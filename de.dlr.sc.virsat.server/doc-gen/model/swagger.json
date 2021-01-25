@@ -1,0 +1,577 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "API to access the Virtual Satellite data model",
+    "version" : "v0.0.1",
+    "title" : "The Model API"
+  },
+  "basePath" : "/rest/model/v0.0.1",
+  "schemes" : [ "http" ],
+  "paths" : {
+    "/repository/{repoName}/ca" : {
+      "put" : {
+        "summary" : "Put CA",
+        "description" : "This service updates an existing CategoryAssignment",
+        "operationId" : "putCa",
+        "consumes" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "CA to put",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/ABeanCategoryAssignment"
+          }
+        }, {
+          "name" : "repoName",
+          "in" : "path",
+          "description" : "Name of the repository",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/repository/{repoName}/ca/{caUuid}" : {
+      "get" : {
+        "summary" : "Fetch CA",
+        "description" : "This service fetches a CategoryAssignment",
+        "operationId" : "getCa",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "caUuid",
+          "in" : "path",
+          "description" : "Uuid of the CA",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "repoName",
+          "in" : "path",
+          "description" : "Name of the repository",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/ABeanCategoryAssignment"
+            }
+          },
+          "400" : {
+            "description" : "Could not find requested CA"
+          }
+        }
+      }
+    },
+    "/repository/{repoName}/property" : {
+      "put" : {
+        "summary" : "Put Property",
+        "description" : "This service updates an existing Property",
+        "operationId" : "putProperty",
+        "consumes" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Property to put",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/ABeanProperty"
+          }
+        }, {
+          "name" : "repoName",
+          "in" : "path",
+          "description" : "Name of the repository",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/repository/{repoName}/property/{propertyUuid}" : {
+      "get" : {
+        "summary" : "Fetch Property",
+        "description" : "This service fetches a Property",
+        "operationId" : "getProperty",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "propertyUuid",
+          "in" : "path",
+          "description" : "Uuid of the property",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "repoName",
+          "in" : "path",
+          "description" : "Name of the repository",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/ABeanProperty"
+            }
+          },
+          "400" : {
+            "description" : "Could not find requested Property"
+          }
+        }
+      }
+    },
+    "/repository/{repoName}/sei" : {
+      "put" : {
+        "summary" : "Put SEI",
+        "description" : "This service updates an existing StructuralElementInstance",
+        "operationId" : "putSei",
+        "consumes" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "SEI to put",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/ABeanStructuralElementInstance"
+          }
+        }, {
+          "name" : "repoName",
+          "in" : "path",
+          "description" : "Name of the repository",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "default" : {
+            "description" : "successful operation"
+          }
+        }
+      }
+    },
+    "/repository/{repoName}/sei/{seiUuid}" : {
+      "get" : {
+        "summary" : "Fetch SEI",
+        "description" : "This service fetches a StructuralElementInstance.It can be used as an entry point into the data model.",
+        "operationId" : "getSei",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "seiUuid",
+          "in" : "path",
+          "description" : "Uuid of the SEI",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "repoName",
+          "in" : "path",
+          "description" : "Name of the repository",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/ABeanStructuralElementInstance"
+            }
+          },
+          "400" : {
+            "description" : "Could not find requested SEI"
+          }
+        }
+      }
+    },
+    "/repository/{repoName}/seis" : {
+      "get" : {
+        "summary" : "Fetch a list of root SEIs",
+        "description" : "This service fetches the root StructuralElementInstances",
+        "operationId" : "getRootSeis",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "repoName",
+          "in" : "path",
+          "description" : "Name of the repository",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/ABeanStructuralElementInstance"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Could not create bean for a root SEI"
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "ABeanCategoryAssignment" : {
+      "type" : "object",
+      "required" : [ "name", "uuid" ],
+      "properties" : {
+        "name" : {
+          "type" : "string"
+        },
+        "uuid" : {
+          "type" : "string",
+          "example" : "b168b0df-84b6-4b7f-bede-69298b215f40",
+          "description" : "Unique identifier for a bean"
+        }
+      },
+      "description" : "Abstract model class with properties that every bean CA has. Instead return a concrete bean CA that is identified by a type field. A concrete bean CA can additionally have properties (see ABeanProperty)."
+    },
+    "ABeanProperty" : {
+      "type" : "object",
+      "required" : [ "uuid" ],
+      "discriminator" : "propertyType",
+      "properties" : {
+        "propertyType" : {
+          "type" : "string",
+          "description" : "Enum to idenify a property by it's type",
+          "readOnly" : true,
+          "enum" : [ "BOOLEAN", "STRING", "INT", "FLOAT", "ENUM", "RESOURCE", "REFERENCE", "EREFERENCE", "COMPOSED" ]
+        },
+        "uuid" : {
+          "type" : "string",
+          "example" : "b168b0df-84b6-4b7f-bede-69298b215f40",
+          "description" : "Unique identifier for a bean"
+        }
+      },
+      "description" : "Abstract model class for bean properties. Resources that return this will instead return concrete bean properties."
+    },
+    "ABeanStructuralElementInstance" : {
+      "type" : "object",
+      "required" : [ "categoryAssignments", "children", "name", "parent", "superSeis", "uuid" ],
+      "properties" : {
+        "name" : {
+          "type" : "string"
+        },
+        "uuid" : {
+          "type" : "string",
+          "example" : "b168b0df-84b6-4b7f-bede-69298b215f40",
+          "position" : 1,
+          "description" : "Unique identifier for a bean"
+        },
+        "categoryAssignments" : {
+          "type" : "array",
+          "position" : 2,
+          "description" : "List of the CA beans",
+          "items" : {
+            "xml" : {
+              "name" : "categoryAssignments"
+            },
+            "$ref" : "#/definitions/BeanCategoryAssignment"
+          }
+        },
+        "children" : {
+          "type" : "array",
+          "position" : 3,
+          "description" : "List of the child beans",
+          "items" : {
+            "xml" : {
+              "name" : "children"
+            },
+            "$ref" : "#/definitions/ABeanStructuralElementInstance"
+          }
+        },
+        "superSeis" : {
+          "type" : "array",
+          "position" : 4,
+          "description" : "List of the super SEI beans",
+          "items" : {
+            "xml" : {
+              "name" : "superSeis"
+            },
+            "$ref" : "#/definitions/ABeanStructuralElementInstance"
+          }
+        },
+        "parent" : {
+          "position" : 5,
+          "description" : "Bean of the parent sei or null",
+          "$ref" : "#/definitions/BeanStructuralElementInstance"
+        }
+      },
+      "description" : "Abstract model class for bean SEIs. Instead return a concrete bean SEI that is identified by a type field. Currently concrete SEIs have no additional fields."
+    },
+    "ABeanUnitValueProperty" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ABeanValueProperty"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "unit" : {
+            "type" : "string",
+            "description" : "Unit of the bean"
+          }
+        },
+        "description" : "Abstract model class for bean unit value properties.Those properties have an additional unit field."
+      } ]
+    },
+    "ABeanValueProperty" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ABeanProperty"
+      }, {
+        "type" : "object",
+        "description" : "Abstract model class for bean value properties."
+      } ]
+    },
+    "BeanCategoryAssignment" : {
+      "type" : "object",
+      "required" : [ "name", "uuid" ],
+      "properties" : {
+        "name" : {
+          "type" : "string"
+        },
+        "uuid" : {
+          "type" : "string",
+          "example" : "b168b0df-84b6-4b7f-bede-69298b215f40",
+          "description" : "Unique identifier for a bean"
+        }
+      },
+      "description" : "Convenience bean CA that can be used for every concrete CA. Instances of this only contain the fields of ABeanCategoryAssignment and no additional properties of the concrete CA."
+    },
+    "BeanPropertyBoolean" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ABeanValueProperty"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "value" : {
+            "type" : "boolean",
+            "description" : "Boolean"
+          },
+          "propertyType" : {
+            "type" : "string",
+            "example" : "boolean",
+            "description" : "Always returns constant: \"boolean\"",
+            "readOnly" : true,
+            "enum" : [ "BOOLEAN", "STRING", "INT", "FLOAT", "ENUM", "RESOURCE", "REFERENCE", "EREFERENCE", "COMPOSED" ]
+          }
+        },
+        "description" : "Abstract model class for bean value properties."
+      } ]
+    },
+    "BeanPropertyComposed" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ABeanProperty"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "value" : {
+            "description" : "Returns the bean of the composed Category Assignment\nThis can't be via the API.",
+            "readOnly" : true,
+            "$ref" : "#/definitions/ABeanCategoryAssignment"
+          },
+          "propertyType" : {
+            "type" : "string",
+            "example" : "composed",
+            "description" : "Always returns constant: \"composed\"",
+            "readOnly" : true,
+            "enum" : [ "BOOLEAN", "STRING", "INT", "FLOAT", "ENUM", "RESOURCE", "REFERENCE", "EREFERENCE", "COMPOSED" ]
+          }
+        },
+        "description" : "Abstract model class for bean properties. Resources that return this will instead return concrete bean properties."
+      } ]
+    },
+    "BeanPropertyEnum" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ABeanProperty"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "value" : {
+            "type" : "string",
+            "description" : "Name of an enum"
+          },
+          "unit" : {
+            "type" : "string",
+            "description" : "Unit of the enum"
+          },
+          "propertyType" : {
+            "type" : "string",
+            "example" : "enum",
+            "description" : "Always returns constant: \"enum\"",
+            "readOnly" : true,
+            "enum" : [ "BOOLEAN", "STRING", "INT", "FLOAT", "ENUM", "RESOURCE", "REFERENCE", "EREFERENCE", "COMPOSED" ]
+          }
+        },
+        "description" : "Abstract model class for bean properties. Resources that return this will instead return concrete bean properties."
+      } ]
+    },
+    "BeanPropertyFloat" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ABeanUnitValueProperty"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "value" : {
+            "type" : "number",
+            "format" : "double",
+            "description" : "Double"
+          },
+          "propertyType" : {
+            "type" : "string",
+            "example" : "float",
+            "description" : "Always returns constant: \"float\"",
+            "readOnly" : true,
+            "enum" : [ "BOOLEAN", "STRING", "INT", "FLOAT", "ENUM", "RESOURCE", "REFERENCE", "EREFERENCE", "COMPOSED" ]
+          }
+        },
+        "description" : "Abstract model class for bean unit value properties.Those properties have an additional unit field."
+      } ]
+    },
+    "BeanPropertyInt" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ABeanUnitValueProperty"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "value" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "Long"
+          },
+          "propertyType" : {
+            "type" : "string",
+            "example" : "int",
+            "description" : "Always returns constant: \"int\"",
+            "readOnly" : true,
+            "enum" : [ "BOOLEAN", "STRING", "INT", "FLOAT", "ENUM", "RESOURCE", "REFERENCE", "EREFERENCE", "COMPOSED" ]
+          }
+        },
+        "description" : "Abstract model class for bean unit value properties.Those properties have an additional unit field."
+      } ]
+    },
+    "BeanPropertyReference" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ABeanProperty"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "value" : {
+            "type" : "string",
+            "description" : "Uuid of the referenced bean object, that is either ABeanProperty or ABeanCategoryAssignment"
+          },
+          "propertyType" : {
+            "type" : "string",
+            "example" : "reference",
+            "description" : "Always returns constant: \"reference\"",
+            "readOnly" : true,
+            "enum" : [ "BOOLEAN", "STRING", "INT", "FLOAT", "ENUM", "RESOURCE", "REFERENCE", "EREFERENCE", "COMPOSED" ]
+          }
+        },
+        "description" : "Abstract model class for bean properties. Resources that return this will instead return concrete bean properties."
+      } ]
+    },
+    "BeanPropertyResource" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ABeanProperty"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "value" : {
+            "type" : "string",
+            "description" : "Platform String of a URI"
+          },
+          "propertyType" : {
+            "type" : "string",
+            "example" : "resource",
+            "description" : "Always returns constant: \"resource\"",
+            "readOnly" : true,
+            "enum" : [ "BOOLEAN", "STRING", "INT", "FLOAT", "ENUM", "RESOURCE", "REFERENCE", "EREFERENCE", "COMPOSED" ]
+          }
+        },
+        "description" : "Abstract model class for bean properties. Resources that return this will instead return concrete bean properties."
+      } ]
+    },
+    "BeanPropertyString" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/ABeanValueProperty"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "value" : {
+            "type" : "string",
+            "description" : "String"
+          },
+          "propertyType" : {
+            "type" : "string",
+            "example" : "string",
+            "description" : "Always returns constant: \"string\"",
+            "readOnly" : true,
+            "enum" : [ "BOOLEAN", "STRING", "INT", "FLOAT", "ENUM", "RESOURCE", "REFERENCE", "EREFERENCE", "COMPOSED" ]
+          }
+        },
+        "description" : "Abstract model class for bean value properties."
+      } ]
+    },
+    "BeanStructuralElementInstance" : {
+      "type" : "object",
+      "required" : [ "categoryAssignments", "children", "name", "parent", "superSeis", "uuid" ],
+      "properties" : {
+        "name" : {
+          "type" : "string"
+        },
+        "uuid" : {
+          "type" : "string",
+          "example" : "b168b0df-84b6-4b7f-bede-69298b215f40",
+          "position" : 1,
+          "description" : "Unique identifier for a bean"
+        },
+        "categoryAssignments" : {
+          "type" : "array",
+          "position" : 2,
+          "description" : "List of the CA beans",
+          "items" : {
+            "xml" : {
+              "name" : "categoryAssignments"
+            },
+            "$ref" : "#/definitions/BeanCategoryAssignment"
+          }
+        },
+        "children" : {
+          "type" : "array",
+          "position" : 3,
+          "description" : "List of the child beans",
+          "items" : {
+            "xml" : {
+              "name" : "children"
+            },
+            "$ref" : "#/definitions/ABeanStructuralElementInstance"
+          }
+        },
+        "superSeis" : {
+          "type" : "array",
+          "position" : 4,
+          "description" : "List of the super SEI beans",
+          "items" : {
+            "xml" : {
+              "name" : "superSeis"
+            },
+            "$ref" : "#/definitions/ABeanStructuralElementInstance"
+          }
+        },
+        "parent" : {
+          "position" : 5,
+          "description" : "Bean of the parent sei or null",
+          "$ref" : "#/definitions/BeanStructuralElementInstance"
+        }
+      },
+      "description" : "Convenience bean SEI that can be used for every concrete SEI. Instances of this only contain the fields of ABeanStructuralElement."
+    }
+  }
+}

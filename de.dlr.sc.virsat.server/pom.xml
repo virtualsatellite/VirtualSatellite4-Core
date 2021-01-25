@@ -1,14 +1,11 @@
-<!--
-Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+<!-- Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and 
+	Software Technology, Germany. This program and the accompanying materials 
+	are made available under the terms of the Eclipse Public License 2.0 which 
+	is available at http://www.eclipse.org/legal/epl-2.0. SPDX-License-Identifier: 
+	EPL-2.0 -->
 
-This program and the accompanying materials are made available under the
-terms of the Eclipse Public License 2.0 which is available at
-http://www.eclipse.org/legal/epl-2.0.
-
-SPDX-License-Identifier: EPL-2.0
--->
-
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<artifactId>de.dlr.sc.virsat.parent</artifactId>
@@ -23,10 +20,14 @@ SPDX-License-Identifier: EPL-2.0
 
 	<properties>
 		<swagger-maven-plugin-version>3.1.8</swagger-maven-plugin-version>
-		<swagger.output.dir>${basedir}/doc-gen</swagger.output.dir>
+		<managementPath>management</managementPath>
+		<modelPath>model</modelPath>
+		<swagger.management.output>${basedir}/doc-gen/${managementPath}</swagger.management.output>
+		<swagger.model.output>${basedir}/doc-gen/${modelPath}</swagger.model.output>
 		<swagger.output.name>swagger</swagger.output.name>
 		<swagger2markup.version>1.2.0</swagger2markup.version>
-		<swagger.input>${swagger.output.dir}/${swagger.output.name}.json</swagger.input>
+		<swagger.management.input>${swagger.management.output}/${swagger.output.name}.json</swagger.management.input>
+		<swagger.model.input>${swagger.model.output}/${swagger.output.name}.json</swagger.model.input>
 	</properties>
 
 	<pluginRepositories>
@@ -47,34 +48,62 @@ SPDX-License-Identifier: EPL-2.0
 
 	<profiles>
 		<profile>
-			<id>swagger</id>
+			<id>doc</id>
 			<build>
 				<plugins>
 					<plugin>
 						<groupId>com.github.kongchen</groupId>
 						<artifactId>swagger-maven-plugin</artifactId>
 						<version>${swagger-maven-plugin-version}</version>
-						<configuration>
-							<apiSources>
-								<apiSource>
-									<springmvc>false</springmvc>
-									<locations>
-										<location>de.dlr.sc.virsat.server.resources.ModelAccessResource</location>
-									</locations>
-									<outputPath>${swagger.output.dir}</outputPath>
-									<outputFormats>json,yaml</outputFormats>
-									<swaggerDirectory>${swagger.output.dir}</swaggerDirectory>
-									<swaggerFileName>${swagger.output.name}</swaggerFileName>
-									<modelSubstitute>/model.substitution</modelSubstitute>
-									<schemes>
-										<scheme>http</scheme>
-									</schemes>
-								</apiSource>
-							</apiSources>
-						</configuration>
 						<executions>
+							<!-- Model API -->
 							<execution>
-								<phase>process-resources</phase>
+								<id>modelAPI</id>
+								<configuration>
+									<apiSources>
+										<apiSource>
+											<springmvc>false</springmvc>
+											<locations>
+												<location>de.dlr.sc.virsat.server.resources.ModelAccessResource</location>
+											</locations>
+											<outputPath>${swagger.model.output}</outputPath>
+											<outputFormats>json,yaml</outputFormats>
+											<swaggerDirectory>${swagger.model.output}</swaggerDirectory>
+											<swaggerFileName>${swagger.output.name}</swaggerFileName>
+											<modelSubstitute>/model.substitution</modelSubstitute>
+											<schemes>
+												<scheme>http</scheme>
+											</schemes>
+										</apiSource>
+									</apiSources>
+								</configuration>
+								<phase>process-classes</phase>
+								<goals>
+									<goal>generate</goal>
+								</goals>
+							</execution>
+							<!-- Management API -->
+							<execution>
+								<id>managementAPI</id>
+								<configuration>
+									<apiSources>
+										<apiSource>
+											<springmvc>false</springmvc>
+											<locations>
+												<location>de.dlr.sc.virsat.server.resources.ProjectManagementResource</location>
+											</locations>
+											<outputPath>${swagger.management.output}</outputPath>
+											<outputFormats>json,yaml</outputFormats>
+											<swaggerDirectory>${swagger.management.output}</swaggerDirectory>
+											<swaggerFileName>${swagger.output.name}</swaggerFileName>
+											<modelSubstitute>/model.substitution</modelSubstitute>
+											<schemes>
+												<scheme>http</scheme>
+											</schemes>
+										</apiSource>
+									</apiSources>
+								</configuration>
+								<phase>process-classes</phase>
 								<goals>
 									<goal>generate</goal>
 								</goals>
@@ -97,17 +126,37 @@ SPDX-License-Identifier: EPL-2.0
 								<version>${swagger2markup.version}</version>
 							</dependency>
 						</dependencies>
-						<configuration>
-							<swaggerInput>${swagger.input}</swaggerInput>
-							<outputDir>${swagger.output.dir}</outputDir>
-							<config>
-								<swagger2markup.markupLanguage>ASCIIDOC</swagger2markup.markupLanguage>
-								<swagger2markup.pathsGroupedBy>TAGS</swagger2markup.pathsGroupedBy>
-							</config>
-						</configuration>
 						<executions>
+							<!-- Model API -->
 							<execution>
-								<phase>process-resources</phase>
+								<id>modelAPI</id>
+								<configuration>
+									<swaggerInput>${swagger.model.input}</swaggerInput>
+									<outputDir>${swagger.model.output}</outputDir>
+									<config>
+										<swagger2markup.markupLanguage>ASCIIDOC</swagger2markup.markupLanguage>
+										<swagger2markup.anchorPrefix>model_</swagger2markup.anchorPrefix>
+										<swagger2markup.generatedExamplesEnabled>true</swagger2markup.generatedExamplesEnabled>
+									</config>
+								</configuration>
+								<phase>process-classes</phase>
+								<goals>
+									<goal>convertSwagger2markup</goal>
+								</goals>
+							</execution>
+							<!-- Management API -->
+							<execution>
+								<id>managementAPI</id>
+								<configuration>
+									<swaggerInput>${swagger.management.input}</swaggerInput>
+									<outputDir>${swagger.management.output}</outputDir>
+									<config>
+										<swagger2markup.markupLanguage>ASCIIDOC</swagger2markup.markupLanguage>
+										<swagger2markup.anchorPrefix>management_</swagger2markup.anchorPrefix>
+										<swagger2markup.generatedExamplesEnabled>true</swagger2markup.generatedExamplesEnabled>
+									</config>
+								</configuration>
+								<phase>process-classes</phase>
 								<goals>
 									<goal>convertSwagger2markup</goal>
 								</goals>

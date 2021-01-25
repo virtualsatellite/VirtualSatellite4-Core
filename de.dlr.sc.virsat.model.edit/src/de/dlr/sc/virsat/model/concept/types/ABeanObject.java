@@ -18,6 +18,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapter;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
@@ -28,6 +29,9 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement
+// This class does not appear in the API documentation
+// because there is no concrete resource using it
+@ApiModel
 public abstract class ABeanObject<CP_TYPE extends ATypeInstance> implements IBeanObject<CP_TYPE> {
 
 	protected CP_TYPE ti;
@@ -54,6 +58,9 @@ public abstract class ABeanObject<CP_TYPE extends ATypeInstance> implements IBea
 		this.ti = (CP_TYPE) ti;
 	}
 	
+	@ApiModelProperty(name = "uuid", required = true,
+			value = "Unique identifier for a bean",
+			example = "b168b0df-84b6-4b7f-bede-69298b215f40")
 	@XmlElement(name = "uuid")
 	@XmlJavaTypeAdapter(IUuidAdapter.class)
 	@Override
@@ -66,14 +73,14 @@ public abstract class ABeanObject<CP_TYPE extends ATypeInstance> implements IBea
 		this.ti = ti;
 	}
 
-	@Override
 	@ApiModelProperty(hidden = true)
+	@Override
 	public CP_TYPE getTypeInstance() {
 		return ti;
 	}
 
-	@Override
 	@ApiModelProperty(hidden = true)
+	@Override
 	public String getUuid() {
 		return ti.getUuid().toString();
 	}
