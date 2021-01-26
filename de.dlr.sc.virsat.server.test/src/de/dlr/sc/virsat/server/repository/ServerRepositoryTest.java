@@ -270,27 +270,6 @@ public class ServerRepositoryTest extends AProjectTestCase {
 		assertNull("Dangling reference removed by builders", sei.getType());
 	}
 	
-//	/**
-//	 * Open a repository and count the commits
-//	 * @param repoFile the repository to open
-//	 * @return number of commits in remote
-//	 * @throws IOException
-//	 * @throws NoHeadException
-//	 * @throws GitAPIException
-//	 * @throws InterruptedException
-//	 */
-//	private int countCommits(File repoFile) throws IOException, NoHeadException, GitAPIException, InterruptedException {
-//		Git git = Git.open(repoFile);
-//		Iterator<RevCommit> iterator = git.log().call().iterator();
-//		int commits = 0;
-//		while (iterator.hasNext()) {
-//			iterator.next();
-//			commits++;
-//		}
-//		git.close();
-//		return commits;
-//	}
-	
 	@Test
 	public void testUpdateOrCheckoutProject() throws Exception {
 		ServerRepository testServerRepository = new ServerRepository(localRepoHome, testRepoConfig);
