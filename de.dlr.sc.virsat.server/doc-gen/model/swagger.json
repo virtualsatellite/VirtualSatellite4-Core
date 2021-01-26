@@ -30,8 +30,11 @@
           "type" : "string"
         } ],
         "responses" : {
-          "default" : {
-            "description" : "successful operation"
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "500" : {
+            "description" : "Synchronization error"
           }
         }
       }
@@ -64,6 +67,9 @@
           },
           "400" : {
             "description" : "Could not find requested CA"
+          },
+          "500" : {
+            "description" : "Synchronization error"
           }
         }
       }
@@ -90,8 +96,11 @@
           "type" : "string"
         } ],
         "responses" : {
-          "default" : {
-            "description" : "successful operation"
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "500" : {
+            "description" : "Synchronization error"
           }
         }
       }
@@ -122,8 +131,8 @@
               "$ref" : "#/definitions/ABeanProperty"
             }
           },
-          "400" : {
-            "description" : "Could not find requested Property"
+          "500" : {
+            "description" : "Synchronization error"
           }
         }
       }
@@ -150,8 +159,11 @@
           "type" : "string"
         } ],
         "responses" : {
-          "default" : {
-            "description" : "successful operation"
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "500" : {
+            "description" : "Synchronization error"
           }
         }
       }
@@ -184,6 +196,9 @@
           },
           "400" : {
             "description" : "Could not find requested SEI"
+          },
+          "500" : {
+            "description" : "Synchronization error"
           }
         }
       }
@@ -213,6 +228,9 @@
           },
           "400" : {
             "description" : "Could not create bean for a root SEI"
+          },
+          "500" : {
+            "description" : "Synchronization error"
           }
         }
       }

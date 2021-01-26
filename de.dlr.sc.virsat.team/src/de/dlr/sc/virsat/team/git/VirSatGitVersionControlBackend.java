@@ -172,19 +172,19 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 			// Create trees to compare them
 			ObjectReader reader = gitRepository.newObjectReader();
 			CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
-    		oldTreeIter.reset(reader, headBeforePull);
-    		CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
-    		newTreeIter.reset(reader, headAfterPull);
-    		
-    		// Get the diffs
-    		List<DiffEntry> diffs = Git.wrap(gitRepository).diff()
-                    .setNewTree(newTreeIter)
-                    .setOldTree(oldTreeIter)
-                    .call();
+			oldTreeIter.reset(reader, headBeforePull);
+			CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
+			newTreeIter.reset(reader, headAfterPull);
+
+			// Get the diffs
+			List<DiffEntry> diffs = Git.wrap(gitRepository).diff()
+					.setNewTree(newTreeIter)
+					.setOldTree(oldTreeIter)
+					.call();
 
 			for (DiffEntry entry : diffs) {
-			    VersionControlChangeType changeType = getChangeType(entry.getChangeType());
-			    result.addChange(new VersionControlChange(entry.getOldPath(), entry.getNewPath(), changeType));
+				VersionControlChangeType changeType = getChangeType(entry.getChangeType());
+				result.addChange(new VersionControlChange(entry.getOldPath(), entry.getNewPath(), changeType));
 			}
 		} 
 		 
