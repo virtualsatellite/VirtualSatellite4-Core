@@ -7,16 +7,13 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.commons.command;
+package de.dlr.sc.virsat.commons.external;
 
 import java.io.File;
 import java.io.IOException;
+import de.dlr.sc.virsat.commons.Activator;
 
-public class CommandRunner {
-	
-	
-	
-	
+public class ProcessInteraction {
 	private static final String DEFAULT_OUTPUT_FILE = "output.txt";
 	private static final String DEFAULT_ERROR_FILE = "error.txt";
 	
@@ -36,9 +33,8 @@ public class CommandRunner {
 		try {
 			pb.start();
 			return true;
-			
 		} catch (IOException e) {
-			e.printStackTrace();
+			Activator.getDefault().getLog().error("Process builder for external programm could not be started", e);
 		}
 		return false;
 	}

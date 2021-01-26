@@ -14,27 +14,26 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.commons.external.ProcessInteraction;
+
 
 /**
- * Test cases for the dependency tree.
+ * Test cases for the command runner.
  * @author maur_pa
  *
  */
-public class CommandRunnerTest {
+public class ProcessInteractionTest {
 	
-	private CommandRunner cr;
-	
-	
+	private ProcessInteraction cr;
 	
 	@Before
 	public void setUp() throws Exception {
-		cr = new CommandRunner();
+		cr = new ProcessInteraction();
 	}
 
 	@Test
 	public void testStandardCommandRunner() {
 		assertEquals(cr.startCommandRunner("", "eclipse"), true);
-		assertEquals(cr.startCommandRunner("", "run"), false);
 	}
 	
 }
