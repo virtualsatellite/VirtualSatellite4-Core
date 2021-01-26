@@ -33,6 +33,7 @@ public interface IInstance extends EObject {
 	 * <!-- begin-model-doc -->
 	 * This method hands back the full qualified path of the current instance in the DVLM. The FAN consists of all relevant names from the current object to its top container delimited by a "."
 	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>getFullQualifiedInstanceName</em>' operation as String.
 	 * @model kind="operation"
 	 * @generated
 	 */

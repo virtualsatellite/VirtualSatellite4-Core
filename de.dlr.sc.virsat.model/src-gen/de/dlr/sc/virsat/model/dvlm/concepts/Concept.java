@@ -203,6 +203,7 @@ public interface Concept extends IQualifiedName, IDescription, IActiveConcept, I
 	 * <!-- begin-model-doc -->
 	 * returns all categories from the concept which are not abstract.
 	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>getNonAbstractCategories</em>' operation as EList<Category>.
 	 * @model kind="operation"
 	 * @generated
 	 */

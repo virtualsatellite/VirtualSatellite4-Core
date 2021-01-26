@@ -493,7 +493,7 @@ public class Class
   protected final String TEXT_475 = NL + "\t * ";
   protected final String TEXT_476 = NL + "\t * @param ";
   protected final String TEXT_477 = NL + "\t *   ";
-  protected final String TEXT_478 = "</em>' as ";
+  protected final String TEXT_478 = "</em>' operation as ";
   protected final String TEXT_479 = NL + "\t{";
   protected final String TEXT_480 = NL + "\t\treturn" + NL + "\t\t\t";
   protected final String TEXT_481 = ".validate" + NL + "\t\t\t\t(";

@@ -65,6 +65,7 @@ public interface IAssignedDiscipline extends EObject {
 	 * <!-- begin-model-doc -->
 	 * This method hands back all contained IAssignedDiscipline objects
 	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>getContainedIAssignedDisciplines</em>' operation as EList<IAssignedDiscipline>.
 	 * @model kind="operation"
 	 * @generated
 	 */
