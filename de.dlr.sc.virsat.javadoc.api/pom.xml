@@ -50,6 +50,9 @@
 										<includes>
 											<include>de.dlr.sc.*</include>
 										</includes>
+										<excludes>
+											<exclude>de.dlr.sc.visproto</exclude>
+										</excludes>
 										<ignoreError>false</ignoreError>
 										<additionalArguments>
 											<additionalArgument>-tag "generated:a:This is EMF generated code:"</additionalArgument>
