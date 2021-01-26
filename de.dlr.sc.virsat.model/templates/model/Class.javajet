@@ -1651,13 +1651,13 @@ if (index != -1) { head = typeName.substring(0, index); tail = typeName.substrin
         <%}%>
       <%}%>
     <%}%>
+	 * <!-- end-model-doc -->
     <% /************************************************
         * VirSat specific documentation of return types 
         ************************************************/
     if (genOperation.getTypeParameters(genClass) != null) { %>
 	 * @return the value of the '<em><%=genOperation.getName()%></em>' as <%=genOperation.getTypeParameters(genClass)%><%=genOperation.getImportedType(genClass)%>.
     <%}%>
-	 * <!-- end-model-doc -->
   <%}%>
   <%if (!genModel.isSuppressEMFModelTags()) { boolean first = true; for (StringTokenizer stringTokenizer = new StringTokenizer(genOperation.getModelInfo(), "\n\r"); stringTokenizer.hasMoreTokens(); ) { String modelInfo = stringTokenizer.nextToken(); if (first) { first = false;%>
 	 * @model <%=modelInfo%>

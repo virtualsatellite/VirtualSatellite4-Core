@@ -3804,6 +3804,7 @@ if (index != -1) { head = typeName.substring(0, index); tail = typeName.substrin
     }
     }
     }
+    stringBuffer.append(TEXT_208);
      /************************************************
         * VirSat specific documentation of return types 
         ************************************************/
@@ -3815,7 +3816,6 @@ if (index != -1) { head = typeName.substring(0, index); tail = typeName.substrin
     stringBuffer.append(genOperation.getImportedType(genClass));
     stringBuffer.append(TEXT_188);
     }
-    stringBuffer.append(TEXT_208);
     }
     if (!genModel.isSuppressEMFModelTags()) { boolean first = true; for (StringTokenizer stringTokenizer = new StringTokenizer(genOperation.getModelInfo(), "\n\r"); stringTokenizer.hasMoreTokens(); ) { String modelInfo = stringTokenizer.nextToken(); if (first) { first = false;
     stringBuffer.append(TEXT_214);
