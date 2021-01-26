@@ -162,6 +162,7 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	/**
 	 * Shadows the original function, but makes the list modifiable
 	 * so it can be used by JAXB
+	 * @return modifiable list with all category assignments
 	 */
 	public List<BeanCategoryAssignment> getJaxbCategoryAssignments() {
 		return new ArrayList<BeanCategoryAssignment>(getCategoryAssignments());
@@ -221,6 +222,7 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	/**
 	 * Shadows the original function, but makes the list modifiable
 	 * so it can be used by JAXB
+	 * @return modifiable list with all children
 	 */
 	public List<ABeanStructuralElementInstance> getJaxbChildren() {
 		return new ArrayList<ABeanStructuralElementInstance>(getChildren());
@@ -300,6 +302,7 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	/**
 	 * Shadows the original function, but makes the list modifiable
 	 * so it can be used by JAXB
+	 * @return modifiable list with all super seis
 	 */
 	public List<ABeanStructuralElementInstance> getJaxbSuperSeis() {
 		return new ArrayList<ABeanStructuralElementInstance>(getSuperSeis());

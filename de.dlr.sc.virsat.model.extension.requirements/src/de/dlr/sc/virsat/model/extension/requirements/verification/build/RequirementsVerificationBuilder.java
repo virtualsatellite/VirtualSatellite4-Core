@@ -40,12 +40,7 @@ public class RequirementsVerificationBuilder extends AVirSatTransactionalBuilder
 	
 	protected List<IVerificationStep> verificationSteps = new ArrayList<IVerificationStep>();
 	
-	/**
-	 * @param builderName
-	 * @param vpmHelper
-	 * @param redirectIncrementalToAutoBuild
-	 * @param dvlmOnly
-	 */
+
 	public RequirementsVerificationBuilder() {
 		super("Requirements Verification Builder", new VirSatVerificationMarkerHelper(), true, true);
 		initVerificationSteps();

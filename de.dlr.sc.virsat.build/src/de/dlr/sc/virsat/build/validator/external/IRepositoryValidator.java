@@ -13,7 +13,7 @@ import de.dlr.sc.virsat.model.dvlm.Repository;
 
 /**
  * <p>
- * Deprecated -> Use instead: {@link de.dlr.sc.virsat.model.dvlm.validator.IRepositoryValidator}
+ * Deprecated - Use instead: {@link de.dlr.sc.virsat.model.dvlm.validator.IRepositoryValidator}
  * 
  * </p>
  * the IRepositoryValidator class defines the interface for our model validators
