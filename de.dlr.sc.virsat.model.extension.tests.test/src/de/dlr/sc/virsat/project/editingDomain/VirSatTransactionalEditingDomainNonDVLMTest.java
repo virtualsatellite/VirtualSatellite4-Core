@@ -117,7 +117,6 @@ public class VirSatTransactionalEditingDomainNonDVLMTest extends ATestConceptTes
 		editingDomain.saveAll();
 		
 		// now wait for the notifications to be processed and check the resource got reloaded
-		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 		while (!externalModelResourceReloaded.get()) {
 			Thread.sleep(THREAD_TEST_SLEEP_TIME);
 		}
