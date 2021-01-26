@@ -189,11 +189,8 @@ public class ServerRepository {
 	 * @throws Exception
 	 */
 	public void syncRepository() throws Exception {
-		// TODO: call this function in the resources
-		
 		AtomicExceptionReference<Exception> atomicException = new AtomicExceptionReference<>();
 		String projectName = repositoryConfiguration.getProjectName();
-		
 		
 		runInWorkspace((progress) -> {
 			try {

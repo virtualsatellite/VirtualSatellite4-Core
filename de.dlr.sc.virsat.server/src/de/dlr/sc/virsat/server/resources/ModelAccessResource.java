@@ -36,7 +36,6 @@ import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementIns
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProvider;
 import de.dlr.sc.virsat.server.jetty.VirSatJettyServer;
@@ -91,9 +90,8 @@ public class ModelAccessResource {
 	public RepoModelAccessResource getConcreteResource(@PathParam("repoName") @ApiParam(value = "Name of the repository", required = true) String repoName) {
 		ServerRepository repo = RepoRegistry.getInstance().getRepository(repoName);
 		if (repo != null) {
-			VirSatTransactionalEditingDomain ed = repo.getEd();
 			provider.setServerRepository(repo);
-			return new RepoModelAccessResource(ed.getResourceSet().getRepository());
+			return new RepoModelAccessResource(repo);
 		}
 
 		return null;
@@ -114,16 +112,24 @@ public class ModelAccessResource {
 	public static class RepoModelAccessResource {
 	
 		private static final String SUCCESSFUL_OPERATION = "Successful operation";
+		private static final String SYNC_ERROR = "Synchronization error";
 		private Repository repository;
-		
-		public RepoModelAccessResource(Repository repository) {
-			this.repository = repository;
+		private ServerRepository serverRepository;
+
+		public RepoModelAccessResource(ServerRepository serverRepository) {
+			this.serverRepository = serverRepository;
+			this.repository = serverRepository.getEd().getResourceSet().getRepository();
 		}
-		
+
 		private Response createBadRequestResponse(String msg) {
 			return Response.status(Response.Status.BAD_REQUEST).entity(msg).build();
 		}
 
+		private Response createSyncErrorResponse(String msg) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(msg).build();
+		}
+
+		/** **/
 		@GET
 		@Path(PROPERTY + "/{propertyUuid}")
 		@Produces(MediaType.APPLICATION_JSON)
@@ -138,15 +144,21 @@ public class ModelAccessResource {
 						response = ABeanProperty.class,
 						message = SUCCESSFUL_OPERATION),
 				@ApiResponse(
-						code = HttpStatus.BAD_REQUEST_400, 
-						message = "Could not find requested Property")})
+						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+						message = SYNC_ERROR)})
 		public Response getProperty(@PathParam("propertyUuid") @ApiParam(value = "Uuid of the property", required = true) String propertyUuid) {
-			return Response.status(Response.Status.OK).entity(
-					new BeanPropertyFactory().getInstanceFor(
-							RepositoryUtility.findProperty(propertyUuid, repository)
-					)).build();
+			try {
+				serverRepository.syncRepository();
+				return Response.status(Response.Status.OK).entity(
+						new BeanPropertyFactory().getInstanceFor(
+								RepositoryUtility.findProperty(propertyUuid, repository)
+						)).build();
+			} catch (Exception e) {
+				return createSyncErrorResponse(e.getMessage());
+			}
 		}
-		
+
+		/** **/
 		@PUT
 		@Path(PROPERTY)
 		@Consumes(MediaType.APPLICATION_JSON)
@@ -155,11 +167,20 @@ public class ModelAccessResource {
 				value = "Put Property",
 				httpMethod = "PUT",
 				notes = "This service updates an existing Property")
-		@ApiResponse(
-				code = HttpStatus.OK_200,
-				message = SUCCESSFUL_OPERATION)
+		@ApiResponses(value = { 
+				@ApiResponse(
+						code = HttpStatus.OK_200,
+						message = SUCCESSFUL_OPERATION),
+				@ApiResponse(
+						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+						message = SYNC_ERROR)})
 		public Response putProperty(@SuppressWarnings("rawtypes") @ApiParam(value = "Property to put", required = true) ABeanProperty bean) {
-			return Response.status(Response.Status.OK).build();
+			try {
+				serverRepository.syncRepository();
+				return Response.status(Response.Status.OK).build();
+			} catch (Exception e) {
+				return createSyncErrorResponse(e.getMessage());
+			}
 		}
 		
 
@@ -179,18 +200,25 @@ public class ModelAccessResource {
 						message = SUCCESSFUL_OPERATION),
 				@ApiResponse(
 						code = HttpStatus.BAD_REQUEST_400, 
-						message = "Could not find requested CA")})
+						message = "Could not find requested CA"),
+				@ApiResponse(
+						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+						message = SYNC_ERROR)})
 		public Response getCa(@PathParam("caUuid") @ApiParam(value = "Uuid of the CA", required = true) String caUuid) {
 			try {
+				serverRepository.syncRepository();
 				return Response.status(Response.Status.OK).entity(
 						new BeanCategoryAssignmentFactory().getInstanceFor(
 								RepositoryUtility.findCa(caUuid, repository)
 						)).build();
 			} catch (CoreException e) {
 				return createBadRequestResponse(e.getMessage());
+			} catch (Exception e) {
+				return createSyncErrorResponse(e.getMessage());
 			}
 		}
 
+		/** **/
 		@PUT
 		@Path(CA)
 		@Consumes(MediaType.APPLICATION_JSON)
@@ -199,13 +227,22 @@ public class ModelAccessResource {
 				value = "Put CA",
 				httpMethod = "PUT",
 				notes = "This service updates an existing CategoryAssignment")
-		@ApiResponse(
-				code = HttpStatus.OK_200,
-				message = SUCCESSFUL_OPERATION)
+		@ApiResponses(value = { 
+				@ApiResponse(
+						code = HttpStatus.OK_200,
+						message = SUCCESSFUL_OPERATION),
+				@ApiResponse(
+						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+						message = SYNC_ERROR)})
 		public Response putCa(@ApiParam(value = "CA to put", required = true) ABeanCategoryAssignment bean) {
-			return Response.status(Response.Status.OK).build();
+			try {
+				serverRepository.syncRepository();
+				return Response.status(Response.Status.OK).build();
+			} catch (Exception e) {
+				return createSyncErrorResponse(e.getMessage());
+			}
 		}
-		
+
 		/** **/
 		@GET
 		@Path(ROOT_SEIS)
@@ -223,9 +260,13 @@ public class ModelAccessResource {
 						message = SUCCESSFUL_OPERATION),
 				@ApiResponse(
 						code = HttpStatus.BAD_REQUEST_400, 
-						message = "Could not create bean for a root SEI")})
+						message = "Could not create bean for a root SEI"),
+				@ApiResponse(
+						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+						message = SYNC_ERROR)})
 		public Response getRootSeis() {
 			try {
+				serverRepository.syncRepository();
 				List<StructuralElementInstance> rootSeis = repository.getRootEntities();
 				List<ABeanStructuralElementInstance> beans = new ArrayList<ABeanStructuralElementInstance>();
 				
@@ -239,9 +280,11 @@ public class ModelAccessResource {
 				return Response.ok(genericEntityList).build();
 			} catch (CoreException e) {
 				return createBadRequestResponse(e.getMessage());
+			} catch (Exception e) {
+				return createSyncErrorResponse(e.getMessage());
 			}
 		}
-		
+
 		/** **/
 		@GET
 		@Path(SEI + "/{seiUuid}")
@@ -259,17 +302,24 @@ public class ModelAccessResource {
 						message = SUCCESSFUL_OPERATION),
 				@ApiResponse(
 						code = HttpStatus.BAD_REQUEST_400, 
-						message = "Could not find requested SEI")})
+						message = "Could not find requested SEI"),
+				@ApiResponse(
+						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+						message = SYNC_ERROR)})
 		public Response getSei(@PathParam("seiUuid") @ApiParam(value = "Uuid of the SEI", required = true)  String seiUuid) {
 			try {
+				serverRepository.syncRepository();
 				StructuralElementInstance sei = RepositoryUtility.findSei(seiUuid, repository);
 				IBeanStructuralElementInstance beanSei = new BeanStructuralElementInstanceFactory().getInstanceFor(sei);
 				return Response.ok(beanSei).build();
 			} catch (CoreException e) {
 				return createBadRequestResponse(e.getMessage());
+			} catch (Exception e) {
+				return createSyncErrorResponse(e.getMessage());
 			}
 		}
-		
+
+		/** **/
 		@PUT
 		@Path(SEI)
 		@Consumes(MediaType.APPLICATION_JSON)
@@ -278,11 +328,20 @@ public class ModelAccessResource {
 				value = "Put SEI",
 				httpMethod = "PUT",
 				notes = "This service updates an existing StructuralElementInstance")
-		@ApiResponse(
-				code = HttpStatus.OK_200,
-				message = SUCCESSFUL_OPERATION)
+		@ApiResponses(value = { 
+				@ApiResponse(
+						code = HttpStatus.OK_200,
+						message = SUCCESSFUL_OPERATION),
+				@ApiResponse(
+						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+						message = SYNC_ERROR)})
 		public Response putSei(@ApiParam(value = "SEI to put", required = true) ABeanStructuralElementInstance bean) {
-			return Response.status(Response.Status.OK).build();
+			try {
+				serverRepository.syncRepository();
+				return Response.status(Response.Status.OK).build();
+			} catch (Exception e) {
+				return createSyncErrorResponse(e.getMessage());
+			}
 		}
 	
 	}

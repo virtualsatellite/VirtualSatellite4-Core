@@ -28,7 +28,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -40,7 +39,6 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,6 +53,7 @@ import de.dlr.sc.virsat.project.resources.command.CreateSeiResourceAndFileComman
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 import de.dlr.sc.virsat.project.test.AProjectTestCase;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
+import de.dlr.sc.virsat.server.test.VersionControlTestHelper;
 import de.dlr.sc.virsat.team.Activator;
 import de.dlr.sc.virsat.team.VersionControlSystem;
 import de.dlr.sc.virsat.team.git.VirSatGitVersionControlBackend;
@@ -235,11 +234,11 @@ public class ServerRepositoryTest extends AProjectTestCase {
 		
 		testServerRepository.syncRepository();
 		assertFalse(ed.isDirty());
-		int initialCommits = countCommits(testServerRepository.getLocalRepositoryPath());
+		int initialCommits = VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath());
 		
 		// No changes don't create a commit
 		testServerRepository.syncRepository();
-		assertEquals("No new commit", initialCommits, countCommits(pathRepoRemote.toFile()));
+		assertEquals("No new commit", initialCommits, VersionControlTestHelper.countCommits(pathRepoRemote.toFile()));
 		
 		// Checkout the remote again and create a change that has to be 
 		// resolved in the writeTo method
@@ -265,32 +264,32 @@ public class ServerRepositoryTest extends AProjectTestCase {
 		
 		// Sync with remote
 		testServerRepository.syncRepository();
-		assertEquals("Two new commits", initialCommits + 2, countCommits(pathRepoRemote.toFile()));
+		assertEquals("Two new commits", initialCommits + 2, VersionControlTestHelper.countCommits(pathRepoRemote.toFile()));
 		StructuralElementInstance sei = ed.getResourceSet().getRepository().getRootEntities().get(0);
 		assertEquals("Name changed", newString, sei.getName());
 		assertNull("Dangling reference removed by builders", sei.getType());
 	}
 	
-	/**
-	 * Open a repository and count the commits
-	 * @param repoFile the repository to open
-	 * @return number of commits in remote
-	 * @throws IOException
-	 * @throws NoHeadException
-	 * @throws GitAPIException
-	 * @throws InterruptedException
-	 */
-	private int countCommits(File repoFile) throws IOException, NoHeadException, GitAPIException, InterruptedException {
-		Git git = Git.open(repoFile);
-		Iterator<RevCommit> iterator = git.log().call().iterator();
-		int commits = 0;
-		while (iterator.hasNext()) {
-			iterator.next();
-			commits++;
-		}
-		git.close();
-		return commits;
-	}
+//	/**
+//	 * Open a repository and count the commits
+//	 * @param repoFile the repository to open
+//	 * @return number of commits in remote
+//	 * @throws IOException
+//	 * @throws NoHeadException
+//	 * @throws GitAPIException
+//	 * @throws InterruptedException
+//	 */
+//	private int countCommits(File repoFile) throws IOException, NoHeadException, GitAPIException, InterruptedException {
+//		Git git = Git.open(repoFile);
+//		Iterator<RevCommit> iterator = git.log().call().iterator();
+//		int commits = 0;
+//		while (iterator.hasNext()) {
+//			iterator.next();
+//			commits++;
+//		}
+//		git.close();
+//		return commits;
+//	}
 	
 	@Test
 	public void testUpdateOrCheckoutProject() throws Exception {

@@ -22,7 +22,9 @@ import javax.xml.bind.JAXBException;
 
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.jetty.http.HttpStatus;
+import org.eclipse.jgit.api.Git;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -42,6 +44,7 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
+import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBeanA;
@@ -55,6 +58,7 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.server.servlet.VirSatModelAccessServlet;
 import de.dlr.sc.virsat.server.test.AServerRepositoryTest;
+import de.dlr.sc.virsat.server.test.VersionControlTestHelper;
 
 public class ModelAccessResourceTest extends AServerRepositoryTest {
 
@@ -86,16 +90,21 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	private static final String TEST_STRING = "testString";
 	
 	@BeforeClass
-	public static void setUpTarget() {
+	public static void setUpTargetAndUser() {
+		UserRegistry.getInstance().setSuperUser(true);
 		webTarget = webTarget
 			.path(VirSatModelAccessServlet.MODEL_API)
 			.path(ModelAccessResource.PATH)
 			.path(projectName);
 	}
 	
+	@AfterClass
+	public static void tearDownUser() {
+		UserRegistry.getInstance().setSuperUser(false);
+	}
+	
 	@Before
 	public void setUpModel() throws Exception {
-
 		ed = testServerRepository.getEd();
 		resourceSet = ed.getResourceSet();
 
@@ -143,6 +152,11 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 			element.setValue(beanString);
 		}
 		
+		// Set booleans because it will default from null to false
+		// Which would result in an additional commit
+		beanBool.setValue(false);
+		beanComposed.getValue().setTestBool(false);
+		
 		RecordingCommand recordingCommand = new RecordingCommand(ed) {
 			@Override
 			protected void doExecute() {
@@ -154,6 +168,14 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		ed.getCommandStack().execute(recordingCommand);
 		
 		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
+		
+		ed.saveAll();
+		
+		// Initial commit to have a valid HEAD
+		Git git = Git.open(testServerRepository.getLocalRepositoryPath());
+		git.add().addFilepattern(".").call();
+		git.commit().setAll(true).setMessage("Initial commit").call();
+		git.push().call();
 	}
 	
 	@After
@@ -173,7 +195,9 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	 * Test GET various elements
 	 */
 	@Test
-	public void testRootSeisGet() {
+	public void testRootSeisGet() throws Exception {
+		int commits = VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath());
+		
 		Response response = webTarget
 				.path(ModelAccessResource.ROOT_SEIS)
 				.request()
@@ -190,6 +214,9 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 				.get(String.class);
 		
 		assertTrue("Right Sei found", entity.contains(tSei.getUuid()));
+		
+		assertEquals("No new commit on get without remote changes", commits, 
+				VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath()));
 	}
 	
 	/**
@@ -199,16 +226,21 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	 * @param testSubject the subject to be tested
 	 * @param path the path in the ModelAccessResource
 	 * @param classes the classes required for marshalling
-	 * @throws JAXBException
+	 * @throws Exception
 	 */
 	@SuppressWarnings("rawtypes")
-	private void testGet(IBeanUuid testSubject, String path, Class[] classes) throws JAXBException {
+	private void testGet(IBeanUuid testSubject, String path, Class[] classes) throws Exception {
+		int commits = VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath());
+		
 		String uuid = testSubject.getUuid();
 		Response response = webTarget
 				.path(path)
 				.path(uuid)
 				.request()
 				.get();
+		
+		assertEquals("No new commit on get without remote changes", commits, 
+				VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath()));
 		
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 		
@@ -226,108 +258,108 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		assertEquals("Marshalled object as expected", expected, entity);
 	}
 	
-	private void testGetSei(IBeanUuid testSubject) throws JAXBException {
+	private void testGetSei(IBeanUuid testSubject) throws Exception {
 		testGet(testSubject, ModelAccessResource.SEI, new Class[] {testSubject.getClass()});
 	}
 	
 	@Test
-	public void testSeiGet() throws JAXBException {
+	public void testSeiGet() throws Exception {
 		testGetSei(tSei);
 	}
 	
 	@SuppressWarnings("rawtypes")
-	private void testGetProperty(IBeanObject testSubject) throws JAXBException {
+	private void testGetProperty(IBeanObject testSubject) throws Exception {
 		testGet(testSubject, ModelAccessResource.PROPERTY, new Class[] {testSubject.getClass()});
 	}
 	
 	@SuppressWarnings("rawtypes")
-	private void testGetProperty(IBeanObject testSubject, Class[] classes) throws JAXBException {
+	private void testGetProperty(IBeanObject testSubject, Class[] classes) throws Exception {
 		testGet(testSubject, ModelAccessResource.PROPERTY, classes);
 	}
 	
 	@Test
-	public void testPropertyStringGet() throws JAXBException {
+	public void testPropertyStringGet() throws Exception {
 		testGetProperty(beanString);
 	}
 	
 	@Test
-	public void testPropertyBoolGet() throws JAXBException {
+	public void testPropertyBoolGet() throws Exception {
 		testGetProperty(beanBool);
 	}
 	
 	@Test
-	public void testPropertyEnumGet() throws JAXBException {
+	public void testPropertyEnumGet() throws Exception {
 		testGetProperty(beanEnum);
 	}
 	
 	@Test
-	public void testPropertyFloatGet() throws JAXBException {
+	public void testPropertyFloatGet() throws Exception {
 		testGetProperty(beanFloat);
 	}
 	
 	@Test
-	public void testPropertyIntGet() throws JAXBException {
+	public void testPropertyIntGet() throws Exception {
 		testGetProperty(beanInt);
 	}
 	
 	@Test
-	public void testPropertyResourceGet() throws JAXBException {
+	public void testPropertyResourceGet() throws Exception {
 		testGetProperty(beanResource);
 	}
 	
 	@Test
-	public void testPropertyReferenceGet() throws JAXBException {
+	public void testPropertyReferenceGet() throws Exception {
 		testGetProperty(beanReferenceProp, new Class[] {beanReferenceProp.getClass(), beanString.getClass()});
 		testGetProperty(beanReferenceCa, new Class[] {beanReferenceProp.getClass(), tcAllProperty.getClass()});
 	}
 	
 	@Test
-	public void testPropertyComposedGet() throws JAXBException {
+	public void testPropertyComposedGet() throws Exception {
 		testGetProperty(beanComposed, new Class[] {beanComposed.getClass(), tcAllProperty.getClass()});
 	}
 	
 	@SuppressWarnings("rawtypes")
-	private void testGetCa(IBeanObject testSubject) throws JAXBException {
+	private void testGetCa(IBeanObject testSubject) throws Exception {
 		testGet(testSubject, ModelAccessResource.CA, new Class[] {testSubject.getClass()});
 	}
 	
 	@SuppressWarnings("rawtypes")
-	private void testGetCa(IBeanObject testSubject, Class[] classes) throws JAXBException {
+	private void testGetCa(IBeanObject testSubject, Class[] classes) throws Exception {
 		testGet(testSubject, ModelAccessResource.CA, classes);
 	}
 	
 	@Test
-	public void testCaAllPropertyGet() throws JAXBException {
+	public void testCaAllPropertyGet() throws Exception {
 		testGetCa(tcAllProperty);
 	}
 	
 	@Test
-	public void testCaBeanAGet() throws JAXBException {
+	public void testCaBeanAGet() throws Exception {
 		testGetCa(tcBeanA);
 	}
 	
 	@Test
-	public void testCaCompositionGet() throws JAXBException {
+	public void testCaCompositionGet() throws Exception {
 		testGetCa(tcComposition);
 	}
 	
 	@Test
-	public void testCaRefernceGet() throws JAXBException {
+	public void testCaRefernceGet() throws Exception {
 		testGetCa(tcReference);
 	}
 	
 	@Test
-	public void testCaIntrinsicArrayGet() throws JAXBException {
+	public void testCaIntrinsicArrayGet() throws Exception {
 		testGetCa(tcIntrinsicArray);
 	}
 	
 	@Test
-	public void testCaCompositionArrayGet() throws JAXBException {
+	public void testCaCompositionArrayGet() throws Exception {
 		testGetCa(tcCompositionArray, new Class[] {tcCompositionArray.getClass(), tcAllProperty.getClass()});
 	}
 	
 	@Test
-	public void testCaReferenceArrayGet() throws JAXBException {
+	public void testCaReferenceArrayGet() throws Exception {
 		testGetCa(tcReferenceArray);
 	}
 	
@@ -338,23 +370,29 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	/**
 	 * PUT a sei and assert that the server returns OK
 	 * @param sei bean to PUT
+	 * @throws Exception
 	 */
-	private void testPutSei(IBeanStructuralElementInstance sei) {
+	private void testPutSei(IBeanStructuralElementInstance sei) throws Exception {
+		int commits = VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath());
 		
 		Response response = webTarget
 				.path(ModelAccessResource.SEI)
 				.request()
 				.put(Entity.entity(sei, MediaType.APPLICATION_JSON_TYPE));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
+		
+		assertEquals("No new commit on put without changes", commits, 
+				VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath()));
 	}
 	
 	@Test
-	public void testSeiPut() throws JAXBException {
+	public void testSeiPut() throws Exception {
 		testPutSei(tSei);
 	}
 	
 	@Test
-	public void testPropertyStringPutChangesModel() throws JAXBException {
+	public void testPropertyStringPutChangesModel() throws Exception {
+		int commits = VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath());
 		
 		// Manually marshall the Class to edit the json
 		JAXBUtility jaxbUtility = new JAXBUtility(new Class[] {BeanPropertyString.class});
@@ -370,54 +408,61 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 				.put(Entity.json(jsonIn));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 		assertEquals("Model changed as expected", TEST_STRING, beanString.getValue());
+		
+		assertEquals("One new commit", commits + 1, VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath()));
 	}
 	
 	/**
 	 * PUT a property and assert that the server returns OK
 	 * @param property bean property to PUT
+	 * @throws Exception 
 	 */
 	@SuppressWarnings("rawtypes")
-	private void testPutProperty(IBeanObject property) {
+	private void testPutProperty(IBeanObject property) throws Exception {
+		int commits = VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath());
 		
 		Response response = webTarget
 				.path(ModelAccessResource.PROPERTY)
 				.request()
 				.put(Entity.entity(property, MediaType.APPLICATION_JSON_TYPE));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
+		
+		assertEquals("No new commit on put without changes", commits, 
+				VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath()));
 	}
 	
 	@Test
-	public void testPropertyBoolPut() throws JAXBException {
+	public void testPropertyBoolPut() throws Exception {
 		testPutProperty(beanBool);
 	}
 	
 	@Test
-	public void testPropertyStringPut() throws JAXBException {
+	public void testPropertyStringPut() throws Exception {
 		testPutProperty(beanString);
 	}
 	
 	@Test
-	public void testPropertyEnumPut() throws JAXBException {
+	public void testPropertyEnumPut() throws Exception {
 		testPutProperty(beanEnum);
 	}
 	
 	@Test
-	public void testPropertyFloatPut() throws JAXBException {
+	public void testPropertyFloatPut() throws Exception {
 		testPutProperty(beanFloat);
 	}
 	
 	@Test
-	public void testPropertyIntPut() throws JAXBException {
+	public void testPropertyIntPut() throws Exception {
 		testPutProperty(beanInt);
 	}
 	
 	@Test
-	public void testPropertyResourcePut() throws JAXBException {
+	public void testPropertyResourcePut() throws Exception {
 		testPutProperty(beanResource);
 	}
 	
 	@Test
-	public void testPropertyReferencePut() throws JAXBException {
+	public void testPropertyReferencePut() throws Exception {
 		testPutProperty(beanReferenceProp);
 		testPutProperty(beanReferenceCa);
 	}
@@ -442,43 +487,50 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	/**
 	 * PUT a ca and assert that the server returns OK
 	 * @param ca bean category assignment to PUT
+	 * @throws Exception
 	 */
-	private void testPutCa(IBeanCategoryAssignment ca) {
+	private void testPutCa(IBeanCategoryAssignment ca) throws Exception {
+		int commits = VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath());
 		
 		Response response = webTarget
 				.path(ModelAccessResource.CA)
 				.request()
 				.put(Entity.entity(ca, MediaType.APPLICATION_JSON_TYPE));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
+		
+		assertEquals("No new commit on put without changes", commits, 
+				VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath()));
 	}
 	
 	@Test
-	public void testCaAllPropertyPut() {
+	public void testCaAllPropertyPut() throws Exception {
 		testPutCa(tcAllProperty);
 	}
 	
 	@Test
-	public void testCaBeanAPut() {
+	public void testCaBeanAPut() throws Exception {
 		testPutCa(tcBeanA);
 	}
 	
 	@Test
-	public void testCaCompositionPut() {
+	public void testCaCompositionPut() throws Exception {
 		testPutCa(tcComposition);
 	}
 	
 	@Test
-	public void testCaReferncePut() {
+	public void testCaReferncePut() throws Exception {
 		testPutCa(tcReference);
 	}
 	
 	@Test
-	public void testCaIntrinsicArrayPut() {
+	public void testCaIntrinsicArrayPut() throws Exception {
 		testPutCa(tcIntrinsicArray);
 	}
 	
 	@Test
-	public void testCaCompositionArrayPut() throws JAXBException {
+	public void testCaCompositionArrayPut() throws Exception {
+		int commits = VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath());
+		
 		// Manually marshall the Class because Entity.entity doesn't marshall
 		// the TestCategoryAllProperty right because of generics
 		JAXBUtility jaxbUtility = new JAXBUtility(new Class[] {TestCategoryCompositionArray.class, TestCategoryAllProperty.class});
@@ -491,10 +543,13 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 				.request()
 				.put(Entity.json(jsonIn));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
+		
+		assertEquals("One new commit because boolean was changed from null to false", commits + 1,
+				VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath()));
 	}
 	
 	@Test
-	public void testCaReferenceArrayPut() {
+	public void testCaReferenceArrayPut() throws Exception {
 		testPutCa(tcReferenceArray);
 	}
 }
