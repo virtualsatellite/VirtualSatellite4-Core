@@ -285,47 +285,13 @@ __required__|SEI to put|<<_model_abeanstructuralelementinstance,ABeanStructuralE
   } ],
   "children" : [ {
     "name" : "string",
-    "uuid" : "b168b0df-84b6-4b7f-bede-69298b215f40",
-    "categoryAssignments" : [ {
-      "name" : "string",
-      "uuid" : "b168b0df-84b6-4b7f-bede-69298b215f40"
-    } ],
-    "children" : [ "..." ],
-    "superSeis" : [ "..." ],
-    "parent" : {
-      "name" : "string",
-      "uuid" : "b168b0df-84b6-4b7f-bede-69298b215f40",
-      "categoryAssignments" : [ {
-        "name" : "string",
-        "uuid" : "b168b0df-84b6-4b7f-bede-69298b215f40"
-      } ],
-      "children" : [ "..." ],
-      "superSeis" : [ "..." ],
-      "parent" : {
-        "name" : "string",
-        "uuid" : "b168b0df-84b6-4b7f-bede-69298b215f40",
-        "categoryAssignments" : [ {
-          "name" : "string",
-          "uuid" : "b168b0df-84b6-4b7f-bede-69298b215f40"
-        } ],
-        "children" : [ "..." ],
-        "superSeis" : [ "..." ],
-        "parent" : "..."
-      }
-    }
+    "uuid" : "b168b0df-84b6-4b7f-bede-69298b215f40"
   } ],
-  "superSeis" : [ "..." ],
-  "parent" : {
+  "superSeis" : [ {
     "name" : "string",
-    "uuid" : "b168b0df-84b6-4b7f-bede-69298b215f40",
-    "categoryAssignments" : [ {
-      "name" : "string",
-      "uuid" : "b168b0df-84b6-4b7f-bede-69298b215f40"
-    } ],
-    "children" : [ "..." ],
-    "superSeis" : [ "..." ],
-    "parent" : "..."
-  }
+    "uuid" : "b168b0df-84b6-4b7f-bede-69298b215f40"
+  } ],
+  "parent" : "b168b0df-84b6-4b7f-bede-69298b215f40"
 }
 ----
 
@@ -390,47 +356,13 @@ __required__|Uuid of the SEI|string
   } ],
   "children" : [ {
     "name" : "string",
-    "uuid" : "b168b0df-84b6-4b7f-bede-69298b215f40",
-    "categoryAssignments" : [ {
-      "name" : "string",
-      "uuid" : "b168b0df-84b6-4b7f-bede-69298b215f40"
-    } ],
-    "children" : [ "..." ],
-    "superSeis" : [ "..." ],
-    "parent" : {
-      "name" : "string",
-      "uuid" : "b168b0df-84b6-4b7f-bede-69298b215f40",
-      "categoryAssignments" : [ {
-        "name" : "string",
-        "uuid" : "b168b0df-84b6-4b7f-bede-69298b215f40"
-      } ],
-      "children" : [ "..." ],
-      "superSeis" : [ "..." ],
-      "parent" : {
-        "name" : "string",
-        "uuid" : "b168b0df-84b6-4b7f-bede-69298b215f40",
-        "categoryAssignments" : [ {
-          "name" : "string",
-          "uuid" : "b168b0df-84b6-4b7f-bede-69298b215f40"
-        } ],
-        "children" : [ "..." ],
-        "superSeis" : [ "..." ],
-        "parent" : "..."
-      }
-    }
+    "uuid" : "b168b0df-84b6-4b7f-bede-69298b215f40"
   } ],
-  "superSeis" : [ "..." ],
-  "parent" : {
+  "superSeis" : [ {
     "name" : "string",
-    "uuid" : "b168b0df-84b6-4b7f-bede-69298b215f40",
-    "categoryAssignments" : [ {
-      "name" : "string",
-      "uuid" : "b168b0df-84b6-4b7f-bede-69298b215f40"
-    } ],
-    "children" : [ "..." ],
-    "superSeis" : [ "..." ],
-    "parent" : "..."
-  }
+    "uuid" : "b168b0df-84b6-4b7f-bede-69298b215f40"
+  } ],
+  "parent" : "b168b0df-84b6-4b7f-bede-69298b215f40"
 }
 ----
 
