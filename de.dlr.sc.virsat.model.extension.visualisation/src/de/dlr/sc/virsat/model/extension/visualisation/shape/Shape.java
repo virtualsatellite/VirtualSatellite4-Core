@@ -85,7 +85,7 @@ public class Shape {
 
 	/**
 	 * Copy constructor
-	 * @param shapeToCopyFrom 
+	 * @param shapeToCopyFrom Shape from which to create a copy
 	 */
 	public Shape(Shape shapeToCopyFrom) {
 		this.id = shapeToCopyFrom.id;
