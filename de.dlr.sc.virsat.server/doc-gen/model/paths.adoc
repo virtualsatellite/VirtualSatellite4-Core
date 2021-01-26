@@ -39,6 +39,15 @@ __required__|CA to put|<<_model_abeancategoryassignment,ABeanCategoryAssignment>
 * `application/json`
 
 
+==== Security
+
+[options="header", cols=".^3,.^4"]
+|===
+|Type|Name
+|**basic**|**<<_model_basic,basic>>**
+|===
+
+
 ==== Example HTTP request
 
 ===== Request path
@@ -93,6 +102,15 @@ __required__|Name of the repository|string
 ==== Produces
 
 * `application/json`
+
+
+==== Security
+
+[options="header", cols=".^3,.^4"]
+|===
+|Type|Name
+|**basic**|**<<_model_basic,basic>>**
+|===
 
 
 ==== Example HTTP request
@@ -152,6 +170,15 @@ __required__|Property to put|<<_model_abeanproperty,ABeanProperty>>
 * `application/json`
 
 
+==== Security
+
+[options="header", cols=".^3,.^4"]
+|===
+|Type|Name
+|**basic**|**<<_model_basic,basic>>**
+|===
+
+
 ==== Example HTTP request
 
 ===== Request path
@@ -206,6 +233,15 @@ __required__|Name of the repository|string
 ==== Produces
 
 * `application/json`
+
+
+==== Security
+
+[options="header", cols=".^3,.^4"]
+|===
+|Type|Name
+|**basic**|**<<_model_basic,basic>>**
+|===
 
 
 ==== Example HTTP request
@@ -263,6 +299,15 @@ __required__|SEI to put|<<_model_abeanstructuralelementinstance,ABeanStructuralE
 ==== Consumes
 
 * `application/json`
+
+
+==== Security
+
+[options="header", cols=".^3,.^4"]
+|===
+|Type|Name
+|**basic**|**<<_model_basic,basic>>**
+|===
 
 
 ==== Example HTTP request
@@ -368,6 +413,15 @@ __required__|Uuid of the SEI|string
 * `application/json`
 
 
+==== Security
+
+[options="header", cols=".^3,.^4"]
+|===
+|Type|Name
+|**basic**|**<<_model_basic,basic>>**
+|===
+
+
 ==== Example HTTP request
 
 ===== Request path
@@ -469,6 +523,15 @@ __required__|Name of the repository|string
 ==== Produces
 
 * `application/json`
+
+
+==== Security
+
+[options="header", cols=".^3,.^4"]
+|===
+|Type|Name
+|**basic**|**<<_model_basic,basic>>**
+|===
 
 
 ==== Example HTTP request

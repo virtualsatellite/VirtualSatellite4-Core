@@ -30,6 +30,8 @@ paths:
       responses:
         default:
           description: "successful operation"
+      security:
+      - basic: []
   /repository/{repoName}/ca/{caUuid}:
     get:
       summary: "Fetch CA"
@@ -55,6 +57,8 @@ paths:
             $ref: "#/definitions/ABeanCategoryAssignment"
         400:
           description: "Could not find requested CA"
+      security:
+      - basic: []
   /repository/{repoName}/property:
     put:
       summary: "Put Property"
@@ -77,6 +81,8 @@ paths:
       responses:
         default:
           description: "successful operation"
+      security:
+      - basic: []
   /repository/{repoName}/property/{propertyUuid}:
     get:
       summary: "Fetch Property"
@@ -102,6 +108,8 @@ paths:
             $ref: "#/definitions/ABeanProperty"
         400:
           description: "Could not find requested Property"
+      security:
+      - basic: []
   /repository/{repoName}/sei:
     put:
       summary: "Put SEI"
@@ -124,6 +132,8 @@ paths:
       responses:
         default:
           description: "successful operation"
+      security:
+      - basic: []
   /repository/{repoName}/sei/{seiUuid}:
     get:
       summary: "Fetch SEI"
@@ -150,6 +160,8 @@ paths:
             $ref: "#/definitions/ABeanStructuralElementInstance"
         400:
           description: "Could not find requested SEI"
+      security:
+      - basic: []
   /repository/{repoName}/seis:
     get:
       summary: "Fetch a list of root SEIs"
@@ -172,6 +184,12 @@ paths:
               $ref: "#/definitions/ABeanStructuralElementInstance"
         400:
           description: "Could not create bean for a root SEI"
+      security:
+      - basic: []
+securityDefinitions:
+  basic:
+    description: "HTTP Basic Authentication"
+    type: "basic"
 definitions:
   ABeanCategoryAssignment:
     type: "object"

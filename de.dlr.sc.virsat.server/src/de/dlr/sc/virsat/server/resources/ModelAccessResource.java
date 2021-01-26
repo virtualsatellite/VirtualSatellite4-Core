@@ -50,6 +50,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 import io.swagger.annotations.Info;
 import io.swagger.annotations.SwaggerDefinition;
 
@@ -112,7 +113,11 @@ public class ModelAccessResource {
 	 *   - Get and update ca with properties by uuid
 	 *   - Get and update properties by uuid
 	 */
-	@Api(hidden = true)
+	@Api(hidden = true,
+		authorizations = {
+			@Authorization(value = "basic")
+		}
+	)
 	@RolesAllowed({ServerRoles.ADMIN, ServerRoles.USER})
 	public static class RepoModelAccessResource {
 	

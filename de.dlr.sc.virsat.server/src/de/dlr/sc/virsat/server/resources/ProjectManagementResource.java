@@ -38,10 +38,13 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 import io.swagger.annotations.Info;
 import io.swagger.annotations.SwaggerDefinition;
 
-@Api
+@Api(authorizations = {
+		@Authorization(value = "basic")
+})
 @SwaggerDefinition(
 	info = @Info(
 		version = RepoManagementServlet.MANAGEMENT_API_VERSION,
