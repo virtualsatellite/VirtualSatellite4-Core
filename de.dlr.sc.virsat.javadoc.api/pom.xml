@@ -50,7 +50,9 @@
 										<includes>
 											<include>de.dlr.sc.*</include>
 										</includes>
+										<ignoreError>false</ignoreError>
 										<additionalArguments>
+											<additionalArgument>-tag "generated:a:This is EMF generated code:"</additionalArgument>
 											<additionalArgument>
 												-link
 												https://docs.oracle.com/javase/8/docs/api
@@ -62,6 +64,7 @@
 											</additionalArgument>
 											<additionalArgument>-public</additionalArgument>
 										</additionalArguments>
+										
 									</javadocOptions>
 								</configuration>
 							</execution>
