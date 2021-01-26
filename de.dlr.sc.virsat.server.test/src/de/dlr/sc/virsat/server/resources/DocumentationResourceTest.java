@@ -36,7 +36,7 @@ public class DocumentationResourceTest extends AJettyServerTest {
 	/**
 	 * Gets the file at apiPath from the server and assert that the right content got returned
 	 */
-	private void testDocumentation(String apiPath, String directory, String filename) throws IOException {		
+	private void testDocumentation(String apiPath, String directory, String filename) throws IOException {
 		String docFileContent = webTarget
 				.path(apiPath)
 				.path(filename)
