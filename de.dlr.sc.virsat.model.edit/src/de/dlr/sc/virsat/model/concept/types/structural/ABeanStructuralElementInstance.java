@@ -63,6 +63,13 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 
 	protected StructuralElementInstance sei;
 	
+	private static final int DOCUMENTATION_POSITION_ZERO = 0;
+	private static final int DOCUMENTATION_POSITION_ONE = 1;
+	private static final int DOCUMENTATION_POSITION_TWO = 2;
+	private static final int DOCUMENTATION_POSITION_THREE = 3;
+	private static final int DOCUMENTATION_POSITION_FOUR = 4;
+	private static final int DOCUMENTATION_POSITION_FIVE = 5;
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof ABeanStructuralElementInstance) {
@@ -86,7 +93,7 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	
 	@XmlElement(nillable = true)
 	@ApiModelProperty(required = true,
-			position = 0)
+			position = DOCUMENTATION_POSITION_ZERO)
 	@Override
 	public void setName(String seiName) {
 		sei.setName(seiName);
@@ -107,7 +114,7 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	@ApiModelProperty(name = "uuid", required = true,
 		value = "Unique identifier for a bean",
 		example = "b168b0df-84b6-4b7f-bede-69298b215f40",
-		position = 1)
+		position = DOCUMENTATION_POSITION_ONE)
 	@Override
 	public	void setStructuralElementInstance(StructuralElementInstance sei) {
 		this.sei = sei;
@@ -171,7 +178,7 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	@ApiModelProperty(required = true,
 		name = "categoryAssignments",
 		value = "List of the CA beans",
-		position = 2)
+		position = DOCUMENTATION_POSITION_TWO)
 	public void setJaxbCategoryAssignments(List<BeanCategoryAssignment> newCaBeans) {
 		setCategoryAssignments(newCaBeans);
 	}
@@ -255,11 +262,9 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	}
 	
 	@XmlElement(name = "children")
-	//CHECKSTYLE:OFF: MagicNumber
 	@ApiModelProperty(name = "children", required = true,
 		value = "List of the child beans",
-		position = 3)
-	//CHECKSTYLE:ON: MagicNumber
+		position = DOCUMENTATION_POSITION_THREE)
 	public void setJaxbChildren(List<BeanStructuralElementInstanceReference> newBeanSeis) {
 		setReferenceList(sei.getChildren(), newBeanSeis);
 	}
@@ -331,11 +336,9 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	}
 
 	@XmlElement(name = "superSeis")
-	//CHECKSTYLE:OFF: MagicNumber
 	@ApiModelProperty(name = "superSeis", required = true,
 		value = "List of the super SEI beans",
-		position = 4)
-	//CHECKSTYLE:ON: MagicNumber
+		position = DOCUMENTATION_POSITION_FOUR)
 	public void setJaxbSuperSeis(List<BeanStructuralElementInstanceReference> newBeanSeis) {
 		setReferenceList(sei.getSuperSeis(), newBeanSeis);
 	}
@@ -359,13 +362,11 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 
 	@Override
 	@XmlElement(name = "parent")
-	//CHECKSTYLE:OFF: MagicNumber
 	@ApiModelProperty(required = true,
 		value = "Unique identifier for the parent bean",
 		example = "b168b0df-84b6-4b7f-bede-69298b215f40",
-		position = 5)
+		position = DOCUMENTATION_POSITION_FIVE)
 	@XmlJavaTypeAdapter(ABeanStructuralElementInstanceAdapter.class)
-	//CHECKSTYLE:ON: MagicNumber
 	public BeanStructuralElementInstance getParent() {
 		StructuralElementInstance parentSei = VirSatEcoreUtil.getEContainerOfClass(sei, StructuralElementInstance.class);
 		if (parentSei != null) {
