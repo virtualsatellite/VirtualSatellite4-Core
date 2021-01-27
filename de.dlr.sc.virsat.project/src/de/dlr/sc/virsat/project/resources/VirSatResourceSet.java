@@ -1057,13 +1057,14 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 * @param pm
 	 *            the progress monitor to track the progress of the save
 	 *            operation
+	 * @param userContext in which to save all resources
 	 */
-	public void saveAllResources(IProgressMonitor pm, IUserContext userContect) {
+	public void saveAllResources(IProgressMonitor pm, IUserContext userContext) {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(),
 				"VirSatResourceSet: Started saving all resources for Project (" + project.getName() + ")"));
 		for (Resource resource : this.getResources()) {
 			if (!resource.getContents().isEmpty()) {
-				saveResource(resource, userContect);
+				saveResource(resource, userContext);
 			}
 		}
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(),

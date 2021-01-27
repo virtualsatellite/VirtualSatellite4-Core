@@ -27,7 +27,7 @@ public interface IVirSatVersionControlBackend {
 	 * @param project the project to update
 	 * @param message the commit message
 	 * @param monitor an update monitor
-	 * @throws Exception
+	 * @throws Exception in case something goes wrong
 	 */
 	void commit(IProject project, String message, IProgressMonitor monitor) throws Exception;
 	
@@ -39,7 +39,7 @@ public interface IVirSatVersionControlBackend {
 	 *  repository home such as the git home folder.
 	 * @param remoteUri the uri of the version control system
 	 * @param monitor an update monitor
-	 * @throws Exception
+	 * @throws Exception in case something goes wrong
 	 */
 	IProject checkout(IProjectDescription projectDescription, File pathRepoLocal, String remoteUri, IProgressMonitor monitor) throws Exception;
 	
@@ -49,7 +49,7 @@ public interface IVirSatVersionControlBackend {
 	 * @param pathRepoLocal the local copy of the repository to checkin
 	 * @param remoteUri the uri of the version control system
 	 * @param monitor an update monitor
-	 * @throws Exception
+	 * @throws Exception in case something goes wrong
 	 */
 	void checkin(IProject project, File pathRepoLocal, String remoteUri, IProgressMonitor monitor) throws Exception;
 
@@ -57,7 +57,7 @@ public interface IVirSatVersionControlBackend {
 	 * Gets all remote changes for a project from the version control system
 	 * @param project the project to update
 	 * @param monitor an update monitor
-	 * @throws Exception
+	 * @throws Exception in case something goes wrong
 	 */
 	void update(IProject project, IProgressMonitor monitor) throws Exception;
 }

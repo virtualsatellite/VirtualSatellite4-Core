@@ -109,6 +109,7 @@ public class ConceptActivationHelper {
 	 * Handle the activation of concepts from their configuration elements
 	 * @param conceptConfigurationElements an array of concept configurations
 	 * @param editingDomain the editing domain
+	 * @param progressMonitor to monitor and report concept activation
 	 */
 	public void activateConcepts(Object[] conceptConfigurationElements, EditingDomain editingDomain, IProgressMonitor progressMonitor) {
 		
@@ -125,6 +126,7 @@ public class ConceptActivationHelper {
 	 * Handle the activation of concepts. Resolves dependencies in correct order. 
 	 * @param conceptConfigurationElements a list of concept configurations
 	 * @param editingDomain the editing domain
+	 * @param progressMonitor to monitor and report concept activation
 	 */
 	public void activateConcepts(List<Concept> concepts, EditingDomain editingDomain, IProgressMonitor progressMonitor) {
 		
@@ -160,6 +162,7 @@ public class ConceptActivationHelper {
 	 * migrates it to the latest version, otherwise the concept will be simply added to the active concepts
 	 * @param concept the selected concept
 	 * @param editingDomain the editing domain
+	 * @param progressMonitor to monitor and report concept activation
 	 */
 	protected void activateConcept(Concept concept, EditingDomain editingDomain, IProgressMonitor progressMonitor) {
 
@@ -196,6 +199,7 @@ public class ConceptActivationHelper {
 	 * Activate new concept dependencies 
 	 * @param concept the concept to be prepared for migration
 	 * @param editingDomain the editing domain
+	 * @param progressMonitor to monitor and report concept activation
 	 */
 	public void handleNewDependencies(Concept concept, EditingDomain editingDomain, IProgressMonitor progressMonitor) {
 		Set<String> newRequiredConcepts = new HashSet<String>();

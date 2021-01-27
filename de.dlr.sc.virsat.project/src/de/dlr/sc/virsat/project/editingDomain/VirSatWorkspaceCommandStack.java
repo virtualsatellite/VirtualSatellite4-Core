@@ -86,7 +86,6 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 	 * history, so it cannot be undone. The Transaction.OPTION_NO_UNDO 
 	 * seems to be not implemented.
 	 * @param command The command to be executed.
-	 * @param userContextOverride Override for the User Context. Can be null.
 	 */
 	public void executeNoUndo(Command command) throws RuntimeException {
 		executeNoUndo(command, null, false);

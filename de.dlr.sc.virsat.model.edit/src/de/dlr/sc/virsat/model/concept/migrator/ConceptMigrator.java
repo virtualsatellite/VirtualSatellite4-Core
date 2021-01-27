@@ -124,7 +124,6 @@ public class ConceptMigrator {
 	 * Default Constructor for preparing to migrate the desired concept to the latest
 	 * version available in the same repository
 	 * @param oldConcept the old concept to migrate
-	 * @param oldConcept
 	 */
 	public ConceptMigrator(Concept oldConcept) {
 		this.oldConcept = oldConcept;
@@ -165,7 +164,7 @@ public class ConceptMigrator {
 	 * Migrates the passed concept to the latest version
 	 * @param migrators will used in the passed order of the list
 	 * to bring the concept to the desired version
-	 * @param progressMonitor 
+	 * @param progressMonitor for observing the migration
 	 */
 	public void migrate(List<IMigrator> migrators, IProgressMonitor progressMonitor) {
 		// The first migrator corresponds to the current version, so we do not need to execute it

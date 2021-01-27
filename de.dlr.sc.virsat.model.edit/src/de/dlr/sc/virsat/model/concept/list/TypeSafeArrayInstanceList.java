@@ -22,7 +22,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
  * Core functionality for the type safe array instance list and implementation to the interface bean list
  * @author leps_je
  *
- * @param <BEAN_TYPE> 
+ * @param <BEAN_TYPE> the class of the bean type specified in the generic
  */
 public class TypeSafeArrayInstanceList<BEAN_TYPE extends IBeanProperty<? extends APropertyInstance, ?>> extends AArrayInstanceList<BEAN_TYPE> implements IBeanList<BEAN_TYPE> {
 
@@ -32,7 +32,7 @@ public class TypeSafeArrayInstanceList<BEAN_TYPE extends IBeanProperty<? extends
 	
 	/**
 	 * constructor of the type safe array instance list class
-	 * @param beanClazz 
+	 * @param beanClazz the class of the bean type specified in the generic
 	 */
 	public TypeSafeArrayInstanceList(Class<BEAN_TYPE> beanClazz) {
 		super();
@@ -41,7 +41,7 @@ public class TypeSafeArrayInstanceList<BEAN_TYPE extends IBeanProperty<? extends
 	
 	/**
 	 * constructor of the type safe array instance list class
-	 * @param beanClazz 
+	 * @param beanClazz the class of the bean type specified in the generic
 	 * @param ai the array instance
 	 */
 	public TypeSafeArrayInstanceList(Class<BEAN_TYPE> beanClazz, ArrayInstance ai) {
@@ -68,7 +68,7 @@ public class TypeSafeArrayInstanceList<BEAN_TYPE extends IBeanProperty<? extends
 
 	/**
 	 * this method set the bean class
-	 * @param beanClazz 
+	 * @param beanClazz the class of the bean type specified in the generic
 	 */
 	public void setBeanClazz(Class<BEAN_TYPE> beanClazz) {
 		this.beanClazz = beanClazz;

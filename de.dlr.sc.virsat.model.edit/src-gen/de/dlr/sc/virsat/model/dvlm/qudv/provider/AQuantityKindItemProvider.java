@@ -69,6 +69,7 @@ public class AQuantityKindItemProvider
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param adapterFactory to be used for initialization
 	 * @generated
 	 */
 	public AQuantityKindItemProvider(AdapterFactory adapterFactory) {

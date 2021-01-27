@@ -26,13 +26,13 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropert
  * Core functionality for the type safe referenced property instance list and implementation to the interface bean list
  * @author leps_je
  *
- * @param <BEAN_TYPE>
+ * @param <BEAN_TYPE> specific bean type to be handled by class
  */
 public class TypeSafeReferencePropertyInstanceList<BEAN_TYPE extends IBeanObject<? extends ATypeInstance>> extends AArrayInstanceList<BEAN_TYPE> implements IBeanList<BEAN_TYPE> {
 
 	/**
 	 * class constructor of the type sage reference property instance list 
-	 * @param beanClazz 
+	 * @param beanClazz the class of the bean type specified in the generic
 	 */
 	public TypeSafeReferencePropertyInstanceList(Class<BEAN_TYPE> beanClazz) {
 		super();
@@ -41,7 +41,7 @@ public class TypeSafeReferencePropertyInstanceList<BEAN_TYPE extends IBeanObject
 	
 	/**
 	 * class constructor of the type sage reference property instance list 
-	 * @param beanClazz 
+	 * @param beanClazz the class of the bean type specified in the generic
 	 * @param ai the array Instance
 	 */
 	public TypeSafeReferencePropertyInstanceList(Class<BEAN_TYPE> beanClazz, ArrayInstance ai) {
@@ -61,7 +61,7 @@ public class TypeSafeReferencePropertyInstanceList<BEAN_TYPE extends IBeanObject
 
 	/**
 	 * this method set the bean clazz
-	 * @param beanClazz 
+	 * @param beanClazz the class of the bean type specified in the generic
 	 */
 	public void setBeanClazz(Class<BEAN_TYPE> beanClazz) {
 		this.beanClazz = beanClazz;
