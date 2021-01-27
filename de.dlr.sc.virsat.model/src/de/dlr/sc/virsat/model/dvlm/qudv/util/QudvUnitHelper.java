@@ -1310,7 +1310,7 @@ public class QudvUnitHelper {
 	 * a method to import a system of units 
 	 * @param destination the destination of the file to import
 	 * @return {@link SystemOfUnits} the imported SystemOfUnits
-	 * @throws IOException 
+	 * @throws IOException in case the file cannot be read
 	 */
 	public SystemOfUnits importModelFromFile(String destination) throws IOException {
 		Resource resource = new XMLResourceImpl();

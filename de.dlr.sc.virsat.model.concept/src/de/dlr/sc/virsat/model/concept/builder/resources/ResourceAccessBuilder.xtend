@@ -77,6 +77,9 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 
 	/**
 	 * Do the incremental build
+	 * @param delta describing the changes in the resource
+	 * @param monitor for communicating progress
+	 * @return true in case build should continue in nested resources
 	 */
 	def incrementalBuild(IResourceDelta delta, IProgressMonitor monitor) {
 		delta.accept [
@@ -102,6 +105,7 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 
 	/**
 	 * do the full build
+	 * @param monitor to follow the progress
 	 */
 	def fullBuild(IProgressMonitor monitor) {
 		writeAccessClass(buildManifestAccessClass(), MANIFEST_MF_JAVA);
@@ -111,6 +115,7 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 	/**
 	 * This method builds the manifest access java file
 	 * from the default manifest file in the project.
+	 * @return the input stream
 	 */
 	def buildManifestAccessClass() {
 		var iFileManifest = project.getFile("META-INF/" + MANIFEST_MF);
@@ -123,6 +128,8 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 	/**
 	 * This method builds the manifest access java file
 	 * from a given input stream.
+	 * @param manifestInputStream under which to create the access class
+	 * @return the input stream
 	 */
 	def buildManifestAccessClass(InputStream manifestInputStream) {
 		var manifest = new Manifest(manifestInputStream);
@@ -133,6 +140,9 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 
 	/**
 	 * This method creates the string that should be written into the
+	 * @param packageName of the access class
+	 * @param attributes of the access class
+	 * @return charcter sequence of the generated class
 	 */
 	def createManifestAccessClass(String packageName, Attributes attributes) '''
 		/*******************************************************************************
@@ -161,6 +171,7 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 	/**
 	 * This method is called to build the plugin.xml access class
 	 * from the default plugin.xml in the project.
+	 * @return the input stream
 	 */
 	def buildPluginXmlAccessClass() {
 		var iFilePlugin = project.getFile("plugin.xml");
@@ -173,6 +184,8 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 	/**
 	 * This method is called to build the plugin.xml access class
 	 * from a given input stream.
+	 * @param pluginInputStream to the class representing the plugin xml file
+	 * @return the input stream
 	 */
 	def buildPluginXmlAccessClass(InputStream pluginInputStream) {
 		val dbFactory = DocumentBuilderFactory.newInstance();
@@ -185,6 +198,11 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 		return classSourceStream;
 	}
 
+	/**
+	 * Method to write the actual access class
+	 * @param classSourceStream the stream to write
+	 * @param fileName the actual filename to write
+	 */
 	def writeAccessClass(StringInputStream classSourceStream, String fileName) {
 		val iFolderSrc = getProject().getFolder("src-gen");
 		if (!iFolderSrc.exists) {
@@ -217,6 +235,9 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 
 	/**
 	 * This method creates the string that should be written into the
+	 * @param packageName to be used for access class
+	 * @param node of the plugin xml to be generated
+	 * @return characterSequence of the plugin xml access class
 	 */
 	def createPluginXmlAccessClass(String packageName, Node node) '''
 		/*******************************************************************************

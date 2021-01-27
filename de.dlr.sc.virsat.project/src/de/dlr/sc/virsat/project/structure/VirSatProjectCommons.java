@@ -328,7 +328,7 @@ public class VirSatProjectCommons {
 	 * Use this method to test if a workspace project has the Virtual Satellite Nature attached
 	 * @param project the project to be tested
 	 * @return true in case the Virtual Satellite project nature could be found.
-	 * @throws CoreException
+	 * @throws CoreException in case the project descriotion cannot be retrieved
 	 */
 	public static boolean isVirSatProject(IProject project) throws CoreException {
 		IProjectDescription description = project.getDescription();
@@ -482,7 +482,6 @@ public class VirSatProjectCommons {
 	
 	/**
 	 * This method creates a runnable to create a new Project in Virtual Satellite
-	 * @param ed the Editing DOmain to be used to create the Project
 	 * @param newProject The new Project which should be initialized
 	 * @return the runnable which initializes the whole project
 	 */
@@ -522,7 +521,7 @@ public class VirSatProjectCommons {
 	/**
 	 * Method to activate or deactivate the Workspace builders for the whole workspace
 	 * @param enable set to true if builders should be enabled
-	 * @throws CoreException
+	 * @throws CoreException in case auto build cannot be correctly toggled
 	 */
 	public static void setEnableWorkspaceBuilder(boolean enable) throws CoreException {
 		IWorkspaceDescription wsDescription = ResourcesPlugin.getWorkspace().getDescription();

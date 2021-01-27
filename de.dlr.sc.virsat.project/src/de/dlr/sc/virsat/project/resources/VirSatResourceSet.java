@@ -983,6 +983,8 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 * 
 	 * @param resource
 	 *            the resource to be saved
+	 * @param userContext
+	 *            user context under which to save the resource
 	 * @param overrideWritePermissions
 	 *            set this flag to allow for saving the resource. E.g. when
 	 *            changing the assigned discipline
@@ -1035,6 +1037,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 * resource
 	 * 
 	 * @param resource The resource which should be checked for write access
+	 * @param userContext in which to check for write permission
 	 * @return true in case write access is given otherwise false
 	 */
 	public boolean hasWritePermission(Resource resource, IUserContext userContext) {

@@ -107,6 +107,9 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
   
   /**
    * Do the incremental build
+   * @param delta describing the changes in the resource
+   * @param monitor for communicating progress
+   * @return true in case build should continue in nested resources
    */
   public void incrementalBuild(final IResourceDelta delta, final IProgressMonitor monitor) {
     try {
@@ -138,6 +141,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
   
   /**
    * do the full build
+   * @param monitor to follow the progress
    */
   public void fullBuild(final IProgressMonitor monitor) {
     this.writeAccessClass(this.buildManifestAccessClass(), ResourceAccessBuilder.MANIFEST_MF_JAVA);
@@ -147,6 +151,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
   /**
    * This method builds the manifest access java file
    * from the default manifest file in the project.
+   * @return the input stream
    */
   public StringInputStream buildManifestAccessClass() {
     try {
@@ -169,6 +174,8 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
   /**
    * This method builds the manifest access java file
    * from a given input stream.
+   * @param manifestInputStream under which to create the access class
+   * @return the input stream
    */
   public StringInputStream buildManifestAccessClass(final InputStream manifestInputStream) {
     try {
@@ -184,6 +191,9 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
   
   /**
    * This method creates the string that should be written into the
+   * @param packageName of the access class
+   * @param attributes of the access class
+   * @return charcter sequence of the generated class
    */
   public CharSequence createManifestAccessClass(final String packageName, final Attributes attributes) {
     StringConcatenation _builder = new StringConcatenation();
@@ -260,6 +270,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
   /**
    * This method is called to build the plugin.xml access class
    * from the default plugin.xml in the project.
+   * @return the input stream
    */
   public StringInputStream buildPluginXmlAccessClass() {
     try {
@@ -278,6 +289,8 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
   /**
    * This method is called to build the plugin.xml access class
    * from a given input stream.
+   * @param pluginInputStream to the class representing the plugin xml file
+   * @return the input stream
    */
   public StringInputStream buildPluginXmlAccessClass(final InputStream pluginInputStream) {
     try {
@@ -295,6 +308,11 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
     }
   }
   
+  /**
+   * Method to write the actual access class
+   * @param classSourceStream the stream to write
+   * @param fileName the actual filename to write
+   */
   public void writeAccessClass(final StringInputStream classSourceStream, final String fileName) {
     try {
       final IFolder iFolderSrc = this.getProject().getFolder("src-gen");
@@ -344,6 +362,9 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
   
   /**
    * This method creates the string that should be written into the
+   * @param packageName to be used for access class
+   * @param node of the plugin xml to be generated
+   * @return characterSequence of the plugin xml access class
    */
   public CharSequence createPluginXmlAccessClass(final String packageName, final Node node) {
     StringConcatenation _builder = new StringConcatenation();

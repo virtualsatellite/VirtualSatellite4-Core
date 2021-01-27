@@ -68,8 +68,9 @@ public class MatImporter {
 	
 	/**
 	 * checks if mat and sei fit together
+	 * @param editingDomain editingDomian in which to import
 	 * @param sei sei which should be changed
-	 * @param matFile MatFile that includes all Information
+	 * @param mat MatFile that includes all Information
 	 * @return 
 	 */
 	public CompoundCommand importSei(EditingDomain editingDomain, StructuralElementInstance sei, MatFile mat) throws IOException {
