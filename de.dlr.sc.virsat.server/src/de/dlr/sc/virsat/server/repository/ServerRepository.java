@@ -207,8 +207,8 @@ public class ServerRepository {
 				Activator.getDefault().getLog().info("Server synchronization: " + "Update from remote");
 				VersionControlUpdateResult result = versionControlBackEnd.update(project, new NullProgressMonitor());
 				
+				//TODO:remove
 				System.out.println(result.hasChanges());
-				
 				for (VersionControlChange change : result.getChanges()) {
 					System.out.println(change.getChangeType() + " " + change.getPathNew() + " " + change.getPathOld());
 				}

@@ -23,6 +23,7 @@ import static org.junit.Assert.fail;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -30,6 +31,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -41,7 +43,10 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.diff.DiffEntry;
+import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -241,6 +246,8 @@ public class ServerRepositoryTest extends AProjectTestCase {
 		// No changes don't create a commit
 		testServerRepository.syncRepository();
 		assertEquals("No new commit", initialCommits, VersionControlTestHelper.countCommits(pathRepoRemote.toFile()));
+		
+		//TODO:remove
 		System.out.println(initialCommits);
 		Git git2 = Git.open(pathRepoRemote.toFile());
 		Iterator<RevCommit> iterator = git2.log().call().iterator();
@@ -274,14 +281,28 @@ public class ServerRepositoryTest extends AProjectTestCase {
 		// Sync with remote
 		testServerRepository.syncRepository();
 //		assertEquals("Two new commits", initialCommits + 2, VersionControlTestHelper.countCommits(pathRepoRemote.toFile()));
+		
+		//TODO:remove
 		System.out.println(initialCommits);
 		System.out.println(VersionControlTestHelper.countCommits(pathRepoRemote.toFile()));
 		git2 = Git.open(pathRepoRemote.toFile());
 		iterator = git2.log().call().iterator();
+		RevCommit prevCommit = null;
+		
+		
 		while (iterator.hasNext()) {
 			RevCommit commit = iterator.next();
 			System.out.println(commit.getName() + " " + commit.getFullMessage());
+			if(prevCommit != null) {
+				System.out.println("Diff between " + prevCommit.getFullMessage() + " " + commit.getFullMessage());
+				ObjectReader reader = git2.getRepository().newObjectReader();
+				CanonicalTreeParser oldTree = new CanonicalTreeParser( null, reader, prevCommit.getTree().getId() );
+				CanonicalTreeParser newTree = new CanonicalTreeParser( null, reader, commit.getTree().getId() );
+				git2.diff().setOutputStream(System.out).setOldTree(oldTree).setNewTree(newTree).call();
+			}
+			prevCommit = commit;
 		}
+		
 		StructuralElementInstance sei = ed.getResourceSet().getRepository().getRootEntities().get(0);
 		assertEquals("Name changed", newString, sei.getName());
 		assertNull("Dangling reference removed by builders", sei.getType());
