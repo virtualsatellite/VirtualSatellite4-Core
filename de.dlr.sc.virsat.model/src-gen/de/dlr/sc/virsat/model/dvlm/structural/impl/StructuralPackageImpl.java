@@ -154,6 +154,7 @@ public class StructuralPackageImpl extends EPackageImpl implements StructuralPac
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
+	 * @return an initialized instance of StructuralPackage.
 	 * @generated
 	 */
 	public static StructuralPackage init() {

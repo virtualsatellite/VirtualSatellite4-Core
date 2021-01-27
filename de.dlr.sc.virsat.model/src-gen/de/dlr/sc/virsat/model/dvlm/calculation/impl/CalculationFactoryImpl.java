@@ -31,6 +31,7 @@ public class CalculationFactoryImpl extends EFactoryImpl implements CalculationF
 	 * Creates the default factory implementation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return an initialized instance of 'CalculationFactory'.
 	 * @generated
 	 */
 	public static CalculationFactory init() {
@@ -341,6 +342,7 @@ public class CalculationFactoryImpl extends EFactoryImpl implements CalculationF
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @deprecated
+	 * @return an instance of CalculationPackage.
 	 * @generated
 	 */
 	@Deprecated

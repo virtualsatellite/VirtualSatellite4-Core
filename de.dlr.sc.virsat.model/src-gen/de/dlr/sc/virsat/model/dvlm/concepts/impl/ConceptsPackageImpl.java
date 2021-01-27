@@ -170,6 +170,7 @@ public class ConceptsPackageImpl extends EPackageImpl implements ConceptsPackage
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
+	 * @return an initialized instance of ConceptsPackage.
 	 * @generated
 	 */
 	public static ConceptsPackage init() {

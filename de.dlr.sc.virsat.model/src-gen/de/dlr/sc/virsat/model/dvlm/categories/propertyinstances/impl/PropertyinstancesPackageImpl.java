@@ -196,6 +196,7 @@ public class PropertyinstancesPackageImpl extends EPackageImpl implements Proper
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
+	 * @return an initialized instance of PropertyinstancesPackage.
 	 * @generated
 	 */
 	public static PropertyinstancesPackage init() {

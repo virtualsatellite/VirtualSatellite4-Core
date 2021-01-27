@@ -156,6 +156,7 @@ public class CategoriesPackageImpl extends EPackageImpl implements CategoriesPac
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
+	 * @return an initialized instance of CategoriesPackage.
 	 * @generated
 	 */
 	public static CategoriesPackage init() {

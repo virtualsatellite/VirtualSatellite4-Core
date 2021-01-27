@@ -33,6 +33,7 @@ public class TypesFactoryImpl extends EFactoryImpl implements TypesFactory {
 	 * Creates the default factory implementation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return an initialized instance of 'TypesFactory'.
 	 * @generated
 	 */
 	public static TypesFactory init() {
@@ -154,6 +155,7 @@ public class TypesFactoryImpl extends EFactoryImpl implements TypesFactory {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @deprecated
+	 * @return an instance of TypesPackage.
 	 * @generated
 	 */
 	@Deprecated
