@@ -309,8 +309,11 @@ public class ServerRepositoryTest extends AProjectTestCase {
 			}
 			prevCommit = commit;
 		}
+		
+		org.eclipse.jgit.api.Status status = git2.status().call();
+		System.out.println(status.toString());
+		assertEquals("Two new commits", initialCommits + 2, VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath()));
 
-		assertEquals("Two new commits", initialCommits + 2, VersionControlTestHelper.countCommits(pathRepoRemote.toFile()));
 		StructuralElementInstance sei = ed.getResourceSet().getRepository().getRootEntities().get(0);
 		CategoryAssignment ca = sei.getCategoryAssignments().get(0);
 		TestCategoryAllProperty caBean = new TestCategoryAllProperty(ca);
