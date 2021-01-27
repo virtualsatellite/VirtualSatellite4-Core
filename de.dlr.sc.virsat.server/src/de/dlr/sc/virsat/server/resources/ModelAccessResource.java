@@ -163,7 +163,11 @@ public class ModelAccessResource {
 		}
 		
 
-		/** **/
+		/**
+		 * method to get a category assignment
+		 * @param caUuid the uuid of the CA
+		 * @return the response for the retrieved CA
+		 */
 		@GET
 		@Path(CA + "/{caUuid}")
 		@Produces(MediaType.APPLICATION_JSON)
@@ -206,7 +210,10 @@ public class ModelAccessResource {
 			return Response.status(Response.Status.OK).build();
 		}
 		
-		/** **/
+		/**
+		 * Method to get rootSeis
+		 * @return the response with the root seis
+		 */
 		@GET
 		@Path(ROOT_SEIS)
 		@Produces(MediaType.APPLICATION_JSON)
@@ -242,7 +249,11 @@ public class ModelAccessResource {
 			}
 		}
 		
-		/** **/
+		/**
+		 * method to get a sei by uuid
+		 * @param seiUuid the uuid of the sei
+		 * @return the response for the sei
+		 */
 		@GET
 		@Path(SEI + "/{seiUuid}")
 		@Produces(MediaType.APPLICATION_JSON)

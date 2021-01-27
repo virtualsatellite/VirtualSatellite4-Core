@@ -124,7 +124,7 @@ public class ConceptActivationHelper {
 	
 	/**
 	 * Handle the activation of concepts. Resolves dependencies in correct order. 
-	 * @param conceptConfigurationElements a list of concept configurations
+	 * @param concepts a list of concept configurations
 	 * @param editingDomain the editing domain
 	 * @param progressMonitor to monitor and report concept activation
 	 */

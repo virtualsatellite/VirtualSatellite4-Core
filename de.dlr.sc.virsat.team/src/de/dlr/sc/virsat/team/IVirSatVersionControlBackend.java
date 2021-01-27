@@ -39,6 +39,7 @@ public interface IVirSatVersionControlBackend {
 	 *  repository home such as the git home folder.
 	 * @param remoteUri the uri of the version control system
 	 * @param monitor an update monitor
+	 * @return the project which has been checked out
 	 * @throws Exception in case something goes wrong
 	 */
 	IProject checkout(IProjectDescription projectDescription, File pathRepoLocal, String remoteUri, IProgressMonitor monitor) throws Exception;

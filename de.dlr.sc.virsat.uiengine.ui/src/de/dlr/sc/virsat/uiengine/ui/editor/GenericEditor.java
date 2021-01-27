@@ -1078,7 +1078,7 @@ public class GenericEditor extends FormEditor implements IEditingDomainProvider,
 
 	/**
 	 * this method set the status line manager
-	 * @param selection 
+	 * @param selection the current selection
 	 */
 	public void setStatusLineManager(ISelection selection) {
 		IStatusLineManager statusLineManager = getActionBars().getStatusLineManager();

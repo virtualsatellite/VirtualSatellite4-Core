@@ -81,7 +81,11 @@ public class ProjectManagementResource {
 		return Response.status(Response.Status.OK).entity(entity).build();
 	}
 
-	/** **/
+	/**
+	 * Method to get the project by name
+	 * @param projectName to get
+	 * @return the response to the call
+	 */
 	@GET
 	@Path("/{projectName}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -108,7 +112,11 @@ public class ProjectManagementResource {
 		}
 	}
 
-	/** **/
+	/**
+	 * deletes a project repository by name
+	 * @param repoName the name of the repository
+	 * @return the response to the call
+	 */
 	@DELETE
 	@Path("/{projectName}")
 	@ApiOperation(
@@ -132,7 +140,12 @@ public class ProjectManagementResource {
 		return Response.status(Response.Status.OK).build();
 	}
 
-	/** **/
+	/**
+	 * Creates or updates a project
+	 * @param projectName the name of the project
+	 * @param configuration the configuration for updating
+	 * @return the response to the call
+	 */
 	@PUT
 	@Path("/{projectName}")
 	@Consumes(MediaType.APPLICATION_JSON)

@@ -109,7 +109,6 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
    * Do the incremental build
    * @param delta describing the changes in the resource
    * @param monitor for communicating progress
-   * @return true in case build should continue in nested resources
    */
   public void incrementalBuild(final IResourceDelta delta, final IProgressMonitor monitor) {
     try {
@@ -524,6 +523,8 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
   
   /**
    * Gets all children of a node, including nested nodes.
+   * @param node the node of which to get the children
+   * @return an iterable with all child nodes
    */
   public Iterable<Node> getAllChildren(final Node node) {
     final ArrayList<Node> children = this.getChildren(node);
@@ -545,6 +546,9 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
    * The primary use case is when the user wants to "overwrite" an extension from the generated section
    * of a plugin.xml in the protected region (for example to refine the section of an uiSnippet).
    * In this case, Eclipse takes the last declaration, the resource builder should reflect this.
+   * @param the node for which to find the children
+   * @param extensionType to filter the children
+   * @return list of identified children
    */
   public List<Node> getClassDefiningChildren(final Node node, final String extensionType) {
     final Iterable<Node> children = this.getAllChildren(node);
@@ -568,6 +572,8 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
   
   /**
    * Gets an iterateable list of child nodes from a node.
+   * @param node for which to get the children
+   * @return list of identified children
    */
   public ArrayList<Node> getChildren(final Node node) {
     final ArrayList<Node> arraylist = new ArrayList<Node>();
@@ -581,6 +587,8 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
   
   /**
    * Gets an iterateable list of attributes nodes from a node
+   * @param node for which to get the attributes
+   * @retrun list of attributes
    */
   public ArrayList<Node> getAttributes(final Node node) {
     final Element eElement = ((Element) node);
@@ -596,6 +604,8 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
   
   /**
    * Tries to constructs a unique, versioned class name for a given extension.
+   * @param node for which to construcht the class name
+   * @return the constructed class name
    */
   public String getClassName(final Node node) {
     String _classNameFromIdentifier = this.getClassNameFromIdentifier(node);
@@ -605,6 +615,8 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
   
   /**
    * Remap the name of an attribute in case that it conflicts with a java keyword
+   * @param node for which to get the attribute name
+   * @return the name if identified
    */
   public String getAttributeName(final Node node) {
     boolean _equals = node.getNodeName().equals("class");
@@ -617,6 +629,8 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
   
   /**
    * Gets the name of the class for a given node.
+   * @param node for which to get the class name
+   * @return class name build on the basis of the identifier
    */
   public String getClassNameFromIdentifier(final Node node) {
     final String[] tokens = this.getIdentifierAttribute(node).getNodeValue().split("[.]");
@@ -628,6 +642,8 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
   
   /**
    * Gets the identifier attribute for constructing class name from a node
+   * @param node for which to get the identifier attribute
+   * @return the attribute if it could be found
    */
   public Node getIdentifierAttribute(final Node node) {
     Node identifierAttribute = node.getAttributes().getNamedItem("id");
@@ -645,6 +661,8 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
   
   /**
    * Gets a version attribute from the extension, if one is defined.
+   * @param node for which to get the class suffix
+   * @return the suffix in case it could be detected
    */
   public String getClassSuffixFromVersion(final Node node) {
     final Node versionAttribute = node.getAttributes().getNamedItem("version");
@@ -657,6 +675,9 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
   
   /**
    * Checks if a given node defines an extension point of the passed group.
+   * @param node to check for the extension point
+   * @param group to filter for
+   * @return identified node or null
    */
   public Node getExtensionPointNode(final Node node, final String group) {
     final ArrayList<Node> children = this.getChildren(node);

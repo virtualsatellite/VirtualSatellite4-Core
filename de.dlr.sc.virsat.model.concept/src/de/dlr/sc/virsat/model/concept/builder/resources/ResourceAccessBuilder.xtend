@@ -79,7 +79,6 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 	 * Do the incremental build
 	 * @param delta describing the changes in the resource
 	 * @param monitor for communicating progress
-	 * @return true in case build should continue in nested resources
 	 */
 	def incrementalBuild(IResourceDelta delta, IProgressMonitor monitor) {
 		delta.accept [
@@ -296,6 +295,8 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 	
 	/**
 	 * Gets all children of a node, including nested nodes.
+	 * @param node the node of which to get the children
+	 * @return an iterable with all child nodes
 	 */
 	def Iterable<Node> getAllChildren(Node node) {
 		val children = getChildren(node);
@@ -314,6 +315,9 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 	 * The primary use case is when the user wants to "overwrite" an extension from the generated section
 	 * of a plugin.xml in the protected region (for example to refine the section of an uiSnippet).
 	 * In this case, Eclipse takes the last declaration, the resource builder should reflect this.
+	 * @param the node for which to find the children
+	 * @param extensionType to filter the children
+	 * @return list of identified children
 	 */
 	def getClassDefiningChildren(Node node, String extensionType) {
 		val children = getAllChildren(node);
@@ -338,6 +342,8 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 	
 	/**
 	 * Gets an iterateable list of child nodes from a node.
+	 * @param node for which to get the children
+	 * @return list of identified children
 	 */
 	def getChildren(Node node) {
 		val arraylist = new ArrayList<Node>;
@@ -349,6 +355,8 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 
 	/**
 	 * Gets an iterateable list of attributes nodes from a node
+	 * @param node for which to get the attributes
+	 * @retrun list of attributes
 	 */
 	def getAttributes(Node node) {
 		val eElement = node as Element;
@@ -362,6 +370,8 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 
 	/**
 	 * Tries to constructs a unique, versioned class name for a given extension.
+	 * @param node for which to construcht the class name
+	 * @return the constructed class name
 	 */
 	def getClassName(Node node) {
 		return getClassNameFromIdentifier(node) + getClassSuffixFromVersion(node);
@@ -369,6 +379,8 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 	
 	/**
 	 * Remap the name of an attribute in case that it conflicts with a java keyword
+	 * @param node for which to get the attribute name
+	 * @return the name if identified
 	 */
 	def getAttributeName(Node node) {
 		if (node.nodeName.equals("class")) {
@@ -380,6 +392,8 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 
 	/**
 	 * Gets the name of the class for a given node.
+	 * @param node for which to get the class name
+	 * @return class name build on the basis of the identifier
 	 */
 	def getClassNameFromIdentifier(Node node) {		
 		val tokens = getIdentifierAttribute(node).nodeValue.split("[.]");
@@ -391,6 +405,8 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 	
 	/** 
 	 * Gets the identifier attribute for constructing class name from a node
+	 * @param node for which to get the identifier attribute
+	 * @return the attribute if it could be found
 	 */
 	def getIdentifierAttribute(Node node) {
 		var identifierAttribute = node.attributes.getNamedItem("id");
@@ -409,6 +425,8 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 
 	/** 
 	 * Gets a version attribute from the extension, if one is defined.
+	 * @param node for which to get the class suffix
+	 * @return the suffix in case it could be detected
 	 */
 	def getClassSuffixFromVersion(Node node) {
 		val versionAttribute = node.attributes.getNamedItem("version");
@@ -421,6 +439,9 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 
 	/**
 	 * Checks if a given node defines an extension point of the passed group.
+	 * @param node to check for the extension point
+	 * @param group to filter for
+	 * @return identified node or null
 	 */
 	def getExtensionPointNode(Node node, String group) {
 		val children = getChildren(node);

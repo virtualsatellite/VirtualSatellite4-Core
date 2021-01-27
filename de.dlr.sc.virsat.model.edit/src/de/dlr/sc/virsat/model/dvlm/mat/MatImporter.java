@@ -62,6 +62,7 @@ import us.hebi.matlab.mat.types.Cell;
  * Class for exporting data to .mat
  */
 public class MatImporter {
+	
 	private PropertyInstanceHelper piHelper = new PropertyInstanceHelper();
 	private StructuralElementInstance sei;
 	private EditingDomain editingDomain;
@@ -71,7 +72,8 @@ public class MatImporter {
 	 * @param editingDomain editingDomian in which to import
 	 * @param sei sei which should be changed
 	 * @param mat MatFile that includes all Information
-	 * @return 
+	 * @return command for importing mat file to SEI
+	 * @throws IOException in case mat file cannot be read
 	 */
 	public CompoundCommand importSei(EditingDomain editingDomain, StructuralElementInstance sei, MatFile mat) throws IOException {
 		CompoundCommand importCommand = new CompoundCommand();
@@ -86,7 +88,7 @@ public class MatImporter {
 
 	/**
 	 * split up children and CategoryAssinments
-	 * @param importCommand 
+	 * @param importCommand  the command for importing
 	 * @param sei sei which should be changed
 	 * @param seiStruct MatStruct that includes all Information
 	 */
@@ -402,6 +404,7 @@ public class MatImporter {
 	 * hands back boolean that represents if the MatFile and the sei are equal
 	 * @param sei StructuralElementInstance to test
 	 * @param mat MatFile to test
+	 * @return true in sei is the correct one
 	 */
 	public boolean checkIfCorrectSei(StructuralElementInstance sei, MatFile mat) {
 		try {
@@ -439,6 +442,7 @@ public class MatImporter {
 	 * Delete First and Last Character of a string.
 	 * It is needed because matlab generates '' around strings
 	 * @param str String that should be shorted
+	 * @return trimmed string
 	 */
 	public String shorter(String str) {
 		return str.substring(1, str.length() - 1);

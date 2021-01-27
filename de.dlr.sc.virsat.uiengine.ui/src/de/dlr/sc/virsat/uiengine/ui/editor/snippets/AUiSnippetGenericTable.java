@@ -121,7 +121,7 @@ public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 	 * 
 	 * @param conceptId The ID of the Concept in which to look for the Category
 	 * @param categoryId The ID of the Category 
-	 * @param style 
+	 * @param style the style to be used
 	 */
 	public AUiSnippetGenericTable(String conceptId, String categoryId, int style) {
 		super(conceptId, categoryId);
