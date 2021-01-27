@@ -216,7 +216,7 @@ public class ServerRepository {
 				// Only reload if we detected changes in the update step
 				if (result.hasChanges()) {
 					// Maybe we could reload only the changed resources here
-					ed.reloadAll();					
+					ed.reloadAll();
 				}
 				
 				// Run the builders

@@ -18,12 +18,10 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -31,7 +29,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -39,11 +36,9 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.edit.command.AddCommand;
+import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
@@ -51,12 +46,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
-import de.dlr.sc.virsat.model.dvlm.DVLMPackage;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
+import de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
+import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
+import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
-import de.dlr.sc.virsat.project.resources.command.CreateSeiResourceAndFileCommand;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 import de.dlr.sc.virsat.project.test.AProjectTestCase;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
@@ -222,22 +218,35 @@ public class ServerRepositoryTest extends AProjectTestCase {
 		ServerRepository testServerRepository = new ServerRepository(localRepoHome, testRepoConfig);
 		testServerRepository.checkoutRepository();
 		
-		String testString = "test";
-		StructuralElement testSe = StructuralFactory.eINSTANCE.createStructuralElement();
-		testSe.setIsRootStructuralElement(true);
-		testSe.setName("se");
-		StructuralElementInstance testSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		testSei.setType(testSe);
-		testSei.setName(testString);
+		String testString = "testValue";
+		
+		String pluginName = "de.dlr.sc.virsat.model.extension.tests";
+		String conceptXmiPluginPath = pluginName + "/concept/concept.xmi";
+		Concept conceptTest = ConceptXmiLoader.loadConceptFromPlugin(conceptXmiPluginPath);
+		
+		TestStructuralElement testSei = new TestStructuralElement(conceptTest);
+		TestStructuralElement testSeiChild = new TestStructuralElement(conceptTest);
+		testSei.addSuperSei(testSeiChild);
+		
+		TestCategoryAllProperty testCa = new TestCategoryAllProperty(conceptTest);
+		testSeiChild.add(testCa);
+		testCa.setTestString(testString);
+		
+		StructuralElementInstance rootSei = testSei.getStructuralElementInstance();
 		VirSatTransactionalEditingDomain ed = testServerRepository.getEd();
 		
-		Command addSeiToRepo = AddCommand.create(ed, ed.getResourceSet().getRepository(), 
-				DVLMPackage.eINSTANCE.getRepository_RootEntities(), testSei);
-		ed.getCommandStack().execute(addSeiToRepo);
-		Command createSei = new CreateSeiResourceAndFileCommand(ed.getResourceSet(), testSei);
-		ed.getCommandStack().execute(createSei);
+		RecordingCommand recordingCommand = new RecordingCommand(ed) {
+			@Override
+			protected void doExecute() {
+				ed.getResourceSet().getRepository().getActiveConcepts().add(conceptTest);
+				ed.getResourceSet().getRepository().getRootEntities().add(rootSei);
+				ed.getResourceSet().getAndAddStructuralElementInstanceResource(rootSei);
+				ed.getResourceSet().getAndAddStructuralElementInstanceResource(testSeiChild.getStructuralElementInstance());
+			}
+		};
+		ed.getCommandStack().execute(recordingCommand);
 
-		String seiResource = testSei.eResource().getURI().toPlatformString(false);
+		String childSeiResource = testSeiChild.getStructuralElementInstance().eResource().getURI().toPlatformString(false);
 		
 		testServerRepository.syncRepository();
 		assertFalse(ed.isDirty());
@@ -264,8 +273,8 @@ public class ServerRepositoryTest extends AProjectTestCase {
 				.setURI(testServerRepository.getRepositoryConfiguration().getRemoteUri())
 				.call();
 		
-		String newString = "new";
-		Path seiPathInLocal = Paths.get(localRepo.toString(), seiResource);
+		String newString = "newValue";
+		Path seiPathInLocal = Paths.get(localRepo.toString(), childSeiResource);
 		String content = new String(Files.readAllBytes(seiPathInLocal), StandardCharsets.UTF_8);
 		content = content.replaceAll(testString, newString);
 		Files.write(seiPathInLocal, content.getBytes(StandardCharsets.UTF_8));
@@ -275,12 +284,10 @@ public class ServerRepositoryTest extends AProjectTestCase {
 		git.push().call();
 
 		// Assert state before sync
-		assertEquals(testString, testSei.getName());
-		assertEquals(testSe, testSei.getType());
+		assertEquals(testString, testCa.getTestString());
 		
 		// Sync with remote
 		testServerRepository.syncRepository();
-//		assertEquals("Two new commits", initialCommits + 2, VersionControlTestHelper.countCommits(pathRepoRemote.toFile()));
 		
 		//TODO:remove
 		System.out.println(initialCommits);
@@ -302,12 +309,12 @@ public class ServerRepositoryTest extends AProjectTestCase {
 			}
 			prevCommit = commit;
 		}
-		
+
+		assertEquals("Two new commits", initialCommits + 2, VersionControlTestHelper.countCommits(pathRepoRemote.toFile()));
 		StructuralElementInstance sei = ed.getResourceSet().getRepository().getRootEntities().get(0);
-		assertEquals("Name changed", newString, sei.getName());
-		assertNull("Dangling reference removed by builders", sei.getType());
-		
-		fail();
+		CategoryAssignment ca = sei.getCategoryAssignments().get(0);
+		TestCategoryAllProperty caBean = new TestCategoryAllProperty(ca);
+		assertEquals("Name changed", newString, caBean.getTestString());
 	}
 	
 	@Test
