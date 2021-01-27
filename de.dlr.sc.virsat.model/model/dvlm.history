@@ -5392,5 +5392,23 @@
       <element href="dvlm.ecore#//dmf"/>
     </changes>
   </releases>
-  <releases xmi:id="_z9zaEIL0EeqQ2L2u1ztINA"/>
+  <releases xmi:id="_z9zaEIL0EeqQ2L2u1ztINA">
+    <changes xsi:type="history:Create" xmi:id="_10sSMGB6Eeum8qfshOhL6Q" referenceName="eAnnotations">
+      <target href="dvlm.ecore#//categories/Category/isExtensionOf/typeDefinition"/>
+      <element href="dvlm.ecore#//categories/Category/isExtensionOf/typeDefinition/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%"/>
+      <changes xsi:type="history:Set" xmi:id="_10sSMWB6Eeum8qfshOhL6Q" featureName="source" dataValue="http://www.eclipse.org/emf/2002/GenModel">
+        <element href="dvlm.ecore#//categories/Category/isExtensionOf/typeDefinition/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%"/>
+      </changes>
+    </changes>
+    <changes xsi:type="history:Create" xmi:id="_10sSMmB6Eeum8qfshOhL6Q" referenceName="details">
+      <target href="dvlm.ecore#//categories/Category/isExtensionOf/typeDefinition/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%"/>
+      <element href="dvlm.ecore#//categories/Category/isExtensionOf/typeDefinition/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%/@details.0"/>
+      <changes xsi:type="history:Set" xmi:id="_10sSM2B6Eeum8qfshOhL6Q" featureName="key" dataValue="documentation">
+        <element href="dvlm.ecore#//categories/Category/isExtensionOf/typeDefinition/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%/@details.0"/>
+      </changes>
+      <changes xsi:type="history:Set" xmi:id="_10sSNGB6Eeum8qfshOhL6Q" featureName="value" dataValue="of which the current is an extension of or not.">
+        <element href="dvlm.ecore#//categories/Category/isExtensionOf/typeDefinition/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%/@details.0"/>
+      </changes>
+    </changes>
+  </releases>
 </history:History>

@@ -125,6 +125,7 @@ public interface Category extends ATypeDefinition, IApplicableFor, IEquationDefi
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
 	 * This method returns true iff it is an instance of the passed typeDefinition
+	 * @param typeDefinition of which the current is an extension of or not.
 	 * <!-- end-model-doc -->
 	 * @return the value of the '<em>{@code isExtensionOf}</em>' operation as '{@code boolean}'.
 	 * @model

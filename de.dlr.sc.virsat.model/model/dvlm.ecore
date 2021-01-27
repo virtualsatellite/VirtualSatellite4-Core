@@ -215,7 +215,11 @@
           <details key="documentation" value="This method returns true iff it is an instance of the passed typeDefinition"/>
           <details key="body" value="Category category = this;&#xD;&#xA;&#x9;&#x9;&#xD;&#xA;while (category != null) {&#xD;&#xA;&#x9;if (category.equals(typeDefinition)) {&#xD;&#xA;&#x9;&#x9;return true;&#xD;&#xA;&#x9;}&#xD;&#xA;&#x9;&#x9;&#x9;&#xD;&#xA;&#x9;category = category.getExtendsCategory();&#xD;&#xA;}&#xD;&#xA;&#x9;&#x9;&#xD;&#xA;return false;"/>
         </eAnnotations>
-        <eParameters name="typeDefinition" eType="#//categories/ATypeDefinition"/>
+        <eParameters name="typeDefinition" eType="#//categories/ATypeDefinition">
+          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+            <details key="documentation" value="of which the current is an extension of or not."/>
+          </eAnnotations>
+        </eParameters>
       </eOperations>
       <eOperations name="getAllEquationDefinitions" upperBound="-1" eType="#//calculation/EquationDefinition">
         <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
