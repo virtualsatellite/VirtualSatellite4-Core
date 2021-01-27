@@ -328,7 +328,7 @@ public class CalculationFactoryImpl extends EFactoryImpl implements CalculationF
 	 * <!-- end-user-doc -->
 	 * @param eDataType describing the type of object.
 	 * @param instanceValue of the object.
-	 * return a string representing the object.
+	 * @return a string representing the object.
 	 * @generated
 	 */
 	public String convertMathOperatorToString(EDataType eDataType, Object instanceValue) {

@@ -123,7 +123,7 @@ public class TypesFactoryImpl extends EFactoryImpl implements TypesFactory {
 	 * <!-- end-user-doc -->
 	 * @param eDataType describing the type of object.
 	 * @param instanceValue of the object.
-	 * return a string representing the object.
+	 * @return a string representing the object.
 	 * @generated
 	 */
 	public String convertUuidToString(EDataType eDataType, Object instanceValue) {
@@ -147,7 +147,7 @@ public class TypesFactoryImpl extends EFactoryImpl implements TypesFactory {
 	 * <!-- end-user-doc -->
 	 * @param eDataType describing the type of object.
 	 * @param instanceValue of the object.
-	 * return a string representing the object.
+	 * @return a string representing the object.
 	 * @generated
 	 */
 	public String convertURIToString(EDataType eDataType, Object instanceValue) {

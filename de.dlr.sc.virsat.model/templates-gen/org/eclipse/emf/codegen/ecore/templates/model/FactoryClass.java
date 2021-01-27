@@ -203,7 +203,7 @@ public class FactoryClass
   protected final String TEXT_186 = NL + "\t\treturn super.convertToString(";
   protected final String TEXT_187 = ", new ";
   protected final String TEXT_188 = "(instanceValue));";
-  protected final String TEXT_189 = NL + "\t/**" + NL + "\t * <!-- begin-user-doc -->" + NL + "\t * <!-- end-user-doc -->" + NL + "\t * @param eDataType describing the type of object." + NL + "\t * @param instanceValue of the object." + NL + "\t * return a string representing the object." + NL + "\t * @generated" + NL + "\t */";
+  protected final String TEXT_189 = NL + "\t/**" + NL + "\t * <!-- begin-user-doc -->" + NL + "\t * <!-- end-user-doc -->" + NL + "\t * @param eDataType describing the type of object." + NL + "\t * @param instanceValue of the object." + NL + "\t * @return a string representing the object." + NL + "\t * @generated" + NL + "\t */";
   protected final String TEXT_190 = NL + "\tpublic String convert";
   protected final String TEXT_191 = " eDataType, Object instanceValue)" + NL + "\t{";
   protected final String TEXT_192 = NL + "\t\tif (instanceValue == null) return null;" + NL + "\t\t";

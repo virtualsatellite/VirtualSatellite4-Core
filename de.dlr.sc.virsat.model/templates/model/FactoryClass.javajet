@@ -554,7 +554,7 @@ public interface <%=genPackage.getFactoryInterfaceName()%><%if (!genModel.isSupp
 	 * <!-- end-user-doc -->
 	 * @param eDataType describing the type of object.
 	 * @param instanceValue of the object.
-	 * return a string representing the object.
+	 * @return a string representing the object.
 	 * @generated
 	 */
     <%if (genModel.useGenerics() && (genDataType.getItemType() != null || genDataType.isUncheckedCast()) && (genPackage.isDataTypeConverters() || genDataType.hasCreatorBody())) {%>
