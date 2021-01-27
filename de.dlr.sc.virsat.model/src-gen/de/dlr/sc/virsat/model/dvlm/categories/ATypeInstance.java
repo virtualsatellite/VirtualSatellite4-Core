@@ -69,7 +69,7 @@ public interface ATypeInstance extends IUuid, IComment, IInstance, IInheritanceL
 	 * <!-- begin-model-doc -->
 	 * Call this method to get a CategoryAssignmentContainer handed back for any TypeInstance. This method returns null in case it could not be found.
 	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>getCategoryAssignmentContainer</em>' operation as ICategoryAssignmentContainer.
+	 * @return the value of the '<em>{@code getCategoryAssignmentContainer}</em>' operation as '{@code ICategoryAssignmentContainer}'.
 	 * @model kind="operation"
 	 * @generated
 	 */

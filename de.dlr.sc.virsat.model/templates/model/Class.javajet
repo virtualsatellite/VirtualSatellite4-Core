@@ -1656,7 +1656,7 @@ if (index != -1) { head = typeName.substring(0, index); tail = typeName.substrin
         * VirSat specific documentation of return types 
         ************************************************/
     if (genOperation.getTypeParameters(genClass) != null) { %>
-	 * @return the value of the '<em><%=genOperation.getName()%></em>' operation as <%=genOperation.getTypeParameters(genClass)%><%=genOperation.getImportedType(genClass)%>.
+	 * @return the value of the '<em>{@code <%=genOperation.getName()%>}</em>' operation as '{@code <%=genOperation.getTypeParameters(genClass)%><%=genOperation.getImportedType(genClass)%>}'.
     <%}%>
   <%}%>
   <%if (!genModel.isSuppressEMFModelTags()) { boolean first = true; for (StringTokenizer stringTokenizer = new StringTokenizer(genOperation.getModelInfo(), "\n\r"); stringTokenizer.hasMoreTokens(); ) { String modelInfo = stringTokenizer.nextToken(); if (first) { first = false;%>

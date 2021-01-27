@@ -63,7 +63,7 @@ public interface ResourcePropertyInstance extends APropertyInstance, IOverridabl
 	 * <!-- begin-model-doc -->
 	 * Convenience Method to set the Uri String via an EMF URI
 	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>setUri</em>' operation as void.
+	 * @return the value of the '<em>{@code setUri}</em>' operation as '{@code void}'.
 	 * @model uriDataType="de.dlr.sc.virsat.model.dvlm.types.URI"
 	 * @generated
 	 */
@@ -75,7 +75,7 @@ public interface ResourcePropertyInstance extends APropertyInstance, IOverridabl
 	 * <!-- begin-model-doc -->
 	 * Convenience Method to get the curently set Uri as EMF Platform Uri
 	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>getUri</em>' operation as URI.
+	 * @return the value of the '<em>{@code getUri}</em>' operation as '{@code URI}'.
 	 * @model kind="operation" dataType="de.dlr.sc.virsat.model.dvlm.types.URI"
 	 * @generated
 	 */
