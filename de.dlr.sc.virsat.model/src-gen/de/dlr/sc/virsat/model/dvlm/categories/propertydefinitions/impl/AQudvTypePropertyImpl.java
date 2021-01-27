@@ -202,6 +202,7 @@ public abstract class AQudvTypePropertyImpl extends IEquationDefinitionInputImpl
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getName() {
@@ -223,6 +224,7 @@ public abstract class AQudvTypePropertyImpl extends IEquationDefinitionInputImpl
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getFullQualifiedName() {
@@ -235,6 +237,7 @@ public abstract class AQudvTypePropertyImpl extends IEquationDefinitionInputImpl
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getShortName() {
@@ -256,6 +259,7 @@ public abstract class AQudvTypePropertyImpl extends IEquationDefinitionInputImpl
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getDescription() {
@@ -277,6 +281,7 @@ public abstract class AQudvTypePropertyImpl extends IEquationDefinitionInputImpl
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code IArrayModifier}'.
 	 * @generated
 	 */
 	public IArrayModifier getArrayModifier() {
@@ -347,6 +352,7 @@ public abstract class AQudvTypePropertyImpl extends IEquationDefinitionInputImpl
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getQuantityKindName() {
@@ -368,6 +374,7 @@ public abstract class AQudvTypePropertyImpl extends IEquationDefinitionInputImpl
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getUnitName() {

@@ -92,6 +92,7 @@ public abstract class AConversionBasedUnitImpl extends AUnitImpl implements ACon
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code boolean}'.
 	 * @generated
 	 */
 	public boolean isIsInvertible() {
@@ -113,6 +114,7 @@ public abstract class AConversionBasedUnitImpl extends AUnitImpl implements ACon
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code AUnit}'.
 	 * @generated
 	 */
 	public AUnit getReferenceUnit() {

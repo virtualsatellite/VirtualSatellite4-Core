@@ -231,6 +231,7 @@ public class GeneralRelationImpl extends MinimalEObjectImpl.Container implements
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getName() {
@@ -252,6 +253,7 @@ public class GeneralRelationImpl extends MinimalEObjectImpl.Container implements
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getFullQualifiedName() {
@@ -264,6 +266,7 @@ public class GeneralRelationImpl extends MinimalEObjectImpl.Container implements
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getShortName() {
@@ -285,6 +288,7 @@ public class GeneralRelationImpl extends MinimalEObjectImpl.Container implements
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<StructuralElement>}'.
 	 * @generated
 	 */
 	public EList<StructuralElement> getApplicableFor() {
@@ -299,6 +303,7 @@ public class GeneralRelationImpl extends MinimalEObjectImpl.Container implements
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code boolean}'.
 	 * @generated
 	 */
 	public boolean isIsApplicableForAll() {
@@ -320,6 +325,7 @@ public class GeneralRelationImpl extends MinimalEObjectImpl.Container implements
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code int}'.
 	 * @generated
 	 */
 	public int getCardinality() {
@@ -341,6 +347,7 @@ public class GeneralRelationImpl extends MinimalEObjectImpl.Container implements
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getDescription() {
@@ -362,6 +369,7 @@ public class GeneralRelationImpl extends MinimalEObjectImpl.Container implements
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code StructuralElement}'.
 	 * @generated
 	 */
 	public StructuralElement getReferencedType() {

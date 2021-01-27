@@ -93,6 +93,7 @@ public class ComposedPropertyInstanceImpl extends APropertyInstanceImpl implemen
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code CategoryAssignment}'.
 	 * @generated
 	 */
 	public CategoryAssignment getTypeInstance() {

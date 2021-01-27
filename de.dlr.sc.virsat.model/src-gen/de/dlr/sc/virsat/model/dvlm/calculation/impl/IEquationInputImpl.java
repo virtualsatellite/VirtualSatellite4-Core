@@ -92,6 +92,7 @@ public abstract class IEquationInputImpl extends MinimalEObjectImpl.Container im
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<IInheritanceLink>}'.
 	 * @generated
 	 */
 	public EList<IInheritanceLink> getSuperTis() {
@@ -106,6 +107,7 @@ public abstract class IEquationInputImpl extends MinimalEObjectImpl.Container im
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code boolean}'.
 	 * @generated
 	 */
 	public boolean isIsInherited() {

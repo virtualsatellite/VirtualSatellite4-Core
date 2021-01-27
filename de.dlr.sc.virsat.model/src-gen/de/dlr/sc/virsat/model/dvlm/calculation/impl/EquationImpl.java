@@ -201,6 +201,7 @@ public class EquationImpl extends MinimalEObjectImpl.Container implements Equati
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<IInheritanceLink>}'.
 	 * @generated
 	 */
 	public EList<IInheritanceLink> getSuperTis() {
@@ -215,6 +216,7 @@ public class EquationImpl extends MinimalEObjectImpl.Container implements Equati
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code boolean}'.
 	 * @generated
 	 */
 	public boolean isIsInherited() {
@@ -236,6 +238,7 @@ public class EquationImpl extends MinimalEObjectImpl.Container implements Equati
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code boolean}'.
 	 * @generated
 	 */
 	public boolean isOverride() {
@@ -257,6 +260,7 @@ public class EquationImpl extends MinimalEObjectImpl.Container implements Equati
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code AExpression}'.
 	 * @generated
 	 */
 	public AExpression getExpression() {
@@ -327,6 +331,7 @@ public class EquationImpl extends MinimalEObjectImpl.Container implements Equati
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code IEquationResult}'.
 	 * @generated
 	 */
 	public IEquationResult getResult() {
@@ -397,6 +402,7 @@ public class EquationImpl extends MinimalEObjectImpl.Container implements Equati
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getResultText() {
@@ -418,6 +424,7 @@ public class EquationImpl extends MinimalEObjectImpl.Container implements Equati
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EquationDefinition}'.
 	 * @generated
 	 */
 	public EquationDefinition getDefinition() {

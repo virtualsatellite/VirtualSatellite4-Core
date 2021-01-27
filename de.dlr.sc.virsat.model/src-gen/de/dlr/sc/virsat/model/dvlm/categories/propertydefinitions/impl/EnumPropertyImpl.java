@@ -110,6 +110,7 @@ public class EnumPropertyImpl extends AQudvTypePropertyImpl implements EnumPrope
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<EnumValueDefinition>}'.
 	 * @generated
 	 */
 	public EList<EnumValueDefinition> getValues() {
@@ -124,6 +125,7 @@ public class EnumPropertyImpl extends AQudvTypePropertyImpl implements EnumPrope
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EnumValueDefinition}'.
 	 * @generated
 	 */
 	public EnumValueDefinition getDefaultValue() {

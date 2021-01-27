@@ -134,6 +134,7 @@ public class ComposedPropertyImpl extends APropertyImpl implements ComposedPrope
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code Category}'.
 	 * @generated
 	 */
 	public Category getType() {
@@ -173,6 +174,7 @@ public class ComposedPropertyImpl extends APropertyImpl implements ComposedPrope
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getQuantityKindName() {
@@ -194,6 +196,7 @@ public class ComposedPropertyImpl extends APropertyImpl implements ComposedPrope
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getUnitName() {

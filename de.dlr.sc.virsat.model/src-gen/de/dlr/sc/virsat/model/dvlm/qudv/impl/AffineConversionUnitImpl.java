@@ -119,6 +119,7 @@ public class AffineConversionUnitImpl extends AConversionBasedUnitImpl implement
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code double}'.
 	 * @generated
 	 */
 	public double getFactor() {
@@ -140,6 +141,7 @@ public class AffineConversionUnitImpl extends AConversionBasedUnitImpl implement
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code double}'.
 	 * @generated
 	 */
 	public double getOffset() {

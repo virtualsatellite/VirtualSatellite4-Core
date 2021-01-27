@@ -336,6 +336,7 @@ public class ConceptImpl extends MinimalEObjectImpl.Container implements Concept
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getName() {
@@ -357,6 +358,7 @@ public class ConceptImpl extends MinimalEObjectImpl.Container implements Concept
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getFullQualifiedName() {
@@ -369,6 +371,7 @@ public class ConceptImpl extends MinimalEObjectImpl.Container implements Concept
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getShortName() {
@@ -390,6 +393,7 @@ public class ConceptImpl extends MinimalEObjectImpl.Container implements Concept
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getDescription() {
@@ -411,6 +415,7 @@ public class ConceptImpl extends MinimalEObjectImpl.Container implements Concept
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code boolean}'.
 	 * @generated
 	 */
 	public boolean isActive() {
@@ -432,6 +437,7 @@ public class ConceptImpl extends MinimalEObjectImpl.Container implements Concept
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<ConceptImport>}'.
 	 * @generated
 	 */
 	public EList<ConceptImport> getImports() {
@@ -446,6 +452,7 @@ public class ConceptImpl extends MinimalEObjectImpl.Container implements Concept
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<EcoreImport>}'.
 	 * @generated
 	 */
 	public EList<EcoreImport> getEcoreImports() {
@@ -460,6 +467,7 @@ public class ConceptImpl extends MinimalEObjectImpl.Container implements Concept
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<Category>}'.
 	 * @generated
 	 */
 	public EList<Category> getCategories() {
@@ -474,6 +482,7 @@ public class ConceptImpl extends MinimalEObjectImpl.Container implements Concept
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<StructuralElement>}'.
 	 * @generated
 	 */
 	public EList<StructuralElement> getStructuralElements() {
@@ -488,6 +497,7 @@ public class ConceptImpl extends MinimalEObjectImpl.Container implements Concept
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<GeneralRelation>}'.
 	 * @generated
 	 */
 	public EList<GeneralRelation> getRelations() {
@@ -502,6 +512,7 @@ public class ConceptImpl extends MinimalEObjectImpl.Container implements Concept
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getVersion() {
@@ -523,6 +534,7 @@ public class ConceptImpl extends MinimalEObjectImpl.Container implements Concept
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code boolean}'.
 	 * @generated
 	 */
 	public boolean isDMF() {
@@ -544,6 +556,7 @@ public class ConceptImpl extends MinimalEObjectImpl.Container implements Concept
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getDisplayName() {
@@ -565,6 +578,7 @@ public class ConceptImpl extends MinimalEObjectImpl.Container implements Concept
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code boolean}'.
 	 * @generated
 	 */
 	public boolean isBeta() {

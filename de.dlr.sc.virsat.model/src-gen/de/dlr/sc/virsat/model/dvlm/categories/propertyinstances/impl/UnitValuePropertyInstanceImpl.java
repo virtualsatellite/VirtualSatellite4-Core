@@ -145,6 +145,7 @@ public class UnitValuePropertyInstanceImpl extends APropertyInstanceImpl impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code boolean}'.
 	 * @generated
 	 */
 	public boolean isOverride() {
@@ -166,6 +167,7 @@ public class UnitValuePropertyInstanceImpl extends APropertyInstanceImpl impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getValue() {
@@ -187,6 +189,7 @@ public class UnitValuePropertyInstanceImpl extends APropertyInstanceImpl impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code AUnit}'.
 	 * @generated
 	 */
 	public AUnit getUnit() {

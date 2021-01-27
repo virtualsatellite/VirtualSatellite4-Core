@@ -94,6 +94,7 @@ public abstract class AOpRightExpressionImpl extends AExpressionImpl implements 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code MathOperator}'.
 	 * @generated
 	 */
 	public MathOperator getOperator() {
@@ -115,6 +116,7 @@ public abstract class AOpRightExpressionImpl extends AExpressionImpl implements 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code AExpression}'.
 	 * @generated
 	 */
 	public AExpression getRight() {

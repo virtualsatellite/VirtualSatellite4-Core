@@ -183,6 +183,7 @@ public class EquationSectionImpl extends MinimalEObjectImpl.Container implements
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EquationSection}'.
 	 * @generated
 	 */
 	public EquationSection getEquationSection() {
@@ -253,6 +254,7 @@ public class EquationSectionImpl extends MinimalEObjectImpl.Container implements
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<IInheritanceLink>}'.
 	 * @generated
 	 */
 	public EList<IInheritanceLink> getSuperTis() {
@@ -267,6 +269,7 @@ public class EquationSectionImpl extends MinimalEObjectImpl.Container implements
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code boolean}'.
 	 * @generated
 	 */
 	public boolean isIsInherited() {
@@ -288,6 +291,7 @@ public class EquationSectionImpl extends MinimalEObjectImpl.Container implements
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<Import>}'.
 	 * @generated
 	 */
 	public EList<Import> getImports() {
@@ -302,6 +306,7 @@ public class EquationSectionImpl extends MinimalEObjectImpl.Container implements
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<Equation>}'.
 	 * @generated
 	 */
 	public EList<Equation> getEquations() {
@@ -316,6 +321,7 @@ public class EquationSectionImpl extends MinimalEObjectImpl.Container implements
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getSerializedStatements() {

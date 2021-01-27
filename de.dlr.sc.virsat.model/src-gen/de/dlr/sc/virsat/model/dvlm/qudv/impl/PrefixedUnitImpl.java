@@ -89,6 +89,7 @@ public class PrefixedUnitImpl extends AConversionBasedUnitImpl implements Prefix
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code Prefix}'.
 	 * @generated
 	 */
 	public Prefix getPrefix() {

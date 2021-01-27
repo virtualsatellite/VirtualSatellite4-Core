@@ -790,6 +790,7 @@ if (index != -1) { head = typeName.substring(0, index); tail = typeName.substrin
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code <%=genFeature.getImportedType(genClass)%>}'.
 	 * @generated
 	 */
 <%if (isJDK50) { //Class/getGenFeature.annotations.insert.javajetinc%>

@@ -132,6 +132,7 @@ public class EnumUnitPropertyInstanceImpl extends APropertyInstanceImpl implemen
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code boolean}'.
 	 * @generated
 	 */
 	public boolean isOverride() {
@@ -153,6 +154,7 @@ public class EnumUnitPropertyInstanceImpl extends APropertyInstanceImpl implemen
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code AUnit}'.
 	 * @generated
 	 */
 	public AUnit getUnit() {
@@ -192,6 +194,7 @@ public class EnumUnitPropertyInstanceImpl extends APropertyInstanceImpl implemen
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EnumValueDefinition}'.
 	 * @generated
 	 */
 	public EnumValueDefinition getValue() {

@@ -103,6 +103,7 @@ public class EquationDefinitionImpl extends MinimalEObjectImpl.Container impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code AExpression}'.
 	 * @generated
 	 */
 	public AExpression getExpression() {
@@ -173,6 +174,7 @@ public class EquationDefinitionImpl extends MinimalEObjectImpl.Container impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code IEquationDefinitionResult}'.
 	 * @generated
 	 */
 	public IEquationDefinitionResult getResult() {

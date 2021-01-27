@@ -139,6 +139,7 @@ public class UnitManagementImpl extends MinimalEObjectImpl.Container implements 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code Discipline}'.
 	 * @generated
 	 */
 	public Discipline getAssignedDiscipline() {
@@ -178,6 +179,7 @@ public class UnitManagementImpl extends MinimalEObjectImpl.Container implements 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code VirSatUuid}'.
 	 * @generated
 	 */
 	public VirSatUuid getUuid() {
@@ -199,6 +201,7 @@ public class UnitManagementImpl extends MinimalEObjectImpl.Container implements 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code SystemOfUnits}'.
 	 * @generated
 	 */
 	public SystemOfUnits getSystemOfUnit() {

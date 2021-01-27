@@ -105,6 +105,7 @@ public abstract class ALeftOpRightExpressionImpl extends AExpressionImpl impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code AExpression}'.
 	 * @generated
 	 */
 	public AExpression getLeft() {
@@ -175,6 +176,7 @@ public abstract class ALeftOpRightExpressionImpl extends AExpressionImpl impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code MathOperator}'.
 	 * @generated
 	 */
 	public MathOperator getOperator() {
@@ -196,6 +198,7 @@ public abstract class ALeftOpRightExpressionImpl extends AExpressionImpl impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code AExpression}'.
 	 * @generated
 	 */
 	public AExpression getRight() {

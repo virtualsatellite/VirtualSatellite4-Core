@@ -75,6 +75,7 @@ public abstract class APropertyImpl extends ATypeDefinitionImpl implements AProp
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code IArrayModifier}'.
 	 * @generated
 	 */
 	public IArrayModifier getArrayModifier() {

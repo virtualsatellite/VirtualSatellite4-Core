@@ -101,6 +101,7 @@ public class ReferencedInputImpl extends ALiteralImpl implements ReferencedInput
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code IEquationInput}'.
 	 * @generated
 	 */
 	public IEquationInput getReference() {
@@ -140,6 +141,7 @@ public class ReferencedInputImpl extends ALiteralImpl implements ReferencedInput
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code ReferencedDefinitionInput}'.
 	 * @generated
 	 */
 	public ReferencedDefinitionInput getDefinition() {
