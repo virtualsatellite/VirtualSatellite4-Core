@@ -62,6 +62,7 @@ public interface ResourcePropertyInstance extends APropertyInstance, IOverridabl
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
 	 * Convenience Method to set the Uri String via an EMF URI
+	 * @param uri the uri of the reosource to be set
 	 * <!-- end-model-doc -->
 	 * @model uriDataType="de.dlr.sc.virsat.model.dvlm.types.URI"
 	 * @generated

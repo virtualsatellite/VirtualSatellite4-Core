@@ -5410,5 +5410,39 @@
         <element href="dvlm.ecore#//categories/Category/isExtensionOf/typeDefinition/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%/@details.0"/>
       </changes>
     </changes>
+    <changes xsi:type="history:Create" xmi:id="_BCWi0GCOEeum8qfshOhL6Q" referenceName="eAnnotations">
+      <target href="dvlm.ecore#//categories/propertyinstances/ResourcePropertyInstance/setUri/uri"/>
+      <element href="dvlm.ecore#//categories/propertyinstances/ResourcePropertyInstance/setUri/uri/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%"/>
+      <changes xsi:type="history:Set" xmi:id="_BCWi0WCOEeum8qfshOhL6Q" featureName="source" dataValue="http://www.eclipse.org/emf/2002/GenModel">
+        <element href="dvlm.ecore#//categories/propertyinstances/ResourcePropertyInstance/setUri/uri/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%"/>
+      </changes>
+    </changes>
+    <changes xsi:type="history:Create" xmi:id="_BCWi0mCOEeum8qfshOhL6Q" referenceName="details">
+      <target href="dvlm.ecore#//categories/propertyinstances/ResourcePropertyInstance/setUri/uri/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%"/>
+      <element href="dvlm.ecore#//categories/propertyinstances/ResourcePropertyInstance/setUri/uri/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%/@details.0"/>
+      <changes xsi:type="history:Set" xmi:id="_BCWi02COEeum8qfshOhL6Q" featureName="key" dataValue="documentation">
+        <element href="dvlm.ecore#//categories/propertyinstances/ResourcePropertyInstance/setUri/uri/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%/@details.0"/>
+      </changes>
+      <changes xsi:type="history:Set" xmi:id="_BCWi1GCOEeum8qfshOhL6Q" featureName="value" dataValue="the uri of the reosource to be set">
+        <element href="dvlm.ecore#//categories/propertyinstances/ResourcePropertyInstance/setUri/uri/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%/@details.0"/>
+      </changes>
+    </changes>
+    <changes xsi:type="history:Create" xmi:id="_lkR8wGCQEeum8qfshOhL6Q" referenceName="eAnnotations">
+      <target href="dvlm.ecore#//categories/propertyinstances/UnitValuePropertyInstance/setValueAsBaseUnit/value"/>
+      <element href="dvlm.ecore#//categories/propertyinstances/UnitValuePropertyInstance/setValueAsBaseUnit/value/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%"/>
+      <changes xsi:type="history:Set" xmi:id="_lkR8wWCQEeum8qfshOhL6Q" featureName="source" dataValue="http://www.eclipse.org/emf/2002/GenModel">
+        <element href="dvlm.ecore#//categories/propertyinstances/UnitValuePropertyInstance/setValueAsBaseUnit/value/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%"/>
+      </changes>
+    </changes>
+    <changes xsi:type="history:Create" xmi:id="_lkR8wmCQEeum8qfshOhL6Q" referenceName="details">
+      <target href="dvlm.ecore#//categories/propertyinstances/UnitValuePropertyInstance/setValueAsBaseUnit/value/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%"/>
+      <element href="dvlm.ecore#//categories/propertyinstances/UnitValuePropertyInstance/setValueAsBaseUnit/value/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%/@details.0"/>
+      <changes xsi:type="history:Set" xmi:id="_lkR8w2CQEeum8qfshOhL6Q" featureName="key" dataValue="documentation">
+        <element href="dvlm.ecore#//categories/propertyinstances/UnitValuePropertyInstance/setValueAsBaseUnit/value/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%/@details.0"/>
+      </changes>
+      <changes xsi:type="history:Set" xmi:id="_lkR8xGCQEeum8qfshOhL6Q" featureName="value" dataValue="the value to be set in base unit.">
+        <element href="dvlm.ecore#//categories/propertyinstances/UnitValuePropertyInstance/setValueAsBaseUnit/value/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%/@details.0"/>
+      </changes>
+    </changes>
   </releases>
 </history:History>
