@@ -109,6 +109,9 @@ public class TypesFactoryImpl extends EFactoryImpl implements TypesFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param eDataType describing the type of object.
+	 * @param initialValue for the creation of the object.
+	 * @return a newly created object of type '{@code VirSatUuid}.'
 	 * @generated
 	 */
 	public VirSatUuid createUuidFromString(EDataType eDataType, String initialValue) {
@@ -118,6 +121,9 @@ public class TypesFactoryImpl extends EFactoryImpl implements TypesFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param eDataType describing the type of object.
+	 * @param instanceValue of the object.
+	 * return a string representing the object.
 	 * @generated
 	 */
 	public String convertUuidToString(EDataType eDataType, Object instanceValue) {
@@ -127,6 +133,9 @@ public class TypesFactoryImpl extends EFactoryImpl implements TypesFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param eDataType describing the type of object.
+	 * @param initialValue for the creation of the object.
+	 * @return a newly created object of type '{@code URI}.'
 	 * @generated
 	 */
 	public URI createURIFromString(EDataType eDataType, String initialValue) {
@@ -136,6 +145,9 @@ public class TypesFactoryImpl extends EFactoryImpl implements TypesFactory {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param eDataType describing the type of object.
+	 * @param instanceValue of the object.
+	 * return a string representing the object.
 	 * @generated
 	 */
 	public String convertURIToString(EDataType eDataType, Object instanceValue) {

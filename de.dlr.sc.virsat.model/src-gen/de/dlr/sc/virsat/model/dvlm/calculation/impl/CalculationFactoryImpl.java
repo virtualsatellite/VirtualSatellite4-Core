@@ -312,6 +312,9 @@ public class CalculationFactoryImpl extends EFactoryImpl implements CalculationF
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param eDataType describing the type of object.
+	 * @param initialValue for the creation of the object.
+	 * @return a newly created object of type '{@code MathOperator}.'
 	 * @generated
 	 */
 	public MathOperator createMathOperatorFromString(EDataType eDataType, String initialValue) {
@@ -323,6 +326,9 @@ public class CalculationFactoryImpl extends EFactoryImpl implements CalculationF
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param eDataType describing the type of object.
+	 * @param instanceValue of the object.
+	 * return a string representing the object.
 	 * @generated
 	 */
 	public String convertMathOperatorToString(EDataType eDataType, Object instanceValue) {

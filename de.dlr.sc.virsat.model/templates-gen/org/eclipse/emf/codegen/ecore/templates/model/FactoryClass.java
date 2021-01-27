@@ -149,89 +149,92 @@ public class FactoryClass
   protected final String TEXT_132 = ", literal)).";
   protected final String TEXT_133 = "super.createFromString(";
   protected final String TEXT_134 = NL + "\t}" + NL;
-  protected final String TEXT_135 = " eDataType, String initialValue)" + NL + "\t{";
-  protected final String TEXT_136 = "(initialValue);";
-  protected final String TEXT_137 = ".get(initialValue);" + NL + "\t\tif (result == null) throw new IllegalArgumentException(\"The value '\" + initialValue + \"' is not a valid enumerator of '\" + eDataType.getName() + \"'\");";
-  protected final String TEXT_138 = ", initialValue);";
-  protected final String TEXT_139 = NL + "\t\tif (initialValue == null) return null;" + NL + "\t\t";
-  protected final String TEXT_140 = "(initialValue); stringTokenizer.hasMoreTokens(); )";
-  protected final String TEXT_141 = NL + "\t\tfor (String item : split(initialValue))";
-  protected final String TEXT_142 = "(initialValue));";
-  protected final String TEXT_143 = " result = null;" + NL + "\t\tRuntimeException exception = null;";
-  protected final String TEXT_144 = NL + "\t\t\tif (result != null && ";
-  protected final String TEXT_145 = ".INSTANCE.validate(eDataType, result, null, null))" + NL + "\t\t\t{" + NL + "\t\t\t\treturn result;" + NL + "\t\t\t}" + NL + "\t\t}" + NL + "\t\tcatch (RuntimeException e)" + NL + "\t\t{" + NL + "\t\t\texception = e;" + NL + "\t\t}";
-  protected final String TEXT_146 = NL + "\t\tif (result != null || exception == null) return result;" + NL + "    " + NL + "\t\tthrow exception;";
-  protected final String TEXT_147 = "super.createFromString(initialValue);";
-  protected final String TEXT_148 = "super.createFromString(eDataType, initialValue);";
-  protected final String TEXT_149 = NL + "\t/**" + NL + "\t * <!-- begin-user-doc -->" + NL + "\t * <!-- end-user-doc -->" + NL + "\t * @generated" + NL + "\t */" + NL + "\tpublic String convert";
-  protected final String TEXT_150 = "instanceValue";
-  protected final String TEXT_151 = NL + "\t\treturn instanceValue == null ? null : instanceValue.toString();";
-  protected final String TEXT_152 = NL + "\t\treturn instanceValue == null ? null : convert";
-  protected final String TEXT_153 = "(instanceValue";
-  protected final String TEXT_154 = NL + "\t\treturn convert";
-  protected final String TEXT_155 = "(instanceValue);";
-  protected final String TEXT_156 = ".convert";
-  protected final String TEXT_157 = ".convertToString(";
-  protected final String TEXT_158 = ", instanceValue);";
-  protected final String TEXT_159 = NL + "\t\tif (instanceValue == null) return null;" + NL + "\t\tif (instanceValue.isEmpty()) return \"\";" + NL + "\t\t";
-  protected final String TEXT_160 = " i = instanceValue.iterator(); i.hasNext(); )";
-  protected final String TEXT_161 = " item : instanceValue)";
-  protected final String TEXT_162 = NL + "\t\t\tresult.append(convert";
-  protected final String TEXT_163 = "((";
-  protected final String TEXT_164 = "));";
-  protected final String TEXT_165 = "ToString(";
-  protected final String TEXT_166 = NL + "\t\t\tresult.append(";
-  protected final String TEXT_167 = NL + "\t\t\tresult.append(' ');" + NL + "\t\t}" + NL + "\t\treturn result.substring(0, result.length() - 1);";
-  protected final String TEXT_168 = NL + "\t\tif (instanceValue == null) return null;";
-  protected final String TEXT_169 = ".isInstance(instanceValue))" + NL + "\t\t{" + NL + "\t\t\ttry" + NL + "\t\t\t{";
-  protected final String TEXT_170 = NL + "\t\t\t\tString value = convert";
-  protected final String TEXT_171 = "(((";
-  protected final String TEXT_172 = ")instanceValue).";
-  protected final String TEXT_173 = "());";
-  protected final String TEXT_174 = ")instanceValue);";
-  protected final String TEXT_175 = NL + "\t\t\t\tString value = ";
-  protected final String TEXT_176 = NL + "\t\t\t\tif (value != null) return value;" + NL + "\t\t\t}" + NL + "\t\t\tcatch (Exception e)" + NL + "\t\t\t{" + NL + "\t\t\t\t// Keep trying other member types until all have failed." + NL + "\t\t\t}" + NL + "\t\t}";
-  protected final String TEXT_177 = NL + "\t\t\tString value = convert";
-  protected final String TEXT_178 = "(instanceValue)";
-  protected final String TEXT_179 = NL + "\t\t\tString value = ";
-  protected final String TEXT_180 = NL + "\t\t\tif (value != null) return value;" + NL + "\t\t}" + NL + "\t\tcatch (Exception e)" + NL + "\t\t{" + NL + "\t\t\t// Keep trying other member types until all have failed." + NL + "\t\t}";
-  protected final String TEXT_181 = NL + "\t\tthrow new IllegalArgumentException(\"Invalid value: '\"+instanceValue+\"' for datatype :\"+";
-  protected final String TEXT_182 = ".getName());";
-  protected final String TEXT_183 = NL + "\t\treturn super.convertToString(instanceValue);";
-  protected final String TEXT_184 = NL + "\t\treturn super.convertToString(";
-  protected final String TEXT_185 = ", new ";
-  protected final String TEXT_186 = "(instanceValue));";
-  protected final String TEXT_187 = NL + "\tpublic String convert";
-  protected final String TEXT_188 = " eDataType, Object instanceValue)" + NL + "\t{";
-  protected final String TEXT_189 = NL + "\t\tif (instanceValue == null) return null;" + NL + "\t\t";
-  protected final String TEXT_190 = " list = (";
-  protected final String TEXT_191 = ")instanceValue;" + NL + "\t\tif (list.isEmpty()) return \"\";" + NL + "\t\t";
-  protected final String TEXT_192 = " i = list.iterator(); i.hasNext(); )";
-  protected final String TEXT_193 = " item : list)";
-  protected final String TEXT_194 = ")instanceValue)";
-  protected final String TEXT_195 = NL + "\t\tthrow new IllegalArgumentException(\"Invalid value: '\"+instanceValue+\"' for datatype :\"+eDataType.getName());";
-  protected final String TEXT_196 = ")instanceValue";
-  protected final String TEXT_197 = ").";
-  protected final String TEXT_198 = NL + "\t\treturn super.convertToString(eDataType, instanceValue);";
-  protected final String TEXT_199 = NL + "\t/**" + NL + "\t * Returns a new object of class '<em>";
-  protected final String TEXT_200 = "</em>'." + NL + "\t * <!-- begin-user-doc -->" + NL + "\t * <!-- end-user-doc -->" + NL + "\t * @return a new object of class '<em>";
-  protected final String TEXT_201 = "</em>'." + NL + "\t * @generated" + NL + "\t */" + NL + "\t";
-  protected final String TEXT_202 = "();" + NL;
-  protected final String TEXT_203 = NL + "\t/**" + NL + "\t * Returns an instance of data type '<em>";
-  protected final String TEXT_204 = "</em>' corresponding the given literal." + NL + "\t * <!-- begin-user-doc -->" + NL + "\t * <!-- end-user-doc -->" + NL + "\t * @param literal a literal of the data type." + NL + "\t * @return a new instance value of the data type." + NL + "\t * @generated" + NL + "\t */" + NL + "\t";
-  protected final String TEXT_205 = "(String literal);" + NL + "" + NL + "\t/**" + NL + "\t * Returns a literal representation of an instance of data type '<em>";
-  protected final String TEXT_206 = "</em>'." + NL + "\t * <!-- begin-user-doc -->" + NL + "\t * <!-- end-user-doc -->" + NL + "\t * @param instanceValue an instance value of the data type." + NL + "\t * @return a literal representation of the instance value." + NL + "\t * @generated" + NL + "\t */" + NL + "\tString convert";
-  protected final String TEXT_207 = " instanceValue);" + NL;
-  protected final String TEXT_208 = NL + "\t/**" + NL + "\t * Returns the package supported by this factory." + NL + "\t * <!-- begin-user-doc -->" + NL + "\t * <!-- end-user-doc -->" + NL + "\t * @return the package supported by this factory." + NL + "\t * @generated" + NL + "\t */" + NL + "\t";
-  protected final String TEXT_209 = " get";
-  protected final String TEXT_210 = "()" + NL + "\t{" + NL + "\t\treturn (";
-  protected final String TEXT_211 = ")getEPackage();" + NL + "\t}" + NL + "" + NL + "\t/**" + NL + "\t * <!-- begin-user-doc -->" + NL + "\t * <!-- end-user-doc -->" + NL + "\t * @deprecated" + NL + "\t * @return an instance of ";
-  protected final String TEXT_212 = "." + NL + "\t * @generated" + NL + "\t */";
-  protected final String TEXT_213 = NL + "\t@Deprecated";
-  protected final String TEXT_214 = NL + "\tpublic static ";
-  protected final String TEXT_215 = " getPackage()" + NL + "\t{" + NL + "\t\treturn ";
-  protected final String TEXT_216 = ".eINSTANCE;" + NL + "\t}" + NL;
-  protected final String TEXT_217 = NL + "} //";
+  protected final String TEXT_135 = NL + "\t/**" + NL + "\t * <!-- begin-user-doc -->" + NL + "\t * <!-- end-user-doc -->" + NL + "\t * @param eDataType describing the type of object." + NL + "\t * @param initialValue for the creation of the object." + NL + "\t * @return a newly created object of type '{@code ";
+  protected final String TEXT_136 = "}.'" + NL + "\t * @generated" + NL + "\t */";
+  protected final String TEXT_137 = " eDataType, String initialValue)" + NL + "\t{";
+  protected final String TEXT_138 = "(initialValue);";
+  protected final String TEXT_139 = ".get(initialValue);" + NL + "\t\tif (result == null) throw new IllegalArgumentException(\"The value '\" + initialValue + \"' is not a valid enumerator of '\" + eDataType.getName() + \"'\");";
+  protected final String TEXT_140 = ", initialValue);";
+  protected final String TEXT_141 = NL + "\t\tif (initialValue == null) return null;" + NL + "\t\t";
+  protected final String TEXT_142 = "(initialValue); stringTokenizer.hasMoreTokens(); )";
+  protected final String TEXT_143 = NL + "\t\tfor (String item : split(initialValue))";
+  protected final String TEXT_144 = "(initialValue));";
+  protected final String TEXT_145 = " result = null;" + NL + "\t\tRuntimeException exception = null;";
+  protected final String TEXT_146 = NL + "\t\t\tif (result != null && ";
+  protected final String TEXT_147 = ".INSTANCE.validate(eDataType, result, null, null))" + NL + "\t\t\t{" + NL + "\t\t\t\treturn result;" + NL + "\t\t\t}" + NL + "\t\t}" + NL + "\t\tcatch (RuntimeException e)" + NL + "\t\t{" + NL + "\t\t\texception = e;" + NL + "\t\t}";
+  protected final String TEXT_148 = NL + "\t\tif (result != null || exception == null) return result;" + NL + "    " + NL + "\t\tthrow exception;";
+  protected final String TEXT_149 = "super.createFromString(initialValue);";
+  protected final String TEXT_150 = "super.createFromString(eDataType, initialValue);";
+  protected final String TEXT_151 = NL + "\t/**" + NL + "\t * <!-- begin-user-doc -->" + NL + "\t * <!-- end-user-doc -->" + NL + "\t * @generated" + NL + "\t */" + NL + "\tpublic String convert";
+  protected final String TEXT_152 = "instanceValue";
+  protected final String TEXT_153 = NL + "\t\treturn instanceValue == null ? null : instanceValue.toString();";
+  protected final String TEXT_154 = NL + "\t\treturn instanceValue == null ? null : convert";
+  protected final String TEXT_155 = "(instanceValue";
+  protected final String TEXT_156 = NL + "\t\treturn convert";
+  protected final String TEXT_157 = "(instanceValue);";
+  protected final String TEXT_158 = ".convert";
+  protected final String TEXT_159 = ".convertToString(";
+  protected final String TEXT_160 = ", instanceValue);";
+  protected final String TEXT_161 = NL + "\t\tif (instanceValue == null) return null;" + NL + "\t\tif (instanceValue.isEmpty()) return \"\";" + NL + "\t\t";
+  protected final String TEXT_162 = " i = instanceValue.iterator(); i.hasNext(); )";
+  protected final String TEXT_163 = " item : instanceValue)";
+  protected final String TEXT_164 = NL + "\t\t\tresult.append(convert";
+  protected final String TEXT_165 = "((";
+  protected final String TEXT_166 = "));";
+  protected final String TEXT_167 = "ToString(";
+  protected final String TEXT_168 = NL + "\t\t\tresult.append(";
+  protected final String TEXT_169 = NL + "\t\t\tresult.append(' ');" + NL + "\t\t}" + NL + "\t\treturn result.substring(0, result.length() - 1);";
+  protected final String TEXT_170 = NL + "\t\tif (instanceValue == null) return null;";
+  protected final String TEXT_171 = ".isInstance(instanceValue))" + NL + "\t\t{" + NL + "\t\t\ttry" + NL + "\t\t\t{";
+  protected final String TEXT_172 = NL + "\t\t\t\tString value = convert";
+  protected final String TEXT_173 = "(((";
+  protected final String TEXT_174 = ")instanceValue).";
+  protected final String TEXT_175 = "());";
+  protected final String TEXT_176 = ")instanceValue);";
+  protected final String TEXT_177 = NL + "\t\t\t\tString value = ";
+  protected final String TEXT_178 = NL + "\t\t\t\tif (value != null) return value;" + NL + "\t\t\t}" + NL + "\t\t\tcatch (Exception e)" + NL + "\t\t\t{" + NL + "\t\t\t\t// Keep trying other member types until all have failed." + NL + "\t\t\t}" + NL + "\t\t}";
+  protected final String TEXT_179 = NL + "\t\t\tString value = convert";
+  protected final String TEXT_180 = "(instanceValue)";
+  protected final String TEXT_181 = NL + "\t\t\tString value = ";
+  protected final String TEXT_182 = NL + "\t\t\tif (value != null) return value;" + NL + "\t\t}" + NL + "\t\tcatch (Exception e)" + NL + "\t\t{" + NL + "\t\t\t// Keep trying other member types until all have failed." + NL + "\t\t}";
+  protected final String TEXT_183 = NL + "\t\tthrow new IllegalArgumentException(\"Invalid value: '\"+instanceValue+\"' for datatype :\"+";
+  protected final String TEXT_184 = ".getName());";
+  protected final String TEXT_185 = NL + "\t\treturn super.convertToString(instanceValue);";
+  protected final String TEXT_186 = NL + "\t\treturn super.convertToString(";
+  protected final String TEXT_187 = ", new ";
+  protected final String TEXT_188 = "(instanceValue));";
+  protected final String TEXT_189 = NL + "\t/**" + NL + "\t * <!-- begin-user-doc -->" + NL + "\t * <!-- end-user-doc -->" + NL + "\t * @param eDataType describing the type of object." + NL + "\t * @param instanceValue of the object." + NL + "\t * return a string representing the object." + NL + "\t * @generated" + NL + "\t */";
+  protected final String TEXT_190 = NL + "\tpublic String convert";
+  protected final String TEXT_191 = " eDataType, Object instanceValue)" + NL + "\t{";
+  protected final String TEXT_192 = NL + "\t\tif (instanceValue == null) return null;" + NL + "\t\t";
+  protected final String TEXT_193 = " list = (";
+  protected final String TEXT_194 = ")instanceValue;" + NL + "\t\tif (list.isEmpty()) return \"\";" + NL + "\t\t";
+  protected final String TEXT_195 = " i = list.iterator(); i.hasNext(); )";
+  protected final String TEXT_196 = " item : list)";
+  protected final String TEXT_197 = ")instanceValue)";
+  protected final String TEXT_198 = NL + "\t\tthrow new IllegalArgumentException(\"Invalid value: '\"+instanceValue+\"' for datatype :\"+eDataType.getName());";
+  protected final String TEXT_199 = ")instanceValue";
+  protected final String TEXT_200 = ").";
+  protected final String TEXT_201 = NL + "\t\treturn super.convertToString(eDataType, instanceValue);";
+  protected final String TEXT_202 = NL + "\t/**" + NL + "\t * Returns a new object of class '<em>";
+  protected final String TEXT_203 = "</em>'." + NL + "\t * <!-- begin-user-doc -->" + NL + "\t * <!-- end-user-doc -->" + NL + "\t * @return a new object of class '<em>";
+  protected final String TEXT_204 = "</em>'." + NL + "\t * @generated" + NL + "\t */" + NL + "\t";
+  protected final String TEXT_205 = "();" + NL;
+  protected final String TEXT_206 = NL + "\t/**" + NL + "\t * Returns an instance of data type '<em>";
+  protected final String TEXT_207 = "</em>' corresponding the given literal." + NL + "\t * <!-- begin-user-doc -->" + NL + "\t * <!-- end-user-doc -->" + NL + "\t * @param literal a literal of the data type." + NL + "\t * @return a new instance value of the data type." + NL + "\t * @generated" + NL + "\t */" + NL + "\t";
+  protected final String TEXT_208 = "(String literal);" + NL + "" + NL + "\t/**" + NL + "\t * Returns a literal representation of an instance of data type '<em>";
+  protected final String TEXT_209 = "</em>'." + NL + "\t * <!-- begin-user-doc -->" + NL + "\t * <!-- end-user-doc -->" + NL + "\t * @param instanceValue an instance value of the data type." + NL + "\t * @return a literal representation of the instance value." + NL + "\t * @generated" + NL + "\t */" + NL + "\tString convert";
+  protected final String TEXT_210 = " instanceValue);" + NL;
+  protected final String TEXT_211 = NL + "\t/**" + NL + "\t * Returns the package supported by this factory." + NL + "\t * <!-- begin-user-doc -->" + NL + "\t * <!-- end-user-doc -->" + NL + "\t * @return the package supported by this factory." + NL + "\t * @generated" + NL + "\t */" + NL + "\t";
+  protected final String TEXT_212 = " get";
+  protected final String TEXT_213 = "()" + NL + "\t{" + NL + "\t\treturn (";
+  protected final String TEXT_214 = ")getEPackage();" + NL + "\t}" + NL + "" + NL + "\t/**" + NL + "\t * <!-- begin-user-doc -->" + NL + "\t * <!-- end-user-doc -->" + NL + "\t * @deprecated" + NL + "\t * @return an instance of ";
+  protected final String TEXT_215 = "." + NL + "\t * @generated" + NL + "\t */";
+  protected final String TEXT_216 = NL + "\t@Deprecated";
+  protected final String TEXT_217 = NL + "\tpublic static ";
+  protected final String TEXT_218 = " getPackage()" + NL + "\t{" + NL + "\t\treturn ";
+  protected final String TEXT_219 = ".eINSTANCE;" + NL + "\t}" + NL;
+  protected final String TEXT_220 = NL + "} //";
 
   public String generate(Object argument)
   {
@@ -693,7 +696,9 @@ public class FactoryClass
     }
     stringBuffer.append(TEXT_134);
     }
-    stringBuffer.append(TEXT_48);
+    stringBuffer.append(TEXT_135);
+    stringBuffer.append(genDataType.getImportedParameterizedObjectInstanceClassName());
+    stringBuffer.append(TEXT_136);
     if (!genPackage.isDataTypeConverters() && genModel.useGenerics() && genDataType.isUncheckedCast() && !genDataType.hasCreatorBody()) {
     stringBuffer.append(TEXT_72);
     }
@@ -703,18 +708,18 @@ public class FactoryClass
     stringBuffer.append(genDataType.getName());
     stringBuffer.append(TEXT_104);
     stringBuffer.append(genModel.getImportedName("org.eclipse.emf.ecore.EDataType"));
-    stringBuffer.append(TEXT_135);
+    stringBuffer.append(TEXT_137);
     if (genDataType instanceof GenEnum) {
     if (genPackage.isDataTypeConverters() || genDataType.hasCreatorBody()) {
     stringBuffer.append(TEXT_87);
     stringBuffer.append(genDataType.getName());
-    stringBuffer.append(TEXT_136);
+    stringBuffer.append(TEXT_138);
     } else {
     stringBuffer.append(TEXT_62);
     stringBuffer.append(((GenEnum)genDataType).getImportedInstanceClassName());
     stringBuffer.append(TEXT_80);
     stringBuffer.append(((GenEnum)genDataType).getImportedInstanceClassName());
-    stringBuffer.append(TEXT_137);
+    stringBuffer.append(TEXT_139);
     stringBuffer.append(genModel.getNonNLS());
     stringBuffer.append(genModel.getNonNLS(2));
     stringBuffer.append(genModel.getNonNLS(3));
@@ -732,7 +737,7 @@ public class FactoryClass
     stringBuffer.append(genBaseType.getName());
     stringBuffer.append(TEXT_104);
     stringBuffer.append(genBaseType.getQualifiedClassifierAccessor());
-    stringBuffer.append(TEXT_138);
+    stringBuffer.append(TEXT_140);
     } else {
     stringBuffer.append(TEXT_70);
     if (!genDataType.isObjectType()) {
@@ -743,15 +748,15 @@ public class FactoryClass
     stringBuffer.append(genBaseType.getGenPackage().getQualifiedEFactoryInternalInstanceAccessor());
     stringBuffer.append(TEXT_90);
     stringBuffer.append(genBaseType.getQualifiedClassifierAccessor());
-    stringBuffer.append(TEXT_138);
+    stringBuffer.append(TEXT_140);
     }
     } else if (genDataType.getItemType() != null) { GenDataType genItemType = genDataType.getItemType(); 
     if (genPackage.isDataTypeConverters()) {
     stringBuffer.append(TEXT_87);
     stringBuffer.append(genDataType.getName());
-    stringBuffer.append(TEXT_136);
+    stringBuffer.append(TEXT_138);
     } else {
-    stringBuffer.append(TEXT_139);
+    stringBuffer.append(TEXT_141);
     stringBuffer.append(genDataType.getImportedParameterizedObjectInstanceClassName());
     stringBuffer.append(TEXT_93);
     stringBuffer.append(genModel.getImportedName("java.util.ArrayList"));
@@ -766,9 +771,9 @@ public class FactoryClass
     stringBuffer.append(genModel.getImportedName("java.util.StringTokenizer"));
     stringBuffer.append(TEXT_97);
     stringBuffer.append(genModel.getImportedName("java.util.StringTokenizer"));
-    stringBuffer.append(TEXT_140);
+    stringBuffer.append(TEXT_142);
     } else {
-    stringBuffer.append(TEXT_141);
+    stringBuffer.append(TEXT_143);
     }
     stringBuffer.append(TEXT_100);
     if (genModel.getRuntimeVersion().getValue() < GenRuntimeVersion.EMF26_VALUE) {
@@ -801,16 +806,16 @@ public class FactoryClass
     stringBuffer.append(genDataType.getObjectInstanceClassName());
     stringBuffer.append(TEXT_85);
     stringBuffer.append(genDataType.getName());
-    stringBuffer.append(TEXT_142);
+    stringBuffer.append(TEXT_144);
     } else {
     stringBuffer.append(TEXT_87);
     stringBuffer.append(genDataType.getName());
-    stringBuffer.append(TEXT_136);
+    stringBuffer.append(TEXT_138);
     }
     } else {
-    stringBuffer.append(TEXT_139);
+    stringBuffer.append(TEXT_141);
     stringBuffer.append(genDataType.getObjectInstanceClassName());
-    stringBuffer.append(TEXT_143);
+    stringBuffer.append(TEXT_145);
     for (GenDataType genMemberType : genDataType.getMemberTypes()) {
     stringBuffer.append(TEXT_111);
     if (genMemberType.getGenPackage() == genPackage) {
@@ -824,7 +829,7 @@ public class FactoryClass
     stringBuffer.append(genMemberType.getName());
     stringBuffer.append(TEXT_104);
     stringBuffer.append(genMemberType.getQualifiedClassifierAccessor());
-    stringBuffer.append(TEXT_138);
+    stringBuffer.append(TEXT_140);
     } else {
     stringBuffer.append(TEXT_115);
     if (!genDataType.isObjectType()) {
@@ -835,18 +840,18 @@ public class FactoryClass
     stringBuffer.append(genMemberType.getGenPackage().getQualifiedEFactoryInternalInstanceAccessor());
     stringBuffer.append(TEXT_90);
     stringBuffer.append(genMemberType.getQualifiedClassifierAccessor());
-    stringBuffer.append(TEXT_138);
-    }
-    stringBuffer.append(TEXT_144);
-    stringBuffer.append(genModel.getImportedName("org.eclipse.emf.ecore.util.Diagnostician"));
-    stringBuffer.append(TEXT_145);
+    stringBuffer.append(TEXT_140);
     }
     stringBuffer.append(TEXT_146);
+    stringBuffer.append(genModel.getImportedName("org.eclipse.emf.ecore.util.Diagnostician"));
+    stringBuffer.append(TEXT_147);
+    }
+    stringBuffer.append(TEXT_148);
     }
     } else if (genPackage.isDataTypeConverters() || genDataType.hasCreatorBody()) {
     stringBuffer.append(TEXT_87);
     stringBuffer.append(genDataType.getName());
-    stringBuffer.append(TEXT_136);
+    stringBuffer.append(TEXT_138);
     } else if (!genDataType.hasConversionDelegate() && genModel.useGenerics() && (genDataType.isArrayType() || !genDataType.getEcoreDataType().getETypeParameters().isEmpty() || genDataType.getEcoreDataType().getInstanceTypeName().contains("<"))) {
     stringBuffer.append(TEXT_70);
     if (!genDataType.isObjectType()) {
@@ -854,7 +859,7 @@ public class FactoryClass
     stringBuffer.append(genDataType.getImportedParameterizedObjectInstanceClassName());
     stringBuffer.append(TEXT_31);
     }
-    stringBuffer.append(TEXT_147);
+    stringBuffer.append(TEXT_149);
     } else if (!genDataType.hasConversionDelegate() && genDataType.isArrayType()) {
     stringBuffer.append(TEXT_129);
     stringBuffer.append(genModel.getImportedName("java.lang.UnsupportedOperationException"));
@@ -866,11 +871,11 @@ public class FactoryClass
     stringBuffer.append(genDataType.getImportedParameterizedObjectInstanceClassName());
     stringBuffer.append(TEXT_31);
     }
-    stringBuffer.append(TEXT_148);
+    stringBuffer.append(TEXT_150);
     }
     stringBuffer.append(TEXT_134);
     if (genPackage.isDataTypeConverters() || genDataType.hasConverterBody()) { String eDataType = genDataType.getQualifiedClassifierAccessor();
-    stringBuffer.append(TEXT_149);
+    stringBuffer.append(TEXT_151);
     stringBuffer.append(genDataType.getName());
     stringBuffer.append(TEXT_74);
     if (genDataType.hasCreatorBody()) {
@@ -881,20 +886,20 @@ public class FactoryClass
     if (genDataType.hasConverterBody()) {
     stringBuffer.append(TEXT_77);
     } else {
-    stringBuffer.append(TEXT_150);
+    stringBuffer.append(TEXT_152);
     }
     stringBuffer.append(TEXT_79);
     if (genDataType.hasConverterBody()) {
     stringBuffer.append(TEXT_62);
     stringBuffer.append(genDataType.getConverterBody(genModel.getIndentation(stringBuffer)));
     } else if (genDataType instanceof GenEnum) {
-    stringBuffer.append(TEXT_151);
+    stringBuffer.append(TEXT_153);
     } else if (genDataType.getBaseType() != null) { GenDataType genBaseType = genDataType.getBaseType(); boolean isPrimitiveConversion = !genDataType.isPrimitiveType() && genBaseType.isPrimitiveType();
     if (genBaseType.getGenPackage() == genPackage) {
     if (isPrimitiveConversion) {
-    stringBuffer.append(TEXT_152);
+    stringBuffer.append(TEXT_154);
     stringBuffer.append(genBaseType.getName());
-    stringBuffer.append(TEXT_153);
+    stringBuffer.append(TEXT_155);
     if (genModel.getComplianceLevel().getValue() < GenJDKLevel.JDK50) {
     stringBuffer.append(TEXT_42);
     stringBuffer.append(genBaseType.getPrimitiveValueFunction());
@@ -902,25 +907,25 @@ public class FactoryClass
     }
     stringBuffer.append(TEXT_66);
     } else {
-    stringBuffer.append(TEXT_154);
+    stringBuffer.append(TEXT_156);
     stringBuffer.append(genBaseType.getName());
-    stringBuffer.append(TEXT_155);
+    stringBuffer.append(TEXT_157);
     }
     } else if (genBaseType.getGenPackage().isDataTypeConverters()) {
     stringBuffer.append(TEXT_70);
     stringBuffer.append(genBaseType.getGenPackage().getQualifiedFactoryInstanceAccessor());
-    stringBuffer.append(TEXT_156);
+    stringBuffer.append(TEXT_158);
     stringBuffer.append(genBaseType.getName());
-    stringBuffer.append(TEXT_155);
+    stringBuffer.append(TEXT_157);
     } else {
     stringBuffer.append(TEXT_70);
     stringBuffer.append(genBaseType.getGenPackage().getQualifiedEFactoryInternalInstanceAccessor());
-    stringBuffer.append(TEXT_157);
+    stringBuffer.append(TEXT_159);
     stringBuffer.append(genBaseType.getQualifiedClassifierAccessor());
-    stringBuffer.append(TEXT_158);
+    stringBuffer.append(TEXT_160);
     }
     } else if (genDataType.getItemType() != null) { GenDataType genItemType = genDataType.getItemType(); 
-    stringBuffer.append(TEXT_159);
+    stringBuffer.append(TEXT_161);
     stringBuffer.append(genModel.getImportedName("java.lang.StringBuffer"));
     stringBuffer.append(TEXT_93);
     stringBuffer.append(genModel.getImportedName("java.lang.StringBuffer"));
@@ -928,226 +933,226 @@ public class FactoryClass
     String item; if (!genModel.useGenerics()) { item = "i.next()"; 
     stringBuffer.append(TEXT_96);
     stringBuffer.append(genModel.getImportedName("java.util.Iterator"));
-    stringBuffer.append(TEXT_160);
+    stringBuffer.append(TEXT_162);
     } else { item = "item";
     stringBuffer.append(TEXT_96);
     stringBuffer.append(genModel.getImportedName("java.lang.Object"));
-    stringBuffer.append(TEXT_161);
+    stringBuffer.append(TEXT_163);
     }
     stringBuffer.append(TEXT_100);
     if (genItemType.getGenPackage() == genPackage) {
     if (genPackage.isDataTypeConverters()) { genItemType = genItemType.getObjectType();
-    stringBuffer.append(TEXT_162);
+    stringBuffer.append(TEXT_164);
     stringBuffer.append(genItemType.getName());
-    stringBuffer.append(TEXT_163);
+    stringBuffer.append(TEXT_165);
     stringBuffer.append(genItemType.getObjectInstanceClassName());
     stringBuffer.append(TEXT_31);
     stringBuffer.append(item);
-    stringBuffer.append(TEXT_164);
+    stringBuffer.append(TEXT_166);
     } else {
-    stringBuffer.append(TEXT_162);
+    stringBuffer.append(TEXT_164);
     stringBuffer.append(genItemType.getName());
-    stringBuffer.append(TEXT_165);
+    stringBuffer.append(TEXT_167);
     stringBuffer.append(genItemType.getQualifiedClassifierAccessor());
     stringBuffer.append(TEXT_119);
     stringBuffer.append(item);
-    stringBuffer.append(TEXT_164);
+    stringBuffer.append(TEXT_166);
     }
     } else {
     if (genItemType.getGenPackage().isDataTypeConverters()) { genItemType = genItemType.getObjectType();
-    stringBuffer.append(TEXT_166);
+    stringBuffer.append(TEXT_168);
     stringBuffer.append(genItemType.getGenPackage().getQualifiedEFactoryInternalInstanceAccessor());
-    stringBuffer.append(TEXT_156);
+    stringBuffer.append(TEXT_158);
     stringBuffer.append(genItemType.getName());
-    stringBuffer.append(TEXT_163);
+    stringBuffer.append(TEXT_165);
     stringBuffer.append(genItemType.getObjectInstanceClassName());
     stringBuffer.append(TEXT_31);
     stringBuffer.append(item);
-    stringBuffer.append(TEXT_164);
-    } else {
     stringBuffer.append(TEXT_166);
+    } else {
+    stringBuffer.append(TEXT_168);
     stringBuffer.append(genItemType.getGenPackage().getQualifiedEFactoryInternalInstanceAccessor());
-    stringBuffer.append(TEXT_157);
+    stringBuffer.append(TEXT_159);
     stringBuffer.append(genItemType.getQualifiedClassifierAccessor());
     stringBuffer.append(TEXT_119);
     stringBuffer.append(item);
-    stringBuffer.append(TEXT_164);
+    stringBuffer.append(TEXT_166);
     }
     }
-    stringBuffer.append(TEXT_167);
+    stringBuffer.append(TEXT_169);
     } else if (!genDataType.getMemberTypes().isEmpty()) {
     if (!genDataType.isPrimitiveType()) {
-    stringBuffer.append(TEXT_168);
+    stringBuffer.append(TEXT_170);
     for (GenDataType genMemberType : genDataType.getMemberTypes()) {
     stringBuffer.append(TEXT_124);
     stringBuffer.append(genMemberType.getQualifiedClassifierAccessor());
-    stringBuffer.append(TEXT_169);
+    stringBuffer.append(TEXT_171);
     if (genMemberType.getGenPackage() == genPackage) {
     if (genPackage.isDataTypeConverters()) {
     if (genMemberType.getQualifiedInstanceClassName().equals(genDataType.getQualifiedInstanceClassName())) {
-    stringBuffer.append(TEXT_170);
-    stringBuffer.append(genMemberType.getName());
-    stringBuffer.append(TEXT_155);
-    } else if (genMemberType.isPrimitiveType() && genModel.getComplianceLevel().getValue() < GenJDKLevel.JDK50) {
-    stringBuffer.append(TEXT_170);
-    stringBuffer.append(genMemberType.getName());
-    stringBuffer.append(TEXT_171);
-    stringBuffer.append(genMemberType.getObjectType().getImportedInstanceClassName());
     stringBuffer.append(TEXT_172);
-    stringBuffer.append(genMemberType.getPrimitiveValueFunction());
-    stringBuffer.append(TEXT_173);
-    } else {
-    stringBuffer.append(TEXT_170);
     stringBuffer.append(genMemberType.getName());
-    stringBuffer.append(TEXT_163);
-    stringBuffer.append(genMemberType.getObjectType().getImportedBoundedWildcardInstanceClassName());
+    stringBuffer.append(TEXT_157);
+    } else if (genMemberType.isPrimitiveType() && genModel.getComplianceLevel().getValue() < GenJDKLevel.JDK50) {
+    stringBuffer.append(TEXT_172);
+    stringBuffer.append(genMemberType.getName());
+    stringBuffer.append(TEXT_173);
+    stringBuffer.append(genMemberType.getObjectType().getImportedInstanceClassName());
     stringBuffer.append(TEXT_174);
-    }
+    stringBuffer.append(genMemberType.getPrimitiveValueFunction());
+    stringBuffer.append(TEXT_175);
     } else {
-    stringBuffer.append(TEXT_170);
+    stringBuffer.append(TEXT_172);
     stringBuffer.append(genMemberType.getName());
     stringBuffer.append(TEXT_165);
+    stringBuffer.append(genMemberType.getObjectType().getImportedBoundedWildcardInstanceClassName());
+    stringBuffer.append(TEXT_176);
+    }
+    } else {
+    stringBuffer.append(TEXT_172);
+    stringBuffer.append(genMemberType.getName());
+    stringBuffer.append(TEXT_167);
     stringBuffer.append(genMemberType.getQualifiedClassifierAccessor());
-    stringBuffer.append(TEXT_158);
+    stringBuffer.append(TEXT_160);
     }
     } else {
     if (genMemberType.getGenPackage().isDataTypeConverters()) { genMemberType = genMemberType.getObjectType();
-    stringBuffer.append(TEXT_175);
+    stringBuffer.append(TEXT_177);
     stringBuffer.append(genMemberType.getGenPackage().getQualifiedEFactoryInternalInstanceAccessor());
-    stringBuffer.append(TEXT_156);
-    stringBuffer.append(genMemberType.getName());
-    stringBuffer.append(TEXT_163);
-    stringBuffer.append(genMemberType.getObjectInstanceClassName());
-    stringBuffer.append(TEXT_174);
-    } else {
-    stringBuffer.append(TEXT_175);
-    stringBuffer.append(genMemberType.getGenPackage().getQualifiedEFactoryInternalInstanceAccessor());
-    stringBuffer.append(TEXT_157);
-    stringBuffer.append(genMemberType.getQualifiedClassifierAccessor());
     stringBuffer.append(TEXT_158);
-    }
-    }
+    stringBuffer.append(genMemberType.getName());
+    stringBuffer.append(TEXT_165);
+    stringBuffer.append(genMemberType.getObjectInstanceClassName());
     stringBuffer.append(TEXT_176);
+    } else {
+    stringBuffer.append(TEXT_177);
+    stringBuffer.append(genMemberType.getGenPackage().getQualifiedEFactoryInternalInstanceAccessor());
+    stringBuffer.append(TEXT_159);
+    stringBuffer.append(genMemberType.getQualifiedClassifierAccessor());
+    stringBuffer.append(TEXT_160);
+    }
+    }
+    stringBuffer.append(TEXT_178);
     }
     } else {
     for (GenDataType genMemberType : genDataType.getMemberTypes()) {
     stringBuffer.append(TEXT_111);
     if (genMemberType.getGenPackage() == genPackage) {
     if (genPackage.isDataTypeConverters()) {
-    stringBuffer.append(TEXT_177);
+    stringBuffer.append(TEXT_179);
     stringBuffer.append(genMemberType.getName());
-    stringBuffer.append(TEXT_155);
+    stringBuffer.append(TEXT_157);
     } else {
-    stringBuffer.append(TEXT_177);
+    stringBuffer.append(TEXT_179);
     stringBuffer.append(genMemberType.getName());
-    stringBuffer.append(TEXT_165);
+    stringBuffer.append(TEXT_167);
     stringBuffer.append(genMemberType.getQualifiedClassifierAccessor());
     stringBuffer.append(TEXT_119);
     if (genModel.getComplianceLevel().getValue() < GenJDKLevel.JDK50) {
     stringBuffer.append(TEXT_120);
     stringBuffer.append(genMemberType.getObjectInstanceClassName());
-    stringBuffer.append(TEXT_178);
+    stringBuffer.append(TEXT_180);
     } else {
-    stringBuffer.append(TEXT_150);
+    stringBuffer.append(TEXT_152);
     }
     stringBuffer.append(TEXT_66);
     }
     } else {
     if (genMemberType.getGenPackage().isDataTypeConverters()) {
-    stringBuffer.append(TEXT_179);
+    stringBuffer.append(TEXT_181);
     stringBuffer.append(genMemberType.getGenPackage().getQualifiedEFactoryInternalInstanceAccessor());
-    stringBuffer.append(TEXT_156);
+    stringBuffer.append(TEXT_158);
     stringBuffer.append(genMemberType.getName());
-    stringBuffer.append(TEXT_155);
-    } else {
-    stringBuffer.append(TEXT_179);
-    stringBuffer.append(genMemberType.getGenPackage().getQualifiedEFactoryInternalInstanceAccessor());
     stringBuffer.append(TEXT_157);
+    } else {
+    stringBuffer.append(TEXT_181);
+    stringBuffer.append(genMemberType.getGenPackage().getQualifiedEFactoryInternalInstanceAccessor());
+    stringBuffer.append(TEXT_159);
     stringBuffer.append(genMemberType.getQualifiedClassifierAccessor());
     stringBuffer.append(TEXT_119);
     if (genModel.getComplianceLevel().getValue() < GenJDKLevel.JDK50) {
     stringBuffer.append(TEXT_120);
     stringBuffer.append(genMemberType.getObjectInstanceClassName());
-    stringBuffer.append(TEXT_178);
+    stringBuffer.append(TEXT_180);
     } else {
-    stringBuffer.append(TEXT_150);
+    stringBuffer.append(TEXT_152);
     }
     stringBuffer.append(TEXT_66);
     }
     }
-    stringBuffer.append(TEXT_180);
-    }
-    }
-    stringBuffer.append(TEXT_181);
-    stringBuffer.append(eDataType);
     stringBuffer.append(TEXT_182);
-    } else if (!genDataType.hasConversionDelegate() && genModel.useGenerics() && (genDataType.isArrayType() || !genDataType.getEcoreDataType().getETypeParameters().isEmpty() || genDataType.getEcoreDataType().getInstanceTypeName().contains("<"))) {
+    }
+    }
     stringBuffer.append(TEXT_183);
+    stringBuffer.append(eDataType);
+    stringBuffer.append(TEXT_184);
+    } else if (!genDataType.hasConversionDelegate() && genModel.useGenerics() && (genDataType.isArrayType() || !genDataType.getEcoreDataType().getETypeParameters().isEmpty() || genDataType.getEcoreDataType().getInstanceTypeName().contains("<"))) {
+    stringBuffer.append(TEXT_185);
     } else if (!genDataType.hasConversionDelegate() && genDataType.isArrayType()) {
     stringBuffer.append(TEXT_129);
     stringBuffer.append(genModel.getImportedName("java.lang.UnsupportedOperationException"));
     stringBuffer.append(TEXT_45);
     } else if (genDataType.isPrimitiveType() && genModel.getComplianceLevel().getValue() < GenJDKLevel.JDK50) {
-    stringBuffer.append(TEXT_184);
-    stringBuffer.append(eDataType);
-    stringBuffer.append(TEXT_185);
-    stringBuffer.append(genDataType.getObjectInstanceClassName());
     stringBuffer.append(TEXT_186);
-    } else {
-    stringBuffer.append(TEXT_184);
     stringBuffer.append(eDataType);
-    stringBuffer.append(TEXT_158);
+    stringBuffer.append(TEXT_187);
+    stringBuffer.append(genDataType.getObjectInstanceClassName());
+    stringBuffer.append(TEXT_188);
+    } else {
+    stringBuffer.append(TEXT_186);
+    stringBuffer.append(eDataType);
+    stringBuffer.append(TEXT_160);
     }
     stringBuffer.append(TEXT_134);
     }
-    stringBuffer.append(TEXT_48);
+    stringBuffer.append(TEXT_189);
     if (genModel.useGenerics() && (genDataType.getItemType() != null || genDataType.isUncheckedCast()) && (genPackage.isDataTypeConverters() || genDataType.hasCreatorBody())) {
     stringBuffer.append(TEXT_72);
     }
-    stringBuffer.append(TEXT_187);
+    stringBuffer.append(TEXT_190);
     stringBuffer.append(genDataType.getName());
-    stringBuffer.append(TEXT_165);
+    stringBuffer.append(TEXT_167);
     stringBuffer.append(genModel.getImportedName("org.eclipse.emf.ecore.EDataType"));
-    stringBuffer.append(TEXT_188);
+    stringBuffer.append(TEXT_191);
     if (genDataType instanceof GenEnum) {
     if (genPackage.isDataTypeConverters() || genDataType.hasConverterBody()) {
-    stringBuffer.append(TEXT_154);
+    stringBuffer.append(TEXT_156);
     stringBuffer.append(genDataType.getName());
-    stringBuffer.append(TEXT_163);
+    stringBuffer.append(TEXT_165);
     stringBuffer.append(genDataType.getImportedInstanceClassName());
-    stringBuffer.append(TEXT_174);
+    stringBuffer.append(TEXT_176);
     } else {
-    stringBuffer.append(TEXT_151);
+    stringBuffer.append(TEXT_153);
     }
     } else if (genDataType.getBaseType() != null) { GenDataType genBaseType = genDataType.getBaseType(); 
     if (genBaseType.getGenPackage() == genPackage) {
-    stringBuffer.append(TEXT_154);
+    stringBuffer.append(TEXT_156);
     stringBuffer.append(genBaseType.getName());
-    stringBuffer.append(TEXT_165);
+    stringBuffer.append(TEXT_167);
     stringBuffer.append(genBaseType.getQualifiedClassifierAccessor());
-    stringBuffer.append(TEXT_158);
+    stringBuffer.append(TEXT_160);
     } else {
     stringBuffer.append(TEXT_70);
     stringBuffer.append(genBaseType.getGenPackage().getQualifiedEFactoryInternalInstanceAccessor());
-    stringBuffer.append(TEXT_157);
+    stringBuffer.append(TEXT_159);
     stringBuffer.append(genBaseType.getQualifiedClassifierAccessor());
-    stringBuffer.append(TEXT_158);
+    stringBuffer.append(TEXT_160);
     }
     } else if (genDataType.getItemType() != null) { GenDataType genItemType = genDataType.getItemType(); 
     if (genPackage.isDataTypeConverters() || genDataType.hasCreatorBody()) {
-    stringBuffer.append(TEXT_154);
+    stringBuffer.append(TEXT_156);
     stringBuffer.append(genDataType.getName());
-    stringBuffer.append(TEXT_163);
+    stringBuffer.append(TEXT_165);
     stringBuffer.append(genDataType.getImportedBoundedWildcardInstanceClassName());
-    stringBuffer.append(TEXT_174);
+    stringBuffer.append(TEXT_176);
     } else { final String singleWildcard = genModel.useGenerics() ? "<?>" : "";
-    stringBuffer.append(TEXT_189);
+    stringBuffer.append(TEXT_192);
     stringBuffer.append(genModel.getImportedName("java.util.List"));
     stringBuffer.append(singleWildcard);
-    stringBuffer.append(TEXT_190);
+    stringBuffer.append(TEXT_193);
     stringBuffer.append(genModel.getImportedName("java.util.List"));
     stringBuffer.append(singleWildcard);
-    stringBuffer.append(TEXT_191);
+    stringBuffer.append(TEXT_194);
     stringBuffer.append(genModel.getImportedName("java.lang.StringBuffer"));
     stringBuffer.append(TEXT_93);
     stringBuffer.append(genModel.getImportedName("java.lang.StringBuffer"));
@@ -1155,40 +1160,40 @@ public class FactoryClass
     String item; if (!genModel.useGenerics()) { item = "i.next()"; 
     stringBuffer.append(TEXT_96);
     stringBuffer.append(genModel.getImportedName("java.util.Iterator"));
-    stringBuffer.append(TEXT_192);
+    stringBuffer.append(TEXT_195);
     } else { item = "item";
     stringBuffer.append(TEXT_96);
     stringBuffer.append(genModel.getImportedName("java.lang.Object"));
-    stringBuffer.append(TEXT_193);
+    stringBuffer.append(TEXT_196);
     }
     stringBuffer.append(TEXT_100);
     if (genItemType.getGenPackage() == genPackage) {
-    stringBuffer.append(TEXT_162);
+    stringBuffer.append(TEXT_164);
     stringBuffer.append(genItemType.getName());
-    stringBuffer.append(TEXT_165);
-    stringBuffer.append(genItemType.getQualifiedClassifierAccessor());
-    stringBuffer.append(TEXT_119);
-    stringBuffer.append(item);
-    stringBuffer.append(TEXT_164);
-    } else {
-    stringBuffer.append(TEXT_166);
-    stringBuffer.append(genItemType.getGenPackage().getQualifiedEFactoryInternalInstanceAccessor());
-    stringBuffer.append(TEXT_157);
-    stringBuffer.append(genItemType.getQualifiedClassifierAccessor());
-    stringBuffer.append(TEXT_119);
-    stringBuffer.append(item);
-    stringBuffer.append(TEXT_164);
-    }
     stringBuffer.append(TEXT_167);
+    stringBuffer.append(genItemType.getQualifiedClassifierAccessor());
+    stringBuffer.append(TEXT_119);
+    stringBuffer.append(item);
+    stringBuffer.append(TEXT_166);
+    } else {
+    stringBuffer.append(TEXT_168);
+    stringBuffer.append(genItemType.getGenPackage().getQualifiedEFactoryInternalInstanceAccessor());
+    stringBuffer.append(TEXT_159);
+    stringBuffer.append(genItemType.getQualifiedClassifierAccessor());
+    stringBuffer.append(TEXT_119);
+    stringBuffer.append(item);
+    stringBuffer.append(TEXT_166);
+    }
+    stringBuffer.append(TEXT_169);
     }
     } else if (!genDataType.getMemberTypes().isEmpty()) {
     if (genPackage.isDataTypeConverters() || genDataType.hasConverterBody()) {
     if (genDataType.isPrimitiveType()) {
-    stringBuffer.append(TEXT_152);
+    stringBuffer.append(TEXT_154);
     stringBuffer.append(genDataType.getName());
-    stringBuffer.append(TEXT_171);
+    stringBuffer.append(TEXT_173);
     stringBuffer.append(genDataType.getObjectInstanceClassName());
-    stringBuffer.append(TEXT_194);
+    stringBuffer.append(TEXT_197);
     if (genModel.getComplianceLevel().getValue() < GenJDKLevel.JDK50) {
     stringBuffer.append(TEXT_42);
     stringBuffer.append(genDataType.getPrimitiveValueFunction());
@@ -1196,36 +1201,36 @@ public class FactoryClass
     }
     stringBuffer.append(TEXT_66);
     } else {
-    stringBuffer.append(TEXT_154);
+    stringBuffer.append(TEXT_156);
     stringBuffer.append(genDataType.getName());
-    stringBuffer.append(TEXT_155);
+    stringBuffer.append(TEXT_157);
     }
     } else {
-    stringBuffer.append(TEXT_168);
+    stringBuffer.append(TEXT_170);
     for (GenDataType genMemberType : genDataType.getMemberTypes()) {
     stringBuffer.append(TEXT_124);
     stringBuffer.append(genMemberType.getQualifiedClassifierAccessor());
-    stringBuffer.append(TEXT_169);
+    stringBuffer.append(TEXT_171);
     if (genMemberType.getGenPackage() == genPackage) {
-    stringBuffer.append(TEXT_170);
+    stringBuffer.append(TEXT_172);
     stringBuffer.append(genMemberType.getName());
-    stringBuffer.append(TEXT_165);
+    stringBuffer.append(TEXT_167);
     stringBuffer.append(genMemberType.getQualifiedClassifierAccessor());
-    stringBuffer.append(TEXT_158);
+    stringBuffer.append(TEXT_160);
     } else {
-    stringBuffer.append(TEXT_175);
+    stringBuffer.append(TEXT_177);
     stringBuffer.append(genMemberType.getGenPackage().getQualifiedEFactoryInternalInstanceAccessor());
-    stringBuffer.append(TEXT_157);
+    stringBuffer.append(TEXT_159);
     stringBuffer.append(genMemberType.getQualifiedClassifierAccessor());
-    stringBuffer.append(TEXT_158);
+    stringBuffer.append(TEXT_160);
     }
-    stringBuffer.append(TEXT_176);
+    stringBuffer.append(TEXT_178);
     }
-    stringBuffer.append(TEXT_195);
+    stringBuffer.append(TEXT_198);
     }
     } else if (genPackage.isDataTypeConverters() || genDataType.hasConverterBody()) {
     if (genDataType.isPrimitiveType()) {
-    stringBuffer.append(TEXT_152);
+    stringBuffer.append(TEXT_154);
     stringBuffer.append(genDataType.getName());
     stringBuffer.append(TEXT_74);
     if (genModel.getComplianceLevel().getValue() < GenJDKLevel.JDK50) {
@@ -1233,28 +1238,28 @@ public class FactoryClass
     }
     stringBuffer.append(TEXT_74);
     stringBuffer.append(genDataType.getObjectInstanceClassName());
-    stringBuffer.append(TEXT_196);
+    stringBuffer.append(TEXT_199);
     if (genModel.getComplianceLevel().getValue() < GenJDKLevel.JDK50) {
-    stringBuffer.append(TEXT_197);
+    stringBuffer.append(TEXT_200);
     stringBuffer.append(genDataType.getPrimitiveValueFunction());
     stringBuffer.append(TEXT_68);
     }
     stringBuffer.append(TEXT_66);
     } else {
-    stringBuffer.append(TEXT_154);
+    stringBuffer.append(TEXT_156);
     stringBuffer.append(genDataType.getName());
-    stringBuffer.append(TEXT_163);
+    stringBuffer.append(TEXT_165);
     stringBuffer.append(genDataType.getImportedBoundedWildcardInstanceClassName());
-    stringBuffer.append(TEXT_174);
+    stringBuffer.append(TEXT_176);
     }
     } else if (!genDataType.hasConversionDelegate() && genModel.useGenerics() && (genDataType.isArrayType() || !genDataType.getEcoreDataType().getETypeParameters().isEmpty() || genDataType.getEcoreDataType().getInstanceTypeName().contains("<"))) {
-    stringBuffer.append(TEXT_183);
+    stringBuffer.append(TEXT_185);
     } else if (!genDataType.hasConversionDelegate() && genDataType.isArrayType()) {
     stringBuffer.append(TEXT_129);
     stringBuffer.append(genModel.getImportedName("java.lang.UnsupportedOperationException"));
     stringBuffer.append(TEXT_45);
     } else {
-    stringBuffer.append(TEXT_198);
+    stringBuffer.append(TEXT_201);
     }
     stringBuffer.append(TEXT_134);
     }
@@ -1262,65 +1267,65 @@ public class FactoryClass
     } else {
     for (GenClass genClass : genPackage.getGenClasses()) {
     if (genClass.hasFactoryInterfaceCreateMethod()) {
-    stringBuffer.append(TEXT_199);
+    stringBuffer.append(TEXT_202);
     stringBuffer.append(genClass.getFormattedName());
-    stringBuffer.append(TEXT_200);
+    stringBuffer.append(TEXT_203);
     stringBuffer.append(genClass.getFormattedName());
-    stringBuffer.append(TEXT_201);
+    stringBuffer.append(TEXT_204);
     stringBuffer.append(genClass.getTypeParameters());
     stringBuffer.append(genClass.getImportedInterfaceName());
     stringBuffer.append(genClass.getInterfaceTypeArguments());
     stringBuffer.append(TEXT_60);
     stringBuffer.append(genClass.getName());
-    stringBuffer.append(TEXT_202);
+    stringBuffer.append(TEXT_205);
     }
     }
     if (genPackage.isDataTypeConverters()) {
     for (GenDataType genDataType : genPackage.getAllGenDataTypes()) {
     if (genDataType.isSerializable()) {
-    stringBuffer.append(TEXT_203);
+    stringBuffer.append(TEXT_206);
     stringBuffer.append(genDataType.getFormattedName());
-    stringBuffer.append(TEXT_204);
+    stringBuffer.append(TEXT_207);
     stringBuffer.append(genDataType.getImportedParameterizedInstanceClassName());
     stringBuffer.append(TEXT_60);
     stringBuffer.append(genDataType.getName());
-    stringBuffer.append(TEXT_205);
+    stringBuffer.append(TEXT_208);
     stringBuffer.append(genDataType.getFormattedName());
-    stringBuffer.append(TEXT_206);
+    stringBuffer.append(TEXT_209);
     stringBuffer.append(genDataType.getName());
     stringBuffer.append(TEXT_74);
     stringBuffer.append(genDataType.getImportedBoundedWildcardInstanceClassName());
-    stringBuffer.append(TEXT_207);
+    stringBuffer.append(TEXT_210);
     }
     }
     }
     }
     if (!isImplementation && !genModel.isSuppressEMFMetaData()) {
-    stringBuffer.append(TEXT_208);
+    stringBuffer.append(TEXT_211);
     stringBuffer.append(genPackage.getPackageInterfaceName());
-    stringBuffer.append(TEXT_209);
+    stringBuffer.append(TEXT_212);
     stringBuffer.append(genPackage.getBasicPackageName());
-    stringBuffer.append(TEXT_202);
+    stringBuffer.append(TEXT_205);
     } else if (isImplementation) {
     stringBuffer.append(TEXT_59);
     stringBuffer.append(genPackage.getImportedPackageInterfaceName());
-    stringBuffer.append(TEXT_209);
-    stringBuffer.append(genPackage.getBasicPackageName());
-    stringBuffer.append(TEXT_210);
-    stringBuffer.append(genPackage.getImportedPackageInterfaceName());
-    stringBuffer.append(TEXT_211);
-    stringBuffer.append(genPackage.getImportedPackageInterfaceName());
     stringBuffer.append(TEXT_212);
-    if (genModel.useClassOverrideAnnotation()) {
+    stringBuffer.append(genPackage.getBasicPackageName());
     stringBuffer.append(TEXT_213);
-    }
+    stringBuffer.append(genPackage.getImportedPackageInterfaceName());
     stringBuffer.append(TEXT_214);
     stringBuffer.append(genPackage.getImportedPackageInterfaceName());
     stringBuffer.append(TEXT_215);
-    stringBuffer.append(genPackage.getImportedPackageInterfaceName());
+    if (genModel.useClassOverrideAnnotation()) {
     stringBuffer.append(TEXT_216);
     }
     stringBuffer.append(TEXT_217);
+    stringBuffer.append(genPackage.getImportedPackageInterfaceName());
+    stringBuffer.append(TEXT_218);
+    stringBuffer.append(genPackage.getImportedPackageInterfaceName());
+    stringBuffer.append(TEXT_219);
+    }
+    stringBuffer.append(TEXT_220);
     stringBuffer.append(isInterface ? genPackage.getFactoryInterfaceName() : genPackage.getFactoryClassName());
     genModel.emitSortedImports();
     stringBuffer.append(TEXT_7);
