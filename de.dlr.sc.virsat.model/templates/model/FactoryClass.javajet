@@ -94,13 +94,14 @@ public interface <%=genPackage.getFactoryInterfaceName()%><%if (!genModel.isSupp
 
 <%}%>
 <%if (isImplementation) {%>
+	<%String factoryType = genModel.isSuppressEMFMetaData() ? genPackage.getFactoryClassName() : genPackage.getImportedFactoryInterfaceName();%>
 	/**
 	 * Creates the default factory implementation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return an initialized instance of '<%=factoryType%>'.
 	 * @generated
 	 */
-<%String factoryType = genModel.isSuppressEMFMetaData() ? genPackage.getFactoryClassName() : genPackage.getImportedFactoryInterfaceName();%>
 	public static <%=factoryType%> init()
 	{
 		try
@@ -704,6 +705,7 @@ public interface <%=genPackage.getFactoryInterfaceName()%><%if (!genModel.isSupp
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @deprecated
+	 * @return an instance of <%=genPackage.getImportedPackageInterfaceName()%>.
 	 * @generated
 	 */
   <%if (genModel.useClassOverrideAnnotation()) {%>
