@@ -55,7 +55,6 @@ public class ModelAPI {
 	
 	/**
 	 * Constructor for the API that automatically loads the DVLM model
-	 * @throws CoreException 
 	 */
 	public ModelAPI() {
 		initialize();

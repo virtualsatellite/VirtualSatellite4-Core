@@ -43,7 +43,7 @@ public class ExcelExporter {
 	 * @param path where to export
 	 * @param useDefaultTemplate using the default template if true
 	 * @param templatePath path of the user given template
-	 * @throws CoreException
+	 * @throws CoreException in case the extension point mechanism cannot generate the appropriate classes
 	 */
 	public void export(EObject eObject, String path, boolean useDefaultTemplate, String templatePath) throws CoreException {
 		IConfigurationElement[] config = registry.getConfigurationElementsFor(IEXPORT_ID);
@@ -62,7 +62,7 @@ public class ExcelExporter {
 	 * Class for exporting excel
 	 * @param object object to export
 	 * @return true if exportable false otherwise
-	 * @throws CoreException
+	 * @throws CoreException in case the extension point mechanism cannot generate the appropriate classes
 	 */
 	public boolean canExport(Object object) throws CoreException {
 		IConfigurationElement[] config = registry.getConfigurationElementsFor(IEXPORT_ID);
