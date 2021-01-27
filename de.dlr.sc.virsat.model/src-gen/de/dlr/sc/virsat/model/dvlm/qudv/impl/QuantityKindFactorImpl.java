@@ -196,6 +196,7 @@ public class QuantityKindFactorImpl extends MinimalEObjectImpl.Container impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code AQuantityKind}'.
 	 * @generated
 	 */
 	public AQuantityKind basicGetQuantityKind() {

@@ -152,6 +152,7 @@ public class EReferencePropertyInstanceImpl extends APropertyInstanceImpl implem
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code EObject}'.
 	 * @generated
 	 */
 	public EObject basicGetReference() {

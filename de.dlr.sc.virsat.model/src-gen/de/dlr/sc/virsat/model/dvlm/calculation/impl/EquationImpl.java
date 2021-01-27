@@ -280,6 +280,7 @@ public class EquationImpl extends MinimalEObjectImpl.Container implements Equati
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code AExpression}'.
 	 * @generated
 	 */
 	public AExpression basicGetExpression() {
@@ -289,6 +290,9 @@ public class EquationImpl extends MinimalEObjectImpl.Container implements Equati
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param newExpression new value to be of type '{@code AExpression}' to be set. 
+	 * @param msgs notifications of type '{@code NotificationChain}'.
+	 * @return notification of type '{@code NotificationChain}'.
 	 * @generated
 	 */
 	public NotificationChain basicSetExpression(AExpression newExpression, NotificationChain msgs) {
@@ -346,6 +350,7 @@ public class EquationImpl extends MinimalEObjectImpl.Container implements Equati
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code IEquationResult}'.
 	 * @generated
 	 */
 	public IEquationResult basicGetResult() {
@@ -355,6 +360,9 @@ public class EquationImpl extends MinimalEObjectImpl.Container implements Equati
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param newResult new value to be of type '{@code IEquationResult}' to be set. 
+	 * @param msgs notifications of type '{@code NotificationChain}'.
+	 * @return notification of type '{@code NotificationChain}'.
 	 * @generated
 	 */
 	public NotificationChain basicSetResult(IEquationResult newResult, NotificationChain msgs) {
@@ -427,6 +435,7 @@ public class EquationImpl extends MinimalEObjectImpl.Container implements Equati
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code EquationDefinition}'.
 	 * @generated
 	 */
 	public EquationDefinition basicGetDefinition() {

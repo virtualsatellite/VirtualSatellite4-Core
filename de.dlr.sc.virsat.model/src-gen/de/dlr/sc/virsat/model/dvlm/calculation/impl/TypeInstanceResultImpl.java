@@ -107,6 +107,7 @@ public class TypeInstanceResultImpl extends IEquationResultImpl implements TypeI
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code ATypeInstance}'.
 	 * @generated
 	 */
 	public ATypeInstance basicGetReference() {

@@ -98,6 +98,7 @@ public abstract class APropertyImpl extends ATypeDefinitionImpl implements AProp
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code IArrayModifier}'.
 	 * @generated
 	 */
 	public IArrayModifier basicGetArrayModifier() {
@@ -107,6 +108,9 @@ public abstract class APropertyImpl extends ATypeDefinitionImpl implements AProp
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param newArrayModifier new value to be of type '{@code IArrayModifier}' to be set. 
+	 * @param msgs notifications of type '{@code NotificationChain}'.
+	 * @return notification of type '{@code NotificationChain}'.
 	 * @generated
 	 */
 	public NotificationChain basicSetArrayModifier(IArrayModifier newArrayModifier, NotificationChain msgs) {

@@ -204,6 +204,7 @@ public class UnitValuePropertyInstanceImpl extends APropertyInstanceImpl impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code AUnit}'.
 	 * @generated
 	 */
 	public AUnit basicGetUnit() {

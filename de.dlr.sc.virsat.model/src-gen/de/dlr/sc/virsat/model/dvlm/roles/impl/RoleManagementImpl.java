@@ -158,6 +158,7 @@ public class RoleManagementImpl extends MinimalEObjectImpl.Container implements 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code Discipline}'.
 	 * @generated
 	 */
 	public Discipline basicGetAssignedDiscipline() {

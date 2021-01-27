@@ -149,6 +149,7 @@ public class DimensionFactorImpl extends MinimalEObjectImpl.Container implements
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code AQuantityKind}'.
 	 * @generated
 	 */
 	public AQuantityKind basicGetBaseDimension() {

@@ -342,6 +342,7 @@ public class CategoryImpl extends ATypeDefinitionImpl implements Category {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code Category}'.
 	 * @generated
 	 */
 	public Category basicGetExtendsCategory() {

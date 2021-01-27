@@ -106,6 +106,7 @@ public class QuantityKindImpl extends AQuantityKindImpl implements QuantityKind 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code AQuantityKind}'.
 	 * @generated
 	 */
 	public AQuantityKind basicGetGeneral() {

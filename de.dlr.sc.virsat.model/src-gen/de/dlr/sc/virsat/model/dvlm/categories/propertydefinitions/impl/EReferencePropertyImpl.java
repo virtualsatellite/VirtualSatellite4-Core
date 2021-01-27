@@ -107,6 +107,7 @@ public class EReferencePropertyImpl extends APropertyImpl implements EReferenceP
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code EClass}'.
 	 * @generated
 	 */
 	public EClass basicGetReferenceType() {

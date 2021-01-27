@@ -262,6 +262,7 @@ public abstract class ATypeInstanceImpl extends MinimalEObjectImpl.Container imp
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code ATypeDefinition}'.
 	 * @generated
 	 */
 	public ATypeDefinition basicGetType() {

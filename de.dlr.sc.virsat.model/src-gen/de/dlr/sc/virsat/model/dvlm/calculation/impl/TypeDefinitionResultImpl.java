@@ -107,6 +107,7 @@ public class TypeDefinitionResultImpl extends IEquationDefinitionResultImpl impl
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code ATypeDefinition}'.
 	 * @generated
 	 */
 	public ATypeDefinition basicGetReference() {

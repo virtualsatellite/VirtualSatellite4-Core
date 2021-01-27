@@ -130,6 +130,7 @@ public abstract class AConversionBasedUnitImpl extends AUnitImpl implements ACon
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code AUnit}'.
 	 * @generated
 	 */
 	public AUnit basicGetReferenceUnit() {

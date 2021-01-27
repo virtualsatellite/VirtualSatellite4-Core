@@ -141,6 +141,7 @@ public class EnumPropertyImpl extends AQudvTypePropertyImpl implements EnumPrope
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code EnumValueDefinition}'.
 	 * @generated
 	 */
 	public EnumValueDefinition basicGetDefaultValue() {

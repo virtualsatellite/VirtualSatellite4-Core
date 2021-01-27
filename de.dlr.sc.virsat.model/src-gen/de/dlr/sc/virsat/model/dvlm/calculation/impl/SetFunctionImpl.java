@@ -148,6 +148,7 @@ public class SetFunctionImpl extends AAdvancedFunctionImpl implements SetFunctio
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code ATypeDefinition}'.
 	 * @generated
 	 */
 	public ATypeDefinition basicGetTypeDefinition() {

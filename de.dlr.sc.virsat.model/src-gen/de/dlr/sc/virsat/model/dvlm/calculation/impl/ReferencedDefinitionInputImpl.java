@@ -106,6 +106,7 @@ public class ReferencedDefinitionInputImpl extends ALiteralImpl implements Refer
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code IEquationDefinitionInput}'.
 	 * @generated
 	 */
 	public IEquationDefinitionInput basicGetReference() {

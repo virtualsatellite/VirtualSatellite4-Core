@@ -116,6 +116,7 @@ public class ComposedPropertyInstanceImpl extends APropertyInstanceImpl implemen
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code CategoryAssignment}'.
 	 * @generated
 	 */
 	public CategoryAssignment basicGetTypeInstance() {
@@ -125,6 +126,9 @@ public class ComposedPropertyInstanceImpl extends APropertyInstanceImpl implemen
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param newTypeInstance new value to be of type '{@code CategoryAssignment}' to be set. 
+	 * @param msgs notifications of type '{@code NotificationChain}'.
+	 * @return notification of type '{@code NotificationChain}'.
 	 * @generated
 	 */
 	public NotificationChain basicSetTypeInstance(CategoryAssignment newTypeInstance, NotificationChain msgs) {

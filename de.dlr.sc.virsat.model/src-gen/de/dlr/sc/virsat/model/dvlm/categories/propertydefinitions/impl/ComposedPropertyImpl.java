@@ -151,6 +151,7 @@ public class ComposedPropertyImpl extends APropertyImpl implements ComposedPrope
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code Category}'.
 	 * @generated
 	 */
 	public Category basicGetType() {

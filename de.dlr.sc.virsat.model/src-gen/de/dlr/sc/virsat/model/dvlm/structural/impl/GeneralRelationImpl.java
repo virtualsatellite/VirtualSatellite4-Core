@@ -379,6 +379,7 @@ public class GeneralRelationImpl extends MinimalEObjectImpl.Container implements
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code StructuralElement}'.
 	 * @generated
 	 */
 	public StructuralElement basicGetReferencedType() {

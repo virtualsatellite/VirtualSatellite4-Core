@@ -170,6 +170,7 @@ public class EnumUnitPropertyInstanceImpl extends APropertyInstanceImpl implemen
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code AUnit}'.
 	 * @generated
 	 */
 	public AUnit basicGetUnit() {
@@ -208,6 +209,7 @@ public class EnumUnitPropertyInstanceImpl extends APropertyInstanceImpl implemen
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code EnumValueDefinition}'.
 	 * @generated
 	 */
 	public EnumValueDefinition basicGetValue() {

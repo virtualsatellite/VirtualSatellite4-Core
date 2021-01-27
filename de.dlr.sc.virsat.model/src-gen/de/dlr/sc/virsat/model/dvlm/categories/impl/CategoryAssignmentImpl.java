@@ -184,6 +184,7 @@ public class CategoryAssignmentImpl extends ATypeInstanceImpl implements Categor
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code EquationSection}'.
 	 * @generated
 	 */
 	public EquationSection basicGetEquationSection() {
@@ -193,6 +194,9 @@ public class CategoryAssignmentImpl extends ATypeInstanceImpl implements Categor
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param newEquationSection new value to be of type '{@code EquationSection}' to be set. 
+	 * @param msgs notifications of type '{@code NotificationChain}'.
+	 * @return notification of type '{@code NotificationChain}'.
 	 * @generated
 	 */
 	public NotificationChain basicSetEquationSection(EquationSection newEquationSection, NotificationChain msgs) {

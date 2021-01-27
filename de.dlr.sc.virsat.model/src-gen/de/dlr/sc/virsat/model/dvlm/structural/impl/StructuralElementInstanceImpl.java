@@ -323,6 +323,7 @@ public class StructuralElementInstanceImpl extends MinimalEObjectImpl.Container 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code Discipline}'.
 	 * @generated
 	 */
 	public Discipline basicGetAssignedDiscipline() {
@@ -389,6 +390,7 @@ public class StructuralElementInstanceImpl extends MinimalEObjectImpl.Container 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code StructuralElement}'.
 	 * @generated
 	 */
 	public StructuralElement basicGetType() {
@@ -448,6 +450,7 @@ public class StructuralElementInstanceImpl extends MinimalEObjectImpl.Container 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code StructuralElementInstance}'.
 	 * @generated
 	 */
 	public StructuralElementInstance basicGetParent() {
@@ -458,6 +461,9 @@ public class StructuralElementInstanceImpl extends MinimalEObjectImpl.Container 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param newParent new value to be of type '{@code StructuralElementInstance}' to be set. 
+	 * @param msgs notifications of type '{@code NotificationChain}'.
+	 * @return notification of type '{@code NotificationChain}'.
 	 * @generated
 	 */
 	public NotificationChain basicSetParent(StructuralElementInstance newParent, NotificationChain msgs) {

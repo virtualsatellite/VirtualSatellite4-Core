@@ -176,6 +176,7 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code IInstance}'.
 	 * @generated
 	 */
 	public IInstance basicGetImportedNamespace() {

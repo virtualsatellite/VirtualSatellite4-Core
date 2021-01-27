@@ -961,6 +961,7 @@ if (index != -1) { head = typeName.substring(0, index); tail = typeName.substrin
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code <%=genFeature.getImportedType(genClass)%>}'.
 	 * @generated
 	 */
 <%if (isJDK50) { //Class/basicGetGenFeature.annotations.insert.javajetinc%>
@@ -1009,6 +1010,9 @@ if (index != -1) { head = typeName.substring(0, index); tail = typeName.substrin
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param new<%=genFeature.getCapName()%> new value to be of type '{@code <%=genFeature.getImportedInternalType(genClass)%>}' to be set. 
+	 * @param msgs notifications of type '{@code <%=genModel.getImportedName("org.eclipse.emf.common.notify.NotificationChain")%>}'.
+	 * @return notification of type '{@code <%=genModel.getImportedName("org.eclipse.emf.common.notify.NotificationChain")%>}'.
 	 * @generated
 	 */
 <%if (isJDK50) { //Class/basicSetGenFeature.annotations.insert.javajetinc%>
