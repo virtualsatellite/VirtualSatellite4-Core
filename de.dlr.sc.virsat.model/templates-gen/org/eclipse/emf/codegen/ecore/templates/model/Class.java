@@ -756,6 +756,7 @@ public class Class
     final String INTERFACE_NAME_QUALIFIEDNAME_GETTER = "getFullQualifiedName";
     final String CLASS_NAME_STRUCTURAL_ELEMENT_INSTANCE = "StructuralElementInstance";
     final String CLASS_NAME_REFERENCE_PROPERTY_INSTANCE = "ReferencePropertyInstance";
+    final String OPERATION_RETURN_VOID = "void";
     final boolean isJDK50 = genModel.getComplianceLevel().getValue() >= GenJDKLevel.JDK50;
     final boolean isInterface = Boolean.TRUE.equals(((Object[])argument)[1]); final boolean isImplementation = Boolean.TRUE.equals(((Object[])argument)[2]);
     final boolean isGWT = genModel.getRuntimePlatform() == GenRuntimePlatform.GWT;
@@ -3829,7 +3830,7 @@ if (index != -1) { head = typeName.substring(0, index); tail = typeName.substrin
      /************************************************
         * VirSat specific documentation of return types 
         ************************************************/
-    if (genOperation.getTypeParameters(genClass) != null) { 
+    if (genOperation.getTypeParameters(genClass) != null && !OPERATION_RETURN_VOID.equalsIgnoreCase(genOperation.getImportedType(genClass))) { 
     stringBuffer.append(TEXT_485);
     stringBuffer.append(genOperation.getName());
     stringBuffer.append(TEXT_486);

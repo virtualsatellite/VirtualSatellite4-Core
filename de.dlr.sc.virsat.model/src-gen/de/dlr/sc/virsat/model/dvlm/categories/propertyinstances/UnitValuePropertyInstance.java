@@ -40,7 +40,6 @@ public interface UnitValuePropertyInstance extends APropertyInstance, ValuePrope
 	 * <!-- begin-model-doc -->
 	 * Convenience Method to directly set a value in the frame of the base unit and convert it to the target unit as set in the current UnitValuePropertyInstance.
 	 * <!-- end-model-doc -->
-	 * @return the value of the '<em>{@code setValueAsBaseUnit}</em>' operation as '{@code void}'.
 	 * @model
 	 * @generated
 	 */
