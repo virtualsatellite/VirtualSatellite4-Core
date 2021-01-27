@@ -27,6 +27,15 @@ This service fetches all Project names
 * `application/json`
 
 
+==== Security
+
+[options="header", cols=".^3,.^4"]
+|===
+|Type|Name
+|**basic**|**<<_management_basic,basic>>**
+|===
+
+
 ==== Example HTTP request
 
 ===== Request path
@@ -69,6 +78,15 @@ __required__|Name of the project|string
 ==== Produces
 
 * `application/json`
+
+
+==== Security
+
+[options="header", cols=".^3,.^4"]
+|===
+|Type|Name
+|**basic**|**<<_management_basic,basic>>**
+|===
 
 
 ==== Example HTTP request
@@ -133,6 +151,15 @@ __required__|New Configuration|<<_management_repositoryconfiguration,RepositoryC
 * `application/json`
 
 
+==== Security
+
+[options="header", cols=".^3,.^4"]
+|===
+|Type|Name
+|**basic**|**<<_management_basic,basic>>**
+|===
+
+
 ==== Example HTTP request
 
 ===== Request path
@@ -183,6 +210,15 @@ __required__|Name of the project|string
 |HTTP Code|Description|Schema
 |**200**|Successful operation|No Content
 |**400**|Project could not be deleted|No Content
+|===
+
+
+==== Security
+
+[options="header", cols=".^3,.^4"]
+|===
+|Type|Name
+|**basic**|**<<_management_basic,basic>>**
 |===
 
 

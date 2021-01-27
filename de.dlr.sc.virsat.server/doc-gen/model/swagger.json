@@ -33,7 +33,10 @@
           "default" : {
             "description" : "successful operation"
           }
-        }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        } ]
       }
     },
     "/repository/{repoName}/ca/{caUuid}" : {
@@ -65,7 +68,10 @@
           "400" : {
             "description" : "Could not find requested CA"
           }
-        }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        } ]
       }
     },
     "/repository/{repoName}/property" : {
@@ -93,7 +99,10 @@
           "default" : {
             "description" : "successful operation"
           }
-        }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        } ]
       }
     },
     "/repository/{repoName}/property/{propertyUuid}" : {
@@ -125,7 +134,10 @@
           "400" : {
             "description" : "Could not find requested Property"
           }
-        }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        } ]
       }
     },
     "/repository/{repoName}/sei" : {
@@ -153,7 +165,10 @@
           "default" : {
             "description" : "successful operation"
           }
-        }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        } ]
       }
     },
     "/repository/{repoName}/sei/{seiUuid}" : {
@@ -185,7 +200,10 @@
           "400" : {
             "description" : "Could not find requested SEI"
           }
-        }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        } ]
       }
     },
     "/repository/{repoName}/seis" : {
@@ -214,8 +232,17 @@
           "400" : {
             "description" : "Could not create bean for a root SEI"
           }
-        }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        } ]
       }
+    }
+  },
+  "securityDefinitions" : {
+    "basic" : {
+      "description" : "HTTP Basic Authentication",
+      "type" : "basic"
     }
   },
   "definitions" : {

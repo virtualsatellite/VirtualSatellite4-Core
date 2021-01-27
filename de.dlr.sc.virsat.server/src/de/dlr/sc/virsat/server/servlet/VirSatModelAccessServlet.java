@@ -20,7 +20,6 @@ import org.glassfish.jersey.servlet.ServletContainer;
 import de.dlr.sc.virsat.server.auth.filter.CorsFilter;
 import de.dlr.sc.virsat.server.auth.filter.DynamicRepositoryFilterBinding;
 import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProvider;
-import de.dlr.sc.virsat.server.resources.AuthTestResource;
 import de.dlr.sc.virsat.server.resources.DocumentationResource;
 import de.dlr.sc.virsat.server.resources.ModelAccessResource;
 import de.dlr.virsat.external.lib.jersey.servlet.ApplicationServletContainer;
@@ -49,7 +48,6 @@ public class VirSatModelAccessServlet extends ApplicationServletContainer implem
 		 */
 		private ModelAccessRestApplication() {
 			// Resources
-			register(AuthTestResource.class);
 			register(ModelAccessResource.class);
 			
 			// Register documentation resource via binder

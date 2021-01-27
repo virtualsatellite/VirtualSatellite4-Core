@@ -21,7 +21,6 @@ import de.dlr.sc.virsat.server.dataaccess.RepositoryUtilityTest;
 import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProviderTest;
 import de.dlr.sc.virsat.server.repository.ServerRepoHelperTest;
 import de.dlr.sc.virsat.server.repository.ServerRepositoryTest;
-import de.dlr.sc.virsat.server.resources.AuthTestResourceTest;
 import de.dlr.sc.virsat.server.resources.DocumentationResourceTest;
 import de.dlr.sc.virsat.server.resources.ModelAccessResourceTest;
 import de.dlr.sc.virsat.server.resources.ProjectManagementResourceTest;
@@ -35,7 +34,6 @@ import junit.framework.JUnit4TestAdapter;
 
 @SuiteClasses({
 	ServerRepositoryTest.class,
-	AuthTestResourceTest.class,
 	ServerConfigurationTest.class,
 	ServerRepoHelperTest.class,
 	RepoManagementControllerTest.class,

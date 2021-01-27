@@ -1,2 +1,13 @@
 
+[[_management_securityscheme]]
+== Security
+
+[[_management_basic]]
+=== basic
+HTTP Basic Authentication
+
+[%hardbreaks]
+__Type__ : basic
+
+
 

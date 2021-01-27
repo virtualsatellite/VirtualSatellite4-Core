@@ -13,7 +13,7 @@ import javax.ws.rs.container.DynamicFeature;
 import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.FeatureContext;
 
-import de.dlr.sc.virsat.server.resources.AuthTestResource;
+import de.dlr.sc.virsat.server.resources.ModelAccessResource.RepoModelAccessResource;
 
 /**
  * Binds the RepositoryFilter to specified classes and functions,
@@ -21,12 +21,9 @@ import de.dlr.sc.virsat.server.resources.AuthTestResource;
  */
 public class DynamicRepositoryFilterBinding implements DynamicFeature {
 
-	private static final String REPOSITORY = "Repository";
-
 	@Override
 	public void configure(ResourceInfo resourceInfo, FeatureContext context) {
-		if (AuthTestResource.class.equals(resourceInfo.getResourceClass())
-				&& resourceInfo.getResourceMethod().getName().contains(REPOSITORY)) {
+		if (RepoModelAccessResource.class.equals(resourceInfo.getResourceClass())) {
 			context.register(RepositoryFilter.class);
 		}
 	}

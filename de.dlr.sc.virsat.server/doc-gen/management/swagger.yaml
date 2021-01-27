@@ -19,6 +19,8 @@ paths:
       responses:
         default:
           description: "successful operation"
+      security:
+      - basic: []
   /project/{projectName}:
     get:
       summary: "Fetch Project"
@@ -39,6 +41,8 @@ paths:
             $ref: "#/definitions/RepositoryConfiguration"
         404:
           description: "Project not found"
+      security:
+      - basic: []
     put:
       summary: "PUT Project"
       description: "This service creates or updates a project configuration on the\
@@ -64,6 +68,8 @@ paths:
           description: "Successful operation"
         400:
           description: "An error occured, returns error message"
+      security:
+      - basic: []
     delete:
       summary: "Delete Project"
       description: "This service deletes the configuration for the given project name"
@@ -79,6 +85,12 @@ paths:
           description: "Successful operation"
         400:
           description: "Project could not be deleted"
+      security:
+      - basic: []
+securityDefinitions:
+  basic:
+    description: "HTTP Basic Authentication"
+    type: "basic"
 definitions:
   RepositoryConfiguration:
     type: "object"
