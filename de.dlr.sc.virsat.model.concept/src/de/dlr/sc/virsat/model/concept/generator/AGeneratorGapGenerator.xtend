@@ -17,6 +17,8 @@ abstract class AGeneratorGapGenerator<TYPE extends EObject> implements IGenerato
 	
 	/**
 	 * This method hands back the Package as folder. It replaces the . with /
+	 * @param concept for which to create the package name
+	 * @return the package name for the concept
 	 */
 	def getPackageFolder(Concept concept) {
 		concept.package.replace(".","/");

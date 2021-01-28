@@ -546,7 +546,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
    * The primary use case is when the user wants to "overwrite" an extension from the generated section
    * of a plugin.xml in the protected region (for example to refine the section of an uiSnippet).
    * In this case, Eclipse takes the last declaration, the resource builder should reflect this.
-   * @param the node for which to find the children
+   * @param node for which to find the children
    * @param extensionType to filter the children
    * @return list of identified children
    */
@@ -588,7 +588,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
   /**
    * Gets an iterateable list of attributes nodes from a node
    * @param node for which to get the attributes
-   * @retrun list of attributes
+   * @return list of attributes
    */
   public ArrayList<Node> getAttributes(final Node node) {
     final Element eElement = ((Element) node);
