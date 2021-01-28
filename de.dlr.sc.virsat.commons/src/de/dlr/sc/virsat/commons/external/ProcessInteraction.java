@@ -19,9 +19,9 @@ public class ProcessInteraction {
 	
 	/**
 	 * 
-	 * @param applicationpath path to the .exe file
+	 * @param applicationpath path to the application
 	 * @param command command to run 
-	 * @return returns true if the process could be started
+	 * @return returns true if the process was successfully finished
 	 */
 	public boolean startCommandRunner(String applicationpath, String command) {
 
@@ -31,9 +31,10 @@ public class ProcessInteraction {
 		pb.redirectError(err);
 		pb.redirectOutput(out);
 		try {
-			pb.start();
+			Process p = pb.start();
+			p.waitFor();
 			return true;
-		} catch (IOException e) {
+		} catch (IOException | InterruptedException e) {
 			Activator.getDefault().getLog().error("Process builder for external programm could not be started", e);
 		}
 		return false;
