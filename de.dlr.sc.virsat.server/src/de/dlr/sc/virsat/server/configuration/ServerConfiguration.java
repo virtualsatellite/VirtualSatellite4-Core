@@ -29,7 +29,7 @@ public class ServerConfiguration {
 	public static final String REPOSITORY_CONFIGURATIONS_DIR_KEY = "repository.configurations.dir";
 	public static final String PROJECT_REPOSITORIES_DIR_KEY = "project.repositories.dir";
 	public static final String LOGIN_SERIVE_CLASS_KEY = "login.service.class";
-	public static final String AUTH_PROPERTIES_FILE_KEY = "auth.propierties.file";
+	public static final String AUTH_PROPERTIES_FILE_KEY = "auth.properties.file";
 	
 	private static Properties properties = new Properties();
 	

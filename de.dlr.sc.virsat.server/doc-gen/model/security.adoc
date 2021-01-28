@@ -1,2 +1,13 @@
 
+[[_model_securityscheme]]
+== Security
+
+[[_model_basic]]
+=== basic
+HTTP Basic Authentication
+
+[%hardbreaks]
+__Type__ : basic
+
+
 

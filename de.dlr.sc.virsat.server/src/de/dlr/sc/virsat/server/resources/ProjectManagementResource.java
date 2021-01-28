@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -26,6 +27,7 @@ import javax.ws.rs.core.Response;
 
 import org.eclipse.jetty.http.HttpStatus;
 
+import de.dlr.sc.virsat.server.auth.ServerRoles;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
 import de.dlr.sc.virsat.server.controller.RepoManagementController;
 import de.dlr.sc.virsat.server.jetty.VirSatJettyServer;
@@ -36,10 +38,13 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 import io.swagger.annotations.Info;
 import io.swagger.annotations.SwaggerDefinition;
 
-@Api
+@Api(authorizations = {
+		@Authorization(value = "basic")
+})
 @SwaggerDefinition(
 	info = @Info(
 		version = RepoManagementServlet.MANAGEMENT_API_VERSION,
@@ -49,6 +54,7 @@ import io.swagger.annotations.SwaggerDefinition;
 	basePath = VirSatJettyServer.PATH + RepoManagementServlet.MANAGEMENT_API
 )
 @Path(ProjectManagementResource.PATH)
+@RolesAllowed(ServerRoles.ADMIN)
 public class ProjectManagementResource {
 
 	private static final String SUCCESSFUL_OPERATION = "Successful operation";

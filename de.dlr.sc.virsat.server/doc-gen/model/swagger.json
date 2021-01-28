@@ -36,7 +36,10 @@
           "500" : {
             "description" : "Synchronization error"
           }
-        }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        } ]
       }
     },
     "/repository/{repoName}/ca/{caUuid}" : {
@@ -71,7 +74,10 @@
           "500" : {
             "description" : "Synchronization error"
           }
-        }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        } ]
       }
     },
     "/repository/{repoName}/property" : {
@@ -102,7 +108,10 @@
           "500" : {
             "description" : "Synchronization error"
           }
-        }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        } ]
       }
     },
     "/repository/{repoName}/property/{propertyUuid}" : {
@@ -134,7 +143,10 @@
           "500" : {
             "description" : "Synchronization error"
           }
-        }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        } ]
       }
     },
     "/repository/{repoName}/sei" : {
@@ -165,7 +177,10 @@
           "500" : {
             "description" : "Synchronization error"
           }
-        }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        } ]
       }
     },
     "/repository/{repoName}/sei/{seiUuid}" : {
@@ -200,7 +215,10 @@
           "500" : {
             "description" : "Synchronization error"
           }
-        }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        } ]
       }
     },
     "/repository/{repoName}/seis" : {
@@ -232,8 +250,17 @@
           "500" : {
             "description" : "Synchronization error"
           }
-        }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        } ]
       }
+    }
+  },
+  "securityDefinitions" : {
+    "basic" : {
+      "description" : "HTTP Basic Authentication",
+      "type" : "basic"
     }
   },
   "definitions" : {
@@ -303,7 +330,7 @@
             "xml" : {
               "name" : "children"
             },
-            "$ref" : "#/definitions/ABeanStructuralElementInstance"
+            "$ref" : "#/definitions/BeanStructuralElementInstanceReference"
           }
         },
         "superSeis" : {
@@ -314,13 +341,14 @@
             "xml" : {
               "name" : "superSeis"
             },
-            "$ref" : "#/definitions/ABeanStructuralElementInstance"
+            "$ref" : "#/definitions/BeanStructuralElementInstanceReference"
           }
         },
         "parent" : {
+          "type" : "string",
+          "example" : "b168b0df-84b6-4b7f-bede-69298b215f40",
           "position" : 5,
-          "description" : "Bean of the parent sei or null",
-          "$ref" : "#/definitions/BeanStructuralElementInstance"
+          "description" : "Unique identifier for the parent bean"
         }
       },
       "description" : "Abstract model class for bean SEIs. Instead return a concrete bean SEI that is identified by a type field. Currently concrete SEIs have no additional fields."
@@ -537,9 +565,9 @@
         "description" : "Abstract model class for bean value properties."
       } ]
     },
-    "BeanStructuralElementInstance" : {
+    "BeanStructuralElementInstanceReference" : {
       "type" : "object",
-      "required" : [ "categoryAssignments", "children", "name", "parent", "superSeis", "uuid" ],
+      "required" : [ "name", "uuid" ],
       "properties" : {
         "name" : {
           "type" : "string"
@@ -549,47 +577,9 @@
           "example" : "b168b0df-84b6-4b7f-bede-69298b215f40",
           "position" : 1,
           "description" : "Unique identifier for a bean"
-        },
-        "categoryAssignments" : {
-          "type" : "array",
-          "position" : 2,
-          "description" : "List of the CA beans",
-          "items" : {
-            "xml" : {
-              "name" : "categoryAssignments"
-            },
-            "$ref" : "#/definitions/BeanCategoryAssignment"
-          }
-        },
-        "children" : {
-          "type" : "array",
-          "position" : 3,
-          "description" : "List of the child beans",
-          "items" : {
-            "xml" : {
-              "name" : "children"
-            },
-            "$ref" : "#/definitions/ABeanStructuralElementInstance"
-          }
-        },
-        "superSeis" : {
-          "type" : "array",
-          "position" : 4,
-          "description" : "List of the super SEI beans",
-          "items" : {
-            "xml" : {
-              "name" : "superSeis"
-            },
-            "$ref" : "#/definitions/ABeanStructuralElementInstance"
-          }
-        },
-        "parent" : {
-          "position" : 5,
-          "description" : "Bean of the parent sei or null",
-          "$ref" : "#/definitions/BeanStructuralElementInstance"
         }
       },
-      "description" : "Convenience bean SEI that can be used for every concrete SEI. Instances of this only contain the fields of ABeanStructuralElement."
+      "description" : "Reference to a bean SEI that can be used for every concrete SEI. Instances of this only contain the fields uuid and name."
     }
   }
 }

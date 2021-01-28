@@ -234,8 +234,44 @@ By convention this file is named *server.properties*:
  
 # Location of the .properties file for authentication 
 # *WARNING*: will only be used if the HashLoginService is used
-*auth.propierties.file* = ...
+*auth.properties.file* = ...
 ....
+
+=== The Authentication File
+[WARNING]
+This file should be stored in a secure location on the server.
+
+This file persists the known users and their roles. The server currently supports the following roles:
+
+[%header,cols=">8,102a"] 
+|===
+
+|Role
+|Permission
+
+|ADMIN
+|Can access all resources on the server. This includes the Management API and all repositories.
+
+|USER
+|Can access resources available to users, has to be granted access to the specific repositories (see below).
+
+|repositoryName
+|A USER with this role can also access this repository. Has no effect on ADMINs.
+
+|===
+
+An example configuration:
+
+[subs=+quotes]
+....
+# Properties for user authentication with entries in the format:
+# username: password[,rolename ...]
+admin: password,ADMIN
+user: password,USER
+user2: password,USER,testRepository
+....
+
+Only the _admin_ can access the Management API. Only _admin_ and _user2_ can access the _testRepository_.
 
 === How to add a Repository manually instead of using the REST API
 

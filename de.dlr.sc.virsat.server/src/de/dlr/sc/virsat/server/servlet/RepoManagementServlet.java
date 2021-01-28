@@ -14,6 +14,7 @@ import javax.servlet.Servlet;
 
 import org.glassfish.jersey.internal.inject.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.glassfish.jersey.servlet.ServletContainer;
 
 import de.dlr.sc.virsat.server.resources.DocumentationResource;
@@ -38,6 +39,9 @@ public class RepoManagementServlet extends ApplicationServletContainer implement
 		 */
 		private RepoManagementRestApplication() {
 			register(ProjectManagementResource.class);
+			
+			// Registering this feature enables jetty to check for java security annotations e.g. roles allowed
+			register(RolesAllowedDynamicFeature.class);
 
 			// Register documentation resource via binder
 			final DocumentationResource docProvider = new DocumentationResource("management");
