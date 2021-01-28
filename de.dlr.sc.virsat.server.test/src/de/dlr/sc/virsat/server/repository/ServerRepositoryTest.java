@@ -28,7 +28,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -36,23 +35,21 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.emf.transaction.RecordingCommand;
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.revwalk.RevCommit;
-import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
-import de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.DVLMPackage;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
-import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
+import de.dlr.sc.virsat.project.resources.command.CreateSeiResourceAndFileCommand;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 import de.dlr.sc.virsat.project.test.AProjectTestCase;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
@@ -218,35 +215,22 @@ public class ServerRepositoryTest extends AProjectTestCase {
 		ServerRepository testServerRepository = new ServerRepository(localRepoHome, testRepoConfig);
 		testServerRepository.checkoutRepository();
 		
-		String testString = "testValue";
-		
-		String pluginName = "de.dlr.sc.virsat.model.extension.tests";
-		String conceptXmiPluginPath = pluginName + "/concept/concept.xmi";
-		Concept conceptTest = ConceptXmiLoader.loadConceptFromPlugin(conceptXmiPluginPath);
-		
-		TestStructuralElement testSei = new TestStructuralElement(conceptTest);
-		TestStructuralElement testSeiChild = new TestStructuralElement(conceptTest);
-		testSei.addSuperSei(testSeiChild);
-		
-		TestCategoryAllProperty testCa = new TestCategoryAllProperty(conceptTest);
-		testSeiChild.add(testCa);
-		testCa.setTestString(testString);
-		
-		StructuralElementInstance rootSei = testSei.getStructuralElementInstance();
+		String testString = "test";
+		StructuralElement testSe = StructuralFactory.eINSTANCE.createStructuralElement();
+		testSe.setIsRootStructuralElement(true);
+		testSe.setName("se");
+		StructuralElementInstance testSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		testSei.setType(testSe);
+		testSei.setName(testString);
 		VirSatTransactionalEditingDomain ed = testServerRepository.getEd();
 		
-		RecordingCommand recordingCommand = new RecordingCommand(ed) {
-			@Override
-			protected void doExecute() {
-				ed.getResourceSet().getRepository().getActiveConcepts().add(conceptTest);
-				ed.getResourceSet().getRepository().getRootEntities().add(rootSei);
-				ed.getResourceSet().getAndAddStructuralElementInstanceResource(rootSei);
-				ed.getResourceSet().getAndAddStructuralElementInstanceResource(testSeiChild.getStructuralElementInstance());
-			}
-		};
-		ed.getCommandStack().execute(recordingCommand);
+		Command addSeiToRepo = AddCommand.create(ed, ed.getResourceSet().getRepository(), 
+				DVLMPackage.eINSTANCE.getRepository_RootEntities(), testSei);
+		ed.getCommandStack().execute(addSeiToRepo);
+		Command createSei = new CreateSeiResourceAndFileCommand(ed.getResourceSet(), testSei);
+		ed.getCommandStack().execute(createSei);
 
-		String childSeiResource = testSeiChild.getStructuralElementInstance().eResource().getURI().toPlatformString(false);
+		String seiResource = testSei.eResource().getURI().toPlatformString(false);
 		
 		testServerRepository.syncRepository();
 		assertFalse(ed.isDirty());
@@ -256,15 +240,6 @@ public class ServerRepositoryTest extends AProjectTestCase {
 		testServerRepository.syncRepository();
 		assertEquals("No new commit", initialCommits, VersionControlTestHelper.countCommits(pathRepoRemote.toFile()));
 		
-		//TODO:remove
-		System.out.println(initialCommits);
-		Git git2 = Git.open(pathRepoRemote.toFile());
-		Iterator<RevCommit> iterator = git2.log().call().iterator();
-		while (iterator.hasNext()) {
-			RevCommit commit = iterator.next();
-			System.out.println(commit.getName() + " " + commit.getFullMessage());
-		}
-		
 		// Checkout the remote again and create a change that has to be 
 		// resolved in the writeTo method
 		Path localRepo = VirSatFileUtils.createAutoDeleteTempDirectory("localRepo");
@@ -273,8 +248,8 @@ public class ServerRepositoryTest extends AProjectTestCase {
 				.setURI(testServerRepository.getRepositoryConfiguration().getRemoteUri())
 				.call();
 		
-		String newString = "newValue";
-		Path seiPathInLocal = Paths.get(localRepo.toString(), childSeiResource);
+		String newString = "new";
+		Path seiPathInLocal = Paths.get(localRepo.toString(), seiResource);
 		String content = new String(Files.readAllBytes(seiPathInLocal), StandardCharsets.UTF_8);
 		content = content.replaceAll(testString, newString);
 		Files.write(seiPathInLocal, content.getBytes(StandardCharsets.UTF_8));
@@ -284,40 +259,15 @@ public class ServerRepositoryTest extends AProjectTestCase {
 		git.push().call();
 
 		// Assert state before sync
-		assertEquals(testString, testCa.getTestString());
+		assertEquals(testString, testSei.getName());
+		assertEquals(testSe, testSei.getType());
 		
 		// Sync with remote
 		testServerRepository.syncRepository();
-		
-		//TODO:remove
-		System.out.println(initialCommits);
-		System.out.println(VersionControlTestHelper.countCommits(pathRepoRemote.toFile()));
-		git2 = Git.open(pathRepoRemote.toFile());
-		iterator = git2.log().call().iterator();
-		RevCommit prevCommit = null;
-		
-		
-		while (iterator.hasNext()) {
-			RevCommit commit = iterator.next();
-			System.out.println(commit.getName() + " " + commit.getFullMessage());
-			if(prevCommit != null) {
-				System.out.println("Diff between " + prevCommit.getFullMessage() + " " + commit.getFullMessage());
-				ObjectReader reader = git2.getRepository().newObjectReader();
-				CanonicalTreeParser oldTree = new CanonicalTreeParser( null, reader, prevCommit.getTree().getId() );
-				CanonicalTreeParser newTree = new CanonicalTreeParser( null, reader, commit.getTree().getId() );
-				git2.diff().setOutputStream(System.out).setOldTree(oldTree).setNewTree(newTree).call();
-			}
-			prevCommit = commit;
-		}
-		
-//		org.eclipse.jgit.api.Status status = git2.status().call();
-//		System.out.println(status.toString());
-		assertEquals("Two new commits", initialCommits + 2, VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath()));
-
+		assertEquals("Two new commits", initialCommits + 2, VersionControlTestHelper.countCommits(pathRepoRemote.toFile()));
 		StructuralElementInstance sei = ed.getResourceSet().getRepository().getRootEntities().get(0);
-		CategoryAssignment ca = sei.getCategoryAssignments().get(0);
-		TestCategoryAllProperty caBean = new TestCategoryAllProperty(ca);
-		assertEquals("Name changed", newString, caBean.getTestString());
+		assertEquals("Name changed", newString, sei.getName());
+		assertNull("Dangling reference removed by builders", sei.getType());
 	}
 	
 	@Test

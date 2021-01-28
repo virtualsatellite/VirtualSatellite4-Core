@@ -39,7 +39,6 @@ import de.dlr.sc.virsat.server.Activator;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
 import de.dlr.sc.virsat.team.VersionControlBackendProvider;
-import de.dlr.sc.virsat.team.VersionControlChange;
 import de.dlr.sc.virsat.team.VersionControlUpdateResult;
 
 /**
@@ -207,12 +206,6 @@ public class ServerRepository {
 				Activator.getDefault().getLog().info("Server synchronization: " + "Update from remote");
 				VersionControlUpdateResult result = versionControlBackEnd.update(project, new NullProgressMonitor());
 				
-				//TODO:remove
-				System.out.println(result.hasChanges());
-				for (VersionControlChange change : result.getChanges()) {
-					System.out.println(change.getChangeType() + " " + change.getPathNew() + " " + change.getPathOld());
-				}
-				
 				// Only reload if we detected changes in the update step
 				if (result.hasChanges()) {
 					// Maybe we could reload only the changed resources here
@@ -220,7 +213,7 @@ public class ServerRepository {
 				}
 				
 				// Run the builders
-				project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, new NullProgressMonitor());
+				project.build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
 				
 				// Commit and push the new state to the repository
 				Activator.getDefault().getLog().info("Server synchronization: " + "Push changes");

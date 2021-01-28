@@ -11,7 +11,8 @@ Require-Bundle: de.dlr.sc.virsat.team,
  org.eclipse.egit.core,
  org.hamcrest.library,
  org.eclipse.team.svn.core,
- de.dlr.sc.virsat.model.edit
+ de.dlr.sc.virsat.model.edit,
+ de.dlr.sc.virsat.build
 Export-Package: de.dlr.sc.virsat.server.test
 Automatic-Module-Name: de.dlr.sc.virsat.server.test
 Import-Package: de.dlr.sc.virsat.concept.unittest.util,
