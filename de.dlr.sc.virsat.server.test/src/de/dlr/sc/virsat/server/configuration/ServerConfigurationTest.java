@@ -30,7 +30,7 @@ import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
 import de.dlr.sc.virsat.server.Activator;
 
 public class ServerConfigurationTest {
-	
+	// TODO: test new properties
 	@Test
 	public void testDefaultProperties() throws IOException {
 		String expectedDefaultPropertiesFilePath = "resources/server.properties";
