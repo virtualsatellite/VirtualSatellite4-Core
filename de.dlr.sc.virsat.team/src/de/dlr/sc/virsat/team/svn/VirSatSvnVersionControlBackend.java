@@ -174,8 +174,10 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 				
 				result = new VersionControlUpdateResult();
 				for (SVNChangeStatus svnChangeStatus : statuses) {
-					result.addChange(new VersionControlChange(
-							workingCopy.toURI().relativize(new File(svnChangeStatus.path).toURI()).getPath(), null, getChangeType(svnChangeStatus.textStatus)));
+					VersionControlChange change = new VersionControlChange(
+							workingCopy.toURI().relativize(new File(svnChangeStatus.path).toURI()).getPath(),
+							null, getChangeType(svnChangeStatus.textStatus));
+					result.addChange(change);
 				}
 			} finally {
 				location.releaseSVNProxy(proxy);

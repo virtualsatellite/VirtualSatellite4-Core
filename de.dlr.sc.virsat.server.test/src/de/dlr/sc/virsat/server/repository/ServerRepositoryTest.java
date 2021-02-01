@@ -212,6 +212,16 @@ public class ServerRepositoryTest extends AProjectTestCase {
 	
 	@Test
 	public void testSyncRepositoryModelChanges() throws Exception {
+		// This test case tests the server synchronization with the following steps:
+		// 1. Checkout a repository, setup a sei with an dangling se,
+		//    synchronize it with the remote, the project should not be dirty now
+		// 2. Synchronize again, this should not create any changes/commit because local
+		//    and remote should not have changed
+		// 3. Checkout the remote in a second local repository, change the seis name one the file system level
+		//    in the second repository, push the changes and assert the state before synchronizing
+		// 4. Synchronize again, this should pull the changes, the name of the sei in the model should have changed 
+		//    and the dangling reference to the se should be removed by the builders after reloading
+		
 		ServerRepository testServerRepository = new ServerRepository(localRepoHome, testRepoConfig);
 		testServerRepository.checkoutRepository();
 		

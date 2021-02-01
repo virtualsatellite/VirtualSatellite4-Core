@@ -131,17 +131,15 @@ public class TransactionalJsonProviderTest extends AServerRepositoryTest {
 		
 		String output = writeToAndAssert(testString);
 		
-		// No changes
-		StringBuffer buf = new StringBuffer(output);
-		InputStream entityStream = new ByteArrayInputStream(buf.toString().getBytes());
+		// Write did not cause any changes
+		InputStream entityStream = new ByteArrayInputStream(output.getBytes());
 		provider.readFrom((Class<Object>) type, type, null, mediaType, null, entityStream);
 		
 		assertEquals(testString, testBean.getName());
 		
 		// Changes
 		output = output.replace(testString, newString);
-		buf = new StringBuffer(output);
-		entityStream = new ByteArrayInputStream(buf.toString().getBytes());
+		entityStream = new ByteArrayInputStream(output.getBytes());
 		provider.readFrom((Class<Object>) type, type, null, mediaType, null, entityStream);
 		
 		assertEquals(newString, testBean.getName());
