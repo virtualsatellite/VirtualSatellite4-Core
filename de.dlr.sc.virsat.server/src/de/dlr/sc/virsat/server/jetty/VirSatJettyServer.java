@@ -39,8 +39,9 @@ public class VirSatJettyServer {
 
 	public VirSatJettyServer() { }
 	
-	private static final int VIRSAT_JETTY_PORT = 8000;
-	private static final int VIRSAT_JETTY_PORT_HTTPS = 8001;
+	public static final int VIRSAT_JETTY_PORT = 8000;
+	public static final int VIRSAT_JETTY_PORT_HTTPS = 8001;
+	public static final String HTTP_SCHEME = "http";
 	public static final String HTTPS_SCHEME = "https";
 	public static final String PATH = "/rest";
 	public static final String STATUS = "/status";

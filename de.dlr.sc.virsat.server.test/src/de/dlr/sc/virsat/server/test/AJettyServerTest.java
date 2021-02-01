@@ -75,7 +75,7 @@ public abstract class AJettyServerTest extends AConceptTestCase {
 		ClientConfig config = new ClientConfig();
 		Client client = ClientBuilder.newClient(config);
 		
-		URI uri = UriBuilder.fromUri("http://localhost:8000/").build();
+		URI uri = UriBuilder.fromUri(VirSatJettyServer.HTTP_SCHEME + "://localhost:" + VirSatJettyServer.VIRSAT_JETTY_PORT).build();
 		webTarget = client.target(uri).path("/rest");
 	}
 
