@@ -13,11 +13,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Iterator;
 
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
@@ -93,5 +95,11 @@ public class VirSatGitVersionControlBackendTest extends AVirSatVersionControlBac
 			}
 		} catch (InterruptedException e) {
 		}
+	}
+	
+	@Override
+	protected void addToIgnore(IFolder ignoredFolder) throws Exception {
+		String folderName = ignoredFolder.getName();
+		ignoredFolder.getProject().getFile(".gitignore").create(new ByteArrayInputStream(folderName.getBytes()), false, null);
 	}
 }
