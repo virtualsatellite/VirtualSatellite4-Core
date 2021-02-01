@@ -40,7 +40,7 @@ public class VirSatJettyServer {
 	public VirSatJettyServer() { }
 	
 	public static final int VIRSAT_JETTY_PORT = 8000;
-	public static final int VIRSAT_JETTY_PORT_HTTPS = 8001;
+	public static final int VIRSAT_JETTY_PORT_HTTPS = 8443;
 	public static final String HTTP_SCHEME = "http";
 	public static final String HTTPS_SCHEME = "https";
 	public static final String PATH = "/rest";
@@ -102,16 +102,14 @@ public class VirSatJettyServer {
 	}
 	
 	private void setupHttps(Server server) {
+		// TODO: doc: HTTPS, new properties
 		// Setup SSL
 		SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
-//		sslContextFactory.setKeyStoreResource(keyStorePath);
 		sslContextFactory.setKeyStorePath(ServerConfiguration.getHttpsKeystorePath());
-//		sslContextFactory.setKeyStorePassword("OBF:1vny1zlo1x8e1vnw1vn61x8g1zlu1vn4");
-//		sslContextFactory.setKeyManagerPassword("OBF:1u2u1wml1z7s1z7a1wnl1u2g");
 		sslContextFactory.setKeyStorePassword(ServerConfiguration.getHttpsKeystorePassword());
 		sslContextFactory.setKeyManagerPassword(ServerConfiguration.getHttpsKeystoreManagerPassword());
 		
-		// TODO: ?
+		// TODO: deal with client auth?
 		sslContextFactory.setWantClientAuth(true); // Option 1
 //		sslContextFactory.setNeedClientAuth(true); // Option 2
 
@@ -134,6 +132,7 @@ public class VirSatJettyServer {
 		final HttpConfiguration httpConfiguration = new HttpConfiguration();
 
 		if (httpsEnabled) {
+			// TODO: can / should we test this?
 			httpConfiguration.setSecureScheme(HTTPS_SCHEME);
 			httpConfiguration.setSecurePort(VIRSAT_JETTY_PORT_HTTPS);
 		}

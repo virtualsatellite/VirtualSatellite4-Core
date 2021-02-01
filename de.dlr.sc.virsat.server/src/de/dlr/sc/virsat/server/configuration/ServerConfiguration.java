@@ -141,12 +141,18 @@ public class ServerConfiguration {
 		String filePath = null;
 		String filePathFromKey = properties.getProperty(key);
 		
-		// Check if the file exists, else try to resolve it in the bundle
-		if (new File(filePathFromKey).exists()) {
-			filePath = filePathFromKey;
+		// Only resolve if the file name is not null or empty
+		if (filePathFromKey != null && !filePathFromKey.isEmpty()) {
+			// Check if the file exists, else try to resolve it in the bundle
+			if (new File(filePathFromKey).exists()) {
+				filePath = filePathFromKey;
+			} else {
+				Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), Status.WARNING, "No valid " + key + " provided, trying to resolve it in the bundle", null));
+				filePath = getResolvedFile(filePathFromKey);
+			}
 		} else {
-			Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), Status.WARNING, "No valid " + key + " provided, trying to resolve it in the bundle", null));
-			filePath = getResolvedFile(filePathFromKey);
+			Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), Status.WARNING, key + " is empty or null", null));
+			filePath = filePathFromKey;
 		}
 		return filePath;
 	}

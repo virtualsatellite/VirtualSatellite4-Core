@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2021 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *******************************************************************************/
 package de.dlr.sc.virsat.server.jetty;
 
 import static org.junit.Assert.assertEquals;
@@ -6,14 +15,12 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.ConnectException;
 import java.net.URI;
 import java.net.URL;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
+import javax.net.ssl.SSLSession;
 import javax.net.ssl.X509TrustManager;
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.client.Client;
@@ -25,8 +32,8 @@ import javax.ws.rs.core.UriBuilder;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jetty.http.HttpStatus;
+import org.eclipse.jetty.util.ssl.SslContextFactory.X509ExtendedTrustManagerWrapper;
 import org.glassfish.jersey.client.ClientConfig;
-import org.glassfish.jersey.server.ServerProperties;
 import org.junit.After;
 import org.junit.Test;
 
@@ -38,20 +45,18 @@ public class VirSatJettyServerTest {
 	private VirSatJettyServer server;
 	private WebTarget httpTarget;
 	private WebTarget httpsTarget;
-	
-	private class InsecureTrustManager implements X509TrustManager {
-		@Override
-		public void checkClientTrusted(final X509Certificate[] chain, final String authType) throws CertificateException { }
 
+	private class TrustAllHostNameVerifier implements HostnameVerifier {
 		@Override
-		public void checkServerTrusted(final X509Certificate[] chain, final String authType) throws CertificateException { }
-
-		@Override
-		public X509Certificate[] getAcceptedIssuers() {
-			return new X509Certificate[0];
+		public boolean verify(String hostname, SSLSession session) {
+			return true;
 		}
 	}
-	
+
+	/**
+	 * Creates the server and client targets for HTTP and HTTPS
+	 * @throws Exception
+	 */
 	private void initServerAndClient() throws Exception {
 		server = new VirSatJettyServer();
 		server.init();
@@ -60,17 +65,19 @@ public class VirSatJettyServerTest {
 		ClientConfig config = new ClientConfig();
 		Client httpClient = ClientBuilder.newClient(config);
 		
-		TrustManager[] trustAllCerts = { new InsecureTrustManager() };
+		// Mock an SSL client that accepts everything
 		SSLContext ctx = SSLContext.getInstance("SSL");
-		ctx.init(null, trustAllCerts, null);
-//		config.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES, new HTTPSProperties(hostnameVerifier, ctx));
-		Client httpsClient = ClientBuilder.newClient(config);
+		ctx.init(null, new X509TrustManager[]{new X509ExtendedTrustManagerWrapper(null)}, null);
+		Client httpsClient = ClientBuilder.newBuilder()
+				.withConfig(config)
+				.hostnameVerifier(new TrustAllHostNameVerifier())
+				.sslContext(ctx)
+				.build();
 		
-		// TODO: use port variable
-		URI uriHttp = UriBuilder.fromUri("http://localhost:8000/").build();
+		URI uriHttp = UriBuilder.fromUri(VirSatJettyServer.HTTP_SCHEME + "://localhost:" + VirSatJettyServer.VIRSAT_JETTY_PORT).build();
 		httpTarget = httpClient.target(uriHttp).path("/status");
 		
-		URI uriHttps = UriBuilder.fromUri("https://localhost:8001/").build();
+		URI uriHttps = UriBuilder.fromUri(VirSatJettyServer.HTTPS_SCHEME + "://localhost:" + VirSatJettyServer.VIRSAT_JETTY_PORT_HTTPS).build();
 		httpsTarget = httpsClient.target(uriHttps).path("/status");
 	}
 	

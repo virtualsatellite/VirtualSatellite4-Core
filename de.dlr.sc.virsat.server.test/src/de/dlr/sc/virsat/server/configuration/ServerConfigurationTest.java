@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.server.configuration;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
@@ -30,15 +31,23 @@ import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
 import de.dlr.sc.virsat.server.Activator;
 
 public class ServerConfigurationTest {
-	// TODO: test new properties
+	// TODO: improve test cases?
 	@Test
 	public void testDefaultProperties() throws IOException {
 		String expectedDefaultPropertiesFilePath = "resources/server.properties";
 		assertEquals(expectedDefaultPropertiesFilePath, Activator.getDefault().getPropertiesFilePath());
 		assertFalse("There are some configurations in the default configuration file", ServerConfiguration.getProperties().isEmpty());
+		
+		Activator.getDefault().getBundle().getLocation();
+		
 		assertFalse(ServerConfiguration.getRepositoryConfigurationsDir().isEmpty());
 		assertFalse(ServerConfiguration.getLoginServiceClass().isEmpty());
 		assertFalse(ServerConfiguration.getAuthPropertiesFile().isEmpty());
+		assertFalse(ServerConfiguration.getHttpsEnabled());
+		assertTrue(ServerConfiguration.getHttpsKeystorePath().isEmpty());
+		assertTrue(ServerConfiguration.getHttpsKeystorePassword().isEmpty());
+		assertTrue(ServerConfiguration.getHttpsKeystoreManagerPassword().isEmpty());
+		assertFalse(ServerConfiguration.getHttpsOnly());
 	}
 
 	@Test
