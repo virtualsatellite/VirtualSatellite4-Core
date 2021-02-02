@@ -73,6 +73,7 @@
 											<modelSubstitute>/model.substitution</modelSubstitute>
 											<schemes>
 												<scheme>http</scheme>
+												<scheme>https</scheme>
 											</schemes>
 											<securityDefinitions>
 												<securityDefinition>
@@ -104,6 +105,7 @@
 											<modelSubstitute>/model.substitution</modelSubstitute>
 											<schemes>
 												<scheme>http</scheme>
+												<scheme>https</scheme>
 											</schemes>
 											<securityDefinitions>
 												<securityDefinition>
