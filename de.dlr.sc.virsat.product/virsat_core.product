@@ -126,6 +126,7 @@ Germany
       <feature id="org.eclipse.equinox.executable" installMode="root"/>
       <feature id="org.eclipse.draw2d" installMode="root"/>
       <feature id="org.eclipse.graphiti.feature" installMode="root"/>
+      <feature id="org.eclipse.graphiti.export.feature" installMode="root"/>
       <feature id="org.eclipse.egit" installMode="root"/>
       <feature id="org.eclipse.jgit" installMode="root"/>
       <feature id="org.eclipse.jgit.ssh.apache" installMode="root"/>

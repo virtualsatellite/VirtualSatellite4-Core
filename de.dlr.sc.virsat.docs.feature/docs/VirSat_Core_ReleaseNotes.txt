@@ -8,6 +8,7 @@ New Features:
    Added trigger to transitions in state machines
    Added fields for detailed description in state machines states and triggers
    Add a verification builder to check the status of requirements
+   Added support for exporting Graphiti diagrams to SVG
 
 Usability Updates:
    Improved layout of state machine diagrams
