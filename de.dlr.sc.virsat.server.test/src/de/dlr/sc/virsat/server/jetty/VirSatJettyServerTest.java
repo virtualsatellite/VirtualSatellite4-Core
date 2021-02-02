@@ -31,6 +31,7 @@ import javax.ws.rs.core.UriBuilder;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jetty.http.HttpScheme;
 import org.eclipse.jetty.http.HttpStatus;
 import org.eclipse.jetty.util.ssl.SslContextFactory.X509ExtendedTrustManagerWrapper;
 import org.glassfish.jersey.client.ClientConfig;
@@ -74,10 +75,10 @@ public class VirSatJettyServerTest {
 				.sslContext(ctx)
 				.build();
 		
-		URI uriHttp = UriBuilder.fromUri(VirSatJettyServer.HTTP_SCHEME + "://localhost:" + VirSatJettyServer.VIRSAT_JETTY_PORT).build();
+		URI uriHttp = UriBuilder.fromUri(HttpScheme.HTTP.asString() + "://localhost:" + VirSatJettyServer.VIRSAT_JETTY_PORT).build();
 		httpTarget = httpClient.target(uriHttp).path("/status");
 		
-		URI uriHttps = UriBuilder.fromUri(VirSatJettyServer.HTTPS_SCHEME + "://localhost:" + VirSatJettyServer.VIRSAT_JETTY_PORT_HTTPS).build();
+		URI uriHttps = UriBuilder.fromUri(HttpScheme.HTTPS.asString() + "://localhost:" + VirSatJettyServer.VIRSAT_JETTY_PORT_HTTPS).build();
 		httpsTarget = httpsClient.target(uriHttps).path("/status");
 	}
 	

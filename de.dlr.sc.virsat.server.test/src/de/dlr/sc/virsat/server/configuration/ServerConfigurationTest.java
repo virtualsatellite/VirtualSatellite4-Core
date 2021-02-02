@@ -11,7 +11,6 @@ package de.dlr.sc.virsat.server.configuration;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
@@ -31,7 +30,6 @@ import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
 import de.dlr.sc.virsat.server.Activator;
 
 public class ServerConfigurationTest {
-	// TODO: improve test cases?
 	@Test
 	public void testDefaultProperties() throws IOException {
 		String expectedDefaultPropertiesFilePath = "resources/server.properties";
