@@ -14,9 +14,14 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation.Builder;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBException;
 
@@ -24,6 +29,7 @@ import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
@@ -52,6 +58,8 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferenceArray;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
+import de.dlr.sc.virsat.server.auth.filter.CorsFilter;
+import de.dlr.sc.virsat.server.servlet.VirSatModelAccessServlet;
 import de.dlr.sc.virsat.server.test.AServerRepositoryTest;
 
 public class ModelAccessResourceTest extends AServerRepositoryTest {
@@ -82,6 +90,14 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	private BeanPropertyReference<TestCategoryAllProperty> beanReferenceCa;
 
 	private static final String TEST_STRING = "testString";
+	
+	@BeforeClass
+	public static void setUpTarget() {
+		webTarget = webTarget
+			.path(VirSatModelAccessServlet.MODEL_API)
+			.path(ModelAccessResource.PATH)
+			.path(projectName);
+	}
 	
 	@Before
 	public void setUpModel() throws Exception {
@@ -142,6 +158,8 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 			}
 		};
 		ed.getCommandStack().execute(recordingCommand);
+		
+		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
 	}
 	
 	@After
@@ -157,29 +175,47 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		ed.getCommandStack().execute(recordingCommand);
 	}
 	
+	@Test
+	public void testAuthentication() {
+		assertEquals(HttpStatus.OK_200, getRootSeisRequest(ADMIN_HEADER).getStatus());
+		
+		assertEquals(HttpStatus.OK_200, getRootSeisRequest(USER_WITH_REPO_HEADER).getStatus());
+		
+		assertEquals(HttpStatus.FORBIDDEN_403, getRootSeisRequest(USER_NO_REPO_HEADER).getStatus());
+
+		// The RepositoryFilter won't be called if the request got denied by jersey before
+		// so this won't produce an Exception in RepositoryFilter"
+		String encoded = getAuthHeader("unknown:password");
+		assertEquals(HttpStatus.FORBIDDEN_403, getRootSeisRequest(encoded).getStatus());
+	}
+
 	/*
 	 * Test GET various elements
 	 */
 	@Test
 	public void testRootSeisGet() {
-		Response response = webTarget.path(ModelAccessResource.PATH)
-				.path(projectName)
-				.path(ModelAccessResource.ROOT_SEIS)
-				.request()
-				.get();
+		Response response = getRootSeisRequest(USER_WITH_REPO_HEADER);
 		
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 		
 		// This would return a List<ABeanStructuralElementInstance>
 		// but because of problems with unmarshalling the list of abstract objects,
 		// we just use a String here
-		String entity = webTarget.path(ModelAccessResource.PATH)
-				.path(projectName)
+		String entity = webTarget
 				.path(ModelAccessResource.ROOT_SEIS)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.get(String.class);
 		
 		assertTrue("Right Sei found", entity.contains(tSei.getUuid()));
+	}
+	
+	private Response getRootSeisRequest(String header) {
+		return webTarget
+				.path(ModelAccessResource.ROOT_SEIS)
+				.request()
+				.header(HttpHeaders.AUTHORIZATION, header)
+				.get();
 	}
 	
 	/**
@@ -194,20 +230,20 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	@SuppressWarnings("rawtypes")
 	private void testGet(IBeanUuid testSubject, String path, Class[] classes) throws JAXBException {
 		String uuid = testSubject.getUuid();
-		Response response = webTarget.path(ModelAccessResource.PATH)
-				.path(projectName)
+		Response response = webTarget
 				.path(path)
 				.path(uuid)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.get();
 		
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 		
-		String entity = webTarget.path(ModelAccessResource.PATH)
-				.path(projectName)
+		String entity = webTarget
 				.path(path)
 				.path(uuid)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.get(String.class);
 		
 		// Compare with the expected
@@ -333,10 +369,10 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	 */
 	private void testPutSei(IBeanStructuralElementInstance sei) {
 		
-		Response response = webTarget.path(ModelAccessResource.PATH)
-				.path(projectName)
+		Response response = webTarget
 				.path(ModelAccessResource.SEI)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.put(Entity.entity(sei, MediaType.APPLICATION_JSON_TYPE));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 	}
@@ -357,67 +393,64 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		jsonIn = jsonIn.replace("null", "\"" + TEST_STRING + "\"");
 	
 		assertNull(beanString.getValue());
-		Response response = webTarget.path(ModelAccessResource.PATH)
-				.path(projectName)
+		Response response = webTarget
 				.path(ModelAccessResource.PROPERTY)
-				.path(ModelAccessResource.STRING)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.put(Entity.json(jsonIn));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 		assertEquals("Model changed as expected", TEST_STRING, beanString.getValue());
 	}
 	
 	/**
-	 * PUT a property of a specified type and assert that the server returns OK
+	 * PUT a property and assert that the server returns OK
 	 * @param property bean property to PUT
-	 * @param type the type of the property
 	 */
 	@SuppressWarnings("rawtypes")
-	private void testPutProperty(IBeanObject property, String type) {
+	private void testPutProperty(IBeanObject property) {
 		
-		Response response = webTarget.path(ModelAccessResource.PATH)
-				.path(projectName)
+		Response response = webTarget
 				.path(ModelAccessResource.PROPERTY)
-				.path(type)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.put(Entity.entity(property, MediaType.APPLICATION_JSON_TYPE));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 	}
 	
 	@Test
 	public void testPropertyBoolPut() throws JAXBException {
-		testPutProperty(beanBool, ModelAccessResource.BOOLEAN);
+		testPutProperty(beanBool);
 	}
 	
 	@Test
 	public void testPropertyStringPut() throws JAXBException {
-		testPutProperty(beanString, ModelAccessResource.STRING);
+		testPutProperty(beanString);
 	}
 	
 	@Test
 	public void testPropertyEnumPut() throws JAXBException {
-		testPutProperty(beanEnum, ModelAccessResource.ENUM);
+		testPutProperty(beanEnum);
 	}
 	
 	@Test
 	public void testPropertyFloatPut() throws JAXBException {
-		testPutProperty(beanFloat, ModelAccessResource.FLOAT);
+		testPutProperty(beanFloat);
 	}
 	
 	@Test
 	public void testPropertyIntPut() throws JAXBException {
-		testPutProperty(beanInt, ModelAccessResource.INT);
+		testPutProperty(beanInt);
 	}
 	
 	@Test
 	public void testPropertyResourcePut() throws JAXBException {
-		testPutProperty(beanResource, ModelAccessResource.RESOURCE);
+		testPutProperty(beanResource);
 	}
 	
 	@Test
 	public void testPropertyReferencePut() throws JAXBException {
-		testPutProperty(beanReferenceProp, ModelAccessResource.REFERENCE);
-		testPutProperty(beanReferenceCa, ModelAccessResource.REFERENCE);
+		testPutProperty(beanReferenceProp);
+		testPutProperty(beanReferenceCa);
 	}
 	
 	@Test
@@ -430,11 +463,10 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		jaxbUtility.getJsonMarshaller().marshal(beanComposed, sw);
 		String jsonIn = sw.toString();
 		
-		Response response = webTarget.path(ModelAccessResource.PATH)
-				.path(projectName)
+		Response response = webTarget
 				.path(ModelAccessResource.PROPERTY)
-				.path(ModelAccessResource.COMPOSED)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.put(Entity.json(jsonIn));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 	}
@@ -445,10 +477,10 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	 */
 	private void testPutCa(IBeanCategoryAssignment ca) {
 		
-		Response response = webTarget.path(ModelAccessResource.PATH)
-				.path(projectName)
+		Response response = webTarget
 				.path(ModelAccessResource.CA)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.put(Entity.entity(ca, MediaType.APPLICATION_JSON_TYPE));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 	}
@@ -487,10 +519,10 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		jaxbUtility.getJsonMarshaller().marshal(tcCompositionArray, sw);
 		String jsonIn = sw.toString();
 		
-		Response response = webTarget.path(ModelAccessResource.PATH)
-				.path(projectName)
+		Response response = webTarget
 				.path(ModelAccessResource.CA)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.put(Entity.json(jsonIn));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 	}
@@ -498,5 +530,50 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	@Test
 	public void testCaReferenceArrayPut() {
 		testPutCa(tcReferenceArray);
+	}
+	
+	@Test
+	public void testCorsHeaders() {
+		Map<String, String> headers = new HashMap<String, String>();
+
+		// Not a CORS request has no additional headers
+		// and status code of the underlying resource
+		Response response = getBuilderWithHeaders(headers).get();
+		assertNull(response.getHeaderString(CorsFilter.AC_ALLOW_ORIGIN));
+		assertNull(response.getHeaderString(CorsFilter.AC_ALLOW_CREDENTIALS));
+		assertNull(response.getHeaderString(CorsFilter.AC_ALLOW_METHODS));
+		assertNull(response.getHeaderString(CorsFilter.AC_ALLOW_HEADERS));
+		assertEquals(HttpStatus.FORBIDDEN_403, response.getStatus());
+
+		// CORS simple request only has allow origin header
+		headers.put(CorsFilter.ORIGIN, "test");
+
+		response = getBuilderWithHeaders(headers).get();
+		assertEquals(CorsFilter.AC_ALLOWED_ORIGINS, response.getHeaderString(CorsFilter.AC_ALLOW_ORIGIN));
+		assertNull(response.getHeaderString(CorsFilter.AC_ALLOW_CREDENTIALS));
+		assertNull(response.getHeaderString(CorsFilter.AC_ALLOW_METHODS));
+		assertNull(response.getHeaderString(CorsFilter.AC_ALLOW_HEADERS));
+		assertEquals(HttpStatus.FORBIDDEN_403, response.getStatus());
+
+		// A preflight request has all headers
+		response = getBuilderWithHeaders(headers).options();
+		assertEquals(CorsFilter.AC_ALLOWED_ORIGINS, response.getHeaderString(CorsFilter.AC_ALLOW_ORIGIN));
+		assertEquals(CorsFilter.AC_ALLOWED_CREDENTIALS, response.getHeaderString(CorsFilter.AC_ALLOW_CREDENTIALS));
+		assertEquals(CorsFilter.AC_ALLOWED_METHODS, response.getHeaderString(CorsFilter.AC_ALLOW_METHODS));
+		assertEquals(CorsFilter.AC_ALLOWED_HEADERS, response.getHeaderString(CorsFilter.AC_ALLOW_HEADERS));
+		// The preflight request will have the status code ok instead of forbidden
+		assertEquals(HttpStatus.OK_200, response.getStatus());
+	}
+
+	/**
+	 * Returns the builder for a request with CORS headers
+	 * @param headers the CORS headers
+	 * @return request builder
+	 */
+	private Builder getBuilderWithHeaders(Map<String, String> headers) {
+		return webTarget
+				.path(ModelAccessResource.ROOT_SEIS)
+				.request()
+				.headers(new MultivaluedHashMap<>(headers));
 	}
 }

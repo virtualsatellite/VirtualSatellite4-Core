@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.model.extension.requirements.verification.build;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.extension.requirements.model.IVerification;
@@ -41,7 +42,7 @@ public class RequirementsStatusUpdater implements IVerificationStep {
 	
 	/**
 	 * Update the status of the different requirement objects in a specification 
-	 * @param requirementObject	the requirement object to verify
+	 * @param requirementObject the requirement object to verify
 	 * @param monitor the progress monitor
 	 */
 	protected void updateRequirementStatus(RequirementObject requirementObject, IProgressMonitor monitor) {
@@ -71,27 +72,31 @@ public class RequirementsStatusUpdater implements IVerificationStep {
 		boolean fullyCompliant = false;
 		
 		for (IVerification verification : requirement.getVerification()) {
-			if (verification.getStatus() != null) {
-				if (verification.getStatus().equals(IVerification.STATUS_FullyCompliant_NAME)) {
+			String verificationStatus = verification.getStatus();
+			if (verificationStatus != null) {
+				if (verificationStatus.equals(IVerification.STATUS_FullyCompliant_NAME)) {
 					fullyCompliant = true;
-				} else if (verification.getStatus().equals(IVerification.STATUS_NonCompliant_NAME)) {
+				} else if (verificationStatus.equals(IVerification.STATUS_NonCompliant_NAME)) {
 					partlyNonCompliant = true;
-				} else if (verification.getStatus().equals(IVerification.STATUS_Open_NAME)) {
+				} else if (verificationStatus.equals(IVerification.STATUS_Open_NAME)) {
 					inProgress = true;
-				} else if (verification.getStatus().equals(IVerification.STATUS_PartialCompliant_NAME)) {
+				} else if (verificationStatus.equals(IVerification.STATUS_PartialCompliant_NAME)) {
 					partlyCompliant = true;
 				}
 			}
 		}
-		
+		Command setCommand = null;
 		if (inProgress) {
-			editingDomain.getCommandStack().execute(requirement.setStatus(editingDomain, Requirement.STATUS_Open_NAME));
+			setCommand = requirement.setStatus(editingDomain, Requirement.STATUS_Open_NAME);
 		} else if (fullyCompliant && partlyNonCompliant || partlyCompliant) {
-			editingDomain.getCommandStack().execute(requirement.setStatus(editingDomain, Requirement.STATUS_PartialCompliant_NAME));
+			setCommand = requirement.setStatus(editingDomain, Requirement.STATUS_PartialCompliant_NAME);
 		} else if (fullyCompliant) {
-			editingDomain.getCommandStack().execute(requirement.setStatus(editingDomain, Requirement.STATUS_FullyCompliant_NAME));
+			setCommand = requirement.setStatus(editingDomain, Requirement.STATUS_FullyCompliant_NAME);
 		} else if (partlyNonCompliant) {
-			editingDomain.getCommandStack().execute(requirement.setStatus(editingDomain, Requirement.STATUS_NonCompliant_NAME));
+			setCommand = requirement.setStatus(editingDomain, Requirement.STATUS_NonCompliant_NAME);
+		}
+		if (setCommand != null) {
+			editingDomain.getCommandStack().execute(setCommand);
 		}
 	}
 

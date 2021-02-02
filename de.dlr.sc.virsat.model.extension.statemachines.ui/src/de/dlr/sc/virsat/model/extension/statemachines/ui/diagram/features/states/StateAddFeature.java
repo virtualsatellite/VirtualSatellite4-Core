@@ -25,6 +25,7 @@ import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.services.IGaService;
 import org.eclipse.graphiti.services.IPeCreateService;
+import org.eclipse.graphiti.util.ColorConstant;
 import org.eclipse.graphiti.util.IColorConstant;
 
 import de.dlr.sc.virsat.graphiti.ui.diagram.feature.VirSatAddShapeFeature;
@@ -38,11 +39,16 @@ import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
  */
 
 public class StateAddFeature extends VirSatAddShapeFeature {
-	public static  final int RADIUS = 50;
+	public static  final int RADIUS = 65;
 	
-	public static final int DEFAULT_WIDTH = 65;	
-	public static final int DEFAULT_HEIGHT = 50;	
-	public static final int IMAGE_WIDTH = 15;	
+	public static final int INDEX_ELLIPSE = 0;
+	public static final int INDEX_INITIAL_ARROW = 1;
+	public static final int INDEX_TEXT = 2;
+	
+	public static final int INITIAL_ARROW_SIZE = 15;
+	public static final int CONTAINER_SIZE = RADIUS + INITIAL_ARROW_SIZE * 2;
+	
+	public static final IColorConstant ELEMENT_BACKGROUND =	new ColorConstant(232, 94, 74);
 	
 	/** 
 	 * Default constructor.
@@ -87,52 +93,48 @@ public class StateAddFeature extends VirSatAddShapeFeature {
 	
 	@Override
 	public PictogramElement add(IAddContext context) {
-		State s = new State((CategoryAssignment) context.getNewObject());
+		State state = new State((CategoryAssignment) context.getNewObject());
 		ContainerShape targetContainer = context.getTargetContainer();	
-		StateMachine stateMachine = s.getParentCaBeanOfClass(StateMachine.class);
+		StateMachine stateMachine = state.getParentCaBeanOfClass(StateMachine.class);
 		State initialState = stateMachine.getInitialState();
 		
-		boolean isInitial = s.equals(initialState);
+		boolean isInitial = state.equals(initialState);
 		IPeCreateService peCreateService = Graphiti.getPeCreateService();
         
 		ContainerShape containerShape = peCreateService.createContainerShape(targetContainer, true);
-        link(containerShape, s);
+        link(containerShape, state);
         IGaService gaService = Graphiti.getGaService();
         
         
         Rectangle invisibleRectangle = gaService.createInvisibleRectangle(containerShape);
-		int width = getRectangleWidth(isInitial);
-		int height = DEFAULT_HEIGHT;
-		int x = context.getX() - width;
-		gaService.setLocationAndSize(invisibleRectangle, x, context.getY(), width, height);
-        
+		gaService.setLocationAndSize(invisibleRectangle, context.getX(), context.getY(), CONTAINER_SIZE, CONTAINER_SIZE);
         
         ContainerShape ellipseShape = peCreateService.createContainerShape(containerShape, true);
         
         Ellipse ellipse = gaService.createEllipse(ellipseShape);
-        ellipse.setBackground(manageColor(IColorConstant.RED));
+        ellipse.setBackground(manageColor(ELEMENT_BACKGROUND));
         ellipse.setLineVisible(false);
         ellipseShape.setActive(false);
-        gaService.setLocationAndSize(ellipse, getEllipsePlacement(isInitial), 0, RADIUS, RADIUS);
 
         ChopboxAnchor boxAnchor = peCreateService.createChopboxAnchor(containerShape);
         boxAnchor.setReferencedGraphicsAlgorithm(ellipse);
-    	link(boxAnchor, s);			
+    	link(boxAnchor, state);			
     	
     	Shape imageShape =  peCreateService.createShape(containerShape, false);	
     	Image image  = gaService.createImage(imageShape, StateMachine.PROPERTY_INITIALSTATE);
-    	gaService.setLocationAndSize(image, 0, 0, IMAGE_WIDTH, DEFAULT_HEIGHT);	
+    	gaService.setLocationAndSize(image, 0, 0, INITIAL_ARROW_SIZE, INITIAL_ARROW_SIZE);	
     	imageShape.setVisible(isInitial);
-    	link(imageShape, s);
+    	link(imageShape, state);
+    	
     	Shape nameShape = peCreateService.createShape(containerShape, false);	
-    	Text nameText = gaService.createText(nameShape, s.getName());		
+    	Text nameText = gaService.createText(nameShape, state.getName());		
     	nameText.setForeground(manageColor(IColorConstant.BLACK));	
     	nameText.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);	
     	nameText.setVerticalAlignment(Orientation.ALIGNMENT_CENTER);
     	Font font = gaService.manageDefaultFont(getDiagram(), false, true);		
     	nameText.setFont(font);			
-    	gaService.setLocationAndSize(nameText, getEllipsePlacement(isInitial), 0, ellipse.getWidth(), ellipse.getHeight());	
-    	link(nameShape, s);
+    	link(nameShape, state);
+    	
     	IDirectEditingInfo directEditingInfo = getFeatureProvider().getDirectEditingInfo();
     	// set container shape for direct editing after object creation
     	directEditingInfo.setMainPictogramElement(containerShape);
@@ -141,32 +143,8 @@ public class StateAddFeature extends VirSatAddShapeFeature {
     	directEditingInfo.setPictogramElement(containerShape);
     	directEditingInfo.setGraphicsAlgorithm(nameText);
     	
-    	return null;
-	}
-	
-	/** 
-	 * if it is an initial state first the image is drawn then the ellipse
-	 * @param isInitial true if the state is initial
-	 * @return the point where ellipse starts
-	 */
-	private int getEllipsePlacement(boolean isInitial) {
-		if (isInitial) {
-			return IMAGE_WIDTH;
-		} else {
-			return 0; 
-		}
-	}
-	
-	/** 
-	 * if it is an initial state the rectangle is bigger because it contains an image
-	 * @param isInitial true if the state is initial
-	 * @return the width of the rectangle
-	 */
-	private int getRectangleWidth(boolean isInitial) {
-		if (isInitial) {
-			return DEFAULT_WIDTH;
-		} else {
-			return DEFAULT_WIDTH - IMAGE_WIDTH; 
-		}
+    	layoutPictogramElement(containerShape);
+    	
+    	return containerShape;
 	}
 }

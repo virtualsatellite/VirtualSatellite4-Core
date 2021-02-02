@@ -16,7 +16,6 @@ Require-Bundle: org.eclipse.core.runtime,
  de.dlr.sc.virsat.model,
  de.dlr.sc.virsat.team,
  de.dlr.sc.virsat.project,
- de.dlr.sc.virsat.external.lib.jersey,
  javax.servlet,
  org.eclipse.jgit,
  org.slf4j.api,
@@ -24,18 +23,14 @@ Require-Bundle: org.eclipse.core.runtime,
  org.bouncycastle.bcpg,
  org.bouncycastle.bcprov,
  org.eclipse.core.resources,
- de.dlr.sc.virsat.commons
+ de.dlr.sc.virsat.commons,
+ de.dlr.sc.virsat.external.lib.swagger,
+ de.dlr.sc.virsat.model.edit,
+ de.dlr.sc.virsat.external.lib.jersey
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Export-Package: de.dlr.sc.virsat.server,
- de.dlr.sc.virsat.server.dataaccess,
  de.dlr.sc.virsat.server.jetty,
  de.dlr.sc.virsat.server.resources
 Automatic-Module-Name: de.dlr.sc.virsat.server
-Import-Package: de.dlr.sc.virsat.model.concept.types,
- de.dlr.sc.virsat.model.concept.types.category,
- de.dlr.sc.virsat.model.concept.types.factory,
- de.dlr.sc.virsat.model.concept.types.property,
- de.dlr.sc.virsat.model.concept.types.structural,
- de.dlr.sc.virsat.model.dvlm.json

@@ -20,24 +20,29 @@
 	<packaging>eclipse-plugin</packaging>
 
 	
-	<dependencies>
-		<!-- https://mvnrepository.com/artifact/org.jfree/jfreechart -->
-		<dependency>
-			<groupId>org.jfree</groupId>
-			<artifactId>jfreechart</artifactId>
-			<version>1.0.19</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jfree</groupId>
-			<artifactId>jfreechart-swt</artifactId>
-			<version>1.0</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.eclipse.swt</groupId>
-					<artifactId>org.eclipse.swt.cocoa.macosx.x86_64</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-	</dependencies>
+	<profiles>
+		<profile>
+			<id>downloadLibs</id>
+			<dependencies>
+				<!-- https://mvnrepository.com/artifact/org.jfree/jfreechart -->
+				<dependency>
+					<groupId>org.jfree</groupId>
+					<artifactId>jfreechart</artifactId>
+					<version>1.0.19</version>
+				</dependency>
+				<dependency>
+					<groupId>org.jfree</groupId>
+					<artifactId>jfreechart-swt</artifactId>
+					<version>1.0</version>
+					<exclusions>
+						<exclusion>
+							<groupId>org.eclipse.swt</groupId>
+							<artifactId>org.eclipse.swt.cocoa.macosx.x86_64</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
 
 </project>

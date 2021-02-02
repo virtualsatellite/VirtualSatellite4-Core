@@ -72,11 +72,17 @@ public class Migrator0v4ProjectConfigurationTest extends AConceptProjectTestCase
 		IProjectDescription description = testProject.getDescription();
 		ICommand[] commands = description.getBuildSpec();
 		ICommand[] newCommands = new ICommand[commands.length - 1];
-		System.arraycopy(commands, 0, newCommands, 0, commands.length - 1);
+		int newIndex = 0;
+		for (int oldIndex = 0; oldIndex < commands.length; oldIndex++) {
+			if (!commands[oldIndex].getBuilderName().equals(VirSatProjectNature.BUILDER_VERIFICATION_ID)) {
+				newCommands[newIndex] = commands[oldIndex];
+				newIndex++;
+			}
+		}
 		description.setBuildSpec(newCommands);
 		testProject.setDescription(description, new NullProgressMonitor());
 		
-		assertFalse("Builder is initally not acitvated", hasVerificationBuilderEnabled());
+		assertFalse("Builder is initally not activated", hasVerificationBuilderEnabled());
 		migrator.dataModelMigration(diffs);
 		assertTrue("Builder got added", hasVerificationBuilderEnabled());
 	}

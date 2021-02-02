@@ -14,7 +14,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
-import de.dlr.sc.virsat.model.concept.types.ABeanObject;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 
@@ -22,7 +21,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.Propertyinstance
  * Bean class to warp EObject values of EReferencePropertyInstances. Supports getting and setting values via command.
  * @param <Type> the reference type
  */
-public class BeanPropertyEReference<Type extends EObject> extends ABeanObject<EReferencePropertyInstance> implements IBeanProperty<EReferencePropertyInstance, Type> {
+public class BeanPropertyEReference<Type extends EObject> extends ABeanProperty<EReferencePropertyInstance, Type> {
 
 	/**
 	 * Standard Constructor
@@ -58,5 +57,10 @@ public class BeanPropertyEReference<Type extends EObject> extends ABeanObject<ER
 	@Override
 	public Type getValue() {
 		return (Type) ti.getReference();
+	}
+	
+	@Override
+	public BeanPropertyType getPropertyType() {
+		return BeanPropertyType.EREFERENCE;
 	}
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/commons-collections4.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/commons-codec.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/curvesapi.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/poi-ooxml-schemas.jar"/>

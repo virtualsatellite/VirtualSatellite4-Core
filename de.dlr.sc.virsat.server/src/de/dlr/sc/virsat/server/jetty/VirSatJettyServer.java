@@ -32,6 +32,9 @@ public class VirSatJettyServer {
 	public VirSatJettyServer() { }
 	
 	private static final int VIRSAT_JETTY_PORT = 8000; 
+	public static final String PATH = "/rest";
+	private static final String SUFFIX = "/*";
+	
 	private LoginService loginService = null;
 
 	/**
@@ -67,8 +70,8 @@ public class VirSatJettyServer {
 
 		ServletContextHandler servletContextHandler = new ServletContextHandler(NO_SESSIONS);
 		servletContextHandler.setContextPath("/");
-		servletContextHandler.addServlet(VirSatModelAccessServlet.class, "/rest/*");
-		servletContextHandler.addServlet(RepoManagementServlet.class, "/rest/management/*");
+		servletContextHandler.addServlet(VirSatModelAccessServlet.class, PATH + VirSatModelAccessServlet.MODEL_API + SUFFIX);
+		servletContextHandler.addServlet(RepoManagementServlet.class, PATH + RepoManagementServlet.MANAGEMENT_API + SUFFIX);
 		
 		setupSecurity(server, servletContextHandler);
 	}

@@ -12,7 +12,6 @@ package de.dlr.sc.virsat.model.extension.requirements.verification.build;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -26,7 +25,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 
 import de.dlr.sc.virsat.build.inheritance.AVirSatTransactionalBuilder;
 import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.requirements.Activator;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsSpecification;
@@ -134,18 +132,14 @@ public class RequirementsVerificationBuilder extends AVirSatTransactionalBuilder
 	 * @param monitor the progress monitor
 	 */
 	protected void buildSei(BeanStructuralElementInstance seiBean, IProgressMonitor monitor) {
-		List<CategoryAssignment> caSpecifications = seiBean.getStructuralElementInstance().getCategoryAssignments().stream().
-				filter(ca -> ca.getType().getFullQualifiedName().equals(RequirementsSpecification.FULL_QUALIFIED_CATEGORY_NAME)).
-				collect(Collectors.toList());
-		
-		int verificationTaskNumber = caSpecifications.size() * verificationSteps.size();
+		List<RequirementsSpecification> specifications = seiBean.getAll(RequirementsSpecification.class);
+		int verificationTaskNumber = specifications.size() * verificationSteps.size();
 		SubMonitor subMonitor = SubMonitor.convert(monitor, verificationTaskNumber);
 		subMonitor.beginTask("Executing Verification of SEI", verificationTaskNumber);
 		
-		for (CategoryAssignment specification : caSpecifications) {
-			RequirementsSpecification specBean = new RequirementsSpecification(specification);
+		for (RequirementsSpecification specification : specifications) {
 			for (IVerificationStep step : verificationSteps) {
-				step.execute(specBean, virSatTed, subMonitor);
+				step.execute(specification, virSatTed, subMonitor);
 				subMonitor.worked(1);
 			}
 			subMonitor.worked(1);

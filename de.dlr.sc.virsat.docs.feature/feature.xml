@@ -22,4 +22,10 @@ by German Aerospace Center (DLR e.V.)
       %license
    </license>
 
+   <requires>
+      <!-- Ensure that the static server documentation is generated beforehand,
+         because it is included into the server manual -->
+      <import feature="de.dlr.sc.virsat.server.feature" version="4.12.1.qualifier"/>
+   </requires>
+
 </feature>

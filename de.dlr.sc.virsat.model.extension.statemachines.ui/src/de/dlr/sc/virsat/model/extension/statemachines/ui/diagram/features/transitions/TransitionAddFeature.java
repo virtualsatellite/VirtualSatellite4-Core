@@ -10,15 +10,18 @@
 package de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.transitions;
 
 import org.eclipse.graphiti.features.IFeatureProvider;
+
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.extension.statemachines.model.State;
 import de.dlr.sc.virsat.model.extension.statemachines.model.Transition;
 import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.abstractConnection.AbstractConnectionAddFeature;
 /**
 * Feature for adding transition in an state machine diagram. 
-* @author bell_Er 
 * */
 public class TransitionAddFeature extends AbstractConnectionAddFeature {
+	
+	public static final String EXTENSION_POINT_ID_TRANSITION_LABEL_PROVIDER = "de.dlr.sc.virsat.model.extension.statemachines.transition.LabelProvider";
+	
 	/** 
 	 * Default constructor.
 	 * @param fp the feature provider.
@@ -32,5 +35,11 @@ public class TransitionAddFeature extends AbstractConnectionAddFeature {
 		Transition t = new Transition(ca);
 		State[] states = { t.getStateFrom(), t.getStateTo() };
 		return states;
+	}
+	
+	@Override
+	protected String getTransitionLabel(CategoryAssignment ca) {
+		Transition transition = new Transition(ca);
+		return new LabelProviderInstantiator().getLabelProvider().getLabel(transition);
 	}
 }

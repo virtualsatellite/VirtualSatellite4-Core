@@ -1,0 +1,486 @@
+
+[[_model_paths]]
+== Paths
+
+[[_model_putca]]
+=== Put CA
+....
+PUT /repository/{repoName}/ca
+....
+
+
+==== Description
+This service updates an existing CategoryAssignment
+
+
+==== Parameters
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|Type|Name|Description|Schema
+|**Path**|**repoName** +
+__required__|Name of the repository|string
+|**Body**|**body** +
+__required__|CA to put|<<_model_abeancategoryassignment,ABeanCategoryAssignment>>
+|===
+
+
+==== Responses
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP Code|Description|Schema
+|**default**|successful operation|No Content
+|===
+
+
+==== Consumes
+
+* `application/json`
+
+
+==== Security
+
+[options="header", cols=".^3,.^4"]
+|===
+|Type|Name
+|**basic**|**<<_model_basic,basic>>**
+|===
+
+
+==== Example HTTP request
+
+===== Request path
+----
+/repository/string/ca
+----
+
+
+===== Request body
+[source,json]
+----
+{
+  "name" : "string",
+  "uuid" : "b168b0df-84b6-4b7f-bede-69298b215f40"
+}
+----
+
+
+[[_model_getca]]
+=== Fetch CA
+....
+GET /repository/{repoName}/ca/{caUuid}
+....
+
+
+==== Description
+This service fetches a CategoryAssignment
+
+
+==== Parameters
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|Type|Name|Description|Schema
+|**Path**|**caUuid** +
+__required__|Uuid of the CA|string
+|**Path**|**repoName** +
+__required__|Name of the repository|string
+|===
+
+
+==== Responses
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP Code|Description|Schema
+|**200**|Successful operation|<<_model_abeancategoryassignment,ABeanCategoryAssignment>>
+|**400**|Could not find requested CA|No Content
+|===
+
+
+==== Produces
+
+* `application/json`
+
+
+==== Security
+
+[options="header", cols=".^3,.^4"]
+|===
+|Type|Name
+|**basic**|**<<_model_basic,basic>>**
+|===
+
+
+==== Example HTTP request
+
+===== Request path
+----
+/repository/string/ca/string
+----
+
+
+==== Example HTTP response
+
+===== Response 200
+[source,json]
+----
+{
+  "name" : "string",
+  "uuid" : "b168b0df-84b6-4b7f-bede-69298b215f40"
+}
+----
+
+
+[[_model_putproperty]]
+=== Put Property
+....
+PUT /repository/{repoName}/property
+....
+
+
+==== Description
+This service updates an existing Property
+
+
+==== Parameters
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|Type|Name|Description|Schema
+|**Path**|**repoName** +
+__required__|Name of the repository|string
+|**Body**|**body** +
+__required__|Property to put|<<_model_abeanproperty,ABeanProperty>>
+|===
+
+
+==== Responses
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP Code|Description|Schema
+|**default**|successful operation|No Content
+|===
+
+
+==== Consumes
+
+* `application/json`
+
+
+==== Security
+
+[options="header", cols=".^3,.^4"]
+|===
+|Type|Name
+|**basic**|**<<_model_basic,basic>>**
+|===
+
+
+==== Example HTTP request
+
+===== Request path
+----
+/repository/string/property
+----
+
+
+===== Request body
+[source,json]
+----
+{
+  "propertyType" : "string",
+  "uuid" : "b168b0df-84b6-4b7f-bede-69298b215f40"
+}
+----
+
+
+[[_model_getproperty]]
+=== Fetch Property
+....
+GET /repository/{repoName}/property/{propertyUuid}
+....
+
+
+==== Description
+This service fetches a Property
+
+
+==== Parameters
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|Type|Name|Description|Schema
+|**Path**|**propertyUuid** +
+__required__|Uuid of the property|string
+|**Path**|**repoName** +
+__required__|Name of the repository|string
+|===
+
+
+==== Responses
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP Code|Description|Schema
+|**200**|Successful operation|<<_model_abeanproperty,ABeanProperty>>
+|**400**|Could not find requested Property|No Content
+|===
+
+
+==== Produces
+
+* `application/json`
+
+
+==== Security
+
+[options="header", cols=".^3,.^4"]
+|===
+|Type|Name
+|**basic**|**<<_model_basic,basic>>**
+|===
+
+
+==== Example HTTP request
+
+===== Request path
+----
+/repository/string/property/string
+----
+
+
+==== Example HTTP response
+
+===== Response 200
+[source,json]
+----
+{
+  "propertyType" : "string",
+  "uuid" : "b168b0df-84b6-4b7f-bede-69298b215f40"
+}
+----
+
+
+[[_model_putsei]]
+=== Put SEI
+....
+PUT /repository/{repoName}/sei
+....
+
+
+==== Description
+This service updates an existing StructuralElementInstance
+
+
+==== Parameters
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|Type|Name|Description|Schema
+|**Path**|**repoName** +
+__required__|Name of the repository|string
+|**Body**|**body** +
+__required__|SEI to put|<<_model_abeanstructuralelementinstance,ABeanStructuralElementInstance>>
+|===
+
+
+==== Responses
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP Code|Description|Schema
+|**default**|successful operation|No Content
+|===
+
+
+==== Consumes
+
+* `application/json`
+
+
+==== Security
+
+[options="header", cols=".^3,.^4"]
+|===
+|Type|Name
+|**basic**|**<<_model_basic,basic>>**
+|===
+
+
+==== Example HTTP request
+
+===== Request path
+----
+/repository/string/sei
+----
+
+
+===== Request body
+[source,json]
+----
+{
+  "name" : "string",
+  "uuid" : "b168b0df-84b6-4b7f-bede-69298b215f40",
+  "categoryAssignments" : [ {
+    "name" : "string",
+    "uuid" : "b168b0df-84b6-4b7f-bede-69298b215f40"
+  } ],
+  "children" : [ {
+    "name" : "string",
+    "uuid" : "b168b0df-84b6-4b7f-bede-69298b215f40"
+  } ],
+  "superSeis" : [ {
+    "name" : "string",
+    "uuid" : "b168b0df-84b6-4b7f-bede-69298b215f40"
+  } ],
+  "parent" : "b168b0df-84b6-4b7f-bede-69298b215f40"
+}
+----
+
+
+[[_model_getsei]]
+=== Fetch SEI
+....
+GET /repository/{repoName}/sei/{seiUuid}
+....
+
+
+==== Description
+This service fetches a StructuralElementInstance.It can be used as an entry point into the data model.
+
+
+==== Parameters
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|Type|Name|Description|Schema
+|**Path**|**repoName** +
+__required__|Name of the repository|string
+|**Path**|**seiUuid** +
+__required__|Uuid of the SEI|string
+|===
+
+
+==== Responses
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP Code|Description|Schema
+|**200**|Successful operation|<<_model_abeanstructuralelementinstance,ABeanStructuralElementInstance>>
+|**400**|Could not find requested SEI|No Content
+|===
+
+
+==== Produces
+
+* `application/json`
+
+
+==== Security
+
+[options="header", cols=".^3,.^4"]
+|===
+|Type|Name
+|**basic**|**<<_model_basic,basic>>**
+|===
+
+
+==== Example HTTP request
+
+===== Request path
+----
+/repository/string/sei/string
+----
+
+
+==== Example HTTP response
+
+===== Response 200
+[source,json]
+----
+{
+  "name" : "string",
+  "uuid" : "b168b0df-84b6-4b7f-bede-69298b215f40",
+  "categoryAssignments" : [ {
+    "name" : "string",
+    "uuid" : "b168b0df-84b6-4b7f-bede-69298b215f40"
+  } ],
+  "children" : [ {
+    "name" : "string",
+    "uuid" : "b168b0df-84b6-4b7f-bede-69298b215f40"
+  } ],
+  "superSeis" : [ {
+    "name" : "string",
+    "uuid" : "b168b0df-84b6-4b7f-bede-69298b215f40"
+  } ],
+  "parent" : "b168b0df-84b6-4b7f-bede-69298b215f40"
+}
+----
+
+
+[[_model_getrootseis]]
+=== Fetch a list of root SEIs
+....
+GET /repository/{repoName}/seis
+....
+
+
+==== Description
+This service fetches the root StructuralElementInstances
+
+
+==== Parameters
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|Type|Name|Description|Schema
+|**Path**|**repoName** +
+__required__|Name of the repository|string
+|===
+
+
+==== Responses
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP Code|Description|Schema
+|**200**|Successful operation|< <<_model_abeanstructuralelementinstance,ABeanStructuralElementInstance>> > array
+|**400**|Could not create bean for a root SEI|No Content
+|===
+
+
+==== Produces
+
+* `application/json`
+
+
+==== Security
+
+[options="header", cols=".^3,.^4"]
+|===
+|Type|Name
+|**basic**|**<<_model_basic,basic>>**
+|===
+
+
+==== Example HTTP request
+
+===== Request path
+----
+/repository/string/seis
+----
+
+
+==== Example HTTP response
+
+===== Response 200
+[source,json]
+----
+"array"
+----
+
+
+

@@ -17,18 +17,19 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.UnexecutableCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
-import de.dlr.sc.virsat.model.concept.types.ABeanObject;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.json.AnyTypeAdapter;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModelProperty.AccessMode;
 
 /**
  * Class to wrap a ComposedPropertyInstance that doesn't support to set values.
  * @param <BEAN_TYPE> the reference type
  */
-public class BeanPropertyComposed<BEAN_TYPE extends IBeanCategoryAssignment> extends ABeanObject<ComposedPropertyInstance> implements IBeanProperty<ComposedPropertyInstance, BEAN_TYPE> {
+public class BeanPropertyComposed<BEAN_TYPE extends IBeanCategoryAssignment> extends ABeanProperty<ComposedPropertyInstance, BEAN_TYPE> {
 
 	public BeanPropertyComposed() { }
 	
@@ -37,7 +38,7 @@ public class BeanPropertyComposed<BEAN_TYPE extends IBeanCategoryAssignment> ext
 	 * @param cpi the type instance to be used
 	 */
 	public BeanPropertyComposed(ComposedPropertyInstance cpi) {
-		setTypeInstance(cpi);
+		super(cpi);
 	}
 	
 	@Override
@@ -53,6 +54,11 @@ public class BeanPropertyComposed<BEAN_TYPE extends IBeanCategoryAssignment> ext
 
 	@XmlElement(nillable = true)
 	@XmlJavaTypeAdapter(AnyTypeAdapter.class)
+	@ApiModelProperty(
+		reference = "ABeanCategoryAssignment",
+		value = "Returns the bean of the composed Category Assignment\n"
+				+ "This can't be via the API.",
+		accessMode = AccessMode.READ_ONLY)
 	@SuppressWarnings("unchecked")
 	@Override
 	public BEAN_TYPE getValue() {
@@ -81,5 +87,13 @@ public class BeanPropertyComposed<BEAN_TYPE extends IBeanCategoryAssignment> ext
 	public void unset() {
 		// Can't unset the composed ca on the bean level
 	}
-
+	
+	@ApiModelProperty(
+			value = "Always returns constant: \"composed\"", 
+			example = "composed",
+			accessMode = AccessMode.READ_ONLY)
+	@Override
+	public BeanPropertyType getPropertyType() {
+		return BeanPropertyType.COMPOSED;
+	}
 }

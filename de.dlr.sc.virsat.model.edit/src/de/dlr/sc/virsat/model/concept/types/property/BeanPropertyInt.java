@@ -17,13 +17,14 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModelProperty.AccessMode;
 
 /**
  * Class to wrap IntPropertyInstances
- * @author fisc_ph
  *
  */
-public class BeanPropertyInt extends ABeanUnitProperty<Long> {
+public class BeanPropertyInt extends ABeanUnitValueProperty<Long> {
 
 	/**
 	 * Standard Constructor
@@ -36,7 +37,7 @@ public class BeanPropertyInt extends ABeanUnitProperty<Long> {
 	 * @param uvpi the type instance to be used
 	 */
 	public BeanPropertyInt(UnitValuePropertyInstance uvpi) {
-		setTypeInstance(uvpi);
+		super(uvpi);
 	}
 	
 	@Override
@@ -55,10 +56,20 @@ public class BeanPropertyInt extends ABeanUnitProperty<Long> {
 	
 	@Override
 	@XmlElement(nillable = true)
+	@ApiModelProperty(value = "Long")
 	public Long getValue() throws NumberFormatException {
 		if (isSet()) {
 			return Long.parseLong(ti.getValue());
 		}
 		return null;
+	}
+	
+	@ApiModelProperty(
+			value = "Always returns constant: \"int\"", 
+			example = "int",
+			accessMode = AccessMode.READ_ONLY)
+	@Override
+	public BeanPropertyType getPropertyType() {
+		return BeanPropertyType.INT;
 	}
 }

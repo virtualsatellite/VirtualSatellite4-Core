@@ -1134,6 +1134,251 @@ TIP: You can also use *drag & drop* again to set the inheritance links.
 
 You finalized the tutorial for the extended product structures. 
 
+==== Requirements modeling concept
+
+To support model based requirements management and to verify requirements by using the system model, Virtual Satellite provides a concept to model requirements.
+Requirements can be either imported from other tools or created directly within Virtual Satellite.
+
+===== First steps
+
+Before you can start: 
+
+* Open Virtual Satellite.
+
+* Create a new Virtual Satellite Project.
+
+* Activate your required concepts, such as _Product structure_ and _Requirements_. 
+
+
+For more information check <<Modeling with Virtual Satellite>>.
+
+===== Configure requirements modeling
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Create a _RequirementsConfigurationCollection_ element directly in the Virtual Satellite Repository. 
+
+* This collection is a place where all requirements configuration elements should be stored.
+
+TIP: User rights can be customized to prevent other users from editing this collection.
+
+Add a _RequirementsConfiguration_ under the collection.
+
+NOTE: The _RequirementsConfiguration_ element is used to define requirement types.
+These types specify attributes of each requirement.
+
+Double-click the new configuration element to open its editor. 
+
+Add a new requirement type.
+|image:chapterModeling/subsectionRequirements/AddRequirementType.png[Add requirement type]
+
+|{counter:step}.
+|Specify a name for the new requirement type and add attributes in the dialog box.
+|image:chapterModeling/subsectionRequirements/SpecifyRequirementTypeNameAndAttributes.png[Specify requirement type name and attributes]
+
+|===
+
+===== Modeling of requirements
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Go to the model location where you want to add requirements. 
+
+NOTE: Requirements can also be split to several elements within a model. 
+
+At the desired location create a _RequirementSpecification_.
+|image:chapterModeling/subsectionRequirements/CreateRequirementSpec.png[Create requirement specification]
+
+|{counter:step}.
+|Double-click the specification element to open its editor. 
+
+Add requirements by using the button `Add Requirement` in the requirements section.
+|image:chapterModeling/subsectionRequirements/AddRequirement.png[Add requirements]
+
+|{counter:step}.
+|When a new requirement is added, the editor asks of which type it needs to be: 
+
+* You can now choose between the types you create in the configuration element of your project. 
+The left part of the dialog allows to filter by the container element of the configuration, the right side shows all applicable types in the currently selected tree element.
+|image:chapterModeling/subsectionRequirements/ChooseRequirementType.png[Choose requirement type]
+
+|{counter:step}.
+|After a requirement of the selected type is added, its values can be added.
+|image:chapterModeling/subsectionRequirements/AddValues.png[Add values]
+
+|{counter:step}.
+|It is also possible to create hierarchies of requirements.
+To do that, create a requirement group by clicking the button `Add RequirementGroup`.
+|image:chapterModeling/subsectionRequirements/CreateRequirementGroup.png[Create requirement group]
+
+|{counter:step}.
+|To create requirements within a group click on the button `Drill-Down` to go to the group.
+|image:chapterModeling/subsectionRequirements/DrillDownReqGroup.png[Drill-Down to requirement group]
+
+|===
+
+
+===== Import / export of requirements 
+
+To integrate requirements management into the model-based systems engineering process, Virtual Satellite supports importing requirements from external tools.
+
+====== Import from CSV-files
+It is possible to import requirements form CSV files.
+CSV files can be exported from e.g. Excel.
+To import requirements from CSV files follow the next steps:
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Select `Import` from the file menu in Virtual Satellite
+|image:chapterModeling/subsectionRequirements/ImportMenuRequirements.png[Import Menu Virtual Satellite]
+
+|{counter:step}.
+|Select `CSV Requirements Import` form the `Virtual Satellite` category.
+|image:chapterModeling/subsectionRequirements/ImportWizard.png[Select the correct import wizard]
+
+|{counter:step}.
+|Select a CSV file to import from, check if the column separator is correct (from a default Excel export it is “;”) and set the line number of the heading and the first data line.
+Then select a _RequirementsConfiguration_ which should be container for the new requirement type.
+It is also possible to select an existing _requirement_ type for the import.
+For more information got to the next section <<Map CSV requirements column to existing type>>.
+|image:chapterModeling/subsectionRequirements/CsvImportStartPage.png[Import start page]
+
+|{counter:step}.
+|On the next page of the import wizard, select a type for each column found in the file.
+If the type is not clear yet it can be left as string.
+It is always possible to import types later.
+
+NOTE: The type is used only for editing support; values are not validated when importing requirement values.
+Unselected columns are not imported.
+|image:chapterModeling/subsectionRequirements/CsvImportTypeCustomizationPage.png[Configure the imported type]
+
+|{counter:step}.
+|Then select the _RequirementSpecification_ in which the requirements should be imported to.
+|image:chapterModeling/subsectionRequirements/CsvImportTargetPage.png[Selection of import target element]
+
+|===
+
+After the import, the targeted specification element should contain the requirements.
+For columns with the type _Enumeration_, the editor shows all values which were already contained in this column from the moment of import.
+Additional values can be added to the enumeration when re-selecting _Enumeration_ as type of the attribute in the editor of the requirement type.
+
+image:chapterModeling/subsectionRequirements/CsvImportEnumeration.png[Imported enumerations]
+
+====== Map CSV requirement columns to existing type 
+
+It is also possible to import requirements by using an existing type.
+This does not create a new requirement type and can help to have consistent requirement types for all modeled requirements.
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Instead of selecting the container for the new requirement type, select the existing type on the first page of the import wizard.
+|image:chapterModeling/subsectionRequirements/CsvImportStartPageExisitingType.png[Select an existing type]
+
+|{counter:step}.
+|On the next page, map the columns of the CSV-File to the attributes of the existing requirement type.
+|image:chapterModeling/subsectionRequirements/CsvImportTypeMappingPage.png[Map requirement attributes to CSV columns]
+
+|===
+
+===== Requirements verification
+
+Managing requirements within Virtual Satellite allows to verify the requirements with the system model.
+This section explains how these model based verification methods can be used and how custom project-specific verification methods can be integrated into the project.
+
+====== Configuration of basic verification methods
+
+Basic verification methods do not use the system model but are simple model representations to reflect external verification processes.
+
+To configure these basic verification methods follow these steps:
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Add a _VerificationConfiguration_ to your _RequirementsConfigurationCollection_.
+|image:chapterModeling/subsectionRequirements/AddVerificationConfiguration.png[Add verification configuration]
+
+|{counter:step}.
+|Open the _VerificationConfiguration_ by double-clicking it in the navigator and use the `Add VerificationType` button to add a new verification method.
+|image:chapterModeling/subsectionRequirements/AddVerificationType.png[Add a verification type]
+
+|{counter:step}.
+|Configure the new verification type by specifying a name, description and what kind of verification it is.
+|image:chapterModeling/subsectionRequirements/ConfigureVerificationType.png[Configure the verification type]
+
+|===
+
+Besides these basic verification methods, Virtual Satellite supports verification methods that use and link to the system model.
+System model-based verification methods are provided via the different domain concepts.
+For more information how concepts are developed check out our https://github.com/virtualsatellite/VirtualSatellite4-Core/releases/download/Release_4.12.1/VirSat_Core_Developer_Manual.pdf[developer manual]. 
+
+====== Add verification methods to requirements
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|To add verification a method to a requirement open it in the VirSat Editor.
+Easiest way to do so is to press the `Drill-Down` button in the _RequirementSpecification_ or by double-clicking the element in the VirSat Navigator.
+|image:chapterModeling/subsectionRequirements/OpenRequirementEditor.png[Open requirement in editor]
+
+|{counter:step}.
+|Add verification methods in the dedicated editor sections of the requirement.
+One requirement can also have multiple verification methods. 
+
+NOTE: Basic verification types are created in the _VerificationConfiguration_.
+
+NOTE: System model-based verification methods can be added via dedicated editor sections.
+Depending on the used concepts in the project there might be different model-based verification methods. 
+
+|image:chapterModeling/subsectionRequirements/AddVerification.png[Add a verification methods to requirement]
+
+|===
+
+The verification methods have a *status* attribute which also has influence on the requirement status which is shown in the specification table.
+
+NOTE: Depending on the verification status, the requirement status might change automatically.
+
+image:chapterModeling/subsectionRequirements/RequirementStatus.png[Requirement status]
+
 
 ==== Equipment mass and mass summaries concept
 
@@ -1193,8 +1438,72 @@ Now, in the _Navigator_ double click on ConfigurationTree and scroll to the Mass
 Here you can find a budget breakdown.
 |image:chapterModeling/MassConceptBudget.png[Insepcting the mass budegt breakdown]
 
-
 |===
+==== Functional Electrical Architecture
+===== Add Interface to the model
+Virtual Satellite enables the user to add _Interfaces_ to the system model. Add the concept *Functional Electrical Architecture* as described in section in <<Activating a Concept>>
+Elements of the functional electrical architecture can be added to the system model by opening the context menu with the right mouse and click. 
+
+There are _InterfaceEnds_ that are of a specific _InterfaceType_ and have the potential to connect _Interfaces_.
+
+_InterfaceTypes_ need to be defined as child elements of an _InterfaceTypeCollection_ .
+The _InterfaceTypeCollection_ is created by clicking with the right mouse on the repository and select menu:Context[Functional Electrical Architecture>Add InterfaceTypeCollection].
+image:chapterModeling/subsectionFEA/InterfaceType.png[InterfaceType_Collection]
+A type can be created by clicking with the right mouse on the _InterfaceTypeCollection_ and selecting menu:Context[Functional>Electrical Architecture>Add InterfaceType]
+image:chapterModeling/subsectionFEA/AddInterfaceType.png[InterfaceType]
+
+An _InterfaceType_ can be a _DataInterfaceType_ , a _ThermalReferencePoint_ or a _PowerInterfaceType_.
+
+By adding a _RangedVoltageDefinition_ or a _FixedVoltageDefinition_ to the _PowerInterfaceType_ a minimum and maximum voltage  can be specified.
+
+image:chapterModeling/subsectionFEA/VoltageSpecificationPowerInterfaceType.png[Specify the voltage of a power Interface]
+
+_InterfaceEnds_ should be defined as part of an ElementDefinition in a product tree.
+This definition enables elements of the configuration tree to inherit properties defined in the product tree.
+It can be added to elements in the product tree by right-clicking the selected element definitions and using the context menu: menu:Context[Functional Electrical Architecture>Add _Interface_End].
+
+
+An _Interface_ can be added manual to an *Element Configuration* in the configuration tree by using the right mouse and navigating to menu:Context[Functional Electrical Architecture>Add Interface].
+The end and start point of the _Interface_ can be set as properties of the _Interface_ as shown in the following image:
+image:chapterModeling/subsectionFEA/InterfaceEnd.PNG[_Interface_End]
+
+Additionally it is possible to add an _Interface_ as described in the following subsection.
+
+===== Add a new diagram
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:s}.
+|Click on the documents folder in the *ConfigurationTree*.
+|image:chapterModeling/subsectionFEA/DocumentsElement.PNG[DE]
+
+|{counter:s}.
+|Click on the new elements symbol.
+|image:chapterModeling/subsectionFEA/NewElement.PNG[NE]
+
+|{counter:s}.
+|Choose menu:Context[VirSat>Virsat Diagram].
+|image:chapterModeling/subsectionFEA/Diagram.PNG[NE]
+
+|{counter:s}.
+|Choose _Interface_ in the btn:[Drop Down] menu.
+|
+
+|{counter:s}.
+|Drag and Drop the *Element Configurations* from the satellite navigator to the diagram editor .
+|
+
+|{counter:s}.
+|The _Interface_ can be used in the system diagram to connect system elements with a power supply by drag and dropping the _Interface_ to their _Interface_End.
+|image:chapterModeling/subsectionFEA/InterfaceInTheDiagram.PNG[InterfaceIn]
+|===
+
+The properties of the _Interface_ and the _InterfaceType_ can be imported and exported from an excel spreadsheet.
 
 ==== Product maturity concept
 
@@ -1231,6 +1540,119 @@ To get a summary of the different maturity values of the system, the section sho
 image:chapterModeling/MaturityOverview.png[Maturity overview]
 
 Elements can be collapsed or expanded and the values can be exported to Excel. 
+
+
+==== State machine concept
+
+Virtual Satellite provides means to add state machines to your system but also of its single components. State machines describe the behavior of the system. It consists of a finite number of states and is therefore also called finite-state machine (FSM). Based on the current state and a given input the machine performs state transitions and produces outputs. 
+
+The basic building blocks of a state machine are:
+
+* `State:` 
+is a situation of a system depending on previous inputs and causes a reaction on following inputs. One state is marked as the initial state; this is where the execution of the machine starts.
+* `Transition:` defines for which input a state is changed from one to another. Depending on the state machine type, states and/or transitions produce outputs.
+* `AllowsConstraint:` should specify the states that are allowed to be activated while the parent state is active.
+* `ForbidsConstraint:` should specify the states that are forbidden while the parent state is active.
+
+In the following we will create a state machine. Create a project - in the following called `MySatellite` - and activate the following concepts
+
+* `de.dlr.sc.virsat.model.extension.statemachines`
+* `de.dlr.sc.virsat.model.extension.ps`
+
+according to <<Activating a Concept>>.
+
+:step1: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+ 
+|{counter:step1}.
+|First of all, the concepts _State Machines_ and _Product Structure_ need to be activated in the _Repository_.
+|image:chapterStateMachines/AddStateMachineConcept.png[AddStateMachineConcept]
+
+|{counter:step1}.
+|For the system, create a _ConfigurationTree_ with a _ElementConfiguration_, and give it the name `AOCS` (Attitude and Orbit Control System). 
+This shall serve only as an example.
+|image:chapterStateMachines/CreatingAOCSElementConfiguration.png[CreatingAOCSElementConfiguration]
+
+|{counter:step1}.
+|Now the `AOCS` shall for example contain components like a Camera as payload, as well as the Thrusters and Reaction Wheels for attitude control purposes. 
+
+For this, add three _ElementConfiguration_ elements and give them the following names: `CAM`, `THR`, `RW`.
+|image:chapterStateMachines/CreateSubcomponentsOfSystem.png[CreateSubcomponentsOfSystem]
+
+|{counter:step1}.
+|Now create a _State Machine_ element for any of the system components. 
+In the following a _State Machine_ is created for the Camera that shall be used in the science phase of the mission for collecting images data. 
+
+Now you can add a state machine to the component `CAM` in the _Navigator_ with `Context` › `State Machines` › `Add StateMachine`.
+
+|image:chapterStateMachines/CreateCamStateMachine.png[CreateCamStateMachine]
+
+|{counter:step1}.
+|Having created a _State Machine_ for the camera. Now open the _State Machine Diagram Editor_ in the _Navigator_ with `Context` › `Open Diagram Editor`.
+|image:chapterStateMachines/OpenDiagramEditor.png[OpenDiagramEditor]
+
+|{counter:step1}.
+|The _Diagram Editor_ shall look as shown in the image. 
+|image:chapterStateMachines/DiagramEditor.png[DiagramEditor]
+
+|{counter:step1}.
+|Now to add a _State_ (same for other objects in the _Diagram Palette_, i.e. `State`, `Transition`, `ForbidsConstraint`, ...), left click on the object in the Palette once and then left click again on the position in the diagram where you want to add it.
+
+The state machine diagram for the `CAM` object shall look as shown in the image.
+|image:chapterStateMachines/AddState.png[AddState] 
+
+|{counter:step1}.
+|After creating a transition connection in the Diagram Editor, you want to create a _TransitionTriggerEvent_ and assign it to the previously created transition. 
+
+Go in the _Editor_ using _SM_ instance in the _Navigator_: `Context` › `Open Editor` or simply by double clicking on the _SM_ instance in the _Navigator_.
+
+In the _Editor_ if you press [Add TransitionTriggerEvent] button, a new trigger event is created. 
+
+Name it under the column `Name`, and give it a description under the `detail`.
+
+|image:chapterStateMachines/Open Editor.png[Open Editor] image:chapterStateMachines/AddTransitionTriggerEvent.png[AddTransitionTriggerEvent]
+
+|{counter:step1}.
+|Now assign the created trigger event to the `Transition` you created in the diagram. 
+Under `trigger` column in the `transitions` section, you can choose a trigger action from the list as shown in the image.
+
+NOTE: Transitions can be created or removed in the _Diagram Editor_, but also manually in the normal _Editor_.
+
+|image:chapterStateMachines/AssigningTriggers.png[AssigningTriggers] image:chapterStateMachines/OpenedWizardForTriggerActions.png[OpenedWizardForTriggerActions]
+
+|{counter:step1}.
+|After assigning, go back to the _Diagram Editor_ and update the state machine diagram using the yellow button up right the _State Machine_ block, then you will be able to see the new transition.
+|image:chapterStateMachines/UpdateStateMachine.png[UpdateStateMachine]
+
+|{counter:step1}.
+|Now having created the various components of the system and described their behavior using state machines, the _State Machine_ for the `AOCS` system can be created in a newly created _ElementConfiguration_ namely `SystemOperation` (standing for concept operations). 
+This state machine shall describe the behavior of the whole system.
+
+See Task No.4 “Creating a State Machine”
+
+|image:chapterStateMachines/AddingSystemStateMachine.png[AddingSystemStateMachine]
+
+|{counter:step1}.
+|Open the _Diagram Editor_ and add the following _States_ and _Transitions_ as shown in the image. 
+This shall serve as an example to represent the behavior of the `AOCS` system.
+
+NOTE: The green and red arrows shown in the state machine shall represent the _AllowsConstraints_ and _ForbidsConstraints_ respectively.  
+For instance, the thrusters are on when the safe mode of the satellite is active to perform coarse pointing control.
+
+TIP: To use the _State Machine_ of other system components, e.g. the Camera, Reaction Wheels in Main system _State Machine_, one can just drag and drop them from the _Navigator_. 
+
+|image:chapterStateMachines/AOCSSystemStateMachine.png[AOCSSystemStateMachine] image:chapterStateMachines/AOCSTransitionsAndTriggerEvents.png[AOCSTransitionsAndTriggerEvents]
+
+|{counter:step1}.
+|For each section in _State Machine_ concept found in the Editor an excel table with the section instances can be created. 
+This is shown in the following image on the down right part with a button named [Export to Excel].
+|image:chapterStateMachines/ExtractingExcelTables.png[ExtractingExcelTables]
+|===
 
 === 3D Visualisation
 
@@ -1280,6 +1702,53 @@ In this case you can add a NONE shape to the root of the component to position t
 |image:chapterModeling/VisComposite.png[3D View]
 
 |===
+
+==== Geometric shapes
+
+Every Visualisation node has a _shape_ property defining how the node is rendered.
+Below is the description of all shape types and their relevant properties.
+
+[%header,cols="1,1,4"]
+|===
+|Shape
+|Size properties
+|Notes
+
+|None
+|-
+|_None_ shape is not rendered, but can be used for logical grouping of elements.
+Example: an equipment contains several parts that have individual _Visualisations_ attached.
+_None_ visualisation can be added on the equipment level to control the positioning of the whole equipment (by setting _positions_ and _rotations_ of the _None_ node).
+
+|Box
+|_sizeX_ +
+_sizeY_ +
+_sizeZ_
+|-
+
+|Sphere
+|_radius_
+|-
+
+|Cylinder
+|_radius_ +
+_sizeY_
+|-
+
+|Cone
+|_radius_ +
+_sizeY_
+|-
+
+|Geometry
+|_geometryFile_
+|Renders an external STL 3d model. An STL file should be uploaded via _geometryFile_ property. For other shapes this property has no effect.
+The size of the STL model is taken from the file and cannot be changed in Virtual Satellite.
+|===
+
+All shapes can be translated using properties _positionX_, _positionY_, _positionZ_ and rotated using properties _rotationX_, _rotationY_, _rotationZ_ (relative to the parent _Visualisation_ node or the origin).
+
+Properties _color_ and _transparency_ can be set for all shapes except _None_.
 
 ==== CAD Export/Import
 
@@ -1512,7 +1981,7 @@ By selecting a project in the _Navigator_, the view will then show a proposed up
 
 In MBSE it is very important not just to model a system, but to also make use of the modeled data.
 In most cases reasonable Input and Output from and to other sources is required, same as some on-the-fly analysis of the current data.
-Since it is impossible to foresee all possible use cases, Virtual Satellite provides a generic App interface based on the Java programming language.
+Since it is impossible to foresee all possible use cases, Virtual Satellite provides a generic App _Interface_ based on the Java programming language.
 The following steps explain how you can activate the Apps and how you can create your first individual program on your data model.
 
 NOTE: Create an example project (see <<First Steps>>) before you continue with this tutorial.
@@ -1543,7 +2012,7 @@ NOTE: Technically the project will be transformed into an eclispe plugin project
 |{counter:step}.
 |Now select the newly created App "AppExample1.java" in the list and press the button btn:[Edit App]. This will open the the App in an _Editor_. This example App accesses the repository and prints all units stored in the unit management. 
 
-NOTE: The Apps provide a complete Java in the background. This means you can include any library you like, code your own user interfaces as you are used to in an eclipse environment.
+NOTE: The Apps provide a complete Java in the background. This means you can include any library you like, code your own user _Interface_s as you are used to in an eclipse environment.
 
 |image:chapterApps/AppEditor.png[The App opened in a Java Editor]
 
