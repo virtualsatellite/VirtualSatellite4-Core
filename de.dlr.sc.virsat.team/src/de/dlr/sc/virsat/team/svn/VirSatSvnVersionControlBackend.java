@@ -179,7 +179,7 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 		// to be under version control as well. We check here if the parent is under version control,
 		// and if so, then we can simply commit the project file. If not, we commit the commitable files under the
 		// project. 
-		if (SVNUtility.hasSVNFolderInOrAbove(projectWorkingCopy)) {
+		if (SVNUtility.hasSVNFolderInOrAbove(projectWorkingCopy.getParentFile())) {
 			filesList.add(projectWorkingCopy);
 		} else {
 			IStateFilter[] filters = { IStateFilter.SF_MODIFIED, IStateFilter.SF_NEW };
