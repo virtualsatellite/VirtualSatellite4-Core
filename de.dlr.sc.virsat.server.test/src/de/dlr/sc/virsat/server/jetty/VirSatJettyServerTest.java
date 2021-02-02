@@ -47,7 +47,7 @@ public class VirSatJettyServerTest {
 	private WebTarget httpTarget;
 	private WebTarget httpsTarget;
 
-	private class TrustAllHostNameVerifier implements HostnameVerifier {
+	private static class TrustAllHostNameVerifier implements HostnameVerifier {
 		@Override
 		public boolean verify(String hostname, SSLSession session) {
 			return true;
