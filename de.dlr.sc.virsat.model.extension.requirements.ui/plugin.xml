@@ -996,6 +996,13 @@
 	     icon="resources/icons/RequirementsSpecification.gif"
 	     name="Requirements CSV Import Wizard">
 	   </wizard>
+	   <wizard
+	     category="de.dlr.virsat.global.category.import.virsat"
+	     class="de.dlr.sc.virsat.model.extension.requirements.ui.wizard.ReqIfImportWizard"
+	     id="de.dlr.sc.virsat.model.extension.requirements.ui.wizard.reqIFImport"
+	     icon="resources/icons/RequirementsSpecification.gif"
+	     name="Requirements ReqIF Import Wizard">
+	   </wizard>
 	  <category
             id="de.dlr.virsat.global.category.import.virsat"
             name="Virtual Satellite">

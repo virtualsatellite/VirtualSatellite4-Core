@@ -20,16 +20,13 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.internal.ide.VirtualResourceDecorator;
 
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
-import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfiguration;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollection;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
@@ -48,6 +45,7 @@ public class ReqIfFileReqTypeSelectionPage extends AImportExportPage {
 	protected static final int COLUMNS = 2;
 	protected static final int WITH_TEXT = 200;
 	
+	@SuppressWarnings("unused")
 	private ReqIfTypeReviewPage typeReviewPage;
 
 	protected List<String> csvHeader;
@@ -67,7 +65,7 @@ public class ReqIfFileReqTypeSelectionPage extends AImportExportPage {
 		setTitle(PAGE_TITEL);
 		setModel(model);
 		this.typeReviewPage = typeReviewPage;
-		setDescription("Please select a ReqIF file and a requirement type for the imported requirements. To create a new type, select a container configuration.");
+		setDescription("Please select a ReqIF file and a requirement configuration collection to store the configurations in.");
 	}
 
 	@Override
@@ -103,7 +101,6 @@ public class ReqIfFileReqTypeSelectionPage extends AImportExportPage {
 		TreeViewer treeViewer = createTreeUI();
 		VirSatFilteredWrappedTreeContentProvider filteredCp = (VirSatFilteredWrappedTreeContentProvider) treeViewer
 				.getContentProvider();
-		filteredCp.addClassFilter(CategoryAssignment.class);
 		filteredCp.addClassFilter(ArrayInstance.class);
 		filteredCp.addClassFilter(ComposedPropertyInstance.class);
 		filteredCp.addStructuralElementIdFilter(
@@ -114,10 +111,9 @@ public class ReqIfFileReqTypeSelectionPage extends AImportExportPage {
 	@Override
 	public boolean isSelectionValid() {
 		Object selection = getSelection();
-		if (selection instanceof CategoryAssignment) {
-			String categoryFqn = ((CategoryAssignment) selection).getType().getFullQualifiedName();
-			return categoryFqn.equals(RequirementsConfiguration.FULL_QUALIFIED_CATEGORY_NAME) 
-					|| categoryFqn.equals(RequirementType.FULL_QUALIFIED_CATEGORY_NAME);
+		if (selection instanceof StructuralElementInstance) {
+			String seiFqn = ((StructuralElementInstance) selection).getType().getFullQualifiedName();
+			return seiFqn.equals(RequirementsConfigurationCollection.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME);
 		}
 		return false;
 	}
@@ -134,11 +130,11 @@ public class ReqIfFileReqTypeSelectionPage extends AImportExportPage {
 				&& isCurrentPage() 
 				&& isSelectionValid()) {
 
-			CategoryAssignment selection = (CategoryAssignment) getSelection();
+			StructuralElementInstance selection = (StructuralElementInstance) getSelection();
 			Repository repository = VirSatResourceSet.getVirSatResourceSet(selection).getRepository();
-			ActiveConceptHelper activeConceptHelper = new ActiveConceptHelper(repository);
-			Concept activeReqConcept = activeConceptHelper
-					.getConcept(de.dlr.sc.virsat.model.extension.requirements.Activator.getPluginId());
+//			ActiveConceptHelper activeConceptHelper = new ActiveConceptHelper(repository);
+//			Concept activeReqConcept = activeConceptHelper
+//					.getConcept(de.dlr.sc.virsat.model.extension.requirements.Activator.getPluginId());
 			
 			final String destination = getDestination();
 			VirSatResourceSet rs = VirSatEditingDomainRegistry.INSTANCE.getEd(repository).getResourceSet();
