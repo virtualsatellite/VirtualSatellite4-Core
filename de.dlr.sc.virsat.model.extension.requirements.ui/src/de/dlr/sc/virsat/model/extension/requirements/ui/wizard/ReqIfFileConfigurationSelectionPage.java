@@ -16,13 +16,13 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.rmf.reqif10.impl.ReqIFImpl;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
 import de.dlr.sc.virsat.model.dvlm.Repository;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
@@ -37,7 +37,7 @@ import de.dlr.sc.virsat.uiengine.ui.wizard.AImportExportPage;
  * A page to select a CSV file to import and the target model element
  *
  */
-public class ReqIfFileReqTypeSelectionPage extends AImportExportPage {
+public class ReqIfFileConfigurationSelectionPage extends AImportExportPage {
 
 	private static final String PAGE_TITEL = "Requirements ReqIF Import";
 	
@@ -45,8 +45,7 @@ public class ReqIfFileReqTypeSelectionPage extends AImportExportPage {
 	protected static final int COLUMNS = 2;
 	protected static final int WITH_TEXT = 200;
 	
-	@SuppressWarnings("unused")
-	private ReqIfTypeReviewPage typeReviewPage;
+	private ReqIfMappingPage mappingPage;
 
 	protected List<String> csvHeader;
 	protected RequirementType reqType = null;
@@ -60,11 +59,11 @@ public class ReqIfFileReqTypeSelectionPage extends AImportExportPage {
 	 * @param typeReviewPage
 	 * 			  the page that recieves the requirement type
 	 */
-	protected ReqIfFileReqTypeSelectionPage(IContainer model, ReqIfTypeReviewPage typeReviewPage) {
+	protected ReqIfFileConfigurationSelectionPage(IContainer model, ReqIfMappingPage typeReviewPage) {
 		super(PAGE_TITEL);
 		setTitle(PAGE_TITEL);
 		setModel(model);
-		this.typeReviewPage = typeReviewPage;
+		this.mappingPage = typeReviewPage;
 		setDescription("Please select a ReqIF file and a requirement configuration collection to store the configurations in.");
 	}
 
@@ -132,15 +131,16 @@ public class ReqIfFileReqTypeSelectionPage extends AImportExportPage {
 
 			StructuralElementInstance selection = (StructuralElementInstance) getSelection();
 			Repository repository = VirSatResourceSet.getVirSatResourceSet(selection).getRepository();
-//			ActiveConceptHelper activeConceptHelper = new ActiveConceptHelper(repository);
-//			Concept activeReqConcept = activeConceptHelper
-//					.getConcept(de.dlr.sc.virsat.model.extension.requirements.Activator.getPluginId());
 			
 			final String destination = getDestination();
 			VirSatResourceSet rs = VirSatEditingDomainRegistry.INSTANCE.getEd(repository).getResourceSet();
 			Resource resource = rs.getResource(URI.createFileURI(destination), true);
-			EObject test = resource.getContents().get(0);
-			System.out.println(test);
+			EObject reqIFContent = resource.getContents().get(0);
+			if (reqIFContent instanceof ReqIFImpl) {
+				mappingPage.setInput((ReqIFImpl) reqIFContent, repository);
+				return true;
+			}
+			
 		}
 		return false;
 	}
