@@ -30,6 +30,11 @@ public class ServerConfiguration {
 	public static final String PROJECT_REPOSITORIES_DIR_KEY = "project.repositories.dir";
 	public static final String LOGIN_SERIVE_CLASS_KEY = "login.service.class";
 	public static final String AUTH_PROPERTIES_FILE_KEY = "auth.properties.file";
+	public static final String HTTPS_KEYSTORE_PATH = "https.keystore.path";
+	public static final String HTTPS_KEYSTORE_PASSWORD = "https.keystore.password";
+	public static final String HTTPS_KEYSTORE_MANAGER_PASSWORD = "https.keystore.manager.password";
+	public static final String HTTPS_ONLY = "https.only";
+	public static final String HTTPS_ENABLED = "https.enabled";
 	
 	private static Properties properties = new Properties();
 	
@@ -87,6 +92,46 @@ public class ServerConfiguration {
 		properties.setProperty(AUTH_PROPERTIES_FILE_KEY, authPropertiesFile);
 	}
 	
+	public static String getHttpsKeystorePath() {
+		return getConfigFilePath(HTTPS_KEYSTORE_PATH);
+	}
+	
+	public static void setHttpsKeystorePath(String httpsKeystorePath) {
+		properties.setProperty(HTTPS_KEYSTORE_PATH, httpsKeystorePath);
+	}
+	
+	public static boolean getHttpsEnabled() {
+		return Boolean.valueOf(properties.getProperty(HTTPS_ENABLED));
+	}
+	
+	public static void setHttpsEnabled(boolean httpsEnabled) {
+		properties.setProperty(HTTPS_ENABLED, Boolean.toString(httpsEnabled));
+	}
+	
+	public static boolean getHttpsOnly() {
+		return Boolean.valueOf(properties.getProperty(HTTPS_ONLY));
+	}
+	
+	public static void setHttpsOnly(boolean httpsOnly) {
+		properties.setProperty(HTTPS_ONLY, Boolean.toString(httpsOnly));
+	}
+	
+	public static String getHttpsKeystorePassword() {
+		return properties.getProperty(HTTPS_KEYSTORE_PASSWORD);
+	}
+
+	public static void setHttpsKeystorePassword(String httpsKeystorePassword) {
+		properties.setProperty(HTTPS_KEYSTORE_PASSWORD, httpsKeystorePassword);
+	}
+	
+	public static String getHttpsKeystoreManagerPassword() {
+		return properties.getProperty(HTTPS_KEYSTORE_MANAGER_PASSWORD);
+	}
+
+	public static void setHttpsKeystoreManagerPassword(String httpsKeystoreManagerPassword) {
+		properties.setProperty(HTTPS_KEYSTORE_MANAGER_PASSWORD, httpsKeystoreManagerPassword);
+	}
+	
 	/**
 	 * Get the path of property or try to resolve it
 	 * @param key of the property
@@ -96,12 +141,18 @@ public class ServerConfiguration {
 		String filePath = null;
 		String filePathFromKey = properties.getProperty(key);
 		
-		// Check if the file exists, else try to resolve it in the bundle
-		if (new File(filePathFromKey).exists()) {
-			filePath = filePathFromKey;
+		// Only resolve if the file name is not null or empty
+		if (filePathFromKey != null && !filePathFromKey.isEmpty()) {
+			// Check if the file exists, else try to resolve it in the bundle
+			if (new File(filePathFromKey).exists()) {
+				filePath = filePathFromKey;
+			} else {
+				Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), Status.WARNING, "No valid " + key + " provided, trying to resolve it in the bundle", null));
+				filePath = getResolvedFile(filePathFromKey);
+			}
 		} else {
-			Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), Status.WARNING, "No valid " + key + " provided, trying to resolve it in the bundle", null));
-			filePath = getResolvedFile(filePathFromKey);
+			Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), Status.WARNING, key + " is empty or null", null));
+			filePath = filePathFromKey;
 		}
 		return filePath;
 	}

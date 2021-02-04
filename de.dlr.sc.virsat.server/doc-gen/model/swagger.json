@@ -6,7 +6,7 @@
     "title" : "The Model API"
   },
   "basePath" : "/rest/model/v0.0.1",
-  "schemes" : [ "http" ],
+  "schemes" : [ "http", "https" ],
   "paths" : {
     "/repository/{repoName}/ca" : {
       "put" : {
