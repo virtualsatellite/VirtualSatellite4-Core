@@ -19,6 +19,10 @@
 	<name>de.dlr.sc.virsat.external.lib.lyo</name>
 	<packaging>eclipse-plugin</packaging>
 
+	<properties>
+		<lyo.version>4.1.0-SNAPSHOT</lyo.version>
+	</properties>
+
 	<repositories>
 		<repository>
 			<id>lyo-releases</id>
@@ -38,20 +42,67 @@
 		</repository>
 	</repositories>
 
-
 	<dependencies>
-		<!-- https://mvnrepository.com/artifact/org.eclipse.lyo.oslc4j.core/oslc4j-core -->
 		<dependency>
 			<groupId>org.eclipse.lyo.oslc4j.core</groupId>
 			<artifactId>oslc4j-core</artifactId>
-			<version>4.0.0.M2</version>
+			<version>${lyo.version}</version>
 		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.eclipse.lyo.clients/oslc-java-client -->
+		<dependency>
+			<groupId>org.eclipse.lyo.clients</groupId>
+			<artifactId>oslc-client</artifactId>
+			<version>${lyo.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.eclipse.lyo.clients</groupId>
 			<artifactId>oslc-java-client</artifactId>
-			<version>4.0.0.M2</version>
+			<version>${lyo.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.lyo.clients</groupId>
+			<artifactId>oslc-java-client-resources</artifactId>
+			<version>${lyo.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>javax.ws.rs-api</artifactId>
+			<version>2.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.5</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.11</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.thrift</groupId>
+			<artifactId>libthrift</artifactId>
+			<version>0.13.0</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.ws.rs</groupId>
+			<artifactId>jakarta.ws.rs-api</artifactId>
+			<version>2.1.2</version>
 		</dependency>
 	</dependencies>
 </project>

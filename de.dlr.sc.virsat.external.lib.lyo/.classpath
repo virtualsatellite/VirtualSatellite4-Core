@@ -1,6 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/oslc-client-base.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jsonld-java.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/oauth-httpclient4.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/oauth-consumer.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jackson-annotations.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jackson-core.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jackson-databind.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-shaded-guava.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/commons-lang3.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/libthrift.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/javax.inject.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/oslc-java-client.jar" sourcepath="externalLib/maven/oslc-java-client-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/commons-cli-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/commons-cli.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/httpclient-cache-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/httpclient-cache.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/httpclient-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/httpcore-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/httpcore.jar" sourcepath="externalLib/maven/httpcore-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jakarta.ws.rs-api.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/javax.annotation-api-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/javax.servlet-api-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/javax.ws.rs-api-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jaxb-api-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-arq-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-arq.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-base-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-core-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-dboe-base-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-dboe-base.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-dboe-index-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-dboe-index.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-dboe-storage-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-dboe-storage.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-dboe-trans-data-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-dboe-trans-data.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-dboe-transaction-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-dboe-transaction.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-iri-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-rdfconnection-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-shacl-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-shacl.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-shaded-guava-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-tdb-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-tdb.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-tdb2-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-tdb2.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jsonld-java-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/oauth-consumer-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/oauth-httpclient4-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/oauth-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/oslc-client-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/oslc-java-client-resources-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/oslc-java-client-resources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/oslc-java-client-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/oslc4j-core-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/oslc4j-jena-provider-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/oslc4j-json4j-provider-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/slf4j-api-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/slf4j-log4j12-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/slf4j-log4j12.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/wink-json4j-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/wink-json4j.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/oslc-client.jar" sourcepath="externalLib/maven/oslc-client-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-iri.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-base.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-core.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-rdfconnection.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/javax.annotation-api.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/javax.servlet-api.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/javax.ws.rs-api.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/oslc4j-json4j-provider.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/oslc4j-jena-provider.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/slf4j-api.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/wink-client-apache-httpclient.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/wink-common.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/httpclient.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/wink-client.jar" sourcepath="externalLib/maven/wink-client-apache-httpclient.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/oauth.jar" sourcepath="externalLib/maven/oauth-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/oslc4j-core.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
