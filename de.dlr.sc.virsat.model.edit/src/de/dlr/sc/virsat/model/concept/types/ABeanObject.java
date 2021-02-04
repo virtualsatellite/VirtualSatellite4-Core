@@ -12,13 +12,14 @@ package de.dlr.sc.virsat.model.concept.types;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.dvlm.json.TypeInstanceAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapter;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Core functionality for a Concept Bean and abstract implementation to the interface
@@ -28,6 +29,9 @@ import de.dlr.sc.virsat.model.dvlm.json.TypeInstanceAdapter;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement
+// This class does not appear in the API documentation
+// because there is no concrete resource using it
+@ApiModel
 public abstract class ABeanObject<CP_TYPE extends ATypeInstance> implements IBeanObject<CP_TYPE> {
 
 	protected CP_TYPE ti;
@@ -54,9 +58,11 @@ public abstract class ABeanObject<CP_TYPE extends ATypeInstance> implements IBea
 		this.ti = (CP_TYPE) ti;
 	}
 	
-	@XmlID
+	@ApiModelProperty(name = "uuid", required = true,
+			value = "Unique identifier for a bean",
+			example = "b168b0df-84b6-4b7f-bede-69298b215f40")
 	@XmlElement(name = "uuid")
-	@XmlJavaTypeAdapter(TypeInstanceAdapter.class)
+	@XmlJavaTypeAdapter(IUuidAdapter.class)
 	@Override
 	public ATypeInstance getATypeInstance() {
 		return ti;
@@ -67,11 +73,13 @@ public abstract class ABeanObject<CP_TYPE extends ATypeInstance> implements IBea
 		this.ti = ti;
 	}
 
+	@ApiModelProperty(hidden = true)
 	@Override
 	public CP_TYPE getTypeInstance() {
 		return ti;
 	}
 
+	@ApiModelProperty(hidden = true)
 	@Override
 	public String getUuid() {
 		return ti.getUuid().toString();

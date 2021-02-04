@@ -26,13 +26,14 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ResourcePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.json.UriAdapter;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModelProperty.AccessMode;
 
 /**
  * Class to wrap Resource Property Instance
- * @author fisc_ph
  *
  */
-public class BeanPropertyResource extends ABeanObject<ResourcePropertyInstance> implements IBeanProperty<ResourcePropertyInstance, URI> {
+public class BeanPropertyResource extends ABeanProperty<ResourcePropertyInstance, URI> {
 
 	/**
 	 * Default constructor
@@ -46,7 +47,7 @@ public class BeanPropertyResource extends ABeanObject<ResourcePropertyInstance> 
 	 * @param rpi the resource property instance
 	 */
 	public BeanPropertyResource(ResourcePropertyInstance rpi) {
-		this.ti = rpi;
+		super(rpi);
 	}
 	
 	/**
@@ -74,6 +75,9 @@ public class BeanPropertyResource extends ABeanObject<ResourcePropertyInstance> 
 	 */
 	@XmlElement(nillable = true)
 	@XmlJavaTypeAdapter(UriAdapter.class)
+	@ApiModelProperty(
+		dataType = "String",
+		value = "Platform String of a URI")
 	public URI getValue() {
 		return ti.getUri();
 	}
@@ -116,5 +120,14 @@ public class BeanPropertyResource extends ABeanObject<ResourcePropertyInstance> 
 		}
 		
 		return null;
+	}
+	
+	@ApiModelProperty(
+			value = "Always returns constant: \"resource\"", 
+			example = "resource",
+			accessMode = AccessMode.READ_ONLY)
+	@Override
+	public BeanPropertyType getPropertyType() {
+		return BeanPropertyType.RESOURCE;
 	}
 }

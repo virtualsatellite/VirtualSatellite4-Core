@@ -15,10 +15,16 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumProperty;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumPropertyHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
+import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
+import de.dlr.sc.virsat.model.extension.requirements.model.IVerification;
 
 /**
  * Auto Generated Class inheriting from Generator Gap Class
@@ -33,8 +39,25 @@ public class CreateAddArrayElementVerificationCommand extends ACreateAddArrayEle
 	@Override
 	public Command create(EditingDomain editingDomain, ArrayInstance arrayInstance, Category type) {
 		ATypeInstance ati = new CategoryInstantiator().generateInstance(arrayInstance, type);
-		((ComposedPropertyInstance) ati).getTypeInstance().setName(type.getName());
+		CategoryAssignment verificationInstance = (CategoryAssignment) ((ComposedPropertyInstance) ati).getTypeInstance();
+		configureIVerification(verificationInstance, type);
 		return AddCommand.create(editingDomain, arrayInstance, PropertyinstancesPackage.Literals.ARRAY_INSTANCE__ARRAY_INSTANCES, ati);
+	}
+	
+	/**
+	 * Configure the verification instance with its type
+	 * @param verificationInstance the instance
+	 * @param type the type
+	 * 
+	 * Cannot use bean here as IVerification is abstract
+	 */
+	protected void configureIVerification(CategoryAssignment verificationInstance, Category type) {
+		CategoryAssignmentHelper caHelper = new CategoryAssignmentHelper(verificationInstance);
+		EnumPropertyHelper enumHelper = new EnumPropertyHelper();
+		
+		verificationInstance.setName(type.getName());
+		EnumUnitPropertyInstance piStatus = (EnumUnitPropertyInstance) caHelper.getPropertyInstance(IVerification.PROPERTY_STATUS);
+		piStatus.setValue(enumHelper.getEvdForName((EnumProperty) piStatus.getType(), IVerification.STATUS_Open_NAME));
 	}
 	
 }

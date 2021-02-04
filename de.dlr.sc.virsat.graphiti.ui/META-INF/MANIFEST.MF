@@ -19,6 +19,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: DLR (German Aerospace Center)
 Export-Package: de.dlr.sc.virsat.graphiti.ui.diagram.editor,
- de.dlr.sc.virsat.graphiti.ui.diagram.feature
+ de.dlr.sc.virsat.graphiti.ui.diagram.feature,
+ de.dlr.sc.virsat.graphiti.ui.handler
 Bundle-Activator: de.dlr.sc.virsat.graphiti.ui.Activator
 Automatic-Module-Name: de.dlr.sc.virsat.graphiti.ui

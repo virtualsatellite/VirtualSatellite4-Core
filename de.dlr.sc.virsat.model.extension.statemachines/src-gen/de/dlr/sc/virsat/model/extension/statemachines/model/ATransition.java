@@ -60,6 +60,7 @@ public abstract class ATransition extends GenericCategory implements IBeanCatego
 	// property name constants
 	public static final String PROPERTY_STATEFROM = "stateFrom";
 	public static final String PROPERTY_STATETO = "stateTo";
+	public static final String PROPERTY_TRIGGER = "trigger";
 	
 	
 	
@@ -143,6 +144,38 @@ public abstract class ATransition extends GenericCategory implements IBeanCatego
 	public BeanPropertyReference<State> getStateToBean() {
 		safeAccessStateTo();
 		return stateTo;
+	}
+	
+	// *****************************************************************
+	// * Attribute: trigger
+	// *****************************************************************
+	private BeanPropertyReference<TransitionTriggerEvent> trigger = new BeanPropertyReference<>();
+	
+	private void safeAccessTrigger() {
+		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("trigger");
+		trigger.setTypeInstance(propertyInstance);
+	}
+	
+	@XmlElement(nillable = true)
+	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
+	public TransitionTriggerEvent getTrigger() {
+		safeAccessTrigger();
+		return trigger.getValue();
+	}
+	
+	public Command setTrigger(EditingDomain ed, TransitionTriggerEvent value) {
+		safeAccessTrigger();
+		return trigger.setValue(ed, value);
+	}
+	
+	public void setTrigger(TransitionTriggerEvent value) {
+		safeAccessTrigger();
+		trigger.setValue(value);
+	}
+	
+	public BeanPropertyReference<TransitionTriggerEvent> getTriggerBean() {
+		safeAccessTrigger();
+		return trigger;
 	}
 	
 	
