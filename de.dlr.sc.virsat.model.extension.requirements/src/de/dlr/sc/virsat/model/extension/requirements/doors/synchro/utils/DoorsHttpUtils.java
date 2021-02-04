@@ -1,52 +1,47 @@
+/*******************************************************************************
+ * Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.doors.synchro.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URI;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.UriBuilder;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.auth.InvalidCredentialsException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.params.HttpClientParams;
-import org.apache.http.conn.ssl.NoopHostnameVerifier;
-import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
-import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.util.EntityUtils;
 import org.apache.wink.client.ClientResponse;
 import org.eclipse.lyo.client.OslcClient;
-import org.eclipse.lyo.client.OslcClientFactory;
-import org.eclipse.lyo.client.OslcOAuthClient;
-import org.eclipse.lyo.client.OslcOAuthClientBuilder;
-import org.eclipse.lyo.client.RootServicesHelper;
-import org.glassfish.jersey.client.ClientConfig;
 
-public class DoorsHttpUtils {
-	static public boolean DEBUG = false;
+@SuppressWarnings("deprecation")
+public final class DoorsHttpUtils {
 
-	static String AUTHREQUIRED = "X-com-ibm-team-repository-web-auth-msg";
+	private DoorsHttpUtils() {
+		
+	}
+	
+//	private static final String AUTHREQUIRED = "X-com-ibm-team-repository-web-auth-msg";
 
 	/**
 	 * Print out the HTTPResponse headers
@@ -63,8 +58,9 @@ public class DoorsHttpUtils {
 	 */
 	public static void printResponseBody(ClientResponse response) {
 		InputStream input = response.getEntity(InputStream.class);
-		if (input == null)
+		if (input == null) {
 			return;
+		}
 		BufferedReader reader;
 		try {
 			reader = new BufferedReader(new InputStreamReader(input));
@@ -81,6 +77,16 @@ public class DoorsHttpUtils {
 		}
 	}
 
+	/**
+	 * 
+	 * @param rootServicesClient
+	 * @param redirect
+	 * @param user
+	 * @param password
+	 * @param authURL
+	 * @throws IOException
+	 * @throws InvalidCredentialsException
+	 */
 	public static void validateTokens(OslcClient rootServicesClient, String redirect, String user, String password,
 			String authURL) throws IOException, InvalidCredentialsException {
 
@@ -91,6 +97,7 @@ public class DoorsHttpUtils {
 //		EntityUtils.consume(response.getEntity());
 
 		HttpGet request = new HttpGet(redirect);
+		@SuppressWarnings("resource")
 		DefaultHttpClient httpClient = new DefaultHttpClient();
 		HttpResponse response = httpClient.execute(request);
 		EntityUtils.consume(response.getEntity());
@@ -158,7 +165,11 @@ public class DoorsHttpUtils {
 			EntityUtils.consume(formResponse.getEntity());
 		}
 	}
-
+	/**
+	 * 
+	 * @param query
+	 * @return
+	 */
 	private static Map<String, String> getQueryMap(String query) {
 		Map<String, String> map = new HashMap<String, String>();
 		String[] params = query.split("&"); //$NON-NLS-1$
@@ -168,9 +179,6 @@ public class DoorsHttpUtils {
 			String value = param.split("=")[1]; //$NON-NLS-1$
 			map.put(name, value);
 		}
-
 		return map;
 	}
-
-
 }

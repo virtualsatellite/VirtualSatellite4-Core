@@ -9,37 +9,14 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.doors.synchro;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.security.GeneralSecurityException;
 import java.security.KeyManagementException;
-import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertPath;
 import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactory;
-import javax.net.ssl.X509TrustManager;
-import javax.security.cert.Certificate;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 
@@ -48,7 +25,6 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.ssl.SSLContextBuilder;
-import org.apache.log4j.Logger;
 import org.eclipse.lyo.client.OSLCConstants;
 import org.eclipse.lyo.client.OslcClient;
 import org.eclipse.lyo.client.OslcClientFactory;
@@ -64,18 +40,37 @@ import org.glassfish.jersey.client.ClientConfig;
 
 import net.oauth.OAuthException;
 
-public class DoorsSynchroClient {
 
-	private static final Logger LOGGER = Logger.getLogger(DoorsSynchroClient.class.getName());
+public final class DoorsSynchroClient {
+
+	private DoorsSynchroClient() {
+		
+	}
+//	private static final Logger LOGGER = Logger.getLogger(DoorsSynchroClient.class.getName());
 
 	private static final String SERVER_NAME = "https://gk-sl0002.intra.dlr.de:9443/rm";
-	private static final String LOGIN = "tobias.franz_admin";
-	private static final String PASSWORD = "tobias.franz_admin";
+//	private static final String LOGIN = "tobias.franz_admin";
+//	private static final String PASSWORD = "tobias.franz_admin";
 	private static final String CATALOG_URL = "https://gk-sl0002.intra.dlr.de:9443/rm/oslc_rm/catalog";
-	private static final String PROVIDER_TITLE = "Testprojekt für Schulungen etc.";
+//	private static final String PROVIDER_TITLE = "Testprojekt für Schulungen etc.";
 	private static final String CONSUMER = "dff0727199e048bb8bc031b96bcacb16";
 	private static final String SECRET = "virtual.satellite";
 
+	
+	/**
+	 * 
+	 * @param args
+	 * @throws ResourceNotFoundException
+	 * @throws RootServicesException
+	 * @throws InvalidCredentialsException
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 * @throws OAuthException
+	 * @throws KeyManagementException
+	 * @throws NoSuchAlgorithmException
+	 * @throws KeyStoreException
+	 * @throws CertificateException
+	 */
 	public static void main(String[] args) throws ResourceNotFoundException, RootServicesException,
 			InvalidCredentialsException, IOException, URISyntaxException, OAuthException, KeyManagementException,
 			NoSuchAlgorithmException, KeyStoreException, CertificateException {
@@ -112,7 +107,17 @@ public class DoorsSynchroClient {
 //			response.readEntity(InputStream.class).close();
 //		}
 	}
-
+	/**
+	 * 
+	 * @param selfAssignedSSL
+	 * @return
+	 * @throws NoSuchAlgorithmException
+	 * @throws KeyStoreException
+	 * @throws KeyManagementException
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 * @throws CertificateException
+	 */
 	private static ClientBuilder configureClientBuilder(final boolean selfAssignedSSL) throws NoSuchAlgorithmException,
 			KeyStoreException, KeyManagementException, MalformedURLException, IOException, CertificateException {
 		// Use HttpClient instead of the default HttpUrlConnection
