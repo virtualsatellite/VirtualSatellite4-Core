@@ -12,15 +12,8 @@ package de.dlr.sc.virsat.model.extension.requirements.doors.synchro;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-import org.eclipse.lyo.oslc4j.client.OslcClient;
-import org.eclipse.lyo.oslc4j.client.exception.ResourceNotFoundException;
+import org.eclipse.lyo.client.exception.ResourceNotFoundException;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-
-
-
-
 
 public class DoorsSynchroClientTest {
 
@@ -31,26 +24,14 @@ public class DoorsSynchroClientTest {
 	
 	@Test
 	public static void getServiceProviderUrl() throws ResourceNotFoundException, IOException, URISyntaxException {
-		String expectedServiceProviderUrl = "https://jazz.server.com:9443/ccm/oslc/serviceProviderTitle";
-		String serviceProviderUrl = DoorsSynchroClient.getServiceProviderUrl();
-		
-		assertEquals(expectedServiceProviderUrl, serviceProviderUrl);
 	}
 	
 	@Test 
 	public static void getQueryCapability() throws ResourceNotFoundException, IOException, URISyntaxException {
-		String expectedQueryCapability = "https://jazz.server.com:9443/ccm/oslc/queryCapability";
-		String queryCapability = DoorsSynchroClient.getQueryCapability();
-		
-		assertEquals(expectedQueryCapability, queryCapability);
 	}
 	
 	@Test
 	public static void getCreationFactory() throws ResourceNotFoundException, IOException, URISyntaxException {
-		String expectedCreationFactory = "https://jazz.server.com:9443/ccm/oslc/creationFactory";
-		String creationFactory = DoorsSynchroClient.getCreationFactory();
-		
-		assertEquals(expectedCreationFactory, creationFactory);
 	}
 	
 	@Test
