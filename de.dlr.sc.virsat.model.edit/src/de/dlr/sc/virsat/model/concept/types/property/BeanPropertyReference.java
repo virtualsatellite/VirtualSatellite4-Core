@@ -17,19 +17,20 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
-import de.dlr.sc.virsat.model.concept.types.ABeanObject;
 import de.dlr.sc.virsat.model.concept.types.IBeanObject;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanTypeInstanceFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapter;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModelProperty.AccessMode;
 
 /**
  * Bean class to wrap the referenced beans of ReferencePropertyInstances
  * @param <BEAN_TYPE> type of the referenced bean
  */
-public class BeanPropertyReference<BEAN_TYPE extends IBeanObject<? extends ATypeInstance>> extends ABeanObject<ReferencePropertyInstance> implements IBeanProperty<ReferencePropertyInstance, BEAN_TYPE> {
+public class BeanPropertyReference<BEAN_TYPE extends IBeanObject<? extends ATypeInstance>> extends ABeanProperty<ReferencePropertyInstance, BEAN_TYPE> {
 
 	public BeanPropertyReference() { }
 
@@ -38,7 +39,7 @@ public class BeanPropertyReference<BEAN_TYPE extends IBeanObject<? extends AType
 	 * @param rpi the type instance to be used
 	 */
 	public BeanPropertyReference(ReferencePropertyInstance rpi) {
-		setTypeInstance(rpi);
+		super(rpi);
 	}
 	
 	private ATypeInstance safeGetTypeInstance(BEAN_TYPE value) {
@@ -66,6 +67,9 @@ public class BeanPropertyReference<BEAN_TYPE extends IBeanObject<? extends AType
 	@Override
 	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
 	@XmlElement(nillable = true)
+	@ApiModelProperty(
+		dataType = "String",
+		value = "Uuid of the referenced bean object, that is either ABeanProperty or ABeanCategoryAssignment")
 	public BEAN_TYPE getValue() {
 		BEAN_TYPE referencedBean = null;
 		
@@ -91,5 +95,14 @@ public class BeanPropertyReference<BEAN_TYPE extends IBeanObject<? extends AType
 	@Override
 	public void unset() {
 		ti.setReference(null);
+	}
+	
+	@ApiModelProperty(
+			value = "Always returns constant: \"reference\"", 
+			example = "reference",
+			accessMode = AccessMode.READ_ONLY)
+	@Override
+	public BeanPropertyType getPropertyType() {
+		return BeanPropertyType.REFERENCE;
 	}
 }

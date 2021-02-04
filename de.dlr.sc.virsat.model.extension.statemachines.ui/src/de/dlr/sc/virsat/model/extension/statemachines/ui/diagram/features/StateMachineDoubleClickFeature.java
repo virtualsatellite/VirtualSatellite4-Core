@@ -75,6 +75,7 @@ public class StateMachineDoubleClickFeature extends VirsatCategoryAssignmentOpen
 		if (dialog.open() == Dialog.OK) {
 			Object selection = dialog.getFirstResult();
 			if (selection instanceof CategoryAssignment || selection == null) {
+
 				CategoryAssignment selectedCA = (CategoryAssignment) selection;
 				
 				VirSatTransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(transition.getATypeInstance());

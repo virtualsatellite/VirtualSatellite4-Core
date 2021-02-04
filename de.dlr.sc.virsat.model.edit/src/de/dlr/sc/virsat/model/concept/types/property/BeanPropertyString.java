@@ -17,13 +17,14 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModelProperty.AccessMode;
 
 /**
- * Class to wrap IntPropertyInstances
- * @author fisc_ph
+ * Class to wrap StringPropertyInstances
  *
  */
-public class BeanPropertyString extends ABeanProperty<String> {
+public class BeanPropertyString extends ABeanValueProperty<ValuePropertyInstance, String> {
 
 	/**
 	 * Standard Constructor
@@ -36,7 +37,7 @@ public class BeanPropertyString extends ABeanProperty<String> {
 	 * @param vpi the type instance to be used
 	 */
 	public BeanPropertyString(ValuePropertyInstance vpi) {
-		setTypeInstance(vpi);
+		super(vpi);
 	}
 	
 	@Override
@@ -51,7 +52,17 @@ public class BeanPropertyString extends ABeanProperty<String> {
 	
 	@Override
 	@XmlElement(nillable = true)
+	@ApiModelProperty(value = "String")
 	public String getValue() {
 		return ti.getValue();
+	}
+
+	@ApiModelProperty(
+			value = "Always returns constant: \"string\"", 
+			example = "string",
+			accessMode = AccessMode.READ_ONLY)
+	@Override
+	public BeanPropertyType getPropertyType() {
+		return BeanPropertyType.STRING;
 	}
 }
