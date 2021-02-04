@@ -36,4 +36,9 @@ public class ProcessInteractionTest {
 		assertEquals(cr.startCommandRunner("ping", ""), true);
 	}
 	
+	@Test(expected = NullPointerException.class)
+	public void testStandardCommandRunnerException() {
+		cr.startCommandRunner("process", "");
+	}
+	
 }
