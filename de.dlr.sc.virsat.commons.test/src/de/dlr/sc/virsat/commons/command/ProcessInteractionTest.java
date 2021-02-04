@@ -33,7 +33,7 @@ public class ProcessInteractionTest {
 
 	@Test
 	public void testStandardCommandRunner() {
-		assertEquals(cr.startCommandRunner("PING", ""), true);
+		assertEquals(cr.startCommandRunner("ping", ""), true);
 	}
 	
 }
