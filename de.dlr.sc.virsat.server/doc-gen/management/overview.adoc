@@ -1,0 +1,20 @@
+= The Management API
+
+
+[[_management_overview]]
+== Overview
+API to manage the Server Configuration
+
+
+=== Version information
+[%hardbreaks]
+__Version__ : v0.0.1
+
+
+=== URI scheme
+[%hardbreaks]
+__BasePath__ : /rest/management/v0.0.1
+__Schemes__ : HTTP, HTTPS
+
+
+

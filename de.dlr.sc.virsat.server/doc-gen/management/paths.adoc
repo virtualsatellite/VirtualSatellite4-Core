@@ -1,0 +1,233 @@
+
+[[_management_paths]]
+== Paths
+
+[[_management_getallprojects]]
+=== Fetch a list of Project names
+....
+GET /project
+....
+
+
+==== Description
+This service fetches all Project names
+
+
+==== Responses
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP Code|Description|Schema
+|**default**|successful operation|No Content
+|===
+
+
+==== Produces
+
+* `application/json`
+
+
+==== Security
+
+[options="header", cols=".^3,.^4"]
+|===
+|Type|Name
+|**basic**|**<<_management_basic,basic>>**
+|===
+
+
+==== Example HTTP request
+
+===== Request path
+----
+/project
+----
+
+
+[[_management_getproject]]
+=== Fetch Project
+....
+GET /project/{projectName}
+....
+
+
+==== Description
+This service fetches the configuration for the given project name
+
+
+==== Parameters
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|Type|Name|Description|Schema
+|**Path**|**projectName** +
+__required__|Name of the project|string
+|===
+
+
+==== Responses
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP Code|Description|Schema
+|**200**|Successful operation|<<_management_repositoryconfiguration,RepositoryConfiguration>>
+|**404**|Project not found|No Content
+|===
+
+
+==== Produces
+
+* `application/json`
+
+
+==== Security
+
+[options="header", cols=".^3,.^4"]
+|===
+|Type|Name
+|**basic**|**<<_management_basic,basic>>**
+|===
+
+
+==== Example HTTP request
+
+===== Request path
+----
+/project/string
+----
+
+
+==== Example HTTP response
+
+===== Response 200
+[source,json]
+----
+{
+  "remoteUri" : "some/path.git",
+  "backend" : "GIT",
+  "functionalAccountName" : "string",
+  "functionalAccountPassword" : "string",
+  "projectName" : "string",
+  "localPath" : "projectName"
+}
+----
+
+
+[[_management_createorupdateproject]]
+=== PUT Project
+....
+PUT /project/{projectName}
+....
+
+
+==== Description
+This service creates or updates a project configuration on the project specified by the URL. URL project overrides project name in the passed configuration if they are different.
+
+
+==== Parameters
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|Type|Name|Description|Schema
+|**Path**|**projectName** +
+__required__|Name of the project|string
+|**Body**|**body** +
+__required__|New Configuration|<<_management_repositoryconfiguration,RepositoryConfiguration>>
+|===
+
+
+==== Responses
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP Code|Description|Schema
+|**200**|Successful operation|No Content
+|**400**|An error occured, returns error message|No Content
+|===
+
+
+==== Consumes
+
+* `application/json`
+
+
+==== Security
+
+[options="header", cols=".^3,.^4"]
+|===
+|Type|Name
+|**basic**|**<<_management_basic,basic>>**
+|===
+
+
+==== Example HTTP request
+
+===== Request path
+----
+/project/string
+----
+
+
+===== Request body
+[source,json]
+----
+{
+  "remoteUri" : "some/path.git",
+  "backend" : "GIT",
+  "functionalAccountName" : "string",
+  "functionalAccountPassword" : "string",
+  "projectName" : "string",
+  "localPath" : "projectName"
+}
+----
+
+
+[[_management_deleteproject]]
+=== Delete Project
+....
+DELETE /project/{projectName}
+....
+
+
+==== Description
+This service deletes the configuration for the given project name
+
+
+==== Parameters
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|Type|Name|Description|Schema
+|**Path**|**projectName** +
+__required__|Name of the project|string
+|===
+
+
+==== Responses
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP Code|Description|Schema
+|**200**|Successful operation|No Content
+|**400**|Project could not be deleted|No Content
+|===
+
+
+==== Security
+
+[options="header", cols=".^3,.^4"]
+|===
+|Type|Name
+|**basic**|**<<_management_basic,basic>>**
+|===
+
+
+==== Example HTTP request
+
+===== Request path
+----
+/project/string
+----
+
+
+

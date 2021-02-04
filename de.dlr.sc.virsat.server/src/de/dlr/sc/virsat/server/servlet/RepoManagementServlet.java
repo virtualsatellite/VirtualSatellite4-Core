@@ -12,17 +12,20 @@ package de.dlr.sc.virsat.server.servlet;
 
 import javax.servlet.Servlet;
 
+import org.glassfish.jersey.internal.inject.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.glassfish.jersey.servlet.ServletContainer;
 
+import de.dlr.sc.virsat.server.resources.DocumentationResource;
 import de.dlr.sc.virsat.server.resources.ProjectManagementResource;
 import de.dlr.virsat.external.lib.jersey.servlet.ApplicationServletContainer;
 
 public class RepoManagementServlet extends ApplicationServletContainer implements Servlet {
 	
 	public static final String MANAGEMENT_API_ID = "/management";
-	public static final String MANAGEMENT_API_VERSION = "/v0.0.1";
-	public static final String MANAGEMENT_API = MANAGEMENT_API_ID + MANAGEMENT_API_VERSION;
+	public static final String MANAGEMENT_API_VERSION = "v0.0.1";
+	public static final String MANAGEMENT_API = MANAGEMENT_API_ID + "/" + MANAGEMENT_API_VERSION;
 	
 	@Override
 	protected Servlet onCreateServlet() {
@@ -31,8 +34,25 @@ public class RepoManagementServlet extends ApplicationServletContainer implement
 	}
 
 	private static class RepoManagementRestApplication extends ResourceConfig {
+		/**
+		 * Registers all relevant Classes: Resources, Filter and Bindings
+		 */
 		private RepoManagementRestApplication() {
 			register(ProjectManagementResource.class);
+			
+			// Registering this feature enables jetty to check for java security annotations e.g. roles allowed
+			register(RolesAllowedDynamicFeature.class);
+
+			// Register documentation resource via binder
+			final DocumentationResource docProvider = new DocumentationResource("management");
+			final AbstractBinder docBinder = new AbstractBinder() {
+				@Override
+				public void configure() {
+					bind(docProvider).to(DocumentationResource.class);
+				}
+			};
+			register(docBinder);
+			register(DocumentationResource.class);
 		}
 	}
 

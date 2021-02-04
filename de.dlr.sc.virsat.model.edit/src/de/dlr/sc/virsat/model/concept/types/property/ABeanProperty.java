@@ -9,8 +9,15 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.property;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import de.dlr.sc.virsat.model.concept.types.ABeanObject;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.json.BeanPropertyTypeAdapter;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModelProperty.AccessMode;
 
 /**
  * Core functionality for a Property Bean and abstract implementation to the interface
@@ -18,6 +25,16 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstanc
  * @param <P_TYPE> The property bean type
  * @param <V_TYPE> The value type of the bean
  */
+@ApiModel(discriminator = "propertyType",
+	description = "Abstract model class for bean properties."
+		+ " Resources that return this will instead return concrete bean properties.",
+	subTypes = {
+		ABeanValueProperty.class,
+		BeanPropertyComposed.class,
+		BeanPropertyEnum.class,
+		BeanPropertyReference.class,
+		BeanPropertyResource.class
+	})
 public abstract class ABeanProperty<P_TYPE extends APropertyInstance, V_TYPE> extends ABeanObject<P_TYPE> implements IBeanProperty<P_TYPE, V_TYPE> {
 
 	public ABeanProperty() {
@@ -27,4 +44,11 @@ public abstract class ABeanProperty<P_TYPE extends APropertyInstance, V_TYPE> ex
 	public ABeanProperty(APropertyInstance ti) {
 		super(ti);
 	}
+	
+	@XmlElement(nillable = true)
+	@XmlJavaTypeAdapter(BeanPropertyTypeAdapter.class)
+	@ApiModelProperty(
+		accessMode = AccessMode.READ_ONLY,
+		value = "Enum to idenify a property by it's type")
+	public abstract BeanPropertyType getPropertyType();
 }

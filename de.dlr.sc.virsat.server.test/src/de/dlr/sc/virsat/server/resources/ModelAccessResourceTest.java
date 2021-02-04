@@ -14,9 +14,14 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation.Builder;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBException;
 
@@ -53,6 +58,7 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferenceArray;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
+import de.dlr.sc.virsat.server.auth.filter.CorsFilter;
 import de.dlr.sc.virsat.server.servlet.VirSatModelAccessServlet;
 import de.dlr.sc.virsat.server.test.AServerRepositoryTest;
 
@@ -169,15 +175,26 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		ed.getCommandStack().execute(recordingCommand);
 	}
 	
+	@Test
+	public void testAuthentication() {
+		assertEquals(HttpStatus.OK_200, getRootSeisRequest(ADMIN_HEADER).getStatus());
+		
+		assertEquals(HttpStatus.OK_200, getRootSeisRequest(USER_WITH_REPO_HEADER).getStatus());
+		
+		assertEquals(HttpStatus.FORBIDDEN_403, getRootSeisRequest(USER_NO_REPO_HEADER).getStatus());
+
+		// The RepositoryFilter won't be called if the request got denied by jersey before
+		// so this won't produce an Exception in RepositoryFilter"
+		String encoded = getAuthHeader("unknown:password");
+		assertEquals(HttpStatus.FORBIDDEN_403, getRootSeisRequest(encoded).getStatus());
+	}
+
 	/*
 	 * Test GET various elements
 	 */
 	@Test
 	public void testRootSeisGet() {
-		Response response = webTarget
-				.path(ModelAccessResource.ROOT_SEIS)
-				.request()
-				.get();
+		Response response = getRootSeisRequest(USER_WITH_REPO_HEADER);
 		
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 		
@@ -187,9 +204,18 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		String entity = webTarget
 				.path(ModelAccessResource.ROOT_SEIS)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.get(String.class);
 		
 		assertTrue("Right Sei found", entity.contains(tSei.getUuid()));
+	}
+	
+	private Response getRootSeisRequest(String header) {
+		return webTarget
+				.path(ModelAccessResource.ROOT_SEIS)
+				.request()
+				.header(HttpHeaders.AUTHORIZATION, header)
+				.get();
 	}
 	
 	/**
@@ -208,6 +234,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 				.path(path)
 				.path(uuid)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.get();
 		
 		assertEquals(HttpStatus.OK_200, response.getStatus());
@@ -216,6 +243,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 				.path(path)
 				.path(uuid)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.get(String.class);
 		
 		// Compare with the expected
@@ -344,6 +372,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		Response response = webTarget
 				.path(ModelAccessResource.SEI)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.put(Entity.entity(sei, MediaType.APPLICATION_JSON_TYPE));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 	}
@@ -367,6 +396,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		Response response = webTarget
 				.path(ModelAccessResource.PROPERTY)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.put(Entity.json(jsonIn));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 		assertEquals("Model changed as expected", TEST_STRING, beanString.getValue());
@@ -382,6 +412,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		Response response = webTarget
 				.path(ModelAccessResource.PROPERTY)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.put(Entity.entity(property, MediaType.APPLICATION_JSON_TYPE));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 	}
@@ -435,6 +466,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		Response response = webTarget
 				.path(ModelAccessResource.PROPERTY)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.put(Entity.json(jsonIn));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 	}
@@ -448,6 +480,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		Response response = webTarget
 				.path(ModelAccessResource.CA)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.put(Entity.entity(ca, MediaType.APPLICATION_JSON_TYPE));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 	}
@@ -489,6 +522,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		Response response = webTarget
 				.path(ModelAccessResource.CA)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.put(Entity.json(jsonIn));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 	}
@@ -496,5 +530,50 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	@Test
 	public void testCaReferenceArrayPut() {
 		testPutCa(tcReferenceArray);
+	}
+	
+	@Test
+	public void testCorsHeaders() {
+		Map<String, String> headers = new HashMap<String, String>();
+
+		// Not a CORS request has no additional headers
+		// and status code of the underlying resource
+		Response response = getBuilderWithHeaders(headers).get();
+		assertNull(response.getHeaderString(CorsFilter.AC_ALLOW_ORIGIN));
+		assertNull(response.getHeaderString(CorsFilter.AC_ALLOW_CREDENTIALS));
+		assertNull(response.getHeaderString(CorsFilter.AC_ALLOW_METHODS));
+		assertNull(response.getHeaderString(CorsFilter.AC_ALLOW_HEADERS));
+		assertEquals(HttpStatus.FORBIDDEN_403, response.getStatus());
+
+		// CORS simple request only has allow origin header
+		headers.put(CorsFilter.ORIGIN, "test");
+
+		response = getBuilderWithHeaders(headers).get();
+		assertEquals(CorsFilter.AC_ALLOWED_ORIGINS, response.getHeaderString(CorsFilter.AC_ALLOW_ORIGIN));
+		assertNull(response.getHeaderString(CorsFilter.AC_ALLOW_CREDENTIALS));
+		assertNull(response.getHeaderString(CorsFilter.AC_ALLOW_METHODS));
+		assertNull(response.getHeaderString(CorsFilter.AC_ALLOW_HEADERS));
+		assertEquals(HttpStatus.FORBIDDEN_403, response.getStatus());
+
+		// A preflight request has all headers
+		response = getBuilderWithHeaders(headers).options();
+		assertEquals(CorsFilter.AC_ALLOWED_ORIGINS, response.getHeaderString(CorsFilter.AC_ALLOW_ORIGIN));
+		assertEquals(CorsFilter.AC_ALLOWED_CREDENTIALS, response.getHeaderString(CorsFilter.AC_ALLOW_CREDENTIALS));
+		assertEquals(CorsFilter.AC_ALLOWED_METHODS, response.getHeaderString(CorsFilter.AC_ALLOW_METHODS));
+		assertEquals(CorsFilter.AC_ALLOWED_HEADERS, response.getHeaderString(CorsFilter.AC_ALLOW_HEADERS));
+		// The preflight request will have the status code ok instead of forbidden
+		assertEquals(HttpStatus.OK_200, response.getStatus());
+	}
+
+	/**
+	 * Returns the builder for a request with CORS headers
+	 * @param headers the CORS headers
+	 * @return request builder
+	 */
+	private Builder getBuilderWithHeaders(Map<String, String> headers) {
+		return webTarget
+				.path(ModelAccessResource.ROOT_SEIS)
+				.request()
+				.headers(new MultivaluedHashMap<>(headers));
 	}
 }

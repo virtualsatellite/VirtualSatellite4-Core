@@ -30,9 +30,11 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
+import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
@@ -336,17 +338,19 @@ public class EditorTest extends ASwtBotTestCase {
 
 		SWTBotTable dynamicArrayTable = getSWTBotTable(arrays, getSectionName(TestCategoryIntrinsicArray.PROPERTY_TESTSTRINGARRAYDYNAMIC));
 
+		KeyStroke keyStrokeEnter = Keystrokes.CR;
+		
 		bot.button("Add testStringArrayDynamic").click();
 		setTableValue(dynamicArrayTable, 0, 1, "", ELEMENT_1);
-		bot.text(ELEMENT_1).pressShortcut(SWT.CR, SWT.LF);
+		bot.text(ELEMENT_1).pressShortcut(keyStrokeEnter);
 
 		bot.button("Add testStringArrayDynamic").click();
 		setTableValue(dynamicArrayTable, 1, 1, "", ELEMENT_2);
-		bot.text(ELEMENT_2).pressShortcut(SWT.CR, SWT.LF);
+		bot.text(ELEMENT_2).pressShortcut(keyStrokeEnter);
 		
 		bot.button("Add testStringArrayDynamic").click();
 		setTableValue(dynamicArrayTable, 2, 1, "", ELEMENT_3);
-		bot.text(ELEMENT_3).pressShortcut(SWT.CR, SWT.LF);
+		bot.text(ELEMENT_3).pressShortcut(keyStrokeEnter);
 
 		SWTBotTable parentTable = getSWTBotTable(elementConfiguration, TestCategoryIntrinsicArray.class);
 		
