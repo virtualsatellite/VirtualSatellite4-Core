@@ -36,7 +36,7 @@ public class ProcessInteractionTest {
 		assertEquals(cr.startCommandRunner("ping", ""), true);
 	}
 	
-	@Test(expected = Exception.class)
+	@Test(expected = java.lang.Exception.class)
 	public void testStandardCommandRunnerException() {
 		cr.startCommandRunner("process", "");
 	}
