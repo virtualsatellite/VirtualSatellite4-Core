@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.commons.external;
 
 import java.io.File;
 import java.io.IOException;
+
 import de.dlr.sc.virsat.commons.Activator;
 
 public class ProcessInteraction {
@@ -36,7 +37,7 @@ public class ProcessInteraction {
 			return true;
 		} catch (IOException | InterruptedException e) {
 			Activator.getDefault().getLog().error("Process builder for external programm could not be started", e);
+			return false;
 		}
-		return false;
 	}
 }

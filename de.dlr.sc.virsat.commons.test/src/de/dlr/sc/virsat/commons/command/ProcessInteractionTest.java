@@ -38,16 +38,7 @@ public class ProcessInteractionTest {
 	
 	@Test 
 	public void testStandardCommandRunnerException() {
-		Boolean throwsException = false;
-		try { 
-			cr.startCommandRunner("process", "");
-		} catch (NullPointerException e) {
-			if (e != null) {
-				throwsException = true;
-			}
-		}
-		
-		assertEquals(throwsException, true);
+		assertEquals(cr.startCommandRunner("process", ""), false);
 	}
 	
 }
