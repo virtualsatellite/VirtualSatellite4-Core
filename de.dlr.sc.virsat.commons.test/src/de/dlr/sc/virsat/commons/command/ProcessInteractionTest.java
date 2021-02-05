@@ -11,14 +11,10 @@ package de.dlr.sc.virsat.commons.command;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
-
-import org.eclipse.core.runtime.Status;
 import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.commons.external.ProcessInteraction;
-import de.dlr.sc.virsat.commons.Activator;
 
 
 /**
