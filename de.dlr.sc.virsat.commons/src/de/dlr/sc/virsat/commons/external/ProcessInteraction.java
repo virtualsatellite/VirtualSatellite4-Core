@@ -9,14 +9,16 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.commons.external;
 
-import java.io.File;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import de.dlr.sc.virsat.commons.Activator;
 
 public class ProcessInteraction {
-	private static final String DEFAULT_OUTPUT_FILE = "output.txt";
-	private static final String DEFAULT_ERROR_FILE = "error.txt";
 	
 	/**
 	 * 
@@ -24,20 +26,24 @@ public class ProcessInteraction {
 	 * @param command command to run 
 	 * @return returns true if the process was successfully finished
 	 */
-	public boolean startCommandRunner(String applicationpath, String command) {
-
+	public List<String> startCommandRunner(String applicationpath, String command) {
+		
+		List<String> output = new ArrayList<String>();
 		ProcessBuilder pb = new ProcessBuilder(applicationpath + command);
-		File out = new File(DEFAULT_OUTPUT_FILE);
-		File err = new File(DEFAULT_ERROR_FILE);
-		pb.redirectError(err);
-		pb.redirectOutput(out);
+		pb.redirectErrorStream(true);
 		try {
 			Process p = pb.start();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				output.add(line);
+			}
+			reader.close();
 			p.waitFor();
-			return true;
+			return output;
 		} catch (IOException | InterruptedException e) {
 			Activator.getDefault().getLog().error("Process builder for external programm could not be started", e);
-			return false;
+			return output;
 		}
 	}
 }

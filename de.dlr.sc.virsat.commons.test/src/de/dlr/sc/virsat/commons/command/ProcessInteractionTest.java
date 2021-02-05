@@ -10,7 +10,7 @@
 package de.dlr.sc.virsat.commons.command;
 
 import static org.junit.Assert.assertEquals;
-
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,12 +33,14 @@ public class ProcessInteractionTest {
 
 	@Test
 	public void testStandardCommandRunner() {
-		assertEquals(cr.startCommandRunner("ping", ""), true);
+		List<String> output = cr.startCommandRunner("ping", "");
+		assertEquals(output.isEmpty(), false);
 	}
 	
-	@Test 
+	@Test
 	public void testStandardCommandRunnerException() {
-		assertEquals(cr.startCommandRunner("process", ""), false);
+		List<String> output = cr.startCommandRunner("process", "");
+		assertEquals(output.isEmpty(), true);
 	}
 	
 }
