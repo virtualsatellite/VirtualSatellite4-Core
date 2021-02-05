@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EcoreFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,9 +32,9 @@ import de.dlr.sc.virsat.excel.exporter.IExport;
 public class ExcelExporterTest {
 
 	/**
-	 * Mockup exporter accepting Strings
+	 * Mockup exporter accepting EObjects
 	 */
-	public class StringExporter implements IExport {
+	public class EObjectExporter implements IExport {
 
 		@Override
 		public void export(EObject eObject, String path, boolean useDefaultTemplate, String templatePath) {
@@ -42,7 +43,7 @@ public class ExcelExporterTest {
 
 		@Override
 		public boolean canExport(Object selection) {
-			return selection instanceof String;
+			return selection instanceof EObject;
 		}
 	}
 
@@ -58,7 +59,7 @@ public class ExcelExporterTest {
 					new ConfigurationElementHandle(null, 0) {
 						@Override
 						public Object createExecutableExtension(String propertyName) throws CoreException {
-							return new StringExporter();
+							return new EObjectExporter();
 						}
 					}
 				};
@@ -69,17 +70,21 @@ public class ExcelExporterTest {
 	@Test
 	public void testCanExport() throws CoreException {
 		ExcelExporter exporter = new ExcelExporter(registry);
-		boolean canExportString = exporter.canExport("Test");
-		assertTrue("String exporter can export a String", canExportString);
+		boolean canExportEObject = exporter.canExport(EcoreFactory.eINSTANCE.createEObject());
+		assertTrue("EObject exporter can export an eObject", canExportEObject);
 		boolean canExportObject = exporter.canExport(new Object());
-		assertFalse("String exporter cannot export an Object", canExportObject);
+		assertFalse("EObject exporter cannot export an Object", canExportObject);
 	}
 
 	@Test
 	public void testExport() throws CoreException {
 		ExcelExporter exporter = new ExcelExporter(registry);
 		assertFalse(executed);
-		exporter.export(null, null, false, null);
+		exporter.export(EcoreFactory.eINSTANCE.createEObject(), null, false, null);
 		assertTrue(executed);
+		
+		executed = false;
+		exporter.export(null, null, false, null);
+		assertFalse(executed);
 	}
 }

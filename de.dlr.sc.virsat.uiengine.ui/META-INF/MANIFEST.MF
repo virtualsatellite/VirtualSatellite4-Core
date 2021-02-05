@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core Generic UI Engine and Editor UI
 Bundle-SymbolicName: de.dlr.sc.virsat.uiengine.ui;singleton:=true
-Bundle-Version: 4.12.1.qualifier
+Bundle-Version: 4.12.2.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: de.dlr.sc.virsat.uieingine.ui.DVLMEditorPlugin$Implementation
 Bundle-Vendor: DLR (German Aerospace Center)

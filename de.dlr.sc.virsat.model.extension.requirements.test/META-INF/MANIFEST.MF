@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Model Extension Requirements Concept Tests
 Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.requirements.test;singleton:=true
-Bundle-Version: 4.12.1.qualifier
+Bundle-Version: 4.12.2.qualifier
 Fragment-Host: de.dlr.sc.virsat.model.extension.requirements
 Bundle-ClassPath: .
 Bundle-Vendor: DLR (German Aerospace Center)
@@ -17,3 +17,4 @@ Require-Bundle: org.junit,
  de.dlr.sc.virsat.model.extension.ps
 Export-Package: de.dlr.sc.virsat.model.extension.requirements.test
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.requirements.test
+Import-Package: de.dlr.sc.virsat.build.test

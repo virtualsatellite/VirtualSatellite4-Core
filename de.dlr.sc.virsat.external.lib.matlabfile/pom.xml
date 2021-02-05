@@ -13,7 +13,7 @@ SPDX-License-Identifier: EPL-2.0
 	<parent>
 		<artifactId>de.dlr.sc.virsat.external.lib.maven.parent</artifactId>
 		<groupId>de.dlr.sc.virsat</groupId>
-		<version>4.12.1-SNAPSHOT</version>
+		<version>4.12.2-SNAPSHOT</version>
 		<relativePath>../de.dlr.sc.virsat.external.lib/maven/pom.xml</relativePath>
 	</parent>
 	
@@ -22,13 +22,19 @@ SPDX-License-Identifier: EPL-2.0
 	<name>de.dlr.sc.virsat.external.lib.matlabfile</name>
 	<packaging>eclipse-plugin</packaging>
 
-	<dependencies>
-		<!-- https://mvnrepository.com/artifact/us.hebi.matlab.mat/mfl-core -->
-		<dependency>
-			<groupId>us.hebi.matlab.mat</groupId>
-			<artifactId>mfl-core</artifactId>
-			<version>0.5.6</version>
-		</dependency>
-	</dependencies>
+	<profiles>
+		<profile>
+			<id>downloadLibs</id>
+			<dependencies>
+				<!-- https://mvnrepository.com/artifact/us.hebi.matlab.mat/mfl-core -->
+				<dependency>
+					<groupId>us.hebi.matlab.mat</groupId>
+					<artifactId>mfl-core</artifactId>
+					<version>0.5.6</version>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
+
 
 </project>

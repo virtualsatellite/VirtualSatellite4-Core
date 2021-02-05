@@ -10,7 +10,7 @@
 	<parent>
 		<artifactId>de.dlr.sc.virsat.external.lib.maven.parent</artifactId>
 		<groupId>de.dlr.sc.virsat</groupId>
-		<version>4.12.1-SNAPSHOT</version>
+		<version>4.12.2-SNAPSHOT</version>
 		<relativePath>../de.dlr.sc.virsat.external.lib/maven/pom.xml</relativePath>
 	</parent>
 
@@ -19,11 +19,16 @@
 	<name>de.dlr.sc.virsat.external.lib.commons.csv</name>
 	<packaging>eclipse-plugin</packaging>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-csv</artifactId>
-			<version>1.8</version>
-		</dependency>
-	</dependencies>
+	<profiles>
+		<profile>
+			<id>downloadLibs</id>
+			<dependencies>
+				<dependency>
+					<groupId>org.apache.commons</groupId>
+					<artifactId>commons-csv</artifactId>
+					<version>1.8</version>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
 </project>

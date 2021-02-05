@@ -10,7 +10,7 @@
 	<parent>
 		<artifactId>de.dlr.sc.virsat.external.lib.maven.parent</artifactId>
 		<groupId>de.dlr.sc.virsat</groupId>
-		<version>4.12.1-SNAPSHOT</version>
+		<version>4.12.2-SNAPSHOT</version>
 		<relativePath>../de.dlr.sc.virsat.external.lib/maven/pom.xml</relativePath>
 	</parent>
 
@@ -19,38 +19,43 @@
 	<name>de.dlr.sc.virsat.external.lib.jersey</name>
 	<packaging>eclipse-plugin</packaging>
 
-	<!-- Execute with profile downloadLib which is defined in the parent pom 
-		to update all libs and licenses from maven -->
+	<profiles>
+		<profile>
+			<id>downloadLibs</id>
+			<!-- Execute with profile downloadLib which is defined in the parent pom 
+				to update all libs and licenses from maven -->
 
-	<properties>
-		<jersey.version>2.31</jersey.version>
-	</properties>
+			<properties>
+				<jersey.version>2.31</jersey.version>
+			</properties>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.glassfish.jersey.inject</groupId>
-			<artifactId>jersey-hk2</artifactId>
-			<version>${jersey.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jersey.media</groupId>
-			<artifactId>jersey-media-moxy</artifactId>
-			<version>${jersey.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jersey.containers</groupId>
-			<artifactId>jersey-container-servlet</artifactId>
-			<version>${jersey.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jersey.core</groupId>
-			<artifactId>jersey-server</artifactId>
-			<version>${jersey.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jersey.core</groupId>
-			<artifactId>jersey-client</artifactId>
-			<version>${jersey.version}</version>
-		</dependency>
-	</dependencies>
+			<dependencies>
+				<dependency>
+					<groupId>org.glassfish.jersey.inject</groupId>
+					<artifactId>jersey-hk2</artifactId>
+					<version>${jersey.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>org.glassfish.jersey.media</groupId>
+					<artifactId>jersey-media-moxy</artifactId>
+					<version>${jersey.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>org.glassfish.jersey.containers</groupId>
+					<artifactId>jersey-container-servlet</artifactId>
+					<version>${jersey.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>org.glassfish.jersey.core</groupId>
+					<artifactId>jersey-server</artifactId>
+					<version>${jersey.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>org.glassfish.jersey.core</groupId>
+					<artifactId>jersey-client</artifactId>
+					<version>${jersey.version}</version>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
 </project>
