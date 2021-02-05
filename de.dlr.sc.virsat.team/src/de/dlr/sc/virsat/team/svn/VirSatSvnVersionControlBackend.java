@@ -182,7 +182,7 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 		if (SVNUtility.hasSVNFolderInOrAbove(projectWorkingCopy.getParentFile())) {
 			filesList.add(projectWorkingCopy);
 		} else {
-			IStateFilter[] filters = { IStateFilter.SF_MODIFIED, IStateFilter.SF_UNVERSIONED };
+			IStateFilter[] filters = { IStateFilter.SF_MODIFIED, IStateFilter.SF_NEW };
 			IResource[] resources = FileUtility.getResourcesRecursive(project.members(), new OrStateFilter(filters));
 			for (IResource resource : resources) {
 				filesList.add(new File(FileUtility.getWorkingCopyPath(resource)));
