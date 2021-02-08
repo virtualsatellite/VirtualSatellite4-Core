@@ -23,27 +23,24 @@ public class ProcessInteraction {
 	/**
 	 * 
 	 * @param applicationpath path to the application
-	 * @param command command to run 
+	 * @param command command to run and application path
 	 * @return returns true if the process was successfully finished
+	 * @throws IOException cannot find exe for starting the process
+	 * @throws InterruptedException 
 	 */
-	public List<String> startCommandRunner(String applicationpath, String command) {
+	public List<String> startCommandRunner(String command) throws IOException, InterruptedException {
 		
 		List<String> output = new ArrayList<String>();
-		ProcessBuilder pb = new ProcessBuilder(applicationpath + command);
+		ProcessBuilder pb = new ProcessBuilder(command);
 		pb.redirectErrorStream(true);
-		try {
-			Process p = pb.start();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-			String line = null;
-			while ((line = reader.readLine()) != null) {
-				output.add(line);
-			}
-			reader.close();
-			p.waitFor();
-			return output;
-		} catch (IOException | InterruptedException e) {
-			Activator.getDefault().getLog().error("Process builder for external programm could not be started", e);
-			return output;
+		Process p = pb.start();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+		String line = null;
+		while ((line = reader.readLine()) != null) {
+			output.add(line);
 		}
+		reader.close();
+		p.waitFor();
+		return output;
 	}
 }
