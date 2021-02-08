@@ -16,8 +16,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.dlr.sc.virsat.commons.Activator;
-
 public class ProcessInteraction {
 	
 	/**
