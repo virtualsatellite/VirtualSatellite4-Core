@@ -9,22 +9,28 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.doors.synchro;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.security.KeyManagementException;
+import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 
+import javax.net.ssl.SSLContext;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.Configuration;
 
 import org.apache.http.auth.InvalidCredentialsException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.ssl.SSLContextBuilder;
+import org.apache.http.ssl.TrustStrategy;
 import org.eclipse.lyo.client.OSLCConstants;
 import org.eclipse.lyo.client.OslcClient;
 import org.eclipse.lyo.client.OslcClientFactory;
@@ -40,11 +46,10 @@ import org.glassfish.jersey.client.ClientConfig;
 
 import net.oauth.OAuthException;
 
-
 public final class DoorsSynchroClient {
 
 	private DoorsSynchroClient() {
-		
+
 	}
 //	private static final Logger LOGGER = Logger.getLogger(DoorsSynchroClient.class.getName());
 
@@ -53,10 +58,9 @@ public final class DoorsSynchroClient {
 //	private static final String PASSWORD = "tobias.franz_admin";
 	private static final String CATALOG_URL = "https://gk-sl0002.intra.dlr.de:9443/rm/oslc_rm/catalog";
 //	private static final String PROVIDER_TITLE = "Testprojekt für Schulungen etc.";
-	private static final String CONSUMER = "dff0727199e048bb8bc031b96bcacb16";
-	private static final String SECRET = "virtual.satellite";
+	private static final String CONSUMER = "";
+	private static final String SECRET = "";
 
-	
 	/**
 	 * 
 	 * @param args
@@ -70,10 +74,11 @@ public final class DoorsSynchroClient {
 	 * @throws NoSuchAlgorithmException
 	 * @throws KeyStoreException
 	 * @throws CertificateException
+	 * @throws UnrecoverableKeyException
 	 */
 	public static void main(String[] args) throws ResourceNotFoundException, RootServicesException,
 			InvalidCredentialsException, IOException, URISyntaxException, OAuthException, KeyManagementException,
-			NoSuchAlgorithmException, KeyStoreException, CertificateException {
+			NoSuchAlgorithmException, KeyStoreException, CertificateException, UnrecoverableKeyException {
 
 		ClientBuilder clientBuilder = configureClientBuilder(true);
 
@@ -107,6 +112,7 @@ public final class DoorsSynchroClient {
 //			response.readEntity(InputStream.class).close();
 //		}
 	}
+
 	/**
 	 * 
 	 * @param selfAssignedSSL
@@ -117,9 +123,11 @@ public final class DoorsSynchroClient {
 	 * @throws MalformedURLException
 	 * @throws IOException
 	 * @throws CertificateException
+	 * @throws UnrecoverableKeyException
 	 */
-	private static ClientBuilder configureClientBuilder(final boolean selfAssignedSSL) throws NoSuchAlgorithmException,
-			KeyStoreException, KeyManagementException, MalformedURLException, IOException, CertificateException {
+	private static ClientBuilder configureClientBuilder(final boolean selfAssignedSSL)
+			throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException, MalformedURLException,
+			IOException, CertificateException, UnrecoverableKeyException {
 		// Use HttpClient instead of the default HttpUrlConnection
 		ApacheConnectorProvider apacheConnectorProvider = new ApacheConnectorProvider();
 
@@ -127,15 +135,18 @@ public final class DoorsSynchroClient {
 				.property(ApacheClientProperties.DISABLE_COOKIES, false);
 		ClientBuilder clientBuilder = ClientBuilder.newBuilder();
 		clientBuilder.withConfig(clientConfig);
+
+		
 ////		PropertiesHelper.getValue(new HashMap(), "test", DoorsSynchroClient.class);
 		// Setup SSL support to ignore self-assigned SSL certificates - for testing
 		// only!!
-		if (selfAssignedSSL) {
-			SSLContextBuilder sslContextBuilder = new SSLContextBuilder();
-			sslContextBuilder.loadTrustMaterial(TrustSelfSignedStrategy.INSTANCE);
-			clientBuilder.sslContext(sslContextBuilder.build());
-			clientBuilder.hostnameVerifier(NoopHostnameVerifier.INSTANCE);
-		}
+//		if (selfAssignedSSL) {
+//			SSLContextBuilder sslContextBuilder = new SSLContextBuilder();
+//			sslContextBuilder.loadTrustMaterial(TrustSelfSignedStrategy.INSTANCE);
+//			clientBuilder.sslContext(sslContextBuilder.build());
+//			clientBuilder.hostnameVerifier(NoopHostnameVerifier.INSTANCE);
+//		}
+
 		return clientBuilder;
 	}
 }
