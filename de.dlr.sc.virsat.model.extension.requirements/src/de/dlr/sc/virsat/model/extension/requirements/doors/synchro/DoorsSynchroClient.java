@@ -137,15 +137,6 @@ public final class DoorsSynchroClient {
 		clientBuilder.withConfig(clientConfig);
 
 		
-////		PropertiesHelper.getValue(new HashMap(), "test", DoorsSynchroClient.class);
-		// Setup SSL support to ignore self-assigned SSL certificates - for testing
-		// only!!
-//		if (selfAssignedSSL) {
-//			SSLContextBuilder sslContextBuilder = new SSLContextBuilder();
-//			sslContextBuilder.loadTrustMaterial(TrustSelfSignedStrategy.INSTANCE);
-//			clientBuilder.sslContext(sslContextBuilder.build());
-//			clientBuilder.hostnameVerifier(NoopHostnameVerifier.INSTANCE);
-//		}
 
 		return clientBuilder;
 	}
