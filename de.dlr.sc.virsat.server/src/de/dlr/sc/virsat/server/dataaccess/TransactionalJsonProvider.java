@@ -35,7 +35,6 @@ import javax.xml.bind.ValidationEventHandler;
 import javax.xml.bind.helpers.DefaultValidationEventHandler;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.persistence.jaxb.rs.MOXyJsonProvider;
@@ -62,7 +61,6 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 	
 	private ValidationEventHandler eventHandler;
 	
-	private ServerRepository repo;
 	private VirSatTransactionalEditingDomain ed;
 	private VirSatResourceSet resourceSet;
 	
@@ -78,7 +76,6 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 	}
 	
 	public void setServerRepository(ServerRepository repo) {
-		this.repo = repo;
 		this.ed = repo.getEd();
 		this.resourceSet = repo.getResourceSet();
 	}
@@ -155,7 +152,8 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 		ReadFromArguments arguments = new ReadFromArguments(
 				type, genericType, annotations, mediaType, httpHeaders, entityStream);
 		ReadFromCommand readFromCommand = new ReadFromCommand(ed, arguments);
-		
+
+		// Run as command to directly change resource in the editing domain
 		ed.getCommandStack().execute(readFromCommand);
 		
 		readFromCommand.throwExceptionsIfSet();
@@ -226,7 +224,6 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 
 		private AtomicExceptionReference<WebApplicationException> atomicWebAppException;
 		private AtomicExceptionReference<IOException> atomicIoException;
-		private AtomicExceptionReference<Exception> atomicException;
 		
 		/**
 		 * Create a command to call ConfigurableMoxyJsonProvider.readFrom()
@@ -240,7 +237,6 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 			
 			atomicIoException = new AtomicExceptionReference<>();
 			atomicWebAppException = new AtomicExceptionReference<>();
-			atomicException = new AtomicExceptionReference<>();
 		}
 
 		@Override
@@ -253,15 +249,11 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 					arguments.getMediaType(),
 					arguments.getHttpHeaders(),
 					arguments.getEntityStream());
-				resourceSet.saveAllResources(new NullProgressMonitor(), ed);
-				repo.syncRepository();
 				results.add(result);
 			} catch (WebApplicationException e) {
 				atomicWebAppException.set(e);
 			} catch (IOException e) {
 				atomicIoException.set(e);
-			} catch (Exception e) {
-				atomicException.set(e);
 			}
 		}
 		
@@ -276,9 +268,6 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 		public void throwExceptionsIfSet() throws IOException, WebApplicationException {
 			atomicWebAppException.throwIfSet();
 			atomicIoException.throwIfSet();
-			// Has to be thrown as RuntimeException because
-			// we can't change the method signature in the parent class
-			atomicException.throwAsRuntimeExceptionIfSet();
 		}
 	}
 	

@@ -30,7 +30,8 @@ __required__|CA to put|<<_model_abeancategoryassignment,ABeanCategoryAssignment>
 [options="header", cols=".^2,.^14,.^4"]
 |===
 |HTTP Code|Description|Schema
-|**default**|successful operation|No Content
+|**200**|Successful operation|No Content
+|**500**|Synchronization error|No Content
 |===
 
 
@@ -96,6 +97,7 @@ __required__|Name of the repository|string
 |HTTP Code|Description|Schema
 |**200**|Successful operation|<<_model_abeancategoryassignment,ABeanCategoryAssignment>>
 |**400**|Could not find requested CA|No Content
+|**500**|Synchronization error|No Content
 |===
 
 
@@ -161,7 +163,8 @@ __required__|Property to put|<<_model_abeanproperty,ABeanProperty>>
 [options="header", cols=".^2,.^14,.^4"]
 |===
 |HTTP Code|Description|Schema
-|**default**|successful operation|No Content
+|**200**|Successful operation|No Content
+|**500**|Synchronization error|No Content
 |===
 
 
@@ -226,7 +229,7 @@ __required__|Name of the repository|string
 |===
 |HTTP Code|Description|Schema
 |**200**|Successful operation|<<_model_abeanproperty,ABeanProperty>>
-|**400**|Could not find requested Property|No Content
+|**500**|Synchronization error|No Content
 |===
 
 
@@ -292,7 +295,8 @@ __required__|SEI to put|<<_model_abeanstructuralelementinstance,ABeanStructuralE
 [options="header", cols=".^2,.^14,.^4"]
 |===
 |HTTP Code|Description|Schema
-|**default**|successful operation|No Content
+|**200**|Successful operation|No Content
+|**500**|Synchronization error|No Content
 |===
 
 
@@ -371,6 +375,7 @@ __required__|Uuid of the SEI|string
 |HTTP Code|Description|Schema
 |**200**|Successful operation|<<_model_abeanstructuralelementinstance,ABeanStructuralElementInstance>>
 |**400**|Could not find requested SEI|No Content
+|**500**|Synchronization error|No Content
 |===
 
 
@@ -449,6 +454,7 @@ __required__|Name of the repository|string
 |HTTP Code|Description|Schema
 |**200**|Successful operation|< <<_model_abeanstructuralelementinstance,ABeanStructuralElementInstance>> > array
 |**400**|Could not create bean for a root SEI|No Content
+|**500**|Synchronization error|No Content
 |===
 
 

@@ -30,8 +30,11 @@
           "type" : "string"
         } ],
         "responses" : {
-          "default" : {
-            "description" : "successful operation"
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "500" : {
+            "description" : "Synchronization error"
           }
         },
         "security" : [ {
@@ -67,6 +70,9 @@
           },
           "400" : {
             "description" : "Could not find requested CA"
+          },
+          "500" : {
+            "description" : "Synchronization error"
           }
         },
         "security" : [ {
@@ -96,8 +102,11 @@
           "type" : "string"
         } ],
         "responses" : {
-          "default" : {
-            "description" : "successful operation"
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "500" : {
+            "description" : "Synchronization error"
           }
         },
         "security" : [ {
@@ -131,8 +140,8 @@
               "$ref" : "#/definitions/ABeanProperty"
             }
           },
-          "400" : {
-            "description" : "Could not find requested Property"
+          "500" : {
+            "description" : "Synchronization error"
           }
         },
         "security" : [ {
@@ -162,8 +171,11 @@
           "type" : "string"
         } ],
         "responses" : {
-          "default" : {
-            "description" : "successful operation"
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "500" : {
+            "description" : "Synchronization error"
           }
         },
         "security" : [ {
@@ -199,6 +211,9 @@
           },
           "400" : {
             "description" : "Could not find requested SEI"
+          },
+          "500" : {
+            "description" : "Synchronization error"
           }
         },
         "security" : [ {
@@ -231,6 +246,9 @@
           },
           "400" : {
             "description" : "Could not create bean for a root SEI"
+          },
+          "500" : {
+            "description" : "Synchronization error"
           }
         },
         "security" : [ {

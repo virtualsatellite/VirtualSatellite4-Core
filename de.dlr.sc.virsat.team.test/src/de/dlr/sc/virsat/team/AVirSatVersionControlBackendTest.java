@@ -220,7 +220,10 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 		assertTrue("File exsists on filesystem", seiNewDownstreamFile.getRawLocation().toFile().exists());
 		
 		// Update project in local2
-		backend.update(projectRepoLocal2, new NullProgressMonitor());
+		VersionControlUpdateResult result = backend.update(projectRepoLocal2, new NullProgressMonitor());
+		assertTrue("Found changes from the remote pull", result.hasChanges());
+		final int NUMBER_OF_CHANGES = 4;
+		assertEquals("", NUMBER_OF_CHANGES, result.getChanges().size());
 
 		// Reload the downstream sei which should now have the name of the upstream sei
 		rs.reloadResource(seiDownstreamResource);
