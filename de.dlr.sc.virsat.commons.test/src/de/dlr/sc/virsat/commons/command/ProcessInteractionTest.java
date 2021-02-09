@@ -34,14 +34,10 @@ public class ProcessInteractionTest {
 	}
 
 	@Test
-	public void testStandardCommandRunner() {
+	public void testStandardCommandRunner() throws IOException, InterruptedException {
 		List<String> output;
-		try {
-			output = cr.startCommandRunner("ping");
-			assertEquals(output.isEmpty(), false);
-		} catch (IOException | InterruptedException e) {
-			e.printStackTrace();
-		}
+		output = cr.startCommandRunner("ping");
+		assertEquals(output.isEmpty(), false);
 	}
 	
 }
