@@ -35,8 +35,7 @@ public class ProcessInteractionTest {
 
 	@Test
 	public void testStandardCommandRunner() throws IOException, InterruptedException {
-		List<String> output;
-		output = cr.startCommandRunner("ping");
+		List<String> output = cr.startCommandRunner("ping");
 		assertEquals(output.isEmpty(), false);
 	}
 	
