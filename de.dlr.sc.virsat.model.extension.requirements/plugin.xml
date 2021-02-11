@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+   <extension-point id="de.dlr.sc.virsat.model.extension.requirements.verification" name="CustomVerification" schema="schema/de.dlr.sc.virsat.model.extension.requirements.verification.exsd"/>
 	<extension point="de.dlr.sc.virsat.model.Concept">
 		<concept
 			id="de.dlr.sc.virsat.model.extension.requirements"
@@ -123,5 +124,13 @@
          <run class="de.dlr.sc.virsat.model.extension.requirements.verification.build.RequirementsVerificationBuilder" />
       </builder>
    </extension>
+<extension
+      name="Existence Verification"
+      point="de.dlr.sc.virsat.model.extension.requirements.verification">
+   <verification
+         model_element="de.dlr.sc.virsat.model.extension.requirements.model.ExistenceVerification"
+         verification_impl="de.dlr.sc.virsat.model.extension.requirements.verification.impl.ExistenceVerificationImpl">
+   </verification>
+</extension>
 	<!-- Plugin.XML Protected Region End -->
 </plugin>

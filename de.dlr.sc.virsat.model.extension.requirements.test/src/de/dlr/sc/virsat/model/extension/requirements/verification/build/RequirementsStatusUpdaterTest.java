@@ -23,6 +23,7 @@ import de.dlr.sc.virsat.model.extension.requirements.model.IVerification;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementGroup;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsSpecification;
+import de.dlr.sc.virsat.model.extension.requirements.verification.build.steps.RequirementsStatusUpdater;
 
 /**
  *
