@@ -10,62 +10,24 @@
 package de.dlr.sc.virsat.model.extension.requirements.verification.build;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.extension.requirements.model.IVerification;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
-import de.dlr.sc.virsat.model.extension.requirements.model.RequirementGroup;
-import de.dlr.sc.virsat.model.extension.requirements.model.RequirementObject;
-import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsSpecification;
 
 /**
  * Class to update the requirement status according to their verification status 
  *
  */
-public class RequirementsStatusUpdater implements IVerificationStep {
+public class RequirementsStatusUpdater extends AbstractRequirementVerificationStep {
 
-	protected EditingDomain editingDomain;
+	@Override
+	protected void doVerificationStep(IVerification verification, Requirement requirement, IProgressMonitor monitor) {
+		// Nothing to do as this step is only updating the status
+	}
 	
 	@Override
-	public void execute(RequirementsSpecification specification, EditingDomain editingDomain, IProgressMonitor monitor) {
-		this.editingDomain = editingDomain;
-		int verificationTaskNumber = specification.getRequirements().size();
-		SubMonitor subMonitor = SubMonitor.convert(monitor, verificationTaskNumber);
-		subMonitor.beginTask("Updating Status on Requirments in Specification " + specification.getName(), verificationTaskNumber);
-		for (RequirementObject requirementObject : specification.getRequirements()) {
-			updateRequirementStatus(requirementObject, subMonitor);
-			subMonitor.worked(1);
-		}
-	}
-	
-	/**
-	 * Update the status of the different requirement objects in a specification 
-	 * @param requirementObject the requirement object to verify
-	 * @param monitor the progress monitor
-	 */
-	protected void updateRequirementStatus(RequirementObject requirementObject, IProgressMonitor monitor) {
-		if (requirementObject instanceof RequirementGroup) {
-			// Recursively go threw groups
-			RequirementGroup group = (RequirementGroup) requirementObject;
-			int verificationTaskNumber = group.getChildren().size();
-			SubMonitor subMonitor = SubMonitor.convert(monitor, verificationTaskNumber);
-			subMonitor.beginTask("Updating Status on Requirments in Group " + group.getName(), verificationTaskNumber);
-			for (RequirementObject child : group.getChildren()) {
-				updateRequirementStatus(child, subMonitor);
-			}
-		} else if (requirementObject instanceof Requirement) {
-			Requirement requirement = (Requirement) requirementObject;
-			computeNewStatus(requirement);
-		}
-	}
-	
-	/**
-	 * Compute the new requirement status based on the verification status
-	 * @param requirement the requirement to be updated
-	 */
-	protected void computeNewStatus(Requirement requirement) {
+	protected void postVerificationStep(Requirement requirement, IProgressMonitor monitor) { 
 		boolean inProgress = false;
 		boolean partlyNonCompliant = false;
 		boolean partlyCompliant = false;
