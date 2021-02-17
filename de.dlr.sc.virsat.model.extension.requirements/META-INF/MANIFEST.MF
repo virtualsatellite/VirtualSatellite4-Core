@@ -11,7 +11,8 @@ Require-Bundle: org.eclipse.ui,
  de.dlr.sc.virsat.project,
  de.dlr.sc.virsat.model.ext.core;visibility:=reexport,
  de.dlr.sc.virsat.external.lib.commons.csv,
- de.dlr.sc.virsat.build
+ de.dlr.sc.virsat.build,
+ de.dlr.sc.virsat.external.lib.lyo
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
@@ -23,3 +24,4 @@ Export-Package: de.dlr.sc.virsat.model.extension.requirements,
  de.dlr.sc.virsat.model.extension.requirements.verification.build
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.requirements
 Bundle-Activator: de.dlr.sc.virsat.model.extension.requirements.Activator
+Import-Package: org.glassfish.jersey.client
