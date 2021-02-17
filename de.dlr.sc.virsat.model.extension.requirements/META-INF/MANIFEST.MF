@@ -24,4 +24,5 @@ Export-Package: de.dlr.sc.virsat.model.extension.requirements,
  de.dlr.sc.virsat.model.extension.requirements.verification.build
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.requirements
 Bundle-Activator: de.dlr.sc.virsat.model.extension.requirements.Activator
-Import-Package: org.glassfish.jersey.client
+Import-Package: org.glassfish.jersey.apache.connector,
+ org.glassfish.jersey.client
