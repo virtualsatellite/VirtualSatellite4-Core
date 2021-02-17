@@ -10,7 +10,6 @@
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-shaded-guava.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/commons-lang3.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/libthrift.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/javax.inject.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/oslc-java-client.jar" sourcepath="externalLib/maven/oslc-java-client-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/commons-cli-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/commons-cli.jar"/>
