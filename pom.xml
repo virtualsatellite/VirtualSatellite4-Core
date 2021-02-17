@@ -43,6 +43,7 @@
 				<module>de.dlr.sc.virsat.external.lib.commons.math</module>
 				<module>de.dlr.sc.virsat.external.lib.jfreechart</module>
 				<module>de.dlr.sc.virsat.external.lib.json-simple</module>
+				<module>de.dlr.sc.virsat.external.lib.lyo</module>
 				<module>de.dlr.sc.virsat.external.lib.matlabfile</module>
 				<module>de.dlr.sc.virsat.external.lib.jersey</module>
 				<module>de.dlr.sc.virsat.external.lib.swagger</module>
