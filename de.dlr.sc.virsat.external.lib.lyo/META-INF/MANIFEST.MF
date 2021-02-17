@@ -2,11 +2,10 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat External Lib - Lyo
 Bundle-SymbolicName: de.dlr.sc.virsat.external.lib.lyo
-Bundle-Version: 4.12.1.qualifier
+Bundle-Version: 4.12.2.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: de.dlr.sc.virsat.external.lib
 Bundle-Activator: de.dlr.virsat.external.lib.lyo.Activator
 Automatic-Module-Name: de.dlr.sc.virsat.external.lib.lyo
-Bundle-ClassPath: .,
-Export-Package: de.dlr.virsat.external.lib.lyo,
+Export-Package: de.dlr.virsat.external.lib.lyo
