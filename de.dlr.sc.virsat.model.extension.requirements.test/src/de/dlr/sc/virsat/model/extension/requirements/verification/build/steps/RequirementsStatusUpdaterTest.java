@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.requirements.verification.build;
+package de.dlr.sc.virsat.model.extension.requirements.verification.build.steps;
 
 import static org.junit.Assert.assertEquals;
 
@@ -23,7 +23,6 @@ import de.dlr.sc.virsat.model.extension.requirements.model.IVerification;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementGroup;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsSpecification;
-import de.dlr.sc.virsat.model.extension.requirements.verification.build.steps.RequirementsStatusUpdater;
 
 /**
  *

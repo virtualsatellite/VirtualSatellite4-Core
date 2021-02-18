@@ -31,7 +31,6 @@ public class VerificationConfigurationElementRunner extends AbstractRequirementV
 	
 	@Override
 	protected void doVerificationStep(IVerification verification, Requirement requirement, IProgressMonitor monitor) {
-		System.out.println(verification.getClass().getPackage() + "." + verification.getClass().getName());
 		IAutomaticVerification verificationRunner = getCustomVerification(verification);
 		if (verificationRunner != null) {
 			verificationRunner.runCustomVerification(editingDomain, verification, requirement, monitor);
@@ -43,7 +42,7 @@ public class VerificationConfigurationElementRunner extends AbstractRequirementV
 	 * Get the verification engine for the verification model element
 	 * @return the label provider
 	 */
-	public IAutomaticVerification getCustomVerification(IVerification modelElement) {
+	protected IAutomaticVerification getCustomVerification(IVerification modelElement) {
 		IVerification verificationModelElement = null;
 		IAutomaticVerification verificationEngine = null;
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
