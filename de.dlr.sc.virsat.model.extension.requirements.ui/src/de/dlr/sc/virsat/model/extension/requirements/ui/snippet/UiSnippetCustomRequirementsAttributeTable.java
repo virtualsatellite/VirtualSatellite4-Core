@@ -56,6 +56,7 @@ import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollection;
 import de.dlr.sc.virsat.model.extension.requirements.ui.Activator;
+import de.dlr.sc.virsat.model.extension.requirements.ui.celleditor.RequirementTraceEditingSupport;
 import de.dlr.sc.virsat.model.extension.requirements.ui.celleditor.RequirementsAttributeValuePerColumnEditingSupport;
 import de.dlr.sc.virsat.model.extension.requirements.ui.provider.RequirementsAttributeLabelProvider;
 import de.dlr.sc.virsat.project.ui.labelProvider.VirSatTransactionalAdapterFactoryLabelProvider;
@@ -80,8 +81,9 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 
 	private static final int TABLE_HIGHT = 500;
 	private static final int STATUS_COLUMN_WIDTH = 100;
+	private static final int TRACE_VERIFICATION_WIDTH = 100;
 	private static final int TRACE_COLUMN_WIDTH = 100;
-	private static final int FIXED_COLUMNS_NUMBER = 2; // status + verification column
+	public static final int FIXED_COLUMNS_NUMBER = 3; // status + verification column + tracing 
 	private static final String COLUMN_PREFIX = "attColumn";
 	
 	protected final String arrayInstanceID;
@@ -90,7 +92,8 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	protected int maxNumberAttributes = 0;
 
 	protected TableViewerColumn colStatus = null;
-	protected TableViewerColumn colValidation = null;
+	protected TableViewerColumn colVerification = null;
+	protected TableViewerColumn colTracing = null;
 	protected List<TableViewerColumn> attColumns;
 	
 	protected boolean controlListenerActive = true;
@@ -135,13 +138,22 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 			attColumns.add(colStatus);
 		}
 		
-		if (colValidation == null) {
-			colValidation = (TableViewerColumn) createDefaultColumn(COLUMN_TEXT_VERIFICATION);
+		if (colVerification == null) {
+			colVerification = (TableViewerColumn) createDefaultColumn(COLUMN_TEXT_VERIFICATION);
 
-			colValidation.getColumn().setWidth(TRACE_COLUMN_WIDTH);
-			colValidation.getColumn().addControlListener(this);
-			attColumns.add(colValidation);
+			colVerification.getColumn().setWidth(TRACE_VERIFICATION_WIDTH);
+			colVerification.getColumn().addControlListener(this);
+			attColumns.add(colVerification);
+		}
+		
+		if (colTracing == null) {
+			colTracing = (TableViewerColumn) createDefaultColumn(COLUMN_TEXT_TRACE);
 
+			colTracing.getColumn().setWidth(TRACE_COLUMN_WIDTH);
+			colTracing.getColumn().addControlListener(this);
+			colTracing.setEditingSupport(new RequirementTraceEditingSupport(editingDomain, columnViewer, categoryModel.getProperties()
+					.get(RequirementsAttributeLabelProvider.REQUIREMENT_VERIFICIATION_PROPERTY_NUMBER), toolkit));
+			attColumns.add(colTracing);
 		}
 
 		if (model instanceof CategoryAssignment) {
