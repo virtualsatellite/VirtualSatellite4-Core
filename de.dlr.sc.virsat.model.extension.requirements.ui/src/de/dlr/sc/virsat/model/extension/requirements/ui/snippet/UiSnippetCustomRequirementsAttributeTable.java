@@ -74,6 +74,7 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	protected static final String COLUMN_ATTRIBUTE_SEPARATOR = " / ";
 
 	protected static final String COLUMN_TEXT_VERIFICATION = "Verification";
+	protected static final String COLUMN_TEXT_TRACE = "Tracing";
 	
 	protected static final String FQN_PROPERTY_REQUIREMENT_TYPE = Requirement.FULL_QUALIFIED_CATEGORY_NAME + "." + Requirement.PROPERTY_REQTYPE;
 
