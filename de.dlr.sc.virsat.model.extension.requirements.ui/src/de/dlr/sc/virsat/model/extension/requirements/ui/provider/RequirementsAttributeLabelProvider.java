@@ -286,7 +286,7 @@ public class RequirementsAttributeLabelProvider extends VirSatTransactionalAdapt
 	 * @return the label
 	 */
 	protected String getTracingLabel(Requirement req) {
-		if (req.getVerification().isEmpty()) {
+		if (req.getTrace().getTarget().isEmpty()) {
 			return EMPTY_TRACE_STRING;
 		} else {
 			List<String> traceStringArtifacts = new ArrayList<String>();
