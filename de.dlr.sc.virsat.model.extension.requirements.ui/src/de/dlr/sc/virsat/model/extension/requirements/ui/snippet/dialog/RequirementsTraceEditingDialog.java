@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
-import de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementTrace;
+import de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementTraceTarget;
 
 /**
  *
@@ -55,7 +55,7 @@ public class RequirementsTraceEditingDialog extends AUiSnippetEditDialog {
 		// create the dialog area and button bar
 		dialogArea = createDialogArea(composite);
 
-		new UiSnippetTableRequirementTrace().createSwt(toolkit, editingDomain, composite,
+		new UiSnippetTableRequirementTraceTarget().createSwt(toolkit, editingDomain, composite,
 				initModel);
 		
 		buttonBar = createButtonBar(composite);

@@ -152,7 +152,7 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 			colTracing.getColumn().setWidth(TRACE_COLUMN_WIDTH);
 			colTracing.getColumn().addControlListener(this);
 			colTracing.setEditingSupport(new RequirementTraceEditingSupport(editingDomain, columnViewer, categoryModel.getProperties()
-					.get(RequirementsAttributeLabelProvider.REQUIREMENT_VERIFICIATION_PROPERTY_NUMBER), toolkit));
+					.get(RequirementsAttributeLabelProvider.REQUIREMENT_TRACE_PROPERTY_NUMBER), toolkit));
 			attColumns.add(colTracing);
 		}
 

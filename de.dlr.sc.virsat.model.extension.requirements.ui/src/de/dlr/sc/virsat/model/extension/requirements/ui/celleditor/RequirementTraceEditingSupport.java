@@ -92,7 +92,8 @@ public class RequirementTraceEditingSupport extends APropertyCellEditingSupport 
 	@Override
 	protected Object getValue(Object element) {
 		APropertyInstance propertyInstance = getPropertyInstance(element);
-		return propertyInstance;
+		CategoryAssignment value = ((ComposedPropertyInstance) propertyInstance).getTypeInstance();
+		return value;
 	}
 	
 	@Override

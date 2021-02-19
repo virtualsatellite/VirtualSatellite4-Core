@@ -122,7 +122,7 @@ public class RequirementsAttributeLabelProvider extends VirSatTransactionalAdapt
 				redirectNotification(propertyInstance, object);
 
 				if (propertyInstance instanceof ArrayInstance) {
-					int attIndex = columnIndex - 2; // Status + Trace Column
+					int attIndex = columnIndex - UiSnippetCustomRequirementsAttributeTable.FIXED_COLUMNS_NUMBER; 
 					return getValueOfAttributeIndex((ArrayInstance) propertyInstance, attIndex);
 				}
 			}
