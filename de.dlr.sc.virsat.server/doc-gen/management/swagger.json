@@ -6,7 +6,7 @@
     "title" : "The Management API"
   },
   "basePath" : "/rest/management/v0.0.1",
-  "schemes" : [ "http" ],
+  "schemes" : [ "http", "https" ],
   "paths" : {
     "/project" : {
       "get" : {

@@ -37,7 +37,8 @@ So a Client can read or write into the Virtual Satellite model.
 The server provides functionality for administrators, that can manipulate the server configuration, and users.
 For that purpose it uses authentication and authorization.
 // For authentication purposes it is planned to an LDAP server can be connected to the REST server.
-// The connection can be secured via HTTPS.
+The connection can be secured via HTTPS.
+The server uses the port 8000 for HTTP and 8443 for HTTPS requests.
 Each user can only access the _Server Repositories_ to which he has been granted access.
 
 The connected SVN/git repositories can also be manipulated from _Clients using the Virtual Satellite UI_.
@@ -73,13 +74,13 @@ The _Data Model_ is connected to a _SVN_ or _git_ backend.
 The REST API can be accessed via the 
 [subs=+quotes]
 ....
-{*server adress*}:8000/rest
+{*server adress*}:{*http/https port*}/rest
 ....
 and currently supports multiple APIs for different purposes.
 Each API can be accessed via it's *name* and *version number*:
 [subs=+quotes]
 ....
-{*server adress*}:8000/rest/{*name*}/{*version number*}
+{*server adress*}:{*http/https port*}/rest/{*name*}/{*version number*}
 ....
 
 Currently the following APIs are provided:
@@ -91,7 +92,7 @@ The following documentation of the REST endpoints is automatically generated usi
 For each API the swagger documentation also is provided via the REST API at:
 [subs=+quotes]
 ....
-{*server adress*}:8000/rest/{*name*}/{*version number*}/swagger.json or /swagger.yaml
+{*server adress*}:{*http/https port*}/rest/{*name*}/{*version number*}/swagger.json or /swagger.yaml
 ....
 
 It can help you, if you want to connect Virtual Satellite to your own application.
@@ -204,9 +205,27 @@ The Server will start and try to load the repositories defined in
         demo2.repository
 ....
 
+|{counter:step}.
+|Send your first request to the server!
+The server provides a status endpoint that can be accessed without authentication and repositories.
+Send a HTTP/S GET request to the following address:
+[subs=+quotes]
+....
+{*server adress*}:{*http/https port*}/status
+....
+|
+The server should return HTTP status OK (200) and the following response body:
+....
+{
+	"status": "ok"
+}
+....
+
 |===
 
 === The Configuration File
+[WARNING]
+This file should be stored in a secure location on the server.
 
 [WARNING]
 .Connection is UNSECURED by default
@@ -214,7 +233,7 @@ The Server will start and try to load the repositories defined in
 By default the REST server communicates over HTTP, so your credentials (username and password) are transmitted unencrypted.
 ====
 
-// TIP: Configure the server to use the secure HTTPS connection.
+TIP: Configure the server to use the secure HTTPS connection.
 
 By convention this file is named *server.properties*:
 
@@ -235,7 +254,25 @@ By convention this file is named *server.properties*:
 # Location of the .properties file for authentication 
 # *WARNING*: will only be used if the HashLoginService is used
 *auth.properties.file* = ...
+
+# "true" if HTTPS should be enabled
+*https.enabled* = 
+# Path to the JSSE keystore containing the certificates (by JDKs keytool)
+*https.keystore.path* = 
+# Password for the keystore
+*https.keystore.password* = 
+# Optional password for the key "jetty", will default to https.keystore.password if left empty
+*https.keystore.manager.password* = 
+# "true" if HTTP should be disabled (*WARNING*: will only be used if HTTPS is enabled)
+*https.only* = 
 ....
+
+To use HTTPS you have to enable it in the server configuration and provide a certificate that is stored in a JSSE keystore.
+Such a keystore can be created and managed (e.g. create or add certificates) via the JDKs keytool.
+The server will use the certificate stored with the key "jetty", that is secured by the keystore password and an optional password for the key.
+HTTP can be disabled in the server configuration if HTTPS is enabled.
+
+TIP: For more information regarding the keystore you can refer to the Jetty, JSSE and keytool documentation.
 
 === The Authentication File
 [WARNING]

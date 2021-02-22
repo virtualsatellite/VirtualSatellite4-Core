@@ -4,7 +4,7 @@
 	<extension point="de.dlr.sc.virsat.model.Concept">
 		<concept
 			id="de.dlr.sc.virsat.model.extension.requirements"
-			version="0.4"
+			version="0.5"
 			xmi="concept/concept.xmi">
 		</concept>
 	</extension>
@@ -40,6 +40,10 @@
 		<CategoryAssignmentBean
 			id="de.dlr.sc.virsat.model.extension.requirements.RequirementLink"
 			caBean="de.dlr.sc.virsat.model.extension.requirements.model.RequirementLink">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.requirements.RequirementTrace"
+			caBean="de.dlr.sc.virsat.model.extension.requirements.model.RequirementTrace">
 		</CategoryAssignmentBean>
 		<CategoryAssignmentBean
 			id="de.dlr.sc.virsat.model.extension.requirements.AttributeValue"
@@ -111,6 +115,14 @@
 		version="0.4"
 		class="de.dlr.sc.virsat.model.extension.requirements.migrator.Migrator0v4"
 		xmi="concept/concept_v0_4.xmi">
+	</migrator>
+</extension>
+<extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">
+	<migrator
+		id="de.dlr.sc.virsat.model.extension.requirements"
+		version="0.5"
+		class="de.dlr.sc.virsat.model.extension.requirements.migrator.Migrator0v5"
+		xmi="concept/concept_v0_5.xmi">
 	</migrator>
 </extension>
 	<!-- Plugin.XML Protected Region End -->

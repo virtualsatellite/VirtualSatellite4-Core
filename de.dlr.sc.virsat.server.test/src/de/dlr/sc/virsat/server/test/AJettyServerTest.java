@@ -23,6 +23,7 @@ import javax.ws.rs.core.UriBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jetty.http.HttpScheme;
 import org.eclipse.jetty.security.HashLoginService;
 import org.glassfish.jersey.client.ClientConfig;
 import org.junit.After;
@@ -75,7 +76,7 @@ public abstract class AJettyServerTest extends AConceptTestCase {
 		ClientConfig config = new ClientConfig();
 		Client client = ClientBuilder.newClient(config);
 		
-		URI uri = UriBuilder.fromUri("http://localhost:8000/").build();
+		URI uri = UriBuilder.fromUri(HttpScheme.HTTP.asString() + "://localhost:" + VirSatJettyServer.VIRSAT_JETTY_PORT).build();
 		webTarget = client.target(uri).path("/rest");
 	}
 

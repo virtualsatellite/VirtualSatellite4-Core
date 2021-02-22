@@ -44,6 +44,10 @@
 		pathToImage="resources/icons/RequirementLink.gif">
 	</conceptImage>
 	<conceptImage
+		fullQualifiedID="de.dlr.sc.virsat.model.extension.requirements.RequirementTrace"
+		pathToImage="resources/icons/RequirementTrace.gif">
+	</conceptImage>
+	<conceptImage
 		fullQualifiedID="de.dlr.sc.virsat.model.extension.requirements.AttributeValue"
 		pathToImage="resources/icons/AttributeValue.gif">
 	</conceptImage>
@@ -114,6 +118,10 @@
 		name="Add RequirementLink">
 	</command>
 	<command
+		id="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddRequirementTrace"
+		name="Add RequirementTrace">
+	</command>
+	<command
 		id="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddAttributeValue"
 		name="Add AttributeValue">
 	</command>
@@ -180,6 +188,11 @@
 	      commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddRequirementLink"
 	      disabledIcon="resources/icons/RequirementLink_disabled.gif"
 	      icon="resources/icons/RequirementLink.gif">
+	</image>
+	<image
+	      commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddRequirementTrace"
+	      disabledIcon="resources/icons/RequirementTrace_disabled.gif"
+	      icon="resources/icons/RequirementTrace.gif">
 	</image>
 	<image
 	      commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddAttributeValue"
@@ -251,6 +264,10 @@
 	<handler
 		class="de.dlr.sc.virsat.model.extension.requirements.ui.handler.AddRequirementLinkHandler"
 		commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddRequirementLink">
+	</handler>
+	<handler
+		class="de.dlr.sc.virsat.model.extension.requirements.ui.handler.AddRequirementTraceHandler"
+		commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddRequirementTrace">
 	</handler>
 	<handler
 		class="de.dlr.sc.virsat.model.extension.requirements.ui.handler.AddAttributeValueHandler"
@@ -445,6 +462,28 @@
 		</command>
 		<command
 			commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddRequirementLink"
+			style="push">
+			<visibleWhen
+				checkEnabled="true">
+				<with
+					variable="selection">
+					<iterate
+						ifEmpty="false"
+						operator="and">
+						<test 
+							property="de.dlr.sc.virsat.model.extension.requirements.ui.propertyTester.conceptEnabled"
+							value="true" 
+							forcePluginActivation="true">
+						</test>		
+						<instanceof
+							value="de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer">
+						</instanceof>
+					</iterate>
+				</with>
+			</visibleWhen>
+		</command>
+		<command
+			commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddRequirementTrace"
 			style="push">
 			<visibleWhen
 				checkEnabled="true">
@@ -800,6 +839,21 @@
 		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementLinkTargets"
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementLinkTargets">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementTrace"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementTrace">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.section.uiSnippetRequirementTrace"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetSectionRequirementTrace">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementTraceTarget"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementTraceTarget">
 		</uiSnippet>
 		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetAttributeValue"

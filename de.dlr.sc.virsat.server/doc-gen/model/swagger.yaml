@@ -7,6 +7,7 @@ info:
 basePath: "/rest/model/v0.0.1"
 schemes:
 - "http"
+- "https"
 paths:
   /repository/{repoName}/ca:
     put:
@@ -28,8 +29,10 @@ paths:
         required: true
         type: "string"
       responses:
-        default:
-          description: "successful operation"
+        200:
+          description: "Successful operation"
+        500:
+          description: "Synchronization error"
       security:
       - basic: []
   /repository/{repoName}/ca/{caUuid}:
@@ -57,6 +60,8 @@ paths:
             $ref: "#/definitions/ABeanCategoryAssignment"
         400:
           description: "Could not find requested CA"
+        500:
+          description: "Synchronization error"
       security:
       - basic: []
   /repository/{repoName}/property:
@@ -79,8 +84,10 @@ paths:
         required: true
         type: "string"
       responses:
-        default:
-          description: "successful operation"
+        200:
+          description: "Successful operation"
+        500:
+          description: "Synchronization error"
       security:
       - basic: []
   /repository/{repoName}/property/{propertyUuid}:
@@ -106,8 +113,8 @@ paths:
           description: "Successful operation"
           schema:
             $ref: "#/definitions/ABeanProperty"
-        400:
-          description: "Could not find requested Property"
+        500:
+          description: "Synchronization error"
       security:
       - basic: []
   /repository/{repoName}/sei:
@@ -130,8 +137,10 @@ paths:
         required: true
         type: "string"
       responses:
-        default:
-          description: "successful operation"
+        200:
+          description: "Successful operation"
+        500:
+          description: "Synchronization error"
       security:
       - basic: []
   /repository/{repoName}/sei/{seiUuid}:
@@ -160,6 +169,8 @@ paths:
             $ref: "#/definitions/ABeanStructuralElementInstance"
         400:
           description: "Could not find requested SEI"
+        500:
+          description: "Synchronization error"
       security:
       - basic: []
   /repository/{repoName}/seis:
@@ -184,6 +195,8 @@ paths:
               $ref: "#/definitions/ABeanStructuralElementInstance"
         400:
           description: "Could not create bean for a root SEI"
+        500:
+          description: "Synchronization error"
       security:
       - basic: []
 securityDefinitions:
