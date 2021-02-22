@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.server.resources;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -25,6 +26,7 @@ import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBException;
 
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.jetty.http.HttpStatus;
 import org.eclipse.jgit.api.Git;
@@ -61,6 +63,7 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferenceArray;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
+import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 import de.dlr.sc.virsat.server.auth.filter.CorsFilter;
 import de.dlr.sc.virsat.server.servlet.VirSatModelAccessServlet;
 import de.dlr.sc.virsat.server.test.AServerRepositoryTest;
@@ -92,6 +95,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	private BeanPropertyReference<BeanPropertyString> beanReferenceProp;
 	private BeanPropertyComposed<TestCategoryAllProperty> beanComposed;
 	private BeanPropertyReference<TestCategoryAllProperty> beanReferenceCa;
+	private VirSatProjectCommons projectCommons;
 
 	private static final String TEST_STRING = "testString";
 	
@@ -113,6 +117,8 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	public void setUpModel() throws Exception {
 		ed = testServerRepository.getEd();
 		resourceSet = ed.getResourceSet();
+
+		projectCommons = new VirSatProjectCommons(resourceSet.getProject());
 
 		conceptTest = loadConceptFromPlugin("de.dlr.sc.virsat.model.extension.tests");
 		
@@ -585,6 +591,50 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	@Test
 	public void testCaReferenceArrayPut() throws Exception {
 		testPutCa(tcReferenceArray);
+	}
+	
+	/**
+	 * Delete a testSubject via delete request to a specified path
+	 * @param testSubject to be deleted
+	 * @param path to the delete resource
+	 * @throws Exception
+	 */
+	private void testDelete(IBeanUuid testSubject, String path) throws Exception {
+		int commits = VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath());
+		
+		String uuid = testSubject.getUuid();
+		Response response = webTarget
+				.path(path)
+				.path(uuid)
+				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
+				.delete();
+		
+		assertEquals(HttpStatus.OK_200, response.getStatus());
+		
+		assertEquals("One new commit", commits + 1,
+				VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath()));
+	}
+	
+	/**
+	 * Delete a beanSei via delete request
+	 * @param beanSei to delete
+	 * @throws Exception
+	 */
+	private void testDeleteSei(IBeanStructuralElementInstance beanSei) throws Exception {
+		IFolder seiFolder = projectCommons.getStructuralElemntInstanceFolder(beanSei.getStructuralElementInstance());
+		
+		assertTrue("Sei folder exists", seiFolder.exists());
+		
+		testDelete(beanSei, ModelAccessResource.SEI);
+		
+		assertNull("Sei has been deleted and is no longer in a resource", beanSei.getStructuralElementInstance().eResource());
+		assertFalse("Sei folder deleted", seiFolder.exists());
+	}
+	
+	@Test
+	public void testSeiDelete() throws Exception {
+		testDeleteSei(tSei);
 	}
 	
 	@Test

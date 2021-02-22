@@ -16,6 +16,7 @@ import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -26,6 +27,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.emf.common.command.Command;
 import org.eclipse.jetty.http.HttpStatus;
 
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
@@ -37,6 +39,9 @@ import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementIns
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
+import de.dlr.sc.virsat.project.structure.command.CreateRemoveSeiWithFileStructureCommand;
+import de.dlr.sc.virsat.project.structure.command.RemoveFileStructureCommand;
 import de.dlr.sc.virsat.server.auth.ServerRoles;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProvider;
@@ -119,14 +124,17 @@ public class ModelAccessResource {
 	@RolesAllowed({ServerRoles.ADMIN, ServerRoles.USER})
 	public static class RepoModelAccessResource {
 	
+		private static final String COULD_NOT_FIND_REQUESTED_SEI = "Could not find requested SEI";
 		private static final String SUCCESSFUL_OPERATION = "Successful operation";
 		private static final String SYNC_ERROR = "Synchronization error";
 		private Repository repository;
 		private ServerRepository serverRepository;
+		private VirSatTransactionalEditingDomain ed;
 
 		public RepoModelAccessResource(ServerRepository serverRepository) {
 			this.serverRepository = serverRepository;
-			this.repository = serverRepository.getEd().getResourceSet().getRepository();
+			ed = serverRepository.getEd();
+			repository = serverRepository.getResourceSet().getRepository();
 		}
 
 		private Response createBadRequestResponse(String msg) {
@@ -259,7 +267,8 @@ public class ModelAccessResource {
 				produces = "application/json",
 				value = "Fetch a list of root SEIs",
 				httpMethod = "GET",
-				notes = "This service fetches the root StructuralElementInstances")
+				notes = "This service fetches the root StructuralElementInstances"
+						+ "It can be used as an entry point into the data model.")
 		@ApiResponses(value = { 
 				@ApiResponse(
 						code = HttpStatus.OK_200,
@@ -301,8 +310,7 @@ public class ModelAccessResource {
 				produces = "application/json",
 				value = "Fetch SEI",
 				httpMethod = "GET",
-				notes = "This service fetches a StructuralElementInstance."
-						+ "It can be used as an entry point into the data model.")
+				notes = "This service fetches a StructuralElementInstance.")
 		@ApiResponses(value = { 
 				@ApiResponse(
 						code = HttpStatus.OK_200,
@@ -310,7 +318,7 @@ public class ModelAccessResource {
 						message = SUCCESSFUL_OPERATION),
 				@ApiResponse(
 						code = HttpStatus.BAD_REQUEST_400, 
-						message = "Could not find requested SEI"),
+						message = COULD_NOT_FIND_REQUESTED_SEI),
 				@ApiResponse(
 						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 						message = SYNC_ERROR)})
@@ -347,6 +355,40 @@ public class ModelAccessResource {
 			try {
 				serverRepository.syncRepository();
 				return Response.status(Response.Status.OK).build();
+			} catch (Exception e) {
+				return createSyncErrorResponse(e.getMessage());
+			}
+		}
+			
+		/** **/
+		@DELETE
+		@Path(SEI + "/{seiUuid}")
+		@Produces(MediaType.APPLICATION_JSON)
+		@ApiOperation(
+				produces = "application/json",
+				value = "Delete SEI",
+				httpMethod = "DELETE",
+				notes = "This service deletes a StructuralElementInstance.")
+		@ApiResponses(value = { 
+				@ApiResponse(
+						code = HttpStatus.OK_200,
+						message = SUCCESSFUL_OPERATION),
+				@ApiResponse(
+						code = HttpStatus.BAD_REQUEST_400,
+						message = COULD_NOT_FIND_REQUESTED_SEI),
+				@ApiResponse(
+						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+						message = SYNC_ERROR)})
+		public Response deleteSei(@PathParam("seiUuid") @ApiParam(value = "Uuid of the SEI", required = true)  String seiUuid) {
+			try {
+				serverRepository.syncRepository();
+				StructuralElementInstance sei = RepositoryUtility.findSei(seiUuid, repository);
+				Command deleteCommand = CreateRemoveSeiWithFileStructureCommand.create(sei, RemoveFileStructureCommand.DELETE_RESOURCE_OPERATION_FUNCTION);
+				ed.getCommandStack().execute(deleteCommand);
+				serverRepository.syncRepository();
+				return Response.ok().build();
+			} catch (CoreException e) {
+				return createBadRequestResponse(e.getMessage());
 			} catch (Exception e) {
 				return createSyncErrorResponse(e.getMessage());
 			}
