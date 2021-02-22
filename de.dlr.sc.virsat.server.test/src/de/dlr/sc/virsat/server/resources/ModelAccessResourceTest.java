@@ -637,6 +637,24 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		testDeleteSei(tSei);
 	}
 	
+	/**
+	 * Delete a beanCa via delete request
+	 * @param beanCa to delete
+	 * @throws Exception
+	 */
+	private void testDeleteCa(IBeanCategoryAssignment beanCa) throws Exception {
+		int initialCas = tSei.getCategoryAssignments().size();
+		
+		testDelete(beanCa, ModelAccessResource.CA);
+
+		assertEquals("Ca removed", initialCas - 1, tSei.getCategoryAssignments().size());
+	}
+	
+	@Test
+	public void testCaDelete() throws Exception {
+		testDeleteCa(tcAllProperty);
+	}
+	
 	@Test
 	public void testCorsHeaders() {
 		Map<String, String> headers = new HashMap<String, String>();

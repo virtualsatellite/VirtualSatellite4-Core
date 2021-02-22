@@ -38,6 +38,7 @@ import de.dlr.sc.virsat.model.concept.types.property.ABeanProperty;
 import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.Repository;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.structure.command.CreateRemoveSeiWithFileStructureCommand;
@@ -124,6 +125,7 @@ public class ModelAccessResource {
 	@RolesAllowed({ServerRoles.ADMIN, ServerRoles.USER})
 	public static class RepoModelAccessResource {
 	
+		private static final String COULD_NOT_FIND_REQUESTED_CA = "Could not find requested CA";
 		private static final String COULD_NOT_FIND_REQUESTED_SEI = "Could not find requested SEI";
 		private static final String SUCCESSFUL_OPERATION = "Successful operation";
 		private static final String SYNC_ERROR = "Synchronization error";
@@ -216,7 +218,7 @@ public class ModelAccessResource {
 						message = SUCCESSFUL_OPERATION),
 				@ApiResponse(
 						code = HttpStatus.BAD_REQUEST_400, 
-						message = "Could not find requested CA"),
+						message = COULD_NOT_FIND_REQUESTED_CA),
 				@ApiResponse(
 						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 						message = SYNC_ERROR)})
@@ -254,6 +256,45 @@ public class ModelAccessResource {
 			try {
 				serverRepository.syncRepository();
 				return Response.status(Response.Status.OK).build();
+			} catch (Exception e) {
+				return createSyncErrorResponse(e.getMessage());
+			}
+		}
+		
+		/** **/
+		@DELETE
+		@Path(CA + "/{caUuid}")
+		@Produces(MediaType.APPLICATION_JSON)
+		@ApiOperation(
+				produces = "application/json",
+				value = "Delete CA",
+				httpMethod = "DELETE",
+				notes = "This service deletes a CategoryAssignment.")
+		@ApiResponses(value = { 
+				@ApiResponse(
+						code = HttpStatus.OK_200,
+						message = SUCCESSFUL_OPERATION),
+				@ApiResponse(
+						code = HttpStatus.BAD_REQUEST_400,
+						message = COULD_NOT_FIND_REQUESTED_CA),
+				@ApiResponse(
+						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+						message = SYNC_ERROR)})
+		public Response deleteCa(@PathParam("caUuid") @ApiParam(value = "Uuid of the CA", required = true)  String caUuid) {
+			try {
+				// Sync before delete
+				serverRepository.syncRepository();
+				
+				// Delete CA
+				CategoryAssignment ca = RepositoryUtility.findCa(caUuid, repository);
+				Command deleteCommand = new BeanCategoryAssignmentFactory().getInstanceFor(ca).delete(ed);
+				ed.getCommandStack().execute(deleteCommand);
+				
+				// Sync after delete
+				serverRepository.syncRepository();
+				return Response.ok().build();
+			} catch (CoreException e) {
+				return createBadRequestResponse(e.getMessage());
 			} catch (Exception e) {
 				return createSyncErrorResponse(e.getMessage());
 			}
@@ -381,10 +422,15 @@ public class ModelAccessResource {
 						message = SYNC_ERROR)})
 		public Response deleteSei(@PathParam("seiUuid") @ApiParam(value = "Uuid of the SEI", required = true)  String seiUuid) {
 			try {
+				// Sync before delete
 				serverRepository.syncRepository();
+				
+				// Delete Sei
 				StructuralElementInstance sei = RepositoryUtility.findSei(seiUuid, repository);
 				Command deleteCommand = CreateRemoveSeiWithFileStructureCommand.create(sei, RemoveFileStructureCommand.DELETE_RESOURCE_OPERATION_FUNCTION);
 				ed.getCommandStack().execute(deleteCommand);
+				
+				// Sync after delete
 				serverRepository.syncRepository();
 				return Response.ok().build();
 			} catch (CoreException e) {
