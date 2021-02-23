@@ -78,6 +78,39 @@
         "security" : [ {
           "basic" : [ ]
         } ]
+      },
+      "delete" : {
+        "summary" : "Delete CA",
+        "description" : "This service deletes a CategoryAssignment.",
+        "operationId" : "deleteCa",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "caUuid",
+          "in" : "path",
+          "description" : "Uuid of the CA",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "repoName",
+          "in" : "path",
+          "description" : "Name of the repository",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "400" : {
+            "description" : "Could not find requested CA"
+          },
+          "500" : {
+            "description" : "Synchronization error"
+          }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        } ]
       }
     },
     "/repository/{repoName}/property" : {
@@ -186,7 +219,7 @@
     "/repository/{repoName}/sei/{seiUuid}" : {
       "get" : {
         "summary" : "Fetch SEI",
-        "description" : "This service fetches a StructuralElementInstance.It can be used as an entry point into the data model.",
+        "description" : "This service fetches a StructuralElementInstance.",
         "operationId" : "getSei",
         "produces" : [ "application/json" ],
         "parameters" : [ {
@@ -219,12 +252,45 @@
         "security" : [ {
           "basic" : [ ]
         } ]
+      },
+      "delete" : {
+        "summary" : "Delete SEI",
+        "description" : "This service deletes a StructuralElementInstance.",
+        "operationId" : "deleteSei",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "seiUuid",
+          "in" : "path",
+          "description" : "Uuid of the SEI",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "repoName",
+          "in" : "path",
+          "description" : "Name of the repository",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation"
+          },
+          "400" : {
+            "description" : "Could not find requested SEI"
+          },
+          "500" : {
+            "description" : "Synchronization error"
+          }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        } ]
       }
     },
     "/repository/{repoName}/seis" : {
       "get" : {
         "summary" : "Fetch a list of root SEIs",
-        "description" : "This service fetches the root StructuralElementInstances",
+        "description" : "This service fetches the root StructuralElementInstancesIt can be used as an entry point into the data model.",
         "operationId" : "getRootSeis",
         "produces" : [ "application/json" ],
         "parameters" : [ {
