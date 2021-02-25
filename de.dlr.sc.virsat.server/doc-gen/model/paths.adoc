@@ -135,6 +135,62 @@ __required__|Name of the repository|string
 ----
 
 
+[[_model_deleteca]]
+=== Delete CA
+....
+DELETE /repository/{repoName}/ca/{caUuid}
+....
+
+
+==== Description
+This service deletes a CategoryAssignment.
+
+
+==== Parameters
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|Type|Name|Description|Schema
+|**Path**|**caUuid** +
+__required__|Uuid of the CA|string
+|**Path**|**repoName** +
+__required__|Name of the repository|string
+|===
+
+
+==== Responses
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP Code|Description|Schema
+|**200**|Successful operation|No Content
+|**400**|Could not find requested CA|No Content
+|**500**|Synchronization error|No Content
+|===
+
+
+==== Produces
+
+* `application/json`
+
+
+==== Security
+
+[options="header", cols=".^3,.^4"]
+|===
+|Type|Name
+|**basic**|**<<_model_basic,basic>>**
+|===
+
+
+==== Example HTTP request
+
+===== Request path
+----
+/repository/string/ca/string
+----
+
+
 [[_model_putproperty]]
 === Put Property
 ....
@@ -353,7 +409,7 @@ GET /repository/{repoName}/sei/{seiUuid}
 
 
 ==== Description
-This service fetches a StructuralElementInstance.It can be used as an entry point into the data model.
+This service fetches a StructuralElementInstance.
 
 
 ==== Parameters
@@ -426,6 +482,62 @@ __required__|Uuid of the SEI|string
 ----
 
 
+[[_model_deletesei]]
+=== Delete SEI
+....
+DELETE /repository/{repoName}/sei/{seiUuid}
+....
+
+
+==== Description
+This service deletes a StructuralElementInstance.
+
+
+==== Parameters
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|Type|Name|Description|Schema
+|**Path**|**repoName** +
+__required__|Name of the repository|string
+|**Path**|**seiUuid** +
+__required__|Uuid of the SEI|string
+|===
+
+
+==== Responses
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP Code|Description|Schema
+|**200**|Successful operation|No Content
+|**400**|Could not find requested SEI|No Content
+|**500**|Synchronization error|No Content
+|===
+
+
+==== Produces
+
+* `application/json`
+
+
+==== Security
+
+[options="header", cols=".^3,.^4"]
+|===
+|Type|Name
+|**basic**|**<<_model_basic,basic>>**
+|===
+
+
+==== Example HTTP request
+
+===== Request path
+----
+/repository/string/sei/string
+----
+
+
 [[_model_getrootseis]]
 === Fetch a list of root SEIs
 ....
@@ -434,7 +546,7 @@ GET /repository/{repoName}/seis
 
 
 ==== Description
-This service fetches the root StructuralElementInstances
+This service fetches the root StructuralElementInstancesIt can be used as an entry point into the data model.
 
 
 ==== Parameters
