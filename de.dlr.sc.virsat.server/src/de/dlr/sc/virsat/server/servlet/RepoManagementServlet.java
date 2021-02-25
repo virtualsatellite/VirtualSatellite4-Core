@@ -10,6 +10,8 @@
 
 package de.dlr.sc.virsat.server.servlet;
 
+import java.io.File;
+
 import javax.servlet.Servlet;
 
 import org.glassfish.jersey.internal.inject.AbstractBinder;
@@ -44,7 +46,7 @@ public class RepoManagementServlet extends ApplicationServletContainer implement
 			register(RolesAllowedDynamicFeature.class);
 
 			// Register documentation resource via binder
-			final DocumentationResource docProvider = new DocumentationResource("management");
+			final DocumentationResource docProvider = new DocumentationResource("doc-gen" + File.separator + "management");
 			final AbstractBinder docBinder = new AbstractBinder() {
 				@Override
 				public void configure() {

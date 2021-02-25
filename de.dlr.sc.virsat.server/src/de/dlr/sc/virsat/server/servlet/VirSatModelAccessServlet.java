@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.servlet;
 
+import java.io.File;
+
 import javax.servlet.Servlet;
 
 import org.glassfish.jersey.CommonProperties;
@@ -51,7 +53,7 @@ public class VirSatModelAccessServlet extends ApplicationServletContainer implem
 			register(ModelAccessResource.class);
 			
 			// Register documentation resource via binder
-			final DocumentationResource docProvider = new DocumentationResource("model");
+			final DocumentationResource docProvider = new DocumentationResource("doc-gen" + File.separator + "model");
 			final AbstractBinder docBinder = new AbstractBinder() {
 				@Override
 				public void configure() {
