@@ -73,6 +73,16 @@ Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"
 		Type enumeration of Category EnumerationDefinition;
 	}
 	
+	Category ImportConfiguration description "Mapping specification of imported requirements" {
+		Applicable For [ RequirementsConfigurationCollection];
+		Reference typeDefinitionsContainer of Type RequirementsConfiguration;
+		Type mappedSpecifications[] of Category SpecificationMapping;
+	}
+	
+	Category SpecificationMapping {
+		StringProperty externalIdentifier;
+		Reference specification of Type RequirementsSpecification;
+	}
 	
 	Category EnumerationDefinition {
 		Type literals [] of Category EnumerationLiteral;

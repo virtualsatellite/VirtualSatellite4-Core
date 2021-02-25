@@ -19,7 +19,10 @@ Eclipse-ExtensibleAPI: true
 Export-Package: de.dlr.sc.virsat.model.extension.requirements,
  de.dlr.sc.virsat.model.extension.requirements.command,
  de.dlr.sc.virsat.model.extension.requirements.csv,
+ de.dlr.sc.virsat.model.extension.requirements.migrator,
  de.dlr.sc.virsat.model.extension.requirements.model,
+ de.dlr.sc.virsat.model.extension.requirements.reqif,
+ de.dlr.sc.virsat.model.extension.requirements.util,
  de.dlr.sc.virsat.model.extension.requirements.validator,
  de.dlr.sc.virsat.model.extension.requirements.verification.build
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.requirements

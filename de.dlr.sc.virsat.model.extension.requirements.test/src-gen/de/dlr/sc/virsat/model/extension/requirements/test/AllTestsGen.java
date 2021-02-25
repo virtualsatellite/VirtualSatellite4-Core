@@ -20,10 +20,12 @@ import org.junit.runners.Suite.SuiteClasses;
 import junit.framework.JUnit4TestAdapter;
 
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementGroupTest;
+import de.dlr.sc.virsat.model.extension.requirements.model.ImportConfigurationTest;
 import de.dlr.sc.virsat.model.extension.requirements.migrator.Migrator0v1Test;
 import de.dlr.sc.virsat.model.extension.requirements.model.VerificationTypeTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.EnumerationLiteralTest;
 import de.dlr.sc.virsat.model.extension.requirements.migrator.Migrator0v4Test;
+import de.dlr.sc.virsat.model.extension.requirements.model.SpecificationMappingTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.DefaultVerificationTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollectionTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementTypeTest;
@@ -58,6 +60,8 @@ import de.dlr.sc.virsat.model.extension.requirements.model.ExistenceVerification
 	AttributeValueTest.class,
 	RequirementTypeTest.class,
 	RequirementAttributeTest.class,
+	ImportConfigurationTest.class,
+	SpecificationMappingTest.class,
 	EnumerationDefinitionTest.class,
 	EnumerationLiteralTest.class,
 	DefaultVerificationTest.class,
