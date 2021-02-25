@@ -8,10 +8,8 @@
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/jetty-io.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/jetty-server.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/jetty-util.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/hamcrest-core.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/jakarta.servlet-api.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-test-framework-core.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/junit.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/aopalliance-repackaged.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/hk2-api.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/hk2-locator.jar"/>
