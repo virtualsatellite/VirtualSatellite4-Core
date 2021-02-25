@@ -16,18 +16,26 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.dialogs.DialogSettings;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.rmf.reqif10.ReqIF;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWizard;
 import org.eclipse.ui.statushandlers.StatusManager;
 
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.extension.requirements.model.ImportConfiguration;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollection;
+import de.dlr.sc.virsat.model.extension.requirements.reqif.ReqIfImporter;
 import de.dlr.sc.virsat.model.extension.requirements.ui.Activator;
+import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 
 /**
  * A wizard for the import of requirements from a CSV file
@@ -36,11 +44,11 @@ import de.dlr.sc.virsat.model.extension.requirements.ui.Activator;
 public class ReqIfImportWizard extends Wizard implements IWorkbenchWizard {
 
 	public static final String ID = "de.dlr.sc.virsat.model.extension.requirements.ui.wizard.csvImport";
-	private static final int NUMBER_PROGRESS_TICKS = 3;
 
 	private ReqIfFileConfigurationSelectionPage importPage;
 	private ReqIfMappingPage mappingPage;
 	private IContainer model;
+	private ReqIfImporter importer = new ReqIfImporter();
 
 
 	/**
@@ -66,33 +74,55 @@ public class ReqIfImportWizard extends Wizard implements IWorkbenchWizard {
 	}
 
 	@Override
+	public boolean canFinish() {
+		return super.canFinish() || importPage.canFinish();
+	}
+	
+	@Override
 	public boolean performFinish() {
 
-		final StructuralElementInstance reqConfiguration = (StructuralElementInstance) importPage.getSelection();
+		final EObject reqConfiguration = (EObject) importPage.getSelection();
 
 		// Do the import
 		Job importJob = new Job("Performing Requirements CSV Import") {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				SubMonitor importSubMonitor = SubMonitor.convert(monitor, NUMBER_PROGRESS_TICKS);
 				
+				VirSatTransactionalEditingDomain editingDomain = VirSatEditingDomainRegistry.INSTANCE
+						.getEd(reqConfiguration);
+				ReqIF reqIfContent = mappingPage.getReqIfContent();
+				
+				if (reqConfiguration instanceof StructuralElementInstance) {
+					doImport(editingDomain, reqIfContent, new RequirementsConfigurationCollection((StructuralElementInstance) reqConfiguration), monitor);
+				} else  {
+					doReimport(editingDomain, reqIfContent, new ImportConfiguration((CategoryAssignment) reqConfiguration), monitor);
+				}
 				
 				// Update workspace
 				try {
 					ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
 				} catch (CoreException e) {
 					Status status = new Status(Status.ERROR, Activator.getPluginId(),
-							"CSVImportWizard: Failed to refresh the workspace!", e);
+							"ReqIFImportWizard: Failed to refresh the workspace!", e);
 					StatusManager.getManager().handle(status, StatusManager.LOG | StatusManager.SHOW);
 					return Status.CANCEL_STATUS;
 				}
-				importSubMonitor.worked(1);
 				return Status.OK_STATUS;
 			}
 		};
 		importJob.schedule();
 
 		return true;
+	}
+	
+	public void doImport(EditingDomain editingDomain, ReqIF reqIfContent, RequirementsConfigurationCollection configurationContainer, IProgressMonitor monitor) {
+
+		importer.persistSpecificationMapping(editingDomain, mappingPage.getSpecificationMapping(), configurationContainer);
+
+	}
+	
+	public void doReimport(EditingDomain editingDomain, ReqIF reqIfContent, ImportConfiguration importConfiguration, IProgressMonitor monitor) {
+		
 	}
 
 	@Override

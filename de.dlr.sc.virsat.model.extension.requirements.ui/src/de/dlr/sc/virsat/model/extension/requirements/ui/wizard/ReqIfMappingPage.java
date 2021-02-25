@@ -55,8 +55,8 @@ public class ReqIfMappingPage extends WizardPage implements SelectionListener {
 	private List<CCombo> editors = new ArrayList<CCombo>();
 	
 	private ReqIFImpl reqIfContent;
-	private Map<StructuralElementInstance, Specification> mapSeiToSpec = new HashMap<StructuralElementInstance, Specification>();
 
+	private Repository repository;
 	/**
 	 * Constructor
 	 */
@@ -98,6 +98,7 @@ public class ReqIfMappingPage extends WizardPage implements SelectionListener {
 	 */
 	public void setInput(ReqIFImpl reqIFImpl, Repository projectRepo) {
 		this.reqIfContent = reqIFImpl;
+		this.repository = projectRepo;
 		cleanTable();
 		EList<Specification> specList = reqIFImpl.getCoreContent().getSpecifications();
 		for (Specification spec : specList) {
@@ -150,13 +151,12 @@ public class ReqIfMappingPage extends WizardPage implements SelectionListener {
 	
 	@Override
 	public boolean isPageComplete() {
-		setPageComplete(false);
 		for (TableItem item : tableItems) {
 			if (item.getChecked() && item.getText(1).equals("")) {
 				return false;
 			}
 		}
-		return true;
+		return isCurrentPage();
 	}
 	
 	
@@ -172,7 +172,6 @@ public class ReqIfMappingPage extends WizardPage implements SelectionListener {
 		
 	}
 	
-
 	@Override
 	public void widgetSelected(SelectionEvent e) {
 		if (e.getSource().equals(table) && e.detail == SWT.CHECK) {
@@ -187,5 +186,47 @@ public class ReqIfMappingPage extends WizardPage implements SelectionListener {
 		
 	}
 
+	/**
+	 * Get the mapping of specifications on their container
+	 * @return the map of specs on seis
+	 */
+	public Map<Specification, StructuralElementInstance> getSpecificationMapping() {
+		Map<Specification, StructuralElementInstance> mapSeiToSpec = new HashMap<Specification, StructuralElementInstance>();
+		for (int index = 0; index < tableItems.size(); index++) {
+			TableItem item = tableItems.get(index);
+			if (item.getChecked()) {
+				Specification slectedspec = null;
+				StructuralElementInstance specContainer = null;
+				String selectedSpecName = item.getText();
+				EList<Specification> specList = reqIfContent.getCoreContent().getSpecifications();
+				for (Specification spec : specList) {
+					if (spec.getLongName().equals(selectedSpecName)) {
+						slectedspec = spec;
+					}
+				}
+				String selectedContainerName = editors.get(index).getText();
+				for (StructuralElementInstance rootSei : repository.getRootEntities()) {
+					if (rootSei.getName().equals(selectedSpecName)) {
+						specContainer = rootSei;
+					} else {
+						for (StructuralElementInstance sei : rootSei.getDeepChildren()) {
+							if (sei.getName().equals(selectedContainerName)) {
+								specContainer = sei;
+							}
+						}
+					}
+				}
+				mapSeiToSpec.put(slectedspec, specContainer);
+			}
+		}
+		return mapSeiToSpec;
+	}
+	
+	/**
+	 * @return the reqIfContent
+	 */
+	public ReqIFImpl getReqIfContent() {
+		return reqIfContent;
+	}
 
 }

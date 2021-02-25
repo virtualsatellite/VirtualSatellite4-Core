@@ -23,9 +23,11 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
 import de.dlr.sc.virsat.model.dvlm.Repository;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.extension.requirements.model.ImportConfiguration;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollection;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
@@ -41,7 +43,9 @@ public class ReqIfFileConfigurationSelectionPage extends AImportExportPage {
 
 	private static final String PAGE_TITEL = "Requirements ReqIF Import";
 	
-	private static final String[] FILE_EXTENSIONS = { "*.reqif" };
+	private static final String REQ_IF_FILE_ENDING = "reqif";
+	private static final String[] FILE_EXTENSIONS = { "*." + REQ_IF_FILE_ENDING };
+	
 	protected static final int COLUMNS = 2;
 	protected static final int WITH_TEXT = 200;
 	
@@ -100,10 +104,11 @@ public class ReqIfFileConfigurationSelectionPage extends AImportExportPage {
 		TreeViewer treeViewer = createTreeUI();
 		VirSatFilteredWrappedTreeContentProvider filteredCp = (VirSatFilteredWrappedTreeContentProvider) treeViewer
 				.getContentProvider();
+		filteredCp.addClassFilter(CategoryAssignment.class);
 		filteredCp.addClassFilter(ArrayInstance.class);
 		filteredCp.addClassFilter(ComposedPropertyInstance.class);
-		filteredCp.addStructuralElementIdFilter(
-				RequirementsConfigurationCollection.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME);
+		filteredCp.addStructuralElementIdFilter(RequirementsConfigurationCollection.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME);
+		filteredCp.addCategoryIdFilter(ImportConfiguration.FULL_QUALIFIED_CATEGORY_NAME);
 
 	}
 
@@ -113,8 +118,57 @@ public class ReqIfFileConfigurationSelectionPage extends AImportExportPage {
 		if (selection instanceof StructuralElementInstance) {
 			String seiFqn = ((StructuralElementInstance) selection).getType().getFullQualifiedName();
 			return seiFqn.equals(RequirementsConfigurationCollection.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME);
+		} else if (selection instanceof CategoryAssignment) {
+			String categoryFqn = ((CategoryAssignment) selection).getType().getFullQualifiedName();
+			return categoryFqn.equals(ImportConfiguration.FULL_QUALIFIED_CATEGORY_NAME);
 		}
 		return false;
+	}
+	
+	/**
+	 * Check if specified destination is valid
+	 * @return
+	 */
+	public boolean isDestinationValid() {
+		if (!isDestinationSelected && destinationField == null) {
+			return false;
+		}
+		String destination = getDestination();
+		if (destination != null && !destination.isEmpty()) {
+			URI uri = URI.createFileURI(destination);
+			if (uri.fileExtension().equals(REQ_IF_FILE_ENDING)) {
+				EObject selection = (EObject) getSelection();
+				Repository repository = VirSatResourceSet.getVirSatResourceSet(selection).getRepository();
+				
+				VirSatResourceSet rs = VirSatEditingDomainRegistry.INSTANCE.getEd(repository).getResourceSet();
+				Resource resource = rs.getResource(URI.createFileURI(destination), true);
+				EObject reqIFContent = resource.getContents().get(0);
+				if (reqIFContent instanceof ReqIFImpl) {
+					mappingPage.setInput((ReqIFImpl) reqIFContent, repository);
+					return true;
+				}
+			}
+			
+		}
+		return false;
+	}
+	
+	/**
+	 * If an existing configuration is selected the wizard can be finished otherwise we need the next side
+	 * @return if wizard can be finished
+	 */
+	public boolean canFinish() {
+		Object selection = getSelection();
+		if (selection instanceof CategoryAssignment) {
+			String categoryFqn = ((CategoryAssignment) selection).getType().getFullQualifiedName();
+			return categoryFqn.equals(ImportConfiguration.FULL_QUALIFIED_CATEGORY_NAME) && isDestinationValid();
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean canFlipToNextPage() {
+		return super.canFlipToNextPage() && !canFinish();
 	}
 
 	@Override
@@ -124,25 +178,9 @@ public class ReqIfFileConfigurationSelectionPage extends AImportExportPage {
 
 	@Override
 	public boolean isComplete() {
-
-		if (isDestinationSelected 
+		return isDestinationValid() 
 				&& isCurrentPage() 
-				&& isSelectionValid()) {
-
-			StructuralElementInstance selection = (StructuralElementInstance) getSelection();
-			Repository repository = VirSatResourceSet.getVirSatResourceSet(selection).getRepository();
-			
-			final String destination = getDestination();
-			VirSatResourceSet rs = VirSatEditingDomainRegistry.INSTANCE.getEd(repository).getResourceSet();
-			Resource resource = rs.getResource(URI.createFileURI(destination), true);
-			EObject reqIFContent = resource.getContents().get(0);
-			if (reqIFContent instanceof ReqIFImpl) {
-				mappingPage.setInput((ReqIFImpl) reqIFContent, repository);
-				return true;
-			}
-			
-		}
-		return false;
+				&& isSelectionValid();
 	}
 
 	@Override

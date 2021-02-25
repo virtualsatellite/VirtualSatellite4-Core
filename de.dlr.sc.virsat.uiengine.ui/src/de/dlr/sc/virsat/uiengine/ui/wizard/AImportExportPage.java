@@ -38,7 +38,7 @@ public abstract class AImportExportPage extends ATreeViewerPage {
 	protected int dialogStyle = SWT.SAVE | SWT.SHEET;
 
 	protected boolean isDestinationSelected;
-	private Combo destinationField;
+	protected Combo destinationField;
 	private Composite composite;
 
 	/**
