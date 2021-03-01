@@ -9,10 +9,14 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.test;
 
+import java.util.logging.Level;
+
 import org.glassfish.jersey.test.JerseyTest;
 import org.glassfish.jersey.test.TestProperties;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 
 /**
  * Test class wrapping the class from the Jersey Test Framework.
@@ -20,12 +24,24 @@ import org.junit.Before;
  * Also enables verbose debug output.
  */
 public class AJerseyTest extends JerseyTest {
+	private static final String ALLOW_HEADERS = "sun.net.http.allowRestrictedHeaders";
+	
+	@BeforeClass
+	public static void setUpClass() throws Exception {
+		System.setProperty(ALLOW_HEADERS, "true");
+	}
+	
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+		System.setProperty(ALLOW_HEADERS, "false");
+	}
 	
 	@Before
 	public void setUp() throws Exception {
         super.setUp();
 		enable(TestProperties.LOG_TRAFFIC);
         enable(TestProperties.DUMP_ENTITY);
+        set(TestProperties.RECORD_LOG_LEVEL, Level.FINE.intValue());
     }
 	
 	@After

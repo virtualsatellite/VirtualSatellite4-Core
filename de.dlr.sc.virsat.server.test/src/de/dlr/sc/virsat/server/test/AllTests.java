@@ -14,6 +14,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import de.dlr.sc.virsat.server.auth.LoginServiceFactoryTest;
+import de.dlr.sc.virsat.server.auth.filter.CorsFilterTest;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfigurationTest;
 import de.dlr.sc.virsat.server.configuration.ServerConfigurationTest;
 import de.dlr.sc.virsat.server.controller.RepoManagementControllerTest;
@@ -45,7 +46,8 @@ import junit.framework.JUnit4TestAdapter;
 	TransactionalJsonProviderTest.class,
 	RepositoryUtilityTest.class,
 	DocumentationResourceTest.class,
-	VirSatJettyServerTest.class
+	VirSatJettyServerTest.class,
+	CorsFilterTest.class
 })
 
 public class AllTests {
