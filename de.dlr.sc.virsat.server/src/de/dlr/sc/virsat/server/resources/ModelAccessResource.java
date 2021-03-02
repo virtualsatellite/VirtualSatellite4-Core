@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.server.resources;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.security.RolesAllowed;
@@ -77,6 +78,14 @@ public class ModelAccessResource {
 	public static final String CA_AND_PROPERTIES = "caAndProperties";
 	public static final String PROPERTY = "property";
 
+	// List of all resource classes used in this class
+	// Used to register model specific filters
+	public static final List<?> RESOURCE_CLASSES = Arrays.asList(
+			RepoModelAccessResource.class,
+			StructuralElementInstanceResource.class,
+			CategoryAssignmentResource.class,
+			PropertyResource.class);
+	
 	public ModelAccessResource() { }
 	
 	/**
