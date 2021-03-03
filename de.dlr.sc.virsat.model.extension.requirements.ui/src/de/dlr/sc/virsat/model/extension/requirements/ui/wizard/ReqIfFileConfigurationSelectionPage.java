@@ -9,8 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.ui.wizard;
 
-import java.util.List;
-
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -51,7 +49,6 @@ public class ReqIfFileConfigurationSelectionPage extends AImportExportPage {
 	
 	private ReqIfMappingPage mappingPage;
 
-	protected List<String> csvHeader;
 	protected RequirementType reqType = null;
 
 	/**
