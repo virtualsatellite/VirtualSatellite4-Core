@@ -61,7 +61,8 @@ Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"
 	
 	Category AttributeValue {
 		Reference attType of Type RequirementAttribute;
-		StringProperty value;
+		StringProperty value description "The raw value of this attribute";
+		StringProperty formattedValue description "Optional property containing the value of this attribute formatted by e.g. HTML";
 	}
 	
 	Category RequirementType description "Definition of a requirement type" {

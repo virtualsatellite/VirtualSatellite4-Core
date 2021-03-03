@@ -69,7 +69,8 @@
   </categories>
   <categories name="AttributeValue">
     <properties xsi:type="dvlm_cppd:ReferenceProperty" name="attType" referenceType="de.dlr.sc.virsat.model.extension.requirements.RequirementAttribute"/>
-    <properties xsi:type="dvlm_cppd:StringProperty" name="value"/>
+    <properties xsi:type="dvlm_cppd:StringProperty" name="value" description="The raw value of this attribute"/>
+    <properties xsi:type="dvlm_cppd:StringProperty" name="formattedValue" description="Optional property containing the value of this attribute formatted by e.g. HTML"/>
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="RequirementType" description="Definition of a requirement type">
