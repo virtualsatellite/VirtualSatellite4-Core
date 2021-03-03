@@ -49,7 +49,7 @@ public abstract class AbstractRequirementVerificationStep implements IVerificati
 	protected void handleRequirement(RequirementObject requirementObject, IProgressMonitor monitor) {
 		
 		if (requirementObject instanceof RequirementGroup) {
-			// Recursively go threw groups
+			// Recursively go through groups
 			RequirementGroup group = (RequirementGroup) requirementObject;
 			int verificationTaskNumber = group.getChildren().size();
 			SubMonitor subMonitor = SubMonitor.convert(monitor, verificationTaskNumber);
