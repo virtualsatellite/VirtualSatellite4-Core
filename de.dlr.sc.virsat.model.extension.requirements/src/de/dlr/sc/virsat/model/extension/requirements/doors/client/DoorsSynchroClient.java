@@ -10,89 +10,104 @@
 
 package de.dlr.sc.virsat.model.extension.requirements.doors.client;
 
-import java.io.FileInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.KeyManagementException;
-import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
-import java.util.Properties;
 
-import javax.net.ssl.SSLContext;
-import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.core.Configuration;
+import javax.ws.rs.core.Response;
 
-import org.apache.http.auth.InvalidCredentialsException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.ssl.SSLContextBuilder;
+import org.eclipse.lyo.client.JEEFormAuthenticator;
 import org.eclipse.lyo.client.OSLCConstants;
 import org.eclipse.lyo.client.OslcClient;
-import org.eclipse.lyo.client.OslcClientFactory;
-import org.eclipse.lyo.client.OslcOAuthClient;
-import org.eclipse.lyo.client.OslcOAuthClientBuilder;
-import org.eclipse.lyo.client.RootServicesHelper;
-import org.eclipse.lyo.client.UnderlyingHttpClient;
 import org.eclipse.lyo.client.exception.ResourceNotFoundException;
-import org.eclipse.lyo.client.exception.RootServicesException;
-import org.glassfish.jersey.apache.connector.ApacheClientProperties;
+import org.eclipse.lyo.client.query.OslcQuery;
+import org.eclipse.lyo.client.query.OslcQueryParameters;
+import org.eclipse.lyo.client.query.OslcQueryResult;
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
 
-import net.oauth.OAuthException;
-
 public class DoorsSynchroClient {
 
-	private static final String SERVER_NAME = "https://gk-sl0002.intra.dlr.de:9443/rm";
+	private DoorsSynchroClient() {
+		
+	}
+	
+	private static final String SERVER_NAME = "https://gk-sl0002.intra.dlr.de:9443/rm/";
 	private static final String CATALOG_URL = "https://gk-sl0002.intra.dlr.de:9443/rm/oslc_rm/catalog";
-	private static final String CONSUMER = "";
-	private static final String SECRET = "";
+	private static final String PROJECT_NAME = "MBSE4GK Testprojekt";
 
-	public static void main(String[] args) throws ResourceNotFoundException, RootServicesException,
-			InvalidCredentialsException, IOException, URISyntaxException, OAuthException, KeyManagementException,
-			NoSuchAlgorithmException, KeyStoreException, CertificateException, UnrecoverableKeyException {
+	/**
+	 * 
+	 * @param args
+	 * @throws Exception
+	 */
+	public static void main(String[] args) throws Exception {
+		ClientBuilder clientBuilder = configureClientBuilder();
+		OslcClient doorsClient = new OslcClient(clientBuilder);
 
-		ClientBuilder clientBuilder = configureClientBuilder(true);
+		String serviceProviderUrl = lookUpServiceProviderUrl(doorsClient, PROJECT_NAME);
+		String queryCapabilityUrl = lookUpQueryCapability(doorsClient, serviceProviderUrl);
 
-		// Initialize a Jazz rootservices helper
-		OslcClient rootServicesClient = new OslcClient(clientBuilder);
-		RootServicesHelper helper = new RootServicesHelper(SERVER_NAME, OSLCConstants.OSLC_RM_V2, rootServicesClient);
+		queryRequirements(doorsClient, queryCapabilityUrl);
+	}
 
-		OslcOAuthClientBuilder oAuthClientBuilder = OslcClientFactory.oslcOAuthClientBuilder();
-		oAuthClientBuilder.setFromRootService(helper);
-		oAuthClientBuilder.setOAuthConsumer("", CONSUMER, SECRET);
-		oAuthClientBuilder.setClientBuilder(clientBuilder);
-		oAuthClientBuilder.setUnderlyingHttpClient(new UnderlyingHttpClient() {
-			@Override
-			public HttpClient get(Client client) {
-				return ApacheConnectorProvider.getHttpClient(client);
-			}
-		});
-		OslcOAuthClient oAuthClient = (OslcOAuthClient) oAuthClientBuilder.build();
+	private static String lookUpServiceProviderUrl(OslcClient client, String projectName) throws ResourceNotFoundException, IOException, URISyntaxException {
+		String serviceProviderUrl = client.lookupServiceProviderUrl(CATALOG_URL, projectName);
+		return serviceProviderUrl;
+	}
+	
+	private static String lookUpQueryCapability(OslcClient client, String serviceProvider) throws ResourceNotFoundException, IOException, URISyntaxException {
+		String queryCapabilty = client.lookupQueryCapability(serviceProvider, OSLCConstants.OSLC_RM_V2, OSLCConstants.RM_REQUIREMENT_TYPE);
+		return queryCapabilty;
+	}
+	
+	/**
+	 * 
+	 * @param client
+	 * @param queryCapability
+	 * @throws IOException
+	 */
+	private static void queryRequirements(OslcClient client, String queryCapability) throws IOException {
+		OslcQueryParameters queryParams = new OslcQueryParameters();
+		queryParams.setSelect("*");
+//		queryParams.setWhere("");
+		OslcQuery query = new OslcQuery(client, queryCapability, queryParams);
+		OslcQueryResult result = query.submit();
+		processRawResponse(result.getRawResponse());
+	}
+	
+	/**
+	 * 
+	 * @param response
+	 * @throws IOException
+	 */
+	private static void processRawResponse(Response response) throws IOException {
+		InputStream is = response.readEntity(InputStream.class);
+		BufferedReader in = new BufferedReader(new InputStreamReader(is));
 
-		oAuthClient.performOAuthNegotiation(SERVER_NAME);
-		oAuthClient.getResource(CATALOG_URL);
-//		try {
-//			oAuthClient.getResource(SERVER_NAME, OSLCConstants.CT_RDF);
-//		} catch (OAuthRedirectException oauthE) {
-//			DoorsHttpUtils.validateTokens(oAuthClient,
-//					((OAuthRedirectException) oauthE).getRedirectURL() + "?oauth_token="
-//							+ ((OAuthRedirectException) oauthE).getAccessor().requestToken,
-//					LOGIN, PASSWORD, SERVER_NAME + "/j_security_check");
-//			// Try to access again
-//			Response response = oAuthClient.getResource(SERVER_NAME, OSLCConstants.CT_RDF);
-//			response.readEntity(InputStream.class).close();
-//		}
+		String line = null;
+		while ((line = in.readLine()) != null) {
+			System.out.println(line);
+		}
+		System.out.println();
 	}
 
 	/**
 	 * 
-	 * @param selfAssignedSSL
 	 * @return
 	 * @throws NoSuchAlgorithmException
 	 * @throws KeyStoreException
@@ -102,40 +117,27 @@ public class DoorsSynchroClient {
 	 * @throws CertificateException
 	 * @throws UnrecoverableKeyException
 	 */
-	private static ClientBuilder configureClientBuilder(final boolean selfAssignedSSL)
+	private static ClientBuilder configureClientBuilder()
 			throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException, MalformedURLException,
 			IOException, CertificateException, UnrecoverableKeyException {
-		// Use HttpClient instead of the default HttpUrlConnection
-		ApacheConnectorProvider apacheConnectorProvider = new ApacheConnectorProvider();
 
-		ClientConfig clientConfig = new ClientConfig().connectorProvider(apacheConnectorProvider)
-				.property(ApacheClientProperties.DISABLE_COOKIES, false);
+		ClientConfig clientConfig = new ClientConfig().connectorProvider(new ApacheConnectorProvider());
 		ClientBuilder clientBuilder = ClientBuilder.newBuilder();
 		clientBuilder.withConfig(clientConfig);
 
-		KeyStore trustStore = KeyStore.getInstance("JKS");
-		char[] pwdArray = "changeit".toCharArray();
-		trustStore.load(new FileInputStream("C:\\Users\\gefk_an\\Requirements\\Certificates\\myTrustStore"), pwdArray);
-		trustStore.getCertificate("JazzServerCert1");
-		clientBuilder.trustStore(trustStore);
-		clientBuilder.getConfiguration();
-
-		SSLContextBuilder sslContextBuilder = SSLContextBuilder.create();
-		sslContextBuilder.loadKeyMaterial(trustStore, pwdArray);
-		sslContextBuilder.loadTrustMaterial(trustStore, null);
-		SSLContext sslContext = sslContextBuilder.build();
+		// Setup SSL support to ignore self-assigned SSL certificates - for testing
+		// only!!
+		SSLContextBuilder sslContextBuilder = new SSLContextBuilder();
+		sslContextBuilder.loadTrustMaterial(TrustSelfSignedStrategy.INSTANCE);
+		clientBuilder.sslContext(sslContextBuilder.build());
 		clientBuilder.hostnameVerifier(NoopHostnameVerifier.INSTANCE);
-		clientBuilder.sslContext(sslContext);
-		Configuration configuration = clientBuilder.getConfiguration();
-		clientBuilder.withConfig(configuration);
-		
-		//set keystore containing self-signed certificate
-		Properties systemProp = System.getProperties();
-		systemProp.put("javax.net.ssl.keyStorePassword", "changeit");
-		systemProp.put("javax.net.ssl.keyStore",
-					"C:\\Users\\gefk_an\\Requirements\\Certificates\\keystore.jks");
-		System.setProperties(systemProp);
-		System.getProperty("javax.net.ssl.keyStore");
+
+		// Authenticate
+		String loginPasswordFile = "C:\\Users\\gefk_an\\Requirements\\client_virsat\\loginPassword.txt";
+		String login = Files.readAllLines(Paths.get(loginPasswordFile)).get(0);
+		String password = Files.readAllLines(Paths.get(loginPasswordFile)).get(1);
+		JEEFormAuthenticator authenticator = new JEEFormAuthenticator(SERVER_NAME, login, password);
+		clientBuilder.register(authenticator);
 
 		return clientBuilder;
 	}
