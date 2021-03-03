@@ -25,6 +25,7 @@ import de.dlr.sc.virsat.model.extension.requirements.model.ImportConfiguration;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollection;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsSpecification;
 import de.dlr.sc.virsat.model.extension.requirements.model.SpecificationMapping;
+import de.dlr.sc.virsat.model.extension.requirements.util.RequirementHelper;
 
 /**
  * @author fran_tb
@@ -32,10 +33,23 @@ import de.dlr.sc.virsat.model.extension.requirements.model.SpecificationMapping;
  */
 public class ReqIfImporter {
 	
+	private static final String IMPORT_CONFIC_PREFIX = "ReqIFImport";
+	private RequirementHelper reqHelper = new RequirementHelper();
+	
+	/**
+	 * Create a command the persists the mapping created in the UI to the model so that it can be reused
+	 * @param editingDomain the editing domain
+	 * @param mapping the mapping from UI
+	 * @param reqIFContent the ReqIF content
+	 * @param configurationContainer the container for the new configuration element
+	 * @return the command to be executed
+	 */
 	public Command persistSpecificationMapping(EditingDomain editingDomain, Map<Specification, StructuralElementInstance> mapping, ReqIF reqIFContent, RequirementsConfigurationCollection configurationContainer) {
 		Concept concept = ActiveConceptHelper.getConcept(configurationContainer.getStructuralElementInstance().getType());
 		CompoundCommand cc = new CompoundCommand();
 		ImportConfiguration configuration = new ImportConfiguration(concept);
+		String configName = IMPORT_CONFIC_PREFIX + reqIFContent.eResource().getURI().trimFileExtension().lastSegment();
+		configuration.setName(configName);
 		
 		for (Specification spec : mapping.keySet()) {
 			
@@ -43,7 +57,7 @@ public class ReqIfImporter {
 			BeanStructuralElementInstance seiBean = new BeanStructuralElementInstance(mapping.get(spec));
 			RequirementsSpecification conceptSpec = new RequirementsSpecification(concept);
 			String externalIdentifier = spec.getLongName();
-			conceptSpec.setName(spec.getLongName());
+			conceptSpec.setName(reqHelper.cleanEntityName(spec.getLongName()));
 			cc.append(seiBean.add(editingDomain, conceptSpec));
 			
 			//Add to mapping

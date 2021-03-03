@@ -136,9 +136,9 @@ public class ReqIfFileConfigurationSelectionPage extends AImportExportPage {
 		String destination = getDestination();
 		if (destination != null && !destination.isEmpty()) {
 			URI uri = URI.createFileURI(destination);
-			if (uri.fileExtension().equals(REQ_IF_FILE_ENDING)) {
-				EObject selection = (EObject) getSelection();
-				Repository repository = VirSatResourceSet.getVirSatResourceSet(selection).getRepository();
+			Object treeSelection = getSelection();
+			if (uri.fileExtension().equals(REQ_IF_FILE_ENDING) && treeSelection instanceof EObject) {
+				Repository repository = VirSatResourceSet.getVirSatResourceSet((EObject) treeSelection).getRepository();
 				
 				VirSatResourceSet rs = VirSatEditingDomainRegistry.INSTANCE.getEd(repository).getResourceSet();
 				Resource resource = rs.getResource(URI.createFileURI(destination), true);

@@ -194,7 +194,7 @@ public class ReqIfMappingPage extends WizardPage implements SelectionListener {
 		Map<Specification, StructuralElementInstance> mapSeiToSpec = new HashMap<Specification, StructuralElementInstance>();
 		for (int index = 0; index < tableItems.size(); index++) {
 			TableItem item = tableItems.get(index);
-			if (item.getChecked()) {
+			if (!item.isDisposed() && item.getChecked()) {
 				Specification slectedspec = null;
 				StructuralElementInstance specContainer = null;
 				String selectedSpecName = item.getText();
@@ -206,11 +206,11 @@ public class ReqIfMappingPage extends WizardPage implements SelectionListener {
 				}
 				String selectedContainerName = editors.get(index).getText();
 				for (StructuralElementInstance rootSei : repository.getRootEntities()) {
-					if (rootSei.getName().equals(selectedSpecName)) {
+					if (rootSei.getFullQualifiedInstanceName().equals(selectedContainerName)) {
 						specContainer = rootSei;
 					} else {
 						for (StructuralElementInstance sei : rootSei.getDeepChildren()) {
-							if (sei.getName().equals(selectedContainerName)) {
+							if (sei.getFullQualifiedInstanceName().equals(selectedContainerName)) {
 								specContainer = sei;
 							}
 						}

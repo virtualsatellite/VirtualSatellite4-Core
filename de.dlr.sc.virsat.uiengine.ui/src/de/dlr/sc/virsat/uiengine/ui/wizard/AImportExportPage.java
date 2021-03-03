@@ -153,7 +153,10 @@ public abstract class AImportExportPage extends ATreeViewerPage {
 	 * @return path to the target file
 	 */
 	public String getDestination() {
-		return destinationField.getText();
+		if (destinationField != null && !destinationField.isDisposed()) {
+			return destinationField.getText();
+		}
+		return "";
 	}
 
 	@Override

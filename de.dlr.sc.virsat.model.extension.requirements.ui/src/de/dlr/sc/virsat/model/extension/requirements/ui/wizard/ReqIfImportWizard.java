@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.ui.wizard;
 
+import java.util.Map;
+
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -17,6 +19,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.dialogs.DialogSettings;
@@ -24,6 +27,7 @@ import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.rmf.reqif10.ReqIF;
+import org.eclipse.rmf.reqif10.Specification;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWizard;
 import org.eclipse.ui.statushandlers.StatusManager;
@@ -82,6 +86,7 @@ public class ReqIfImportWizard extends Wizard implements IWorkbenchWizard {
 	public boolean performFinish() {
 
 		final EObject reqConfiguration = (EObject) importPage.getSelection();
+		final Map<Specification, StructuralElementInstance> specMapping = mappingPage.getSpecificationMapping();
 
 		// Do the import
 		Job importJob = new Job("Performing Requirements CSV Import") {
@@ -93,7 +98,7 @@ public class ReqIfImportWizard extends Wizard implements IWorkbenchWizard {
 				ReqIF reqIfContent = mappingPage.getReqIfContent();
 				
 				if (reqConfiguration instanceof StructuralElementInstance) {
-					doImport(editingDomain, reqIfContent, new RequirementsConfigurationCollection((StructuralElementInstance) reqConfiguration), monitor);
+					doImport(editingDomain, reqIfContent, specMapping, new RequirementsConfigurationCollection((StructuralElementInstance) reqConfiguration), monitor);
 				} else  {
 					doReimport(editingDomain, reqIfContent, new ImportConfiguration((CategoryAssignment) reqConfiguration), monitor);
 				}
@@ -115,9 +120,10 @@ public class ReqIfImportWizard extends Wizard implements IWorkbenchWizard {
 		return true;
 	}
 	
-	public void doImport(EditingDomain editingDomain, ReqIF reqIfContent, RequirementsConfigurationCollection configurationContainer, IProgressMonitor monitor) {
+	public void doImport(EditingDomain editingDomain, ReqIF reqIfContent, Map<Specification, StructuralElementInstance> specMapping, RequirementsConfigurationCollection configurationContainer, IProgressMonitor monitor) {
 
-		importer.persistSpecificationMapping(editingDomain, mappingPage.getSpecificationMapping(), configurationContainer);
+		Command mappingCmd = importer.persistSpecificationMapping(editingDomain, specMapping, reqIfContent, configurationContainer);
+		editingDomain.getCommandStack().execute(mappingCmd);
 
 	}
 	
