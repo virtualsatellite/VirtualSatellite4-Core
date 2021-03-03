@@ -88,8 +88,10 @@ Bundle-ClassPath: .,
  externalLib/maven/oauth-consumer.jar,
  externalLib/maven/oauth-httpclient4.jar,
  externalLib/maven/jsonld-java.jar,
- externalLib/maven/oslc-client-base.jar
+ externalLib/maven/oslc-client-base.jar,
+ externalLib/maven/classgraph.jar
 Export-Package: de.dlr.sc.virsat.external.lib.lyo,
+ io.github.classgraph,
  javax.annotation,
  javax.annotation.security,
  javax.annotation.sql,

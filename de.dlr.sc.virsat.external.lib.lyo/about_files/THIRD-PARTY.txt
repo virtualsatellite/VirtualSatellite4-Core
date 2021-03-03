@@ -9,7 +9,7 @@ Lists of 62 third-party dependencies.
      (Apache 2.0) Apache Commons CLI (commons-cli:commons-cli:1.4 - http://commons.apache.org/proper/commons-cli/)
      (Apache 2.0) Apache Commons Codec (commons-codec:commons-codec:1.11 - http://commons.apache.org/proper/commons-codec/)
      (Apache 2.0) Apache Commons IO (commons-io:commons-io:2.6 - http://commons.apache.org/proper/commons-io/)
-     (The MIT License (MIT)) ClassGraph (io.github.classgraph:classgraph:4.8.90 - https://github.com/classgraph/classgraph)
+     (The MIT License (MIT)) ClassGraph (io.github.classgraph:classgraph:4.8.102 - https://github.com/classgraph/classgraph)
      (EPL 2.0) (GPL2 w/ CPE) javax.ws.rs-api (jakarta.ws.rs:jakarta.ws.rs-api:2.1.2 - https://github.com/eclipse-ee4j/jaxrs-api)
      (Common Development and Distribution License (CDDL) v1.0) JavaBeans Activation Framework (JAF) (javax.activation:activation:1.1 - http://java.sun.com/products/javabeans/jaf/index.jsp)
      (CDDL + GPLv2 with classpath exception) javax.annotation API (javax.annotation:javax.annotation-api:1.3.2 - http://jcp.org/en/jsr/detail?id=250)

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/classgraph.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/oslc-client-base.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/jsonld-java.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/oauth-httpclient4.jar"/>
