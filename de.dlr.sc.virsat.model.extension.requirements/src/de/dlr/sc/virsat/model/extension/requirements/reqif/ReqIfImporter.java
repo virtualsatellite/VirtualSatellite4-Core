@@ -33,7 +33,7 @@ import de.dlr.sc.virsat.model.extension.requirements.util.RequirementHelper;
  */
 public class ReqIfImporter {
 	
-	private static final String IMPORT_CONFIC_PREFIX = "ReqIFImport";
+	public static final String IMPORT_CONFIC_PREFIX = "ReqIFImport";
 	private RequirementHelper reqHelper = new RequirementHelper();
 	
 	/**

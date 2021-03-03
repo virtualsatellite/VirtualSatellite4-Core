@@ -52,4 +52,18 @@ public  class ImportConfiguration extends AImportConfiguration {
 	public ImportConfiguration(CategoryAssignment categoryAssignment) {
 		super(categoryAssignment);
 	}
+	
+	/**
+	 * Utility method to get a concept specification by its external identifier 
+	 * @param externalIdentifier the identifier
+	 * @return the specification as defined in the req concept
+	 */
+	public RequirementsSpecification getSpecification(String externalIdentifier) {
+		for (SpecificationMapping mapping : this.getMappedSpecifications()) {
+			if (mapping.getExternalIdentifier().equals(externalIdentifier)) {
+				return mapping.getSpecification();
+			}
+		}
+		return null;
+	}
 }
