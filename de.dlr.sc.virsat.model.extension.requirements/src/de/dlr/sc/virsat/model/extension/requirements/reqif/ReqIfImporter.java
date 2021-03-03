@@ -28,7 +28,7 @@ import de.dlr.sc.virsat.model.extension.requirements.model.SpecificationMapping;
 import de.dlr.sc.virsat.model.extension.requirements.util.RequirementHelper;
 
 /**
- * @author fran_tb
+ * Class for importing requirements from reqIF to our requirements concept
  *
  */
 public class ReqIfImporter {

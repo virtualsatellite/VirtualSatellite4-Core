@@ -47,7 +47,7 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
  */
 public class ReqIfImportWizard extends Wizard implements IWorkbenchWizard {
 
-	public static final String ID = "de.dlr.sc.virsat.model.extension.requirements.ui.wizard.csvImport";
+	public static final String ID = "de.dlr.sc.virsat.model.extension.requirements.ui.wizard.reqIFImport";
 
 	private ReqIfFileConfigurationSelectionPage importPage;
 	private ReqIfMappingPage mappingPage;
@@ -89,7 +89,7 @@ public class ReqIfImportWizard extends Wizard implements IWorkbenchWizard {
 		final Map<Specification, StructuralElementInstance> specMapping = mappingPage.getSpecificationMapping();
 
 		// Do the import
-		Job importJob = new Job("Performing Requirements CSV Import") {
+		Job importJob = new Job("Performing Requirements ReqIF Import") {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				
