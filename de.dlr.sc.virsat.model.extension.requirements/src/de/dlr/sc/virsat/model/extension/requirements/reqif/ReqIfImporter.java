@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.model.extension.requirements.reqif;
 
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CompoundCommand;
@@ -51,7 +52,8 @@ public class ReqIfImporter {
 		String configName = IMPORT_CONFIC_PREFIX + reqIFContent.eResource().getURI().trimFileExtension().lastSegment();
 		configuration.setName(configName);
 		
-		for (Specification spec : mapping.keySet()) {
+		for (Entry<Specification, StructuralElementInstance> entry : mapping.entrySet()) {
+			Specification spec = entry.getKey();  // According to spotbugs this way of iterating is faster than by using keySet()
 			
 			// Create specification
 			BeanStructuralElementInstance seiBean = new BeanStructuralElementInstance(mapping.get(spec));
