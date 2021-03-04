@@ -38,14 +38,14 @@ public class AJerseyTest extends JerseyTest {
 	
 	@Before
 	public void setUp() throws Exception {
-        super.setUp();
+		super.setUp();
 		enable(TestProperties.LOG_TRAFFIC);
-        enable(TestProperties.DUMP_ENTITY);
-        set(TestProperties.RECORD_LOG_LEVEL, Level.FINE.intValue());
-    }
+		enable(TestProperties.DUMP_ENTITY);
+		set(TestProperties.RECORD_LOG_LEVEL, Level.FINE.intValue());
+	}
 	
 	@After
 	public void tearDown() throws Exception {
-        super.tearDown();
-    }
+		super.tearDown();
+	}
 }
