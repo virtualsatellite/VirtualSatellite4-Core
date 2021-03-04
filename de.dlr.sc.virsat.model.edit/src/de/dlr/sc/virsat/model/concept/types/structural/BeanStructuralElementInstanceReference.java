@@ -49,8 +49,7 @@ public class BeanStructuralElementInstanceReference {
 	}
 
 	@XmlElement(nillable = true)
-	@ApiModelProperty(required = true,
-			position = 0)
+	@ApiModelProperty(required = true)
 	public void setName(String seiName) {
 		sei.setName(seiName);
 	}
@@ -62,8 +61,7 @@ public class BeanStructuralElementInstanceReference {
 	@XmlElement(name = "uuid")
 	@ApiModelProperty(name = "uuid", required = true,
 		value = "Unique identifier for a bean",
-		example = "b168b0df-84b6-4b7f-bede-69298b215f40",
-		position = 1)
+		example = "b168b0df-84b6-4b7f-bede-69298b215f40")
 	@XmlJavaTypeAdapter(IUuidAdapter.class)
 	public void setStructuralElementInstance(StructuralElementInstance sei) {
 		this.sei = sei;

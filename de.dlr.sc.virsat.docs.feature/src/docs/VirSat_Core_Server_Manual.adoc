@@ -98,7 +98,7 @@ For each API the swagger documentation also is provided via the REST API at:
 It can help you, if you want to connect Virtual Satellite to your own application.
 E.g. it can be used to automatically generate your client, using Swaggers Codegen capabilities.
 
-WARNING: Important concept: Inheritance
+=== Important concept: Inheritance
 
 Some resources in the following documentation return abstract model classes (e.g. AClass).
 Here the server will instead return the concrete model class (e.g. ConcreteClass) inheriting from AClass.
@@ -117,6 +117,9 @@ So the JSON for ConcreteClass will look like this:
 ....
 This concept is most relevant for CategoryAssignments, which can additionally have
 fields in the form of Properties.
+
+WARNING: A good understanding of Modeling in Virtual Satellite is required to use the the APIs.
+If you are new to Virtual Satellite, please refer to the User Manual before continuing.
 
 NOTE: Now follows the generated documentation
 
@@ -267,6 +270,7 @@ By convention this file is named *server.properties*:
 *https.only* = 
 ....
 
+Authentication credentials are stored in <<The Authentication File>>.
 To use HTTPS you have to enable it in the server configuration and provide a certificate that is stored in a JSSE keystore.
 Such a keystore can be created and managed (e.g. create or add certificates) via the JDKs keytool.
 The server will use the certificate stored with the key "jetty", that is secured by the keystore password and an optional password for the key.
@@ -280,7 +284,7 @@ This file should be stored in a secure location on the server.
 
 This file persists the known users and their roles. The server currently supports the following roles:
 
-[%header,cols=">8,102a"] 
+[%header,cols=">30,80a"] 
 |===
 
 |Role
