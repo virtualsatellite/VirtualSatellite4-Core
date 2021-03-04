@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"  description "Extension for Requirement Specification" version 0.4 beta 
+Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"  description "Extension for Requirement Specification" version 0.5 beta 
 {
 
 	StructuralElement RequirementsConfigurationCollection description "Storage for configuration elements of requirements" {
@@ -46,12 +46,17 @@ Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"
 		Type elements [] of Category AttributeValue;
 		EnumProperty status values [Open = 0, FullyCompliant = 1, PartialCompliant = 2, NonCompliant = 3, NotApplicable = 4];
 		Type verification[] of Category IVerification;
+		Type trace of Category RequirementTrace;
 	}
 	
 	Category RequirementLink {
 		EnumProperty type values [DependsOn = 1, Parent = 2];
 		Reference subject of Type Requirement;
 		Reference targets[] of Type Requirement;
+	}
+	
+	Category RequirementTrace {
+		Reference target[] of Type GenericCategory;
 	}
 	
 	Category AttributeValue {

@@ -34,6 +34,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyInstanceList;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 import javax.xml.bind.annotation.XmlElement;
 
 
@@ -68,6 +69,7 @@ public abstract class ARequirement extends RequirementObject implements IBeanCat
 	public static final String PROPERTY_ELEMENTS = "elements";
 	public static final String PROPERTY_STATUS = "status";
 	public static final String PROPERTY_VERIFICATION = "verification";
+	public static final String PROPERTY_TRACE = "trace";
 	
 	// Status enumeration value names
 	public static final String STATUS_Open_NAME = "Open";
@@ -228,6 +230,29 @@ public abstract class ARequirement extends RequirementObject implements IBeanCat
 	public IBeanList<BeanPropertyComposed<IVerification>> getVerificationBean() {
 		safeAccessVerificationBean();
 		return verificationBean;
+	}
+	
+	// *****************************************************************
+	// * Attribute: trace
+	// *****************************************************************
+	private BeanPropertyComposed<RequirementTrace> trace = new BeanPropertyComposed<>();
+	
+	private void safeAccessTrace() {
+		if (trace.getTypeInstance() == null) {
+			ComposedPropertyInstance propertyInstance = (ComposedPropertyInstance) helper.getPropertyInstance("trace");
+			trace.setTypeInstance(propertyInstance);
+		}
+	}
+	
+	@XmlElement(nillable = true)
+	public RequirementTrace getTrace() {
+		safeAccessTrace();
+		return trace.getValue();
+	}
+	
+	public BeanPropertyComposed<RequirementTrace> getTraceBean() {
+		safeAccessTrace();
+		return trace;
 	}
 	
 	
