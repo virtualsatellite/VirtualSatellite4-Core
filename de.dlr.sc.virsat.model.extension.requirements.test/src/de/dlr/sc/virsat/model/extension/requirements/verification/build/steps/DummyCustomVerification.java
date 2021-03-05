@@ -7,24 +7,33 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.requirements.verification.build;
+package de.dlr.sc.virsat.model.extension.requirements.verification.build.steps;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
-import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsSpecification;
+import de.dlr.sc.virsat.model.extension.requirements.model.IVerification;
+import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 
 /**
- * Class that runs customized verification methods on requirements
  *
  */
-public class RequirementVerificationRunner implements IVerificationStep {
-
-	protected EditingDomain editingDomain;
+public class DummyCustomVerification implements IAutomaticVerification {
 	
+	private static boolean didRun = false;
+
 	@Override
-	public void execute(RequirementsSpecification specification, EditingDomain editingDomain, IProgressMonitor monitor) {
-		this.editingDomain = editingDomain;
+	public void runCustomVerification(EditingDomain editingDomain, IVerification verification, Requirement requirement,
+			IProgressMonitor monitor) {
+		didRun = true;
+	}
+	
+	public static boolean didRun() {
+		return didRun;
+	}
+	
+	public static void reset() {
+		didRun = false;
 	}
 
 }

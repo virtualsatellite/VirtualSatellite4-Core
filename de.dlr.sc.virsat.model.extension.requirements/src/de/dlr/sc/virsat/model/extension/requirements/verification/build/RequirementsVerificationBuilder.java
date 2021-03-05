@@ -28,6 +28,8 @@ import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInst
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.requirements.Activator;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsSpecification;
+import de.dlr.sc.virsat.model.extension.requirements.verification.build.steps.RequirementsStatusUpdater;
+import de.dlr.sc.virsat.model.extension.requirements.verification.build.steps.VerificationConfigurationElementRunner;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 
@@ -52,7 +54,7 @@ public class RequirementsVerificationBuilder extends AVirSatTransactionalBuilder
 	}
 	
 	protected void initVerificationSteps() {
-		verificationSteps.add(new RequirementVerificationRunner());
+		verificationSteps.add(new VerificationConfigurationElementRunner());
 		verificationSteps.add(new RequirementsStatusUpdater());
 	}
 
