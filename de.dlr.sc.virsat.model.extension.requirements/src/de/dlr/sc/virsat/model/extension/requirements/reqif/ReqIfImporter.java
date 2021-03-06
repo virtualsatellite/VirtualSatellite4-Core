@@ -169,7 +169,7 @@ public class ReqIfImporter {
 	 */
 	protected boolean contains(IBeanList<? extends IBeanName> list, String name) {
 		for (IBeanName namedElement : list) {
-			if (namedElement.equals(name)) {
+			if (namedElement.getName().equals(name)) {
 				return true;
 			}
 		}
