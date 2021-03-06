@@ -17,6 +17,15 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.rmf.reqif10.AttributeDefinition;
+import org.eclipse.rmf.reqif10.AttributeDefinitionBoolean;
+import org.eclipse.rmf.reqif10.AttributeDefinitionDate;
+import org.eclipse.rmf.reqif10.AttributeDefinitionEnumeration;
+import org.eclipse.rmf.reqif10.AttributeDefinitionInteger;
+import org.eclipse.rmf.reqif10.AttributeDefinitionReal;
+import org.eclipse.rmf.reqif10.AttributeDefinitionString;
+import org.eclipse.rmf.reqif10.AttributeDefinitionXHTML;
+import org.eclipse.rmf.reqif10.DatatypeDefinitionEnumeration;
+import org.eclipse.rmf.reqif10.EnumValue;
 import org.eclipse.rmf.reqif10.ReqIF;
 import org.eclipse.rmf.reqif10.ReqIFContent;
 import org.eclipse.rmf.reqif10.SpecObjectType;
@@ -26,10 +35,10 @@ import org.eclipse.rmf.reqif10.Specification;
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.concept.types.IBeanName;
 import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.extension.requirements.model.EnumerationLiteral;
 import de.dlr.sc.virsat.model.extension.requirements.model.ImportConfiguration;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttribute;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
@@ -94,10 +103,9 @@ public class ReqIfImporter {
 					RequirementAttribute conceptAttType = new RequirementAttribute(concept);
 					String attDefName = reqHelper.cleanEntityName(reqIfAttDef.getLongName());
 					conceptAttType.setName(attDefName);
+					configureAttributeType(conceptAttType, reqIfAttDef);
 					conceptRequirementType.getAttributes().add(conceptAttType);
 				}
-				
-				//TODO switch type
 				
 				cc.append(typeContainer.getTypeDefinitions().add(editingDomain, conceptRequirementType));
 			}
@@ -174,6 +182,39 @@ public class ReqIfImporter {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * Configure the type of the requirement attribute
+	 * @param conceptAttType the concept requirement attribute type to be configured
+	 * @param reqIfAttDef the ReqIF attribute definition
+	 */
+	protected void configureAttributeType(RequirementAttribute conceptAttType, AttributeDefinition reqIfAttDef) {
+		if (reqIfAttDef instanceof AttributeDefinitionString) {
+			conceptAttType.setType(RequirementAttribute.TYPE_String_NAME);
+		} else if (reqIfAttDef instanceof AttributeDefinitionBoolean) {
+			conceptAttType.setType(RequirementAttribute.TYPE_Boolean_NAME);
+		} else if (reqIfAttDef instanceof AttributeDefinitionDate) {
+			conceptAttType.setType(RequirementAttribute.TYPE_Date_NAME);
+		} else if (reqIfAttDef instanceof AttributeDefinitionReal) {
+			conceptAttType.setType(RequirementAttribute.TYPE_Real_NAME);
+		} else if (reqIfAttDef instanceof AttributeDefinitionInteger) {
+			conceptAttType.setType(RequirementAttribute.TYPE_Integer_NAME);
+		} else if (reqIfAttDef instanceof AttributeDefinitionXHTML) {
+			conceptAttType.setType(RequirementAttribute.TYPE_String_NAME);
+		} else if (reqIfAttDef instanceof AttributeDefinitionEnumeration) {
+			conceptAttType.setType(RequirementAttribute.TYPE_Enumeration_NAME);
+			AttributeDefinitionEnumeration attributeDefinitionEnumeration = (AttributeDefinitionEnumeration) reqIfAttDef;
+			DatatypeDefinitionEnumeration enumerationType = attributeDefinitionEnumeration.getType();
+			conceptAttType.getEnumeration().setName(reqHelper.cleanEntityName(enumerationType.getLongName()));
+			for (EnumValue value : enumerationType.getSpecifiedValues()) {
+				EnumerationLiteral literal = new EnumerationLiteral(concept);
+				literal.setName(reqHelper.cleanEntityName(value.getLongName()));
+				conceptAttType.getEnumeration().getLiterals().add(literal);
+			}
+		} else {
+			conceptAttType.setType(RequirementAttribute.TYPE_String_NAME);
+		}
 	}
 
 }

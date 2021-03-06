@@ -22,7 +22,12 @@ public class RequirementHelper {
 	 * @return the clean name 
 	 */
 	public String cleanEntityName(String rawName) {
-		return rawName.replaceAll(" ", "").replaceAll("-", "").replaceAll("_", "");
+		return rawName.replaceAll(" ", "")
+				.replaceAll("-", "")
+				.replaceAll("_", "")
+				.replaceAll("\\.", "")
+				.replaceAll("\\/", "")
+				.replaceAll("\\\\", "");
 	}
 	
 }
