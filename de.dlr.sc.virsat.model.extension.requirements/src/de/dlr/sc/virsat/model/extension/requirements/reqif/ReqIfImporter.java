@@ -11,18 +11,28 @@ package de.dlr.sc.virsat.model.extension.requirements.reqif;
 
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.rmf.reqif10.AttributeDefinition;
 import org.eclipse.rmf.reqif10.ReqIF;
+import org.eclipse.rmf.reqif10.ReqIFContent;
+import org.eclipse.rmf.reqif10.SpecObjectType;
+import org.eclipse.rmf.reqif10.SpecType;
 import org.eclipse.rmf.reqif10.Specification;
 
+import de.dlr.sc.virsat.model.concept.list.IBeanList;
+import de.dlr.sc.virsat.model.concept.types.IBeanName;
 import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.requirements.model.ImportConfiguration;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttribute;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfiguration;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollection;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsSpecification;
@@ -56,6 +66,43 @@ public class ReqIfImporter {
 		this.reqIfContent = reqIFContent;
 		this.importConfiguration = configuration;
 		this.configurationContainer = (RequirementsConfigurationCollection) configuration.getParent();
+	}
+	
+	/**
+	 * Import the requirement types specified in the ReqIF content
+	 * @param editingDomain the editing domain for the import
+	 * @param reqIFContent the actual ReqIF content
+	 * @return the command to be executed
+	 */
+	public Command importRequirementTypes(EditingDomain editingDomain, ReqIF reqIFContent) {
+		this.reqIfContent = reqIFContent;
+		CompoundCommand cc = new CompoundCommand();
+		RequirementsConfiguration typeContainer = importConfiguration.getTypeDefinitionsContainer();
+		ReqIFContent importContent = reqIFContent.getCoreContent();
+
+		for (SpecType type : importContent.getSpecTypes().stream().
+					filter(type -> type instanceof SpecObjectType).collect(Collectors.toList())) {
+			SpecObjectType reqIfRequirementType = (SpecObjectType) type; // List is filtered to only contain spec object types
+			String reqTypeName = reqHelper.cleanEntityName(reqIfRequirementType.getLongName());
+			
+			// We're not overwriting the requirement types to ensure these can be customized
+			if (!contains(typeContainer.getTypeDefinitions(), reqTypeName)) {
+				RequirementType conceptRequirementType = new RequirementType(concept);
+				conceptRequirementType.setName(reqHelper.cleanEntityName(reqIfRequirementType.getLongName()));
+				
+				for (AttributeDefinition reqIfAttDef : reqIfRequirementType.getSpecAttributes()) {
+					RequirementAttribute conceptAttType = new RequirementAttribute(concept);
+					String attDefName = reqHelper.cleanEntityName(reqIfAttDef.getLongName());
+					conceptAttType.setName(attDefName);
+					conceptRequirementType.getAttributes().add(conceptAttType);
+				}
+				
+				//TODO switch type
+				
+				cc.append(typeContainer.getTypeDefinitions().add(editingDomain, conceptRequirementType));
+			}
+		}
+		return cc;
 	}
 	
 	/**
@@ -110,13 +157,23 @@ public class ReqIfImporter {
 		return importConfiguration.setTypeDefinitionsContainer(editingDomain, typeContainer);
 	}
 	
-	public Command importRequirementTypes(EditingDomain editingDomain, ReqIF reqIFContent) {
-		CompoundCommand cc = new CompoundCommand();
-		return cc;
-	}
-	
 	protected String getImportTitle() {
 		return this.reqIfContent.eResource().getURI().trimFileExtension().lastSegment();
+	}
+	
+	/**
+	 * Utility method to check if a list of named elements contains an element with a given name
+	 * @param list the list of named beans
+	 * @param name the name to search for
+	 * @return weather the list contains an element with the given name
+	 */
+	protected boolean contains(IBeanList<? extends IBeanName> list, String name) {
+		for (IBeanName namedElement : list) {
+			if (namedElement.equals(name)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
