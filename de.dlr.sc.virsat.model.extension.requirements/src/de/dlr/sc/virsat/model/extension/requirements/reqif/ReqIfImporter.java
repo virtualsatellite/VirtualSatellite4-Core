@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.reqif;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
@@ -62,12 +64,14 @@ public class ReqIfImporter {
 	protected RequirementsConfigurationCollection configurationContainer = null;
 	protected Concept concept = null;
 	protected ReqIF reqIfContent;
+	protected List<INativeRequirementAttributeMapping> mappingImpls = new ArrayList<INativeRequirementAttributeMapping>();
 	
 
 	public void init(ReqIF reqIFContent, RequirementsConfigurationCollection configurationContainer) {
 		this.concept = ActiveConceptHelper.getConcept(configurationContainer.getStructuralElementInstance().getType());
 		this.reqIfContent = reqIFContent;
 		this.configurationContainer = configurationContainer;
+		registerAttributeMappingImpls();
 	}
 	
 	public void init(ReqIF reqIFContent, ImportConfiguration configuration) {
@@ -75,6 +79,21 @@ public class ReqIfImporter {
 		this.reqIfContent = reqIFContent;
 		this.importConfiguration = configuration;
 		this.configurationContainer = (RequirementsConfigurationCollection) configuration.getParent();
+		registerAttributeMappingImpls();
+	}
+	
+	protected void registerAttributeMappingImpls() {
+		mappingImpls.add(new DoorsNGImportMapping());
+	}
+	
+	/**
+	 * Import the requirements specified in the ReqIF content
+	 * @param editingDomain the editing domain for the import
+	 * @param reqIFContent the actual ReqIF content
+	 * @return the command to be executed
+	 */
+	public void importRequirements(EditingDomain editingDomain, ReqIF reqIFContent) {
+		
 	}
 	
 	/**
@@ -100,13 +119,16 @@ public class ReqIfImporter {
 				conceptRequirementType.setName(reqHelper.cleanEntityName(reqIfRequirementType.getLongName()));
 				
 				for (AttributeDefinition reqIfAttDef : reqIfRequirementType.getSpecAttributes()) {
-					RequirementAttribute conceptAttType = new RequirementAttribute(concept);
-					String attDefName = reqHelper.cleanEntityName(reqIfAttDef.getLongName());
-					conceptAttType.setName(attDefName);
-					configureAttributeType(conceptAttType, reqIfAttDef);
-					conceptRequirementType.getAttributes().add(conceptAttType);
+					
+					if (!hasNativeAttributeImpl(reqIfAttDef)) {
+						RequirementAttribute conceptAttType = new RequirementAttribute(concept);
+						String attDefName = reqHelper.cleanEntityName(reqIfAttDef.getLongName());
+						conceptAttType.setName(attDefName);
+						configureAttributeType(conceptAttType, reqIfAttDef);
+						conceptRequirementType.getAttributes().add(conceptAttType);
+					}
+					
 				}
-				
 				cc.append(typeContainer.getTypeDefinitions().add(editingDomain, conceptRequirementType));
 			}
 		}
@@ -215,6 +237,21 @@ public class ReqIfImporter {
 		} else {
 			conceptAttType.setType(RequirementAttribute.TYPE_String_NAME);
 		}
+	}
+	
+	/**
+	 * Check it a requirement attribute to be imported has a specified mapping to a native attribute implementation
+	 * 
+	 * @param reqIfAtt the attribute mapping to be checked
+	 * @return true if native mapping is defined, false otherwise
+	 */
+	protected boolean hasNativeAttributeImpl(AttributeDefinition reqIfAtt) {
+		for (INativeRequirementAttributeMapping mappingImpl : mappingImpls) {
+			if (mappingImpl.isNativeAttribute(reqIfAtt)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
