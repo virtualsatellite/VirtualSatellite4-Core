@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.dialogs.DialogSettings;
@@ -35,6 +35,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.requirements.model.ImportConfiguration;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfiguration;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollection;
 import de.dlr.sc.virsat.model.extension.requirements.reqif.ReqIfImporter;
 import de.dlr.sc.virsat.model.extension.requirements.ui.Activator;
@@ -87,6 +88,7 @@ public class ReqIfImportWizard extends Wizard implements IWorkbenchWizard {
 
 		final EObject reqConfiguration = (EObject) importPage.getSelection();
 		final Map<Specification, StructuralElementInstance> specMapping = mappingPage.getSpecificationMapping();
+		final RequirementsConfiguration typeContainer = mappingPage.getRequirementTypeContainer();
 
 		// Do the import
 		Job importJob = new Job("Performing Requirements ReqIF Import") {
@@ -98,7 +100,7 @@ public class ReqIfImportWizard extends Wizard implements IWorkbenchWizard {
 				ReqIF reqIfContent = mappingPage.getReqIfContent();
 				
 				if (reqConfiguration instanceof StructuralElementInstance) {
-					doImport(editingDomain, reqIfContent, specMapping, new RequirementsConfigurationCollection((StructuralElementInstance) reqConfiguration), monitor);
+					doImport(editingDomain, reqIfContent, specMapping, new RequirementsConfigurationCollection((StructuralElementInstance) reqConfiguration), typeContainer, monitor);
 				} else  {
 					doReimport(editingDomain, reqIfContent, new ImportConfiguration((CategoryAssignment) reqConfiguration), monitor);
 				}
@@ -119,15 +121,39 @@ public class ReqIfImportWizard extends Wizard implements IWorkbenchWizard {
 
 		return true;
 	}
-	
-	public void doImport(EditingDomain editingDomain, ReqIF reqIfContent, Map<Specification, StructuralElementInstance> specMapping, RequirementsConfigurationCollection configurationContainer, IProgressMonitor monitor) {
 
-		Command mappingCmd = importer.persistSpecificationMapping(editingDomain, specMapping, reqIfContent, configurationContainer);
-		editingDomain.getCommandStack().execute(mappingCmd);
+	/**
+	 * Do an initial import, this method also creates a mapping of specifications and configures the import configuration
+	 * 
+	 * @param editingDomain the editing domain
+	 * @param reqIfContent the content to import
+	 * @param specMapping the mapping as map
+	 * @param configurationContainer the container in which the import configuration shall be created
+	 * @param typeContainer the container element for new requirement types imported from ReqIF
+	 * @param monitor the progress monitor
+	 */
+	public void doImport(EditingDomain editingDomain, ReqIF reqIfContent, Map<Specification, StructuralElementInstance> specMapping, RequirementsConfigurationCollection configurationContainer, RequirementsConfiguration typeContainer, IProgressMonitor monitor) {
+
+		importer.init(reqIfContent, configurationContainer);
+		
+		CompoundCommand importCommand = new CompoundCommand();
+		importCommand.append(importer.persistSpecificationMapping(editingDomain, specMapping, reqIfContent, configurationContainer));
+		importCommand.append(importer.persistRequirementTypeContainer(editingDomain, typeContainer));
+		editingDomain.getCommandStack().execute(importCommand);
 
 	}
 	
+	/**
+	 * Do a re-import in a import configuration already exists. Existing requirement values are overwritten.
+	 * 
+	 * @param editingDomain the editing domain
+	 * @param reqIfContent the content to import
+	 * @param importConfiguration the existing configuration element
+	 * @param monitor the progress monitor
+	 */
 	public void doReimport(EditingDomain editingDomain, ReqIF reqIfContent, ImportConfiguration importConfiguration, IProgressMonitor monitor) {
+		
+		importer.init(reqIfContent, importConfiguration);
 		
 	}
 

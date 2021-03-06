@@ -23,6 +23,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.requirements.model.ImportConfiguration;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfiguration;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollection;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsSpecification;
 import de.dlr.sc.virsat.model.extension.requirements.model.SpecificationMapping;
@@ -35,10 +36,30 @@ import de.dlr.sc.virsat.model.extension.requirements.util.RequirementHelper;
 public class ReqIfImporter {
 	
 	public static final String IMPORT_CONFIC_PREFIX = "ReqIFImport";
+	public static final String TYPE_CONTAINER_PREFIX = "TypeContainer";
+	
 	private RequirementHelper reqHelper = new RequirementHelper();
+	protected ImportConfiguration importConfiguration = null;
+	protected RequirementsConfigurationCollection configurationContainer = null;
+	protected Concept concept = null;
+	protected ReqIF reqIfContent;
+	
+
+	public void init(ReqIF reqIFContent, RequirementsConfigurationCollection configurationContainer) {
+		this.concept = ActiveConceptHelper.getConcept(configurationContainer.getStructuralElementInstance().getType());
+		this.reqIfContent = reqIFContent;
+		this.configurationContainer = configurationContainer;
+	}
+	
+	public void init(ReqIF reqIFContent, ImportConfiguration configuration) {
+		this.concept = ActiveConceptHelper.getConcept(configuration.getTypeInstance().getType());
+		this.reqIfContent = reqIFContent;
+		this.importConfiguration = configuration;
+		this.configurationContainer = (RequirementsConfigurationCollection) configuration.getParent();
+	}
 	
 	/**
-	 * Create a command the persists the mapping created in the UI to the model so that it can be reused
+	 * Create a command that persists the mapping created in the UI to the model so that it can be reused
 	 * @param editingDomain the editing domain
 	 * @param mapping the mapping from UI
 	 * @param reqIFContent the ReqIF content
@@ -46,12 +67,10 @@ public class ReqIfImporter {
 	 * @return the command to be executed
 	 */
 	public Command persistSpecificationMapping(EditingDomain editingDomain, Map<Specification, StructuralElementInstance> mapping, ReqIF reqIFContent, RequirementsConfigurationCollection configurationContainer) {
-		Concept concept = ActiveConceptHelper.getConcept(configurationContainer.getStructuralElementInstance().getType());
-		CompoundCommand cc = new CompoundCommand();
-		ImportConfiguration configuration = new ImportConfiguration(concept);
-		String configName = IMPORT_CONFIC_PREFIX + reqIFContent.eResource().getURI().trimFileExtension().lastSegment();
-		configuration.setName(configName);
+		importConfiguration = new ImportConfiguration(concept);
+		importConfiguration.setName(IMPORT_CONFIC_PREFIX + getImportTitle());
 		
+		CompoundCommand cc = new CompoundCommand();
 		for (Entry<Specification, StructuralElementInstance> entry : mapping.entrySet()) {
 			Specification spec = entry.getKey();  // According to spotbugs this way of iterating is faster than by using keySet()
 			
@@ -66,12 +85,38 @@ public class ReqIfImporter {
 			SpecificationMapping specMapping = new SpecificationMapping(concept);
 			specMapping.setExternalIdentifier(externalIdentifier);
 			specMapping.setSpecification(conceptSpec);
-			configuration.getMappedSpecifications().add(specMapping);
+			importConfiguration.getMappedSpecifications().add(specMapping);
 		}
 		
-		cc.append(configurationContainer.add(editingDomain, configuration));
+		cc.append(configurationContainer.add(editingDomain, importConfiguration));
 		return cc;
 	}
 	
+	/**
+	 * Add the configuration element for new requirement types to the import configuration. If non is specified, a new type container is created
+	 * @param editingDomain the editing domain
+	 * @param typeContainer an existing type container or null if a new one should be created
+	 * @return the command to be executed
+	 */
+	public Command persistRequirementTypeContainer(EditingDomain editingDomain, RequirementsConfiguration typeContainer) {
+		if (typeContainer == null) {
+			CompoundCommand cc = new CompoundCommand();
+			RequirementsConfiguration newTypeContainer = new RequirementsConfiguration(concept);
+			newTypeContainer.setName(TYPE_CONTAINER_PREFIX + getImportTitle());
+			cc.append(configurationContainer.add(editingDomain, newTypeContainer));
+			cc.append(importConfiguration.setTypeDefinitionsContainer(editingDomain, newTypeContainer));
+			return cc;
+		}
+		return importConfiguration.setTypeDefinitionsContainer(editingDomain, typeContainer);
+	}
+	
+	public Command importRequirementTypes(EditingDomain editingDomain, ReqIF reqIFContent) {
+		CompoundCommand cc = new CompoundCommand();
+		return cc;
+	}
+	
+	protected String getImportTitle() {
+		return this.reqIfContent.eResource().getURI().trimFileExtension().lastSegment();
+	}
 
 }
