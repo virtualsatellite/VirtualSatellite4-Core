@@ -144,6 +144,9 @@ public class ReqIfImportWizard extends Wizard implements IWorkbenchWizard {
 		
 		// Created required types
 		editingDomain.getCommandStack().execute(importer.importRequirementTypes(editingDomain, reqIfContent));
+		
+		// Do the actual imports
+		editingDomain.getCommandStack().execute(importer.importRequirements(editingDomain, reqIfContent));
 
 	}
 	
@@ -159,9 +162,11 @@ public class ReqIfImportWizard extends Wizard implements IWorkbenchWizard {
 		
 		importer.init(reqIfContent, importConfiguration);
 		
-		CompoundCommand importCommand = new CompoundCommand();
-		importCommand.append(importer.importRequirementTypes(editingDomain, reqIfContent));
-		editingDomain.getCommandStack().execute(importCommand);
+		// Created required types
+		editingDomain.getCommandStack().execute(importer.importRequirementTypes(editingDomain, reqIfContent));
+				
+		// Do the actual imports
+		editingDomain.getCommandStack().execute(importer.importRequirements(editingDomain, reqIfContent));
 	}
 
 	@Override

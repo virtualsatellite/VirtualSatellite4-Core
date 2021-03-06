@@ -9,10 +9,15 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.reqif;
 
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.rmf.reqif10.AttributeDefinition;
+import org.eclipse.rmf.reqif10.AttributeValue;
+
+import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 
 /**
- * @author fran_tb
+ * Interface for mapping implementations of imported requirement attributes to native attributes
  *
  */
 public interface INativeRequirementAttributeMapping {
@@ -29,5 +34,23 @@ public interface INativeRequirementAttributeMapping {
 	 */
 	boolean isNativeAttribute(AttributeDefinition reqIFAttDef);
 	
+	/**
+	 * Specify if the attribute is an identifying attribute
+	 * 
+	 * @param reqIFAttDef the attribute under question
+	 * @return 
+	 */
+	boolean isIdentifierAttribute(AttributeDefinition reqIFAttDef);
+	
+	
+	/**
+	 * Import a requirement value into its native requirement implementation
+	 * 
+	 * @param editingDomain the editing domain for the import
+	 * @param requirement the requirement in which values should be imported
+	 * @param attValue the attribute value
+	 * @return the command to be executed
+	 */
+	Command setNativeValues(EditingDomain editingDomain, Requirement requirement, AttributeValue attValue);
 	
 }

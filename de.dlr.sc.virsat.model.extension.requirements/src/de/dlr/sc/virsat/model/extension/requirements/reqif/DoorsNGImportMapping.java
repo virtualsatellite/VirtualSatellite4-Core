@@ -9,7 +9,12 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.reqif;
 
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.rmf.reqif10.AttributeDefinition;
+import org.eclipse.rmf.reqif10.AttributeValue;
+
+import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 
 /**
  * Mapping implementation that maps the default Doors NG requirement attributes to native attribute
@@ -27,5 +32,19 @@ public class DoorsNGImportMapping implements INativeRequirementAttributeMapping 
 		}
 		return false;
 	}
+
+	@Override
+	public boolean isIdentifierAttribute(AttributeDefinition reqIFAttDef) {
+		return false;
+	}
+
+	@Override
+	public Command setNativeValues(EditingDomain editingDomain, Requirement requirement, AttributeValue attValue) {
+		// TODO Import status attribute
+		return null;
+	}
+	
+	
+
 
 }

@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CompoundCommand;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.rmf.reqif10.AttributeDefinition;
 import org.eclipse.rmf.reqif10.AttributeDefinitionBoolean;
@@ -26,10 +27,13 @@ import org.eclipse.rmf.reqif10.AttributeDefinitionInteger;
 import org.eclipse.rmf.reqif10.AttributeDefinitionReal;
 import org.eclipse.rmf.reqif10.AttributeDefinitionString;
 import org.eclipse.rmf.reqif10.AttributeDefinitionXHTML;
+import org.eclipse.rmf.reqif10.AttributeValue;
 import org.eclipse.rmf.reqif10.DatatypeDefinitionEnumeration;
 import org.eclipse.rmf.reqif10.EnumValue;
 import org.eclipse.rmf.reqif10.ReqIF;
 import org.eclipse.rmf.reqif10.ReqIFContent;
+import org.eclipse.rmf.reqif10.SpecHierarchy;
+import org.eclipse.rmf.reqif10.SpecObject;
 import org.eclipse.rmf.reqif10.SpecObjectType;
 import org.eclipse.rmf.reqif10.SpecType;
 import org.eclipse.rmf.reqif10.Specification;
@@ -42,7 +46,10 @@ import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.requirements.model.EnumerationLiteral;
 import de.dlr.sc.virsat.model.extension.requirements.model.ImportConfiguration;
+import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttribute;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementGroup;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementObject;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfiguration;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollection;
@@ -65,6 +72,7 @@ public class ReqIfImporter {
 	protected Concept concept = null;
 	protected ReqIF reqIfContent;
 	protected List<INativeRequirementAttributeMapping> mappingImpls = new ArrayList<INativeRequirementAttributeMapping>();
+	private Object child;
 	
 
 	public void init(ReqIF reqIFContent, RequirementsConfigurationCollection configurationContainer) {
@@ -92,8 +100,83 @@ public class ReqIfImporter {
 	 * @param reqIFContent the actual ReqIF content
 	 * @return the command to be executed
 	 */
-	public void importRequirements(EditingDomain editingDomain, ReqIF reqIFContent) {
-		
+	public Command importRequirements(EditingDomain editingDomain, ReqIF reqIFContent) {
+		CompoundCommand cc = new CompoundCommand();
+		for (SpecificationMapping specMapping : importConfiguration.getMappedSpecifications()) {
+			Specification reqIfSpec = null;
+			for (Specification spec : reqIFContent.getCoreContent().getSpecifications()) {
+				if (spec.getLongName().equals(specMapping.getExternalIdentifier())) {
+					reqIfSpec = spec;
+				}
+			}
+			cc.append(importRequirementList(editingDomain, specMapping.getSpecification().getRequirements(), reqIfSpec.getChildren()));
+		}
+		return cc;
+	}
+	
+	protected Command importRequirementList(EditingDomain editingDomain, IBeanList<RequirementObject> reqList, EList<SpecHierarchy> reqIfSpecificationList) {
+		CompoundCommand cc = new CompoundCommand();
+		for (SpecHierarchy rootChild : reqIfSpecificationList) {
+			
+			RequirementObject current = findExisting(reqList, rootChild);
+			for (SpecHierarchy child : rootChild.getChildren()) {
+				if (current == null) {
+					RequirementGroup newGroup = new RequirementGroup(concept);
+					createSpecHierarchyGroup(newGroup, rootChild.getChildren());
+					cc.append(reqList.add(editingDomain, newGroup));
+				} else {
+					importRequirementList(editingDomain, ((RequirementGroup) current).getChildren(), rootChild.getChildren());
+				}
+			}
+			
+			if (rootChild.getChildren() == null || rootChild.getChildren().isEmpty()) {
+				if (current == null) {
+					Requirement newReq = new Requirement(concept);
+					createSpecHierarchyRequirement(newReq, rootChild);
+					cc.append(reqList.add(editingDomain, newReq));
+				} else {
+					cc.append(reImportSpecHierarchyRequirement(editingDomain, (Requirement) current, rootChild));
+				}
+			}
+		}
+		return cc;
+	}
+	
+	protected void createSpecHierarchyGroup(RequirementGroup reqGroup, EList<SpecHierarchy> reqIfSpecificationList) {
+		for(SpecHierarchy spec : reqIfSpecificationList) {
+			Requirement newRequirement = new Requirement(concept);
+			createSpecHierarchyRequirement(newRequirement, spec);
+			reqGroup.getChildren().add(newRequirement);
+		}
+	}
+	
+	protected Command reImportSpecHierarchyGroup(EditingDomain editingDomain, RequirementGroup reqGroup, SpecHierarchy hierarchyLevel) {
+		CompoundCommand cc = new CompoundCommand();
+		for (SpecHierarchy child : hierarchyLevel.getChildren()) {
+			
+		}
+		return cc;
+	}
+	
+	protected void createSpecHierarchyRequirement(Requirement conceptRequirement, SpecHierarchy hierarchyLevel) {
+		CompoundCommand cc = new CompoundCommand();
+		SpecObject reqObject = hierarchyLevel.getObject();
+		for (AttributeValue att : reqObject.getValues()) {
+			
+		}
+	}
+	
+	protected Command reImportSpecHierarchyRequirement(EditingDomain editingDomain, Requirement conceptRequirement, SpecHierarchy hierarchyLevel) {
+		CompoundCommand cc = new CompoundCommand();
+		SpecObject reqObject = hierarchyLevel.getObject();
+		for (AttributeValue att : reqObject.getValues()) {
+			// Do import
+		}
+		return cc;
+	}
+	
+	protected RequirementObject findExisting(IBeanList<RequirementObject> reqList, SpecHierarchy hierarchyLevel) {
+		return null;
 	}
 	
 	/**
@@ -212,7 +295,9 @@ public class ReqIfImporter {
 	 * @param reqIfAttDef the ReqIF attribute definition
 	 */
 	protected void configureAttributeType(RequirementAttribute conceptAttType, AttributeDefinition reqIfAttDef) {
-		if (reqIfAttDef instanceof AttributeDefinitionString) {
+		if (isIdentifier(reqIfAttDef)) {
+			conceptAttType.setType(RequirementAttribute.TYPE_Identifier_NAME);
+		} else if (reqIfAttDef instanceof AttributeDefinitionString) {
 			conceptAttType.setType(RequirementAttribute.TYPE_String_NAME);
 		} else if (reqIfAttDef instanceof AttributeDefinitionBoolean) {
 			conceptAttType.setType(RequirementAttribute.TYPE_Boolean_NAME);
@@ -248,6 +333,21 @@ public class ReqIfImporter {
 	protected boolean hasNativeAttributeImpl(AttributeDefinition reqIfAtt) {
 		for (INativeRequirementAttributeMapping mappingImpl : mappingImpls) {
 			if (mappingImpl.isNativeAttribute(reqIfAtt)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Check it a requirement attribute to be imported is specified as identifier
+	 * 
+	 * @param reqIfAtt the attribute mapping to be checked
+	 * @return true if is an identifier, false otherwise
+	 */
+	protected boolean isIdentifier(AttributeDefinition reqIfAtt) {
+		for (INativeRequirementAttributeMapping mappingImpl : mappingImpls) {
+			if (mappingImpl.isIdentifierAttribute(reqIfAtt)) {
 				return true;
 			}
 		}
