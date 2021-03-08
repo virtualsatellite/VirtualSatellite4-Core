@@ -53,4 +53,12 @@ public interface INativeRequirementAttributeMapping {
 	 */
 	Command setNativeValues(EditingDomain editingDomain, Requirement requirement, AttributeValue attValue);
 	
+	/**
+	 * Import a requirement value into its native requirement implementation
+	 * 
+	 * @param requirement the requirement in which values should be imported
+	 * @param attValue the attribute value
+	 */
+	void setNativeValues(Requirement requirement, AttributeValue attValue);
+	
 }

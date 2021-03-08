@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.model.extension.requirements.reqif;
 
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.rmf.reqif10.AttributeDefinition;
 import org.eclipse.rmf.reqif10.AttributeValue;
@@ -40,11 +41,15 @@ public class DoorsNGImportMapping implements INativeRequirementAttributeMapping 
 
 	@Override
 	public Command setNativeValues(EditingDomain editingDomain, Requirement requirement, AttributeValue attValue) {
-		// TODO Import status attribute
-		return null;
+		CompoundCommand cc = new CompoundCommand();
+		// Import status attribute
+		return cc;
 	}
 	
-	
+	@Override
+	public void setNativeValues(Requirement requirement, AttributeValue attValue) {
+		// Import status attribute
+	}
 
 
 }
