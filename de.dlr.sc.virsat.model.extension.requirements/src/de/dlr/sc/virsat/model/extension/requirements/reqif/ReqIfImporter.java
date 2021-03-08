@@ -123,7 +123,7 @@ public class ReqIfImporter {
 					reqIfSpec = spec;
 				}
 			}
-			cc.append(importRequirementList(editingDomain, specMapping.getSpecification().getRequirements(), reqIfSpec.getChildren()));
+			importRequirementList(editingDomain, cc, specMapping.getSpecification().getRequirements(), reqIfSpec.getChildren());
 		}
 		return cc;
 	}
@@ -136,8 +136,8 @@ public class ReqIfImporter {
 	 * @param reqIfSpecificationList the list of ReqIF requirements on the current level 
 	 * @return the command to be executed for import
 	 */
-	protected Command importRequirementList(EditingDomain editingDomain, IBeanList<RequirementObject> reqList, EList<SpecHierarchy> reqIfSpecificationList) {
-		CompoundCommand cc = new CompoundCommand();
+	protected Command importRequirementList(EditingDomain editingDomain, CompoundCommand cc, IBeanList<RequirementObject> reqList, EList<SpecHierarchy> reqIfSpecificationList) {
+		//CompoundCommand cc = new CompoundCommand();
 		for (SpecHierarchy rootChild : reqIfSpecificationList) {
 			
 			RequirementObject current = findExisting(reqList, rootChild);
@@ -147,10 +147,10 @@ public class ReqIfImporter {
 				if (current == null) {
 					Requirement newReq = createRequirementBase(rootChild.getObject().getType());
 					createSpecHierarchyRequirement(newReq, rootChild);
-					cc.append(newReq.updateNameFromAttributes(editingDomain));
+					newReq.updateNameFromAttributes();
 					cc.append(reqList.add(editingDomain, newReq));
 				} else {
-					cc.append(reImportSpecHierarchyRequirement(editingDomain, (Requirement) current, rootChild));
+					reImportSpecHierarchyRequirement(editingDomain, cc, (Requirement) current, rootChild);
 				}
 			} else {
 				// Import requirements which have further children
@@ -160,7 +160,7 @@ public class ReqIfImporter {
 					newGroup.setName(getReqIFRequirementName(rootChild));
 					cc.append(reqList.add(editingDomain, newGroup));
 				} else {
-					importRequirementList(editingDomain, ((RequirementGroup) current).getChildren(), rootChild.getChildren());
+					importRequirementList(editingDomain, cc, ((RequirementGroup) current).getChildren(), rootChild.getChildren());
 				}
 			}
 		}
@@ -212,11 +212,11 @@ public class ReqIfImporter {
 	 * @param hierarchyLevel the ReqIF requirement
 	 * @return the command to be executed for import
 	 */
-	protected Command reImportSpecHierarchyRequirement(EditingDomain editingDomain, Requirement conceptRequirement, SpecHierarchy hierarchyLevel) {
-		CompoundCommand cc = new CompoundCommand();
+	protected Command reImportSpecHierarchyRequirement(EditingDomain editingDomain, CompoundCommand cc, Requirement conceptRequirement, SpecHierarchy hierarchyLevel) {
+		//CompoundCommand cc = new CompoundCommand();
 		SpecObject reqObject = hierarchyLevel.getObject();
 		for (AttributeValue att : reqObject.getValues()) {
-			setAttributeValue(editingDomain, conceptRequirement, att);
+			setAttributeValue(editingDomain, cc, conceptRequirement, att);
 		}
 		return cc;
 	}
@@ -229,8 +229,8 @@ public class ReqIfImporter {
 	 * @param attvalue the ReqIF attribute value
 	 * @return the command to be executed for import
 	 */
-	protected Command setAttributeValue(EditingDomain editingDomain, Requirement conceptRequirement, AttributeValue attvalue) {
-		CompoundCommand cc = new CompoundCommand();
+	protected Command setAttributeValue(EditingDomain editingDomain, CompoundCommand cc, Requirement conceptRequirement, AttributeValue attvalue) {
+		//CompoundCommand cc = new CompoundCommand();
 		StringBuilder newValue = new StringBuilder();
 		StringBuilder newFormattedValue = new StringBuilder();
 		AttributeDefinition attDef = switchAttributeValue(newValue, newFormattedValue, attvalue);
