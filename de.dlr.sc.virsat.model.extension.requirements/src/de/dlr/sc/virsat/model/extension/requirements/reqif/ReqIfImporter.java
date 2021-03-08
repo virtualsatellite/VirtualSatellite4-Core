@@ -45,6 +45,7 @@ import org.eclipse.rmf.reqif10.SpecObject;
 import org.eclipse.rmf.reqif10.SpecObjectType;
 import org.eclipse.rmf.reqif10.SpecType;
 import org.eclipse.rmf.reqif10.Specification;
+import org.eclipse.rmf.reqif10.XhtmlContent;
 
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.concept.types.IBeanName;
@@ -141,7 +142,7 @@ public class ReqIfImporter {
 			// Import atomic requirements first
 			if (rootChild.getChildren() == null || rootChild.getChildren().isEmpty()) {
 				if (current == null) {
-					Requirement newReq = new Requirement(concept);
+					Requirement newReq = createRequirementBase(rootChild.getObject().getType());
 					createSpecHierarchyRequirement(newReq, rootChild);
 					cc.append(reqList.add(editingDomain, newReq));
 				} else {
@@ -168,12 +169,11 @@ public class ReqIfImporter {
 	 * @param reqIfSpecificationList the ReqIF container of the list of requirements 
 	 */
 	protected void createSpecHierarchyGroup(RequirementGroup reqGroup, SpecHierarchy reqIfSpecificationList) {
-		if (reqIfSpecificationList.getLongName() != null) {
-			reqGroup.setName(reqIfSpecificationList.getLongName());
-		}
+		reqGroup.setName(reqIfSpecificationList.getObject().getType().getLongName());
+		
 		for (SpecHierarchy spec : reqIfSpecificationList.getChildren()) {
 			if (spec.getChildren() == null || spec.getChildren().isEmpty()) {
-				Requirement newRequirement = new Requirement(concept);
+				Requirement newRequirement = createRequirementBase(spec.getObject().getType());
 				createSpecHierarchyRequirement(newRequirement, spec);
 				reqGroup.getChildren().add(newRequirement);
 			} else {
@@ -224,8 +224,8 @@ public class ReqIfImporter {
 	 */
 	protected Command setAttributeValue(EditingDomain editingDomain, Requirement conceptRequirement, AttributeValue attvalue) {
 		CompoundCommand cc = new CompoundCommand();
-		String newValue = null;
-		String newFormattedValue = null;
+		StringBuilder newValue = new StringBuilder();
+		StringBuilder newFormattedValue = new StringBuilder();
 		AttributeDefinition attDef = switchAttributeValue(newValue, newFormattedValue, attvalue);
 		
 		de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue conceptAttributeValue = findExisting(conceptRequirement, attDef);
@@ -241,8 +241,8 @@ public class ReqIfImporter {
 			if (hasNativeAttributeImpl(attDef)) { 
 				cc.append(setNativeRequirementAttributeValue(editingDomain, conceptRequirement, attvalue, attDef));
 			} else {
-				cc.append(conceptAttributeValue.setValue(editingDomain, newValue));
-				cc.append(conceptAttributeValue.setFormattedValue(editingDomain, newFormattedValue));
+				cc.append(conceptAttributeValue.setValue(editingDomain, newValue.toString()));
+				cc.append(conceptAttributeValue.setFormattedValue(editingDomain, newFormattedValue.toString()));
 			}
 		}
 		return cc;
@@ -255,23 +255,23 @@ public class ReqIfImporter {
 	 * @param attvalue the ReqIF attribute value
 	 */
 	protected void setAttributeValue(Requirement conceptRequirement, AttributeValue attvalue) {
-		String newValue = null;
-		String newFormattedValue = null;
+		StringBuilder newValue = new StringBuilder();
+		StringBuilder newFormattedValue = new StringBuilder();
 		AttributeDefinition attDef = switchAttributeValue(newValue, newFormattedValue, attvalue);
 		RequirementAttribute conceptAttDef = findAttributeDefinition(conceptRequirement, attDef);
 		
 		// Create and add a new attribute value into requirement
 		de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue conceptAttributeValue = new de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue(concept);
 		conceptAttributeValue.setAttType(conceptAttDef);
-		conceptRequirement.getElements().add(conceptAttributeValue);
 		
 		// Set the value
 		if (hasNativeAttributeImpl(attDef)) { 
 			setNativeRequirementAttributeValue(conceptRequirement, attvalue, attDef);
 		} else {
-			conceptAttributeValue.setValue(newValue);
-			conceptAttributeValue.setFormattedValue(newFormattedValue);
+			conceptAttributeValue.setValue(newValue.toString());
+			conceptAttributeValue.setFormattedValue(newFormattedValue.toString());
 		}
+		conceptRequirement.getElements().add(conceptAttributeValue);
 	}
 	
 	/**
@@ -290,7 +290,7 @@ public class ReqIfImporter {
 		for (SpecType type : importContent.getSpecTypes().stream().
 					filter(type -> type instanceof SpecObjectType).collect(Collectors.toList())) {
 			SpecObjectType reqIfRequirementType = (SpecObjectType) type; // List is filtered to only contain spec object types
-			String reqTypeName = reqHelper.cleanEntityName(reqIfRequirementType.getLongName());
+			String reqTypeName = cleanAttName(reqIfRequirementType.getLongName());
 			
 			// We're not overwriting the requirement types to ensure these can be customized
 			if (!contains(typeContainer.getTypeDefinitions(), reqTypeName)) {
@@ -301,7 +301,7 @@ public class ReqIfImporter {
 					
 					if (!hasNativeAttributeImpl(reqIfAttDef)) {
 						RequirementAttribute conceptAttType = new RequirementAttribute(concept);
-						String attDefName = reqHelper.cleanEntityName(reqIfAttDef.getLongName());
+						String attDefName = cleanAttName(reqIfAttDef.getLongName());
 						conceptAttType.setName(attDefName);
 						configureAttributeType(conceptAttType, reqIfAttDef);
 						conceptRequirementType.getAttributes().add(conceptAttType);
@@ -339,10 +339,10 @@ public class ReqIfImporter {
 			conceptAttType.setType(RequirementAttribute.TYPE_Enumeration_NAME);
 			AttributeDefinitionEnumeration attributeDefinitionEnumeration = (AttributeDefinitionEnumeration) reqIfAttDef;
 			DatatypeDefinitionEnumeration enumerationType = attributeDefinitionEnumeration.getType();
-			conceptAttType.getEnumeration().setName(reqHelper.cleanEntityName(enumerationType.getLongName()));
+			conceptAttType.getEnumeration().setName(cleanAttName(enumerationType.getLongName()));
 			for (EnumValue value : enumerationType.getSpecifiedValues()) {
 				EnumerationLiteral literal = new EnumerationLiteral(concept);
-				literal.setName(reqHelper.cleanEntityName(value.getLongName()));
+				literal.setName(cleanAttName(value.getLongName()));
 				conceptAttType.getEnumeration().getLiterals().add(literal);
 			}
 		} else {
@@ -358,42 +358,60 @@ public class ReqIfImporter {
 	 * @param attValue the ReqIF attribute value
 	 * @return the attribute definition
 	 */
-	protected AttributeDefinition switchAttributeValue(String value, String formattedValue, AttributeValue attValue) {
+	protected AttributeDefinition switchAttributeValue(StringBuilder value, StringBuilder formattedValue, AttributeValue attValue) {
 		AttributeDefinition attDef = null;
 		if (attValue instanceof AttributeValueString) {
 			AttributeValueString attvalueString = (AttributeValueString) attValue;
 			attDef = attvalueString.getDefinition();
-			value = attvalueString.getTheValue();
+			value.append(attvalueString.getTheValue());
 		} else if (attValue instanceof AttributeValueBoolean) {
 			AttributeValueBoolean attValueBoolean = (AttributeValueBoolean) attValue;
 			attDef = attValueBoolean.getDefinition();
-			value = new Boolean(attValueBoolean.isTheValue()).toString();
+			value.append(attValueBoolean.isTheValue());
 		} else if (attValue instanceof AttributeValueDate) {
 			AttributeValueDate attValueDate = (AttributeValueDate) attValue;
 			attDef = attValueDate.getDefinition();
-			value = attValueDate.getTheValue().toString();
+			value.append(attValueDate.getTheValue().toZonedDateTime().toLocalDate().toString());
 		} else if (attValue instanceof AttributeValueEnumeration) {
 			AttributeValueEnumeration attValueEnumeration = (AttributeValueEnumeration) attValue;
 			attDef = attValueEnumeration.getDefinition();
-			value = reqHelper.cleanEntityName(attValueEnumeration.getValues().get(0).getLongName());
+			value.append(reqHelper.cleanEntityName(attValueEnumeration.getValues().get(0).getLongName()));
 		} else if (attValue instanceof AttributeValueReal) {
 			AttributeValueReal attDefinitionReal = (AttributeValueReal) attValue;
 			attDef = attDefinitionReal.getDefinition();
-			value = String.valueOf(attDefinitionReal.getTheValue());
+			value.append(String.valueOf(attDefinitionReal.getTheValue()));
 		} else if (attValue instanceof AttributeValueInteger) {
 			AttributeValueInteger attValueInteger = (AttributeValueInteger) attValue;
 			attDef = attValueInteger.getDefinition();
-			value = String.valueOf(attValueInteger.getTheValue());
+			value.append(attValueInteger.getTheValue());
 		} else if (attValue instanceof AttributeValueXHTML) {
 			AttributeValueXHTML attValueXHTML = (AttributeValueXHTML) attValue;
 			attDef = attValueXHTML.getDefinition();
-			value = attValueXHTML.getTheValue().toString().replaceAll("(?s)<[^>]*>(\\s*<[^>]*>)*", ""); // Remove HTML mark-up
-			formattedValue = attValueXHTML.getTheValue().toString();
+			XhtmlContent oValue = attValueXHTML.getTheValue();
+			if (oValue.getXhtmlSource() != null) {
+				value.append(oValue.getXhtmlSource().replaceAll("(?s)<[^>]*>(\\s*<[^>]*>)*", "")); // Remove HTML mark-up
+				formattedValue.append(oValue.getXhtmlSource());
+			}
+			
 		}
 		return attDef;
 	}
 	
-
+	/**
+	 * Instantiate a new requirement from a ReqIF requirement type
+	 * @param reqIfType the ReqIF requirement type
+	 * @return the new requirement
+	 */
+	protected Requirement createRequirementBase(SpecObjectType reqIfType) {
+		Requirement newRequirement = new Requirement(concept);
+		String reqTypeName = reqHelper.cleanEntityName(reqIfType.getLongName());
+		for (RequirementType reqType : importConfiguration.getTypeDefinitionsContainer().getTypeDefinitions()) {
+			if (reqType.getName().equals(reqTypeName)) {
+				newRequirement.setReqType(reqType);
+			}
+		}
+		return newRequirement;
+	}
 	
 	/**
 	 * Create a command that persists the mapping created in the UI to the model so that it can be reused
@@ -482,7 +500,7 @@ public class ReqIfImporter {
 	 */
 	protected de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue findExisting(Requirement requirement, AttributeDefinition attDef) {
 		for (de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue attValue : requirement.getElements()) {
-			if (attValue.getAttType().getName().equals(reqHelper.cleanEntityName(attDef.getLongName()))) {
+			if (attValue.getAttType().getName().equals(cleanAttName(attDef.getLongName()))) {
 				return attValue;
 			}
 		}
@@ -499,7 +517,7 @@ public class ReqIfImporter {
 	protected RequirementAttribute findAttributeDefinition(Requirement requirement, AttributeDefinition attDefReqIf) {
 		RequirementType reqType = requirement.getReqType();
 		for (RequirementAttribute attDef : reqType.getAttributes()) {
-			if (attDef.getName().equals(reqHelper.cleanEntityName(attDefReqIf.getLongName()))) {
+			if (attDef.getName().equals(cleanAttName(attDefReqIf.getLongName()))) {
 				return attDef;
 			}
 		}
@@ -571,6 +589,10 @@ public class ReqIfImporter {
 			}
 		}
 		return false;
+	}
+	
+	public String cleanAttName(String rawName) {
+		return reqHelper.cleanEntityName(rawName).replaceAll("ReqIF", "").replaceAll("Foreign", "");
 	}
 
 }
