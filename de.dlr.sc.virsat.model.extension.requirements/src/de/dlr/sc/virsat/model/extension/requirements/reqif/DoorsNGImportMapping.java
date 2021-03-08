@@ -27,6 +27,7 @@ public class DoorsNGImportMapping implements INativeRequirementAttributeMapping 
 	public static final String DOORS_STATUS_ATTRIBUTE_NAME = "Status";
 	public static final String DOORS_NAME_ATTRIBUTE_NAME = "ReqIF.Name";
 	public static final String DOORS_ID_ATTRIBUTE_NAME = "ReqIF.ForeignID";
+	public static final String DOORS_TEXT_ATTRIBUTE_NAME = "ReqIF.Text";
 	
 	@Override
 	public boolean isNativeAttribute(AttributeDefinition reqIFAttDef) {
@@ -56,6 +57,15 @@ public class DoorsNGImportMapping implements INativeRequirementAttributeMapping 
 	public void setNativeValues(Requirement requirement, AttributeValue attValue) {
 		// Import status attribute
 	}
+	
+	@Override
+	public Integer getNativeIndex(AttributeDefinition reqIfAttDef) {
+		if (reqIfAttDef.getLongName().equals(DOORS_TEXT_ATTRIBUTE_NAME)) {
+			return 0;
+		}
+		return null;
+	}
 
+	
 
 }

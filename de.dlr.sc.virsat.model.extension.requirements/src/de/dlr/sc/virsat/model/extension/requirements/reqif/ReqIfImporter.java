@@ -132,12 +132,12 @@ public class ReqIfImporter {
 	 * Import a list of ReqIF requirements by checking if these already exist locally
 	 * 
 	 * @param editingDomain the editing domain for the import
+	 * @param cc The compound command in which commands should be added
 	 * @param reqList the list of local requirements on the current level
 	 * @param reqIfSpecificationList the list of ReqIF requirements on the current level 
 	 * @return the command to be executed for import
 	 */
 	protected Command importRequirementList(EditingDomain editingDomain, CompoundCommand cc, IBeanList<RequirementObject> reqList, EList<SpecHierarchy> reqIfSpecificationList) {
-		//CompoundCommand cc = new CompoundCommand();
 		for (SpecHierarchy rootChild : reqIfSpecificationList) {
 			
 			RequirementObject current = findExisting(reqList, rootChild);
@@ -213,7 +213,6 @@ public class ReqIfImporter {
 	 * @return the command to be executed for import
 	 */
 	protected Command reImportSpecHierarchyRequirement(EditingDomain editingDomain, CompoundCommand cc, Requirement conceptRequirement, SpecHierarchy hierarchyLevel) {
-		//CompoundCommand cc = new CompoundCommand();
 		SpecObject reqObject = hierarchyLevel.getObject();
 		for (AttributeValue att : reqObject.getValues()) {
 			setAttributeValue(editingDomain, cc, conceptRequirement, att);
@@ -225,12 +224,12 @@ public class ReqIfImporter {
 	 * Set the attribute value from the corresponding ReqIF attribute value definition
 	 * 
 	 * @param editingDomain the editing domain for the import
+	 * @param cc The compound command in which commands should be added
 	 * @param conceptRequirement the local requirement element
 	 * @param attvalue the ReqIF attribute value
 	 * @return the command to be executed for import
 	 */
 	protected Command setAttributeValue(EditingDomain editingDomain, CompoundCommand cc, Requirement conceptRequirement, AttributeValue attvalue) {
-		//CompoundCommand cc = new CompoundCommand();
 		StringBuilder newValue = new StringBuilder();
 		StringBuilder newFormattedValue = new StringBuilder();
 		AttributeDefinition attDef = switchAttributeValue(newValue, newFormattedValue, attvalue);
@@ -314,7 +313,13 @@ public class ReqIfImporter {
 						String attDefName = cleanAttName(reqIfAttDef.getLongName());
 						conceptAttType.setName(attDefName);
 						configureAttributeType(conceptAttType, reqIfAttDef);
-						conceptRequirementType.getAttributes().add(conceptAttType);
+						Integer index = nativeIndex(reqIfAttDef);
+						if (index == null) {
+							conceptRequirementType.getAttributes().add(conceptAttType);
+						} else {
+							conceptRequirementType.getAttributes().add(index, conceptAttType);
+						}
+						
 					}
 					
 				}
@@ -658,6 +663,21 @@ public class ReqIfImporter {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * Check if a native index exists for the given attribute
+	 * @param reqIfAtt the attribute
+	 * @return a fixed index or null
+	 */
+	protected Integer nativeIndex(AttributeDefinition reqIfAtt) {
+		for (INativeRequirementAttributeMapping mappingImpl : mappingImpls) {
+			Integer index = mappingImpl.getNativeIndex(reqIfAtt);
+			if (index != null) {
+				return index;
+			}
+		}
+		return null;
 	}
 	
 	public String cleanAttName(String rawName) {

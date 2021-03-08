@@ -42,6 +42,13 @@ public interface INativeRequirementAttributeMapping {
 	 */
 	boolean isIdentifierAttribute(AttributeDefinition reqIFAttDef);
 	
+	/**
+	 * Enables to fix a specific attribute to some table column
+	 * 
+	 * @param reqIfAttDef the ReqIf attribute definition
+	 * @return the integer index at which the attribute should be located or null if not relevant
+	 */
+	Integer getNativeIndex(AttributeDefinition reqIfAttDef);
 	
 	/**
 	 * Import a requirement value into its native requirement implementation
