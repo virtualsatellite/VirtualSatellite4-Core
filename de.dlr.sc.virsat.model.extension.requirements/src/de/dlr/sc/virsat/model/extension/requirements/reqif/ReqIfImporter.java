@@ -78,6 +78,7 @@ public class ReqIfImporter {
 	public static final String TYPE_CONTAINER_PREFIX = "TypeContainer";
 	public static final String DUPLICATE_NATIVE_ATTRIBUTE_MAPPING = "Duplicate implementation for native attribute mapping defined! For attribute: ";
 	public static final String XHTML_PARSER_ERROR = "Could not parse XHTML!";
+	public static final String REQIF_NAME_ATTRIBUTE_NAME = "ReqIF.Name";
 	
 	private RequirementHelper reqHelper = new RequirementHelper();
 	protected ImportConfiguration importConfiguration = null;
@@ -156,6 +157,7 @@ public class ReqIfImporter {
 				if (current == null) {
 					RequirementGroup newGroup = new RequirementGroup(concept);
 					createSpecHierarchyGroup(newGroup, rootChild);
+					newGroup.setName(getReqIFRequirementName(rootChild));
 					cc.append(reqList.add(editingDomain, newGroup));
 				} else {
 					importRequirementList(editingDomain, ((RequirementGroup) current).getChildren(), rootChild.getChildren());
@@ -183,6 +185,7 @@ public class ReqIfImporter {
 			} else {
 				RequirementGroup newGroup = new RequirementGroup(concept);
 				createSpecHierarchyGroup(newGroup, spec);
+				newGroup.setName(getReqIFRequirementName(spec));
 				reqGroup.getChildren().add(newGroup);
 			}
 		}
@@ -264,18 +267,21 @@ public class ReqIfImporter {
 		AttributeDefinition attDef = switchAttributeValue(newValue, newFormattedValue, attvalue);
 		RequirementAttribute conceptAttDef = findAttributeDefinition(conceptRequirement, attDef);
 		
-		// Create and add a new attribute value into requirement
-		de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue conceptAttributeValue = new de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue(concept);
-		conceptAttributeValue.setAttType(conceptAttDef);
-		
-		// Set the value
-		if (hasNativeAttributeImpl(attDef)) { 
-			setNativeRequirementAttributeValue(conceptRequirement, attvalue, attDef);
-		} else {
-			conceptAttributeValue.setValue(newValue.toString());
-			conceptAttributeValue.setFormattedValue(newFormattedValue.toString());
+		// Check if attribute definition exist locally, otherwise it was deleted and thus should not be imported
+		if (conceptAttDef != null) {
+			// Create and add a new attribute value into requirement
+			de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue conceptAttributeValue = new de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue(concept);
+			conceptAttributeValue.setAttType(conceptAttDef);
+			
+			// Set the value
+			if (hasNativeAttributeImpl(attDef)) { 
+				setNativeRequirementAttributeValue(conceptRequirement, attvalue, attDef);
+			} else {
+				conceptAttributeValue.setValue(newValue.toString());
+				conceptAttributeValue.setFormattedValue(newFormattedValue.toString());
+			}
+			conceptRequirement.getElements().add(conceptAttributeValue);
 		}
-		conceptRequirement.getElements().add(conceptAttributeValue);
 	}
 	
 	/**
@@ -493,7 +499,21 @@ public class ReqIfImporter {
 		return false;
 	}
 	
-	protected RequirementObject findExisting(IBeanList<RequirementObject> reqList, SpecHierarchy hierarchyLevel) {
+	/**
+	 * Check if we have an existing object locally for the given ReqIF requirement
+	 * @param reqList the list to search for existing requirement objects
+	 * @param hierarchyObject the ReqIF requirement hierarchy element
+	 * @return the existing requirement object or null
+	 */
+	protected RequirementObject findExisting(IBeanList<RequirementObject> reqList, SpecHierarchy hierarchyObject) {
+		String requirementName = Requirement.REQUIREMENT_NAME_PREFIX + getReqIFRequirementIdentifier(hierarchyObject);
+		String groupName = getReqIFRequirementName(hierarchyObject);
+		for (RequirementObject namedElement : reqList) {
+			if (namedElement.getName().equals(requirementName) 
+					|| namedElement.getName().equals(groupName)) {
+				return namedElement;
+			}
+		}
 		return null;
 	}
 	
@@ -525,6 +545,49 @@ public class ReqIfImporter {
 		for (RequirementAttribute attDef : reqType.getAttributes()) {
 			if (attDef.getName().equals(cleanAttName(attDefReqIf.getLongName()))) {
 				return attDef;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Get the identifying attribute value for a ReqIF requirement
+	 * 
+	 * @param hierarchyObject the ReqIF requirement
+	 * @return the identifying string
+	 */
+	protected String getReqIFRequirementIdentifier(SpecHierarchy hierarchyObject) {
+		for (AttributeValue attValue : hierarchyObject.getObject().getValues()) {
+			if (attValue instanceof AttributeValueString) {
+				AttributeValueString attValueString = (AttributeValueString) attValue;
+				if (isIdentifier(attValueString.getDefinition())) {
+					return attValueString.getTheValue();
+				}
+				
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Get the name of a ReqIF requirement object
+	 * 
+	 * @param hierarchyObject the ReqIF object
+	 * @return the name as string
+	 */
+	protected String getReqIFRequirementName(SpecHierarchy hierarchyObject) {
+		for (AttributeValue attValue : hierarchyObject.getObject().getValues()) {
+			if (attValue instanceof AttributeValueXHTML) {
+				AttributeValueXHTML attValueHTML = (AttributeValueXHTML) attValue;
+				if (attValueHTML.getDefinition().getLongName().equals(REQIF_NAME_ATTRIBUTE_NAME)) {
+					String name;
+					try {
+						name = ReqIF10XhtmlUtil.getXhtmlString(attValueHTML.getTheValue());
+						return reqHelper.cleanEntityName(name.replaceAll("(?s)<[^>]*>(\\s*<[^>]*>)*", ""));
+					} catch (IOException e) {
+						Activator.getDefault().getLog().error(XHTML_PARSER_ERROR, e);
+					}
+				}
 			}
 		}
 		return null;
