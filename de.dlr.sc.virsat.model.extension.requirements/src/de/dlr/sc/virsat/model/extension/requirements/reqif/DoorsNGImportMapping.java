@@ -25,10 +25,13 @@ import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 public class DoorsNGImportMapping implements INativeRequirementAttributeMapping {
 
 	public static final String DOORS_STATUS_ATTRIBUTE_NAME = "Status";
+	public static final String DOORS_NAME_ATTRIBUTE_NAME = "ReqIF.Name";
+	public static final String DOORS_ID_ATTRIBUTE_NAME = "ReqIF.ForeignID";
 	
 	@Override
 	public boolean isNativeAttribute(AttributeDefinition reqIFAttDef) {
-		if (reqIFAttDef.getLongName().equals(DOORS_STATUS_ATTRIBUTE_NAME)) {
+		if (reqIFAttDef.getLongName().equals(DOORS_STATUS_ATTRIBUTE_NAME) 
+				|| reqIFAttDef.getLongName().equals(DOORS_NAME_ATTRIBUTE_NAME)) {
 			return true;
 		}
 		return false;
@@ -36,6 +39,9 @@ public class DoorsNGImportMapping implements INativeRequirementAttributeMapping 
 
 	@Override
 	public boolean isIdentifierAttribute(AttributeDefinition reqIFAttDef) {
+		if (reqIFAttDef.getLongName().equals(DOORS_ID_ATTRIBUTE_NAME)) {
+			return true;
+		}
 		return false;
 	}
 

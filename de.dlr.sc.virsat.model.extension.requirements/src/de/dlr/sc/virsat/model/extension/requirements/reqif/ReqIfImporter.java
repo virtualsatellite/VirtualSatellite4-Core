@@ -146,6 +146,7 @@ public class ReqIfImporter {
 				if (current == null) {
 					Requirement newReq = createRequirementBase(rootChild.getObject().getType());
 					createSpecHierarchyRequirement(newReq, rootChild);
+					cc.append(newReq.updateNameFromAttributes(editingDomain));
 					cc.append(reqList.add(editingDomain, newReq));
 				} else {
 					cc.append(reImportSpecHierarchyRequirement(editingDomain, (Requirement) current, rootChild));
@@ -177,6 +178,7 @@ public class ReqIfImporter {
 			if (spec.getChildren() == null || spec.getChildren().isEmpty()) {
 				Requirement newRequirement = createRequirementBase(spec.getObject().getType());
 				createSpecHierarchyRequirement(newRequirement, spec);
+				newRequirement.updateNameFromAttributes();
 				reqGroup.getChildren().add(newRequirement);
 			} else {
 				RequirementGroup newGroup = new RequirementGroup(concept);
