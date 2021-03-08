@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.reqif;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +46,7 @@ import org.eclipse.rmf.reqif10.SpecObject;
 import org.eclipse.rmf.reqif10.SpecObjectType;
 import org.eclipse.rmf.reqif10.SpecType;
 import org.eclipse.rmf.reqif10.Specification;
-import org.eclipse.rmf.reqif10.XhtmlContent;
+import org.eclipse.rmf.reqif10.common.util.ReqIF10XhtmlUtil;
 
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.concept.types.IBeanName;
@@ -76,6 +77,7 @@ public class ReqIfImporter {
 	public static final String IMPORT_CONFIC_PREFIX = "ReqIFImport";
 	public static final String TYPE_CONTAINER_PREFIX = "TypeContainer";
 	public static final String DUPLICATE_NATIVE_ATTRIBUTE_MAPPING = "Duplicate implementation for native attribute mapping defined! For attribute: ";
+	public static final String XHTML_PARSER_ERROR = "Could not parse XHTML!";
 	
 	private RequirementHelper reqHelper = new RequirementHelper();
 	protected ImportConfiguration importConfiguration = null;
@@ -387,12 +389,14 @@ public class ReqIfImporter {
 		} else if (attValue instanceof AttributeValueXHTML) {
 			AttributeValueXHTML attValueXHTML = (AttributeValueXHTML) attValue;
 			attDef = attValueXHTML.getDefinition();
-			XhtmlContent oValue = attValueXHTML.getTheValue();
-			if (oValue.getXhtmlSource() != null) {
-				value.append(oValue.getXhtmlSource().replaceAll("(?s)<[^>]*>(\\s*<[^>]*>)*", "")); // Remove HTML mark-up
-				formattedValue.append(oValue.getXhtmlSource());
+			String xhtmlString;
+			try {
+				xhtmlString = ReqIF10XhtmlUtil.getXhtmlString(attValueXHTML.getTheValue());
+				value.append(xhtmlString.replaceAll("(?s)<[^>]*>(\\s*<[^>]*>)*", "")); // Remove HTML mark-up
+				formattedValue.append(xhtmlString);
+			} catch (IOException e) {
+				Activator.getDefault().getLog().error(XHTML_PARSER_ERROR, e);
 			}
-			
 		}
 		return attDef;
 	}
