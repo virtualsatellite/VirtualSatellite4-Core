@@ -23,6 +23,7 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import javax.xml.bind.annotation.XmlAccessType;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyBoolean;
 import org.eclipse.emf.common.command.Command;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
@@ -57,6 +58,7 @@ public abstract class ATransitionTriggerEvent extends GenericCategory implements
 	
 	// property name constants
 	public static final String PROPERTY_DETAIL = "detail";
+	public static final String PROPERTY_ISSENDING = "isSending";
 	
 	
 	
@@ -108,6 +110,38 @@ public abstract class ATransitionTriggerEvent extends GenericCategory implements
 	public BeanPropertyString getDetailBean() {
 		safeAccessDetail();
 		return detail;
+	}
+	
+	// *****************************************************************
+	// * Attribute: isSending
+	// *****************************************************************
+	private BeanPropertyBoolean isSending = new BeanPropertyBoolean();
+	
+	private void safeAccessIsSending() {
+		if (isSending.getTypeInstance() == null) {
+			isSending.setTypeInstance((ValuePropertyInstance) helper.getPropertyInstance("isSending"));
+		}
+	}
+	
+	public Command setIsSending(EditingDomain ed, boolean value) {
+		safeAccessIsSending();
+		return this.isSending.setValue(ed, value);
+	}
+	
+	public void setIsSending(boolean value) {
+		safeAccessIsSending();
+		this.isSending.setValue(value);
+	}
+	
+	public boolean getIsSending() {
+		safeAccessIsSending();
+		return isSending.getValue();
+	}
+	
+	@XmlElement
+	public BeanPropertyBoolean getIsSendingBean() {
+		safeAccessIsSending();
+		return isSending;
 	}
 	
 	

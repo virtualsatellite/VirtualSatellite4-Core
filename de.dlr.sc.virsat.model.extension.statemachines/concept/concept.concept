@@ -22,6 +22,7 @@ Concept de.dlr.sc.virsat.model.extension.statemachines displayname "State Machin
 	
 	Category TransitionTriggerEvent description "Some kind of event or action that triggers a transition" {
 		StringProperty detail description "Optional additional detail information about this trigger";
+		BooleanProperty isSending description "Determins if a transition is triggering the event or is triggered by the event";
 	}
 	
 	Category AConstraint description "General constraint in statemachines "{

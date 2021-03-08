@@ -14,6 +14,7 @@
   </categories>
   <categories name="TransitionTriggerEvent" description="Some kind of event or action that triggers a transition">
     <properties xsi:type="dvlm_cppd:StringProperty" name="detail" description="Optional additional detail information about this trigger"/>
+    <properties xsi:type="dvlm_cppd:BooleanProperty" name="isSending" description="Determins if a transition is triggering the event or is triggered by the event"/>
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="AConstraint" description="General constraint in statemachines " isAbstract="true">
