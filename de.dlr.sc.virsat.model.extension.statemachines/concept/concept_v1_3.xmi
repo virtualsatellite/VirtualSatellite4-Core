@@ -10,6 +10,8 @@
     <properties xsi:type="dvlm_cppd:ReferenceProperty" name="stateFrom" description="The Transition starts in this state" referenceType="de.dlr.sc.virsat.model.extension.statemachines.State"/>
     <properties xsi:type="dvlm_cppd:ReferenceProperty" name="stateTo" description="The Transition ends in this state" referenceType="de.dlr.sc.virsat.model.extension.statemachines.State"/>
     <properties xsi:type="dvlm_cppd:ReferenceProperty" name="trigger" description="The event that triggers the Transition" referenceType="de.dlr.sc.virsat.model.extension.statemachines.TransitionTriggerEvent"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="minExec" description="Minimum time for executing the transition"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="maxExec" description="Maximum time for executing the transition"/>
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="TransitionTriggerEvent" description="Some kind of event or action that triggers a transition">

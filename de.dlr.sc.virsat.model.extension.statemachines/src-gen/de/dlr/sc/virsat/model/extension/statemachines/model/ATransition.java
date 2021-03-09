@@ -24,9 +24,11 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.common.command.Command;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapter;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloat;
 import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
 import javax.xml.bind.annotation.XmlElement;
 
@@ -61,6 +63,8 @@ public abstract class ATransition extends GenericCategory implements IBeanCatego
 	public static final String PROPERTY_STATEFROM = "stateFrom";
 	public static final String PROPERTY_STATETO = "stateTo";
 	public static final String PROPERTY_TRIGGER = "trigger";
+	public static final String PROPERTY_MINEXEC = "minExec";
+	public static final String PROPERTY_MAXEXEC = "maxExec";
 	
 	
 	
@@ -176,6 +180,80 @@ public abstract class ATransition extends GenericCategory implements IBeanCatego
 	public BeanPropertyReference<TransitionTriggerEvent> getTriggerBean() {
 		safeAccessTrigger();
 		return trigger;
+	}
+	
+	// *****************************************************************
+	// * Attribute: minExec
+	// *****************************************************************
+	private BeanPropertyFloat minExec = new BeanPropertyFloat();
+	
+	private void safeAccessMinExec() {
+		if (minExec.getTypeInstance() == null) {
+			minExec.setTypeInstance((UnitValuePropertyInstance) helper.getPropertyInstance("minExec"));
+		}
+	}
+	
+	public Command setMinExec(EditingDomain ed, double value) {
+		safeAccessMinExec();
+		return this.minExec.setValue(ed, value);
+	}
+	
+	public void setMinExec(double value) {
+		safeAccessMinExec();
+		this.minExec.setValue(value);
+	}
+	
+	public double getMinExec() {
+		safeAccessMinExec();
+		return minExec.getValue();
+	}
+	
+	public boolean isSetMinExec() {
+		safeAccessMinExec();
+		return minExec.isSet();
+	}
+	
+	@XmlElement
+	public BeanPropertyFloat getMinExecBean() {
+		safeAccessMinExec();
+		return minExec;
+	}
+	
+	// *****************************************************************
+	// * Attribute: maxExec
+	// *****************************************************************
+	private BeanPropertyFloat maxExec = new BeanPropertyFloat();
+	
+	private void safeAccessMaxExec() {
+		if (maxExec.getTypeInstance() == null) {
+			maxExec.setTypeInstance((UnitValuePropertyInstance) helper.getPropertyInstance("maxExec"));
+		}
+	}
+	
+	public Command setMaxExec(EditingDomain ed, double value) {
+		safeAccessMaxExec();
+		return this.maxExec.setValue(ed, value);
+	}
+	
+	public void setMaxExec(double value) {
+		safeAccessMaxExec();
+		this.maxExec.setValue(value);
+	}
+	
+	public double getMaxExec() {
+		safeAccessMaxExec();
+		return maxExec.getValue();
+	}
+	
+	public boolean isSetMaxExec() {
+		safeAccessMaxExec();
+		return maxExec.isSet();
+	}
+	
+	@XmlElement
+	public BeanPropertyFloat getMaxExecBean() {
+		safeAccessMaxExec();
+		return maxExec;
 	}
 	
 	

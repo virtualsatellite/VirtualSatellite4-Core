@@ -18,6 +18,8 @@ Concept de.dlr.sc.virsat.model.extension.statemachines displayname "State Machin
 		Reference stateFrom of Type State description "The Transition starts in this state";
 		Reference stateTo of Type State description "The Transition ends in this state";
 		Reference trigger of Type TransitionTriggerEvent description "The event that triggers the Transition";
+		FloatProperty minExec description "Minimum time for executing the transition";
+		FloatProperty maxExec description "Maximum time for executing the transition";
 	}
 	
 	Category TransitionTriggerEvent description "Some kind of event or action that triggers a transition" {
