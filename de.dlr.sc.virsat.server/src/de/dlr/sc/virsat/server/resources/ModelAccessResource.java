@@ -39,6 +39,7 @@ import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementIns
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.structure.command.CreateRemoveSeiWithFileStructureCommand;
@@ -435,6 +436,43 @@ public class ModelAccessResource {
 				return Response.ok().build();
 			} catch (CoreException e) {
 				return createBadRequestResponse(e.getMessage());
+			} catch (Exception e) {
+				return createSyncErrorResponse(e.getMessage());
+			}
+		}
+
+		/** **/
+		@GET
+		@Path(CONCEPTS)
+		@Produces(MediaType.APPLICATION_JSON)
+		@ApiOperation(
+				produces = "application/json",
+				value = "Fetch a list of active Concepts full qualified names",
+				httpMethod = "GET",
+				notes = "This service fetches the active Concepts")
+		@ApiResponses(value = { 
+				@ApiResponse(
+						code = HttpStatus.OK_200,
+						response = String.class,
+						responseContainer = "List",
+						message = SUCCESSFUL_OPERATION),
+				@ApiResponse(
+						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+						message = SYNC_ERROR)})
+		public Response getActiveConcepts() {
+			try {
+				serverRepository.syncRepository();
+				List<Concept> activeConcepts = repository.getActiveConcepts();
+				List<String> fullQualifiedNames = new ArrayList<String>();
+				
+				for (Concept concept : activeConcepts) {
+					fullQualifiedNames.add(concept.getFullQualifiedName());
+				}
+				
+				GenericEntity<List<String>> genericEntityList =
+						new GenericEntity<List<String>>(fullQualifiedNames) { };
+				
+				return Response.ok(genericEntityList).build();
 			} catch (Exception e) {
 				return createSyncErrorResponse(e.getMessage());
 			}
