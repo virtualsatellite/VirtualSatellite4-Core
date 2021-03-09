@@ -401,7 +401,7 @@ public class ReqIfImporter {
 		} else if (attValue instanceof AttributeValueDate) {
 			AttributeValueDate attValueDate = (AttributeValueDate) attValue;
 			attDef = attValueDate.getDefinition();
-			value.append(attValueDate.getTheValue().toZonedDateTime().toLocalDate().toString());
+			value.append(attValueDate.getTheValue().toZonedDateTime().toLocalDateTime().toString());
 		} else if (attValue instanceof AttributeValueEnumeration) {
 			AttributeValueEnumeration attValueEnumeration = (AttributeValueEnumeration) attValue;
 			attDef = attValueEnumeration.getDefinition();
