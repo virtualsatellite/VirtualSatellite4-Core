@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CompoundCommand;
-import org.eclipse.emf.common.command.UnexecutableCommand;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.rmf.reqif10.AttributeDefinition;
@@ -49,7 +48,6 @@ import org.eclipse.rmf.reqif10.Specification;
 import org.eclipse.rmf.reqif10.common.util.ReqIF10XhtmlUtil;
 
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
-import de.dlr.sc.virsat.model.concept.types.IBeanName;
 import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
@@ -76,11 +74,9 @@ public class ReqIfImporter {
 	
 	public static final String IMPORT_CONFIC_PREFIX = "ReqIFImport";
 	public static final String TYPE_CONTAINER_PREFIX = "TypeContainer";
-	public static final String DUPLICATE_NATIVE_ATTRIBUTE_MAPPING = "Duplicate implementation for native attribute mapping defined! For attribute: ";
-	public static final String XHTML_PARSER_ERROR = "Could not parse XHTML!";
-	public static final String REQIF_NAME_ATTRIBUTE_NAME = "ReqIF.Name";
 	
 	private RequirementHelper reqHelper = new RequirementHelper();
+	private ReqIfUtils reqIfUtils;
 	protected ImportConfiguration importConfiguration = null;
 	protected RequirementsConfigurationCollection configurationContainer = null;
 	protected Concept concept = null;
@@ -88,19 +84,33 @@ public class ReqIfImporter {
 	protected List<INativeRequirementAttributeMapping> mappingImpls = new ArrayList<INativeRequirementAttributeMapping>();
 	
 
+	/**
+	 * Init the importer by handing over the ReqIF content to be handled and the import configuration location
+	 * 
+	 * @param reqIFContent the ReqIF content to be handled
+	 * @param configurationContainer the import configuration location when created
+	 */
 	public void init(ReqIF reqIFContent, RequirementsConfigurationCollection configurationContainer) {
 		this.concept = ActiveConceptHelper.getConcept(configurationContainer.getStructuralElementInstance().getType());
 		this.reqIfContent = reqIFContent;
 		this.configurationContainer = configurationContainer;
 		registerAttributeMappingImpls();
+		reqIfUtils = new ReqIfUtils(mappingImpls);
 	}
 	
+	/**
+	 * Init the importer by handing over the ReqIF content to be handled and the import configuration
+	 * 
+	 * @param reqIFContent the ReqIF content to be handled
+	 * @param configuration the import configuration
+	 */
 	public void init(ReqIF reqIFContent, ImportConfiguration configuration) {
 		this.concept = ActiveConceptHelper.getConcept(configuration.getTypeInstance().getType());
 		this.reqIfContent = reqIFContent;
 		this.importConfiguration = configuration;
 		this.configurationContainer = (RequirementsConfigurationCollection) configuration.getParent();
 		registerAttributeMappingImpls();
+		reqIfUtils = new ReqIfUtils(mappingImpls);
 	}
 	
 	protected void registerAttributeMappingImpls() {
@@ -140,7 +150,7 @@ public class ReqIfImporter {
 	protected Command importRequirementList(EditingDomain editingDomain, CompoundCommand cc, IBeanList<RequirementObject> reqList, EList<SpecHierarchy> reqIfSpecificationList) {
 		for (SpecHierarchy rootChild : reqIfSpecificationList) {
 			
-			RequirementObject current = findExisting(reqList, rootChild);
+			RequirementObject current = reqIfUtils.findExisting(reqList, rootChild);
 			
 			// Import atomic requirements first
 			if (rootChild.getChildren() == null || rootChild.getChildren().isEmpty()) {
@@ -157,7 +167,7 @@ public class ReqIfImporter {
 				if (current == null) {
 					RequirementGroup newGroup = new RequirementGroup(concept);
 					createSpecHierarchyGroup(newGroup, rootChild);
-					newGroup.setName(getReqIFRequirementName(rootChild));
+					newGroup.setName(reqIfUtils.getReqIFRequirementName(rootChild));
 					cc.append(reqList.add(editingDomain, newGroup));
 				} else {
 					importRequirementList(editingDomain, cc, ((RequirementGroup) current).getChildren(), rootChild.getChildren());
@@ -185,7 +195,7 @@ public class ReqIfImporter {
 			} else {
 				RequirementGroup newGroup = new RequirementGroup(concept);
 				createSpecHierarchyGroup(newGroup, spec);
-				newGroup.setName(getReqIFRequirementName(spec));
+				newGroup.setName(reqIfUtils.getReqIFRequirementName(spec));
 				reqGroup.getChildren().add(newGroup);
 			}
 		}
@@ -208,7 +218,7 @@ public class ReqIfImporter {
 		RequirementType type = conceptRequirement.getReqType();
 		for (RequirementAttribute attDef : type.getAttributes()) {
 			String attName = de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue.ATTRIBUTE_NAME_PREFIX + attDef.getName();
-			if (!contains(conceptRequirement.getElements(), attName)) {
+			if (!reqIfUtils.contains(conceptRequirement.getElements(), attName)) {
 				de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue attValue = new de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue(concept);
 				attValue.setAttType(attDef);
 				attValue.setName(attName);
@@ -247,8 +257,8 @@ public class ReqIfImporter {
 		StringBuilder newFormattedValue = new StringBuilder();
 		AttributeDefinition attDef = switchAttributeValue(newValue, newFormattedValue, attvalue);
 		
-		de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue conceptAttributeValue = findExisting(conceptRequirement, attDef);
-		RequirementAttribute conceptAttDef = findAttributeDefinition(conceptRequirement, attDef);
+		de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue conceptAttributeValue = reqIfUtils.findExisting(conceptRequirement, attDef);
+		RequirementAttribute conceptAttDef = reqIfUtils.findAttributeDefinition(conceptRequirement, attDef);
 		
 		// Check if local requirement type has the corresponding attribute; if not is has been deleted form the type and thus should not be imported
 		if (conceptAttDef != null) {
@@ -258,8 +268,8 @@ public class ReqIfImporter {
 				conceptAttributeValue.setName(de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue.ATTRIBUTE_NAME_PREFIX + conceptAttDef.getName());
 				cc.append(conceptRequirement.getElements().add(editingDomain, conceptAttributeValue));
 			} 
-			if (hasNativeAttributeImpl(attDef)) { 
-				cc.append(setNativeRequirementAttributeValue(editingDomain, conceptRequirement, attvalue, attDef));
+			if (reqIfUtils.hasNativeAttributeImpl(attDef)) { 
+				cc.append(reqIfUtils.setNativeRequirementAttributeValue(editingDomain, conceptRequirement, attvalue, attDef));
 			} else {
 				cc.append(conceptAttributeValue.setValue(editingDomain, newValue.toString()));
 				cc.append(conceptAttributeValue.setFormattedValue(editingDomain, newFormattedValue.toString()));
@@ -278,7 +288,7 @@ public class ReqIfImporter {
 		StringBuilder newValue = new StringBuilder();
 		StringBuilder newFormattedValue = new StringBuilder();
 		AttributeDefinition attDef = switchAttributeValue(newValue, newFormattedValue, attvalue);
-		RequirementAttribute conceptAttDef = findAttributeDefinition(conceptRequirement, attDef);
+		RequirementAttribute conceptAttDef = reqIfUtils.findAttributeDefinition(conceptRequirement, attDef);
 		
 		// Check if attribute definition exist locally, otherwise it was deleted and thus should not be imported
 		if (conceptAttDef != null) {
@@ -288,8 +298,8 @@ public class ReqIfImporter {
 			conceptAttributeValue.setAttType(conceptAttDef);
 			
 			// Set the value
-			if (hasNativeAttributeImpl(attDef)) { 
-				setNativeRequirementAttributeValue(conceptRequirement, attvalue, attDef);
+			if (reqIfUtils.hasNativeAttributeImpl(attDef)) { 
+				reqIfUtils.setNativeRequirementAttributeValue(conceptRequirement, attvalue, attDef);
 			} else {
 				conceptAttributeValue.setValue(newValue.toString());
 				conceptAttributeValue.setFormattedValue(newFormattedValue.toString());
@@ -314,21 +324,21 @@ public class ReqIfImporter {
 		for (SpecType type : importContent.getSpecTypes().stream().
 					filter(type -> type instanceof SpecObjectType).collect(Collectors.toList())) {
 			SpecObjectType reqIfRequirementType = (SpecObjectType) type; // List is filtered to only contain spec object types
-			String reqTypeName = cleanAttName(reqIfRequirementType.getLongName());
+			String reqTypeName = reqIfUtils.cleanAttName(reqIfRequirementType.getLongName());
 			
 			// We're not overwriting the requirement types to ensure these can be customized
-			if (!contains(typeContainer.getTypeDefinitions(), reqTypeName)) {
+			if (!reqIfUtils.contains(typeContainer.getTypeDefinitions(), reqTypeName)) {
 				RequirementType conceptRequirementType = new RequirementType(concept);
 				conceptRequirementType.setName(reqHelper.cleanEntityName(reqIfRequirementType.getLongName()));
 				
 				for (AttributeDefinition reqIfAttDef : reqIfRequirementType.getSpecAttributes()) {
 					
-					if (!hasNativeAttributeImpl(reqIfAttDef)) {
+					if (!reqIfUtils.hasNativeAttributeImpl(reqIfAttDef)) {
 						RequirementAttribute conceptAttType = new RequirementAttribute(concept);
-						String attDefName = cleanAttName(reqIfAttDef.getLongName());
+						String attDefName = reqIfUtils.cleanAttName(reqIfAttDef.getLongName());
 						conceptAttType.setName(attDefName);
 						configureAttributeType(conceptAttType, reqIfAttDef);
-						Integer index = nativeIndex(reqIfAttDef);
+						Integer index = reqIfUtils.nativeIndex(reqIfAttDef);
 						if (index == null) {
 							conceptRequirementType.getAttributes().add(conceptAttType);
 						} else {
@@ -351,7 +361,7 @@ public class ReqIfImporter {
 	 * @param reqIfAttDef the ReqIF attribute definition
 	 */
 	protected void configureAttributeType(RequirementAttribute conceptAttType, AttributeDefinition reqIfAttDef) {
-		if (isIdentifier(reqIfAttDef)) {
+		if (reqIfUtils.isIdentifier(reqIfAttDef)) {
 			conceptAttType.setType(RequirementAttribute.TYPE_Identifier_NAME);
 		} else if (reqIfAttDef instanceof AttributeDefinitionString) {
 			conceptAttType.setType(RequirementAttribute.TYPE_String_NAME);
@@ -369,10 +379,10 @@ public class ReqIfImporter {
 			conceptAttType.setType(RequirementAttribute.TYPE_Enumeration_NAME);
 			AttributeDefinitionEnumeration attributeDefinitionEnumeration = (AttributeDefinitionEnumeration) reqIfAttDef;
 			DatatypeDefinitionEnumeration enumerationType = attributeDefinitionEnumeration.getType();
-			conceptAttType.getEnumeration().setName(cleanAttName(enumerationType.getLongName()));
+			conceptAttType.getEnumeration().setName(reqIfUtils.cleanAttName(enumerationType.getLongName()));
 			for (EnumValue value : enumerationType.getSpecifiedValues()) {
 				EnumerationLiteral literal = new EnumerationLiteral(concept);
-				literal.setName(cleanAttName(value.getLongName()));
+				literal.setName(reqIfUtils.cleanAttName(value.getLongName()));
 				conceptAttType.getEnumeration().getLiterals().add(literal);
 			}
 		} else {
@@ -423,7 +433,7 @@ public class ReqIfImporter {
 				value.append(xhtmlString.replaceAll("(?s)<[^>]*>(\\s*<[^>]*>)*", "")); // Remove HTML mark-up
 				formattedValue.append(xhtmlString);
 			} catch (IOException e) {
-				Activator.getDefault().getLog().error(XHTML_PARSER_ERROR, e);
+				Activator.getDefault().getLog().error(ReqIfUtils.XHTML_PARSER_ERROR, e);
 			}
 		}
 		return attDef;
@@ -501,202 +511,6 @@ public class ReqIfImporter {
 	
 	protected String getImportTitle() {
 		return this.reqIfContent.eResource().getURI().trimFileExtension().lastSegment();
-	}
-	
-	/**
-	 * Utility method to check if a list of named elements contains an element with a given name
-	 * 
-	 * @param list the list of named beans
-	 * @param name the name to search for
-	 * @return weather the list contains an element with the given name
-	 */
-	protected boolean contains(IBeanList<? extends IBeanName> list, String name) {
-		for (IBeanName namedElement : list) {
-			if (namedElement.getName().equals(name)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * Check if we have an existing object locally for the given ReqIF requirement
-	 * @param reqList the list to search for existing requirement objects
-	 * @param hierarchyObject the ReqIF requirement hierarchy element
-	 * @return the existing requirement object or null
-	 */
-	protected RequirementObject findExisting(IBeanList<RequirementObject> reqList, SpecHierarchy hierarchyObject) {
-		String requirementName = Requirement.REQUIREMENT_NAME_PREFIX + getReqIFRequirementIdentifier(hierarchyObject);
-		String groupName = getReqIFRequirementName(hierarchyObject);
-		for (RequirementObject namedElement : reqList) {
-			if (namedElement.getName().equals(requirementName) 
-					|| namedElement.getName().equals(groupName)) {
-				return namedElement;
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * Return an existing attribute value object of a given requirement if existing
-	 * 
-	 * @param requirement the requirement in which the attribute value should be found
-	 * @param attDef the ReqIF attribute definition corresponding to the attribute value 
-	 * @return the existing attribute value or null if not existing
-	 */
-	protected de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue findExisting(Requirement requirement, AttributeDefinition attDef) {
-		for (de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue attValue : requirement.getElements()) {
-			if (attValue.getAttType().getName().equals(cleanAttName(attDef.getLongName()))) {
-				return attValue;
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * Return the attribute type of a ReqIF attribute definition
-	 * 
-	 * @param requirement the requirement in which the attribute value should be found
-	 * @param attDefReqIf the ReqIF attribute definition corresponding to the attribute value 
-	 * @return the existing attribute value or null if not existing
-	 */
-	protected RequirementAttribute findAttributeDefinition(Requirement requirement, AttributeDefinition attDefReqIf) {
-		RequirementType reqType = requirement.getReqType();
-		for (RequirementAttribute attDef : reqType.getAttributes()) {
-			if (attDef.getName().equals(cleanAttName(attDefReqIf.getLongName()))) {
-				return attDef;
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * Get the identifying attribute value for a ReqIF requirement
-	 * 
-	 * @param hierarchyObject the ReqIF requirement
-	 * @return the identifying string
-	 */
-	protected String getReqIFRequirementIdentifier(SpecHierarchy hierarchyObject) {
-		for (AttributeValue attValue : hierarchyObject.getObject().getValues()) {
-			if (attValue instanceof AttributeValueString) {
-				AttributeValueString attValueString = (AttributeValueString) attValue;
-				if (isIdentifier(attValueString.getDefinition())) {
-					return attValueString.getTheValue();
-				}
-				
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * Get the name of a ReqIF requirement object
-	 * 
-	 * @param hierarchyObject the ReqIF object
-	 * @return the name as string
-	 */
-	protected String getReqIFRequirementName(SpecHierarchy hierarchyObject) {
-		for (AttributeValue attValue : hierarchyObject.getObject().getValues()) {
-			if (attValue instanceof AttributeValueXHTML) {
-				AttributeValueXHTML attValueHTML = (AttributeValueXHTML) attValue;
-				if (attValueHTML.getDefinition().getLongName().equals(REQIF_NAME_ATTRIBUTE_NAME)) {
-					String name;
-					try {
-						name = ReqIF10XhtmlUtil.getXhtmlString(attValueHTML.getTheValue());
-						return reqHelper.cleanEntityName(name.replaceAll("(?s)<[^>]*>(\\s*<[^>]*>)*", ""));
-					} catch (IOException e) {
-						Activator.getDefault().getLog().error(XHTML_PARSER_ERROR, e);
-					}
-				}
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * Check it a requirement attribute to be imported has a specified mapping to a native attribute implementation
-	 * 
-	 * @param reqIfAtt the attribute mapping to be checked
-	 * @return true if native mapping is defined, false otherwise
-	 */
-	protected boolean hasNativeAttributeImpl(AttributeDefinition reqIfAtt) {
-		boolean isNativeAttribute = false;
-		for (INativeRequirementAttributeMapping mappingImpl : mappingImpls) {
-			if (mappingImpl.isNativeAttribute(reqIfAtt)) {
-				if (isNativeAttribute) {
-					Activator.getDefault().getLog().error(DUPLICATE_NATIVE_ATTRIBUTE_MAPPING + reqIfAtt.getLongName());
-				}
-				isNativeAttribute = true;
-			}
-		}
-		return isNativeAttribute;
-	}
-	
-	/**
-	 * Delegate the setting of the attribute value to the implementation of native attribute mapping
-	 * 
-	 * @param editingDomain the editing domain of the import
-	 * @param requirement the requirement in which values are supposed to be imported
-	 * @param attValue the ReqIF attribute value
-	 * @param attDef the ReqIF attribute definition
-	 * @return the command to be executed for 
-	 */
-	protected Command setNativeRequirementAttributeValue(EditingDomain editingDomain, Requirement requirement, AttributeValue attValue, AttributeDefinition attDef) {
-		for (INativeRequirementAttributeMapping mappingImpl : mappingImpls) {
-			if (mappingImpl.isNativeAttribute(attDef)) {
-				return mappingImpl.setNativeValues(editingDomain, requirement, attValue);
-			}
-		}
-		return UnexecutableCommand.INSTANCE;
-	}
-	
-	/**
-	 * Delegate the setting of the attribute value to the implementation of native attribute mapping
-	 * 
-	 * @param requirement the requirement in which values are supposed to be imported
-	 * @param attValue the ReqIF attribute value
-	 * @param attDef the ReqIF attribute definition
-	 */
-	protected void setNativeRequirementAttributeValue(Requirement requirement, AttributeValue attValue, AttributeDefinition attDef) {
-		for (INativeRequirementAttributeMapping mappingImpl : mappingImpls) {
-			if (mappingImpl.isNativeAttribute(attDef)) {
-				mappingImpl.setNativeValues(requirement, attValue);
-			}
-		}
-	}
-	
-	/**
-	 * Check it a requirement attribute to be imported is specified as identifier
-	 * 
-	 * @param reqIfAtt the attribute mapping to be checked
-	 * @return true if is an identifier, false otherwise
-	 */
-	protected boolean isIdentifier(AttributeDefinition reqIfAtt) {
-		for (INativeRequirementAttributeMapping mappingImpl : mappingImpls) {
-			if (mappingImpl.isIdentifierAttribute(reqIfAtt)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * Check if a native index exists for the given attribute
-	 * @param reqIfAtt the attribute
-	 * @return a fixed index or null
-	 */
-	protected Integer nativeIndex(AttributeDefinition reqIfAtt) {
-		for (INativeRequirementAttributeMapping mappingImpl : mappingImpls) {
-			Integer index = mappingImpl.getNativeIndex(reqIfAtt);
-			if (index != null) {
-				return index;
-			}
-		}
-		return null;
-	}
-	
-	public String cleanAttName(String rawName) {
-		return reqHelper.cleanEntityName(rawName).replaceAll("ReqIF", "").replaceAll("Foreign", "");
 	}
 
 }
