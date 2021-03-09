@@ -199,8 +199,21 @@ public class ReqIfImporter {
 	 */
 	protected void createSpecHierarchyRequirement(Requirement conceptRequirement, SpecHierarchy reqIfRequirement) {
 		SpecObject reqObject = reqIfRequirement.getObject();
+		// Import values
 		for (AttributeValue att : reqObject.getValues()) {
 			setAttributeValue(conceptRequirement, att);
+		}
+		
+		// Fill up other, emtpy values
+		RequirementType type = conceptRequirement.getReqType();
+		for (RequirementAttribute attDef : type.getAttributes()) {
+			String attName = de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue.ATTRIBUTE_NAME_PREFIX + attDef.getName();
+			if (!contains(conceptRequirement.getElements(), attName)) {
+				de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue attValue = new de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue(concept);
+				attValue.setAttType(attDef);
+				attValue.setName(attName);
+				conceptRequirement.getElements().add(attValue);
+			}
 		}
 	}
 	
@@ -242,6 +255,7 @@ public class ReqIfImporter {
 			if (conceptAttributeValue == null) {
 				conceptAttributeValue = new de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue(concept);
 				conceptAttributeValue.setAttType(conceptAttDef);
+				conceptAttributeValue.setName(de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue.ATTRIBUTE_NAME_PREFIX + conceptAttDef.getName());
 				cc.append(conceptRequirement.getElements().add(editingDomain, conceptAttributeValue));
 			} 
 			if (hasNativeAttributeImpl(attDef)) { 
@@ -270,6 +284,7 @@ public class ReqIfImporter {
 		if (conceptAttDef != null) {
 			// Create and add a new attribute value into requirement
 			de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue conceptAttributeValue = new de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue(concept);
+			conceptAttributeValue.setName(de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue.ATTRIBUTE_NAME_PREFIX + conceptAttDef.getName());
 			conceptAttributeValue.setAttType(conceptAttDef);
 			
 			// Set the value
