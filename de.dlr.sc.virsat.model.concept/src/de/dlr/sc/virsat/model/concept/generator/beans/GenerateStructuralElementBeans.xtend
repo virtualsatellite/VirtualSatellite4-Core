@@ -23,6 +23,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.xtext.generator.IFileSystemAccess
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory
 import de.dlr.sc.virsat.model.concept.types.factory.BeanRegistry
+import javax.xml.bind.annotation.XmlType
 
 /**
  * This class is the generator for the StructuralElement beans of our model extension.
@@ -138,11 +139,13 @@ class GenerateStructuralElementBeans extends AGeneratorGapGenerator<StructuralEl
 	override declareClass(Concept concept, StructuralElement se, ImportManager importManager) '''
 	«importManager.register(StructuralElementInstance)»
 	«importManager.register(Concept)»
+	«importManager.register(XmlType)»
 	// *****************************************************************
 	// * Class Declaration
 	// *****************************************************************
 	
 	«ConceptGeneratorUtil.generateClassHeader(se)»
+	@XmlType(A«se.name.toFirstUpper».FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME)
 	public class «se.name.toFirstUpper» extends A«se.name.toFirstUpper» {
 		
 		/**
