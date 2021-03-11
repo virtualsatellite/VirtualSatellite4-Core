@@ -221,7 +221,7 @@ public class GenerateStructuralElementBeans extends AGeneratorGapGenerator<Struc
     CharSequence _generateClassHeader = ConceptGeneratorUtil.generateClassHeader(se);
     _builder.append(_generateClassHeader);
     _builder.newLineIfNotEmpty();
-    _builder.append("@XmlType(A");
+    _builder.append("@XmlType(name = A");
     String _firstUpper = StringExtensions.toFirstUpper(se.getName());
     _builder.append(_firstUpper);
     _builder.append(".FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME)");

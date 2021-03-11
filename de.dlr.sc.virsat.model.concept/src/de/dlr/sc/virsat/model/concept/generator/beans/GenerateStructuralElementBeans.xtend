@@ -145,7 +145,7 @@ class GenerateStructuralElementBeans extends AGeneratorGapGenerator<StructuralEl
 	// *****************************************************************
 	
 	«ConceptGeneratorUtil.generateClassHeader(se)»
-	@XmlType(A«se.name.toFirstUpper».FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME)
+	@XmlType(name = A«se.name.toFirstUpper».FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME)
 	public class «se.name.toFirstUpper» extends A«se.name.toFirstUpper» {
 		
 		/**
