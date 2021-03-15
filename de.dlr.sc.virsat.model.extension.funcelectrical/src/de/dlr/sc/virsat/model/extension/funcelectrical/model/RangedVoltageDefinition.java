@@ -13,6 +13,9 @@ package de.dlr.sc.virsat.model.extension.funcelectrical.model;
 // * Import Statements
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+
+import javax.xml.bind.annotation.XmlType;
+
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 
 // *****************************************************************
@@ -27,6 +30,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
  * Interval range of nominal voltages
  * 
  */	
+@XmlType(name = ARangedVoltageDefinition.FULL_QUALIFIED_CATEGORY_NAME)
 public  class RangedVoltageDefinition extends ARangedVoltageDefinition {
 	
 	/**

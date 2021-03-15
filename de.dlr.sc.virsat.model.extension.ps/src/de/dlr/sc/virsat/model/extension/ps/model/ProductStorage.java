@@ -13,6 +13,9 @@ package de.dlr.sc.virsat.model.extension.ps.model;
 // * Import Statements
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+
+import javax.xml.bind.annotation.XmlType;
+
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 
 // *****************************************************************
@@ -27,6 +30,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
  * Product tree to describe a storage of real components
  * 
  */	
+@XmlType(name = AProductStorage.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME)
 public class ProductStorage extends AProductStorage {
 	
 	/**
