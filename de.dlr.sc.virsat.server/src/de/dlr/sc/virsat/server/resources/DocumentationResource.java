@@ -66,7 +66,7 @@ public class DocumentationResource {
     private String getFileContent(String fileName) {
 		
     	String content = FILE_NOT_FOUND;
-    	String realmResourceName = "doc-gen" + File.separator + directory + File.separator + fileName;
+    	String realmResourceName = directory + File.separator + fileName;
     	
 		try {
 			InputStream inputStream  = FileLocator.openStream(Activator.getDefault().getBundle(), 
