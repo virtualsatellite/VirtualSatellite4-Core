@@ -116,12 +116,7 @@ public class ReqIfUtilsTest extends AConceptProjectTestCase {
 	@Before
 	public void setUp() throws CoreException {
 		super.setUp();
-		addEditingDomainAndRepository();
-		
-		executeAsCommand(() -> loadConceptAndInstallToRepository(CONCEPT_ID_CORE));
-		executeAsCommand(() -> loadConceptAndInstallToRepository(de.dlr.sc.virsat.model.extension.ps.Activator.getPluginId()));
-		executeAsCommand(() -> reqConcept = loadConceptAndInstallToRepository(Activator.getPluginId()));
-		
+		reqConcept = loadConceptFromPlugin(Activator.getPluginId());
 		List<INativeRequirementAttributeMapping> mappings = new ArrayList<INativeRequirementAttributeMapping>();
 		mappings.add(new TestMapping());
 		reqIfUtils = new ReqIfUtils(mappings);
