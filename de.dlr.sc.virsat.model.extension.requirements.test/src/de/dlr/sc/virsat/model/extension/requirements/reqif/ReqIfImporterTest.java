@@ -113,7 +113,7 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 	
 	@Test
 	public void testPersistSpecificationMapping() {
-		
+		importerUnderTest.init(reqIFContent, rcc);
 		Command importCmd = importerUnderTest.persistSpecificationMapping(editingDomain, getBasicSpecMapping(), reqIFContent, rcc);
 		editingDomain.getCommandStack().execute(importCmd);
 		

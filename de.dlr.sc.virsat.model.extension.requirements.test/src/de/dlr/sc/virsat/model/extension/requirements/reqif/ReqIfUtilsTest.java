@@ -266,7 +266,7 @@ public class ReqIfUtilsTest extends AConceptProjectTestCase {
 	
 	@Test
 	public void testCleanAttName() {
-		String crazyAttributeName = " .. \\ \n\r " + System.lineSeparator() + TEST_DEFAULT_ATTRIBUTE_NAME + " .. / ";
+		String crazyAttributeName = " .. \\ " + System.lineSeparator() + TEST_DEFAULT_ATTRIBUTE_NAME + " .. / ";
 		
 		String cleanedName = reqIfUtils.cleanAttName(crazyAttributeName);
 		assertEquals("String should have been cleaned", TEST_DEFAULT_ATTRIBUTE_NAME, cleanedName);

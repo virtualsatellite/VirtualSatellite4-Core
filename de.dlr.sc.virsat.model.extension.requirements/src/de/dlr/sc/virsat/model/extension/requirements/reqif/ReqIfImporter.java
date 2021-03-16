@@ -204,6 +204,7 @@ public class ReqIfImporter {
 	
 	/**
 	 * Import a ReqIF requirement by creating a new local requirement (-> initial import)
+	 * 
 	 * @param conceptRequirement the local requirement (not persisted yet)
 	 * @param reqIfRequirement the ReqIF requirement
 	 */
@@ -441,6 +442,7 @@ public class ReqIfImporter {
 	
 	/**
 	 * Instantiate a new requirement from a ReqIF requirement type
+	 * 
 	 * @param reqIfType the ReqIF requirement type
 	 * @return the new requirement
 	 */
