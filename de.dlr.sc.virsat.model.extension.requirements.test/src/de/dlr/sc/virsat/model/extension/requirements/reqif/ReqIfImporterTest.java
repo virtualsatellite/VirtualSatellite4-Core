@@ -27,12 +27,15 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.xml.namespace.XMLNamespacePackage;
 import org.eclipse.rmf.reqif10.ReqIF;
 import org.eclipse.rmf.reqif10.ReqIF10Factory;
 import org.eclipse.rmf.reqif10.ReqIF10Package;
 import org.eclipse.rmf.reqif10.Specification;
-import org.eclipse.rmf.reqif10.impl.ReqIF10FactoryImpl;
+import org.eclipse.rmf.reqif10.datatypes.DatatypesPackage;
+import org.eclipse.rmf.reqif10.xhtml.XhtmlPackage;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -188,8 +191,8 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 	
 	@Test
 	public void testImportRequirements() {
+		registerEPackageReqIF();
 		URI modelURI = URI.createPlatformPluginURI(PLATFORM_REQ_IF_MODEL_PATH, true);
-		Resource.Factory.Registry.INSTANCE.getContentTypeToFactoryMap().put("reqif", new ReqIF10FactoryImpl());
 		rs.getPackageRegistry().put(ReqIF10Package.eNS_URI, ReqIF10Package.eINSTANCE);
 		Resource modelResource = rs.getResource(modelURI, true);
 		ReqIF reqIfFileContent = (ReqIF) modelResource.getContents().get(0);
@@ -283,6 +286,21 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * Register all required packages
+	 */
+	private static void registerEPackageReqIF() {
+		EPackage.Registry.INSTANCE.clear();
+		EPackage.Registry.INSTANCE.put(ReqIF10Package.eNS_URI,
+				ReqIF10Package.eINSTANCE);
+		EPackage.Registry.INSTANCE.put(XhtmlPackage.eNS_URI,
+				XhtmlPackage.eINSTANCE);
+		EPackage.Registry.INSTANCE.put(DatatypesPackage.eNS_URI,
+				DatatypesPackage.eINSTANCE);
+		EPackage.Registry.INSTANCE.put(XMLNamespacePackage.eNS_URI,
+				XMLNamespacePackage.eINSTANCE);
 	}
 
 }
