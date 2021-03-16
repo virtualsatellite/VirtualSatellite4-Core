@@ -35,7 +35,6 @@ import org.eclipse.rmf.reqif10.ReqIF10Factory;
 import org.eclipse.rmf.reqif10.ReqIF10Package;
 import org.eclipse.rmf.reqif10.Specification;
 import org.eclipse.rmf.reqif10.datatypes.DatatypesPackage;
-import org.eclipse.rmf.reqif10.xhtml.XhtmlPackage;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -295,8 +294,8 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 		EPackage.Registry.INSTANCE.clear();
 		EPackage.Registry.INSTANCE.put(ReqIF10Package.eNS_URI,
 				ReqIF10Package.eINSTANCE);
-		EPackage.Registry.INSTANCE.put(XhtmlPackage.eNS_URI,
-				XhtmlPackage.eINSTANCE);
+//		EPackage.Registry.INSTANCE.put(XhtmlPackage.eNS_URI,
+//				XhtmlPackage.eINSTANCE);
 		EPackage.Registry.INSTANCE.put(DatatypesPackage.eNS_URI,
 				DatatypesPackage.eINSTANCE);
 		EPackage.Registry.INSTANCE.put(XMLNamespacePackage.eNS_URI,
