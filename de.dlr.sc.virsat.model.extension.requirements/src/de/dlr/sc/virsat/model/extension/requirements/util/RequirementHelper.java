@@ -28,7 +28,9 @@ public class RequirementHelper {
 				.replaceAll("\\.", "")
 				.replaceAll("\\/", "")
 				.replaceAll("\\\\", "")
-				.replaceAll(System.lineSeparator(), "");
+				.replaceAll(System.lineSeparator(), "")
+				.replaceAll("\\n\\r", "")
+				.replaceAll("\\n", "");
 	}
 	
 }
