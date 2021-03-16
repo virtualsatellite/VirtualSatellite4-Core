@@ -133,7 +133,7 @@ public class DoorsSynchroClient {
 		clientBuilder.hostnameVerifier(NoopHostnameVerifier.INSTANCE);
 
 		// Authenticate
-		String loginPasswordFile = "C:\\Users\\gefk_an\\Requirements\\client_virsat\\loginPassword.txt";
+		String loginPasswordFile = "../../../Requirements/client_virsat/DoorsLogin.txt";
 		String login = Files.readAllLines(Paths.get(loginPasswordFile)).get(0);
 		String password = Files.readAllLines(Paths.get(loginPasswordFile)).get(1);
 		JEEFormAuthenticator authenticator = new JEEFormAuthenticator(SERVER_NAME, login, password);
