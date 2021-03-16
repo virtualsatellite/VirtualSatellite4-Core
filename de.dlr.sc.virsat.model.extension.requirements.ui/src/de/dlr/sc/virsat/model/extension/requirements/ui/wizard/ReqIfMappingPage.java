@@ -44,8 +44,8 @@ public class ReqIfMappingPage extends WizardPage implements SelectionListener {
 	private static final String COLUMN_SPECIFICATION_LABEL = "Specification";
 	private static final String COLUMN_CONTAINER_LABEL = "Container";
 	
-	private static final int COLUMN_NAME_WIDTH = 300;
-	private static final int COLUMN_TYPE_WIDTH = 300;
+	private static final int COLUMN_SPECIFICATION_WIDTH = 300;
+	private static final int COLUMN_CONTAINER_WIDTH = 300;
 
 
 	private static final int SPEC_COLUMN_INDEX = 1;
@@ -81,13 +81,13 @@ public class ReqIfMappingPage extends WizardPage implements SelectionListener {
 		table.setHeaderVisible(true);
 		table.addSelectionListener(this);
 
-		TableColumn columnColumnName = new TableColumn(table, SWT.NULL);
-		columnColumnName.setWidth(COLUMN_NAME_WIDTH);
-		columnColumnName.setText(COLUMN_SPECIFICATION_LABEL);
+		TableColumn columnSpecification = new TableColumn(table, SWT.NULL);
+		columnSpecification.setWidth(COLUMN_SPECIFICATION_WIDTH);
+		columnSpecification.setText(COLUMN_SPECIFICATION_LABEL);
 
-		TableColumn columnType = new TableColumn(table, SWT.NONE | SWT.DROP_DOWN);
-		columnType.setText(COLUMN_CONTAINER_LABEL);
-		columnType.setWidth(COLUMN_TYPE_WIDTH);
+		TableColumn columnContainer = new TableColumn(table, SWT.NONE | SWT.DROP_DOWN);
+		columnContainer.setText(COLUMN_CONTAINER_LABEL);
+		columnContainer.setWidth(COLUMN_CONTAINER_WIDTH);
 
 	}
 
@@ -119,6 +119,15 @@ public class ReqIfMappingPage extends WizardPage implements SelectionListener {
 				);
 			}
 			createDropDownEditor(item, containerNamerList);
+		}
+		// Clean up old unused editors
+		for (int i = specList.size(); i < tableItems.size(); i++) {
+			TableItem item = tableItems.get(i);
+			CCombo editor = editors.get(i);
+			item.dispose();
+			editor.dispose();
+			tableItems.remove(item);
+			editors.remove(editor);
 		}
 	}
 
@@ -195,13 +204,13 @@ public class ReqIfMappingPage extends WizardPage implements SelectionListener {
 		for (int index = 0; index < tableItems.size(); index++) {
 			TableItem item = tableItems.get(index);
 			if (!item.isDisposed() && item.getChecked()) {
-				Specification slectedspec = null;
+				Specification slectedSpec = null;
 				StructuralElementInstance specContainer = null;
 				String selectedSpecName = item.getText();
 				EList<Specification> specList = reqIfContent.getCoreContent().getSpecifications();
 				for (Specification spec : specList) {
 					if (spec.getLongName().equals(selectedSpecName)) {
-						slectedspec = spec;
+						slectedSpec = spec;
 					}
 				}
 				String selectedContainerName = editors.get(index).getText();
@@ -216,7 +225,7 @@ public class ReqIfMappingPage extends WizardPage implements SelectionListener {
 						}
 					}
 				}
-				mapSeiToSpec.put(slectedspec, specContainer);
+				mapSeiToSpec.put(slectedSpec, specContainer);
 			}
 		}
 		return mapSeiToSpec;
