@@ -4,7 +4,7 @@
 	<extension point="de.dlr.sc.virsat.model.Concept">
 		<concept
 			id="de.dlr.sc.virsat.model.extension.requirements"
-			version="0.4"
+			version="0.5"
 			xmi="concept/concept.xmi">
 		</concept>
 	</extension>
@@ -40,6 +40,10 @@
 		<CategoryAssignmentBean
 			id="de.dlr.sc.virsat.model.extension.requirements.RequirementLink"
 			caBean="de.dlr.sc.virsat.model.extension.requirements.model.RequirementLink">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.requirements.RequirementTrace"
+			caBean="de.dlr.sc.virsat.model.extension.requirements.model.RequirementTrace">
 		</CategoryAssignmentBean>
 		<CategoryAssignmentBean
 			id="de.dlr.sc.virsat.model.extension.requirements.AttributeValue"
@@ -113,15 +117,32 @@
 		xmi="concept/concept_v0_4.xmi">
 	</migrator>
 </extension>
+<extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">
+	<migrator
+		id="de.dlr.sc.virsat.model.extension.requirements"
+		version="0.5"
+		class="de.dlr.sc.virsat.model.extension.requirements.migrator.Migrator0v5"
+		xmi="concept/concept_v0_5.xmi">
+	</migrator>
+</extension>
 	<!-- Plugin.XML Protected Region End -->
 	<!-- Plugin.XML Protected Region Start -->
+<extension-point id="de.dlr.sc.virsat.model.extension.requirements.verification" name="CustomVerification" schema="schema/de.dlr.sc.virsat.model.extension.requirements.verification.exsd"/>
 <extension
          id="de.dlr.sc.virsat.model.extension.requirements.build.verification"
-         name="VirSat Requirements Veriification Builder"
+         name="VirSat Requirements Verification Builder"
          point="org.eclipse.core.resources.builders">
       <builder hasNature="true">
          <run class="de.dlr.sc.virsat.model.extension.requirements.verification.build.RequirementsVerificationBuilder" />
       </builder>
    </extension>
+<extension
+      name="Existence Verification"
+      point="de.dlr.sc.virsat.model.extension.requirements.verification">
+   <verification
+         model_element="de.dlr.sc.virsat.model.extension.requirements.model.ExistenceVerification"
+         verification_impl="de.dlr.sc.virsat.model.extension.requirements.verification.impl.ExistenceVerificationImpl">
+   </verification>
+</extension>
 	<!-- Plugin.XML Protected Region End -->
 </plugin>

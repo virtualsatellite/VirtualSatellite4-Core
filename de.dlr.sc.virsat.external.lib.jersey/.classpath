@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-apache-connector.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/javax.servlet-api.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-container-jetty-http.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-test-framework-provider-jetty.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jetty-continuation.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jetty-http.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jetty-io.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jetty-server.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jetty-util.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jakarta.servlet-api.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-test-framework-core.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/aopalliance-repackaged.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/hk2-api.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/hk2-locator.jar"/>
