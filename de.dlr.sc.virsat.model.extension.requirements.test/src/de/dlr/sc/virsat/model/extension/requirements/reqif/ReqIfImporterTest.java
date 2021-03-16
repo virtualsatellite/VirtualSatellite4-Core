@@ -13,6 +13,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -34,13 +35,19 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
 import de.dlr.sc.virsat.model.extension.requirements.Activator;
+import de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue;
 import de.dlr.sc.virsat.model.extension.requirements.model.ImportConfiguration;
+import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementGroup;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfiguration;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollection;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsSpecification;
 import de.dlr.sc.virsat.project.resources.command.CreateSeiResourceAndFileCommand;
 
 /**
@@ -51,6 +58,7 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 	
 	private static final String REQ_IF_RESOURCE_NAME = "ImportModel";
 	private static final String REQ_IF_RESOURCE_PATH = "test/" + REQ_IF_RESOURCE_NAME + ".reqif";
+	private static final String PLATFORM_REQ_IF_MODEL_PATH = "/de.dlr.sc.virsat.model.extension.requirements.test/resources/ReqIF/TestRequirements.reqif";
 	
 	private static final String TREE_NAME = "ConfigurationTree";
 	private static final String TREE_CHILD_NAME = "ElementConfiguration";
@@ -69,6 +77,24 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 	private RequirementsConfigurationCollection rcc;
 	StructuralElementInstance treeSei;
 	StructuralElementInstance childSei;
+	
+	// ReqIF File Content
+	private static final String TEXT_ATTRIBUTE_NAME = "Text";
+	private static final String ID_ATTRIBUTE_NAME = "ID";
+	private static final String PRIORITY_ATTRIBUTE_NAME = "Priority";
+	
+	private static final String SYSTEM_SPEC_NAME = "TestSpecification";
+	private static final String HARDWARE_SPEC_NAME = "TestHardwareSpecification";
+	
+	private static final String SYSTEM_REQUIREMENT_TEXT = "TestRequirement";
+	private static final String SYSTEM_REQUIREMENT_ID = "99095";
+	private static final String SYSTEM_REQUIREMENT_PRIORITY = "High";
+	
+	private static final String SYSTEM_REQUIREMENT_GROUP_NAME = "MissionRequirements";
+	private static final String SYSTEM_REQUIREMENT_GROUP_CHILD_TEXT = "Test Child Requirement";
+	
+	private static final String HARDWARE_REQUIREMENT_GROUP_NAME = "MissionObjectives";
+	private static final String HARDWARE_REQUIREMENT_GROUP_CHILD_TEXT = "Test Hardware Requirement";
 	
 	@Before
 	public void setUp() throws CoreException {
@@ -104,6 +130,7 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 		executeAsCommand(() -> reqIfModel.getContents().add(reqIFContent));
 		try {
 			reqIfModel.save(Collections.emptyMap());
+			editingDomain.saveAll();
 		} catch (IOException e) {
 		}
 		
@@ -140,6 +167,81 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 		assertThat(childSei.getCategoryAssignments(), hasItem(importConfig.getSpecification(SPEC_3_NAME).getTypeInstance()));
 	}
 	
+	@Test
+	public void testPersistRequirementTypeContainer() {
+		ImportConfiguration importConfiguration = new ImportConfiguration(reqConcept);
+		editingDomain.getCommandStack().execute(rcc.add(editingDomain, importConfiguration));
+		importerUnderTest.init(reqIFContent, importConfiguration);
+		
+		assertNull("The should be no type container for now", rcc.getFirst(RequirementsConfiguration.class));
+		
+		Command createNewCommand = importerUnderTest.persistRequirementTypeContainer(editingDomain, null);
+		editingDomain.getCommandStack().execute(createNewCommand);
+		
+		RequirementsConfiguration typeContainer = rcc.getFirst(RequirementsConfiguration.class);
+		assertNotNull("Now there should be one", typeContainer);
+		assertEquals(typeContainer, importConfiguration.getTypeDefinitionsContainer());
+		
+	}
+	
+	@Test
+	public void testImportRequirements() {
+		URI modelURI = URI.createPlatformPluginURI(PLATFORM_REQ_IF_MODEL_PATH, true);
+		Resource modelResource = rs.getResource(modelURI, true);
+		ReqIF reqIfFileContent = (ReqIF) modelResource.getContents().get(0);
+		System.out.println(reqIfFileContent);
+		importerUnderTest.init(reqIfFileContent, rcc);
+		
+		// Simply map all specifications into childSei
+		Map<Specification, StructuralElementInstance> map = new HashMap<Specification, StructuralElementInstance>();
+		for (Specification spec : reqIfFileContent.getCoreContent().getSpecifications()) {
+			map.put(spec, childSei);
+		}
+
+		// Prepare import
+		editingDomain.getCommandStack().execute(importerUnderTest.persistSpecificationMapping(editingDomain, map, reqIfFileContent, rcc));
+		editingDomain.getCommandStack().execute(importerUnderTest.persistRequirementTypeContainer(editingDomain, null));
+		editingDomain.getCommandStack().execute(importerUnderTest.importRequirementTypes(editingDomain, reqIfFileContent));
+		
+		// Do the actual import
+		Command importCommand = importerUnderTest.importRequirements(editingDomain, reqIfFileContent);
+		editingDomain.getCommandStack().execute(importCommand);
+		
+		RequirementsSpecification systemSpec = null;
+		RequirementsSpecification hardwareSpec = null;
+		for (CategoryAssignment cA : childSei.getCategoryAssignments()) {
+			if (cA.getName().equals(SYSTEM_SPEC_NAME)) {
+				systemSpec = new RequirementsSpecification(cA);
+			} else if (cA.getName().equals(HARDWARE_SPEC_NAME)) {
+				hardwareSpec = new RequirementsSpecification(cA);
+			}
+		}
+
+		Requirement firstRequirement = (Requirement) systemSpec.getRequirements().stream()
+				.filter((child) -> child instanceof Requirement)
+				.collect(Collectors.toList())
+				.get(0);
+		assertEquals("Should be Requirement Prefix + its ID", Requirement.REQUIREMENT_NAME_PREFIX + SYSTEM_REQUIREMENT_ID, firstRequirement.getName());
+		assertEquals(SYSTEM_REQUIREMENT_TEXT, getRequirementValue(firstRequirement, TEXT_ATTRIBUTE_NAME));
+		assertEquals(SYSTEM_REQUIREMENT_ID, getRequirementValue(firstRequirement, ID_ATTRIBUTE_NAME));
+		assertEquals(SYSTEM_REQUIREMENT_PRIORITY, getRequirementValue(firstRequirement, PRIORITY_ATTRIBUTE_NAME));
+		
+		RequirementGroup firstGroup = (RequirementGroup) systemSpec.getRequirements().stream()
+				.filter((child) -> child instanceof RequirementGroup)
+				.collect(Collectors.toList())
+				.get(0);
+		
+		assertEquals(SYSTEM_REQUIREMENT_GROUP_NAME, firstGroup.getName());
+		
+		Requirement firstChildRequirement = (Requirement) firstGroup.getChildren().get(0);
+		assertEquals(SYSTEM_REQUIREMENT_GROUP_CHILD_TEXT, getRequirementValue(firstChildRequirement, TEXT_ATTRIBUTE_NAME));
+		
+		RequirementGroup hardwareMissionObjectives = (RequirementGroup) hardwareSpec.getRequirements().get(0);
+		assertEquals(HARDWARE_REQUIREMENT_GROUP_NAME, hardwareMissionObjectives.getName());
+		Requirement firstHardwareRequirement = (Requirement) hardwareMissionObjectives.getChildren().get(0);
+		assertEquals(HARDWARE_REQUIREMENT_GROUP_CHILD_TEXT, getRequirementValue(firstHardwareRequirement, TEXT_ATTRIBUTE_NAME));
+	}
+	
 	/**
 	 * Create a basic mapping of reqif specifications to SEIs
 	 * @return a hashmap
@@ -162,6 +264,21 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 		map.put(spec2, childSei);
 		map.put(spec3, childSei);
 		return map;
+	}
+	
+	/**
+	 * Get the requirement value of a specified attribute
+	 * @param requirement the requirement
+	 * @param attName the attribute to get
+	 * @return the value
+	 */
+	protected String getRequirementValue(Requirement requirement, String attName) {
+		for (AttributeValue att : requirement.getElements()) {
+			if (att.getAttType().getName().equals(attName)) {
+				return att.getValue();
+			}
+		}
+		return null;
 	}
 
 }

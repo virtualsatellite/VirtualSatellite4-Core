@@ -26,11 +26,9 @@ public class RequirementHelper {
 				.replaceAll("-", "")
 				.replaceAll("_", "")
 				.replaceAll("\\.", "")
+				.replaceAll("\\r|\\n", "")
 				.replaceAll("\\/", "")
-				.replaceAll("\\\\", "")
-				.replaceAll(System.lineSeparator(), "")
-				.replaceAll("\\n\\r", "")
-				.replaceAll("\\n", "");
+				.replaceAll("\\\\", "");
 	}
 	
 }

@@ -431,7 +431,7 @@ public class ReqIfImporter {
 			String xhtmlString;
 			try {
 				xhtmlString = ReqIF10XhtmlUtil.getXhtmlString(attValueXHTML.getTheValue());
-				value.append(xhtmlString.replaceAll("(?s)<[^>]*>(\\s*<[^>]*>)*", "")); // Remove HTML mark-up
+				value.append(xhtmlString.replaceAll("(?s)<[^>]*>(\\s*<[^>]*>)*", "").replaceAll("\\r|\\n", "")); // Remove HTML mark-up
 				formattedValue.append(xhtmlString);
 			} catch (IOException e) {
 				Activator.getDefault().getLog().error(ReqIfUtils.XHTML_PARSER_ERROR, e);
