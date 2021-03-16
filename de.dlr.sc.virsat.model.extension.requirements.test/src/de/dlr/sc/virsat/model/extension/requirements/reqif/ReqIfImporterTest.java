@@ -32,6 +32,7 @@ import org.eclipse.rmf.reqif10.ReqIF;
 import org.eclipse.rmf.reqif10.ReqIF10Factory;
 import org.eclipse.rmf.reqif10.ReqIF10Package;
 import org.eclipse.rmf.reqif10.Specification;
+import org.eclipse.rmf.reqif10.impl.ReqIF10FactoryImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -188,6 +189,7 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 	@Test
 	public void testImportRequirements() {
 		URI modelURI = URI.createPlatformPluginURI(PLATFORM_REQ_IF_MODEL_PATH, true);
+		Resource.Factory.Registry.INSTANCE.getContentTypeToFactoryMap().put("reqif", new ReqIF10FactoryImpl());
 		rs.getPackageRegistry().put(ReqIF10Package.eNS_URI, ReqIF10Package.eINSTANCE);
 		Resource modelResource = rs.getResource(modelURI, true);
 		ReqIF reqIfFileContent = (ReqIF) modelResource.getContents().get(0);
