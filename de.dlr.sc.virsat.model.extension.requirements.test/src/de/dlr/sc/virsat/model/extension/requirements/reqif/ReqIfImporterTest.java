@@ -29,12 +29,10 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.xml.namespace.XMLNamespacePackage;
 import org.eclipse.rmf.reqif10.ReqIF;
 import org.eclipse.rmf.reqif10.ReqIF10Factory;
 import org.eclipse.rmf.reqif10.ReqIF10Package;
 import org.eclipse.rmf.reqif10.Specification;
-import org.eclipse.rmf.reqif10.datatypes.DatatypesPackage;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -63,6 +61,7 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 	private static final String REQ_IF_RESOURCE_NAME = "ImportModel";
 	private static final String REQ_IF_RESOURCE_PATH = "test/" + REQ_IF_RESOURCE_NAME + ".reqif";
 	private static final String PLATFORM_REQ_IF_MODEL_PATH = "/de.dlr.sc.virsat.model.extension.requirements.test/resources/ReqIF/TestRequirements.reqif";
+	private static final String PLATFORM_REQ_IF_MODEL_PATH_REIMPORT = "/de.dlr.sc.virsat.model.extension.requirements.test/resources/ReqIF/TestRequirements_reimport.reqif";
 	
 	private static final String TREE_NAME = "ConfigurationTree";
 	private static final String TREE_CHILD_NAME = "ElementConfiguration";
@@ -99,6 +98,7 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 	
 	private static final String HARDWARE_REQUIREMENT_GROUP_NAME = "MissionObjectives";
 	private static final String HARDWARE_REQUIREMENT_GROUP_CHILD_TEXT = "Test Hardware Requirement";
+	private static final String HARDWARE_REQUIREMENT_GROUP_CHILD_TEXT_UPDATED = "Test Hardware Requirement Updated";
 	
 	@Before
 	public void setUp() throws CoreException {
@@ -248,6 +248,49 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 		assertEquals(HARDWARE_REQUIREMENT_GROUP_CHILD_TEXT, getRequirementValue(firstHardwareRequirement, TEXT_ATTRIBUTE_NAME));
 	}
 	
+	@Test
+	public void testReImportRequirements() {
+		registerEPackageReqIF();
+		URI modelURI = URI.createPlatformPluginURI(PLATFORM_REQ_IF_MODEL_PATH, true);
+		rs.getPackageRegistry().put(ReqIF10Package.eNS_URI, ReqIF10Package.eINSTANCE);
+		Resource modelResource = rs.getResource(modelURI, true);
+		ReqIF reqIfFileContent = (ReqIF) modelResource.getContents().get(0);
+		System.out.println(reqIfFileContent);
+		importerUnderTest.init(reqIfFileContent, rcc);
+		
+		// Simply map all specifications into childSei
+		Map<Specification, StructuralElementInstance> map = new HashMap<Specification, StructuralElementInstance>();
+		for (Specification spec : reqIfFileContent.getCoreContent().getSpecifications()) {
+			map.put(spec, childSei);
+		}
+
+		// Do first import
+		editingDomain.getCommandStack().execute(importerUnderTest.persistSpecificationMapping(editingDomain, map, reqIfFileContent, rcc));
+		editingDomain.getCommandStack().execute(importerUnderTest.persistRequirementTypeContainer(editingDomain, null));
+		editingDomain.getCommandStack().execute(importerUnderTest.importRequirementTypes(editingDomain, reqIfFileContent));
+		editingDomain.getCommandStack().execute(importerUnderTest.importRequirements(editingDomain, reqIfFileContent));
+		
+		// Get some nested requirement to check on if values are updated
+		RequirementsSpecification hardwareSpec = null;
+		for (CategoryAssignment cA : childSei.getCategoryAssignments()) {
+			if (cA.getName().equals(HARDWARE_SPEC_NAME)) {
+				hardwareSpec = new RequirementsSpecification(cA);
+			}
+		}
+		RequirementGroup hardwareMissionObjectives = (RequirementGroup) hardwareSpec.getRequirements().get(0);
+		Requirement firstHardwareRequirement = (Requirement) hardwareMissionObjectives.getChildren().get(0);
+		assertEquals(HARDWARE_REQUIREMENT_GROUP_CHILD_TEXT, getRequirementValue(firstHardwareRequirement, TEXT_ATTRIBUTE_NAME));
+		
+		
+		// Now do re-import and check if value changed
+		URI reImportModelURI = URI.createPlatformPluginURI(PLATFORM_REQ_IF_MODEL_PATH_REIMPORT, true);
+		modelResource = rs.getResource(reImportModelURI, true);
+		reqIfFileContent = (ReqIF) modelResource.getContents().get(0);
+		editingDomain.getCommandStack().execute(importerUnderTest.importRequirements(editingDomain, reqIfFileContent));
+
+		assertEquals(HARDWARE_REQUIREMENT_GROUP_CHILD_TEXT_UPDATED, getRequirementValue(firstHardwareRequirement, TEXT_ATTRIBUTE_NAME));
+	}
+	
 	/**
 	 * Create a basic mapping of reqif specifications to SEIs
 	 * @return a hashmap
@@ -294,12 +337,6 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 		EPackage.Registry.INSTANCE.clear();
 		EPackage.Registry.INSTANCE.put(ReqIF10Package.eNS_URI,
 				ReqIF10Package.eINSTANCE);
-//		EPackage.Registry.INSTANCE.put(XhtmlPackage.eNS_URI,
-//				XhtmlPackage.eINSTANCE);
-		EPackage.Registry.INSTANCE.put(DatatypesPackage.eNS_URI,
-				DatatypesPackage.eINSTANCE);
-		EPackage.Registry.INSTANCE.put(XMLNamespacePackage.eNS_URI,
-				XMLNamespacePackage.eINSTANCE);
 	}
 
 }

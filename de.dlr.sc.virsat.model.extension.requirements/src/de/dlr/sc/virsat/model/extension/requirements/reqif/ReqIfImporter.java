@@ -133,7 +133,12 @@ public class ReqIfImporter {
 					reqIfSpec = spec;
 				}
 			}
-			importRequirementList(editingDomain, cc, specMapping.getSpecification().getRequirements(), reqIfSpec.getChildren());
+			if (reqIfSpec != null) {
+				importRequirementList(editingDomain, cc, specMapping.getSpecification().getRequirements(), reqIfSpec.getChildren());
+			} else {
+				Activator.getDefault().getLog().error("One mapped specification not found in ReqIF file!");
+			}
+			
 		}
 		return cc;
 	}
