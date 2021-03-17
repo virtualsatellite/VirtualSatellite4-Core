@@ -43,9 +43,9 @@ import org.glassfish.jersey.client.ClientConfig;
 public class DoorsSynchroClient {
 
 	private DoorsSynchroClient() {
-		
+
 	}
-	
+
 	private static final String SERVER_NAME = "https://gk-sl0002.intra.dlr.de:9443/rm/";
 	private static final String CATALOG_URL = "https://gk-sl0002.intra.dlr.de:9443/rm/oslc_rm/catalog";
 	private static final String PROJECT_NAME = "MBSE4GK Testprojekt";
@@ -65,16 +65,19 @@ public class DoorsSynchroClient {
 		queryRequirements(doorsClient, queryCapabilityUrl);
 	}
 
-	private static String lookUpServiceProviderUrl(OslcClient client, String projectName) throws ResourceNotFoundException, IOException, URISyntaxException {
+	private static String lookUpServiceProviderUrl(OslcClient client, String projectName)
+			throws ResourceNotFoundException, IOException, URISyntaxException {
 		String serviceProviderUrl = client.lookupServiceProviderUrl(CATALOG_URL, projectName);
 		return serviceProviderUrl;
 	}
-	
-	private static String lookUpQueryCapability(OslcClient client, String serviceProvider) throws ResourceNotFoundException, IOException, URISyntaxException {
-		String queryCapabilty = client.lookupQueryCapability(serviceProvider, OSLCConstants.OSLC_RM_V2, OSLCConstants.RM_REQUIREMENT_TYPE);
+
+	private static String lookUpQueryCapability(OslcClient client, String serviceProvider)
+			throws ResourceNotFoundException, IOException, URISyntaxException {
+		String queryCapabilty = client.lookupQueryCapability(serviceProvider, OSLCConstants.OSLC_RM_V2,
+				OSLCConstants.RM_REQUIREMENT_TYPE);
 		return queryCapabilty;
 	}
-	
+
 	/**
 	 * 
 	 * @param client
@@ -89,7 +92,7 @@ public class DoorsSynchroClient {
 		OslcQueryResult result = query.submit();
 		processRawResponse(result.getRawResponse());
 	}
-	
+
 	/**
 	 * 
 	 * @param response
@@ -100,8 +103,13 @@ public class DoorsSynchroClient {
 		BufferedReader in = new BufferedReader(new InputStreamReader(is));
 
 		String line = null;
-		while ((line = in.readLine()) != null) {
-			System.out.println(line);
+
+		try {
+			while ((line = in.readLine()) != null) {
+				System.out.println(line);
+			}
+		} finally {
+			is.close();
 		}
 		System.out.println();
 	}
