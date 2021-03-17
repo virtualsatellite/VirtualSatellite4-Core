@@ -11,22 +11,28 @@ package de.dlr.sc.virsat.server.resources;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.jetty.http.HttpStatus;
 
@@ -40,12 +46,14 @@ import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementIns
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.structure.command.CreateRemoveSeiWithFileStructureCommand;
 import de.dlr.sc.virsat.project.structure.command.RemoveFileStructureCommand;
 import de.dlr.sc.virsat.server.auth.ServerRoles;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
+import de.dlr.sc.virsat.server.dataaccess.ServerConcept;
 import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProvider;
 import de.dlr.sc.virsat.server.jetty.VirSatJettyServer;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
@@ -88,6 +96,8 @@ public class ModelAccessResource {
 	public static final String CA = "ca";
 	public static final String CA_AND_PROPERTIES = "caAndProperties";
 	public static final String PROPERTY = "property";
+	
+	public static final String QP_ONLY_ACTIVE_CONCEPTS = "onlyActiveConcepts";
 
 	public ModelAccessResource() { }
 	
@@ -447,32 +457,51 @@ public class ModelAccessResource {
 		@Produces(MediaType.APPLICATION_JSON)
 		@ApiOperation(
 				produces = "application/json",
-				value = "Fetch a list of active Concepts full qualified names",
+				value = "Fetch a list of active Concepts",
 				httpMethod = "GET",
 				notes = "This service fetches the active Concepts")
 		@ApiResponses(value = { 
 				@ApiResponse(
 						code = HttpStatus.OK_200,
-						response = String.class,
+						response = ServerConcept.class,
 						responseContainer = "List",
 						message = SUCCESSFUL_OPERATION),
 				@ApiResponse(
 						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 						message = SYNC_ERROR)})
-		public Response getActiveConcepts() {
+		public Response getConcepts(@DefaultValue("true") @QueryParam(QP_ONLY_ACTIVE_CONCEPTS) boolean onlyActiveConcepts) {
 			try {
 				serverRepository.syncRepository();
-				List<Concept> activeConcepts = repository.getActiveConcepts();
-				List<String> fullQualifiedNames = new ArrayList<String>();
 				
-				for (Concept concept : activeConcepts) {
-					fullQualifiedNames.add(concept.getFullQualifiedName());
+				List<ServerConcept> pojos = new ArrayList<ServerConcept>();
+				List<Concept> concepts;
+				
+				if (onlyActiveConcepts) {
+					concepts = repository.getActiveConcepts();
+				} else {
+					// Get all concepts from the registry
+					concepts = new ArrayList<Concept>();
+					IExtensionRegistry registry = Platform.getExtensionRegistry();
+					String extensionPoint = ActiveConceptConfigurationElement.EXTENSION_POINT_ID_CONCEPT;
+					
+					// Get the concept configuration elements
+					IConfigurationElement[] configurationElementsArray = registry.getConfigurationElementsFor(extensionPoint);
+					List<IConfigurationElement> configurationElements = (List<IConfigurationElement>) Arrays.asList(configurationElementsArray);
+					
+					// For each configuration element load the concept
+					for (IConfigurationElement configurationElement : configurationElements) {
+						ActiveConceptConfigurationElement acce = new ActiveConceptConfigurationElement(configurationElement);
+						concepts.add(acce.loadConceptFromPlugin());
+					}
 				}
 				
-				GenericEntity<List<String>> genericEntityList =
-						new GenericEntity<List<String>>(fullQualifiedNames) { };
+				for (Concept concept : concepts) {
+					pojos.add(new ServerConcept(concept));
+				}
 				
-				return Response.ok(genericEntityList).build();
+				GenericEntity<List<ServerConcept>> entity = new GenericEntity<List<ServerConcept>>(pojos) { };
+				
+				return Response.ok(entity).build();
 			} catch (Exception e) {
 				return createSyncErrorResponse(e.getMessage());
 			}

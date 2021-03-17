@@ -16,18 +16,19 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.general.IQualifiedName;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModelProperty.AccessMode;
 
-// TODO: swagger doc
 @XmlRootElement
-@XmlType(name = ServerConcept.NAME)
 @XmlAccessorType(XmlAccessType.NONE)
+@ApiModel(description = "A concept that can be activated on the current repository. "
+		+ "It is identified by it's full qualified name and contains it's categories and structural elements. "
+		+ "Which can be instantiated as CategoryAssignments and StructurelElementInstances.")
 public class ServerConcept {
-
-	public static final String NAME = "Concept";
 	
 	private Concept concept;
 	
@@ -52,36 +53,57 @@ public class ServerConcept {
 		return fqns;
 	}
 	
+	@ApiModelProperty(
+			value = "List of available categories",
+			accessMode = AccessMode.READ_ONLY)
 	@XmlElement
 	public List<String> getCategories() {
 		return getFqns(concept.getCategories());
 	}
 	
+	@ApiModelProperty(
+			value = "List of available categories that are not abstract (can be instantiated)",
+			accessMode = AccessMode.READ_ONLY)
 	@XmlElement
 	public List<String> getNonAbstractCategories() {
 		return getFqns(concept.getNonAbstractCategories());
 	}
 	
+	@ApiModelProperty(
+			value = "List of available structural elements",
+			accessMode = AccessMode.READ_ONLY)
 	@XmlElement
 	public List<String> getStructuralElements() {
 		return getFqns(concept.getStructuralElements());
 	}
 	
+	@ApiModelProperty(
+			value = "Version of the concept",
+			accessMode = AccessMode.READ_ONLY)
 	@XmlElement
 	public String getVersion() {
 		return concept.getVersion();
 	}
 	
+	@ApiModelProperty(
+			value = "If the concept is still in a beta version",
+			accessMode = AccessMode.READ_ONLY)
 	@XmlElement
 	public boolean getIsBeta() {
 		return concept.isBeta();
 	}
 	
+	@ApiModelProperty(
+			value = "Description of the concept",
+			accessMode = AccessMode.READ_ONLY)
 	@XmlElement
 	public String getDescription() {
 		return concept.getDescription();
 	}
 	
+	@ApiModelProperty(
+			value = "Full qualified name of the concept",
+			accessMode = AccessMode.READ_ONLY)
 	@XmlElement
 	public String getFullQualifiedName() {
 		return concept.getFullQualifiedName();
