@@ -334,7 +334,6 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 	 * Register all required packages
 	 */
 	private static void registerEPackageReqIF() {
-		EPackage.Registry.INSTANCE.clear();
 		EPackage.Registry.INSTANCE.put(ReqIF10Package.eNS_URI,
 				ReqIF10Package.eINSTANCE);
 	}
