@@ -20,6 +20,7 @@ import org.eclipse.rmf.reqif10.AttributeValue;
 import org.eclipse.rmf.reqif10.AttributeValueString;
 import org.eclipse.rmf.reqif10.AttributeValueXHTML;
 import org.eclipse.rmf.reqif10.SpecHierarchy;
+import org.eclipse.rmf.reqif10.SpecObject;
 import org.eclipse.rmf.reqif10.common.util.ReqIF10XhtmlUtil;
 
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
@@ -139,12 +140,7 @@ public class ReqIfUtils {
 	 * @return weather the list contains an element with the given name
 	 */
 	protected boolean contains(IBeanList<? extends IBeanName> list, String name) {
-		for (IBeanName namedElement : list) {
-			if (namedElement.getName().equals(name)) {
-				return true;
-			}
-		}
-		return false;
+		return findExisting(list, name) != null;
 	}
 	
 	/**
@@ -159,6 +155,21 @@ public class ReqIfUtils {
 		for (RequirementObject namedElement : reqList) {
 			if (namedElement.getName().equals(requirementName) 
 					|| namedElement.getName().equals(groupName)) {
+				return namedElement;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Check if we have an existing object locally for the given element
+	 * @param beanList the list to search for existing  objects
+	 * @param hierarchyObject the element name
+	 * @return the existing element
+	 */
+	protected IBeanName findExisting(IBeanList<? extends IBeanName> beanList, String name) {
+		for (IBeanName namedElement : beanList) {
+			if (namedElement.getName().equals(name)) {
 				return namedElement;
 			}
 		}
@@ -190,12 +201,7 @@ public class ReqIfUtils {
 	 */
 	protected RequirementAttribute findAttributeDefinition(Requirement requirement, AttributeDefinition attDefReqIf) {
 		RequirementType reqType = requirement.getReqType();
-		for (RequirementAttribute attDef : reqType.getAttributes()) {
-			if (attDef.getName().equals(cleanAttName(attDefReqIf.getLongName()))) {
-				return attDef;
-			}
-		}
-		return null;
+		return (RequirementAttribute) findExisting(reqType.getAttributes(), cleanAttName(attDefReqIf.getLongName()));
 	}
 	
 	/**
@@ -205,7 +211,17 @@ public class ReqIfUtils {
 	 * @return the identifying string
 	 */
 	protected String getReqIFRequirementIdentifier(SpecHierarchy hierarchyObject) {
-		for (AttributeValue attValue : hierarchyObject.getObject().getValues()) {
+		return getReqIFRequirementIdentifier(hierarchyObject.getObject());
+	}
+	
+	/**
+	 * Get the identifying attribute value for a ReqIF requirement
+	 * 
+	 * @param reqObject the ReqIF requirement
+	 * @return the identifying string
+	 */
+	protected String getReqIFRequirementIdentifier(SpecObject reqObject) {
+		for (AttributeValue attValue : reqObject.getValues()) {
 			if (attValue instanceof AttributeValueString) {
 				AttributeValueString attValueString = (AttributeValueString) attValue;
 				if (isIdentifier(attValueString.getDefinition())) {
@@ -224,7 +240,17 @@ public class ReqIfUtils {
 	 * @return the name as string
 	 */
 	protected String getReqIFRequirementName(SpecHierarchy hierarchyObject) {
-		for (AttributeValue attValue : hierarchyObject.getObject().getValues()) {
+		return getReqIFRequirementName(hierarchyObject.getObject());
+	}
+	
+	/**
+	 * Get the name of a ReqIF requirement object
+	 * 
+	 * @param reqObject the ReqIF object
+	 * @return the name as string
+	 */
+	protected String getReqIFRequirementName(SpecObject reqObject) {
+		for (AttributeValue attValue : reqObject.getValues()) {
 			if (attValue instanceof AttributeValueXHTML) {
 				AttributeValueXHTML attValueHTML = (AttributeValueXHTML) attValue;
 				if (attValueHTML.getDefinition().getLongName().equals(REQIF_NAME_ATTRIBUTE_NAME)) {

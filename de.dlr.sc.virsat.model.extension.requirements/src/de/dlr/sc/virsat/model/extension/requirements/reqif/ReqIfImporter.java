@@ -43,6 +43,7 @@ import org.eclipse.rmf.reqif10.ReqIFContent;
 import org.eclipse.rmf.reqif10.SpecHierarchy;
 import org.eclipse.rmf.reqif10.SpecObject;
 import org.eclipse.rmf.reqif10.SpecObjectType;
+import org.eclipse.rmf.reqif10.SpecRelation;
 import org.eclipse.rmf.reqif10.SpecType;
 import org.eclipse.rmf.reqif10.Specification;
 import org.eclipse.rmf.reqif10.common.util.ReqIF10XhtmlUtil;
@@ -58,6 +59,7 @@ import de.dlr.sc.virsat.model.extension.requirements.model.ImportConfiguration;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttribute;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementGroup;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementLink;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementObject;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfiguration;
@@ -313,7 +315,7 @@ public class ReqIfImporter {
 			conceptRequirement.getElements().add(conceptAttributeValue);
 		}
 	}
-	
+
 	/**
 	 * Import the requirement types specified in the ReqIF content
 	 * 
@@ -358,6 +360,63 @@ public class ReqIfImporter {
 			}
 		}
 		return cc;
+	}
+	
+	/**
+	 * Import the requirement links specified in the ReqIF content
+	 * 
+	 * @param editingDomain the editing domain for the import
+	 * @param reqIFContent the actual ReqIF content
+	 * @return the command to be executed
+	 */
+	public Command importRequirementLinks(EditingDomain editingDomain, ReqIF reqIFContent) {
+		CompoundCommand cc = new CompoundCommand();
+		for (SpecRelation relation : reqIFContent.getCoreContent().getSpecRelations()) {
+			importRequirementLink(editingDomain, cc, relation);
+		}
+		return cc;
+	}
+	
+	/**
+	 * Import a ReqIF relation into local requirements
+	 * 
+	 * @param editingDomain the editing domain for the import
+	 * @param command the compound command
+	 * @param relation the relation to be imported
+	 */
+	public void importRequirementLink(EditingDomain editingDomain, CompoundCommand command, SpecRelation relation) {
+		if (relation.getSource() != null || relation.getTarget() != null || relation.getType() != null) {
+			String sourceReqName = Requirement.REQUIREMENT_NAME_PREFIX + reqIfUtils.getReqIFRequirementIdentifier(relation.getSource());
+			String targetReqName = Requirement.REQUIREMENT_NAME_PREFIX + reqIfUtils.getReqIFRequirementIdentifier(relation.getTarget());
+			String linkName = Requirement.REQUIREMENT_NAME_PREFIX + reqIfUtils.getReqIFRequirementIdentifier(relation.getSource()) 
+					+ relation.getType().getLongName() 
+					+ Requirement.REQUIREMENT_NAME_PREFIX + reqIfUtils.getReqIFRequirementIdentifier(relation.getTarget());
+			RequirementsSpecification containerSpec = null;
+			Requirement localSourceRequirement = null;
+			Requirement localTargetRequirement = null;
+			for (SpecificationMapping mappedSpec : importConfiguration.getMappedSpecifications()) {
+				localSourceRequirement = reqHelper.findRequirement(mappedSpec.getSpecification().getRequirements(), sourceReqName, true);
+				localTargetRequirement = reqHelper.findRequirement(mappedSpec.getSpecification().getRequirements(), targetReqName, true);
+				if (localSourceRequirement != null) {
+					containerSpec = mappedSpec.getSpecification();
+				}
+			}
+			// Check if relation is relevant for imported specifications, if not ignore it
+			if (containerSpec != null && localSourceRequirement != null && localTargetRequirement != null) {
+				RequirementLink localLink = (RequirementLink) reqIfUtils.findExisting(containerSpec.getLinks(), linkName);
+				if (localLink == null) {
+					localLink = new RequirementLink(concept);
+					localLink.setName(linkName);
+					localLink.setSubject(localSourceRequirement);
+					localLink.getTargets().add(localTargetRequirement);
+					command.append(containerSpec.getLinks().add(editingDomain, localLink));
+				} else {
+					if (!localLink.getTargets().contains(localTargetRequirement)) {
+						command.append(localLink.getTargets().add(editingDomain, localTargetRequirement));
+					}
+				}
+			} 
+		}
 	}
 	
 	/**
