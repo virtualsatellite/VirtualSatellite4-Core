@@ -334,11 +334,12 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 	 * Register all required packages
 	 */
 	private void registerEPackageReqIF() {
+		System.err.println(rs.getPackageRegistry().getEPackage(ReqIF10Package.eNS_URI));
 		EPackage.Registry.INSTANCE.put(ReqIF10Package.eNS_URI,
 				ReqIF10Package.eINSTANCE);
 		ReqIF10Package.eINSTANCE.eClass();
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("reqif", new XMLResourceFactoryImpl());
-		rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("reqif", new XMLResourceFactoryImpl());
+		System.err.println(rs.getPackageRegistry().getEPackage(ReqIF10Package.eNS_URI));
 	}
 
 }
