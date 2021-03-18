@@ -29,7 +29,6 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl;
 import org.eclipse.rmf.reqif10.ReqIF;
 import org.eclipse.rmf.reqif10.ReqIF10Factory;
 import org.eclipse.rmf.reqif10.ReqIF10Package;
@@ -193,7 +192,6 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 	public void testImportRequirements() {
 		registerEPackageReqIF();
 		URI modelURI = URI.createPlatformPluginURI(PLATFORM_REQ_IF_MODEL_PATH, true);
-		rs.getPackageRegistry().put(ReqIF10Package.eNS_URI, ReqIF10Package.eINSTANCE);
 		Resource modelResource = rs.getResource(modelURI, true);
 		ReqIF reqIfFileContent = (ReqIF) modelResource.getContents().get(0);
 		System.out.println(reqIfFileContent);
@@ -333,13 +331,9 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 	/**
 	 * Register all required packages
 	 */
-	private void registerEPackageReqIF() {
-		System.err.println(rs.getPackageRegistry().getEPackage(ReqIF10Package.eNS_URI));
+	private static void registerEPackageReqIF() {
 		EPackage.Registry.INSTANCE.put(ReqIF10Package.eNS_URI,
 				ReqIF10Package.eINSTANCE);
-		ReqIF10Package.eINSTANCE.eClass();
-		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("reqif", new XMLResourceFactoryImpl());
-		System.err.println(rs.getPackageRegistry().getEPackage(ReqIF10Package.eNS_URI));
 	}
 
 }
