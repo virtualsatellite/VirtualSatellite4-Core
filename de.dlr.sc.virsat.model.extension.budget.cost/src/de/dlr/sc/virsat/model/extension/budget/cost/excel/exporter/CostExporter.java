@@ -116,18 +116,18 @@ public class CostExporter implements IExport {
 	private void exportData(StructuralElementInstance exportSei) {
 		String exportSeiTypeName = exportSei.getType().getName();
 		if (exportSeiTypeName.equals(CostTypesCollection.class.getSimpleName())) {
-			// when exporting interface Type collection those sheets are not needed
-			removeSheets(AExcelCostO.TEMPLATE_SHEETNAME_INTERFACEENDS);
+			// when exporting cost type collection those sheets are not needed
+			removeSheets(AExcelCostO.TEMPLATE_SHEETNAME_COSTEQUIPMENTS);
 			createDataSheetCostTypes(exportSei);	
 		} else if (exportSeiTypeName.equals(ElementDefinition.class.getSimpleName())
 				|| exportSeiTypeName.equals(ElementRealization.class.getSimpleName())) {
 			// when exporting ElementDefinition or ElementRealization those sheets are not needed
-			removeSheets(AExcelCostO.TEMPLATE_SHEETNAME_INTERFACETYPES, AExcelCostO.TEMPLATE_SHEETNAME_INTERFACES);
+			removeSheets(AExcelCostO.TEMPLATE_SHEETNAME_COSTTYPES);
 			createDataSheetCostEquipments(exportSei);
 		} else if (exportSeiTypeName.equals(ElementConfiguration.class.getSimpleName())
 				|| exportSeiTypeName.equals(ElementOccurence.class.getSimpleName())) {
 			// when exporting ElementConfiguration or ElementOccurence that sheet is not needed
-			removeSheets(AExcelCostO.TEMPLATE_SHEETNAME_INTERFACETYPES);
+			removeSheets(AExcelCostO.TEMPLATE_SHEETNAME_COSTTYPES);
 			createDataSheetCostEquipments(exportSei);
 		}
 	}
@@ -146,21 +146,21 @@ public class CostExporter implements IExport {
 	}
 
 	/**
-	 * Creates the data sheet for interface type collection and populates it with the data
+	 * Creates the data sheet for cost type collection and populates it with the data
 	 * @param exportSei Structural element instance to be exported
 	 */
 	private void createDataSheetCostTypes(StructuralElementInstance exportSei) {
-		XSSFSheet sheet = createSheetIfNeeded(AExcelCostO.TEMPLATE_SHEETNAME_INTERFACETYPES);
+		XSSFSheet sheet = createSheetIfNeeded(AExcelCostO.TEMPLATE_SHEETNAME_COSTTYPES);
 		// get all the cost types from the model
 		BeanCategoryAssignmentHelper bCaHelper = new BeanCategoryAssignmentHelper();
 		List<CostType> seiCostTypes = bCaHelper.getAllBeanCategories(exportSei, CostType.class);
 
-		helper.instantiateCells(sheet, seiCostTypes.size() + AExcelCostO.COMMON_ROW_START_TABLE, AExcelCostO.INTERFACETYPES_COLUMN_INTERFACETYPE_NAME + 1);
+		helper.instantiateCells(sheet, seiCostTypes.size() + AExcelCostO.COMMON_ROW_START_TABLE, AExcelCostO.COSTTYPES_COLUMN_COSTTYPE_NAME + 1);
 		int i = AExcelCostO.COMMON_ROW_START_TABLE;
 		for (CostType costType : seiCostTypes) {
 			Row row = sheet.getRow(i);
 			row.getCell(AExcelCostO.COMMON_COLUMN_UUID).setCellValue(helper.getCreationHelper().createRichTextString(costType.getTypeInstance().getUuid().toString()));
-			row.getCell(AExcelCostO.INTERFACETYPES_COLUMN_INTERFACETYPE_NAME).setCellValue(helper.getCreationHelper().createRichTextString(costType.getName()));
+			row.getCell(AExcelCostO.COSTTYPES_COLUMN_COSTTYPE_NAME).setCellValue(helper.getCreationHelper().createRichTextString(costType.getName()));
 			i++;
 		}
 	}
@@ -170,21 +170,21 @@ public class CostExporter implements IExport {
 	 * @param exportSei Structural element instance to be exported
 	 */
 	private void createDataSheetCostEquipments(StructuralElementInstance exportSei) {
-		XSSFSheet sheet = createSheetIfNeeded(AExcelCostO.TEMPLATE_SHEETNAME_INTERFACEENDS);
-		// get all the interface ends
+		XSSFSheet sheet = createSheetIfNeeded(AExcelCostO.TEMPLATE_SHEETNAME_COSTEQUIPMENTS);
+		// get all the cost equipment
 		BeanCategoryAssignmentHelper bCaHelper = new BeanCategoryAssignmentHelper();
 		List<CostEquipment> seiCostEquipments = bCaHelper.getAllBeanCategories(exportSei, CostEquipment.class);
-		helper.instantiateCells(sheet, seiCostEquipments.size() + AExcelCostO.COMMON_ROW_START_TABLE, AExcelCostO.INTERFACEEND_COLUMN_INTERFACEEND_FQN + 1);
+		helper.instantiateCells(sheet, seiCostEquipments.size() + AExcelCostO.COMMON_ROW_START_TABLE, AExcelCostO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_FQN + 1);
 
-		// for each interface end, fill out a row
+		// for each cost equipment, fill out a row
 		int i = AExcelCostO.COMMON_ROW_START_TABLE;
 		for (CostEquipment costEquipment : seiCostEquipments) {
 			Row row = sheet.getRow(i);
 			row.getCell(AExcelCostO.COMMON_COLUMN_UUID).setCellValue(helper.getCreationHelper().createRichTextString(costEquipment.getTypeInstance().getUuid().toString()));
-			row.getCell(AExcelCostO.INTERFACEEND_COLUMN_INTERFACEEND_NAME).setCellValue(helper.getCreationHelper().createRichTextString(costEquipment.getName()));
-			row.getCell(AExcelCostO.INTERFACEEND_COLUMN_INTERFACEEND_TYPE).setCellValue(helper.getCreationHelper().createRichTextString(""));
-			row.getCell(AExcelCostO.INTERFACEEND_COLUMN_INTERFACEEND_TYPE).setCellValue(helper.getCreationHelper().createRichTextString(getCostTypeName(costEquipment)));
-			row.getCell(AExcelCostO.INTERFACEEND_COLUMN_INTERFACEEND_FQN).setCellValue(helper.getCreationHelper().createRichTextString(costEquipment.getTypeInstance().getFullQualifiedInstanceName()));
+			row.getCell(AExcelCostO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_NAME).setCellValue(helper.getCreationHelper().createRichTextString(costEquipment.getName()));
+			row.getCell(AExcelCostO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_TYPE).setCellValue(helper.getCreationHelper().createRichTextString(""));
+			row.getCell(AExcelCostO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_TYPE).setCellValue(helper.getCreationHelper().createRichTextString(getCostTypeName(costEquipment)));
+			row.getCell(AExcelCostO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_FQN).setCellValue(helper.getCreationHelper().createRichTextString(costEquipment.getTypeInstance().getFullQualifiedInstanceName()));
 			i++;
 		}
 	}
@@ -203,9 +203,9 @@ public class CostExporter implements IExport {
 	}
 	
 	/**
-	 * returns the type of an interface end if exists
-	 * @param ifaceEnd interface end object
-	 * @return interface type name if exists else ""
+	 * returns the type of an cost equipment if exists
+	 * @param costEquipment cost equipment object
+	 * @return cost type name if exists else ""
 	 */
 	private String getCostTypeName(CostEquipment costEquipment) {
 		CostType costType = costEquipment.getType();

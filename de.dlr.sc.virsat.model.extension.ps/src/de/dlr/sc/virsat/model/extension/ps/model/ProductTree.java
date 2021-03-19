@@ -13,6 +13,7 @@ package de.dlr.sc.virsat.model.extension.ps.model;
 // * Import Statements
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 
 // *****************************************************************
@@ -50,5 +51,11 @@ public class ProductTree extends AProductTree {
 	 */
 	public ProductTree(StructuralElementInstance sei) {
 		super(sei);
+	}
+
+	@Override
+	public void add(IBeanStructuralElementInstance bsei) {
+		// TODO Auto-generated method stub
+		
 	}
 }

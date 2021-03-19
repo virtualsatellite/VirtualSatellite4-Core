@@ -17,10 +17,12 @@ import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
-import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfQuantities;
+import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfUnits;
+import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
+import de.dlr.sc.virsat.model.dvlm.units.UnitManagement;
+import de.dlr.sc.virsat.model.dvlm.units.UnitsFactory;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostEquipment;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostType;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostTypesCollection;
@@ -44,8 +46,8 @@ public class ExcelTestCase extends AConceptTestCase {
 	protected ProductTree productTree;
 	protected ProductTreeDomain productTreeDomain;
 	protected ElementConfiguration elementConf;
-	protected ElementConfiguration elementConf2;
 	protected ConfigurationTree configTree;
+	protected QudvUnitHelper qudvUnitHelper;
 
 	protected Concept conceptEgscc;
 	protected Concept conceptCost;
@@ -59,6 +61,13 @@ public class ExcelTestCase extends AConceptTestCase {
 
 		repository = DVLMFactory.eINSTANCE.createRepository();
 		repository.getActiveConcepts().add(conceptEgscc);
+		
+		UnitManagement unitManagement = UnitsFactory.eINSTANCE.createUnitManagement();
+		
+		SystemOfUnits sou = QudvUnitHelper.getInstance().initializeSystemOfUnits("SystemOfUnits", "SoU", "the system of Units", "http://the.system.of.units.de");
+		
+		unitManagement.setSystemOfUnit(sou);
+		repository.setUnitManagement(unitManagement);
 		repository.getActiveConcepts().add(conceptCost);
 
 		ActiveConceptHelper.getCategory(conceptCost, CostEquipment.class.getSimpleName()).setIsApplicableForAll(true);
@@ -130,14 +139,14 @@ public class ExcelTestCase extends AConceptTestCase {
 		costEquipment6.setType(costType3);
 
 		// to hold interface ends
-		elementConf2 = new ElementConfiguration(conceptEgscc);
-		elementConf2.setName("InterfaceEnds");
-		elementConf2.add(costEquipment4);
-		elementConf2.add(costEquipment5);
-		elementConf2.add(costEquipment6);
+		elementConf = new ElementConfiguration(conceptEgscc);
+		elementConf.setName("InterfaceEnds");
+		elementConf.add(costEquipment4);
+		elementConf.add(costEquipment5);
+		elementConf.add(costEquipment6);
+
 
 		configTree.add(elementConf);
-		configTree.add(elementConf2);
 	}
 
 	/**

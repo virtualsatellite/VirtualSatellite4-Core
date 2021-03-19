@@ -52,17 +52,17 @@ public class CostExporterTest extends de.dlr.sc.virsat.model.extension.budget.co
 	}
 
 	@Test
-	public void testExportTypes() { 		
+	public void testExportCostTypes() { 		
 		StructuralElementInstance sei = costTypesCollection.getStructuralElementInstance();
 		CostExporter costExporter = new CostExporter(localDateTime);
 		costExporter.export(costTypesCollection.getStructuralElementInstance(), System.getProperty("java.io.tmpdir"), true, "");
 		XSSFWorkbook wb = costExporter.getWb();
 
-		Sheet sheet = wb.getSheet(AExcelCostO.TEMPLATE_SHEETNAME_INTERFACETYPES);
+		Sheet sheet = wb.getSheet(AExcelCostO.TEMPLATE_SHEETNAME_COSTTYPES);
 		for (int i = 0; i < sei.getCategoryAssignments().size(); ++i) {
 			CategoryAssignment interfaceType = sei.getCategoryAssignments().get(i);
 			Row row = sheet.getRow(AExcelCostO.COMMON_ROW_START_TABLE + i);
-			Cell cell = row.getCell(AExcelCostO.INTERFACETYPES_COLUMN_INTERFACETYPE_NAME);
+			Cell cell = row.getCell(AExcelCostO.COSTTYPES_COLUMN_COSTTYPE_NAME);
 			assertEquals("Type " + i + "exported correctly", interfaceType.getName(), cell.toString());
 		}
 	}
@@ -76,40 +76,21 @@ public class CostExporterTest extends de.dlr.sc.virsat.model.extension.budget.co
 		costExporter.export(sei, iStream);
 		Workbook wb = costExporter.getWb();
 
-		Sheet sheet = wb.getSheet(AExcelCostO.TEMPLATE_SHEETNAME_INTERFACEENDS);
+		Sheet sheet = wb.getSheet(AExcelCostO.TEMPLATE_SHEETNAME_COSTEQUIPMENTS);
 		for (int i = 0; i < sei.getCategoryAssignments().size(); ++i) {
 			CategoryAssignment interfaceEnd = sei.getCategoryAssignments().get(i);
 			Row row = sheet.getRow(AExcelCostO.COMMON_ROW_START_TABLE + i);
-			Cell cell = row.getCell(AExcelCostO.INTERFACEEND_COLUMN_INTERFACEEND_NAME);
-			assertEquals("Interface end name exported correctly", interfaceEnd.getName(), cell.toString());
-			cell = row.getCell(AExcelCostO.INTERFACEEND_COLUMN_INTERFACEEND_FQN);
-			assertEquals("Interface end fqn exported correctly", interfaceEnd.getFullQualifiedInstanceName(), cell.toString());
+			Cell cell = row.getCell(AExcelCostO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_NAME);
+			assertEquals("CostEquipment name exported correctly", interfaceEnd.getName(), cell.toString());
+			cell = row.getCell(AExcelCostO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_FQN);
+			assertEquals("CostEquipment fqn exported correctly", interfaceEnd.getFullQualifiedInstanceName(), cell.toString());
 		}
 		Row row = sheet.getRow(AExcelCostO.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size());
 		assertNull("Line after alle entries correctly empty", row);
 	}
 
 	@Test
-	public void testExportInterfaces() throws IOException {
-		InputStream iStream = de.dlr.sc.virsat.model.extension.budget.cost.test.TestActivator.getResourceContentAsString("/resources/SampleTest.xlsx");
-
-		StructuralElementInstance sei = elementConf.getStructuralElementInstance();
-
-		CostExporter costExporter = new CostExporter(localDateTime);
-		costExporter.export(sei, iStream);
-		Workbook wb = costExporter.getWb();
-
-		Sheet sheet = wb.getSheet(AExcelCostO.TEMPLATE_SHEETNAME_INTERFACES);
-		for (int i = 0; i < sei.getCategoryAssignments().size(); ++i) {
-			Row row = sheet.getRow(AExcelCostO.COMMON_ROW_START_TABLE + i);
-			Cell cell = row.getCell(AExcelCostO.INTERFACE_COLUMN_INTERFACE_NAME);
-			assertEquals("Interface exported correctly", sei.getCategoryAssignments().get(i).getName(), cell.toString());
-		}
-		assertNull("Line after all entries correctly empty", sheet.getRow(AExcelCostO.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size()));
-	}
-
-	@Test
-	public void testExportTypesIntoEmptyWorkbook() throws IOException {
+	public void testExportCostTypesIntoEmptyWorkbook() throws IOException {
 		InputStream iStream = de.dlr.sc.virsat.model.extension.budget.cost.test.TestActivator.getResourceContentAsString("/resources/SampleTestWithoutPages.xlsx");
 
 		StructuralElementInstance sei = costTypesCollection.getStructuralElementInstance();
@@ -118,57 +99,37 @@ public class CostExporterTest extends de.dlr.sc.virsat.model.extension.budget.co
 		costExporter.export(sei, iStream);
 		Workbook wb = costExporter.getWb();
 
-		Sheet sheet = wb.getSheet(AExcelCostO.TEMPLATE_SHEETNAME_INTERFACETYPES);
+		Sheet sheet = wb.getSheet(AExcelCostO.TEMPLATE_SHEETNAME_COSTTYPES);
 
 		for (int i = 0; i < sei.getCategoryAssignments().size(); ++i) {
 			CategoryAssignment interfaceType = sei.getCategoryAssignments().get(i);
 			Row row = sheet.getRow(AExcelCostO.COMMON_ROW_START_TABLE + i);
-			Cell cell = row.getCell(AExcelCostO.INTERFACETYPES_COLUMN_INTERFACETYPE_NAME);
+			Cell cell = row.getCell(AExcelCostO.COSTTYPES_COLUMN_COSTTYPE_NAME);
 			assertEquals("Type " + i + "exported correctly", interfaceType.getName(), cell.toString());
 		}
 		assertNull("Line after all entries correctly empty", sheet.getRow(AExcelCostO.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size()));
 	}
 
+	
+
 	@Test
-	public void testExportInterfacesIntoEmptyWorkbook() throws IOException {
+	public void testExportCostEquipmentsIntoEmptyWorkbook() throws IOException {
 		InputStream iStream = de.dlr.sc.virsat.model.extension.budget.cost.test.TestActivator.getResourceContentAsString("/resources/SampleTestWithoutPages.xlsx");
 
-		StructuralElementInstance sei = elementDef.getStructuralElementInstance();
+		StructuralElementInstance sei = elementConf.getStructuralElementInstance();
 
 		CostExporter costExporter = new CostExporter(localDateTime);
 		costExporter.export(sei, iStream);
 		Workbook wb = costExporter.getWb();
 
-		Sheet sheet = wb.getSheet(AExcelCostO.TEMPLATE_SHEETNAME_INTERFACEENDS);
+		Sheet sheet = wb.getSheet(AExcelCostO.TEMPLATE_SHEETNAME_COSTEQUIPMENTS);
 		for (int i = 0; i < sei.getCategoryAssignments().size(); ++i) {
 			CategoryAssignment interfaceEnd = sei.getCategoryAssignments().get(i);
 			Row row = sheet.getRow(AExcelCostO.COMMON_ROW_START_TABLE + i);
-			Cell cell = row.getCell(AExcelCostO.INTERFACEEND_COLUMN_INTERFACEEND_NAME);
-			assertEquals("Interface end name exported correctly", interfaceEnd.getName(), cell.toString());
-			cell = row.getCell(AExcelCostO.INTERFACEEND_COLUMN_INTERFACEEND_FQN);
-			assertEquals("Interface end fqn exported correctly", interfaceEnd.getFullQualifiedInstanceName(), cell.toString());
-		}
-		assertNull("Line after all entries correctly empty", sheet.getRow(AExcelCostO.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size()));
-	}
-
-	@Test
-	public void testExportInterfaceEndsIntoEmptyWorkbook() throws IOException {
-		InputStream iStream = de.dlr.sc.virsat.model.extension.budget.cost.test.TestActivator.getResourceContentAsString("/resources/SampleTestWithoutPages.xlsx");
-
-		StructuralElementInstance sei = elementConf2.getStructuralElementInstance();
-
-		CostExporter costExporter = new CostExporter(localDateTime);
-		costExporter.export(sei, iStream);
-		Workbook wb = costExporter.getWb();
-
-		Sheet sheet = wb.getSheet(AExcelCostO.TEMPLATE_SHEETNAME_INTERFACEENDS);
-		for (int i = 0; i < sei.getCategoryAssignments().size(); ++i) {
-			CategoryAssignment interfaceEnd = sei.getCategoryAssignments().get(i);
-			Row row = sheet.getRow(AExcelCostO.COMMON_ROW_START_TABLE + i);
-			Cell cell = row.getCell(AExcelCostO.INTERFACEEND_COLUMN_INTERFACEEND_NAME);
-			assertEquals("Interface end name exported correctly", interfaceEnd.getName(), cell.toString());
-			cell = row.getCell(AExcelCostO.INTERFACEEND_COLUMN_INTERFACEEND_FQN);
-			assertEquals("Interface end fqn exported correctly", interfaceEnd.getFullQualifiedInstanceName(), cell.toString());
+			Cell cell = row.getCell(AExcelCostO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_NAME);
+			assertEquals("CostEquipment name exported correctly", interfaceEnd.getName(), cell.toString());
+			cell = row.getCell(AExcelCostO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_FQN);
+			assertEquals("CostEquipment fqn exported correctly", interfaceEnd.getFullQualifiedInstanceName(), cell.toString());
 		}
 		assertNull("Line after all entries correctly empty", sheet.getRow(AExcelCostO.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size()));
 	}
