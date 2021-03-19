@@ -24,6 +24,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.URI;
@@ -51,6 +53,7 @@ import de.dlr.sc.virsat.model.extension.requirements.model.RequirementLink;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfiguration;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollection;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsSpecification;
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.command.CreateSeiResourceAndFileCommand;
 
 /**
@@ -102,6 +105,8 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 	private static final String HARDWARE_REQUIREMENT_GROUP_NAME = "MissionObjectives";
 	private static final String HARDWARE_REQUIREMENT_GROUP_CHILD_TEXT = "Test Hardware Requirement";
 	private static final String HARDWARE_REQUIREMENT_GROUP_CHILD_TEXT_UPDATED = "Test Hardware Requirement Updated";
+	
+	public static final int THREAD_TEST_SLEEP_TIME = 50;
 	
 	@Before
 	public void setUp() throws CoreException {
@@ -291,7 +296,67 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 	}
 	
 	@Test
-	public void testImportRequirementLinks() {
+	public void testImportRequirementLinks() throws InterruptedException, CoreException {
+		registerEPackageReqIF();
+		URI modelURI = URI.createPlatformPluginURI(PLATFORM_REQ_IF_MODEL_WITH_LINK_PATH, true);
+		Resource modelResource = rs.getResource(modelURI, true);
+		ReqIF reqIfFileContent = (ReqIF) modelResource.getContents().get(0);
+		importerUnderTest.init(reqIfFileContent, rcc);
+		
+		// Simply map all specifications into childSei
+		Map<Specification, StructuralElementInstance> map = new HashMap<Specification, StructuralElementInstance>();
+		for (Specification spec : reqIfFileContent.getCoreContent().getSpecifications()) {
+			map.put(spec, childSei);
+		}
+
+		// Do import
+		editingDomain.getCommandStack().execute(importerUnderTest.persistSpecificationMapping(editingDomain, map, reqIfFileContent, rcc));
+		editingDomain.getCommandStack().execute(importerUnderTest.persistRequirementTypeContainer(editingDomain, null));
+		editingDomain.getCommandStack().execute(importerUnderTest.importRequirementTypes(editingDomain, reqIfFileContent));
+		editingDomain.getCommandStack().execute(importerUnderTest.importRequirements(editingDomain, reqIfFileContent));
+		editingDomain.getCommandStack().execute(importerUnderTest.importRequirementLinks(editingDomain, reqIfFileContent));
+		editingDomain.saveAll();
+		editingDomain.reloadAll();
+		ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
+		
+		RequirementsSpecification systemSpec = null;
+		for (CategoryAssignment cA : childSei.getCategoryAssignments()) {
+			if (cA.getName().equals(SYSTEM_SPEC_NAME)) {
+				systemSpec = new RequirementsSpecification(cA);
+			} 
+		}
+		
+		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
+		
+		// Check that target requirement was imported properly
+		Requirement firstRequirement = (Requirement) systemSpec.getRequirements().stream()
+				.filter((child) -> child instanceof Requirement)
+				.collect(Collectors.toList())
+				.get(0);
+		assertEquals("Should be Requirement Prefix + its ID", Requirement.REQUIREMENT_NAME_PREFIX + SYSTEM_REQUIREMENT_ID, firstRequirement.getName());
+		assertEquals(SYSTEM_REQUIREMENT_TEXT, getRequirementValue(firstRequirement, TEXT_ATTRIBUTE_NAME));
+		assertEquals(SYSTEM_REQUIREMENT_ID, getRequirementValue(firstRequirement, ID_ATTRIBUTE_NAME));
+		assertEquals(SYSTEM_REQUIREMENT_PRIORITY, getRequirementValue(firstRequirement, PRIORITY_ATTRIBUTE_NAME));
+		
+		RequirementGroup firstGroup = (RequirementGroup) systemSpec.getRequirements().stream()
+				.filter((child) -> child instanceof RequirementGroup)
+				.collect(Collectors.toList())
+				.get(0);
+		final Requirement EXPECTED_SOURCE = (Requirement) firstGroup.getChildren().get(0); 
+		final Requirement EXPECTED_TARGET = (Requirement) systemSpec.getRequirements().get(0);
+		
+		assertEquals("There should be a link now", 1, systemSpec.getLinks().size());
+		RequirementLink importedLink = systemSpec.getLinks().get(0);
+		assertEquals("Name is set", SYSTEM_REQUIREMENT_LINK_NAME, importedLink.getName());
+		
+		assertEquals(EXPECTED_SOURCE, importedLink.getSubject());
+		assertEquals(EXPECTED_TARGET, importedLink.getTargets().get(0));
+		
+		assertEquals("ReqIF relations only support one target", 1, importedLink.getTargets().size());
+	}
+	
+	@Test
+	public void testReImportRequirementLinks() throws InterruptedException, CoreException {
 		registerEPackageReqIF();
 		URI modelURI = URI.createPlatformPluginURI(PLATFORM_REQ_IF_MODEL_WITH_LINK_PATH, true);
 		Resource modelResource = rs.getResource(modelURI, true);
@@ -311,6 +376,12 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 		editingDomain.getCommandStack().execute(importerUnderTest.importRequirements(editingDomain, reqIfFileContent));
 		editingDomain.getCommandStack().execute(importerUnderTest.importRequirementLinks(editingDomain, reqIfFileContent));
 		
+		// Re import links
+		editingDomain.getCommandStack().execute(importerUnderTest.importRequirementLinks(editingDomain, reqIfFileContent));
+		editingDomain.saveAll();
+		editingDomain.reloadAll();
+		ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
+		
 		RequirementsSpecification systemSpec = null;
 		for (CategoryAssignment cA : childSei.getCategoryAssignments()) {
 			if (cA.getName().equals(SYSTEM_SPEC_NAME)) {
@@ -318,9 +389,17 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 			} 
 		}
 		
-		assertEquals("There should be a link now", 1, systemSpec.getLinks().size());
-		RequirementLink importedLink = systemSpec.getLinks().get(0);
-		assertEquals("Name is set", SYSTEM_REQUIREMENT_LINK_NAME, importedLink.getName());
+		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
+		
+		// Check that target requirement was imported properly
+		Requirement firstRequirement = (Requirement) systemSpec.getRequirements().stream()
+				.filter((child) -> child instanceof Requirement)
+				.collect(Collectors.toList())
+				.get(0);
+		assertEquals("Should be Requirement Prefix + its ID", Requirement.REQUIREMENT_NAME_PREFIX + SYSTEM_REQUIREMENT_ID, firstRequirement.getName());
+		assertEquals(SYSTEM_REQUIREMENT_TEXT, getRequirementValue(firstRequirement, TEXT_ATTRIBUTE_NAME));
+		assertEquals(SYSTEM_REQUIREMENT_ID, getRequirementValue(firstRequirement, ID_ATTRIBUTE_NAME));
+		assertEquals(SYSTEM_REQUIREMENT_PRIORITY, getRequirementValue(firstRequirement, PRIORITY_ATTRIBUTE_NAME));
 		
 		RequirementGroup firstGroup = (RequirementGroup) systemSpec.getRequirements().stream()
 				.filter((child) -> child instanceof RequirementGroup)
@@ -328,11 +407,13 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 				.get(0);
 		final Requirement EXPECTED_SOURCE = (Requirement) firstGroup.getChildren().get(0); 
 		final Requirement EXPECTED_TARGET = (Requirement) systemSpec.getRequirements().get(0);
+				
+		assertEquals("There should still be onle one link now", 1, systemSpec.getLinks().size());
+		RequirementLink importedLink = systemSpec.getLinks().get(0);
+		assertEquals("Re-import should not add target again", 1, importedLink.getTargets().size());
 		
 		assertEquals(EXPECTED_SOURCE, importedLink.getSubject());
 		assertEquals(EXPECTED_TARGET, importedLink.getTargets().get(0));
-		
-		assertEquals("ReqIF relations only support one target", 1, importedLink.getTargets().size());
 	}
 	
 	/**
