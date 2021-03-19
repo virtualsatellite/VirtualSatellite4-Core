@@ -47,6 +47,7 @@ import de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue;
 import de.dlr.sc.virsat.model.extension.requirements.model.ImportConfiguration;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementGroup;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementLink;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfiguration;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollection;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsSpecification;
@@ -62,6 +63,7 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 	private static final String REQ_IF_RESOURCE_PATH = "test/" + REQ_IF_RESOURCE_NAME + ".reqif";
 	private static final String PLATFORM_REQ_IF_MODEL_PATH = "/de.dlr.sc.virsat.model.extension.requirements.test/resources/ReqIF/TestRequirements.reqif";
 	private static final String PLATFORM_REQ_IF_MODEL_PATH_REIMPORT = "/de.dlr.sc.virsat.model.extension.requirements.test/resources/ReqIF/TestRequirements_reimport.reqif";
+	private static final String PLATFORM_REQ_IF_MODEL_WITH_LINK_PATH = "/de.dlr.sc.virsat.model.extension.requirements.test/resources/ReqIF/TestRequirements_link.reqif";
 	
 	private static final String TREE_NAME = "ConfigurationTree";
 	private static final String TREE_CHILD_NAME = "ElementConfiguration";
@@ -95,6 +97,7 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 	
 	private static final String SYSTEM_REQUIREMENT_GROUP_NAME = "MissionRequirements";
 	private static final String SYSTEM_REQUIREMENT_GROUP_CHILD_TEXT = "Test Child Requirement";
+	private static final String SYSTEM_REQUIREMENT_LINK_NAME = "Req99097SatisfactionReq99095";
 	
 	private static final String HARDWARE_REQUIREMENT_GROUP_NAME = "MissionObjectives";
 	private static final String HARDWARE_REQUIREMENT_GROUP_CHILD_TEXT = "Test Hardware Requirement";
@@ -194,7 +197,6 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 		URI modelURI = URI.createPlatformPluginURI(PLATFORM_REQ_IF_MODEL_PATH, true);
 		Resource modelResource = rs.getResource(modelURI, true);
 		ReqIF reqIfFileContent = (ReqIF) modelResource.getContents().get(0);
-		System.out.println(reqIfFileContent);
 		importerUnderTest.init(reqIfFileContent, rcc);
 		
 		// Simply map all specifications into childSei
@@ -253,7 +255,6 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 		URI modelURI = URI.createPlatformPluginURI(PLATFORM_REQ_IF_MODEL_PATH, true);
 		Resource modelResource = rs.getResource(modelURI, true);
 		ReqIF reqIfFileContent = (ReqIF) modelResource.getContents().get(0);
-		System.out.println(reqIfFileContent);
 		importerUnderTest.init(reqIfFileContent, rcc);
 		
 		// Simply map all specifications into childSei
@@ -287,6 +288,51 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 		editingDomain.getCommandStack().execute(importerUnderTest.importRequirements(editingDomain, reqIfFileContent));
 
 		assertEquals(HARDWARE_REQUIREMENT_GROUP_CHILD_TEXT_UPDATED, getRequirementValue(firstHardwareRequirement, TEXT_ATTRIBUTE_NAME));
+	}
+	
+	@Test
+	public void testImportRequirementLinks() {
+		registerEPackageReqIF();
+		URI modelURI = URI.createPlatformPluginURI(PLATFORM_REQ_IF_MODEL_WITH_LINK_PATH, true);
+		Resource modelResource = rs.getResource(modelURI, true);
+		ReqIF reqIfFileContent = (ReqIF) modelResource.getContents().get(0);
+		importerUnderTest.init(reqIfFileContent, rcc);
+		
+		// Simply map all specifications into childSei
+		Map<Specification, StructuralElementInstance> map = new HashMap<Specification, StructuralElementInstance>();
+		for (Specification spec : reqIfFileContent.getCoreContent().getSpecifications()) {
+			map.put(spec, childSei);
+		}
+
+		// Do import
+		editingDomain.getCommandStack().execute(importerUnderTest.persistSpecificationMapping(editingDomain, map, reqIfFileContent, rcc));
+		editingDomain.getCommandStack().execute(importerUnderTest.persistRequirementTypeContainer(editingDomain, null));
+		editingDomain.getCommandStack().execute(importerUnderTest.importRequirementTypes(editingDomain, reqIfFileContent));
+		editingDomain.getCommandStack().execute(importerUnderTest.importRequirements(editingDomain, reqIfFileContent));
+		editingDomain.getCommandStack().execute(importerUnderTest.importRequirementLinks(editingDomain, reqIfFileContent));
+		
+		RequirementsSpecification systemSpec = null;
+		for (CategoryAssignment cA : childSei.getCategoryAssignments()) {
+			if (cA.getName().equals(SYSTEM_SPEC_NAME)) {
+				systemSpec = new RequirementsSpecification(cA);
+			} 
+		}
+		
+		assertEquals("There should be a link now", 1, systemSpec.getLinks().size());
+		RequirementLink importedLink = systemSpec.getLinks().get(0);
+		assertEquals("Name is set", SYSTEM_REQUIREMENT_LINK_NAME, importedLink.getName());
+		
+		RequirementGroup firstGroup = (RequirementGroup) systemSpec.getRequirements().stream()
+				.filter((child) -> child instanceof RequirementGroup)
+				.collect(Collectors.toList())
+				.get(0);
+		final Requirement EXPECTED_SOURCE = (Requirement) firstGroup.getChildren().get(0); 
+		final Requirement EXPECTED_TARGET = (Requirement) systemSpec.getRequirements().get(0);
+		
+		assertEquals(EXPECTED_SOURCE, importedLink.getSubject());
+		assertEquals(EXPECTED_TARGET, importedLink.getTargets().get(0));
+		
+		assertEquals("ReqIF relations only support one target", 1, importedLink.getTargets().size());
 	}
 	
 	/**
