@@ -18,8 +18,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.dialogs.DialogSettings;
@@ -49,6 +49,8 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 public class ReqIfImportWizard extends Wizard implements IWorkbenchWizard {
 
 	public static final String ID = "de.dlr.sc.virsat.model.extension.requirements.ui.wizard.reqIFImport";
+	private static final int NUMBER_PROGRESS_TICKS_IMPORT = 5;
+	private static final int NUMBER_PROGRESS_TICKS_REIMPORT = 3;
 
 	private ReqIfFileConfigurationSelectionPage importPage;
 	private ReqIfMappingPage mappingPage;
@@ -133,23 +135,27 @@ public class ReqIfImportWizard extends Wizard implements IWorkbenchWizard {
 	 * @param monitor the progress monitor
 	 */
 	public void doImport(EditingDomain editingDomain, ReqIF reqIfContent, Map<Specification, StructuralElementInstance> specMapping, RequirementsConfigurationCollection configurationContainer, RequirementsConfiguration typeContainer, IProgressMonitor monitor) {
-
+		SubMonitor importSubMonitor = SubMonitor.convert(monitor, NUMBER_PROGRESS_TICKS_IMPORT);
+		
 		importer.init(reqIfContent, configurationContainer);
 		
 		// Preparation
-		CompoundCommand preparationCommand = new CompoundCommand();
-		preparationCommand.append(importer.persistSpecificationMapping(editingDomain, specMapping, reqIfContent, configurationContainer));
-		preparationCommand.append(importer.persistRequirementTypeContainer(editingDomain, typeContainer));
-		editingDomain.getCommandStack().execute(preparationCommand);
+		editingDomain.getCommandStack().execute(importer.persistSpecificationMapping(editingDomain, specMapping, reqIfContent, configurationContainer));
+		importSubMonitor.worked(1);
+		editingDomain.getCommandStack().execute(importer.persistRequirementTypeContainer(editingDomain, typeContainer));
+		importSubMonitor.worked(1);
 		
 		// Created required types
 		editingDomain.getCommandStack().execute(importer.importRequirementTypes(editingDomain, reqIfContent));
+		importSubMonitor.worked(1);
 		
 		// Do the actual imports
 		editingDomain.getCommandStack().execute(importer.importRequirements(editingDomain, reqIfContent));
+		importSubMonitor.worked(1);
 		
 		//Import the requirement links
 		editingDomain.getCommandStack().execute(importer.importRequirementLinks(editingDomain, reqIfContent));
+		importSubMonitor.worked(1);
 	}
 	
 	/**
@@ -161,17 +167,21 @@ public class ReqIfImportWizard extends Wizard implements IWorkbenchWizard {
 	 * @param monitor the progress monitor
 	 */
 	public void doReimport(EditingDomain editingDomain, ReqIF reqIfContent, ImportConfiguration importConfiguration, IProgressMonitor monitor) {
+		SubMonitor importSubMonitor = SubMonitor.convert(monitor, NUMBER_PROGRESS_TICKS_REIMPORT);
 		
 		importer.init(reqIfContent, importConfiguration);
 		
 		// Created required types
 		editingDomain.getCommandStack().execute(importer.importRequirementTypes(editingDomain, reqIfContent));
+		importSubMonitor.worked(1);
 				
 		// Do the actual imports
 		editingDomain.getCommandStack().execute(importer.importRequirements(editingDomain, reqIfContent));
+		importSubMonitor.worked(1);
 		
 		//Import the requirement links
 		editingDomain.getCommandStack().execute(importer.importRequirementLinks(editingDomain, reqIfContent));
+		importSubMonitor.worked(1);
 	}
 
 	@Override
