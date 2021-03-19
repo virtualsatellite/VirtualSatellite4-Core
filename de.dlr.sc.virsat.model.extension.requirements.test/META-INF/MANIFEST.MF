@@ -23,3 +23,7 @@ Require-Bundle: org.junit,
  org.eclipse.sphinx.emf.serialization
 Export-Package: de.dlr.sc.virsat.model.extension.requirements.test
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.requirements.test
+Import-Package: de.dlr.sc.virsat.build.test,
+ org.eclipse.rmf.reqif10,
+ org.eclipse.rmf.reqif10.common.util,
+ org.eclipse.rmf.reqif10.impl
