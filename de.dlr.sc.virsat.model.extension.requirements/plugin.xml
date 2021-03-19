@@ -54,6 +54,10 @@
 			caBean="de.dlr.sc.virsat.model.extension.requirements.model.RequirementType">
 		</CategoryAssignmentBean>
 		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.requirements.RequirementLinkType"
+			caBean="de.dlr.sc.virsat.model.extension.requirements.model.RequirementLinkType">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
 			id="de.dlr.sc.virsat.model.extension.requirements.RequirementAttribute"
 			caBean="de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttribute">
 		</CategoryAssignmentBean>
@@ -135,13 +139,22 @@
 </extension>
 	<!-- Plugin.XML Protected Region End -->
 	<!-- Plugin.XML Protected Region Start -->
+<extension-point id="de.dlr.sc.virsat.model.extension.requirements.verification" name="CustomVerification" schema="schema/de.dlr.sc.virsat.model.extension.requirements.verification.exsd"/>
 <extension
          id="de.dlr.sc.virsat.model.extension.requirements.build.verification"
-         name="VirSat Requirements Veriification Builder"
+         name="VirSat Requirements Verification Builder"
          point="org.eclipse.core.resources.builders">
       <builder hasNature="true">
          <run class="de.dlr.sc.virsat.model.extension.requirements.verification.build.RequirementsVerificationBuilder" />
       </builder>
    </extension>
+<extension
+      name="Existence Verification"
+      point="de.dlr.sc.virsat.model.extension.requirements.verification">
+   <verification
+         model_element="de.dlr.sc.virsat.model.extension.requirements.model.ExistenceVerification"
+         verification_impl="de.dlr.sc.virsat.model.extension.requirements.verification.impl.ExistenceVerificationImpl">
+   </verification>
+</extension>
 	<!-- Plugin.XML Protected Region End -->
 </plugin>

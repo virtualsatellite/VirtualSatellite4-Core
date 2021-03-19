@@ -91,17 +91,13 @@ public class RequirementsAttributeLabelProvider extends VirSatTransactionalAdapt
 
 				APropertyInstance propertyInstance = ca.getPropertyInstances().get(REQUIREMENT_STATUS_PROPERTY_NUMBER);
 				redirectNotification(propertyInstance, object);
-				ATypeInstance ti = valueSwitch.doSwitch(propertyInstance);
-				redirectNotification(ti, object);
-
+				
 				return valueSwitch.getValueString(propertyInstance);
 
 			} else if (columnIndex == VERIFICATION_COLUMN) {
 
 				APropertyInstance propertyInstance = ca.getPropertyInstances().get(REQUIREMENT_VERIFICIATION_PROPERTY_NUMBER);
 				redirectNotification(propertyInstance, object);
-				ATypeInstance ti = valueSwitch.doSwitch(propertyInstance);
-				redirectNotification(ti, object);
 				
 				return getVerificationLabel(new Requirement(ca));
 				
@@ -110,8 +106,6 @@ public class RequirementsAttributeLabelProvider extends VirSatTransactionalAdapt
 
 				APropertyInstance propertyInstance = ca.getPropertyInstances().get(REQUIREMENT_TRACE_PROPERTY_NUMBER);
 				redirectNotification(propertyInstance, object);
-				ATypeInstance ti = valueSwitch.doSwitch(propertyInstance);
-				redirectNotification(ti, object);
 				
 				return getTracingLabel(new Requirement(ca));
 				
@@ -128,6 +122,16 @@ public class RequirementsAttributeLabelProvider extends VirSatTransactionalAdapt
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * Redirect the notification to property instance and its type instance
+	 * @param propertyInstance the property instance
+	 * @param object the object for which we want to have the label
+	 */
+	protected void redirectNotification(APropertyInstance propertyInstance, Object object) {
+		ATypeInstance ti = valueSwitch.doSwitch(propertyInstance);
+		redirectNotification(ti, object);
 	}
 
 	/**

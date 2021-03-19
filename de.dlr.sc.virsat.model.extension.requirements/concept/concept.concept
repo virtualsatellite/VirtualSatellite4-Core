@@ -26,6 +26,7 @@ Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"
 		Applicable For [ RequirementsConfigurationCollection];
 		StringProperty fileName;
 		Type typeDefinitions [] of Category RequirementType;
+		Type linkTypeDefinitions [] of Category RequirementLinkType;
 	}
 	
 	Category VerificationConfiguration {
@@ -47,10 +48,11 @@ Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"
 		EnumProperty status values [Open = 0, FullyCompliant = 1, PartialCompliant = 2, NonCompliant = 3, NotApplicable = 4];
 		Type verification[] of Category IVerification;
 		Type trace of Category RequirementTrace;
+		StringProperty descriptionText;
 	}
 	
 	Category RequirementLink {
-		EnumProperty type values [DependsOn = 1, Parent = 2];
+		Reference type of Type RequirementLinkType;
 		Reference subject of Type Requirement;
 		Reference targets[] of Type Requirement;
 	}
@@ -67,6 +69,10 @@ Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"
 	
 	Category RequirementType description "Definition of a requirement type" {
 		Type attributes[] of Category RequirementAttribute;
+	}
+	
+	Category RequirementLinkType description "Definition of a requirement link type" {
+		StringProperty linkDescription;
 	}
 	
 	Category RequirementAttribute description "Attribute definition for requirements" {

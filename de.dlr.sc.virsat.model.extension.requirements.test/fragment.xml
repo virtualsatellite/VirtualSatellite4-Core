@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<fragment>
+<extension
+      name="Existence Verification"
+      point="de.dlr.sc.virsat.model.extension.requirements.verification">
+   <verification
+         model_element="de.dlr.sc.virsat.model.extension.requirements.verification.build.steps.ModelVerificationImpl"
+         verification_impl="de.dlr.sc.virsat.model.extension.requirements.verification.build.steps.DummyCustomVerification">
+   </verification>
+</extension>
+</fragment>
