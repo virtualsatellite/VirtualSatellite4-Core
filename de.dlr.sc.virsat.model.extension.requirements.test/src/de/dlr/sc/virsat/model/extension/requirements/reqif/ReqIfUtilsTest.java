@@ -116,6 +116,7 @@ public class ReqIfUtilsTest extends AConceptProjectTestCase {
 	@Before
 	public void setUp() throws CoreException {
 		super.setUp();
+		addEditingDomainAndRepository();
 		reqConcept = loadConceptFromPlugin(Activator.getPluginId());
 		List<INativeRequirementAttributeMapping> mappings = new ArrayList<INativeRequirementAttributeMapping>();
 		mappings.add(new TestMapping());
@@ -164,7 +165,25 @@ public class ReqIfUtilsTest extends AConceptProjectTestCase {
 		assertNull("Native attribute field should not have been set yet", nativeAttributeValue);
 		reqIfUtils.setNativeRequirementAttributeValue(null, attValue, nativeAttDef);
 		assertEquals("Attribute value should have been loaded into native value field", nativeAttributeValue, attValue);
+			
 		
+		AttributeDefinitionString nonNativeAttDef = createDefaultAttibuteDefinition();
+		AttributeValueString attValueOther = createAttributeValue(nonNativeAttDef);
+		
+		reqIfUtils.setNativeRequirementAttributeValue(null, attValueOther, nonNativeAttDef);
+		assertNotEquals("New attribute value should have not have been loaded into native value field", nativeAttributeValue, attValueOther);
+		assertEquals("Should have been keept the old value", nativeAttributeValue, attValue);
+
+	}
+	
+	@Test
+	public void testSetNativeRequirementAttributeValueWithCommand() {
+		AttributeDefinitionString nativeAttDef = createNativeAttibuteDefinition();
+		AttributeValueString attValue = createAttributeValue(nativeAttDef);
+		
+		assertNull("Native attribute field should not have been set yet", nativeAttributeValue);
+		editingDomain.getCommandStack().execute(reqIfUtils.setNativeRequirementAttributeValue(editingDomain, null, attValue, nativeAttDef));
+		assertEquals("Attribute value should have been loaded into native value field", nativeAttributeValue, attValue);
 		
 		
 		AttributeDefinitionString nonNativeAttDef = createDefaultAttibuteDefinition();
