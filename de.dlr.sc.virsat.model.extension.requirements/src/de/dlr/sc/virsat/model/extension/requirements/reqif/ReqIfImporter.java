@@ -395,11 +395,12 @@ public class ReqIfImporter {
 			Requirement localSourceRequirement = null;
 			Requirement localTargetRequirement = null;
 			for (SpecificationMapping mappedSpec : importConfiguration.getMappedSpecifications()) {
-				Requirement localSourceRequirementTmp = reqHelper.findRequirement(mappedSpec.getSpecification().getRequirements(), sourceReqName, true);
-				Requirement localTargetRequirementTmp = reqHelper.findRequirement(mappedSpec.getSpecification().getRequirements(), targetReqName, true);
+				RequirementsSpecification spec = mappedSpec.getSpecification();
+				Requirement localSourceRequirementTmp = reqHelper.findRequirement(spec.getRequirements(), sourceReqName, true);
+				Requirement localTargetRequirementTmp = reqHelper.findRequirement(spec.getRequirements(), targetReqName, true);
 				if (localSourceRequirementTmp != null) {
 					localSourceRequirement = localSourceRequirementTmp;
-					containerSpec = mappedSpec.getSpecification();
+					containerSpec = spec;
 				}
 				if (localTargetRequirementTmp != null) {
 					localTargetRequirement = localTargetRequirementTmp;

@@ -49,7 +49,10 @@ public class RequirementHelper {
 				return (Requirement) reqObject;
 			}
 			if (deepSearch && reqObject instanceof RequirementGroup) {
-				return findRequirement(((RequirementGroup) reqObject).getChildren(), name, deepSearch);
+				Requirement req = findRequirement(((RequirementGroup) reqObject).getChildren(), name, deepSearch);
+				if (req != null) {
+					return req;
+				}
 			}
 		}
 		return null;
