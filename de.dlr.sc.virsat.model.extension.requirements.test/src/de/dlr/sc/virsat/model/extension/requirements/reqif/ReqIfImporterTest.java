@@ -255,6 +255,75 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 	}
 	
 	@Test
+	public void testReCreateRequirementElements() {
+		registerEPackageReqIF();
+		URI modelURI = URI.createPlatformPluginURI(PLATFORM_REQ_IF_MODEL_PATH, true);
+		Resource modelResource = rs.getResource(modelURI, true);
+		ReqIF reqIfFileContent = (ReqIF) modelResource.getContents().get(0);
+		importerUnderTest.init(reqIfFileContent, rcc);
+		
+		// Simply map all specifications into childSei
+		Map<Specification, StructuralElementInstance> map = new HashMap<Specification, StructuralElementInstance>();
+		for (Specification spec : reqIfFileContent.getCoreContent().getSpecifications()) {
+			map.put(spec, childSei);
+		}
+
+		// Prepare import
+		editingDomain.getCommandStack().execute(importerUnderTest.persistSpecificationMapping(editingDomain, map, reqIfFileContent, rcc));
+		editingDomain.getCommandStack().execute(importerUnderTest.persistRequirementTypeContainer(editingDomain, null));
+		editingDomain.getCommandStack().execute(importerUnderTest.importRequirementTypes(editingDomain, reqIfFileContent));
+		
+		// Do the actual import
+		Command importCommand = importerUnderTest.importRequirements(editingDomain, reqIfFileContent);
+		editingDomain.getCommandStack().execute(importCommand);
+		
+		RequirementsSpecification systemSpec = null;
+		RequirementsSpecification hardwareSpec = null;
+		for (CategoryAssignment cA : childSei.getCategoryAssignments()) {
+			if (cA.getName().equals(SYSTEM_SPEC_NAME)) {
+				systemSpec = new RequirementsSpecification(cA);
+			} else if (cA.getName().equals(HARDWARE_SPEC_NAME)) {
+				hardwareSpec = new RequirementsSpecification(cA);
+			}
+		}
+
+		Requirement firstRequirement = (Requirement) systemSpec.getRequirements().stream()
+				.filter((child) -> child instanceof Requirement)
+				.collect(Collectors.toList())
+				.get(0);
+		
+		// Now remove some arbitrary elements
+		AttributeValue firstAttValue = firstRequirement.getElements().get(0);
+		editingDomain.getCommandStack().execute(firstRequirement.getElements().remove(editingDomain, firstAttValue));
+		
+		RequirementGroup firstGroup = (RequirementGroup) systemSpec.getRequirements().stream()
+				.filter((child) -> child instanceof RequirementGroup)
+				.collect(Collectors.toList())
+				.get(0);
+		
+		// Also remove a groupd
+		editingDomain.getCommandStack().execute(systemSpec.getRequirements().remove(editingDomain, firstGroup));
+		
+		// Do the re-import
+		editingDomain.getCommandStack().execute(importerUnderTest.importRequirements(editingDomain, reqIfFileContent));
+		
+		firstGroup = (RequirementGroup) systemSpec.getRequirements().stream()
+				.filter((child) -> child instanceof RequirementGroup)
+				.collect(Collectors.toList())
+				.get(0);
+		
+		assertEquals(SYSTEM_REQUIREMENT_GROUP_NAME, firstGroup.getName());
+		
+		Requirement firstChildRequirement = (Requirement) firstGroup.getChildren().get(0);
+		assertEquals(SYSTEM_REQUIREMENT_GROUP_CHILD_TEXT, getRequirementValue(firstChildRequirement, TEXT_ATTRIBUTE_NAME));
+		
+		RequirementGroup hardwareMissionObjectives = (RequirementGroup) hardwareSpec.getRequirements().get(0);
+		assertEquals(HARDWARE_REQUIREMENT_GROUP_NAME, hardwareMissionObjectives.getName());
+		Requirement firstHardwareRequirement = (Requirement) hardwareMissionObjectives.getChildren().get(0);
+		assertEquals(HARDWARE_REQUIREMENT_GROUP_CHILD_TEXT, getRequirementValue(firstHardwareRequirement, TEXT_ATTRIBUTE_NAME));
+	}
+	
+	@Test
 	public void testReImportRequirements() {
 		registerEPackageReqIF();
 		URI modelURI = URI.createPlatformPluginURI(PLATFORM_REQ_IF_MODEL_PATH, true);
