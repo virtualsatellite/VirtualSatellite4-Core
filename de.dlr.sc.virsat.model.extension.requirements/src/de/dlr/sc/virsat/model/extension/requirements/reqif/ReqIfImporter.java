@@ -395,10 +395,14 @@ public class ReqIfImporter {
 			Requirement localSourceRequirement = null;
 			Requirement localTargetRequirement = null;
 			for (SpecificationMapping mappedSpec : importConfiguration.getMappedSpecifications()) {
-				localSourceRequirement = reqHelper.findRequirement(mappedSpec.getSpecification().getRequirements(), sourceReqName, true);
-				localTargetRequirement = reqHelper.findRequirement(mappedSpec.getSpecification().getRequirements(), targetReqName, true);
-				if (localSourceRequirement != null) {
+				Requirement localSourceRequirementTmp = reqHelper.findRequirement(mappedSpec.getSpecification().getRequirements(), sourceReqName, true);
+				Requirement localTargetRequirementTmp = reqHelper.findRequirement(mappedSpec.getSpecification().getRequirements(), targetReqName, true);
+				if (localSourceRequirementTmp != null) {
+					localSourceRequirement = localSourceRequirementTmp;
 					containerSpec = mappedSpec.getSpecification();
+				}
+				if (localTargetRequirementTmp != null) {
+					localTargetRequirement = localTargetRequirementTmp;
 				}
 			}
 			// Check if relation is relevant for imported specifications, if not ignore it
@@ -415,7 +419,7 @@ public class ReqIfImporter {
 						command.append(localLink.getTargets().add(editingDomain, localTargetRequirement));
 					}
 				}
-			} 
+			}
 		}
 	}
 	

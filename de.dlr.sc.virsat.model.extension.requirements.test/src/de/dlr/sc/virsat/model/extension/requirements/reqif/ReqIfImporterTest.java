@@ -292,7 +292,6 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 				.collect(Collectors.toList())
 				.get(0);
 		
-		// Now remove some arbitrary elements
 		AttributeValue firstAttValue = firstRequirement.getElements().get(0);
 		editingDomain.getCommandStack().execute(firstRequirement.getElements().remove(editingDomain, firstAttValue));
 		
@@ -301,12 +300,13 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 				.collect(Collectors.toList())
 				.get(0);
 		
-		// Also remove a groupd
+		// Remove a group to check if it is re-imported
 		editingDomain.getCommandStack().execute(systemSpec.getRequirements().remove(editingDomain, firstGroup));
 		
 		// Do the re-import
 		editingDomain.getCommandStack().execute(importerUnderTest.importRequirements(editingDomain, reqIfFileContent));
 		
+		// Group should be there again
 		firstGroup = (RequirementGroup) systemSpec.getRequirements().stream()
 				.filter((child) -> child instanceof RequirementGroup)
 				.collect(Collectors.toList())
@@ -447,9 +447,6 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 		
 		// Re import links
 		editingDomain.getCommandStack().execute(importerUnderTest.importRequirementLinks(editingDomain, reqIfFileContent));
-		editingDomain.saveAll();
-		editingDomain.reloadAll();
-		ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
 		
 		RequirementsSpecification systemSpec = null;
 		for (CategoryAssignment cA : childSei.getCategoryAssignments()) {
@@ -457,9 +454,7 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 				systemSpec = new RequirementsSpecification(cA);
 			} 
 		}
-		
-		VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
-		
+
 		// Check that target requirement was imported properly
 		Requirement firstRequirement = (Requirement) systemSpec.getRequirements().stream()
 				.filter((child) -> child instanceof Requirement)
@@ -477,7 +472,7 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 		final Requirement EXPECTED_SOURCE = (Requirement) firstGroup.getChildren().get(0); 
 		final Requirement EXPECTED_TARGET = (Requirement) systemSpec.getRequirements().get(0);
 				
-		assertEquals("There should still be onle one link now", 1, systemSpec.getLinks().size());
+		assertEquals("There should still be only one link now", 1, systemSpec.getLinks().size());
 		RequirementLink importedLink = systemSpec.getLinks().get(0);
 		assertEquals("Re-import should not add target again", 1, importedLink.getTargets().size());
 		
