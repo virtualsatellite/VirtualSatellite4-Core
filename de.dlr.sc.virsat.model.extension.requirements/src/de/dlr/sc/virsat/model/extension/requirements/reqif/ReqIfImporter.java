@@ -60,6 +60,7 @@ import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttribute;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementGroup;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementLink;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementLinkType;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementObject;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfiguration;
@@ -391,6 +392,7 @@ public class ReqIfImporter {
 			String linkName = Requirement.REQUIREMENT_NAME_PREFIX + reqIfUtils.getReqIFRequirementIdentifier(relation.getSource()) 
 					+ relation.getType().getLongName() 
 					+ Requirement.REQUIREMENT_NAME_PREFIX + reqIfUtils.getReqIFRequirementIdentifier(relation.getTarget());
+			String linkTypeName = relation.getType().getLongName();
 			RequirementsSpecification containerSpec = null;
 			Requirement localSourceRequirement = null;
 			Requirement localTargetRequirement = null;
@@ -409,14 +411,24 @@ public class ReqIfImporter {
 			// Check if relation is relevant for imported specifications, if not ignore it
 			if (containerSpec != null && localSourceRequirement != null && localTargetRequirement != null) {
 				RequirementLink localLink = (RequirementLink) reqIfUtils.findExisting(containerSpec.getLinks(), linkName);
+				RequirementsConfiguration typeContainer = importConfiguration.getTypeDefinitionsContainer();
+				RequirementLinkType localLinkType = (RequirementLinkType) reqIfUtils.findExisting(typeContainer.getLinkTypeDefinitions(), linkTypeName);
+				if (localLinkType == null) {
+					localLinkType = new RequirementLinkType(concept);
+					localLinkType.setName(linkTypeName);
+					localLinkType.setLinkDescription(relation.getType().getDesc());
+					command.append(typeContainer.getLinkTypeDefinitions().add(editingDomain, localLinkType));
+				}
 				if (localLink == null) {
 					localLink = new RequirementLink(concept);
 					localLink.setName(linkName);
 					localLink.setSubject(localSourceRequirement);
 					localLink.getTargets().add(localTargetRequirement);
+					localLink.setType(localLinkType);
 					command.append(containerSpec.getLinks().add(editingDomain, localLink));
 				} else {
 					if (!localLink.getTargets().contains(localTargetRequirement)) {
+						command.append(localLink.setType(editingDomain, localLinkType));
 						command.append(localLink.getTargets().add(editingDomain, localTargetRequirement));
 					}
 				}
