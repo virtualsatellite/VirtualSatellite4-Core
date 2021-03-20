@@ -48,9 +48,12 @@ public class CostExporter implements IExport {
 
 	private static final String DEFAULT_TEMPLATE_PATH = "/resources/ExcelExportDefaultTemplate.xlsx";
 
-	private static final String[] EXPORTABLE_SEIS = { ElementDefinition.class.getSimpleName(),
-			ElementConfiguration.class.getSimpleName(), CostTypesCollection.class.getSimpleName(),
-			ElementRealization.class.getSimpleName(), ElementOccurence.class.getSimpleName() };
+	private static final String[] EXPORTABLE_SEIS = { 
+			ElementDefinition.class.getSimpleName(),
+			ElementConfiguration.class.getSimpleName(), 
+			CostTypesCollection.class.getSimpleName(),
+			ElementRealization.class.getSimpleName(), 
+			ElementOccurence.class.getSimpleName() };
 
 	protected LocalDateTime localDateTime;
 	private ExcelExportHelper helper;
@@ -121,7 +124,9 @@ public class CostExporter implements IExport {
 			createDataSheetCostTypes(exportSei);
 			
 		} else if (exportSeiTypeName.equals(ElementConfiguration.class.getSimpleName())
-				|| exportSeiTypeName.equals(ElementDefinition.class.getSimpleName())) {
+				|| exportSeiTypeName.equals(ElementDefinition.class.getSimpleName())
+				|| exportSeiTypeName.equals(ElementOccurence.class.getSimpleName())
+				|| exportSeiTypeName.equals(ElementRealization.class.getSimpleName())) {
 			removeSheets(AExcelCostIO.TEMPLATE_SHEETNAME_COSTTYPES);
 			createDataSheetCostEquipments(exportSei);
 
