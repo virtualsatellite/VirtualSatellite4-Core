@@ -122,8 +122,9 @@ public class CostExporter implements IExport {
 			
 		} else if (exportSeiTypeName.equals(ElementConfiguration.class.getSimpleName())
 				|| exportSeiTypeName.equals(ElementDefinition.class.getSimpleName())) {
+			removeSheets(AExcelCostIO.TEMPLATE_SHEETNAME_COSTTYPES);
 			createDataSheetCostEquipments(exportSei);
-			createDataSheetCostTypes(exportSei);
+
 		}
 	}
 
