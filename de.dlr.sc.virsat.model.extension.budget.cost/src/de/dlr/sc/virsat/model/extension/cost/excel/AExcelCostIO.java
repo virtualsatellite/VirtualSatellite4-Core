@@ -11,16 +11,21 @@ package de.dlr.sc.virsat.model.extension.cost.excel;
 
 import de.dlr.sc.virsat.excel.AExcelIo;
 
-public abstract class AExcelCostO extends AExcelIo {
+public abstract class AExcelCostIO extends AExcelIo {
 
 
 	public static final int COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_NAME = 2;
 	public static final int COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_TYPE = 3;
-	public static final int COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_FQN = 4;
+	public static final int COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_COST = 4;
+	public static final int COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_COSTWITHMARGIN = 5;
+	public static final int COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_COSTMARGIN = 6;
+	public static final int COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_MARGIN = 7;
+	public static final int COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_FQN = 8;
 	
 
 	public static final int COSTTYPES_COLUMN_COSTTYPE_NAME = 2;
 	
 	public static final String TEMPLATE_SHEETNAME_COSTTYPES = "CostTypes";
 	public static final String TEMPLATE_SHEETNAME_COSTEQUIPMENTS = "CostEquipments";
+
 }

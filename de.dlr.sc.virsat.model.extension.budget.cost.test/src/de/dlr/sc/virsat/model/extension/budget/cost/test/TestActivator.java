@@ -27,7 +27,7 @@ public class TestActivator {
 	private TestActivator() {
 	}
 	
-	private static final String FRAGMENT_ID = "de.dlr.sc.virsat.model.extension.funcelectrical.test";
+	private static final String FRAGMENT_ID = "de.dlr.sc.virsat.model.extension.budget.cost.test";
 
 	/**
 	 * Method to access the fragments contents from the resource folder and to hand it back as string

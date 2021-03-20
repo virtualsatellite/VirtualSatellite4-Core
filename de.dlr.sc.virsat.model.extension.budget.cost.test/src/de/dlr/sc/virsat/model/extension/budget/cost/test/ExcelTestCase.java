@@ -38,7 +38,6 @@ import de.dlr.sc.virsat.model.extension.ps.model.ProductTreeDomain;
 public class ExcelTestCase extends AConceptTestCase {
 	protected static final String CONCEPT_ID_EGSCC = de.dlr.sc.virsat.model.extension.ps.Activator.getPluginId();
 	protected static final String CONCEPT_ID_COST = de.dlr.sc.virsat.model.extension.budget.cost.activator.Activator.getPluginId();
-	protected static final int NUMBER_OF_COSTEQUIPMENTS = 3;
 
 	protected Repository repository;
 	protected CostTypesCollection costTypesCollection;
@@ -78,13 +77,13 @@ public class ExcelTestCase extends AConceptTestCase {
 		costTypesCollection.getStructuralElementInstance().setUuid(new VirSatUuid("505748e0-5d88-47b3-bce8-f53acacb7ccb"));
 		CostType costType1 = new CostType(conceptCost);
 		costType1.getTypeInstance().setUuid(new VirSatUuid("ea816464-cea3-4db7-ae91-31d37c60a63c"));
-		costType1.setName("KILL");
+		costType1.setName("BIII");
 		CostType costType2 = new CostType(conceptCost);
 		costType2.getTypeInstance().setUuid(new VirSatUuid("1cd42892-eb5f-42ac-881d-e8ef4825254a"));
-		costType2.setName("MILL");
+		costType2.setName("BAAA");
 		CostType costType3 = new CostType(conceptCost);
 		costType3.getTypeInstance().setUuid(new VirSatUuid("88544856-794e-49fd-a873-266a4008a3fc"));
-		costType3.setName("HILL");
+		costType3.setName("BUUU");
 		costTypesCollection.add(costType1);
 		costTypesCollection.add(costType2);
 		costTypesCollection.add(costType3);
@@ -98,27 +97,27 @@ public class ExcelTestCase extends AConceptTestCase {
 
 		// Element Definition to be changed
 		elementDef = new ElementDefinition(conceptEgscc);
-		elementDef.setName("BATTERY");
+		elementDef.setName("MOTOR");
 		elementDef.getStructuralElementInstance().setUuid(new VirSatUuid("74ccc93a-281b-4ab8-acec-b7f2b9827d4b"));
 
-		productTreeDomain.add(elementDef);
-
 		CostEquipment costEquipment1 = new CostEquipment(conceptCost);
-		costEquipment1.setName("POW_IN");
+		costEquipment1.setName("POW_MAU");
 		costEquipment1.getTypeInstance().setUuid(new VirSatUuid("a2643ddb-e6a1-4015-9b80-be931f0c5a37"));
 		costEquipment1.setType(costType1);
 		CostEquipment costEquipment2 = new CostEquipment(conceptCost);
-		costEquipment2.setName("POW_SOMETHING");
+		costEquipment2.setName("POW_WAU");
 		costEquipment2.getTypeInstance().setUuid(new VirSatUuid("9f8b18e1-f6a1-4cf6-bcb7-0d4a5f0a86de"));
 		costEquipment2.setType(costType2);
 		CostEquipment costEquipment3 = new CostEquipment(conceptCost);
-		costEquipment3.setName("POW_OUT");
+		costEquipment3.setName("POW_LOW");
 		costEquipment3.getTypeInstance().setUuid(new VirSatUuid("e13ad850-21d8-43d7-aa61-20a3f8d1749b"));
 		costEquipment3.setType(costType3);
 
 		elementDef.add(costEquipment1);
 		elementDef.add(costEquipment2);
 		elementDef.add(costEquipment3);
+		
+		productTreeDomain.add(elementDef);
 
 		// will be used for test 3
 
@@ -138,13 +137,12 @@ public class ExcelTestCase extends AConceptTestCase {
 		costEquipment6.getTypeInstance().setUuid(new VirSatUuid("e13ad850-21d8-43d7-aa61-20a3f8d1749b"));
 		costEquipment6.setType(costType3);
 
-		// to hold interface ends
+		// to hold cost equipment
 		elementConf = new ElementConfiguration(conceptEgscc);
-		elementConf.setName("InterfaceEnds");
+		elementConf.setName("CostEquipment");
 		elementConf.add(costEquipment4);
 		elementConf.add(costEquipment5);
 		elementConf.add(costEquipment6);
-
 
 		configTree.add(elementConf);
 	}

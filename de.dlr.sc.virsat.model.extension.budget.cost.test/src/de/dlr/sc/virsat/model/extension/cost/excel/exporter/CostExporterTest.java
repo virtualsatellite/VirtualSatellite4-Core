@@ -28,7 +28,7 @@ import org.junit.Test;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.budget.cost.excel.exporter.CostExporter;
-import de.dlr.sc.virsat.model.extension.cost.excel.AExcelCostO;
+import de.dlr.sc.virsat.model.extension.cost.excel.AExcelCostIO;
 
 /**
  * Test Case for Exporting to Excel
@@ -41,7 +41,7 @@ public class CostExporterTest extends de.dlr.sc.virsat.model.extension.budget.co
 	public void setUp() throws CoreException {
 		super.setUp();
 		//CHECKSTYLE:OFF
-		localDateTime = LocalDateTime.of(2020, 04, 21, 12, 24);
+		localDateTime = LocalDateTime.now();
 		//CHECKSTYLE:ON
 	}
 	
@@ -58,11 +58,11 @@ public class CostExporterTest extends de.dlr.sc.virsat.model.extension.budget.co
 		costExporter.export(costTypesCollection.getStructuralElementInstance(), System.getProperty("java.io.tmpdir"), true, "");
 		XSSFWorkbook wb = costExporter.getWb();
 
-		Sheet sheet = wb.getSheet(AExcelCostO.TEMPLATE_SHEETNAME_COSTTYPES);
+		Sheet sheet = wb.getSheet(AExcelCostIO.TEMPLATE_SHEETNAME_COSTTYPES);
 		for (int i = 0; i < sei.getCategoryAssignments().size(); ++i) {
 			CategoryAssignment interfaceType = sei.getCategoryAssignments().get(i);
-			Row row = sheet.getRow(AExcelCostO.COMMON_ROW_START_TABLE + i);
-			Cell cell = row.getCell(AExcelCostO.COSTTYPES_COLUMN_COSTTYPE_NAME);
+			Row row = sheet.getRow(AExcelCostIO.COMMON_ROW_START_TABLE + i);
+			Cell cell = row.getCell(AExcelCostIO.COSTTYPES_COLUMN_COSTTYPE_NAME);
 			assertEquals("Type " + i + "exported correctly", interfaceType.getName(), cell.toString());
 		}
 	}
@@ -76,16 +76,16 @@ public class CostExporterTest extends de.dlr.sc.virsat.model.extension.budget.co
 		costExporter.export(sei, iStream);
 		Workbook wb = costExporter.getWb();
 
-		Sheet sheet = wb.getSheet(AExcelCostO.TEMPLATE_SHEETNAME_COSTEQUIPMENTS);
+		Sheet sheet = wb.getSheet(AExcelCostIO.TEMPLATE_SHEETNAME_COSTEQUIPMENTS);
 		for (int i = 0; i < sei.getCategoryAssignments().size(); ++i) {
 			CategoryAssignment interfaceEnd = sei.getCategoryAssignments().get(i);
-			Row row = sheet.getRow(AExcelCostO.COMMON_ROW_START_TABLE + i);
-			Cell cell = row.getCell(AExcelCostO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_NAME);
+			Row row = sheet.getRow(AExcelCostIO.COMMON_ROW_START_TABLE + i);
+			Cell cell = row.getCell(AExcelCostIO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_NAME);
 			assertEquals("CostEquipment name exported correctly", interfaceEnd.getName(), cell.toString());
-			cell = row.getCell(AExcelCostO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_FQN);
+			cell = row.getCell(AExcelCostIO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_FQN);
 			assertEquals("CostEquipment fqn exported correctly", interfaceEnd.getFullQualifiedInstanceName(), cell.toString());
 		}
-		Row row = sheet.getRow(AExcelCostO.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size());
+		Row row = sheet.getRow(AExcelCostIO.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size());
 		assertNull("Line after alle entries correctly empty", row);
 	}
 
@@ -99,18 +99,16 @@ public class CostExporterTest extends de.dlr.sc.virsat.model.extension.budget.co
 		costExporter.export(sei, iStream);
 		Workbook wb = costExporter.getWb();
 
-		Sheet sheet = wb.getSheet(AExcelCostO.TEMPLATE_SHEETNAME_COSTTYPES);
+		Sheet sheet = wb.getSheet(AExcelCostIO.TEMPLATE_SHEETNAME_COSTTYPES);
 
 		for (int i = 0; i < sei.getCategoryAssignments().size(); ++i) {
 			CategoryAssignment interfaceType = sei.getCategoryAssignments().get(i);
-			Row row = sheet.getRow(AExcelCostO.COMMON_ROW_START_TABLE + i);
-			Cell cell = row.getCell(AExcelCostO.COSTTYPES_COLUMN_COSTTYPE_NAME);
+			Row row = sheet.getRow(AExcelCostIO.COMMON_ROW_START_TABLE + i);
+			Cell cell = row.getCell(AExcelCostIO.COSTTYPES_COLUMN_COSTTYPE_NAME);
 			assertEquals("Type " + i + "exported correctly", interfaceType.getName(), cell.toString());
 		}
-		assertNull("Line after all entries correctly empty", sheet.getRow(AExcelCostO.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size()));
+		assertNull("Line after all entries correctly empty", sheet.getRow(AExcelCostIO.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size()));
 	}
-
-	
 
 	@Test
 	public void testExportCostEquipmentsIntoEmptyWorkbook() throws IOException {
@@ -122,15 +120,15 @@ public class CostExporterTest extends de.dlr.sc.virsat.model.extension.budget.co
 		costExporter.export(sei, iStream);
 		Workbook wb = costExporter.getWb();
 
-		Sheet sheet = wb.getSheet(AExcelCostO.TEMPLATE_SHEETNAME_COSTEQUIPMENTS);
+		Sheet sheet = wb.getSheet(AExcelCostIO.TEMPLATE_SHEETNAME_COSTEQUIPMENTS);
 		for (int i = 0; i < sei.getCategoryAssignments().size(); ++i) {
 			CategoryAssignment interfaceEnd = sei.getCategoryAssignments().get(i);
-			Row row = sheet.getRow(AExcelCostO.COMMON_ROW_START_TABLE + i);
-			Cell cell = row.getCell(AExcelCostO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_NAME);
+			Row row = sheet.getRow(AExcelCostIO.COMMON_ROW_START_TABLE + i);
+			Cell cell = row.getCell(AExcelCostIO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_NAME);
 			assertEquals("CostEquipment name exported correctly", interfaceEnd.getName(), cell.toString());
-			cell = row.getCell(AExcelCostO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_FQN);
+			cell = row.getCell(AExcelCostIO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_FQN);
 			assertEquals("CostEquipment fqn exported correctly", interfaceEnd.getFullQualifiedInstanceName(), cell.toString());
 		}
-		assertNull("Line after all entries correctly empty", sheet.getRow(AExcelCostO.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size()));
+		assertNull("Line after all entries correctly empty", sheet.getRow(AExcelCostIO.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size()));
 	}
 }
