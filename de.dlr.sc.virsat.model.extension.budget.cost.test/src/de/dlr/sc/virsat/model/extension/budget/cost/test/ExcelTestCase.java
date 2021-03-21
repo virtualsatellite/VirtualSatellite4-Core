@@ -23,6 +23,7 @@ import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.model.dvlm.units.UnitManagement;
 import de.dlr.sc.virsat.model.dvlm.units.UnitsFactory;
+import de.dlr.sc.virsat.model.extension.budget.cost.activator.Activator;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostEquipment;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostType;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostTypesCollection;
@@ -37,7 +38,8 @@ import de.dlr.sc.virsat.model.extension.ps.model.ProductTreeDomain;
  */
 public class ExcelTestCase extends AConceptTestCase {
 	protected static final String CONCEPT_ID_EGSCC = de.dlr.sc.virsat.model.extension.ps.Activator.getPluginId();
-	protected static final String CONCEPT_ID_COST = de.dlr.sc.virsat.model.extension.budget.cost.activator.Activator.getPluginId();
+	protected static final String CONCEPT_ID_COST = Activator.getPluginId();
+	protected static final int NUMBER_OF_COST_TYPES = 3;
 
 	protected Repository repository;
 	protected CostTypesCollection costTypesCollection;
@@ -77,13 +79,13 @@ public class ExcelTestCase extends AConceptTestCase {
 		costTypesCollection.getStructuralElementInstance().setUuid(new VirSatUuid("505748e0-5d88-47b3-bce8-f53acacb7ccb"));
 		CostType costType1 = new CostType(conceptCost);
 		costType1.getTypeInstance().setUuid(new VirSatUuid("ea816464-cea3-4db7-ae91-31d37c60a63c"));
-		costType1.setName("BIII");
+		costType1.setName("KILL");
 		CostType costType2 = new CostType(conceptCost);
 		costType2.getTypeInstance().setUuid(new VirSatUuid("1cd42892-eb5f-42ac-881d-e8ef4825254a"));
-		costType2.setName("BAAA");
+		costType2.setName("MILL");
 		CostType costType3 = new CostType(conceptCost);
 		costType3.getTypeInstance().setUuid(new VirSatUuid("88544856-794e-49fd-a873-266a4008a3fc"));
-		costType3.setName("BUUU");
+		costType3.setName("HILL");
 		costTypesCollection.add(costType1);
 		costTypesCollection.add(costType2);
 		costTypesCollection.add(costType3);
@@ -97,8 +99,10 @@ public class ExcelTestCase extends AConceptTestCase {
 
 		// Element Definition to be changed
 		elementDef = new ElementDefinition(conceptEgscc);
-		elementDef.setName("MOTOR");
+		elementDef.setName("BATTERY");
 		elementDef.getStructuralElementInstance().setUuid(new VirSatUuid("74ccc93a-281b-4ab8-acec-b7f2b9827d4b"));
+
+		productTreeDomain.add(elementDef);
 
 		CostEquipment costEquipment1 = new CostEquipment(conceptCost);
 		costEquipment1.setName("POW_MAU");
@@ -117,7 +121,7 @@ public class ExcelTestCase extends AConceptTestCase {
 		elementDef.add(costEquipment2);
 		elementDef.add(costEquipment3);
 		
-		productTreeDomain.add(elementDef);
+
 
 		// will be used for test 3
 

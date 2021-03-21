@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.cost.excel;
+package de.dlr.sc.virsat.model.extension.budget.cost.excel;
 
 import de.dlr.sc.virsat.excel.AExcelIo;
 
