@@ -1163,7 +1163,7 @@ The CostTypeCollection or CostEquipments can be exported from Virtual Satellite 
 
 |{counter:step}.
 |To export that CostTypeCollection o CostEquipment, navigate to _File->Export..._.
-|image:chapterModeling/subsectionCAD/export/01_Export.png[Export]
+|image:chapterModeling/subsectionCost/export/01_Export.png[Export]
 
 |{counter:step}.
 |The _Export_ Wizard opens, in which you can select the _Excel Export Wizard_.
@@ -1199,10 +1199,10 @@ NOTE: For the purpose of identification, each element has a corresponding UUID (
 |Task
 |Image
 
-|{counter:step}.
-|You start with a simple _Repository_ containing a _Product_, _Configuration_, 
- _Assembly Tree_ and CostTypeCollection with a CostEquipment added to the `CostMaterial`.
-|image:chapterModeling/subsectionCost/export/00_example_tree.PNG[Example trees]
+{counter:step}.
+|You can now modify the generated Excel file, e.g. change Name, Cost o the CostType of the `CostEquipment`. Afterwards it can be reimported to update the Virtual Satellite Model.
+|image:chapterModeling/subsectionCost/import/00_changed_output.PNG[Changed Excel output file]
+
 
 |{counter:step}.
 |To export that CostTypeCollection o CostEquipment, navigate to _File->Export..._.
