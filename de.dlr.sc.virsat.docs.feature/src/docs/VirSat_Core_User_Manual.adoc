@@ -1176,14 +1176,14 @@ You also have to provide the destination of the exported file.
 |image:chapterModeling/subsectionCost/export/03_tree_and_destination_selection.PNG[Tree and destination selection]
 
 |{counter:step}.
-|Finishing the dialog exports all elements of the selected _Tree_, that contain visualisations, into the Excel output file.
+|Finishing the dialog exports all elements of the selected _Tree_, that contain CostEquipment, into the Excel output file.
 
 |===
 
-NOTE: The JSON contains _Parts_, exported from the _Product Tree_, and _Products_, 
-exported from the _Configuration_ or _Assembly Tree_. So _Parts_ contain information about the elements, 
-e.g. their shape, size and color, and _Products_ configuration information, e.g. position and rotation.
-|image:chapterModeling/subsectionCAD/export/04_output.PNG[JSON output file]
+NOTE: The Excel-file contains _Parts_, which were exported from the _Product Tree_, and _Products_,
+exported from the _Configuration_ or _ProductTree_ Tree_. So _Parts_ contain information about the elements,
+e.g. your Cost, Margin, CostWithMargin and CostMargin
+| image:chapterModeling/subsectionCost/export/04_output.PNG [Excel output file] 
 // 
 NOTE: The round-trip engineering is driven from the Virtual Satellite side, 
 so that Virtual Satellite can execute all CRUD (Create, Read, Update, Delete) operations, 
