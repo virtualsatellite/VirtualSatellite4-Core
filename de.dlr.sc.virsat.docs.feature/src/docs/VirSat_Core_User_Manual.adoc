@@ -1180,6 +1180,38 @@ You also have to provide the destination of the exported file.
 
 |===
 
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|You start with a simple _Repository_ containing a _Product_, _Configuration_, 
+ _Assembly Tree_ and CostTypeCollection with a CostEquipment added to the `CostMaterial`.
+|image:chapterModeling/subsectionCost/export/00_example_tree.PNG[Example trees]
+
+|{counter:step}.
+|To export that CostTypeCollection o CostEquipment, navigate to _File->Export..._.
+|image:chapterModeling/subsectionCAD/export/01_Export.png[Export]
+
+|{counter:step}.
+|The _Export_ Wizard opens, in which you can select the _Excel Export Wizard_.
+|image:chapterModeling/subsectionCost/export/02_Export_Wizard.PNG[Export Wizard]
+
+|{counter:step}.
+|In the Wizard you have to select the -Cost Type Collection- o _Tree_ you want to export, 
+e.g. the _ProductTreeDomain_ `_ProductTreeDomain_`.
+You also have to provide the destination of the exported file.
+|image:chapterModeling/subsectionCost/export/03_tree_and_destination_selection.PNG[Tree and destination selection]
+
+|{counter:step}.
+|Finishing the dialog exports all elements of the selected _Tree_, that contain CostEquipment, into the Excel output file.
+
+|===
+
 NOTE: The Excel-file contains _Parts_, which were exported from the _Product Tree_, and _Products_,
 exported from the _Configuration_ or _ProductTree_ Tree_. So _Parts_ contain information about the elements,
 e.g. your Cost, Margin, CostWithMargin and CostMargin
