@@ -1173,24 +1173,23 @@ The CostTypeCollection or CostEquipments can be exported from Virtual Satellite 
 |In the Wizard you have to select the -Cost Type Collection- o _Tree_ you want to export, 
 e.g. the _Configuration Tree_ `StarExplorerConfig`.
 You also have to provide the destination of the exported file.
-
 |image:chapterModeling/subsectionCAD/export/03_tree_and_destination_selection.PNG[Tree and destination selection]
 
 |{counter:step}.
 |Finishing the dialog exports all elements of the selected _Tree_, that contain visualisations, into the Excel output file.
 
-NOTE: The JSON contains _Parts_, exported from the _Product Tree_, and _Products_, 
-exported from the _Configuration_ or _Assembly Tree_. So _Parts_ contain information about the elements, 
-e.g. their shape, size and color, and _Products_ configuration information, e.g. position and rotation.
-|image:chapterModeling/subsectionCAD/export/04_output.PNG[JSON output file]
+//NOTE: The JSON contains _Parts_, exported from the _Product Tree_, and _Products_, 
+//exported from the _Configuration_ or _Assembly Tree_. So _Parts_ contain information about the elements, 
+//e.g. their shape, size and color, and _Products_ configuration information, e.g. position and rotation.
+//|image:chapterModeling/subsectionCAD/export/04_output.PNG[JSON output file]
  
 |===
 
-NOTE: The round-trip engineering is driven from the Virtual Satellite side, 
-so that Virtual Satellite can execute all CRUD (Create, Read, Update, Delete) operations, 
-while an external CAD software can only Read and Update existing components.
-
-NOTE: For the purpose of identification, each element has a corresponding UUID (Universally Unique Identifier).
+//NOTE: The round-trip engineering is driven from the Virtual Satellite side, 
+//so that Virtual Satellite can execute all CRUD (Create, Read, Update, Delete) operations, 
+//while an external CAD software can only Read and Update existing components.
+//
+//NOTE: For the purpose of identification, each element has a corresponding UUID (Universally Unique Identifier).
 
 
 
