@@ -54,8 +54,20 @@
 			caBean="de.dlr.sc.virsat.model.extension.requirements.model.RequirementType">
 		</CategoryAssignmentBean>
 		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.requirements.RequirementLinkType"
+			caBean="de.dlr.sc.virsat.model.extension.requirements.model.RequirementLinkType">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
 			id="de.dlr.sc.virsat.model.extension.requirements.RequirementAttribute"
 			caBean="de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttribute">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.requirements.ImportConfiguration"
+			caBean="de.dlr.sc.virsat.model.extension.requirements.model.ImportConfiguration">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.requirements.SpecificationMapping"
+			caBean="de.dlr.sc.virsat.model.extension.requirements.model.SpecificationMapping">
 		</CategoryAssignmentBean>
 		<CategoryAssignmentBean
 			id="de.dlr.sc.virsat.model.extension.requirements.EnumerationDefinition"

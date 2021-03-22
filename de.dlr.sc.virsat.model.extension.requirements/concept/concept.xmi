@@ -16,6 +16,9 @@
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="typeDefinitions" type="de.dlr.sc.virsat.model.extension.requirements.RequirementType">
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
     </properties>
+    <properties xsi:type="dvlm_cppd:ComposedProperty" name="linkTypeDefinitions" type="de.dlr.sc.virsat.model.extension.requirements.RequirementLinkType">
+      <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
+    </properties>
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="VerificationConfiguration" applicableFor="de.dlr.sc.virsat.model.extension.requirements.RequirementsConfigurationCollection">
@@ -48,12 +51,10 @@
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
     </properties>
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="trace" type="de.dlr.sc.virsat.model.extension.requirements.RequirementTrace"/>
+    <properties xsi:type="dvlm_cppd:StringProperty" name="descriptionText"/>
   </categories>
   <categories name="RequirementLink">
-    <properties xsi:type="dvlm_cppd:EnumProperty" name="type">
-      <values name="DependsOn" value="1"/>
-      <values name="Parent" value="2"/>
-    </properties>
+    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="type" referenceType="de.dlr.sc.virsat.model.extension.requirements.RequirementLinkType"/>
     <properties xsi:type="dvlm_cppd:ReferenceProperty" name="subject" referenceType="de.dlr.sc.virsat.model.extension.requirements.Requirement"/>
     <properties xsi:type="dvlm_cppd:ReferenceProperty" name="targets" referenceType="de.dlr.sc.virsat.model.extension.requirements.Requirement">
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
@@ -69,7 +70,8 @@
   </categories>
   <categories name="AttributeValue">
     <properties xsi:type="dvlm_cppd:ReferenceProperty" name="attType" referenceType="de.dlr.sc.virsat.model.extension.requirements.RequirementAttribute"/>
-    <properties xsi:type="dvlm_cppd:StringProperty" name="value"/>
+    <properties xsi:type="dvlm_cppd:StringProperty" name="value" description="The raw value of this attribute"/>
+    <properties xsi:type="dvlm_cppd:StringProperty" name="formattedValue" description="Optional property containing the value of this attribute formatted by e.g. HTML"/>
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="RequirementType" description="Definition of a requirement type">
@@ -78,8 +80,12 @@
     </properties>
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
+  <categories name="RequirementLinkType" description="Definition of a requirement link type">
+    <properties xsi:type="dvlm_cppd:StringProperty" name="linkDescription"/>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
   <categories name="RequirementAttribute" description="Attribute definition for requirements">
-    <properties xsi:type="dvlm_cppd:EnumProperty" name="type" defaultValue="//@categories.10/@properties.0/@values.5">
+    <properties xsi:type="dvlm_cppd:EnumProperty" name="type" defaultValue="//@categories.11/@properties.0/@values.5">
       <values name="Boolean" value="0"/>
       <values name="Date" value="1"/>
       <values name="Enumeration" value="2"/>
@@ -89,6 +95,18 @@
       <values name="Identifier" value="6"/>
     </properties>
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="enumeration" type="de.dlr.sc.virsat.model.extension.requirements.EnumerationDefinition"/>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
+  <categories name="ImportConfiguration" description="Mapping specification of imported requirements" applicableFor="de.dlr.sc.virsat.model.extension.requirements.RequirementsConfigurationCollection">
+    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="typeDefinitionsContainer" referenceType="de.dlr.sc.virsat.model.extension.requirements.RequirementsConfiguration"/>
+    <properties xsi:type="dvlm_cppd:ComposedProperty" name="mappedSpecifications" type="de.dlr.sc.virsat.model.extension.requirements.SpecificationMapping">
+      <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
+    </properties>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
+  <categories name="SpecificationMapping">
+    <properties xsi:type="dvlm_cppd:StringProperty" name="externalIdentifier"/>
+    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="specification" referenceType="de.dlr.sc.virsat.model.extension.requirements.RequirementsSpecification"/>
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="EnumerationDefinition">

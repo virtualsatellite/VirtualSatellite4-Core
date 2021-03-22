@@ -47,6 +47,17 @@
 		<unit id="org.polarion.eclipse.team.svn.connector.svnkit18.sources.feature.group" version="6.0.4.I20161211-1700"/>
 		<repository location="http://community.polarion.com/projects/subversive/download/eclipse/6.0/update-site/"/>
 		</location>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+		<unit id="org.eclipse.sphinx.core.feature.group" version="0.11.0.201706140911"/>
+		<unit id="org.eclipse.sphinx.emf.serialization.feature.group" version="0.11.0.201706140911"/>
+		<repository location="http://download.eclipse.org/sphinx/releases/0.11.x"/>
+		</location>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+		<unit id="org.eclipse.rmf.reqif10.feature.feature.group" version="0.13.0.201509161042"/>
+		<unit id="org.eclipse.rmf.reqif10.pror.feature.feature.group" version="0.13.0.201509161042"/>
+		<unit id="org.eclipse.rmf.reqif10.thirdparty.feature.feature.group" version="0.13.0.201509161042"/>
+		<repository location="http://download.eclipse.org/rmf/updates/releases"/>
+		</location>
 		</locations>
 		<environment>
 		<os>linux</os>
