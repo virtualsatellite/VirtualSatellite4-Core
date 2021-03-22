@@ -1206,6 +1206,10 @@ change Name, Cost o the CostType of the `CostEquipment`.
 Afterwards it can be reimported to update the Virtual Satellite Model.
 |image:chapterModeling/subsectionCost/import/00_changed_output.PNG[Changed Excel output file]
 
+|{counter:step}.
+|Similar to exporting you open the _Import_ Wizard.
+|image:chapterModeling/subsectionCost/import/01_Import.PNG[Import]
+
 
 
 |===
