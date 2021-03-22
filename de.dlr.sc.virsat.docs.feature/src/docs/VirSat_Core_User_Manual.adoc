@@ -1200,9 +1200,13 @@ NOTE: For the purpose of identification, each element has a corresponding UUID (
 |Task
 |Image
 
-{counter:step}.
-|You can now modify the generated Excel file, e.g. change Name, Cost o the CostType of the `CostEquipment`. Afterwards it can be reimported to update the Virtual Satellite Model.
+|{counter:step}.
+|You can now modify the generated Excel file, e.g. 
+change Name, Cost o the CostType of the `CostEquipment`. 
+Afterwards it can be reimported to update the Virtual Satellite Model.
 |image:chapterModeling/subsectionCost/import/00_changed_output.PNG[Changed Excel output file]
+
+
 
 |===
 
