@@ -1191,6 +1191,7 @@ while an external CAD software can only Read and Update existing components.
 
 NOTE: For the purpose of identification, each element has a corresponding UUID (Universally Unique Identifier).
 
+
 :step: 0
 [%header,cols=">8,62a,40a"] 
 |===
@@ -1203,28 +1204,7 @@ NOTE: For the purpose of identification, each element has a corresponding UUID (
 |You can now modify the generated Excel file, e.g. change Name, Cost o the CostType of the `CostEquipment`. Afterwards it can be reimported to update the Virtual Satellite Model.
 |image:chapterModeling/subsectionCost/import/00_changed_output.PNG[Changed Excel output file]
 
-
-|{counter:step}.
-|To export that CostTypeCollection o CostEquipment, navigate to _File->Export..._.
-|image:chapterModeling/subsectionCAD/export/01_Export.png[Export]
-
-|{counter:step}.
-|The _Export_ Wizard opens, in which you can select the _Excel Export Wizard_.
-|image:chapterModeling/subsectionCost/export/02_Export_Wizard.PNG[Export Wizard]
-
-|{counter:step}.
-|In the Wizard you have to select the -Cost Type Collection- o _Tree_ you want to export, 
-e.g. the _ProductTreeDomain_ `_ProductTreeDomain_`.
-You also have to provide the destination of the exported file.
-|image:chapterModeling/subsectionCost/export/03_tree_and_destination_selection.PNG[Tree and destination selection]
-
-|{counter:step}.
-|Finishing the dialog exports all elements of the selected _Tree_, that contain CostEquipment, into the Excel output file.
-
 |===
-
-
-
 
 
 ==== Equipment mass and mass summaries concept
