@@ -28,6 +28,7 @@ import org.junit.Test;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.budget.cost.excel.AExcelCostIO;
+import de.dlr.sc.virsat.model.extension.budget.cost.model.CostEquipment;
 import de.dlr.sc.virsat.model.extension.budget.cost.test.ExcelTestCase;
 
 /**
@@ -81,66 +82,22 @@ public class CostExporterTest extends ExcelTestCase {
 		Sheet sheet = wb.getSheet(AExcelCostIO.TEMPLATE_SHEETNAME_COSTEQUIPMENTS);
 		for (int i = 0; i < sei.getCategoryAssignments().size(); ++i) {
 
-			CategoryAssignment costEquipment = sei.getCategoryAssignments().get(i);
-
+			CategoryAssignment caAsCostEquipment = sei.getCategoryAssignments().get(i);
+			CostEquipment costEquipment = new CostEquipment(caAsCostEquipment);
+			
 			Row row = sheet.getRow(AExcelCostIO.COMMON_ROW_START_TABLE + i);
 			Cell cell = row.getCell(AExcelCostIO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_NAME);
-			assertEquals("CostEquipment name exported correctly", costEquipment.getName(), cell.toString());
+			assertEquals("CostEquipment name exported correctly", caAsCostEquipment.getName(), cell.toString());
 			cell = row.getCell(AExcelCostIO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_FQN);
-			assertEquals("CostEquipment fqn exported correctly", costEquipment.getFullQualifiedInstanceName(),
-					cell.toString());
-			if (costEquipment.getName() == TestValuesCostEquipment.TEST_NAME_1) {
-				cell = row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_COST);
-				assertEquals("CostEquipment1 cost exported correctly",
-						Double.toString(TestValuesCostEquipment.TEST_COST_1), cell.toString());
-				cell = row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_MARGIN);
-				assertEquals("CostEquipment1 margin exported correctly",
-						Double.toString(TestValuesCostEquipment.TEST_MARGIN_1), cell.toString());
-				cell = row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_COSTMARGIN);
-				assertEquals("CostEquipment1 costMargin exported correctly", Double.toString(
-						(TestValuesCostEquipment.TEST_COST_1 / ONE_HUNDRED) * TestValuesCostEquipment.TEST_MARGIN_1),
-						cell.toString());
-				cell = row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_COSTWITHMARGIN);
-				assertEquals("CostEquipment1 costWithMargin exported correctly",
-						Double.toString(TestValuesCostEquipment.TEST_COST_1
-								+ (TestValuesCostEquipment.TEST_COST_1 / ONE_HUNDRED)
-										* TestValuesCostEquipment.TEST_MARGIN_1),
-						cell.toString());
-			} else if (costEquipment.getName() == TestValuesCostEquipment.TEST_NAME_2) {
-				cell = row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_COST);
-				assertEquals("CostEquipment2 cost exported correctly",
-						Double.toString(TestValuesCostEquipment.TEST_COST_1), cell.toString());
-				cell = row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_MARGIN);
-				assertEquals("CostEquipment2 margin exported correctly",
-						Double.toString(TestValuesCostEquipment.TEST_MARGIN_2), cell.toString());
-				cell = row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_COSTMARGIN);
-				assertEquals("CostEquipment2 costMargin exported correctly", Double.toString(
-						(TestValuesCostEquipment.TEST_COST_1 / ONE_HUNDRED) * TestValuesCostEquipment.TEST_MARGIN_2),
-						cell.toString());
-				cell = row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_COSTWITHMARGIN);
-				assertEquals("CostEquipment2 costWithMargin exported correctly",
-						Double.toString(TestValuesCostEquipment.TEST_COST_1
-								+ (TestValuesCostEquipment.TEST_COST_1 / ONE_HUNDRED)
-										* TestValuesCostEquipment.TEST_MARGIN_2),
-						cell.toString());
-			} else if (costEquipment.getName() == TestValuesCostEquipment.TEST_NAME_3) {
-				cell = row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_COST);
-				assertEquals("CostEquipment3 cost exported correctly",
-						Double.toString(TestValuesCostEquipment.TEST_COST_2), cell.toString());
-				cell = row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_MARGIN);
-				assertEquals("CostEquipment3 margin exported correctly",
-						Double.toString(TestValuesCostEquipment.TEST_MARGIN_2), cell.toString());
-				cell = row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_COSTMARGIN);
-				assertEquals("CostEquipment3 costMargin exported correctly", Double.toString(
-						(TestValuesCostEquipment.TEST_COST_2 / ONE_HUNDRED) * TestValuesCostEquipment.TEST_MARGIN_2),
-						cell.toString());
-				cell = row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_COSTWITHMARGIN);
-				assertEquals("CostEquipment3 costWithMargin exported correctly",
-						Double.toString(TestValuesCostEquipment.TEST_COST_2
-								+ (TestValuesCostEquipment.TEST_COST_2 / ONE_HUNDRED)
-										* TestValuesCostEquipment.TEST_MARGIN_2),
-						cell.toString());
-			}
+			assertEquals("CostEquipment fqn exported correctly", caAsCostEquipment.getFullQualifiedInstanceName(), cell.toString());
+			cell = row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_COST);
+			assertEquals("CostEquipment cost exported correctly", Double.toString(costEquipment.getCost()), cell.toString());
+			cell = row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_MARGIN);
+			assertEquals("CostEquipment margin exported correctly", Double.toString(costEquipment.getMargin()), cell.toString());
+			cell = row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_COSTMARGIN);
+			assertEquals("CostEquipment costMargin exported correctly", Double.toString(costEquipment.getCostMargin()), cell.toString());
+			cell = row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_COSTWITHMARGIN);
+			assertEquals("CostEquipment1 costWithMargin exported correctly", Double.toString(costEquipment.getCostWithMargin()), cell.toString());			
 		}
 		Row row = sheet.getRow(AExcelCostIO.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size());
 		assertNull("Line after alle entries correctly empty", row);

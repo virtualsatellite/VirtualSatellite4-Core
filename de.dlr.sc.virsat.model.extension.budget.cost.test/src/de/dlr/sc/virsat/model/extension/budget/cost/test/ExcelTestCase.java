@@ -24,7 +24,6 @@ import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.model.dvlm.units.UnitManagement;
 import de.dlr.sc.virsat.model.dvlm.units.UnitsFactory;
 import de.dlr.sc.virsat.model.extension.budget.cost.activator.Activator;
-import de.dlr.sc.virsat.model.extension.budget.cost.excel.exporter.TestValuesCostEquipment;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostEquipment;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostType;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostTypesCollection;
@@ -42,6 +41,10 @@ public class ExcelTestCase extends AConceptTestCase {
 	protected static final String CONCEPT_ID_COST = Activator.getPluginId();
 	protected static final int NUMBER_OF_COST_TYPES = 3;
 	protected static final int ONE_HUNDRED = 100;
+	protected static final double TEST_COST_1 = 1200.0;
+	protected static final double TEST_MARGIN_1 = 20.0;
+	protected static final double TEST_COST_2 = 1600.0;
+	protected static final double TEST_MARGIN_2 = 50.0;
 
 	protected Repository repository;
 	protected CostTypesCollection costTypesCollection;
@@ -109,25 +112,25 @@ public class ExcelTestCase extends AConceptTestCase {
 		productTreeDomain.add(elementDef);
 
 		CostEquipment costEquipment1 = new CostEquipment(conceptCost);
-		costEquipment1.setName(TestValuesCostEquipment.TEST_NAME_1);
-		costEquipment1.setCost(TestValuesCostEquipment.TEST_COST_1);
-		costEquipment1.setMargin(TestValuesCostEquipment.TEST_MARGIN_1);
+		costEquipment1.setName("CostMaterial");
+		costEquipment1.setCost(TEST_COST_1);
+		costEquipment1.setMargin(TEST_MARGIN_1);
 		costEquipment1.setCostMargin((costEquipment1.getCost() / ONE_HUNDRED) * costEquipment1.getMargin());
 		costEquipment1.setCostWithMargin(costEquipment1.getCost() + costEquipment1.getCostMargin());
 		costEquipment1.getTypeInstance().setUuid(new VirSatUuid("a2643ddb-e6a1-4015-9b80-be931f0c5a37"));
 		costEquipment1.setType(costType1);
 		CostEquipment costEquipment2 = new CostEquipment(conceptCost);
-		costEquipment2.setName(TestValuesCostEquipment.TEST_NAME_2);
-		costEquipment2.setCost(TestValuesCostEquipment.TEST_COST_1);
-		costEquipment2.setMargin(TestValuesCostEquipment.TEST_MARGIN_2);
+		costEquipment2.setName("CostPersonal");
+		costEquipment2.setCost(TEST_COST_1);
+		costEquipment2.setMargin(TEST_MARGIN_2);
 		costEquipment2.setCostMargin((costEquipment2.getCost() / ONE_HUNDRED) * costEquipment2.getMargin());
 		costEquipment2.setCostWithMargin(costEquipment2.getCost() + costEquipment2.getCostMargin());
 		costEquipment2.getTypeInstance().setUuid(new VirSatUuid("9f8b18e1-f6a1-4cf6-bcb7-0d4a5f0a86de"));
 		costEquipment2.setType(costType2);
 		CostEquipment costEquipment3 = new CostEquipment(conceptCost);
-		costEquipment3.setName(TestValuesCostEquipment.TEST_NAME_3);
-		costEquipment3.setCost(TestValuesCostEquipment.TEST_COST_2);
-		costEquipment3.setMargin(TestValuesCostEquipment.TEST_MARGIN_2);
+		costEquipment3.setName("CostTest");
+		costEquipment3.setCost(TEST_COST_2);
+		costEquipment3.setMargin(TEST_MARGIN_2);
 		costEquipment3.setCostMargin((costEquipment3.getCost() / ONE_HUNDRED) * costEquipment3.getMargin());
 		costEquipment3.setCostWithMargin(costEquipment3.getCost() + costEquipment3.getCostMargin());
 		costEquipment3.getTypeInstance().setUuid(new VirSatUuid("e13ad850-21d8-43d7-aa61-20a3f8d1749b"));
@@ -145,15 +148,15 @@ public class ExcelTestCase extends AConceptTestCase {
 		configTree.setName("ConfigurationTree1");
 
 		CostEquipment costEquipment4 = new CostEquipment(conceptCost);
-		costEquipment4.setName(TestValuesCostEquipment.TEST_NAME_4);
+		costEquipment4.setName("CostMaterial_1");
 		costEquipment4.getTypeInstance().setUuid(new VirSatUuid("a2643ddb-e6a1-4015-9b80-be931f0c5a37"));
 		costEquipment4.setType(costType1);
 		CostEquipment costEquipment5 = new CostEquipment(conceptCost);
-		costEquipment5.setName(TestValuesCostEquipment.TEST_NAME_5);
+		costEquipment5.setName("CostPersonal_2");
 		costEquipment5.getTypeInstance().setUuid(new VirSatUuid("9f8b18e1-f6a1-4cf6-bcb7-0d4a5f0a86de"));
 		costEquipment5.setType(costType2);
 		CostEquipment costEquipment6 = new CostEquipment(conceptCost);
-		costEquipment6.setName(TestValuesCostEquipment.TEST_NAME_6);
+		costEquipment6.setName("CostTest_3");
 		costEquipment6.getTypeInstance().setUuid(new VirSatUuid("e13ad850-21d8-43d7-aa61-20a3f8d1749b"));
 		costEquipment6.setType(costType3);
 

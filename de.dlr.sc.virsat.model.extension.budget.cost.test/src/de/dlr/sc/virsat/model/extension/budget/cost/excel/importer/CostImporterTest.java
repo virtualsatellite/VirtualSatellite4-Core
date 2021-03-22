@@ -51,9 +51,9 @@ public class CostImporterTest extends ExcelTestCase {
 
 		costImporter.importExcel(costTypesCollection.getStructuralElementInstance(), repository, wb);
 		assertEquals(NUMBER_OF_COST_TYPES, costTypesCollection.getStructuralElementInstance().getCategoryAssignments().size());
-		assertEquals("FILL", costTypesCollection.getStructuralElementInstance().getCategoryAssignments().get(0).getName());
-		assertEquals("HILL", costTypesCollection.getStructuralElementInstance().getCategoryAssignments().get(1).getName());
-		assertEquals("PILL", costTypesCollection.getStructuralElementInstance().getCategoryAssignments().get(2).getName());
+		assertEquals("Personal", costTypesCollection.getStructuralElementInstance().getCategoryAssignments().get(0).getName());
+		assertEquals("Test", costTypesCollection.getStructuralElementInstance().getCategoryAssignments().get(1).getName());
+		assertEquals("Demo", costTypesCollection.getStructuralElementInstance().getCategoryAssignments().get(2).getName());
 	}
 
 	@Test
