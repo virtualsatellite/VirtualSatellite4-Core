@@ -1219,6 +1219,8 @@ Afterwards it can be reimported to update the Virtual Satellite Model.
 In the Wizard, select the Tree to load the Excel file into and the destination of the file.
 |image:chapterModeling/subsectionCost/import/03_tree_and_destination_selection.PNG[Tree and destination selection]
 
+|{counter:step}.
+|Finally you can open the `CostMaterial` 's CostEquipment to see if the property has been updated.
 
 
 |===
