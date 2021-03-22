@@ -136,6 +136,9 @@ Germany
       <feature id="org.polarion.eclipse.team.svn.connector" installMode="root"/>
       <feature id="org.polarion.eclipse.team.svn.connector.svnkit18" installMode="root"/>
       <feature id="org.eclipse.xtext.ui" installMode="root"/>
+      <feature id="org.eclipse.rmf.reqif10.feature" installMode="root"/>
+      <feature id="org.eclipse.rmf.reqif10.pror.feature" installMode="root"/>
+      <feature id="org.eclipse.rmf.reqif10.thirdparty.feature" installMode="root"/>
    </features>
 
    <configurations>

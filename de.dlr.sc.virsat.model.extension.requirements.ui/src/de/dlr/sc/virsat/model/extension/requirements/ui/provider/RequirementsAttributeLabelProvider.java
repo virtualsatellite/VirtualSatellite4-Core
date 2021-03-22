@@ -130,7 +130,6 @@ public class RequirementsAttributeLabelProvider extends VirSatTransactionalAdapt
 	 * @param object the object for which we want to have the label
 	 */
 	protected void redirectNotification(APropertyInstance propertyInstance, Object object) {
-		redirectNotification(propertyInstance, object);
 		ATypeInstance ti = valueSwitch.doSwitch(propertyInstance);
 		redirectNotification(ti, object);
 	}
