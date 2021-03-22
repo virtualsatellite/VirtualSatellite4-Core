@@ -1171,7 +1171,7 @@ The CostTypeCollection or CostEquipments can be exported from Virtual Satellite 
 
 |{counter:step}.
 |In the Wizard you have to select the -Cost Type Collection- o _Tree_ you want to export, 
-e.g. the _Configuration Tree_ `StarExplorerConfig`.
+e.g. the _ProductTreeDomain_ `_ProductTreeDomain_`.
 You also have to provide the destination of the exported file.
 |image:chapterModeling/subsectionCAD/export/03_tree_and_destination_selection.PNG[Tree and destination selection]
 
