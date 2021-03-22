@@ -72,12 +72,12 @@ public class CostImporterTest extends ExcelTestCase {
 		List<CostEquipment> seiCostEquipments = bCaHelper.getAllBeanCategories(elementDef.getStructuralElementInstance(), CostEquipment.class);
 		assertEquals(NUMBER_OF_COST_TYPES, elementDef.getStructuralElementInstance().getCategoryAssignments().size());
 
-		assertEquals("POW_SOMETHING", seiCostEquipments.get(0).getName());
-		assertEquals("POW_OUT_C", seiCostEquipments.get(1).getName());
-		assertEquals("POW_NEW", seiCostEquipments.get(2).getName());
-		assertEquals("KILL", seiCostEquipments.get(0).getType().getName());
-		assertEquals("HILL", seiCostEquipments.get(1).getType().getName());
-		assertEquals("KILL", seiCostEquipments.get(2).getType().getName());
+		assertEquals("CostPersonal", seiCostEquipments.get(0).getName());
+		assertEquals("CostTest", seiCostEquipments.get(1).getName());
+		assertEquals("CostMaterial", seiCostEquipments.get(2).getName());
+		assertEquals("Personal", seiCostEquipments.get(0).getType().getName());
+		assertEquals("Test", seiCostEquipments.get(1).getType().getName());
+		assertEquals("Material", seiCostEquipments.get(2).getType().getName());
 	}
 }
 

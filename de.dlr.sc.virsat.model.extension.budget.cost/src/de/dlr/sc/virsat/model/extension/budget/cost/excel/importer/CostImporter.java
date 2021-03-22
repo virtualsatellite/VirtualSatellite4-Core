@@ -42,7 +42,7 @@ import de.dlr.sc.virsat.model.extension.ps.model.ElementRealization;
  */
 public class CostImporter implements IImport {
 	
-	protected final static int ONE_HUNDRED = 100;
+	protected static final int ONE_HUNDRED = 100;
 
 	private StructuralElementInstance sei;
 	private XSSFWorkbook wb;
@@ -54,14 +54,7 @@ public class CostImporter implements IImport {
 	@Override
 	public void importExcel(EObject eObject, Repository repository, XSSFWorkbook wb) {
 		init(eObject, repository, wb);
-		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		// On import and export we should decide on
-		// applicability if we should export or
-		// import a certain type
-		// This needs to be refactored
-		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		String exportSeiTypeName = sei.getType().getName();
-
 		if (exportSeiTypeName.equals(CostTypesCollection.class.getSimpleName())) {
 			importCostTypes();
 		} else if (exportSeiTypeName.equals(ElementDefinition.class.getSimpleName())

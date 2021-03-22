@@ -25,7 +25,7 @@ public abstract class AExcelIo {
 	public static final int COMMON_COLUMN_UUID = 0;
 	public static final int COMMON_COLUMN_DELETE = 1;
 	public static final int COMMON_ROW_START_TABLE = 4;
-	public static final String COMMON_DELETEMARK_VALUE = "1.0";
+	public static final String COMMON_DELETEMARK_VALUE = "X";
 
 	public static final String TEMPLATE_SHEETNAME_HEADER = "Header";
 }
