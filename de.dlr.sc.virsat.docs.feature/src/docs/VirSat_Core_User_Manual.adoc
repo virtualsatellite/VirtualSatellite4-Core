@@ -1171,8 +1171,8 @@ The CostTypeCollection or CostEquipments can be exported from Virtual Satellite 
 
 |{counter:step}.
 |In the Wizard you have to select the -Cost Type Collection- o _Tree_ you want to export, 
-|e.g. the _ProductTreeDomain_ `_ProductTreeDomain_`.
-|You also have to provide the destination of the exported file.
+e.g. the _ProductTreeDomain_ `_ProductTreeDomain_`.
+You also have to provide the destination of the exported file.
 |image:chapterModeling/subsectionCost/export/03_tree_and_destination_selection.PNG[Tree and destination selection]
 
 |{counter:step}.
@@ -1202,8 +1202,8 @@ NOTE: For the purpose of identification, each element has a corresponding UUID (
 
 |{counter:step}.
 |You can now modify the generated Excel file, e.g. 
-|change Name, Cost o the CostType of the `CostEquipment`. 
-|Afterwards it can be reimported to update the Virtual Satellite Model.
+change Name, Cost o the CostType of the `CostEquipment`. 
+Afterwards it can be reimported to update the Virtual Satellite Model.
 |image:chapterModeling/subsectionCost/import/00_changed_output.PNG[Changed Excel output file]
 
 |{counter:step}.
@@ -1216,7 +1216,7 @@ NOTE: For the purpose of identification, each element has a corresponding UUID (
 
 |{counter:step}.
 |Then select the Cad Import Wizard.
-|In the Wizard, select the Tree to load the Excel file into and the destination of the file.
+In the Wizard, select the Tree to load the Excel file into and the destination of the file.
 |image:chapterModeling/subsectionCost/import/03_tree_and_destination_selection.PNG[Tree and destination selection]
 
 
