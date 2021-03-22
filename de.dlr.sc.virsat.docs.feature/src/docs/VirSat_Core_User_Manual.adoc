@@ -1157,7 +1157,8 @@ The CostTypeCollection or CostEquipments can be exported from Virtual Satellite 
 |Image
 
 |{counter:step}.
-|You start with a simple _Repository_ containing a _Product_, _Configuration_,  _Assembly Tree_ and CostTypeCollection with a CostEquipment added to the `ST2`.
+|You start with a simple _Repository_ containing a _Product_, _Configuration_, 
+ _Assembly Tree_ and CostTypeCollection with a CostEquipment added to the `ST2`.
 |image:chapterModeling/subsectionCost/export/00_example_tree.PNG[Example trees]
 
 |{counter:step}.
