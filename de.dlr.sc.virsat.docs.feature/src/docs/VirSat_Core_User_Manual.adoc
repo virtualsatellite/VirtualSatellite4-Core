@@ -1160,10 +1160,35 @@ The CostTypeCollection or CostEquipments can be exported from Virtual Satellite 
 |You start with a simple _Repository_ containing a _Product_, _Configuration_, 
  _Assembly Tree_ and CostTypeCollection with a CostEquipment added to the `ST2`.
 |image:chapterModeling/subsectionCost/export/00_example_tree.PNG[Example trees]
+
+|{counter:step}.
+|To export that CostTypeCollection o CostEquipment, navigate to _File->Export..._.
+|image:chapterModeling/subsectionCAD/export/01_Export.png[Export]
+
+|{counter:step}.
+|The _Export_ Wizard opens, in which you can select the _Excel Export Wizard_.
+|image:chapterModeling/subsectionCAD/export/02_Export_Wizard.PNG[Export Wizard]
+
+|{counter:step}.
+|In the Wizard you have to select the -Cost Type Collection- o _Tree_ you want to export, 
+e.g. the _Configuration Tree_ `StarExplorerConfig`.
+You also have to provide the destination of the exported file.
+
+|image:chapterModeling/subsectionCAD/export/03_tree_and_destination_selection.PNG[Tree and destination selection]
+
+|{counter:step}.
+|Finishing the dialog exports all elements of the selected _Tree_, that contain visualisations, into the Excel output file.
+
+NOTE: The JSON contains _Parts_, exported from the _Product Tree_, and _Products_, 
+exported from the _Configuration_ or _Assembly Tree_. So _Parts_ contain information about the elements, 
+e.g. their shape, size and color, and _Products_ configuration information, e.g. position and rotation.
+|image:chapterModeling/subsectionCAD/export/04_output.PNG[JSON output file]
  
 |===
 
-NOTE: The round-trip engineering is driven from the Virtual Satellite side, so that Virtual Satellite can execute all CRUD (Create, Read, Update, Delete) operations, while an external CAD software can only Read and Update existing components.
+NOTE: The round-trip engineering is driven from the Virtual Satellite side, 
+so that Virtual Satellite can execute all CRUD (Create, Read, Update, Delete) operations, 
+while an external CAD software can only Read and Update existing components.
 
 NOTE: For the purpose of identification, each element has a corresponding UUID (Universally Unique Identifier).
 
