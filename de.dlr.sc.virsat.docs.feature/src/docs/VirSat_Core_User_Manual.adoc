@@ -1221,6 +1221,7 @@ In the Wizard, select the Tree to load the Excel file into and the destination o
 
 |{counter:step}.
 |Finally you can open the `CostMaterial` 's CostEquipment to see if the property has been updated.
+|image:chapterModeling\subsectionCost\import\04_model_changes.PNG[Imported Model changes]
 
 
 |===
