@@ -1173,7 +1173,7 @@ The CostTypeCollection or CostEquipments can be exported from Virtual Satellite 
 |In the Wizard you have to select the -Cost Type Collection- o _Tree_ you want to export, 
 e.g. the _ProductTreeDomain_ `_ProductTreeDomain_`.
 You also have to provide the destination of the exported file.
-|image:chapterModeling/subsectionCAD/export/03_tree_and_destination_selection.PNG[Tree and destination selection]
+|image:chapterModeling/subsectionCost/export/03_tree_and_destination_selection.PNG[Tree and destination selection]
 
 |{counter:step}.
 |Finishing the dialog exports all elements of the selected _Tree_, that contain visualisations, into the Excel output file.
