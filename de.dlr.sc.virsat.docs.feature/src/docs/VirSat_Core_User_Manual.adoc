@@ -1208,11 +1208,11 @@ Afterwards it can be reimported to update the Virtual Satellite Model.
 
 |{counter:step}.
 |Similar to exporting you open the _Import_ Wizard.
-|image:chapterModeling/subsectionCost/import/01_Import.PNG[Import]
+|image:chapterModeling/subsectionCost/import/01_Import.png[Import]
 
 |{counter:step}.
 |In the Wizard, select the Tree to load the Excel file into and the destination of the file.
-|image:chapterModeling/subsectionCost/import/02_Cost_Import_Witard.PNG[Import]
+|image:chapterModeling/subsectionCost/import/02_Cost_Import_Witard.png[Import Wizard]
 
 
 
