@@ -127,7 +127,7 @@ public class ImportValidator {
 			}
 			// control the delete column, value of this column can be 1 or nothing
 			if (!(tempDelete.equals(AExcelCostIO.COMMON_DELETEMARK_VALUE) || tempDelete.equals(""))) {
-				faultList.add(new Fault(FaultType.DELETE_COLUMN_CAN_BE_EMPTY_OR_1, sheetIndex, i));
+				faultList.add(new Fault(FaultType.DELETE_COLUMN_CAN_BE_EMPTY_OR_X, sheetIndex, i));
 			}
 			//Cost_Equipment_Name cannot be null
 			String tempInterfaceEndName = Objects.toString(row.getCell(AExcelCostIO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_NAME), "");
@@ -179,7 +179,7 @@ public class ImportValidator {
 			}
 			// control the delete column, value of this column can be 1 or nothing
 			if (!(tempDelete.equals(AExcelCostIO.COMMON_DELETEMARK_VALUE) || tempDelete.equals(""))) {
-				faultList.add(new Fault(FaultType.DELETE_COLUMN_CAN_BE_EMPTY_OR_1, sheetIndex, i));
+				faultList.add(new Fault(FaultType.DELETE_COLUMN_CAN_BE_EMPTY_OR_X, sheetIndex, i));
 			}
 			// Control if the interfaceType is empty or not
 			String tempInterfaceType = Objects.toString(row.getCell(AExcelCostIO.COSTTYPES_COLUMN_COSTTYPE_NAME), "");

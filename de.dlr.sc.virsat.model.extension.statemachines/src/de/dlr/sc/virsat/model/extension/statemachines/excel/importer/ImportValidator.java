@@ -100,7 +100,7 @@ public class ImportValidator {
 			}
 			// control the delete column, value of this column can be 1 or nothing	
 			if (!(tempDelete.equals(AExcelStatIO.COMMON_DELETEMARK_VALUE) || tempDelete.equals(""))) {
-				faultList.add(new Fault(FaultType.DELETE_COLUMN_CAN_BE_EMPTY_OR_1, sheetIndex, i));
+				faultList.add(new Fault(FaultType.DELETE_COLUMN_CAN_BE_EMPTY_OR_X, sheetIndex, i));
 			}
 			// Control if the FromState does exist or not
 			String tempTransitionFrom = Objects.toString(row.getCell(AExcelStatIO.TRANSITION_COLUMN_TRANSITION_FROM), "");
@@ -150,7 +150,7 @@ public class ImportValidator {
 			}
 			// control the delete column, value of this column can be 1 or nothing
 			if (!(tempDelete.equals(AExcelStatIO.COMMON_DELETEMARK_VALUE) || tempDelete.equals(""))) {
-				faultList.add(new Fault(FaultType.DELETE_COLUMN_CAN_BE_EMPTY_OR_1, sheetIndex, i));
+				faultList.add(new Fault(FaultType.DELETE_COLUMN_CAN_BE_EMPTY_OR_X, sheetIndex, i));
 			}
 			//State_name cannot be null
 			String tempStateName = Objects.toString(row.getCell(AExcelStatIO.STATE_COLUMN_STATE_NAME), "");

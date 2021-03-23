@@ -135,7 +135,7 @@ public class ImportValidator {
 			}
 			// control the delete column, value of this column can be 1 or nothing
 			if (!(tempDelete.equals(AExcelFuncIO.COMMON_DELETEMARK_VALUE) || tempDelete.equals(""))) {
-				faultList.add(new Fault(FaultType.DELETE_COLUMN_CAN_BE_EMPTY_OR_1, sheetIndex, i));
+				faultList.add(new Fault(FaultType.DELETE_COLUMN_CAN_BE_EMPTY_OR_X, sheetIndex, i));
 			}
 			//Interface_end_name cannot be null
 			String tempInterfaceEndName = Objects.toString(row.getCell(AExcelFuncIO.INTERFACEEND_COLUMN_INTERFACEEND_NAME), "");
@@ -186,7 +186,7 @@ public class ImportValidator {
 			}
 			// control the delete column, value of this column can be 1 or nothing
 			if (!(tempDelete.equals(AExcelFuncIO.COMMON_DELETEMARK_VALUE) || tempDelete.equals(""))) {
-				faultList.add(new Fault(FaultType.DELETE_COLUMN_CAN_BE_EMPTY_OR_1, sheetIndex, i));
+				faultList.add(new Fault(FaultType.DELETE_COLUMN_CAN_BE_EMPTY_OR_X, sheetIndex, i));
 			}
 			// Control if the interfaceType is empty or not
 			String tempInterfaceName = Objects.toString(row.getCell(AExcelFuncIO.INTERFACE_COLUMN_INTERFACE_NAME), "");
@@ -242,7 +242,7 @@ public class ImportValidator {
 			}
 			// control the delete column, value of this column can be 1 or nothing
 			if (!(tempDelete.equals(AExcelFuncIO.COMMON_DELETEMARK_VALUE) || tempDelete.equals(""))) {
-				faultList.add(new Fault(FaultType.DELETE_COLUMN_CAN_BE_EMPTY_OR_1, sheetIndex, i));
+				faultList.add(new Fault(FaultType.DELETE_COLUMN_CAN_BE_EMPTY_OR_X, sheetIndex, i));
 			}
 			// Control if the interfaceType is empty or not
 			String tempInterfaceType = Objects.toString(row.getCell(AExcelFuncIO.INTERFACETYPES_COLUMN_INTERFACETYPE_NAME), "");

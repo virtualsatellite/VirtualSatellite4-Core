@@ -21,7 +21,6 @@ public abstract class AExcelCostIO extends AExcelIo {
 	public static final int COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_COSTMARGIN = 6;
 	public static final int COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_MARGIN = 7;
 	public static final int COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_FQN = 8;
-	
 
 	public static final int COSTTYPES_COLUMN_COSTTYPE_NAME = 2;
 	
