@@ -159,7 +159,7 @@ public class ReqIfImportWizard extends Wizard implements IWorkbenchWizard {
 	}
 	
 	/**
-	 * Do a re-import in a import configuration already exists. Existing requirement values are overwritten.
+	 * Do a re-import in if an import configuration already exists. Existing requirement values are overwritten.
 	 * 
 	 * @param editingDomain the editing domain
 	 * @param reqIfContent the content to import

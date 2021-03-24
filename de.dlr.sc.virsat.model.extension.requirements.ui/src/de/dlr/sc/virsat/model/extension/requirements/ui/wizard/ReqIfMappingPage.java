@@ -54,7 +54,7 @@ public class ReqIfMappingPage extends WizardPage implements SelectionListener {
 	private static final int COLUMN_SPECIFICATION_WIDTH = 300;
 	private static final int COLUMN_CONTAINER_WIDTH = 300;
 
-	private static final String TYPE_CONTAINER_LABEL = "Requierement Type Container:";
+	private static final String TYPE_CONTAINER_LABEL = "Requirement Type Container:";
 	private static final String TYPE_CONTAINER_DEFAULT_TEXT = "Create New Container";
 
 	private static final int SPEC_COLUMN_INDEX = 1;
