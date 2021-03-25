@@ -1,0 +1,34 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Core Model Extension Cost Budgets UI
+Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.budget.cost.ui;singleton:=true
+Bundle-Version: 4.12.1.qualifier
+Require-Bundle: de.dlr.sc.virsat.model.extension.budget.cost,
+ org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.expressions,
+ org.eclipse.emf.edit,
+ org.eclipse.emf.transaction,
+ org.eclipse.core.resources,
+ de.dlr.sc.virsat.model,
+ de.dlr.sc.virsat.project,
+ de.dlr.sc.virsat.project.ui,
+ de.dlr.sc.virsat.uiengine.ui,
+ org.eclipse.core.commands,
+ org.eclipse.emf.common
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: de.dlr.sc.virsat.model.extension.budget.cost.ui
+Bundle-Vendor: DLR (German Aerospace Center)
+Import-Package: de.dlr.sc.virsat.commons.ui.jface.viewer,
+ de.dlr.sc.virsat.model.extension.budget.mass.util,
+ org.eclipse.gef.commands,
+ org.eclipse.jgit.internal.storage.reftree;version="5.8.0",
+ org.eclipse.persistence.sessions.coordination,
+ org.jfree.chart,
+ org.jfree.chart.plot,
+ org.jfree.chart.swt,
+ org.jfree.chart.title,
+ org.jfree.data.category,
+ org.jfree.data.general,
+ org.jfree.util
