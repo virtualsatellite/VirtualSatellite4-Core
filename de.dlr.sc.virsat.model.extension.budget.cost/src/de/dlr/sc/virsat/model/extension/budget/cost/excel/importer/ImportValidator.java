@@ -87,7 +87,7 @@ public class ImportValidator {
 			validateHeaders();
 			validateCostEquipments();
 		} else {
-			faultList.add(new Fault(CostFaultType.CAN_ONLY_IMPORT_ELEMENT_DEFINITON_OR_COST_TYPE_COLLECTION, -1, -1));
+			faultList.add(new Fault(CostFaultType.CAN_ONLY_IMPORT_STRUCTURAL_ELEMENT_OR_COST_TYPE_COLLECTION, -1, -1));
 		}
 
 		return faultList;
