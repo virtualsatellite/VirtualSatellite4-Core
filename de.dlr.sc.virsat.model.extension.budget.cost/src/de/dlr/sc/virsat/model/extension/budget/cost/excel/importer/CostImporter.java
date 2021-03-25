@@ -41,6 +41,8 @@ import de.dlr.sc.virsat.model.extension.ps.model.ElementRealization;
  * Class for Importing Excel files.
  */
 public class CostImporter implements IImport {
+	
+	protected static final int ONE_HUNDRED = 100;
 
 	private StructuralElementInstance sei;
 	private XSSFWorkbook wb;
@@ -52,14 +54,7 @@ public class CostImporter implements IImport {
 	@Override
 	public void importExcel(EObject eObject, Repository repository, XSSFWorkbook wb) {
 		init(eObject, repository, wb);
-		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		// On import and export we should decide on
-		// applicability if we should export or
-		// import a certain type
-		// This needs to be refactored
-		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		String exportSeiTypeName = sei.getType().getName();
-
 		if (exportSeiTypeName.equals(CostTypesCollection.class.getSimpleName())) {
 			importCostTypes();
 		} else if (exportSeiTypeName.equals(ElementDefinition.class.getSimpleName())
@@ -111,11 +106,27 @@ public class CostImporter implements IImport {
 			Row row = sheet.getRow(i);
 			// Get the UUID of the first cost equipment
 			String tempUUID = Objects.toString(row.getCell(AExcelCostIO.COMMON_COLUMN_UUID), "");
+			// Get the Cost of the first cost equipment
+			Double tempCost = Double.parseDouble(row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_COST).toString());
+			// Get the Margin of the first cost equipment
+			Double tempMargin = Double.parseDouble(row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_MARGIN).toString());
+			// Updated the CostMargin
+			Double tempCostMargin = (tempCost / ONE_HUNDRED) * tempMargin;
+			// Update the CostWithMargin
+			Double tempCostWithMargin = tempCost + tempCostMargin;
 			// figure out if we are creating a new CostEquipment
 			if ("".equals(tempUUID)) {
 				CostEquipment costEquipment = new CostEquipment(concept);
-				// change the name if it is not empty , if it is empty throw a fault
+				// change the name if it is not empty, if it is empty throw a fault
 				costEquipment.setName(row.getCell(AExcelCostIO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_NAME).toString());
+				// change the cost if it is not empty, if it is empty throw a fault
+				costEquipment.setCost(tempCost);
+				// change the margin if it is not empty, if it is empty throw a fault
+				costEquipment.setMargin(tempMargin);
+				// change the cost margin if it is not empty, if it is empty throw a fault
+				costEquipment.setCostMargin(tempCostMargin);
+				// change the cost with margin if it is not empty, if it is empty throw a fault
+				costEquipment.setCostWithMargin(tempCostWithMargin);
 				// if costType exists, set it, if it does not exist throw a fault
 				int interfaceTypeIndex = ExcelImportHelper.containsABeanCategoryAssignmentName(row.getCell(AExcelCostIO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_TYPE).toString(), costTypes);
 				costEquipment.setType(costTypes.get(interfaceTypeIndex));
@@ -130,6 +141,14 @@ public class CostImporter implements IImport {
 					// change the name if it is not empty , if it is empty throw a fault
 					String tempCostEquipmentName = Objects.toString(row.getCell(AExcelCostIO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_NAME).toString(), "");
 					seiCostEquipments.get(check).setName(tempCostEquipmentName);
+					// change the cost if it is not empty , if it is empty throw a fault
+					seiCostEquipments.get(check).setCost(tempCost);
+					// change the margin if it is not empty , if it is empty throw a fault
+					seiCostEquipments.get(check).setMargin(tempMargin);
+					// change the cost margin if it is not empty , if it is empty throw a fault
+					seiCostEquipments.get(check).setCostMargin(tempCostMargin);
+					// change the cost with margin if it is not empty , if it is empty throw a fault
+					seiCostEquipments.get(check).setCostWithMargin(tempCostWithMargin);
 					// if type exists change the type, if not return a fault
 					int costTypeIndex = ExcelImportHelper.containsABeanCategoryAssignmentName(row.getCell(AExcelCostIO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_TYPE).toString(), costTypes);
 					CostType costType = (costTypeIndex >= 0) ? costTypes.get(costTypeIndex) : null;

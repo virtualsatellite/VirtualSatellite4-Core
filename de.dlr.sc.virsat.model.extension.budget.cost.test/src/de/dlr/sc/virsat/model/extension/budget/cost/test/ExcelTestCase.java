@@ -40,6 +40,11 @@ public class ExcelTestCase extends AConceptTestCase {
 	protected static final String CONCEPT_ID_EGSCC = de.dlr.sc.virsat.model.extension.ps.Activator.getPluginId();
 	protected static final String CONCEPT_ID_COST = Activator.getPluginId();
 	protected static final int NUMBER_OF_COST_TYPES = 3;
+	protected static final int ONE_HUNDRED = 100;
+	protected static final double TEST_COST_1 = 1200.0;
+	protected static final double TEST_MARGIN_1 = 20.0;
+	protected static final double TEST_COST_2 = 1600.0;
+	protected static final double TEST_MARGIN_2 = 50.0;
 
 	protected Repository repository;
 	protected CostTypesCollection costTypesCollection;
@@ -48,10 +53,11 @@ public class ExcelTestCase extends AConceptTestCase {
 	protected ProductTreeDomain productTreeDomain;
 	protected ElementConfiguration elementConf;
 	protected ConfigurationTree configTree;
-	protected QudvUnitHelper qudvUnitHelper;
 
 	protected Concept conceptEgscc;
 	protected Concept conceptCost;
+	
+
 
 	@Before
 	public void setUp() throws CoreException {
@@ -79,13 +85,13 @@ public class ExcelTestCase extends AConceptTestCase {
 		costTypesCollection.getStructuralElementInstance().setUuid(new VirSatUuid("505748e0-5d88-47b3-bce8-f53acacb7ccb"));
 		CostType costType1 = new CostType(conceptCost);
 		costType1.getTypeInstance().setUuid(new VirSatUuid("ea816464-cea3-4db7-ae91-31d37c60a63c"));
-		costType1.setName("KILL");
+		costType1.setName("Material");
 		CostType costType2 = new CostType(conceptCost);
 		costType2.getTypeInstance().setUuid(new VirSatUuid("1cd42892-eb5f-42ac-881d-e8ef4825254a"));
-		costType2.setName("MILL");
+		costType2.setName("Personal");
 		CostType costType3 = new CostType(conceptCost);
 		costType3.getTypeInstance().setUuid(new VirSatUuid("88544856-794e-49fd-a873-266a4008a3fc"));
-		costType3.setName("HILL");
+		costType3.setName("Test");
 		costTypesCollection.add(costType1);
 		costTypesCollection.add(costType2);
 		costTypesCollection.add(costType3);
@@ -105,15 +111,27 @@ public class ExcelTestCase extends AConceptTestCase {
 		productTreeDomain.add(elementDef);
 
 		CostEquipment costEquipment1 = new CostEquipment(conceptCost);
-		costEquipment1.setName("POW_MAU");
+		costEquipment1.setName("CostMaterial");
+		costEquipment1.setCost(TEST_COST_1);
+		costEquipment1.setMargin(TEST_MARGIN_1);
+		costEquipment1.setCostMargin((costEquipment1.getCost() / ONE_HUNDRED) * costEquipment1.getMargin());
+		costEquipment1.setCostWithMargin(costEquipment1.getCost() + costEquipment1.getCostMargin());
 		costEquipment1.getTypeInstance().setUuid(new VirSatUuid("a2643ddb-e6a1-4015-9b80-be931f0c5a37"));
 		costEquipment1.setType(costType1);
 		CostEquipment costEquipment2 = new CostEquipment(conceptCost);
-		costEquipment2.setName("POW_WAU");
+		costEquipment2.setName("CostPersonal");
+		costEquipment2.setCost(TEST_COST_1);
+		costEquipment2.setMargin(TEST_MARGIN_2);
+		costEquipment2.setCostMargin((costEquipment2.getCost() / ONE_HUNDRED) * costEquipment2.getMargin());
+		costEquipment2.setCostWithMargin(costEquipment2.getCost() + costEquipment2.getCostMargin());
 		costEquipment2.getTypeInstance().setUuid(new VirSatUuid("9f8b18e1-f6a1-4cf6-bcb7-0d4a5f0a86de"));
 		costEquipment2.setType(costType2);
 		CostEquipment costEquipment3 = new CostEquipment(conceptCost);
-		costEquipment3.setName("POW_LOW");
+		costEquipment3.setName("CostTest");
+		costEquipment3.setCost(TEST_COST_2);
+		costEquipment3.setMargin(TEST_MARGIN_2);
+		costEquipment3.setCostMargin((costEquipment3.getCost() / ONE_HUNDRED) * costEquipment3.getMargin());
+		costEquipment3.setCostWithMargin(costEquipment3.getCost() + costEquipment3.getCostMargin());
 		costEquipment3.getTypeInstance().setUuid(new VirSatUuid("e13ad850-21d8-43d7-aa61-20a3f8d1749b"));
 		costEquipment3.setType(costType3);
 
@@ -129,15 +147,15 @@ public class ExcelTestCase extends AConceptTestCase {
 		configTree.setName("ConfigurationTree1");
 
 		CostEquipment costEquipment4 = new CostEquipment(conceptCost);
-		costEquipment4.setName("POW_IN");
+		costEquipment4.setName("CostMaterial_1");
 		costEquipment4.getTypeInstance().setUuid(new VirSatUuid("a2643ddb-e6a1-4015-9b80-be931f0c5a37"));
 		costEquipment4.setType(costType1);
 		CostEquipment costEquipment5 = new CostEquipment(conceptCost);
-		costEquipment5.setName("POW_SOMETHING");
+		costEquipment5.setName("CostPersonal_2");
 		costEquipment5.getTypeInstance().setUuid(new VirSatUuid("9f8b18e1-f6a1-4cf6-bcb7-0d4a5f0a86de"));
 		costEquipment5.setType(costType2);
 		CostEquipment costEquipment6 = new CostEquipment(conceptCost);
-		costEquipment6.setName("POW_OUT");
+		costEquipment6.setName("CostTest_3");
 		costEquipment6.getTypeInstance().setUuid(new VirSatUuid("e13ad850-21d8-43d7-aa61-20a3f8d1749b"));
 		costEquipment6.setType(costType3);
 

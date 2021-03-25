@@ -28,6 +28,7 @@ import org.junit.Test;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.budget.cost.excel.AExcelCostIO;
+import de.dlr.sc.virsat.model.extension.budget.cost.model.CostEquipment;
 import de.dlr.sc.virsat.model.extension.budget.cost.test.ExcelTestCase;
 
 /**
@@ -36,15 +37,15 @@ import de.dlr.sc.virsat.model.extension.budget.cost.test.ExcelTestCase;
 public class CostExporterTest extends ExcelTestCase {
 
 	protected LocalDateTime localDateTime;
-	
+
 	@Override
 	public void setUp() throws CoreException {
 		super.setUp();
-		//CHECKSTYLE:OFF
+		// CHECKSTYLE:OFF
 		localDateTime = LocalDateTime.now();
-		//CHECKSTYLE:ON
+		// CHECKSTYLE:ON
 	}
-	
+
 	@Test
 	public void canExport() {
 		CostExporter costExporter = new CostExporter(localDateTime);
@@ -52,10 +53,11 @@ public class CostExporterTest extends ExcelTestCase {
 	}
 
 	@Test
-	public void testExportCostTypes() { 		
+	public void testExportCostTypes() {
 		StructuralElementInstance sei = costTypesCollection.getStructuralElementInstance();
 		CostExporter costExporter = new CostExporter(localDateTime);
-		costExporter.export(costTypesCollection.getStructuralElementInstance(), System.getProperty("java.io.tmpdir"), true, "");
+		costExporter.export(costTypesCollection.getStructuralElementInstance(), System.getProperty("java.io.tmpdir"),
+				true, "");
 		XSSFWorkbook wb = costExporter.getWb();
 
 		Sheet sheet = wb.getSheet(AExcelCostIO.TEMPLATE_SHEETNAME_COSTTYPES);
@@ -69,7 +71,8 @@ public class CostExporterTest extends ExcelTestCase {
 
 	@Test
 	public void testExportCostEquipment() throws IOException {
-		InputStream iStream = de.dlr.sc.virsat.model.extension.budget.cost.test.TestActivator.getResourceContentAsString("/resources/SampleTest.xlsx");
+		InputStream iStream = de.dlr.sc.virsat.model.extension.budget.cost.test.TestActivator
+				.getResourceContentAsString("/resources/SampleTest.xlsx");
 		StructuralElementInstance sei = elementDef.getStructuralElementInstance();
 
 		CostExporter costExporter = new CostExporter(localDateTime);
@@ -78,12 +81,23 @@ public class CostExporterTest extends ExcelTestCase {
 
 		Sheet sheet = wb.getSheet(AExcelCostIO.TEMPLATE_SHEETNAME_COSTEQUIPMENTS);
 		for (int i = 0; i < sei.getCategoryAssignments().size(); ++i) {
-			CategoryAssignment interfaceEnd = sei.getCategoryAssignments().get(i);
+
+			CategoryAssignment caAsCostEquipment = sei.getCategoryAssignments().get(i);
+			CostEquipment costEquipment = new CostEquipment(caAsCostEquipment);
+			
 			Row row = sheet.getRow(AExcelCostIO.COMMON_ROW_START_TABLE + i);
 			Cell cell = row.getCell(AExcelCostIO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_NAME);
-			assertEquals("CostEquipment name exported correctly", interfaceEnd.getName(), cell.toString());
+			assertEquals("CostEquipment name exported correctly", caAsCostEquipment.getName(), cell.toString());
 			cell = row.getCell(AExcelCostIO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_FQN);
-			assertEquals("CostEquipment fqn exported correctly", interfaceEnd.getFullQualifiedInstanceName(), cell.toString());
+			assertEquals("CostEquipment fqn exported correctly", caAsCostEquipment.getFullQualifiedInstanceName(), cell.toString());
+			cell = row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_COST);
+			assertEquals("CostEquipment cost exported correctly", Double.toString(costEquipment.getCost()), cell.toString());
+			cell = row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_MARGIN);
+			assertEquals("CostEquipment margin exported correctly", Double.toString(costEquipment.getMargin()), cell.toString());
+			cell = row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_COSTMARGIN);
+			assertEquals("CostEquipment costMargin exported correctly", Double.toString(costEquipment.getCostMargin()), cell.toString());
+			cell = row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_COSTWITHMARGIN);
+			assertEquals("CostEquipment1 costWithMargin exported correctly", Double.toString(costEquipment.getCostWithMargin()), cell.toString());			
 		}
 		Row row = sheet.getRow(AExcelCostIO.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size());
 		assertNull("Line after alle entries correctly empty", row);
@@ -91,7 +105,8 @@ public class CostExporterTest extends ExcelTestCase {
 
 	@Test
 	public void testExportCostTypesIntoEmptyWorkbook() throws IOException {
-		InputStream iStream = de.dlr.sc.virsat.model.extension.budget.cost.test.TestActivator.getResourceContentAsString("/resources/SampleTestWithoutPages.xlsx");
+		InputStream iStream = de.dlr.sc.virsat.model.extension.budget.cost.test.TestActivator
+				.getResourceContentAsString("/resources/SampleTestWithoutPages.xlsx");
 
 		StructuralElementInstance sei = costTypesCollection.getStructuralElementInstance();
 
@@ -107,12 +122,14 @@ public class CostExporterTest extends ExcelTestCase {
 			Cell cell = row.getCell(AExcelCostIO.COSTTYPES_COLUMN_COSTTYPE_NAME);
 			assertEquals("Type " + i + "exported correctly", interfaceType.getName(), cell.toString());
 		}
-		assertNull("Line after all entries correctly empty", sheet.getRow(AExcelCostIO.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size()));
+		assertNull("Line after all entries correctly empty",
+				sheet.getRow(AExcelCostIO.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size()));
 	}
 
 	@Test
 	public void testExportCostEquipmentsIntoEmptyWorkbook() throws IOException {
-		InputStream iStream = de.dlr.sc.virsat.model.extension.budget.cost.test.TestActivator.getResourceContentAsString("/resources/SampleTestWithoutPages.xlsx");
+		InputStream iStream = de.dlr.sc.virsat.model.extension.budget.cost.test.TestActivator
+				.getResourceContentAsString("/resources/SampleTestWithoutPages.xlsx");
 
 		StructuralElementInstance sei = elementConf.getStructuralElementInstance();
 
@@ -127,8 +144,10 @@ public class CostExporterTest extends ExcelTestCase {
 			Cell cell = row.getCell(AExcelCostIO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_NAME);
 			assertEquals("CostEquipment name exported correctly", interfaceEnd.getName(), cell.toString());
 			cell = row.getCell(AExcelCostIO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_FQN);
-			assertEquals("CostEquipment fqn exported correctly", interfaceEnd.getFullQualifiedInstanceName(), cell.toString());
+			assertEquals("CostEquipment fqn exported correctly", interfaceEnd.getFullQualifiedInstanceName(),
+					cell.toString());
 		}
-		assertNull("Line after all entries correctly empty", sheet.getRow(AExcelCostIO.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size()));
+		assertNull("Line after all entries correctly empty",
+				sheet.getRow(AExcelCostIO.COMMON_ROW_START_TABLE + sei.getCategoryAssignments().size()));
 	}
 }
