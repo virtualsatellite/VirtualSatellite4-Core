@@ -47,6 +47,7 @@ import org.eclipse.rmf.reqif10.SpecRelation;
 import org.eclipse.rmf.reqif10.SpecType;
 import org.eclipse.rmf.reqif10.Specification;
 import org.eclipse.rmf.reqif10.common.util.ReqIF10XhtmlUtil;
+import org.eclipse.rmf.reqif10.impl.SpecRelationImpl;
 
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
@@ -387,49 +388,53 @@ public class ReqIfImporter {
 	 */
 	public void importRequirementLink(EditingDomain editingDomain, CompoundCommand command, SpecRelation relation) {
 		if (relation.getSource() != null || relation.getTarget() != null || relation.getType() != null) {
-			String sourceReqName = Requirement.REQUIREMENT_NAME_PREFIX + reqIfUtils.getReqIFRequirementIdentifier(relation.getSource());
-			String targetReqName = Requirement.REQUIREMENT_NAME_PREFIX + reqIfUtils.getReqIFRequirementIdentifier(relation.getTarget());
-			String linkName = Requirement.REQUIREMENT_NAME_PREFIX + reqIfUtils.getReqIFRequirementIdentifier(relation.getSource()) 
-					+ relation.getType().getLongName() 
-					+ Requirement.REQUIREMENT_NAME_PREFIX + reqIfUtils.getReqIFRequirementIdentifier(relation.getTarget());
-			String linkTypeName = relation.getType().getLongName();
-			RequirementsSpecification containerSpec = null;
-			Requirement localSourceRequirement = null;
-			Requirement localTargetRequirement = null;
-			for (SpecificationMapping mappedSpec : importConfiguration.getMappedSpecifications()) {
-				RequirementsSpecification spec = mappedSpec.getSpecification();
-				Requirement localSourceRequirementTmp = reqHelper.findRequirement(spec.getRequirements(), sourceReqName, true);
-				Requirement localTargetRequirementTmp = reqHelper.findRequirement(spec.getRequirements(), targetReqName, true);
-				if (localSourceRequirementTmp != null) {
-					localSourceRequirement = localSourceRequirementTmp;
-					containerSpec = spec;
+			SpecObject basicTarget = ((SpecRelationImpl) relation).basicGetTarget();
+			SpecObject basicSource = ((SpecRelationImpl) relation).basicGetSource();
+			if (!basicTarget.eIsProxy() && !basicSource.eIsProxy()) {
+				String sourceReqName = Requirement.REQUIREMENT_NAME_PREFIX + reqIfUtils.getReqIFRequirementIdentifier(basicSource);
+				String targetReqName = Requirement.REQUIREMENT_NAME_PREFIX + reqIfUtils.getReqIFRequirementIdentifier(basicTarget);
+				String linkName = Requirement.REQUIREMENT_NAME_PREFIX + reqIfUtils.getReqIFRequirementIdentifier(relation.getSource()) 
+						+ relation.getType().getLongName() 
+						+ Requirement.REQUIREMENT_NAME_PREFIX + reqIfUtils.getReqIFRequirementIdentifier(relation.getTarget());
+				String linkTypeName = relation.getType().getLongName();
+				RequirementsSpecification containerSpec = null;
+				Requirement localSourceRequirement = null;
+				Requirement localTargetRequirement = null;
+				for (SpecificationMapping mappedSpec : importConfiguration.getMappedSpecifications()) {
+					RequirementsSpecification spec = mappedSpec.getSpecification();
+					Requirement localSourceRequirementTmp = reqHelper.findRequirement(spec.getRequirements(), sourceReqName, true);
+					Requirement localTargetRequirementTmp = reqHelper.findRequirement(spec.getRequirements(), targetReqName, true);
+					if (localSourceRequirementTmp != null) {
+						localSourceRequirement = localSourceRequirementTmp;
+						containerSpec = spec;
+					}
+					if (localTargetRequirementTmp != null) {
+						localTargetRequirement = localTargetRequirementTmp;
+					}
 				}
-				if (localTargetRequirementTmp != null) {
-					localTargetRequirement = localTargetRequirementTmp;
-				}
-			}
-			// Check if relation is relevant for imported specifications, if not ignore it
-			if (containerSpec != null && localSourceRequirement != null && localTargetRequirement != null) {
-				RequirementLink localLink = (RequirementLink) reqIfUtils.findExisting(containerSpec.getLinks(), linkName);
-				RequirementsConfiguration typeContainer = importConfiguration.getTypeDefinitionsContainer();
-				RequirementLinkType localLinkType = (RequirementLinkType) reqIfUtils.findExisting(typeContainer.getLinkTypeDefinitions(), linkTypeName);
-				if (localLinkType == null) {
-					localLinkType = new RequirementLinkType(concept);
-					localLinkType.setName(linkTypeName);
-					localLinkType.setLinkDescription(relation.getType().getDesc());
-					command.append(typeContainer.getLinkTypeDefinitions().add(editingDomain, localLinkType));
-				}
-				if (localLink == null) {
-					localLink = new RequirementLink(concept);
-					localLink.setName(linkName);
-					localLink.setSubject(localSourceRequirement);
-					localLink.getTargets().add(localTargetRequirement);
-					localLink.setType(localLinkType);
-					command.append(containerSpec.getLinks().add(editingDomain, localLink));
-				} else {
-					if (!localLink.getTargets().contains(localTargetRequirement)) {
-						command.append(localLink.setType(editingDomain, localLinkType));
-						command.append(localLink.getTargets().add(editingDomain, localTargetRequirement));
+				// Check if relation is relevant for imported specifications, if not ignore it
+				if (containerSpec != null && localSourceRequirement != null && localTargetRequirement != null) {
+					RequirementLink localLink = (RequirementLink) reqIfUtils.findExisting(containerSpec.getLinks(), linkName);
+					RequirementsConfiguration typeContainer = importConfiguration.getTypeDefinitionsContainer();
+					RequirementLinkType localLinkType = (RequirementLinkType) reqIfUtils.findExisting(typeContainer.getLinkTypeDefinitions(), linkTypeName);
+					if (localLinkType == null) {
+						localLinkType = new RequirementLinkType(concept);
+						localLinkType.setName(linkTypeName);
+						localLinkType.setLinkDescription(relation.getType().getDesc());
+						command.append(typeContainer.getLinkTypeDefinitions().add(editingDomain, localLinkType));
+					}
+					if (localLink == null) {
+						localLink = new RequirementLink(concept);
+						localLink.setName(linkName);
+						localLink.setSubject(localSourceRequirement);
+						localLink.getTargets().add(localTargetRequirement);
+						localLink.setType(localLinkType);
+						command.append(containerSpec.getLinks().add(editingDomain, localLink));
+					} else {
+						if (!localLink.getTargets().contains(localTargetRequirement)) {
+							command.append(localLink.setType(editingDomain, localLinkType));
+							command.append(localLink.getTargets().add(editingDomain, localTargetRequirement));
+						}
 					}
 				}
 			}
