@@ -526,5 +526,10 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 		EPackage.Registry.INSTANCE.put(ReqIF10Package.eNS_URI,
 				ReqIF10Package.eINSTANCE);
 	}
+	
+	@Override
+	public void initializeTimeOutRule() {
+		// Disable timeout rule as its shutdown-hook conflicts with the ReqIF serialization
+	}
 
 }

@@ -461,5 +461,9 @@ public class ReqIfUtilsTest extends AConceptProjectTestCase {
 		return testReq;
 	}
 	
+	@Override
+	public void initializeTimeOutRule() {
+		// Disable timeout rule as its shutdown-hook conflicts with the ReqIF serialization
+	}
 
 }
