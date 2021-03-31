@@ -50,8 +50,8 @@ public class CsvTypeReviewPage extends WizardPage implements SelectionListener, 
 	private static final String TYPE_NAME_LABEL = "Type Name";
 	private static final int WITH_TEXT = 400;
 
-	private static final int COLUMN_NAME_WIDTH = 300;
-	private static final int COLUMN_TYPE_WIDTH = 200;
+	private static final int COLUMN_NAME_WIDTH = 350;
+	private static final int COLUMN_TYPE_WIDTH = 350;
 
 	private static final List<String> ATTRIBUTE_TYPES = new ArrayList<String>(
 			Arrays.asList(RequirementAttribute.TYPE_Boolean_NAME, RequirementAttribute.TYPE_Date_NAME,
