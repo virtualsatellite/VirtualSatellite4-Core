@@ -1308,6 +1308,99 @@ This does not create a new requirement type and can help to have consistent requ
 
 |===
 
+====== Import from ReqIF-files from DOORs
+
+Export requirements from Doors:
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Configure the ReqIF export in DOORs. For that you need to manage the project properties.
+|image:chapterModeling/subsectionRequirements/reqif/ConfigureReqIF.png[Configure ReqIF Export]
+
+|{counter:step}.
+|Create a new ReqIF definition that contains the configuration for your ReqIF file to export
+|image:chapterModeling/subsectionRequirements/reqif/CreateReqIFDefinition.png[Create ReqIF Definition]
+
+|{counter:step}.
+|Add specifications to ReqIF file which are shall be exported
+|image:chapterModeling/subsectionRequirements/reqif/AddSpecToDoorsReqIF.png[Add Specifications]
+
+|{counter:step}.
+|Do the export.
+|image:chapterModeling/subsectionRequirements/reqif/DoTheExport.png[Do Export]
+
+|===
+
+Import the Requirements in Virtual Satellite:
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Select `Import` from the file menu in Virtual Satellite.
+|image:chapterModeling/subsectionRequirements/ImportMenuRequirements.png[Import Menu Virtual Satellite]
+
+|{counter:step}.
+|Select `ReqIF Requirements Import` form the `Virtual Satellite` category.
+|image:chapterModeling/subsectionRequirements/reqif/ReqIfImportType.png[ReqIF Import]
+
+|{counter:step}.
+|Select a ReqIF file and a container for the new import configuration (Select a RequirementsConfigurationCollection in the tree)
+|image:chapterModeling/subsectionRequirements/reqif/SelectFileAndConfigContainer.png[Select ReqIF file]
+
+|{counter:step}.
+|Select the requirement specifications from the ReqIF file which shall be imported. For each of them select a container tree element in which a new specification shall be created.
+
+NOTE: Make sure to select a container element for all selected specifications. Otherwise they are not imported
+
+|image:chapterModeling/subsectionRequirements/reqif/SelectImportSpec.png[Select Specifications]
+
+|===
+
+After a first ReqIF import, the mapping of external specification to the ones within the model can be customized. It is also possible to customize in which RequirementsConfiguration the to be imported types are added:
+
+|image:chapterModeling/subsectionRequirements/reqif/EditMappingLater.png[Edit Mapping]
+
+To do a re-import simply select the existing import configuration:
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Select `Import` from the file menu in Virtual Satellite.
+|image:chapterModeling/subsectionRequirements/ImportMenuRequirements.png[Import Menu Virtual Satellite]
+
+|{counter:step}.
+|Select `ReqIF Requirements Import` form the `Virtual Satellite` category.
+|image:chapterModeling/subsectionRequirements/reqif/ReqIfImportType.png[ReqIF Import]
+
+|{counter:step}.
+|Select the ReqIF file to be imported and the existing import configuration.
+
+NOTE: Make sure that ReqIF file and import configuration are matching. Otherwise nothing will be imported.
+
+|image:chapterModeling/subsectionRequirements/reqif/ReqIfImportType.png[ReqIF Import]
+
+
+|===
+
 ===== Requirements verification
 
 Managing requirements within Virtual Satellite allows to verify the requirements with the system model.
