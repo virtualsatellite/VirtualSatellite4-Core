@@ -1254,7 +1254,7 @@ To import requirements from CSV files follow the next steps:
 |image:chapterModeling/subsectionRequirements/ImportMenuRequirements.png[Import Menu Virtual Satellite]
 
 |{counter:step}.
-|Select `CSV Requirements Import` form the `Virtual Satellite` category.
+|Select `Requirements CSV Import Wizard` form the `Virtual Satellite` category.
 |image:chapterModeling/subsectionRequirements/ImportWizard.png[Select the correct import wizard]
 
 |{counter:step}.
@@ -1308,9 +1308,9 @@ This does not create a new requirement type and can help to have consistent requ
 
 |===
 
-====== Import from ReqIF-files from DOORs
+====== Import ReqIF-files from DOORs
 
-Export requirements from Doors:
+First, export requirements from Doors:
 
 :step: 0
 [%header,cols=">8,62a,40a"] 
@@ -1325,15 +1325,18 @@ Export requirements from Doors:
 |image:chapterModeling/subsectionRequirements/reqif/ConfigureReqIF.png[Configure ReqIF Export]
 
 |{counter:step}.
-|Create a new ReqIF definition that contains the configuration for your ReqIF file to export
+|Create a new ReqIF definition that contains the configuration for your ReqIF file to export.
 |image:chapterModeling/subsectionRequirements/reqif/CreateReqIFDefinition.png[Create ReqIF Definition]
 
 |{counter:step}.
-|Add specifications to ReqIF file which are shall be exported
+|Add specifications to the ReqIF file which shall be exported.
 |image:chapterModeling/subsectionRequirements/reqif/AddSpecToDoorsReqIF.png[Add Specifications]
 
 |{counter:step}.
 |Do the export.
+
+NOTE: You can also do this step again later using the same definition. Thus, doing a re-export.
+
 |image:chapterModeling/subsectionRequirements/reqif/DoTheExport.png[Do Export]
 
 |===
@@ -1353,15 +1356,15 @@ Import the Requirements in Virtual Satellite:
 |image:chapterModeling/subsectionRequirements/ImportMenuRequirements.png[Import Menu Virtual Satellite]
 
 |{counter:step}.
-|Select `ReqIF Requirements Import` form the `Virtual Satellite` category.
+|Select `Requirements ReqIF Import Wizard` form the `Virtual Satellite` category.
 |image:chapterModeling/subsectionRequirements/reqif/ReqIfImportType.png[ReqIF Import]
 
 |{counter:step}.
-|Select a ReqIF file and a container for the new import configuration (Select a RequirementsConfigurationCollection in the tree)
+|Select a ReqIF file and a container for the new import configuration. The import configuration is named according to the ReqIF file name. (Select a RequirementsConfigurationCollection in the tree)
 |image:chapterModeling/subsectionRequirements/reqif/SelectFileAndConfigContainer.png[Select ReqIF file]
 
 |{counter:step}.
-|Select the requirement specifications from the ReqIF file which shall be imported. For each of them select a container tree element in which a new specification shall be created.
+|Select the requirement specifications from the ReqIF file which shall be imported. For each of them select a Virtual Satellite container tree element in which a new specification shall be created. Optionally you can specify an existing requirements configuration in which imported requirement types and link types are imported into. Otherwise a new requirements configuration is created for that purpose.
 
 NOTE: Make sure to select a container element for all selected specifications. Otherwise they are not imported
 
@@ -1371,7 +1374,9 @@ NOTE: Make sure to select a container element for all selected specifications. O
 
 After a first ReqIF import, the mapping of external specification to the ones within the model can be customized. It is also possible to customize in which RequirementsConfiguration the to be imported types are added:
 
-|image:chapterModeling/subsectionRequirements/reqif/EditMappingLater.png[Edit Mapping]
+.Edit the mapping of external to internal specifications
+[#SpecificationMapping]
+image::chapterModeling/subsectionRequirements/reqif/EditMappingLater.png[Edit Mapping]
 
 To do a re-import simply select the existing import configuration:
 
@@ -1388,7 +1393,7 @@ To do a re-import simply select the existing import configuration:
 |image:chapterModeling/subsectionRequirements/ImportMenuRequirements.png[Import Menu Virtual Satellite]
 
 |{counter:step}.
-|Select `ReqIF Requirements Import` form the `Virtual Satellite` category.
+|Select `Requirements ReqIF Import Wizard` form the `Virtual Satellite` category.
 |image:chapterModeling/subsectionRequirements/reqif/ReqIfImportType.png[ReqIF Import]
 
 |{counter:step}.
@@ -1396,7 +1401,7 @@ To do a re-import simply select the existing import configuration:
 
 NOTE: Make sure that ReqIF file and import configuration are matching. Otherwise nothing will be imported.
 
-|image:chapterModeling/subsectionRequirements/reqif/ReqIfImportType.png[ReqIF Import]
+|image:chapterModeling/subsectionRequirements/reqif/ReImport.png[Re-import]
 
 
 |===
