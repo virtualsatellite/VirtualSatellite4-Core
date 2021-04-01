@@ -48,12 +48,9 @@ public class CostExporter implements IExport {
 
 	private static final String DEFAULT_TEMPLATE_PATH = "/resources/ExcelExportDefaultTemplate.xlsx";
 
-	private static final String[] EXPORTABLE_SEIS = { 
-			ElementDefinition.class.getSimpleName(),
-			ElementConfiguration.class.getSimpleName(), 
-			CostTypesCollection.class.getSimpleName(),
-			ElementRealization.class.getSimpleName(), 
-			ElementOccurence.class.getSimpleName() };
+	private static final String[] EXPORTABLE_SEIS = { ElementDefinition.class.getSimpleName(),
+			ElementConfiguration.class.getSimpleName(), CostTypesCollection.class.getSimpleName(),
+			ElementRealization.class.getSimpleName(), ElementOccurence.class.getSimpleName() };
 
 	protected LocalDateTime localDateTime;
 	private ExcelExportHelper helper;
@@ -118,11 +115,11 @@ public class CostExporter implements IExport {
 	 */
 	private void exportData(StructuralElementInstance exportSei) {
 		String exportSeiTypeName = exportSei.getType().getName();
-		
+
 		if (exportSeiTypeName.equals(CostTypesCollection.class.getSimpleName())) {
 			removeSheets(AExcelCostIO.TEMPLATE_SHEETNAME_COSTEQUIPMENTS);
 			createDataSheetCostTypes(exportSei);
-			
+
 		} else if (exportSeiTypeName.equals(ElementConfiguration.class.getSimpleName())
 				|| exportSeiTypeName.equals(ElementDefinition.class.getSimpleName())
 				|| exportSeiTypeName.equals(ElementOccurence.class.getSimpleName())
@@ -159,12 +156,15 @@ public class CostExporter implements IExport {
 		BeanCategoryAssignmentHelper bCaHelper = new BeanCategoryAssignmentHelper();
 		List<CostType> seiCostTypes = bCaHelper.getAllBeanCategories(exportSei, CostType.class);
 
-		helper.instantiateCells(sheet, seiCostTypes.size() + AExcelCostIO.COMMON_ROW_START_TABLE, AExcelCostIO.COSTTYPES_COLUMN_COSTTYPE_NAME + 1);
+		helper.instantiateCells(sheet, seiCostTypes.size() + AExcelCostIO.COMMON_ROW_START_TABLE,
+				AExcelCostIO.COSTTYPES_COLUMN_COSTTYPE_NAME + 1);
 		int i = AExcelCostIO.COMMON_ROW_START_TABLE;
 		for (CostType costType : seiCostTypes) {
 			Row row = sheet.getRow(i);
-			row.getCell(AExcelCostIO.COMMON_COLUMN_UUID).setCellValue(helper.getCreationHelper().createRichTextString(costType.getTypeInstance().getUuid().toString()));
-			row.getCell(AExcelCostIO.COSTTYPES_COLUMN_COSTTYPE_NAME).setCellValue(helper.getCreationHelper().createRichTextString(costType.getName()));
+			row.getCell(AExcelCostIO.COMMON_COLUMN_UUID).setCellValue(
+					helper.getCreationHelper().createRichTextString(costType.getTypeInstance().getUuid().toString()));
+			row.getCell(AExcelCostIO.COSTTYPES_COLUMN_COSTTYPE_NAME)
+					.setCellValue(helper.getCreationHelper().createRichTextString(costType.getName()));
 			i++;
 		}
 	}
@@ -182,28 +182,34 @@ public class CostExporter implements IExport {
 		helper.instantiateCells(sheet, seiCostEquipments.size() + AExcelCostIO.COMMON_ROW_START_TABLE,
 				AExcelCostIO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_FQN + 1);
 
-		// for each interface end, fill out a row
+		// for each cost equipments, fill out a row
 		int i = AExcelCostIO.COMMON_ROW_START_TABLE;
 		for (CostEquipment costEquipment : seiCostEquipments) {
 			CostType type = costEquipment.getType();
 			System.out.println(type);
 			Row row = sheet.getRow(i);
-			//create the UUID
-			row.getCell(AExcelCostIO.COMMON_COLUMN_UUID).setCellValue(helper.getCreationHelper().createRichTextString(costEquipment.getTypeInstance().getUuid().toString()));
-			//create the Name
-			row.getCell(AExcelCostIO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_NAME).setCellValue(helper.getCreationHelper().createRichTextString(costEquipment.getName()));
-			//create the Type
-			row.getCell(AExcelCostIO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_TYPE).setCellValue(helper.getCreationHelper().createRichTextString(getCostTypeName(costEquipment)));
-			//create the Cost
+			// create the UUID
+			row.getCell(AExcelCostIO.COMMON_COLUMN_UUID).setCellValue(helper.getCreationHelper()
+					.createRichTextString(costEquipment.getTypeInstance().getUuid().toString()));
+			// create the Name
+			row.getCell(AExcelCostIO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_NAME)
+					.setCellValue(helper.getCreationHelper().createRichTextString(costEquipment.getName()));
+			// create the Type
+			row.getCell(AExcelCostIO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_TYPE)
+					.setCellValue(helper.getCreationHelper().createRichTextString(getCostTypeName(costEquipment)));
+			// create the Cost
 			row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_COST).setCellValue(costEquipment.getCost());
-			//create the CostWithMargin
-			row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_COSTWITHMARGIN).setCellValue(costEquipment.getCostWithMargin());
-			//create the CostMargin
-			row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_COSTMARGIN).setCellValue(costEquipment.getCostMargin());
-			//create the CostMargin
+			// create the CostWithMargin
+			row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_COSTWITHMARGIN)
+					.setCellValue(costEquipment.getCostWithMargin());
+			// create the CostMargin
+			row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_COSTMARGIN)
+					.setCellValue(costEquipment.getCostMargin());
+			// create the CostMargin
 			row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_MARGIN).setCellValue(costEquipment.getMargin());
-			//create the full Name
-			row.getCell(AExcelCostIO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_FQN).setCellValue(helper.getCreationHelper().createRichTextString(costEquipment.getTypeInstance().getFullQualifiedInstanceName()));
+			// create the full Name
+			row.getCell(AExcelCostIO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_FQN).setCellValue(helper.getCreationHelper()
+					.createRichTextString(costEquipment.getTypeInstance().getFullQualifiedInstanceName()));
 			i++;
 		}
 	}
