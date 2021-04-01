@@ -21,7 +21,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostSummary;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostTableEntry;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostType;
@@ -40,7 +39,6 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
  */
 public class UiSnippetTableCostSummaryCostTableCostTableEntry extends AUiSnippetTableCostSummaryCostTableCostTableEntry
 		implements IUiSnippet {
-	protected StructuralElementInstance sei;
 
 	
 	@Override
