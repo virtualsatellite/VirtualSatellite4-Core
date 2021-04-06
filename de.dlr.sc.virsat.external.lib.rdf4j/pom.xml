@@ -19,4 +19,19 @@
 	<name>de.dlr.sc.virsat.external.lib.rdf4j</name>
 	<packaging>eclipse-plugin</packaging>
 
+	<dependencies>
+		<dependency>
+			<groupId>org.eclipse.rdf4j</groupId>
+			<artifactId>rdf4j-bom</artifactId>
+			<version>3.6.0</version>
+			<type>pom</type>
+			<scope>import</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.rdf4j</groupId>
+			<artifactId>rdf4j-storage</artifactId>
+			<version>3.6.0</version>
+			<type>pom</type>
+		</dependency>
+	</dependencies>
 </project>
