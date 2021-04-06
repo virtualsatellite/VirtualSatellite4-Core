@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat External Lib - rdf4j
+Bundle-SymbolicName: de.dlr.sc.virsat.external.lib.rdf4j
+Bundle-Version: 4.12.2.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: DLR (German Aerospace Center)
+Require-Bundle: de.dlr.sc.virsat.external.lib
+Bundle-Activator: de.dlr.virsat.external.lib.rdf4j.Activator
+Automatic-Module-Name: de.dlr.sc.virsat.external.lib.rdf4j
