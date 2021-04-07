@@ -15,5 +15,5 @@ package de.dlr.sc.virsat.excel.fault;
 public enum FaultType implements IFaultType {
 	 STRUCTURAL_ELEMENT_UUIDS_DO_NOT_MATCH,
 	 STRUCTURAL_ELEMENT_NAMES_DO_NOT_MATCH,
-	 DELETE_COLUMN_CAN_BE_EMPTY_OR_X;
+	 DELETE_COLUMN_CAN_BE_EMPTY_OR_1;
 }

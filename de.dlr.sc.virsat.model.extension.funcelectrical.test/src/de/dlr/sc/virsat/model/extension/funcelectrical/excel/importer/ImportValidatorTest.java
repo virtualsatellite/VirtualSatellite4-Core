@@ -52,7 +52,7 @@ public class ImportValidatorTest extends ExcelTestCase {
 		expectedFaults.add(new Fault(FaultType.STRUCTURAL_ELEMENT_NAMES_DO_NOT_MATCH, headerSheetIndex, AExcelFuncIO.COMMON_ROW_START_TABLE + 1));
 		expectedFaults.add(new Fault(FuncFaultType.INTERFACE_END_UUID_NOT_FOUND, interfaceEndSheetIndex, AExcelFuncIO.COMMON_ROW_START_TABLE));
 		expectedFaults.add(new Fault(FuncFaultType.INTERFACE_TYPE_DOES_NOT_EXIST, interfaceEndSheetIndex, AExcelFuncIO.COMMON_ROW_START_TABLE + 1));
-		expectedFaults.add(new Fault(FaultType.DELETE_COLUMN_CAN_BE_EMPTY_OR_X, interfaceEndSheetIndex, AExcelFuncIO.COMMON_ROW_START_TABLE + 2));
+		expectedFaults.add(new Fault(FaultType.DELETE_COLUMN_CAN_BE_EMPTY_OR_1, interfaceEndSheetIndex, AExcelFuncIO.COMMON_ROW_START_TABLE + 2));
 		expectedFaults.add(new Fault(FuncFaultType.CANT_DELETE_NON_EXISTING_INTERFACE_END, interfaceEndSheetIndex, AExcelFuncIO.COMMON_ROW_START_TABLE + NUMBER_OF_INTERFACES));
 		expectedFaults.add(new Fault(FuncFaultType.INTERFACE_END_NAME_IS_NOT_SET, interfaceEndSheetIndex, AExcelFuncIO.COMMON_ROW_START_TABLE + NUMBER_OF_INTERFACES + 1));
 
@@ -73,7 +73,7 @@ public class ImportValidatorTest extends ExcelTestCase {
 		expectedFault.add(new Fault(FaultType.STRUCTURAL_ELEMENT_UUIDS_DO_NOT_MATCH, headerSheetIndex, AExcelFuncIO.COMMON_ROW_START_TABLE));
 		expectedFault.add(new Fault(FaultType.STRUCTURAL_ELEMENT_NAMES_DO_NOT_MATCH, headerSheetIndex, AExcelFuncIO.COMMON_ROW_START_TABLE + 1));
 		expectedFault.add(new Fault(FuncFaultType.INTERFACE_TYPE_UUID_NOT_FOUND, interfaceTypeSheetIndex, AExcelFuncIO.COMMON_ROW_START_TABLE));
-		expectedFault.add(new Fault(FaultType.DELETE_COLUMN_CAN_BE_EMPTY_OR_X, interfaceTypeSheetIndex, AExcelFuncIO.COMMON_ROW_START_TABLE + 1));
+		expectedFault.add(new Fault(FaultType.DELETE_COLUMN_CAN_BE_EMPTY_OR_1, interfaceTypeSheetIndex, AExcelFuncIO.COMMON_ROW_START_TABLE + 1));
 		expectedFault.add(new Fault(FuncFaultType.CANT_DELETE_NON_EXISTING_INTERFACE_TYPE, interfaceTypeSheetIndex, AExcelFuncIO.COMMON_ROW_START_TABLE + NUMBER_OF_INTERFACES));
 		expectedFault.add(new Fault(FuncFaultType.INTERFACE_TYPE_NAME_IS_NOT_SET, interfaceTypeSheetIndex, AExcelFuncIO.COMMON_ROW_START_TABLE + NUMBER_OF_INTERFACES));
 		ImportValidator iValidator = new ImportValidator(ifaceTypeCollection.getStructuralElementInstance(), wb);
@@ -96,7 +96,7 @@ public class ImportValidatorTest extends ExcelTestCase {
 		expectedFault.add(new Fault(FaultType.STRUCTURAL_ELEMENT_UUIDS_DO_NOT_MATCH, headerSheetIndex, AExcelFuncIO.COMMON_ROW_START_TABLE));
 		expectedFault.add(new Fault(FuncFaultType.INTERFACE_UUID_NOT_FOUND, interfaceTypeSheetIndex, AExcelFuncIO.COMMON_ROW_START_TABLE));
 
-		expectedFault.add(new Fault(FaultType.DELETE_COLUMN_CAN_BE_EMPTY_OR_X, interfaceTypeSheetIndex, AExcelFuncIO.COMMON_ROW_START_TABLE));
+		expectedFault.add(new Fault(FaultType.DELETE_COLUMN_CAN_BE_EMPTY_OR_1, interfaceTypeSheetIndex, AExcelFuncIO.COMMON_ROW_START_TABLE));
 		expectedFault.add(new Fault(FuncFaultType.CANT_DELETE_NON_EXISTING_INTERFACE, interfaceTypeSheetIndex, AExcelFuncIO.COMMON_ROW_START_TABLE + 1));
 		expectedFault.add(new Fault(FuncFaultType.INTERFACE_NAME_IS_NOT_SET, interfaceTypeSheetIndex, AExcelFuncIO.COMMON_ROW_START_TABLE + 1));
 		expectedFault.add(new Fault(FuncFaultType.FROM_INTERFACE_END_NOT_FOUND, interfaceTypeSheetIndex, AExcelFuncIO.COMMON_ROW_START_TABLE + 1));
