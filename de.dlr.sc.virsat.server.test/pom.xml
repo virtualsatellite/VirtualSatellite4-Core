@@ -23,6 +23,6 @@
 			on github Actions. PR https://github.com/virtualsatellite/VirtualSatellite4-Core/pull/974 
 			has to successfully build for formal requirements. -->
 
-		<skipTests>false</skipTests>
+		<skipTests>true</skipTests>
 	</properties>
 </project>
