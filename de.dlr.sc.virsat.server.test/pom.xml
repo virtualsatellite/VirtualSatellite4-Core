@@ -18,21 +18,11 @@
 	<name>de.dlr.sc.virsat.server.test</name>
 	<packaging>eclipse-test-plugin</packaging>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-surefire-plugin</artifactId>
-				<version>${tycho-version}</version>
-				<configuration>
-					<!-- Server test cases temporarily deactivated. Test cases are failing 
-						on github Actions. PR https://github.com/virtualsatellite/VirtualSatellite4-Core/pull/974 
-						has to successfully build for formal requirements. -->
+	<properties>
+		<!-- Server test cases temporarily deactivated. Test cases are failing 
+			on github Actions. PR https://github.com/virtualsatellite/VirtualSatellite4-Core/pull/974 
+			has to successfully build for formal requirements. -->
 
-
-					<skip>true</skip>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+		<skipTests>false</skipTests>
+	</properties>
 </project>
