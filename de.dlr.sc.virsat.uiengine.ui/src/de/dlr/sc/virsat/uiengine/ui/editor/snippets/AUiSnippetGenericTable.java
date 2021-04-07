@@ -30,6 +30,7 @@ import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.ColumnViewerEditor;
 import org.eclipse.jface.viewers.ColumnViewerEditorActivationEvent;
 import org.eclipse.jface.viewers.ColumnViewerEditorActivationStrategy;
+import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.FocusCellOwnerDrawHighlighter;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -71,6 +72,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
@@ -80,6 +82,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.structural.IApplicableFor;
 import de.dlr.sc.virsat.model.ui.editor.input.VirSatUriEditorInput;
 import de.dlr.sc.virsat.project.ui.Activator;
+import de.dlr.sc.virsat.uiengine.ui.cellEditor.aproperties.PropertyInstanceEditingSupportFactory;
 import de.dlr.sc.virsat.uiengine.ui.editor.GenericActionBarContributor;
 import de.dlr.sc.virsat.uiengine.ui.editor.GenericEditor;
 import de.dlr.sc.virsat.uiengine.ui.excel.ExcelExportWizard;
@@ -354,7 +357,17 @@ public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 	 * @param editingDomain 
 	 */
 	protected abstract void createTableColumns(EditingDomain editingDomain);
-	
+
+	/**
+	 * An overridable method for creating an Editing Support
+	 * @param editingDomain the editing domain
+	 * @param property the property
+	 * @return the editing support
+	 */
+	protected EditingSupport createEditingSupport(EditingDomain editingDomain, AProperty property) {
+		return PropertyInstanceEditingSupportFactory.INSTANCE.createEditingSupportFor(editingDomain, columnViewer, property);
+	}
+
 	/**
 	 * Method to give a table with the standard format 
 	 * @param toolkit The Toolkit which creates the Table
