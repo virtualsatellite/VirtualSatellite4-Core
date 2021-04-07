@@ -21,12 +21,55 @@ SPDX-License-Identifier: EPL-2.0
 	<name>de.dlr.sc.virsat.swtbot.test</name>
 	<packaging>eclipse-test-plugin</packaging>
 
-	
-		<properties>
-		<!-- Server test cases temporarily deactivated. Test cases are failing 
-			on github Actions. PR https://github.com/virtualsatellite/VirtualSatellite4-Core/pull/974 
-			has to successfully build for formal requirements. -->
-
-		<skipTests>true</skipTests>
-	</properties>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<!-- Let the tests run for 20 minutes max. If time is exceeded kill 
+						the process. Apparently something is wrong -->
+					<forkedProcessTimeoutInSeconds>1800</forkedProcessTimeoutInSeconds>
+					<redirectTestOutputToFile>true</redirectTestOutputToFile>
+					<showEclipseLog>true</showEclipseLog>
+					<rerunFailingTestsCount>3</rerunFailingTestsCount>
+					<testFailureIgnore>false</testFailureIgnore>
+					<useUIHarness>true</useUIHarness>
+					<trimStackTrace>false</trimStackTrace>
+					<useUIThread>false</useUIThread>
+					<product>de.dlr.sc.virsat.branding.ui.VirSat_Core</product>
+					<application>org.eclipse.ui.ide.workbench</application>
+					
+					<!--  Setup the osgi data and workspace directory. Otherwise the workspace will be placed
+					in the plugins target directory, thus creating a repository within a repository (git from
+					the source code). UI tests will then sometimes believe that the project is already connected
+					to a VCS but in fact isn't. -->
+					<osgiDataDirectory>${basedir}/../../surefire-work/${project.artifactId}/data</osgiDataDirectory>
+					<work>${basedir}/../../surefire-work/${project.artifactId}/work</work>
+				</configuration>
+			</plugin>
+        	<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<dependency-resolution>
+						<extraRequirements>
+							<requirement>
+								<type>eclipse-feature</type>
+								<id>org.eclipse.pde</id>
+								<versionRange>0.0.0</versionRange>
+							</requirement>
+							<requirement>
+								<type>eclipse-feature</type>
+								<id>org.eclipse.e4.rcp</id>
+								<versionRange>0.0.0</versionRange>
+							</requirement>
+						</extraRequirements>
+					</dependency-resolution>				
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
