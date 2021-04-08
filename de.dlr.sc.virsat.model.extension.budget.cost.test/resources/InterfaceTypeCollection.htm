@@ -1,0 +1,186 @@
+	<!DOCTYPE html>
+	<html>
+	
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/vue/1.0.24/vue.js"></script>
+
+	<style type="text/css">
+		@media print
+		{    
+		    #tree
+		    {
+		        display: none !important;
+			}
+		}
+	    body {
+	        font-family: Menlo, Consolas, monospace;
+	        color: #444;
+	    }
+	    
+	    .item {
+	        cursor: pointer;
+	    }
+	    
+	    .bold {
+	        font-weight: bold;
+	    }
+	    
+	    .helper {
+	        display: inline-block;
+	        height: 100%;
+	        vertical-align: middle;
+	    }
+	    
+	    ul {
+	        padding-left: 1em;
+	        line-height: 1.5em;
+	        list-style-type: dot;
+	    }
+	    
+	    html,
+	    body {
+	        height: 100%;
+	        min-height: 100%;
+	    }
+	    
+	    #generalwrapper {
+	        height: 100%;
+	        min-height: 100%;
+	        width: 100%;
+	        border: 3px solid #4A8AB8;
+	        display: table;
+	    }
+	    
+	    #wrapper {
+	        height: 100%;
+	        min-height: 100%;
+	        display: table-row;
+	        display: table;
+	        width: 100%;
+	    }
+	    
+	    #datadiv {
+	        height: 100%;
+	        min-height: 500px;
+	        min-width: 500px;
+	        width: 70%;
+	        object-fit: contain;
+	        display: table-cell;
+	        overflow:visible;
+	    }
+	    
+	    #tree {
+	        border-right: 15px solid #4A8AB8;
+	        color: #4A8AB8;
+	        vertical-align: top;
+	        display: table-cell;
+	        width: 5%;
+	    }
+	    
+	    header,
+	    footer {
+	    	height: 5px;
+	        width: 100%;
+	        color: white;
+	        background-color: #4A8AB8;
+	        display: table-row;
+	        text-align: center;
+	        vertical-align: middle;
+	        top: 50%;
+	    }
+	    
+	    article {
+	        float: left;
+	        padding: 1em;
+	        overflow: hidden;
+	    }
+	</style>
+	
+	<script type='text/javascript'>
+	    //<![CDATA[
+	    window.onload = function() {
+	            // demo data
+	            var data = {name: 'InterfaceTypeCollection',
+	            	
+	            
+	            }
+	            // define the item component
+	            Vue.component('item', {
+	                template: '#item-template',
+	                props: {
+	                    model: Object
+	                },
+	                data: function() {
+	                    return {
+	                        open: false
+	                    }
+	                },
+	                computed: {
+	                    isFolder: function() {
+	                        return this.model.children &&
+	                            this.model.children.length
+	                    }
+	                },
+	                methods: {
+	                    toggle: function() {
+	                        if (this.isFolder) {
+	                            this.open = !this.open
+	                        }
+	                        var name = this.model.name
+	                        var url = "resources/" + name + ".htm"
+	                        var start = new Date().getTime()
+	                        document.getElementById("datadiv").innerHTML = '<object width=100% height=100% type="text/html" data="' + url + '" onload="alert(new Date().getTime() - start)"></object>'
+	                    }
+	                }
+	            })
+	            // boot up the demo
+	            var demo = new Vue({
+	                el: '#demo',
+	                data: {
+	                    treeData: data
+	                }
+	            })	
+	        } //]]>
+	</script>	
+	<script type="text/x-template" id="item-template">
+	    <li>
+	        <div :class="{bold: isFolder}" @click="toggle">
+	            {{model.name}}
+	            <span v-if="isFolder">[{{open ? '-' : '+'}}]</span>
+	        </div>
+	        <ul v-show="open" v-if="isFolder">
+	            <item class="item" v-for="model in model.children" :model="model">
+	            </item>
+	        </ul>
+	    </li>
+	</script>
+	
+	<div id="generalwrapper">
+	    <header>
+	
+	        This Document has been generated using Virtual Satellite 4 Core.
+
+	    </header>
+	    <div id="wrapper">
+
+	        <div id="tree">
+	            <img src="resources/ProjectLogo.png" alt="" />
+	            <article>
+	                <ul id="demo">
+	                    <item class="item" :model="treeData">
+	                    </item>
+	                </ul>
+	            </article>
+	        </div>
+	        <div id="datadiv">
+	            Click on the tree to see the interfaces and interface ends
+	        </div>
+	
+	    </div>
+	    <footer>
+	       Exported by : supe_us Export date : 16:50 6/6/2017
+	       
+	    </footer>
+	
+	</div>	
+	</html>
+

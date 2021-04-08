@@ -107,7 +107,7 @@ public class ImportWizard extends Wizard implements INewWizard {
 			ExcelImporter ei = new ExcelImporter();
 			List<Fault> faultList = ei.validate(eObject, wb);
 			if (faultList.isEmpty()) {
-				ImportCommand importCommand = new ImportCommand(eObject, wb, ed);
+				ImportCommand importCommand = new ImportCommand(eObject, wb, ed, ei);
 				ed.getCommandStack().execute(importCommand);
 				DVLMEditPlugin.getPlugin().getLog().log(new Status(Status.INFO, "Excel IO", "Successfully imported excel file " + file.getAbsolutePath()));
 				return true;

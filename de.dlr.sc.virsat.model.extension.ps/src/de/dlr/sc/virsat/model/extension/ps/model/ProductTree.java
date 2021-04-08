@@ -9,11 +9,11 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.ps.model;
 
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 
 // *****************************************************************
 // * Class Declaration
