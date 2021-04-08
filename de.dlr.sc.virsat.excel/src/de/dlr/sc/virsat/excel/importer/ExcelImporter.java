@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.excel.importer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -32,71 +33,78 @@ public class ExcelImporter {
 	private IExtensionRegistry registry;
 
 	/**
-	* Simple constructor
-	*/
+	 * Simple constructor
+	 */
 	public ExcelImporter() {
 		registry = Platform.getExtensionRegistry();
 	}
 
 	/**
-	* Constructor injecting an extension registry. Needed for testing.
-	* @param registry the registry
-	*/
+	 * Constructor injecting an extension registry. Needed for testing.
+	 * 
+	 * @param registry the registry
+	 */
 	public ExcelImporter(IExtensionRegistry registry) {
 		this.registry = registry;
 	}
 
 	/**
-	* Imports depending on the type of the Structural element
-	* @param object element to be imported
-	* @param repository repository of the element
-	* @param wb the workbook
-	*/
+	 * Imports depending on the type of the Structural element
+	 * 
+	 * @param object     element to be imported
+	 * @param repository repository of the element
+	 * @param wb         the workbook
+	 */
 	public void importExcel(EObject object, Repository repository, XSSFWorkbook wb) {
-		IImport importer = getImporter(object);
-		if (importer != null) {
+		List<IImport> importers = getImporter(object);
+		for (IImport importer : importers) {
 			importer.importExcel(object, repository, wb);
 		}
 	}
 
 	/**
-	* Validates the input excel file
-	* @param object element to be imported
-	* @param wb the workbook
-	* @return the fault List
-	*/
+	 * Validates the input excel file
+	 * 
+	 * @param object element to be imported
+	 * @param wb     the workbook
+	 * @return the fault List
+	 */
 	public List<Fault> validate(EObject object, XSSFWorkbook wb) {
-		IImport importer = getImporter(object);
-		if (importer != null) {
-			return importer.validate(object, wb);
+		List<IImport> validateImporters = getImporter(object);
+		List<Fault> allFaults = new ArrayList<Fault>();
+		for (IImport importer : validateImporters) {
+			allFaults.addAll(importer.validate(object, wb));
 		}
-		return null;
+		return allFaults;
 	}
 
 	/**
-	 * Gets an applicable importer for the given EObject if there is any.
-	 * If there is no registered importer for the EObject, null will be returned.
-	 * This will take the firstly found importer.
+	 * Gets an applicable importer for the given EObject if there is any. If there
+	 * is no registered importer for the EObject, null will be returned. This will
+	 * take the firstly found importer.
+	 * 
 	 * @param eObject the eObject
 	 * @return the importer
 	 */
-	private IImport getImporter(EObject eObject) {
+	private List<IImport> getImporter(EObject eObject) {
+		List<IImport> listImports = new ArrayList<IImport>();
 		IConfigurationElement[] config = registry.getConfigurationElementsFor(IIMPORT_ID);
 		for (IConfigurationElement iConfElement : config) {
 			Object object = null;
 			try {
 				object = iConfElement.createExecutableExtension("class");
 			} catch (CoreException e1) {
-				Status status = new Status(Status.ERROR, Activator.getPluginId(), "Failed to perform an excel import operation! ", e1);
+				Status status = new Status(Status.ERROR, Activator.getPluginId(),
+						"Failed to perform an excel import operation! ", e1);
 				DVLMEditPlugin.getPlugin().getLog().log(status);
 			}
 			if (object instanceof IImport) {
 				IImport importer = (IImport) object;
 				if (importer.canImport(eObject)) {
-					return importer;
+					listImports.add(importer);
 				}
 			}
 		}
-		return null;
+		return listImports;
 	}
 }
