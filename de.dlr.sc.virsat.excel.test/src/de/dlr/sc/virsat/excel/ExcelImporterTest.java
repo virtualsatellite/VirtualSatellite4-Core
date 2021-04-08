@@ -9,9 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.excel;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -57,11 +56,13 @@ public class ExcelImporterTest {
 
 		@Override
 		public List<Fault> validate(EObject object, XSSFWorkbook wb) {
-			return FAULT_LIST;
+			List<Fault> faults = new ArrayList<Fault>();
+			faults.add(FAULT);
+			return faults;
 		}
 	}
 
-	private static final List<Fault>FAULT_LIST = new ArrayList<>();
+	private static final Fault FAULT = new Fault(null, 1, 1);
 	private IExtensionRegistry registry;
 	private boolean executed = false;
 
@@ -96,8 +97,8 @@ public class ExcelImporterTest {
 	public void testValidate() throws CoreException {
 		ExcelImporter importer = new ExcelImporter(registry);
 		List<Fault> invalidImportFaults = importer.validate(StructuralFactory.eINSTANCE.createStructuralElement(), null);
-		assertNull("Not a valid input, so return is null", invalidImportFaults);
+		assertTrue("Not a valid input, so return is a emtpy list", invalidImportFaults.isEmpty());
 		List<Fault> validImportFaults = importer.validate(DVLMFactory.eINSTANCE.createRepository(), null);
-		assertSame("A valid input, so the fault list of the importer is returned", FAULT_LIST, validImportFaults);
+		assertTrue("A valid input, so the fault list should contain the known fault", validImportFaults.contains(FAULT));
 	}
 }
