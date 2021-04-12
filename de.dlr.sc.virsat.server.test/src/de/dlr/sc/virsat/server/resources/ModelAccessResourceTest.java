@@ -174,6 +174,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 				resourceSet.getRepository().getActiveConcepts().add(conceptTest);
 				resourceSet.getRepository().getRootEntities().add(sei);
 				resourceSet.getAndAddStructuralElementInstanceResource(sei);
+				resourceSet.getAndAddStructuralElementInstanceResource(tSeiChild.getStructuralElementInstance());
 			}
 		};
 		ed.getCommandStack().execute(recordingCommand);
