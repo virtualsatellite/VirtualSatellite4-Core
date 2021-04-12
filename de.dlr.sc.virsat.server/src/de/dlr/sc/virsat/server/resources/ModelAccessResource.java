@@ -11,7 +11,6 @@ package de.dlr.sc.virsat.server.resources;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.security.RolesAllowed;
@@ -486,10 +485,9 @@ public class ModelAccessResource {
 					
 					// Get the concept configuration elements
 					IConfigurationElement[] configurationElementsArray = registry.getConfigurationElementsFor(extensionPoint);
-					List<IConfigurationElement> configurationElements = (List<IConfigurationElement>) Arrays.asList(configurationElementsArray);
 					
 					// For each configuration element load the concept
-					for (IConfigurationElement configurationElement : configurationElements) {
+					for (IConfigurationElement configurationElement : configurationElementsArray) {
 						ActiveConceptConfigurationElement acce = new ActiveConceptConfigurationElement(configurationElement);
 						concepts.add(acce.loadConceptFromPlugin());
 					}
