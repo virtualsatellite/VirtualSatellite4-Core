@@ -262,6 +262,13 @@ jobs:
       - name: Setup - Prepare OS
         uses: virtualsatellite/ci-actions/ci-setup-action@v2
 
+
+      # --------------------------------------------
+      # Perform various setup operations
+      # --------------------------------------------
+      - name: TEST
+        run: netstat
+
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
