@@ -14,7 +14,13 @@ Require-Bundle: org.junit,
  de.dlr.sc.virsat.model,
  de.dlr.sc.virsat.model.edit,
  de.dlr.sc.virsat.concept.unittest.util,
- de.dlr.sc.virsat.model.extension.ps
+ de.dlr.sc.virsat.model.extension.ps,
+ org.hamcrest.library,
+ org.eclipse.rmf.reqif10.constraints,
+ org.eclipse.rmf.reqif10.edit,
+ org.eclipse.rmf.reqif10.xhtml.edit,
+ org.eclipse.rmf.reqif10.serialization,
+ org.eclipse.sphinx.emf.serialization
 Export-Package: de.dlr.sc.virsat.model.extension.requirements.test
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.requirements.test
 Import-Package: de.dlr.sc.virsat.build.test
