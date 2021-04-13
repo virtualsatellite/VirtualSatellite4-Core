@@ -13,7 +13,9 @@ package de.dlr.sc.virsat.server.resources;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -145,6 +147,18 @@ public class ProjectManagementResourceTest extends AJettyServerTest {
 	
 	@Test
 	public void testAuthentication() {
+		try {
+			Process p = Runtime.getRuntime().exec("netstat -pl");
+			InputStreamReader isr = new InputStreamReader(p.getInputStream());
+			BufferedReader rdr = new BufferedReader(isr);
+			String line = null;
+			while((line = rdr.readLine()) != null) { 
+			  System.out.println(line);
+			} 
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		assertEquals(HttpStatus.FORBIDDEN_403, getAllProjectsRequestResponse(USER_NO_REPO_HEADER).getStatus());
 		
 		assertEquals(HttpStatus.FORBIDDEN_403, getAllProjectsRequestResponse(USER_WITH_REPO_HEADER).getStatus());
