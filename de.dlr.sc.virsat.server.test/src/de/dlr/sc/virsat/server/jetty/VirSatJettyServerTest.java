@@ -37,11 +37,13 @@ import org.eclipse.jetty.util.ssl.SslContextFactory.X509ExtendedTrustManagerWrap
 import org.glassfish.jersey.client.ClientConfig;
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.server.Activator;
 import de.dlr.sc.virsat.server.configuration.ServerConfiguration;
 import de.dlr.sc.virsat.server.servlet.StatusServlet;
+import de.dlr.sc.virsat.server.test.AJettyServerTest;
 
 public class VirSatJettyServerTest {
 	private VirSatJettyServer server;
@@ -83,6 +85,12 @@ public class VirSatJettyServerTest {
 		httpsTarget = httpsClient.target(uriHttps).path("/status");
 	}
 	
+	@BeforeClass
+	public static void setUpClass() {
+		// System property to set headers
+		System.setProperty(AJettyServerTest.ALLOW_HEADERS, "true");
+	}
+	
 	@After
 	public void tearDown() throws Exception {
 		if (server != null) {
@@ -95,6 +103,7 @@ public class VirSatJettyServerTest {
 	public static void tearDownClass() throws FileNotFoundException, IOException {
 		// Reload the default properties
 		ServerConfiguration.loadProperties(Activator.getDefault().getPropertiesFileInputStream());
+		System.setProperty(AJettyServerTest.ALLOW_HEADERS, "false");
 	}
 	
 	private void assertCorrectStatus(WebTarget target) {
