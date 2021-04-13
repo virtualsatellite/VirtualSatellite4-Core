@@ -36,6 +36,7 @@ import org.eclipse.jetty.http.HttpStatus;
 import org.eclipse.jetty.util.ssl.SslContextFactory.X509ExtendedTrustManagerWrapper;
 import org.glassfish.jersey.client.ClientConfig;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.server.Activator;
@@ -88,6 +89,12 @@ public class VirSatJettyServerTest {
 			server.stop();
 			server.join();
 		}
+	}
+	
+	@AfterClass
+	public static void tearDownClass() throws FileNotFoundException, IOException {
+		// Reload the default properties
+		ServerConfiguration.loadProperties(Activator.getDefault().getPropertiesFileInputStream());
 	}
 	
 	private void assertCorrectStatus(WebTarget target) {
