@@ -124,4 +124,19 @@ public class ModelAPITest {
 		CategoryAssignment inheritedCa = sei.getCategoryAssignments().get(0);
 		assertEquals("Sei has a category assignment by name ca", ca.getName(), inheritedCa.getName());
 	}
+	
+	@Test
+	public void testDeleteSeiAndStorage() throws IOException {
+		StructuralElementInstance sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		BeanStructuralElementInstance beanSei = new BeanStructuralElementInstance(sei);
+		
+		modelAPI.addRootSei(beanSei);
+		ModelAPI.resource.getContents().add(sei);
+		
+		assertTrue("Sei is in the repository", repository.getRootEntities().contains(sei));
+		
+		modelAPI.deleteSeiAndStorage(beanSei);
+		
+		assertFalse("Sei is deleted", repository.getRootEntities().contains(sei));
+	}
 }
