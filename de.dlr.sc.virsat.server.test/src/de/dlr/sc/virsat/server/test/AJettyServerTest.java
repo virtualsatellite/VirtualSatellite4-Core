@@ -40,7 +40,7 @@ public abstract class AJettyServerTest extends AConceptTestCase {
 	private static VirSatJettyServer server;
 	private static final File WORKSPACE_ROOT = ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile();
 
-	private static final String ALLOW_HEADERS = "sun.net.http.allowRestrictedHeaders";
+	public static final String ALLOW_HEADERS = "sun.net.http.allowRestrictedHeaders";
 	
 	// Test users
 	public static final String ADMIN = "admin:password";
