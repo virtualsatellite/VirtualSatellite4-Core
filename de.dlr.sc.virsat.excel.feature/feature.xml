@@ -2,7 +2,7 @@
 <feature
       id="de.dlr.sc.virsat.excel.feature"
       label="VirSat Generic Excel IO Feature"
-      version="4.12.2.qualifier"
+      version="4.13.0.qualifier"
       provider-name="DLR (German Aerospace Center)"
       plugin="de.dlr.sc.virsat.branding.ui"
       license-feature="de.dlr.sc.virsat.license.feature">

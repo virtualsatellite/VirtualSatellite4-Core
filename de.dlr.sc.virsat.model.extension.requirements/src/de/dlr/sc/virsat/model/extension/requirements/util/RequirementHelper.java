@@ -9,6 +9,11 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.util;
 
+import de.dlr.sc.virsat.model.concept.list.IBeanList;
+import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementGroup;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementObject;
+
 /**
  * Helper class for the import of requirements
  *
@@ -22,7 +27,35 @@ public class RequirementHelper {
 	 * @return the clean name 
 	 */
 	public String cleanEntityName(String rawName) {
-		return rawName.replaceAll(" ", "").replaceAll("-", "").replaceAll("_", "");
+		return rawName.replaceAll(" ", "")
+				.replaceAll("-", "")
+				.replaceAll("_", "")
+				.replaceAll("\\.", "")
+				.replaceAll("\\r|\\n", "")
+				.replaceAll("\\/", "")
+				.replaceAll("\\\\", "");
+	}
+	
+	/**
+	 * Find a requirement of a specific name in a list of requirements, optionally as deep search
+	 * @param reqList the requirement list
+	 * @param name the name of the requirement to be searched (containing the requirement prefix ReqXXX)
+	 * @param deepSearch weather the search should be extended to deeper levels (groups)
+	 * @return the requirement to be searched
+	 */
+	public Requirement findRequirement(IBeanList<RequirementObject> reqList, String name, boolean deepSearch) {
+		for (RequirementObject reqObject : reqList) {
+			if (reqObject.getName().equals(name)) {
+				return (Requirement) reqObject;
+			}
+			if (deepSearch && reqObject instanceof RequirementGroup) {
+				Requirement req = findRequirement(((RequirementGroup) reqObject).getChildren(), name, deepSearch);
+				if (req != null) {
+					return req;
+				}
+			}
+		}
+		return null;
 	}
 	
 }
