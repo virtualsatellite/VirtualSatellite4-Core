@@ -50,7 +50,7 @@ public abstract class AProjectTestCase {
 	protected static final int MAX_TEST_CASE_WAIT_TIME_MILLI_SECONDS = 1000;
 	
 	@Rule
-	public TestRule globalTimeout = new DisableOnDebug(Timeout.seconds(MAX_TEST_CASE_TIMEOUT_SECONDS));
+	public TestRule globalTimeout;
 	
 	protected static final String TEST_PROJECT_NAME = "testProject";
 	private static final String JUNIT_DEBUG_PROJECT_TEST_CASE = "JUNIT_DEBUG_PROJECT_TEST_CASE";
@@ -88,6 +88,7 @@ public abstract class AProjectTestCase {
 	
 	@Before
 	public void setUp() throws CoreException {
+		initializeTimeOutRule();
 		if (JUNIT_DEBUG_PROJECT_TEST_CASE_TRUE.equalsIgnoreCase(System.getenv(JUNIT_DEBUG_PROJECT_TEST_CASE))) {
 			System.out.println("AProjectTestCase-Debug: " + this.getClass().getSimpleName() + "." + testMethodName.getMethodName() + " - setUp()");
 		}
@@ -303,5 +304,9 @@ public abstract class AProjectTestCase {
 		} catch (InterruptedException e) {
 			Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "AProjectTestCase: Got interrupted while waiting ", e));
 		}
+	}
+	
+	public void initializeTimeOutRule() {
+		globalTimeout  = new DisableOnDebug(Timeout.seconds(MAX_TEST_CASE_TIMEOUT_SECONDS));
 	}
 }

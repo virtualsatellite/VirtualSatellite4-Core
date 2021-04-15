@@ -142,6 +142,7 @@ public class VirSatGitVersionControlBackend implements IVirSatVersionControlBack
 		// Get the remotes for the repository
 		String remoteUrl = gitRepository.getConfig().getString("remote", "origin", "url");
 		Collection<Ref> refs = Git.lsRemoteRepository()
+			.setCredentialsProvider(credentialsProvider)
 			.setRemote(remoteUrl)
 			.call();
 		

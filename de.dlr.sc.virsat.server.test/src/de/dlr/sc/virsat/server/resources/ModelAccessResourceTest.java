@@ -81,6 +81,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	private VirSatTransactionalEditingDomain ed;
 	
 	private TestStructuralElement tSei;
+	private TestStructuralElement tSeiChild;
 	private StructuralElementInstance sei;
 	
 	private TestCategoryAllProperty tcAllProperty;
@@ -146,7 +147,11 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		tSei.add(tcCompositionArray);
 		tSei.add(tcReferenceArray);
 
+		tSeiChild = new TestStructuralElement(conceptTest);
+		
 		sei = tSei.getStructuralElementInstance();
+		// Add a child to also test the beanSei adapter
+		tSeiChild.getStructuralElementInstance().setParent(sei);
 		
 		beanString = tcAllProperty.getTestStringBean();
 		beanBool = tcAllProperty.getTestBoolBean();
@@ -180,6 +185,7 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 				resourceSet.getRepository().getActiveConcepts().add(conceptTest);
 				resourceSet.getRepository().getRootEntities().add(sei);
 				resourceSet.getAndAddStructuralElementInstanceResource(sei);
+				resourceSet.getAndAddStructuralElementInstanceResource(tSeiChild.getStructuralElementInstance());
 			}
 		};
 		ed.getCommandStack().execute(recordingCommand);
@@ -306,6 +312,11 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 		testGetSei(tSei);
 	}
 	
+	@Test
+	public void testChildSeiGet() throws Exception {
+		testGetSei(tSeiChild);
+	}
+	
 	@SuppressWarnings("rawtypes")
 	private void testGetProperty(IBeanObject testSubject) throws Exception {
 		testGet(testSubject, ModelAccessResource.PROPERTY, new Class[] {testSubject.getClass()});
@@ -428,6 +439,11 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 	@Test
 	public void testSeiPut() throws Exception {
 		testPutSei(tSei);
+	}
+	
+	@Test
+	public void testChildSeiPut() throws Exception {
+		testPutSei(tSeiChild);
 	}
 	
 	@Test
