@@ -19,7 +19,7 @@
 	<packaging>eclipse-plugin</packaging>
 
 	<properties>
-		<lyo.version>4.1.0-SNAPSHOT</lyo.version>
+		<lyo.version>4.0.0</lyo.version>
 	</properties>
 
 	<repositories>
@@ -107,6 +107,11 @@
 			<groupId>io.github.classgraph</groupId>
 			<artifactId>classgraph</artifactId>
 			<version>4.8.102</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.lyo</groupId>
+			<artifactId>oslc-domains</artifactId>
+			<version>${lyo.version}</version>
 		</dependency>
 	</dependencies>
 </project>

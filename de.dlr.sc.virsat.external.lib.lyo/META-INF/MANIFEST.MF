@@ -9,7 +9,6 @@ Require-Bundle: de.dlr.sc.virsat.external.lib
 Bundle-Activator: de.dlr.sc.virsat.external.lib.lyo.Activator
 Automatic-Module-Name: de.dlr.sc.virsat.external.lib.lyo
 Bundle-ClassPath: .,
- externalLib/maven/oslc4j-core.jar,
  externalLib/maven/oauth.jar,
  externalLib/maven/wink-client.jar,
  externalLib/maven/httpclient.jar,
@@ -89,7 +88,9 @@ Bundle-ClassPath: .,
  externalLib/maven/oauth-httpclient4.jar,
  externalLib/maven/jsonld-java.jar,
  externalLib/maven/oslc-client-base.jar,
- externalLib/maven/classgraph.jar
+ externalLib/maven/classgraph.jar,
+ externalLib/maven/oslc-domains.jar,
+ externalLib/maven/oslc4j-core.jar
 Export-Package: de.dlr.sc.virsat.external.lib.lyo,
  io.github.classgraph,
  javax.annotation,
@@ -499,6 +500,8 @@ Export-Package: de.dlr.sc.virsat.external.lib.lyo,
  org.eclipse.lyo.client.oslc.resources,
  org.eclipse.lyo.client.query,
  org.eclipse.lyo.client.resources,
+ org.eclipse.lyo.oslc.domains,
+ org.eclipse.lyo.oslc.domains.rm,
  org.eclipse.lyo.oslc4j.core,
  org.eclipse.lyo.oslc4j.core.annotation,
  org.eclipse.lyo.oslc4j.core.exception,
