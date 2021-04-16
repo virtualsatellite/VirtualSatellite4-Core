@@ -29,4 +29,14 @@ public class StructuralElementInstanceResourceTest extends ModelAccessResourceTe
 	public void testSeiDelete() throws Exception {
 		testDeleteSei(tSei);
 	}
+	
+	@Test
+	public void testChildSeiGet() throws Exception {
+		testGetSei(tSeiChild);
+	}
+	
+	@Test
+	public void testChildSeiPut() throws Exception {
+		testPutSei(tSeiChild);
+	}
 }

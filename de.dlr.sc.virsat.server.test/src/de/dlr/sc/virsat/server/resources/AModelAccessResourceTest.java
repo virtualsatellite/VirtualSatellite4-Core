@@ -68,6 +68,7 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 	protected VirSatTransactionalEditingDomain ed;
 	
 	protected TestStructuralElement tSei;
+	protected TestStructuralElement tSeiChild;
 	protected StructuralElementInstance sei;
 	
 	protected TestCategoryAllProperty tcAllProperty;
@@ -133,8 +134,12 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 		tSei.add(tcCompositionArray);
 		tSei.add(tcReferenceArray);
 
+		tSeiChild = new TestStructuralElement(conceptTest);
+
 		sei = tSei.getStructuralElementInstance();
-		
+		// Add a child to also test the beanSei adapter
+		tSeiChild.getStructuralElementInstance().setParent(sei);
+
 		beanString = tcAllProperty.getTestStringBean();
 		beanBool = tcAllProperty.getTestBoolBean();
 		beanEnum = tcAllProperty.getTestEnumBean();
@@ -167,6 +172,7 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 				resourceSet.getRepository().getActiveConcepts().add(conceptTest);
 				resourceSet.getRepository().getRootEntities().add(sei);
 				resourceSet.getAndAddStructuralElementInstanceResource(sei);
+				resourceSet.getAndAddStructuralElementInstanceResource(tSeiChild.getStructuralElementInstance());
 			}
 		};
 		ed.getCommandStack().execute(recordingCommand);
