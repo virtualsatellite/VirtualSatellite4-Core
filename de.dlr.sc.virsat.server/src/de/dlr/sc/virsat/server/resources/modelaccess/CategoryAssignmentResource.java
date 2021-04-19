@@ -19,11 +19,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.jetty.http.HttpStatus;
 
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
+import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
@@ -75,12 +75,15 @@ public class CategoryAssignmentResource {
 	public Response getCa(@PathParam("caUuid") @ApiParam(value = "Uuid of the CA", required = true) String caUuid) {
 		try {
 			serverRepository.syncRepository();
-			return Response.status(Response.Status.OK).entity(
-					new BeanCategoryAssignmentFactory().getInstanceFor(
-							RepositoryUtility.findCa(caUuid, repository)
-					)).build();
-		} catch (CoreException e) {
-			return ApiErrorHelper.createBadRequestResponse(e.getMessage());
+			
+			CategoryAssignment ca = RepositoryUtility.findCa(caUuid, repository);
+			
+			if (ca == null) {
+				return ApiErrorHelper.createBadRequestResponse(COULD_NOT_FIND_REQUESTED_CA);
+			}
+			
+			IBeanCategoryAssignment beanCa = new BeanCategoryAssignmentFactory().getInstanceFor(ca);
+			return Response.status(Response.Status.OK).entity(beanCa).build();
 		} catch (Exception e) {
 			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
 		}
@@ -137,14 +140,16 @@ public class CategoryAssignmentResource {
 			
 			// Delete CA
 			CategoryAssignment ca = RepositoryUtility.findCa(caUuid, repository);
+			if (ca == null) {
+				return ApiErrorHelper.createBadRequestResponse(COULD_NOT_FIND_REQUESTED_CA);
+			}
+			
 			Command deleteCommand = new BeanCategoryAssignmentFactory().getInstanceFor(ca).delete(ed);
 			ed.getCommandStack().execute(deleteCommand);
 			
 			// Sync after delete
 			serverRepository.syncRepository();
 			return Response.ok().build();
-		} catch (CoreException e) {
-			return ApiErrorHelper.createBadRequestResponse(e.getMessage());
 		} catch (Exception e) {
 			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
 		}

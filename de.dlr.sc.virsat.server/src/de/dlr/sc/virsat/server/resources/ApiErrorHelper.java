@@ -23,6 +23,6 @@ public class ApiErrorHelper {
 	}
 
 	public static Response createSyncErrorResponse(String msg) {
-		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(msg).build();
+		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ApiErrorHelper.SYNC_ERROR + ": " + msg).build();
 	}
 }

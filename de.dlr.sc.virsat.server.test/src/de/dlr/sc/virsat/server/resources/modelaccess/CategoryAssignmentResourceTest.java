@@ -120,4 +120,15 @@ public class CategoryAssignmentResourceTest extends AModelAccessResourceTest {
 	public void testCaDelete() throws Exception {
 		testDeleteCa(tcAllProperty);
 	}
+	
+	@Test
+	public void testErrorResponses() {
+		assertBadRequestResponse(
+				getTestRequestBuilder(ModelAccessResource.CA + "/unknown").get(), 
+				CategoryAssignmentResource.COULD_NOT_FIND_REQUESTED_CA);
+		
+		assertBadRequestResponse(
+				getTestRequestBuilder(ModelAccessResource.CA + "/unknown").delete(), 
+				CategoryAssignmentResource.COULD_NOT_FIND_REQUESTED_CA);
+	}
 }

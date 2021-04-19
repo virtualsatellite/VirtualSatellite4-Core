@@ -20,9 +20,11 @@ import javax.ws.rs.core.Response;
 
 import org.eclipse.jetty.http.HttpStatus;
 
+import de.dlr.sc.virsat.model.concept.types.IBeanObject;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanPropertyFactory;
 import de.dlr.sc.virsat.model.concept.types.property.ABeanProperty;
 import de.dlr.sc.virsat.model.dvlm.Repository;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
 import de.dlr.sc.virsat.server.resources.ApiErrorHelper;
@@ -34,6 +36,8 @@ import io.swagger.annotations.ApiResponses;
 
 @Api(hidden = true)
 public class PropertyResource {
+	
+	public static final String COULD_NOT_FIND_REQUESTED_PROPERTY = "Could not find requested property";
 	
 	private Repository repository;
 	private ServerRepository serverRepository;
@@ -58,15 +62,23 @@ public class PropertyResource {
 					response = ABeanProperty.class,
 					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 			@ApiResponse(
+					code = HttpStatus.BAD_REQUEST_400, 
+					message = COULD_NOT_FIND_REQUESTED_PROPERTY),
+			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.SYNC_ERROR)})
 	public Response getProperty(@PathParam("propertyUuid") @ApiParam(value = "Uuid of the property", required = true) String propertyUuid) {
 		try {
 			serverRepository.syncRepository();
-			return Response.status(Response.Status.OK).entity(
-					new BeanPropertyFactory().getInstanceFor(
-							RepositoryUtility.findProperty(propertyUuid, repository)
-					)).build();
+			
+			APropertyInstance property = RepositoryUtility.findProperty(propertyUuid, repository);
+			
+			if (property == null) {
+				return ApiErrorHelper.createBadRequestResponse(COULD_NOT_FIND_REQUESTED_PROPERTY);
+			}
+			
+			IBeanObject<? extends APropertyInstance> beanProperty = new BeanPropertyFactory().getInstanceFor(property);
+			return Response.status(Response.Status.OK).entity(beanProperty).build();
 		} catch (Exception e) {
 			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
 		}

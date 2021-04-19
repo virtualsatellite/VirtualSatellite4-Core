@@ -19,7 +19,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.jetty.http.HttpStatus;
 
@@ -79,10 +78,13 @@ public class StructuralElementInstanceResource {
 		try {
 			serverRepository.syncRepository();
 			StructuralElementInstance sei = RepositoryUtility.findSei(seiUuid, repository);
+			
+			if (sei == null) {
+				return ApiErrorHelper.createBadRequestResponse(COULD_NOT_FIND_REQUESTED_SEI);
+			}
+			
 			IBeanStructuralElementInstance beanSei = new BeanStructuralElementInstanceFactory().getInstanceFor(sei);
 			return Response.ok(beanSei).build();
-		} catch (CoreException e) {
-			return ApiErrorHelper.createBadRequestResponse(e.getMessage());
 		} catch (Exception e) {
 			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
 		}
@@ -139,14 +141,16 @@ public class StructuralElementInstanceResource {
 			
 			// Delete Sei
 			StructuralElementInstance sei = RepositoryUtility.findSei(seiUuid, repository);
+			if (sei == null) {
+				return ApiErrorHelper.createBadRequestResponse(COULD_NOT_FIND_REQUESTED_SEI);
+			}
+			
 			Command deleteCommand = CreateRemoveSeiWithFileStructureCommand.create(sei, RemoveFileStructureCommand.DELETE_RESOURCE_OPERATION_FUNCTION);
 			ed.getCommandStack().execute(deleteCommand);
 			
 			// Sync after delete
 			serverRepository.syncRepository();
 			return Response.ok().build();
-		} catch (CoreException e) {
-			return ApiErrorHelper.createBadRequestResponse(e.getMessage());
 		} catch (Exception e) {
 			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
 		}

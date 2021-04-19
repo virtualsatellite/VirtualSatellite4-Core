@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.server.resources.modelaccess;
 
 import org.junit.Test;
 
+import de.dlr.sc.virsat.server.resources.ModelAccessResource;
 import de.dlr.sc.virsat.server.resources.ModelAccessResourceTest;
 
 public class StructuralElementInstanceResourceTest extends ModelAccessResourceTest {
@@ -38,5 +39,16 @@ public class StructuralElementInstanceResourceTest extends ModelAccessResourceTe
 	@Test
 	public void testChildSeiPut() throws Exception {
 		testPutSei(tSeiChild);
+	}
+	
+	@Test
+	public void testErrorResponses() {
+		assertBadRequestResponse(
+				getTestRequestBuilder(ModelAccessResource.SEI + "/unknown").get(), 
+				StructuralElementInstanceResource.COULD_NOT_FIND_REQUESTED_SEI);
+		
+		assertBadRequestResponse(
+				getTestRequestBuilder(ModelAccessResource.SEI + "/unknown").delete(), 
+				StructuralElementInstanceResource.COULD_NOT_FIND_REQUESTED_SEI);
 	}
 }

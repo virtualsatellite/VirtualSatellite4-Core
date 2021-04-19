@@ -17,9 +17,11 @@ import static org.junit.Assert.assertTrue;
 import java.io.StringWriter;
 
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.emf.transaction.RecordingCommand;
@@ -397,5 +399,25 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 		testDelete(beanCa, ModelAccessResource.CA);
 
 		assertEquals("Ca removed", initialCas - 1, tSei.getCategoryAssignments().size());
+	}
+	
+	protected Builder getTestRequestBuilder(String path) {
+		return webTarget
+			.path(path)
+			.request()
+			.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER);
+	}
+	
+	protected void assertErrorResponse(Response response, Status expectedStatus, String expectedMessage) {
+		assertEquals(expectedStatus.getStatusCode(), response.getStatus());
+		assertEquals(expectedMessage, response.readEntity(String.class));
+	}
+	
+	protected void assertBadRequestResponse(Response response, String expectedMessage) {
+		assertErrorResponse(response, Status.BAD_REQUEST, expectedMessage);
+	}
+	
+	protected void assertSyncErrorResponse(Response response) {
+		assertErrorResponse(response, Status.INTERNAL_SERVER_ERROR, ApiErrorHelper.SYNC_ERROR);
 	}
 }
