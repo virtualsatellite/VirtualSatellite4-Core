@@ -13,6 +13,9 @@ package de.dlr.sc.virsat.model.extension.maturity.model;
 // * Import Statements
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+
+import javax.xml.bind.annotation.XmlType;
+
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 
 // *****************************************************************
@@ -27,6 +30,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
  * Category to describe the maturity of a part or product
  * 
  */	
+@XmlType(name = AMaturity.FULL_QUALIFIED_CATEGORY_NAME)
 public  class Maturity extends AMaturity {
 	
 	/**

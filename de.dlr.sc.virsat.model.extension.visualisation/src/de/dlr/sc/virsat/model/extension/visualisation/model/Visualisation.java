@@ -15,6 +15,9 @@ package de.dlr.sc.virsat.model.extension.visualisation.model;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.extension.visualisation.shape.Shape;
 import de.dlr.sc.virsat.model.extension.visualisation.shape.VisualisationShape;
+
+import javax.xml.bind.annotation.XmlType;
+
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 
 // *****************************************************************
@@ -29,6 +32,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
  * 
  * 
  */	
+@XmlType(name = AVisualisation.FULL_QUALIFIED_CATEGORY_NAME)
 public class Visualisation extends AVisualisation {
 	
 	/**

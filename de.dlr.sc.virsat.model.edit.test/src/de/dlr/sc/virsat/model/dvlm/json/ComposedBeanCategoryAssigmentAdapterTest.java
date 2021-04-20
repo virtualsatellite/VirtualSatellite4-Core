@@ -14,27 +14,31 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-public class AnyTypeAdapterTest {
+import de.dlr.sc.virsat.model.concept.types.category.BeanCategoryAssignment;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
 
-	private AnyTypeAdapter adapter;
-	private Object testObject;
+public class ComposedBeanCategoryAssigmentAdapterTest {
+
+	private ComposedBeanCategoryAssigmentAdapter adapter;
+	private BeanCategoryAssignment testBeanCa;
 	
 	@Before
 	public void setUp() throws Exception {
-		adapter = new AnyTypeAdapter();
-		testObject = new Object();
+		adapter = new ComposedBeanCategoryAssigmentAdapter();
+		testBeanCa = new BeanCategoryAssignment();
+		testBeanCa.setTypeInstance(CategoriesFactory.eINSTANCE.createCategoryAssignment());
 	}
 
 	@Test
 	public void testUnmarshalObject() throws Exception {
-		Object marshalledObject = adapter.marshal(testObject);
-		assertEquals(testObject, marshalledObject);
+		Object marshalledObject = adapter.marshal(testBeanCa);
+		assertEquals(testBeanCa, marshalledObject);
 	}
 
 	@Test
 	public void testMarshalObject() throws Exception {
-		Object unmarshalledObject = adapter.unmarshal(testObject);
-		assertEquals(testObject, unmarshalledObject);
+		Object unmarshalledObject = adapter.unmarshal(testBeanCa);
+		assertEquals(testBeanCa, unmarshalledObject);
 	}
 
 }
