@@ -9,6 +9,9 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.resources;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -16,10 +19,12 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.StringWriter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation.Builder;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedHashMap;
@@ -714,5 +719,55 @@ public class ModelAccessResourceTest extends AServerRepositoryTest {
 				.path(ModelAccessResource.ROOT_SEIS)
 				.request()
 				.headers(new MultivaluedHashMap<>(headers));
+	}
+	
+	@Test
+	public void testActiveConceptsGet() throws Exception {
+		int commits = VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath());
+		
+		List<String> entity = webTarget
+				.path(ModelAccessResource.CONCEPTS)
+				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
+				.get(new GenericType<List<String>>() { });
+		
+		List<Concept> activeConcepts = resourceSet.getRepository().getActiveConcepts();
+		assertEquals(activeConcepts.size(), entity.size());
+		
+		String entityString = webTarget
+				.path(ModelAccessResource.CONCEPTS)
+				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
+				.get(String.class);
+		assertTrue(entityString.contains(activeConcepts.get(0).getFullQualifiedName()));
+		
+		assertEquals("No new commit on get without remote changes", commits, 
+				VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath()));
+	}
+	
+	@Test
+	public void testAllConceptsGet() throws Exception {
+		int commits = VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath());
+		
+		List<String> entity = webTarget
+				.path(ModelAccessResource.CONCEPTS)
+				.queryParam(ModelAccessResource.QP_ONLY_ACTIVE_CONCEPTS, "false")
+				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
+				.get(new GenericType<List<String>>() { });
+		
+		List<Concept> activeConcepts = resourceSet.getRepository().getActiveConcepts();
+		assertThat(entity.size(), is(greaterThan(activeConcepts.size())));
+		
+		String entityString = webTarget
+				.path(ModelAccessResource.CONCEPTS)
+				.queryParam(ModelAccessResource.QP_ONLY_ACTIVE_CONCEPTS, "false")
+				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
+				.get(String.class);
+		assertTrue(entityString.contains(activeConcepts.get(0).getFullQualifiedName()));
+		
+		assertEquals("No new commit on get without remote changes", commits, 
+				VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath()));
 	}
 }
