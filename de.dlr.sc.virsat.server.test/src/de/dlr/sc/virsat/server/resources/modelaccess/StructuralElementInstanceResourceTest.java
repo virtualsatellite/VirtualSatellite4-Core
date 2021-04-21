@@ -51,4 +51,9 @@ public class StructuralElementInstanceResourceTest extends ModelAccessResourceTe
 				getTestRequestBuilder(ModelAccessResource.SEI + "/unknown").delete(), 
 				StructuralElementInstanceResource.COULD_NOT_FIND_REQUESTED_SEI);
 	}
+	
+	@Test
+	public void testGetNoSync() {
+		assertGetNoSync(ModelAccessResource.SEI, tSei.getUuid());
+	}
 }

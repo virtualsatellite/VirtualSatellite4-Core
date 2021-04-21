@@ -87,6 +87,7 @@ public class ModelAccessResource {
 	public static final String PROPERTY = "property";
 	
 	public static final String QP_ONLY_ACTIVE_CONCEPTS = "onlyActiveConcepts";
+	public static final String QP_SYNC = "synchronization";
 
 	// List of all resource classes used in this class
 	// Used to register model specific filters
@@ -138,19 +139,19 @@ public class ModelAccessResource {
 		}
 
 		@Path(PROPERTY)
-	    public PropertyResource getPropertyResource() {
-	        return new PropertyResource(serverRepository);
-	    }
+		public PropertyResource getPropertyResource() {
+			return new PropertyResource(serverRepository);
+		}
 
 		@Path(CA)
-	    public CategoryAssignmentResource getCategoryAssignmentResource() {
-	        return new CategoryAssignmentResource(serverRepository);
-	    }
+		public CategoryAssignmentResource getCategoryAssignmentResource() {
+			return new CategoryAssignmentResource(serverRepository);
+		}
 		
 		@Path(SEI)
-	    public StructuralElementInstanceResource getStructuralElementInstanceResource() {
-	        return new StructuralElementInstanceResource(serverRepository);
-	    }
+		public StructuralElementInstanceResource getStructuralElementInstanceResource() {
+			return new StructuralElementInstanceResource(serverRepository);
+		}
 
 		/** **/
 		@GET

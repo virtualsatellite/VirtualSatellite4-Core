@@ -131,4 +131,9 @@ public class CategoryAssignmentResourceTest extends AModelAccessResourceTest {
 				getTestRequestBuilder(ModelAccessResource.CA + "/unknown").delete(), 
 				CategoryAssignmentResource.COULD_NOT_FIND_REQUESTED_CA);
 	}
+	
+	@Test
+	public void testGetNoSync() {
+		assertGetNoSync(ModelAccessResource.CA, tcBeanA.getUuid());
+	}
 }

@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.resources;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -24,6 +26,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.runtime.ILogListener;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.jetty.http.HttpStatus;
 import org.eclipse.jgit.api.Git;
@@ -60,6 +64,7 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
+import de.dlr.sc.virsat.server.Activator;
 import de.dlr.sc.virsat.server.servlet.VirSatModelAccessServlet;
 import de.dlr.sc.virsat.server.test.AServerRepositoryTest;
 import de.dlr.sc.virsat.server.test.VersionControlTestHelper;
@@ -419,5 +424,53 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 	
 	protected void assertSyncErrorResponse(Response response) {
 		assertErrorResponse(response, Status.INTERNAL_SERVER_ERROR, ApiErrorHelper.SYNC_ERROR);
+	}
+	
+	private class CountingLogListener implements ILogListener {
+		private int logCount = 0;
+
+		@Override
+		public void logging(IStatus status, String plugin) {
+			logCount++;
+		}
+
+		public int getCount() {
+			return logCount;
+		}
+	}
+	
+	/**
+	 * Sends to requests to the server one with the synchronization query parameter
+	 * true, that should result in log output, and false, that shouldn't
+	 * @param path of the get endpoint
+	 * @param uuid of the element to get
+	 */
+	protected void assertGetNoSync(String path, String uuid) {
+		CountingLogListener listener = new CountingLogListener();
+		Activator.getDefault().getLog().addLogListener(listener);
+		
+		assertEquals(0, listener.getCount());
+		
+		webTarget
+			.path(path)
+			.path(uuid)
+			.request()
+			.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
+			.get();
+		
+		int countWithSync = listener.getCount();
+		assertThat("At least one log message because of synchronization", countWithSync, greaterThan(0));
+		
+		webTarget
+			.path(path)
+			.path(uuid)
+			.queryParam(ModelAccessResource.QP_SYNC, "false")
+			.request()
+			.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
+			.get();
+		
+		assertEquals("No new messages", countWithSync, listener.getCount());
+		
+		Activator.getDefault().getLog().removeLogListener(listener);
 	}
 }
