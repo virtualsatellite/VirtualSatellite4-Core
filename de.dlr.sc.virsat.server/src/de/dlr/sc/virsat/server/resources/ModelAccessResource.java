@@ -16,8 +16,10 @@ import java.util.List;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -30,6 +32,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.common.command.Command;
 import org.eclipse.jetty.http.HttpStatus;
 
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
@@ -37,8 +40,14 @@ import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementIns
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
+import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommand;
 import de.dlr.sc.virsat.server.auth.ServerRoles;
+import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.dataaccess.ServerConcept;
 import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProvider;
 import de.dlr.sc.virsat.server.jetty.VirSatJettyServer;
@@ -87,6 +96,7 @@ public class ModelAccessResource {
 	public static final String PROPERTY = "property";
 	
 	public static final String QP_ONLY_ACTIVE_CONCEPTS = "onlyActiveConcepts";
+	public static final String QP_FULL_QUALIFIED_NAME = "fullQualifiedName";
 
 	// List of all resource classes used in this class
 	// Used to register model specific filters
@@ -130,11 +140,13 @@ public class ModelAccessResource {
 	public static class RepoModelAccessResource {
 		
 		private Repository repository;
+		private VirSatTransactionalEditingDomain ed;
 		private ServerRepository serverRepository;
 
 		public RepoModelAccessResource(ServerRepository serverRepository) {
 			this.serverRepository = serverRepository;
 			repository = serverRepository.getResourceSet().getRepository();
+			ed = serverRepository.getEd();
 		}
 
 		@Path(PROPERTY)
@@ -190,6 +202,50 @@ public class ModelAccessResource {
 				return Response.ok(genericEntityList).build();
 			} catch (CoreException e) {
 				return ApiErrorHelper.createBadRequestResponse(e.getMessage());
+			} catch (Exception e) {
+				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			}
+		}
+		
+		@POST
+		@Path(ROOT_SEIS)
+		@Consumes(MediaType.APPLICATION_JSON)
+		@ApiOperation(
+				consumes = "application/json",
+				value = "Create root SEI",
+				httpMethod = "POST",
+				notes = "This service creates a new root StructuralElementInstance and returns its uuid")
+		@ApiResponses(value = { 
+				@ApiResponse(
+						code = HttpStatus.OK_200,
+						response = String.class,
+						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+				@ApiResponse(
+						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+						message = ApiErrorHelper.SYNC_ERROR)})
+		public Response createSei(@QueryParam(value = ModelAccessResource.QP_FULL_QUALIFIED_NAME) String fullQualifiedName) {
+			try {
+				serverRepository.syncRepository();
+				
+				// TODO: make function
+				StructuralElementInstance newSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+				ActiveConceptHelper helper = new ActiveConceptHelper(repository);
+				int idx = fullQualifiedName.lastIndexOf(".");
+				Concept concept = helper.getConcept(fullQualifiedName.substring(0, idx));
+				StructuralElement se = ActiveConceptHelper.getStructuralElement(concept, fullQualifiedName.substring(idx+1));
+				newSei.setType(se);
+				
+				Command createCommand = CreateAddSeiWithFileStructureCommand.create(ed, repository, newSei);
+				
+				// TODO: catch not executeable
+				if(createCommand.canExecute()) {
+					ed.getCommandStack().execute(createCommand);
+				} else {
+					throw new Exception("test");
+				}
+				
+				serverRepository.syncRepository();
+				return Response.ok(newSei.getUuid().toString()).build();
 			} catch (Exception e) {
 				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
 			}

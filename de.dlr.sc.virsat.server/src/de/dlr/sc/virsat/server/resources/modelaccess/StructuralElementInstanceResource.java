@@ -12,10 +12,12 @@ package de.dlr.sc.virsat.server.resources.modelaccess;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -26,13 +28,22 @@ import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanc
 import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.Repository;
+import de.dlr.sc.virsat.model.dvlm.categories.Category;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
+import de.dlr.sc.virsat.model.dvlm.structural.provider.StructuralElementItemProvider;
+import de.dlr.sc.virsat.model.dvlm.structural.util.StructuralElementInstanceHelper;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
+import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommand;
 import de.dlr.sc.virsat.project.structure.command.CreateRemoveSeiWithFileStructureCommand;
 import de.dlr.sc.virsat.project.structure.command.RemoveFileStructureCommand;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
 import de.dlr.sc.virsat.server.resources.ApiErrorHelper;
+import de.dlr.sc.virsat.server.resources.ModelAccessResource;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -114,7 +125,60 @@ public class StructuralElementInstanceResource {
 			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
 		}
 	}
-		
+	
+	@POST
+	@Path("/{parentUuid}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@ApiOperation(
+			consumes = "application/json",
+			value = "Create SEI",
+			httpMethod = "POST",
+			notes = "This service creates a new StructuralElementInstance and returns it")
+	@ApiResponses(value = { 
+			@ApiResponse(
+					code = HttpStatus.OK_200,
+					response = String.class,
+					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.SYNC_ERROR)})
+	// TODO: check query param in documentation -> add for missing params
+	public Response createSei(@PathParam("parentUuid") @ApiParam(value = "parent uuid", required = true) String parentUuid,
+			@QueryParam(value = ModelAccessResource.QP_FULL_QUALIFIED_NAME) String fullQualifiedName) {
+		try {
+			serverRepository.syncRepository();
+			
+			// TODO: func
+			StructuralElementInstance parentSei = RepositoryUtility.findSei(parentUuid, repository);
+			
+			if (parentSei == null) {
+				return ApiErrorHelper.createBadRequestResponse(COULD_NOT_FIND_REQUESTED_SEI);
+			}
+			
+			StructuralElementInstance newSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+			ActiveConceptHelper helper = new ActiveConceptHelper(repository);
+			int idx = fullQualifiedName.lastIndexOf(".");
+			Concept concept = helper.getConcept(fullQualifiedName.substring(0, idx));
+			StructuralElement se = ActiveConceptHelper.getStructuralElement(concept, fullQualifiedName.substring(idx+1));
+			newSei.setType(se);
+			
+			Command createCommand = CreateAddSeiWithFileStructureCommand.create(ed, parentSei, newSei);
+			
+			// TODO: catch not executeable
+			if(createCommand.canExecute()) {
+				ed.getCommandStack().execute(createCommand);
+			} else {
+				throw new Exception("test");
+			}
+			
+			serverRepository.syncRepository();
+			return Response.ok(newSei.getUuid().toString()).build();
+		} catch (Exception e) {
+			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+		}
+	}
+	
+	
 	/** **/
 	@DELETE
 	@Path("/{seiUuid}")
