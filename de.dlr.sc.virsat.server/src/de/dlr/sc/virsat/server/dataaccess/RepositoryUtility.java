@@ -123,7 +123,6 @@ public class RepositoryUtility {
 	 * Finds a ca instance by it's uuid
 	 * @param uuid the cas uuid
 	 * @return the CategoryAssignment or null
-	 * @throws CoreException
 	 */
 	public static CategoryAssignment findCa(String uuid, Repository repository) {
 		IUuid obj = findObjectById(uuid, repository);
@@ -138,7 +137,6 @@ public class RepositoryUtility {
 	 * Finds a property instance by it's uuid
 	 * @param uuid the properties uuid
 	 * @return the APropertyInstance or null
-	 * @throws CoreException
 	 */
 	public static APropertyInstance findProperty(String uuid, Repository repository) {
 		IUuid obj = findObjectById(uuid, repository);
@@ -153,7 +151,6 @@ public class RepositoryUtility {
 	 * Finds a discipline instance by it's uuid
 	 * @param uuid
 	 * @return the Discipline or null
-	 * @throws CoreException
 	 */
 	public static Discipline findDiscipline(String uuid, Repository repository) {
 		EList<Discipline> disciplines = repository.getRoleManagement().getDisciplines();
@@ -170,7 +167,6 @@ public class RepositoryUtility {
 	 * @param fullQualifiedName of the se
 	 * @param repository to search
 	 * @return the StructuralElement or null or null
-	 * @throws CoreException
 	 */
 	public static StructuralElement findSe(String fullQualifiedName, Repository repository) {
 		EList<Concept> concepts = repository.getActiveConcepts();
