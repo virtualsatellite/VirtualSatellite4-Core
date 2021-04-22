@@ -9,20 +9,12 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.resources.modelaccess;
 
-import static org.hamcrest.CoreMatchers.hasItems;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
-import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Test;
 
-import de.dlr.sc.virsat.model.dvlm.Repository;
-import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.resources.AModelAccessResourceTest;
 import de.dlr.sc.virsat.server.resources.ModelAccessResource;
 
@@ -64,16 +56,8 @@ public class StructuralElementInstanceResourceTest extends AModelAccessResourceT
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.post(Entity.json(null));
-		// TODO: func for assert
-		Repository repository = ed.getResourceSet().getRepository();
 		
-		assertEquals(HttpStatus.OK_200, response.getStatus());
-		String uuid = response.readEntity(String.class);
-		
-		sei = RepositoryUtility.findSei(uuid, repository);
-		assertNotNull(sei);
-		assertEquals(wantedTypeFqn, sei.getType().getFullQualifiedName());
-		assertThat("Structural element instance is correctly added to parent sei", tSei.getStructuralElementInstance().getChildren(), hasItems(sei));
+		assertSeiGotCreated(response, wantedTypeFqn, ed, tSei.getStructuralElementInstance().getChildren());
 	}
 	
 	@Test

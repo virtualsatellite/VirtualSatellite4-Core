@@ -28,16 +28,8 @@ import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanc
 import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.Repository;
-import de.dlr.sc.virsat.model.dvlm.categories.Category;
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
-import de.dlr.sc.virsat.model.dvlm.structural.provider.StructuralElementItemProvider;
-import de.dlr.sc.virsat.model.dvlm.structural.util.StructuralElementInstanceHelper;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
-import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommand;
 import de.dlr.sc.virsat.project.structure.command.CreateRemoveSeiWithFileStructureCommand;
 import de.dlr.sc.virsat.project.structure.command.RemoveFileStructureCommand;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
@@ -126,6 +118,7 @@ public class StructuralElementInstanceResource {
 		}
 	}
 	
+	/** **/
 	@POST
 	@Path("/{parentUuid}")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -142,37 +135,21 @@ public class StructuralElementInstanceResource {
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.SYNC_ERROR)})
-	// TODO: check query param in documentation -> add for missing params
 	public Response createSei(@PathParam("parentUuid") @ApiParam(value = "parent uuid", required = true) String parentUuid,
-			@QueryParam(value = ModelAccessResource.QP_FULL_QUALIFIED_NAME) String fullQualifiedName) {
+			@QueryParam(value = ModelAccessResource.QP_FULL_QUALIFIED_NAME)
+			@ApiParam(value = "Full qualified name of the SEI type", required = true) String fullQualifiedName) {
 		try {
 			serverRepository.syncRepository();
 			
-			// TODO: func
 			StructuralElementInstance parentSei = RepositoryUtility.findSei(parentUuid, repository);
 			
 			if (parentSei == null) {
 				return ApiErrorHelper.createBadRequestResponse(COULD_NOT_FIND_REQUESTED_SEI);
 			}
-			
-			StructuralElementInstance newSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-			ActiveConceptHelper helper = new ActiveConceptHelper(repository);
-			int idx = fullQualifiedName.lastIndexOf(".");
-			Concept concept = helper.getConcept(fullQualifiedName.substring(0, idx));
-			StructuralElement se = ActiveConceptHelper.getStructuralElement(concept, fullQualifiedName.substring(idx+1));
-			newSei.setType(se);
-			
-			Command createCommand = CreateAddSeiWithFileStructureCommand.create(ed, parentSei, newSei);
-			
-			// TODO: catch not executeable
-			if(createCommand.canExecute()) {
-				ed.getCommandStack().execute(createCommand);
-			} else {
-				throw new Exception("test");
-			}
+			String newSeiUuid = ModelAccessResource.createSeiFromFqn(fullQualifiedName, parentSei, ed);
 			
 			serverRepository.syncRepository();
-			return Response.ok(newSei.getUuid().toString()).build();
+			return Response.ok(newSeiUuid).build();
 		} catch (Exception e) {
 			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
 		}

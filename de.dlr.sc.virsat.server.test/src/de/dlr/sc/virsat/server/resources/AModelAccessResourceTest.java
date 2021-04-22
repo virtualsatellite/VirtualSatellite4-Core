@@ -9,12 +9,16 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.resources;
 
+import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.StringWriter;
+import java.util.List;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation.Builder;
@@ -24,6 +28,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.jetty.http.HttpStatus;
 import org.eclipse.jgit.api.Git;
@@ -45,6 +50,7 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResource;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
@@ -60,6 +66,7 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
+import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.servlet.VirSatModelAccessServlet;
 import de.dlr.sc.virsat.server.test.AServerRepositoryTest;
 import de.dlr.sc.virsat.server.test.VersionControlTestHelper;
@@ -419,5 +426,25 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 	
 	protected void assertSyncErrorResponse(Response response) {
 		assertErrorResponse(response, Status.INTERNAL_SERVER_ERROR, ApiErrorHelper.SYNC_ERROR);
+	}
+	
+	/**
+	 * Asserts if a sei got correctly created from the server
+	 * @param response of the server containing the created seis uuid
+	 * @param wantedTypeFqn type string of the sei
+	 * @param ed
+	 * @param ownerChildren list of the current children of the owner
+	 * @throws CoreException
+	 */
+	protected void assertSeiGotCreated(Response response, String wantedTypeFqn, VirSatTransactionalEditingDomain ed, List<StructuralElementInstance> ownerChildren) throws CoreException {
+		Repository repository = ed.getResourceSet().getRepository();
+		
+		assertEquals(HttpStatus.OK_200, response.getStatus());
+		String uuid = response.readEntity(String.class);
+		
+		sei = RepositoryUtility.findSei(uuid, repository);
+		assertNotNull(sei);
+		assertEquals(wantedTypeFqn, sei.getType().getFullQualifiedName());
+		assertThat("Structural element instance is correctly added to repository", ownerChildren, hasItems(sei));
 	}
 }

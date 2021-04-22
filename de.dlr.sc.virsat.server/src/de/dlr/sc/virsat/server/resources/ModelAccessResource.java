@@ -33,6 +33,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jetty.http.HttpStatus;
 
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
@@ -47,7 +48,6 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommand;
 import de.dlr.sc.virsat.server.auth.ServerRoles;
-import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.dataaccess.ServerConcept;
 import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProvider;
 import de.dlr.sc.virsat.server.jetty.VirSatJettyServer;
@@ -207,6 +207,7 @@ public class ModelAccessResource {
 			}
 		}
 		
+		/** **/
 		@POST
 		@Path(ROOT_SEIS)
 		@Consumes(MediaType.APPLICATION_JSON)
@@ -223,29 +224,15 @@ public class ModelAccessResource {
 				@ApiResponse(
 						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 						message = ApiErrorHelper.SYNC_ERROR)})
-		public Response createSei(@QueryParam(value = ModelAccessResource.QP_FULL_QUALIFIED_NAME) String fullQualifiedName) {
+		public Response createSei(@QueryParam(value = ModelAccessResource.QP_FULL_QUALIFIED_NAME) 
+			@ApiParam(value = "Full qualified name of the SEI type", required = true) String fullQualifiedName) {
 			try {
 				serverRepository.syncRepository();
 				
-				// TODO: make function
-				StructuralElementInstance newSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-				ActiveConceptHelper helper = new ActiveConceptHelper(repository);
-				int idx = fullQualifiedName.lastIndexOf(".");
-				Concept concept = helper.getConcept(fullQualifiedName.substring(0, idx));
-				StructuralElement se = ActiveConceptHelper.getStructuralElement(concept, fullQualifiedName.substring(idx+1));
-				newSei.setType(se);
-				
-				Command createCommand = CreateAddSeiWithFileStructureCommand.create(ed, repository, newSei);
-				
-				// TODO: catch not executeable
-				if(createCommand.canExecute()) {
-					ed.getCommandStack().execute(createCommand);
-				} else {
-					throw new Exception("test");
-				}
+				String newSeiUuid = createSeiFromFqn(fullQualifiedName, repository, ed);
 				
 				serverRepository.syncRepository();
-				return Response.ok(newSei.getUuid().toString()).build();
+				return Response.ok(newSeiUuid).build();
 			} catch (Exception e) {
 				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
 			}
@@ -306,5 +293,29 @@ public class ModelAccessResource {
 			}
 		}
 	
+	}
+	
+	/**
+	 * Create a new Sei typed by the Se identified by the fullQualifiedName
+	 * @param fullQualifiedName of the sei type (se)
+	 * @param owner of the sei (either another sei or the repository for root seis)
+	 * @param editingDomain
+	 * @return uuid of the created sei
+	 */
+	public static String createSeiFromFqn(String fullQualifiedName, EObject owner, VirSatTransactionalEditingDomain editingDomain) {
+		ActiveConceptHelper helper = new ActiveConceptHelper(editingDomain.getResourceSet().getRepository());
+		
+		StructuralElementInstance newSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		
+		// Add the correct type using the fqn
+		int idx = fullQualifiedName.lastIndexOf(".");
+		Concept concept = helper.getConcept(fullQualifiedName.substring(0, idx));
+		StructuralElement se = ActiveConceptHelper.getStructuralElement(concept, fullQualifiedName.substring(idx + 1));
+		newSei.setType(se);
+		
+		Command createCommand = CreateAddSeiWithFileStructureCommand.create(editingDomain, owner, newSei);
+		editingDomain.getCommandStack().execute(createCommand);
+		
+		return newSei.getUuid().toString();
 	}
 }

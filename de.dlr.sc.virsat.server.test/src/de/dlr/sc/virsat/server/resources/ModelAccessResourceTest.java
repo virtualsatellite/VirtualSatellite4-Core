@@ -9,12 +9,10 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.resources;
 
-import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -30,10 +28,8 @@ import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
-import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
-import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.test.VersionControlTestHelper;
 
 public class ModelAccessResourceTest extends AModelAccessResourceTest {
@@ -154,10 +150,8 @@ public class ModelAccessResourceTest extends AModelAccessResourceTest {
 				VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath()));
 	}
 	
-	// TODO
 	@Test
 	public void testCreateRootSei() throws Exception {
-		Repository repository = ed.getResourceSet().getRepository();
 		String wantedTypeFqn = tSei.getFullQualifiedSturcturalElementName();
 		
 		Response response = webTarget
@@ -167,13 +161,6 @@ public class ModelAccessResourceTest extends AModelAccessResourceTest {
 				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.post(Entity.json("test"));
 		
-		assertEquals(HttpStatus.OK_200, response.getStatus());
-		// TODO: add in abstract test cases
-		String uuid = response.readEntity(String.class);
-		
-		sei = RepositoryUtility.findSei(uuid, repository);
-		assertNotNull(sei);
-		assertEquals(wantedTypeFqn, sei.getType().getFullQualifiedName());
-		assertThat("Structural element instance is correctly added to repository", repository.getRootEntities(), hasItems(sei));
+		assertSeiGotCreated(response, wantedTypeFqn, ed, ed.getResourceSet().getRepository().getRootEntities());
 	}
 }
