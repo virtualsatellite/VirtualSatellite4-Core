@@ -426,7 +426,7 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 		assertErrorResponse(response, Status.INTERNAL_SERVER_ERROR, ApiErrorHelper.SYNC_ERROR);
 	}
 	
-	private class CountingLogListener implements ILogListener {
+	private static class CountingLogListener implements ILogListener {
 		private int logCount = 0;
 
 		@Override
