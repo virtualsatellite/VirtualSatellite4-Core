@@ -57,17 +57,15 @@ public class StructuralElementInstanceResourceTest extends AModelAccessResourceT
 				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.post(Entity.json(null));
 		
-		assertSeiGotCreated(response, wantedTypeFqn, ed, tSei.getStructuralElementInstance().getChildren());
+		assertIUuidGotCreated(response, wantedTypeFqn, ed, tSei.getStructuralElementInstance().getChildren());
 	}
 	
 	@Test
 	public void testErrorResponses() {
-		assertBadRequestResponse(
-				getTestRequestBuilder(ModelAccessResource.SEI + "/unknown").get(), 
-				StructuralElementInstanceResource.COULD_NOT_FIND_REQUESTED_SEI);
+		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.SEI + "/unknown").get());
 		
-		assertBadRequestResponse(
-				getTestRequestBuilder(ModelAccessResource.SEI + "/unknown").delete(), 
-				StructuralElementInstanceResource.COULD_NOT_FIND_REQUESTED_SEI);
+		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.SEI + "/unknown").delete());
+		
+		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.CA + "/unknown").post(Entity.json(null)));
 	}
 }

@@ -37,8 +37,6 @@ import io.swagger.annotations.ApiResponses;
 @Api(hidden = true)
 public class PropertyResource {
 	
-	public static final String COULD_NOT_FIND_REQUESTED_PROPERTY = "Could not find requested property";
-	
 	private Repository repository;
 	private ServerRepository serverRepository;
 	
@@ -63,7 +61,7 @@ public class PropertyResource {
 					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 			@ApiResponse(
 					code = HttpStatus.BAD_REQUEST_400, 
-					message = COULD_NOT_FIND_REQUESTED_PROPERTY),
+					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.SYNC_ERROR)})
@@ -74,7 +72,7 @@ public class PropertyResource {
 			APropertyInstance property = RepositoryUtility.findProperty(propertyUuid, repository);
 			
 			if (property == null) {
-				return ApiErrorHelper.createBadRequestResponse(COULD_NOT_FIND_REQUESTED_PROPERTY);
+				return ApiErrorHelper.createNotFoundErrorResponse();
 			}
 			
 			IBeanObject<? extends APropertyInstance> beanProperty = new BeanPropertyFactory().getInstanceFor(property);

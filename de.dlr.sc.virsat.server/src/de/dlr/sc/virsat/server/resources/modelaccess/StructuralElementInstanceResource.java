@@ -45,8 +45,6 @@ import io.swagger.annotations.ApiResponses;
 @Api(hidden = true)
 public class StructuralElementInstanceResource {
 	
-	public static final String COULD_NOT_FIND_REQUESTED_SEI = "Could not find requested SEI";
-	
 	private Repository repository;
 	private ServerRepository serverRepository;
 	private VirSatTransactionalEditingDomain ed;
@@ -73,7 +71,7 @@ public class StructuralElementInstanceResource {
 					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 			@ApiResponse(
 					code = HttpStatus.BAD_REQUEST_400, 
-					message = COULD_NOT_FIND_REQUESTED_SEI),
+					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.SYNC_ERROR)})
@@ -83,7 +81,7 @@ public class StructuralElementInstanceResource {
 			StructuralElementInstance sei = RepositoryUtility.findSei(seiUuid, repository);
 			
 			if (sei == null) {
-				return ApiErrorHelper.createBadRequestResponse(COULD_NOT_FIND_REQUESTED_SEI);
+				return ApiErrorHelper.createNotFoundErrorResponse();
 			}
 			
 			IBeanStructuralElementInstance beanSei = new BeanStructuralElementInstanceFactory().getInstanceFor(sei);
@@ -133,6 +131,9 @@ public class StructuralElementInstanceResource {
 					response = String.class,
 					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 			@ApiResponse(
+					code = HttpStatus.BAD_REQUEST_400, 
+					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
+			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.SYNC_ERROR)})
 	public Response createSei(@PathParam("parentUuid") @ApiParam(value = "parent uuid", required = true) String parentUuid,
@@ -144,7 +145,7 @@ public class StructuralElementInstanceResource {
 			StructuralElementInstance parentSei = RepositoryUtility.findSei(parentUuid, repository);
 			
 			if (parentSei == null) {
-				return ApiErrorHelper.createBadRequestResponse(COULD_NOT_FIND_REQUESTED_SEI);
+				return ApiErrorHelper.createNotFoundErrorResponse();
 			}
 			String newSeiUuid = ModelAccessResource.createSeiFromFqn(fullQualifiedName, parentSei, ed);
 			
@@ -171,7 +172,7 @@ public class StructuralElementInstanceResource {
 					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 			@ApiResponse(
 					code = HttpStatus.BAD_REQUEST_400,
-					message = COULD_NOT_FIND_REQUESTED_SEI),
+					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.SYNC_ERROR)})
@@ -183,7 +184,7 @@ public class StructuralElementInstanceResource {
 			// Delete Sei
 			StructuralElementInstance sei = RepositoryUtility.findSei(seiUuid, repository);
 			if (sei == null) {
-				return ApiErrorHelper.createBadRequestResponse(COULD_NOT_FIND_REQUESTED_SEI);
+				return ApiErrorHelper.createNotFoundErrorResponse();
 			}
 			
 			Command deleteCommand = CreateRemoveSeiWithFileStructureCommand.create(sei, RemoveFileStructureCommand.DELETE_RESOURCE_OPERATION_FUNCTION);

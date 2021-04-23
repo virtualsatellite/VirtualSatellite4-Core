@@ -126,8 +126,6 @@ public class PropertyResourceTest extends AModelAccessResourceTest {
 	
 	@Test
 	public void testErrorResponses() {
-		assertBadRequestResponse(
-				getTestRequestBuilder(ModelAccessResource.PROPERTY + "/unknown").get(), 
-				PropertyResource.COULD_NOT_FIND_REQUESTED_PROPERTY);
+		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.PROPERTY + "/unknown").get());
 	}
 }

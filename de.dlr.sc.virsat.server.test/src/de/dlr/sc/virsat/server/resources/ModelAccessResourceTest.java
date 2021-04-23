@@ -159,8 +159,8 @@ public class ModelAccessResourceTest extends AModelAccessResourceTest {
 				.queryParam(ModelAccessResource.QP_FULL_QUALIFIED_NAME, wantedTypeFqn)
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
-				.post(Entity.json("test"));
+				.post(Entity.json(null));
 		
-		assertSeiGotCreated(response, wantedTypeFqn, ed, ed.getResourceSet().getRepository().getRootEntities());
+		assertIUuidGotCreated(response, wantedTypeFqn, ed, ed.getResourceSet().getRepository().getRootEntities());
 	}
 }

@@ -224,7 +224,7 @@ public class ModelAccessResource {
 				@ApiResponse(
 						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 						message = ApiErrorHelper.SYNC_ERROR)})
-		public Response createSei(@QueryParam(value = ModelAccessResource.QP_FULL_QUALIFIED_NAME) 
+		public Response createRootSei(@QueryParam(value = ModelAccessResource.QP_FULL_QUALIFIED_NAME) 
 			@ApiParam(value = "Full qualified name of the SEI type", required = true) String fullQualifiedName) {
 			try {
 				serverRepository.syncRepository();
