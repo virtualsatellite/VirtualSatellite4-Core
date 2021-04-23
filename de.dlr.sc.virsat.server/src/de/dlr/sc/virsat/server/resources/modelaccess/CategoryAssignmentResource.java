@@ -214,5 +214,4 @@ public class CategoryAssignmentResource {
 			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
 		}
 	}
-	
 }
