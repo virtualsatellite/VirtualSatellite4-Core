@@ -23,6 +23,7 @@ import org.junit.Test;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementDefinition;
 import de.dlr.sc.virsat.model.extension.ps.model.ProductTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ProductTreeDomain;
+import de.dlr.sc.virsat.project.ui.perspective.CorePerspective;
 
 public class RoleManagementTest extends ASwtBotTestCase {
 	
@@ -59,7 +60,7 @@ public class RoleManagementTest extends ASwtBotTestCase {
 		save();
 		
 		// Check for the warnings
-		SWTBotView problemView = bot.viewByTitle("Problems");
+		SWTBotView problemView = openView(CorePerspective.ID_PROBLEM_VIEW);
 		problemView.show();
 		expand(problemView.bot().tree().getTreeItem("Warnings (2 items)"));
 		problemView.bot().tree().getTreeItem("Warnings (2 items)").getNode("There are duplicate names in namespace: 'SubSystem'.").select();

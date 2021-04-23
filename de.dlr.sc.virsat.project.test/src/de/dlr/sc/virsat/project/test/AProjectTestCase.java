@@ -255,7 +255,7 @@ public abstract class AProjectTestCase {
 					// If it failed in the last retry, than throw the error
 					if (count >= retries) {
 						String message = String.format(
-							"assertRetry failed after %i rerties waiting each for %i milliseconds with the following exception:",
+							"assertRetry failed after %d rerties waiting each for %d milliseconds",
 							retries,
 							milliSeconds
 						);

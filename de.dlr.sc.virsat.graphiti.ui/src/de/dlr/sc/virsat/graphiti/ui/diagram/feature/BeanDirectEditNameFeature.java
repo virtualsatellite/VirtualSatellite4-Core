@@ -14,9 +14,8 @@ import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.IDirectEditingContext;
 import org.eclipse.graphiti.features.impl.AbstractDirectEditingFeature;
+import org.eclipse.graphiti.mm.algorithms.AbstractText;
 import org.eclipse.graphiti.mm.algorithms.GraphicsAlgorithm;
-import org.eclipse.graphiti.mm.algorithms.Text;
-import org.eclipse.graphiti.mm.pictograms.ContainerShape;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 
 import de.dlr.sc.virsat.graphiti.util.DiagramHelper;
@@ -48,7 +47,7 @@ public class BeanDirectEditNameFeature extends AbstractDirectEditingFeature {
 		Object bo = getBusinessObjectForPictogramElement(pe);
 		GraphicsAlgorithm ga = context.getGraphicsAlgorithm();
 		
-		if (bo instanceof IBeanName && ga instanceof Text) {
+		if (bo instanceof IBeanName && ga instanceof AbstractText) {
 			return DiagramHelper.hasBothWritePermission(bo, pe);
 		}
 		
@@ -71,8 +70,8 @@ public class BeanDirectEditNameFeature extends AbstractDirectEditingFeature {
 		Command setName = bean.setName(ed, value);
 		ed.getCommandStack().execute(setName);
 		
-		ContainerShape cs = DiagramHelper.getUpdateableContainer(getFeatureProvider(), pe);
-		updatePictogramElement(cs);
+		PictogramElement updateablePe = DiagramHelper.getUpdateableElement(getFeatureProvider(), pe);
+		updatePictogramElement(updateablePe);
 	}
 
 }

@@ -60,12 +60,24 @@ public class VirsatAppsInititalizerTest extends AProjectTestCase {
 	public void testInitializeProject() throws InvocationTargetException, InterruptedException, CoreException {
 		appsInitializer.initializeProject(testProject, repository, new NullProgressMonitor());
 		
-		assertTrue("bin folder now exists", testProject.getFolder(VirsatAppsInitializer.FOLDER_NAME_BIN).exists());
+		assertTrue("target folder now exists", testProject.getFolder(VirsatAppsInitializer.FOLDER_NAME_TARGET).exists());
+		assertTrue("classes folder now exists", testProject.getFolder(VirsatAppsInitializer.FOLDER_NAME_TARGET).getFolder(VirsatAppsInitializer.FOLDER_NAME_CLASSES).exists());
 		assertTrue("scripts folder now exists", testProject.getFolder(VirsatAppsInitializer.FOLDER_NAME_APPS).exists());
 		assertTrue("meta-inf folder now exists", testProject.getFolder(VirsatAppsInitializer.FOLDER_NAME_META_INF).exists());
 		assertTrue("manifest.mf now exists", testProject.getFolder(VirsatAppsInitializer.FOLDER_NAME_META_INF).getFile(VirsatAppsInitializer.FILE_NAME_MANIFEST_MF).exists());
 		assertTrue("build.properties now exists", testProject.getFile(VirsatAppsInitializer.FILE_NAME_BUILD_PROPERTIES).exists());
-
-		assertEquals("There are not files in the bin folder", 0, testProject.getFolder(VirsatAppsInitializer.FOLDER_NAME_BIN).members().length);
+		
+		assertEquals("There are not files in the target/classes folder", 0, testProject.getFolder(VirsatAppsInitializer.FOLDER_NAME_TARGET).getFolder(VirsatAppsInitializer.FOLDER_NAME_CLASSES).members().length);
+	
+		// Test that initializing apps in a project with existing folder structure or files is safe
+		
+		appsInitializer.initializeProject(testProject, repository, new NullProgressMonitor());
+		
+		assertTrue("target folder still exists", testProject.getFolder(VirsatAppsInitializer.FOLDER_NAME_TARGET).exists());
+		assertTrue("classes folder still exists", testProject.getFolder(VirsatAppsInitializer.FOLDER_NAME_TARGET).getFolder(VirsatAppsInitializer.FOLDER_NAME_CLASSES).exists());
+		assertTrue("scripts folder still exists", testProject.getFolder(VirsatAppsInitializer.FOLDER_NAME_APPS).exists());
+		assertTrue("meta-inf folder still exists", testProject.getFolder(VirsatAppsInitializer.FOLDER_NAME_META_INF).exists());
+		assertTrue("manifest.mf still exists", testProject.getFolder(VirsatAppsInitializer.FOLDER_NAME_META_INF).getFile(VirsatAppsInitializer.FILE_NAME_MANIFEST_MF).exists());
+		assertTrue("build.properties still exists", testProject.getFile(VirsatAppsInitializer.FILE_NAME_BUILD_PROPERTIES).exists());
 	}
 }

@@ -55,5 +55,5 @@ public interface ITreeTraverserMatcher<TYPE> {
 	 * @param treeNode The node for which to get children
 	 * @return A collection containing the children
 	 */
-	Collection<TYPE> getChildren(TYPE treeNode);
+	Collection<? extends TYPE> getChildren(TYPE treeNode);
 }

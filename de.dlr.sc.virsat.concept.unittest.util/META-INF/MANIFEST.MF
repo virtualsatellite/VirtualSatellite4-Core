@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core Concept Test Utils
 Bundle-SymbolicName: de.dlr.sc.virsat.concept.unittest.util
-Bundle-Version: 4.12.1.qualifier
+Bundle-Version: 4.13.0.qualifier
 Bundle-Activator: de.dlr.sc.virsat.concept.unittest.util.Activator
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: org.eclipse.core.runtime,

@@ -23,6 +23,7 @@ import de.dlr.sc.virsat.model.extension.requirements.model.RequirementGroupTest;
 import de.dlr.sc.virsat.model.extension.requirements.migrator.Migrator0v1Test;
 import de.dlr.sc.virsat.model.extension.requirements.model.VerificationTypeTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.EnumerationLiteralTest;
+import de.dlr.sc.virsat.model.extension.requirements.migrator.Migrator0v4Test;
 import de.dlr.sc.virsat.model.extension.requirements.model.DefaultVerificationTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollectionTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementTypeTest;
@@ -63,6 +64,7 @@ import de.dlr.sc.virsat.model.extension.requirements.model.ExistenceVerification
 	Migrator0v1Test.class,
 	Migrator0v2Test.class,
 	Migrator0v3Test.class,
+	Migrator0v4Test.class,
 	RequirementsValidatorTest.class,
 				})
 

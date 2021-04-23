@@ -1,6 +1,51 @@
 VirSat Core Release Notes
 -------------------------
 
+Release 4.12.2 (23rd April 2021)
+----------------------------------
+
+New Features:
+   Deploying first prototype of REST server - #725 #555 #791 #826 #812 Feature
+   Supported resizing of State Machines - #810 Feature
+   Added manual section for Functional Electrical Architecture - #849 Manual
+   Added manual section for REST server - #451 Manual
+   Added manual section for Requirements - #852 Manual
+   Added core support for running external command runners - #907 Feature
+	
+Usability Updates:
+   Improve creation of State Machine Diagrams - #234 Comfort/usability
+
+Fixed Bugs:
+   Fixed project setup with activated apps having warnings - #733 Bug
+   Fixed an issue where name changes to State Machine Transitions were not taken into the model - #337 Bug
+   Fixed inconsistency of bean class hierarchy to better match DVLM - #802 Bug
+   Fixed missing check for exportability on Excel exporters - #336 Bug
+   Fixed executability flag not being set for linux version - #921 Bug
+   
+
+Release 4.12.2 (11th November 2020)
+----------------------------------
+
+New Features:
+   Added trigger to transitions in state machines - #818 Feature
+   Added fields for detailed description in state machines states and triggers - #818 Feature
+   Added a verification builder to check the status of requirements - #799 Feature
+   Added support for exporting Graphiti diagrams to SVG - #829 Feature
+   Added support for multiline lables of states in state machines - #892 Feature
+
+Usability Updates:
+   Improved layout of state machine diagrams - #231 Comfort/usability
+   Improved bean API - #813 Comfort/usability
+   Enable deleting of references - #822 Comfort/usability
+   Added double click options to state machine diagram - #818 Comfort/usability
+
+Fixed Bugs:
+   Fixed an issue when opening a state machine diagram after creating a new connection - #816 Bug
+   Fixed a bug in the excel export of state machines - #336 Bug
+   Fixed update of diagrams - #818 Bug
+   Fixed a bug in SVN backend that ignored new files - #930 Bug
+
+
 Release 4.12.1 (15th October 2020)
 ----------------------------------
 

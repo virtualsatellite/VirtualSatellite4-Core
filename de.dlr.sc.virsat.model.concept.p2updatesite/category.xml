@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/de.dlr.sc.virsat.model.concept.feature_4.12.1.qualifier.jar" id="de.dlr.sc.virsat.model.concept.feature" version="4.12.1.qualifier">
+   <feature url="features/de.dlr.sc.virsat.model.concept.feature_4.13.0.qualifier.jar" id="de.dlr.sc.virsat.model.concept.feature" version="4.13.0.qualifier">
       <category name="de.dlr.sc.virsat.model.concept"/>
    </feature>
-   <feature url="features/de.dlr.sc.virsat.branding.feature_4.12.1.qualifier.jar" id="de.dlr.sc.virsat.branding.feature" version="4.12.1.qualifier">
+   <feature url="features/de.dlr.sc.virsat.branding.feature_4.13.0.qualifier.jar" id="de.dlr.sc.virsat.branding.feature" version="4.13.0.qualifier">
       <category name="de.dlr.sc.virsat.model.concept"/>
    </feature>
-   <feature url="features/de.dlr.sc.virsat.license.feature_4.12.1.qualifier.jar" id="de.dlr.sc.virsat.license.feature" version="4.12.1.qualifier">
+   <feature url="features/de.dlr.sc.virsat.license.feature_4.13.0.qualifier.jar" id="de.dlr.sc.virsat.license.feature" version="4.13.0.qualifier">
       <category name="de.dlr.sc.virsat.model.concept"/>
    </feature>
-   <feature url="features/de.dlr.sc.virsat.model.feature_4.12.1.qualifier.jar" id="de.dlr.sc.virsat.model.feature" version="4.12.1.qualifier">
+   <feature url="features/de.dlr.sc.virsat.model.feature_4.13.0.qualifier.jar" id="de.dlr.sc.virsat.model.feature" version="4.13.0.qualifier">
       <category name="de.dlr.sc.virsat.model.concept"/>
    </feature>
    <feature id="de.dlr.sc.virsat.model.ext.core.feature">

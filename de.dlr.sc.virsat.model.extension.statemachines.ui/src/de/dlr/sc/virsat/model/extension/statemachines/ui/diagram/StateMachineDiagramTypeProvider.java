@@ -11,6 +11,7 @@
 package de.dlr.sc.virsat.model.extension.statemachines.ui.diagram;
 
 import org.eclipse.graphiti.dt.AbstractDiagramTypeProvider;
+import org.eclipse.graphiti.tb.IToolBehaviorProvider;
 
 import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.StateMachineDiagramFeatureProvider;
 
@@ -29,6 +30,26 @@ public class StateMachineDiagramTypeProvider extends AbstractDiagramTypeProvider
 	public StateMachineDiagramTypeProvider() {
 		super();
 		setFeatureProvider(new StateMachineDiagramFeatureProvider(this));
+	}
+	
+	@Override
+	public IToolBehaviorProvider[] getAvailableToolBehaviorProviders() {
+		return new IToolBehaviorProvider[] { new StateMachineDiagramToolBehaviorProvider(this)};
+	}
+	
+	@Override
+	public boolean isAutoUpdateAtStartup() {
+		return true;
+	}
+
+	@Override
+	public boolean isAutoUpdateAtRuntime() {
+		return true;
+	}
+
+	@Override
+	public boolean isAutoUpdateAtRuntimeWhenEditorIsSaved() {
+		return true;
 	}
 }
 

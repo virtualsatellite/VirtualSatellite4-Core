@@ -158,13 +158,358 @@ Congratulations. You have successfully set up your Git integration!
 
 === Virtual Satellite for Concept Developer
 
+Following steps describe creation of a new concept.
+
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step-concept}.
+|Start with clicking menu:File[New > Other...] or kbd:[CTRL+N].
+Then from the _new_ dialog select menu:VirSat Model Extension Concept[VirSat Model Extension Concept Wizard] and press btn:[Next>].
+|image::chapterConceptCreation/concept_wizard_selection.png[Select Concept Wizard]
+
+|{counter:step-concept}.
+|In the concept creation wizard input the future concept name and press btn:[Finish].
+NOTE: Most of the built-in concepts in Virtual Satellite have names starting with `de.dlr.sc.virsat.model.extension`, but external concepts can follow a different naming convention.
+|image::chapterConceptCreation/concept_creation.png[Concept Creation]
+
+|{counter:step-concept}.
+|After everything is generated and built, you should have four new plugins in the workspace.
+|image::chapterConceptCreation/generated_plugins.png[Generated Plugins]
+|=== 
+
+==== Main concept plugin
+
+The main generated plugin has the same name as the concept, and has the following contents.
+
+image::chapterConceptCreation/main_plugin.png[Main Plugin]
+
+The file *concept.concept* contains the description of the domain elements that can be modeled using this concept.
+See section <<Generic Systems Engineering (Concept) Language>> for the details on how to write this file.
+The default concept file only contains categories _Interface_ and _InterfaceEnd_.
+
+Most of the other code in this and other concept plugins is generated based on the contents of the *condept.concept* file.
+The code in directory `src` is generated once, and can be modified and extended as needed.
+The code in `src-gen` is regenerated every time the concept file is changed.
+This automatic generation can be toggled with a toolbar button.
+
+image::chapterConceptCreation/button_toggle_generation.png[Toggle Generation]
+
+===== Beans
+
+For every Category and Structural Element in the concept file there is a class with the same name in the package `model`.
+These "bean" classes provide a convenient way to programmatically access and manipulate model objects.
+
+===== Validators
+
+Virtual Satellite has a validation builder that runs generic and custom validators against the model data.
+Validators normally check the validity and consistency of the model.
+There is one generated validator as a starting point, but you can add more validators.
+All additional new validators have to be registered in `plugin.xml` in the protected region in the end (this region does not get regenerated).
+
+===== Migrators
+
+As soon as you increase the concept version in `concept.concept`, a new migrator from the previous to the new version will be generated automatically.
+The purpose of the migrator is to migrate data modeled with the older concept version to the new version.
+For most changes the auto-generated migrator is sufficient, however if some custom migration logic is required, it can be added to the migrator class.
+
+==== UI plugin
+
+Auto-generated UI plugin contains UI snippets, commands and handlers that extend Virtual Satellite UI for this concept.
+
+==== Test plugin
+
+Test plugin contains some auto-generated unit tests.
+You can add more unit tests as you develop your concept.
+
+==== Concept feature
+
+The generated concept feature bundles the main and the UI concept plugins.
+It can be used to add the new concept to a custom Virtual Satellite-based RCP product.
+
 == Generic Systems Engineering (Concept) Language 
 
-=== Categories and Properties
+Concepts are described using the Generic Systems Engineering Language (GSEL), or also short just _concept language_.
+The GSEL is the main tool for the role of a *Virtual Satellite Concept Developer* as described in <<Different Ways to Develop Virtual Satellite>>.
+The following gives a break-down on the key words and functionalities provided by the GSEL.
+
+=== Concepts
+
+A  _Concept_ is always the root of a concept.concept file.
+It serves as the main container of the concept.
+It also fulfills the task of carrying global meta-information.
+
+A Concept may also have the following attributes:
+
+name::
+The name of the Concept.
+It has to match the name of the plugin in which the concept.concept file resides in.
+
+displayname::
+A name that will be shown to the user when interacting with the concept in the UI.
+For example when activating a concept, the displayname is shown.
+If no displayname is defined, the concept name is shown instead.
+
+description::
+The description of the concept.
+
+version:: 
+The version number of the concept. 
+Must be given in the form of `.` separated numbers (E.g. 2.0 ).
+
+For each version number, the IDE tools generate a corresponding `concept_vVERSION.xmi` in the concept folder.
+This file is used to automtically migrate old repositories based on an older concept version to the newest version.
+
+WARNING: When editing a concept, the version number should be increased before making any changes to the concept.
+Otherwise the changes will be considered to be part of the old version.
+Not doing this will cause automatic migration to fail!
+
+A concept can be filled with _<<Structural Elements>>_ and _<<Categories>>_.
+Structural Elements decompose the system into its basic structure, Categories contain the actual engiering data. 
+This decouples the engineering domain data from the system model's structure.
+In return, new concepts can be added to a system model later on and it becomes possible open system models without all concepts being installed in Virtual Satellite.
+
 
 === Structural Elements
 
+_Structural Elements_ decompose a system into smaller components.
+For example in the _Product Structure_ concept, a system could be structurally decomposed into _System_ -> _SubSystem_ -> _Equipment_ using the _ConfigurationTree_ and _ElementConfiguration_.
+Structural Elements are also the containers for data information (Categories and Properties).
+To support configuration management and to bundle common data, Structural Elements can also inherit data from one another.
+The instance of a Structural Element is called a _Structural Element Instance_.
+
+A Structural Element can have the following additional attributes:
+
+name::
+The name of the Structural Element.
+
+shortname::
+An abbreviated name of the Structural Element.
+Used in the UI, for example the Navigator, to compactely indicate the Structural Element of a Structural Element Instance.
+If no shortname is defined, a default shortname will be generated using the capital letters of the Structural Element name.
+
+description:: 
+The description of the Structural Element.
+
+IsRootStructuralElement::
+Makes it possible to create instances directly in the _Repository_.
+
+Applicable For::
+Describes in which structural element this element's instances can be added into.
+The Applicable For can have the following values:
+* A list of the form _[StructuralElement1, StructuralElement2,...]_.
+* _All_. Instances can be then attached to any type of Structural Element.
+
+Inherits From::
+Describes which type of Structural Elements, instances of this Structural Element can inherit data from.
+Note that the concrete inheritance link between instances is defined during runtime.
+At concept level, only the types between which inheritance is possible are defined.
+When an instance inherits from another instance, all attached data will be passed on to the inheriting instance.
+The Inherits From can have the following values:
+* A list of the form _[StructuralElement1, StructuralElement2,...]_.
+* _All_. Instances can then inherit from any type of Structural Element.
+
+The following example describes a simple system decomposition.
+
+----
+StructuralElement ComponentType {
+	IsRootStructuralElement;
+	Applicable For [ComponentType];
+}
+
+StructuralElement Component {
+	IsRootStructuralElement;
+	Inherits From [ComponentType];
+	Applicable For [Component];
+}
+----
+
+It defines a _ComponentType_ which can be attached to the _Repository_.
+It can also be nested.
+As a second Structural Element, the example defines a _Component_, which can also be attached to the _Repository_.
+It can be nested and inherit data from a selected _ComponentType_. 
+
+=== Categories
+
+Categories are the main way of assigning domain data to a Structural Element.
+
+The instance of a Category is called a _CategoryAssignment_.
+
+A Category may contain properties - described in the next section - and
+also supports the following attributes:
+
+name::
+The name of the Category.
+
+shortname::
+An abbreviated name of the Category.
+Used in the UI, for example the Navigator, to compactely indicate the Category of a Category Assignment.
+If no shortname is defined, a default shortname will be generated using the capital letters of the Category name.
+
+extends:: 
+A Category may extend another Category.
+The extending Category will then inherit all defined properties from the extended Category.
+
+description::
+The description of the Category.
+
+isAbstract::
+Marks a Category as abstract.
+The Category can then be used for defining inheritance hierarchies, 
+but the user will not be able to create Category Assignments of this Category.
+
+Applicable For::
+Describes which Structural Element Instances can have Category Assignments of this Category.
+The Applicable For can have the following values:
+* A list of the form _[StructuralElement1, StructuralElement2,...]_.
+* _All_. The Category can then be assigned to any Structural Element Instance.
+
+Cardinality::
+Defines how many Category Assignments of this Category can be assigned to one Structural Element Instance.
+If no Cardinality is defined, then the number is unlimited.
+
+=== Properties
+
+A Category can be extended with further data by adding _Properties_.
+An instantiation of a property is called a _Property Instance_.
+
+The GSEL supports the following property types:
+
+FloatProperty:: 
+Contains a real number. 
+Can be equipped further with the following attributes:
+* _description_: 
+A description of the property.
+* _default_: 
+The default value after instantiation.
+* _quantityKind_: 
+The quantity kind of this property.
+Only units based on the quantity kind of this attribute will be assignable in the user interface.
+* _unit_: 
+The default unit after instantiation.
+Has to be a unit compatible to the _quantityKind_ attribute. 
+ 
+
+IntegerProperty:: 
+Contains an integer number.
+Can be equipped further with the following attributes:
+* _description_: 
+A description of the property.
+* _default_: 
+The default value after instantiation.
+* _quantityKind_: 
+The quantity kind of this property.
+Only units based on the quantity kind of this attribute will be assignable in the user interface.
+* _unit_: 
+The default unit after instantiation.
+Has to be a unit compatible to the _quantityKind_ attribute. 
+
+BooleanProperty::
+Contains a Boolean value.
+Can be equipped further with the following attributes:
+* _description_: 
+A description of the property.
+* _default_: 
+The default value after instantiation.
+
+StringProperty::
+Contains a string value.
+Can be equipped further with the following attributes:
+* _description_: 
+A description of the property.
+* _default_: 
+The default value after instantiation.
+
+Resource::
+Contains a link to a resource on the file system.
+Can be equipped further with the following attributes:
+* _description_: 
+A description of the property.
+
+Reference::
+Contains a reference to a Category Assignment or  in the model.
+Can be equipped further with the following attributes:
+* _of Type_: 
+The _Category_ or _Property_ that can be referenced.
+* _description_: 
+A description of the property.
+
+EReference::
+Contains a reference to an EMF object outside of the model.
+Can be equipped further with the following attributes:
+* _of Type_: 
+The EMF class that can be referenced.
+* _description_: 
+A description of the property.
+
+EnumProperty::
+Contains a value from an enumeration.
+Each enumeration value is also associated with a real number.
+Can be equipped further with the following attributes:
+* _description_: 
+A description of the property.
+* _default_: 
+The default value after instantiation.
+* _quantityKind_: 
+The quantity kind of the enumeration values.
+* _unit_: 
+The unit of the enumeration values after instantiation.
+Has to be a unit compatible to the _quantityKind_ attribute. 
+* _values_:
+A list of enumeration values.
+Given in the form _[enumValue1 = number, enumValue2 = number, ...]_.
+
+Type::
+Contains another Category Assignment.
+Can be equipped further with the following attributes:
+* _of Type_: 
+The type of the contained Category Assignment.
+* _description_: 
+A description of the property.
+* _quantityKind_: 
+The quantity kind of the enumeration values.
+* _unit_: 
+The unit of the enumeration values after instantiation.
+Has to be a unit compatible to the _quantityKind_ attribute. 
+
+Any property can be defined as a dynamic array by adding _[]_ after the property name.
+By adding the expression _[number]_ after a property name, a static array of properties with the given size will be created.
+
 === Calculations
+
+Calculations can be defined on the concept level.
+By adding a calculation to a _Category_, all instantiated _Category Assignments_ will automatically have the equations defined in the concept.
+For the general syntax of declaring calculations, please check *Adjusting Equations* section in the User Manual.
+This section focuses on details specific to declaring calculations on the concept level.
+
+When declaring a concept level calculation, any properties or Categories contained in the Category can be used.
+Properties from extended Categories can be accessed via _extendedCategoryName.property_.
+
+When referencing a property that is not declared within the Category, the equation will resolve the link at calculation time.
+The equation entry will be linked to the nearest Category Assignment or Property Instance found when traversing the tree towards its root.
+If no fitting instance can be found, the equation will calculate `NaN`.
+To clarify, consider the following example:
+
+----
+Category Config {
+	FloatProperty margin;
+}
+
+Category Parameter {
+	FloatProperty value;
+	FloatProperty valueWithMargin;
+	
+	Ref: valueWithMargin = value * (1 + Config.margin);
+}
+----
+
+When instantiating a _Parameter_, the new Category Assignment will search for a Property Instance of the type _Config.margin_.
+If there is, for example, on root level a Category Assignment of _Config_, that will be used for the calculation.
+If no _Config_ is defined on a parent Structural Element Instance, then _valueWithMargin_ will be calculated as `NaN`.
 
 == Advanced Development Topics
 

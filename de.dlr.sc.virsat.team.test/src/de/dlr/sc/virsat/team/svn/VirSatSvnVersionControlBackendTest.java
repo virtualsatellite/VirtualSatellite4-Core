@@ -14,13 +14,16 @@ import java.io.IOException;
 import java.net.URI;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.team.svn.core.connector.SVNDepth;
+import org.eclipse.team.svn.core.operation.file.AddToSVNIgnoreOperation;
 import org.eclipse.team.svn.core.operation.file.AddToSVNOperation;
 import org.eclipse.team.svn.core.operation.file.CheckoutAsOperation;
 import org.eclipse.team.svn.core.resource.IRepositoryResource;
+import org.eclipse.team.svn.core.resource.ISVNStorage;
 import org.eclipse.team.svn.core.utility.FileUtility;
 import org.eclipse.team.svn.core.utility.SVNUtility;
 import org.junit.Before;
@@ -76,5 +79,13 @@ public class VirSatSvnVersionControlBackendTest extends AVirSatVersionControlBac
 		File[] files = { workingFile };
 		AddToSVNOperation addToSVNOperation = new AddToSVNOperation(files, true);
 		addToSVNOperation.run(new NullProgressMonitor());
+	}
+	
+	@Override
+	protected void addToIgnore(IFolder ignoredFolder) {
+		File[] files = { new File(FileUtility.getWorkingCopyPath(ignoredFolder)) };
+
+		AddToSVNIgnoreOperation ignoreOperation = new AddToSVNIgnoreOperation(files, ISVNStorage.IGNORE_NAME, null);
+		ignoreOperation.run(new NullProgressMonitor());
 	}
 }

@@ -19,6 +19,7 @@
 		<unit id="org.eclipse.emf.transaction.sdk.feature.group" version="1.12.0.201805140824"/>
 		<unit id="org.eclipse.equinox.executable.feature.group" version="3.8.800.v20200514-1529"/>
 		<unit id="org.eclipse.graphiti.sdk.feature.feature.group" version="0.17.0.202005151449"/>
+		<unit id="org.eclipse.graphiti.export.feature.feature.group" version="0.17.0.202005151449"/>
 		<unit id="org.eclipse.jdt.source.feature.group" version="3.18.400.v20200604-0540"/>
 		<unit id="org.eclipse.ocl.all.sdk.feature.group" version="5.12.0.v20200608-1555"/>
 		<unit id="org.eclipse.pde.source.feature.group" version="3.14.400.v20200604-0540"/>

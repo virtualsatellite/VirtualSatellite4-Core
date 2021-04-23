@@ -24,6 +24,10 @@
 		pathToImage="resources/icons/Transition.gif">
 	</conceptImage>
 	<conceptImage
+		fullQualifiedID="de.dlr.sc.virsat.model.extension.statemachines.TransitionTriggerEvent"
+		pathToImage="resources/icons/TransitionTriggerEvent.gif">
+	</conceptImage>
+	<conceptImage
 		fullQualifiedID="de.dlr.sc.virsat.model.extension.statemachines.AConstraint"
 		pathToImage="resources/icons/AConstraint.gif">
 	</conceptImage>
@@ -50,6 +54,10 @@
 		name="Add Transition">
 	</command>
 	<command
+		id="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddTransitionTriggerEvent"
+		name="Add TransitionTriggerEvent">
+	</command>
+	<command
 		id="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddAllowsConstraint"
 		name="Add AllowsConstraint">
 	</command>
@@ -72,6 +80,11 @@
 	      commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddTransition"
 	      disabledIcon="resources/icons/Transition_disabled.gif"
 	      icon="resources/icons/Transition.gif">
+	</image>
+	<image
+	      commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddTransitionTriggerEvent"
+	      disabledIcon="resources/icons/TransitionTriggerEvent_disabled.gif"
+	      icon="resources/icons/TransitionTriggerEvent.gif">
 	</image>
 	<image
 	      commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddAllowsConstraint"
@@ -97,6 +110,10 @@
 	<handler
 		class="de.dlr.sc.virsat.model.extension.statemachines.ui.handler.AddTransitionHandler"
 		commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddTransition">
+	</handler>
+	<handler
+		class="de.dlr.sc.virsat.model.extension.statemachines.ui.handler.AddTransitionTriggerEventHandler"
+		commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddTransitionTriggerEvent">
 	</handler>
 	<handler
 		class="de.dlr.sc.virsat.model.extension.statemachines.ui.handler.AddAllowsConstraintHandler"
@@ -179,6 +196,28 @@
 		</command>
 		<command
 			commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddTransition"
+			style="push">
+			<visibleWhen
+				checkEnabled="true">
+				<with
+					variable="selection">
+					<iterate
+						ifEmpty="false"
+						operator="and">
+						<test 
+							property="de.dlr.sc.virsat.model.extension.statemachines.ui.propertyTester.conceptEnabled"
+							value="true" 
+							forcePluginActivation="true">
+						</test>		
+						<instanceof
+							value="de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer">
+						</instanceof>
+					</iterate>
+				</with>
+			</visibleWhen>
+		</command>
+		<command
+			commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddTransitionTriggerEvent"
 			style="push">
 			<visibleWhen
 				checkEnabled="true">
@@ -299,6 +338,16 @@
 		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetSectionTransition">
 		</uiSnippet>
 		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.statemachines.table.uiSnippetTransitionTriggerEvent"
+		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetTableTransitionTriggerEvent">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.statemachines.section.uiSnippetTransitionTriggerEvent"
+		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetSectionTransitionTriggerEvent">
+		</uiSnippet>
+		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.statemachines.table.uiSnippetAllowsConstraint"
 		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
 		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetTableAllowsConstraint">
@@ -347,6 +396,11 @@
 		      id="de.dlr.sc.virsat.model.extension.statemachines.table.uiSnippetStateMachineConstraintsForbidsConstraint"
 		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
 		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetTableStateMachineConstraintsForbidsConstraint">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.statemachines.table.uiSnippetStateMachineTriggerEventsTransitionTriggerEvent"
+		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetTableStateMachineTriggerEventsTransitionTriggerEvent">
 		</uiSnippet>
 	</extension>
 	<!-- Plugin.XML Protected Region Start -->
@@ -450,5 +504,56 @@
 	          id="de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.stateMachineDiagramImageProvider">
 	    </imageProvider>
 	 </extension>
+	 
+	<extension point="org.eclipse.ui.commands">
+		<command
+			id="de.dlr.sc.virsat.model.extension.statemachines.ui.command.openStateMachineInDiagramEditor"
+			name="Open Diagram Editor">
+		</command>
+	</extension>
+	<extension point="org.eclipse.ui.handlers">
+		<handler
+			class="de.dlr.sc.virsat.model.extension.statemachines.ui.handler.OpenStateMachineInDiagramEditorHandler"
+			commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.openStateMachineInDiagramEditor">
+		</handler>
+	</extension>
+	<extension point="org.eclipse.core.expressions.propertyTesters">
+		<propertyTester
+			id="de.dlr.sc.virsat.model.extension.statemachines.ui.propertyTester.openStateMachineTester"
+			type="de.dlr.sc.virsat.model.dvlm.general.IInstance"
+			namespace="de.dlr.sc.virsat.model.extension.statemachines.ui.propertyTester"
+			properties="openStateMachine"
+			class="de.dlr.sc.virsat.model.extension.statemachines.propertyTester.OpenStateMachineTester">
+		</propertyTester>
+	</extension>
+	<extension point="org.eclipse.ui.menus">
+		<menuContribution allPopups="false"
+			locationURI="popup:de.dlr.sc.virsat.project.ui.navigator.menu#PopupMenu?after=structuralElements">
+			<command
+         commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.openStateMachineInDiagramEditor"
+         icon="resources/icons/StateMachine.gif"
+         style="push">
+				<visibleWhen>
+					<with variable="selection">
+						<iterate ifEmpty="false">
+							<test
+								property="de.dlr.sc.virsat.model.extension.statemachines.ui.propertyTester.openStateMachine"
+								forcePluginActivation="true">
+							</test>	
+						</iterate>
+					</with>
+				</visibleWhen>
+			</command>
+		</menuContribution>
+	</extension>
+	<extension-point id="de.dlr.sc.virsat.model.extension.statemachines.transition.LabelProvider" name="TransitionLabelProvider" schema="schema/de.dlr.sc.virsat.model.extension.statemachines.transition.label.exsd"/>
+ <extension
+       point="de.dlr.sc.virsat.model.extension.statemachines.transition.LabelProvider">
+    <LabelProvider
+          class="de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.transitions.TransitionLabelProvider"
+          id="de.dlr.sc.virsat.model.extension.statemachines.ui.transition.default"
+          level="0">
+    </LabelProvider>
+ </extension>
 	<!-- Plugin.XML Protected Region End -->
 </plugin>
