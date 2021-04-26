@@ -11,44 +11,42 @@ package de.dlr.sc.virsat.server.resources;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.emf.common.command.Command;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jetty.http.HttpStatus;
 
-import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
-import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
-import de.dlr.sc.virsat.model.concept.types.factory.BeanPropertyFactory;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
-import de.dlr.sc.virsat.model.concept.types.property.ABeanProperty;
 import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
-import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.Repository;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
-import de.dlr.sc.virsat.project.structure.command.CreateRemoveSeiWithFileStructureCommand;
-import de.dlr.sc.virsat.project.structure.command.RemoveFileStructureCommand;
 import de.dlr.sc.virsat.server.auth.ServerRoles;
-import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
+import de.dlr.sc.virsat.server.dataaccess.ServerConcept;
 import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProvider;
 import de.dlr.sc.virsat.server.jetty.VirSatJettyServer;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
+import de.dlr.sc.virsat.server.resources.modelaccess.CategoryAssignmentResource;
+import de.dlr.sc.virsat.server.resources.modelaccess.PropertyResource;
+import de.dlr.sc.virsat.server.resources.modelaccess.StructuralElementInstanceResource;
 import de.dlr.sc.virsat.server.servlet.VirSatModelAccessServlet;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -63,7 +61,7 @@ import io.swagger.annotations.SwaggerDefinition;
  * The resource to access the VirSat data model of a server repository
  * Provides an endpoint to access a repository
  */
-@Api
+@Api(authorizations = {@Authorization(value = "basic")})
 @SwaggerDefinition(
 	info = @Info(
 		version = VirSatModelAccessServlet.MODEL_API_VERSION,
@@ -87,7 +85,17 @@ public class ModelAccessResource {
 	public static final String CA = "ca";
 	public static final String CA_AND_PROPERTIES = "caAndProperties";
 	public static final String PROPERTY = "property";
+	
+	public static final String QP_ONLY_ACTIVE_CONCEPTS = "onlyActiveConcepts";
 
+	// List of all resource classes used in this class
+	// Used to register model specific filters
+	public static final List<?> RESOURCE_CLASSES = Arrays.asList(
+			RepoModelAccessResource.class,
+			StructuralElementInstanceResource.class,
+			CategoryAssignmentResource.class,
+			PropertyResource.class);
+	
 	public ModelAccessResource() { }
 	
 	/**
@@ -117,188 +125,32 @@ public class ModelAccessResource {
 	 *   - Get and update ca with properties by uuid
 	 *   - Get and update properties by uuid
 	 */
-	@Api(hidden = true,
-		authorizations = {
-			@Authorization(value = "basic")
-		}
-	)
+	@Api(hidden = true)
 	@RolesAllowed({ServerRoles.ADMIN, ServerRoles.USER})
 	public static class RepoModelAccessResource {
-	
-		private static final String COULD_NOT_FIND_REQUESTED_CA = "Could not find requested CA";
-		private static final String COULD_NOT_FIND_REQUESTED_SEI = "Could not find requested SEI";
-		private static final String SUCCESSFUL_OPERATION = "Successful operation";
-		private static final String SYNC_ERROR = "Synchronization error";
+		
 		private Repository repository;
 		private ServerRepository serverRepository;
-		private VirSatTransactionalEditingDomain ed;
 
 		public RepoModelAccessResource(ServerRepository serverRepository) {
 			this.serverRepository = serverRepository;
-			ed = serverRepository.getEd();
 			repository = serverRepository.getResourceSet().getRepository();
 		}
 
-		private Response createBadRequestResponse(String msg) {
-			return Response.status(Response.Status.BAD_REQUEST).entity(msg).build();
-		}
-
-		private Response createSyncErrorResponse(String msg) {
-			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(msg).build();
-		}
-
-		/** **/
-		@GET
-		@Path(PROPERTY + "/{propertyUuid}")
-		@Produces(MediaType.APPLICATION_JSON)
-		@ApiOperation(
-				produces = "application/json",
-				value = "Fetch Property",
-				httpMethod = "GET",
-				notes = "This service fetches a Property")
-		@ApiResponses(value = { 
-				@ApiResponse(
-						code = HttpStatus.OK_200,
-						response = ABeanProperty.class,
-						message = SUCCESSFUL_OPERATION),
-				@ApiResponse(
-						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = SYNC_ERROR)})
-		public Response getProperty(@PathParam("propertyUuid") @ApiParam(value = "Uuid of the property", required = true) String propertyUuid) {
-			try {
-				serverRepository.syncRepository();
-				return Response.status(Response.Status.OK).entity(
-						new BeanPropertyFactory().getInstanceFor(
-								RepositoryUtility.findProperty(propertyUuid, repository)
-						)).build();
-			} catch (Exception e) {
-				return createSyncErrorResponse(e.getMessage());
-			}
-		}
-
-		/** **/
-		@PUT
 		@Path(PROPERTY)
-		@Consumes(MediaType.APPLICATION_JSON)
-		@ApiOperation(
-				consumes = "application/json",
-				value = "Put Property",
-				httpMethod = "PUT",
-				notes = "This service updates an existing Property")
-		@ApiResponses(value = { 
-				@ApiResponse(
-						code = HttpStatus.OK_200,
-						message = SUCCESSFUL_OPERATION),
-				@ApiResponse(
-						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = SYNC_ERROR)})
-		public Response putProperty(@SuppressWarnings("rawtypes") @ApiParam(value = "Property to put", required = true) ABeanProperty bean) {
-			try {
-				serverRepository.syncRepository();
-				return Response.status(Response.Status.OK).build();
-			} catch (Exception e) {
-				return createSyncErrorResponse(e.getMessage());
-			}
-		}
-		
+	    public PropertyResource getPropertyResource() {
+	        return new PropertyResource(serverRepository);
+	    }
 
-		/** **/
-		@GET
-		@Path(CA + "/{caUuid}")
-		@Produces(MediaType.APPLICATION_JSON)
-		@ApiOperation(
-				produces = "application/json",
-				value = "Fetch CA",
-				httpMethod = "GET",
-				notes = "This service fetches a CategoryAssignment")
-		@ApiResponses(value = { 
-				@ApiResponse(
-						code = HttpStatus.OK_200,
-						response = ABeanCategoryAssignment.class,
-						message = SUCCESSFUL_OPERATION),
-				@ApiResponse(
-						code = HttpStatus.BAD_REQUEST_400, 
-						message = COULD_NOT_FIND_REQUESTED_CA),
-				@ApiResponse(
-						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = SYNC_ERROR)})
-		public Response getCa(@PathParam("caUuid") @ApiParam(value = "Uuid of the CA", required = true) String caUuid) {
-			try {
-				serverRepository.syncRepository();
-				return Response.status(Response.Status.OK).entity(
-						new BeanCategoryAssignmentFactory().getInstanceFor(
-								RepositoryUtility.findCa(caUuid, repository)
-						)).build();
-			} catch (CoreException e) {
-				return createBadRequestResponse(e.getMessage());
-			} catch (Exception e) {
-				return createSyncErrorResponse(e.getMessage());
-			}
-		}
-
-		/** **/
-		@PUT
 		@Path(CA)
-		@Consumes(MediaType.APPLICATION_JSON)
-		@ApiOperation(
-				produces = "application/json",
-				value = "Put CA",
-				httpMethod = "PUT",
-				notes = "This service updates an existing CategoryAssignment")
-		@ApiResponses(value = { 
-				@ApiResponse(
-						code = HttpStatus.OK_200,
-						message = SUCCESSFUL_OPERATION),
-				@ApiResponse(
-						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = SYNC_ERROR)})
-		public Response putCa(@ApiParam(value = "CA to put", required = true) ABeanCategoryAssignment bean) {
-			try {
-				serverRepository.syncRepository();
-				return Response.status(Response.Status.OK).build();
-			} catch (Exception e) {
-				return createSyncErrorResponse(e.getMessage());
-			}
-		}
+	    public CategoryAssignmentResource getCategoryAssignmentResource() {
+	        return new CategoryAssignmentResource(serverRepository);
+	    }
 		
-		/** **/
-		@DELETE
-		@Path(CA + "/{caUuid}")
-		@Produces(MediaType.APPLICATION_JSON)
-		@ApiOperation(
-				produces = "application/json",
-				value = "Delete CA",
-				httpMethod = "DELETE",
-				notes = "This service deletes a CategoryAssignment.")
-		@ApiResponses(value = { 
-				@ApiResponse(
-						code = HttpStatus.OK_200,
-						message = SUCCESSFUL_OPERATION),
-				@ApiResponse(
-						code = HttpStatus.BAD_REQUEST_400,
-						message = COULD_NOT_FIND_REQUESTED_CA),
-				@ApiResponse(
-						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = SYNC_ERROR)})
-		public Response deleteCa(@PathParam("caUuid") @ApiParam(value = "Uuid of the CA", required = true)  String caUuid) {
-			try {
-				// Sync before delete
-				serverRepository.syncRepository();
-				
-				// Delete CA
-				CategoryAssignment ca = RepositoryUtility.findCa(caUuid, repository);
-				Command deleteCommand = new BeanCategoryAssignmentFactory().getInstanceFor(ca).delete(ed);
-				ed.getCommandStack().execute(deleteCommand);
-				
-				// Sync after delete
-				serverRepository.syncRepository();
-				return Response.ok().build();
-			} catch (CoreException e) {
-				return createBadRequestResponse(e.getMessage());
-			} catch (Exception e) {
-				return createSyncErrorResponse(e.getMessage());
-			}
-		}
+		@Path(SEI)
+	    public StructuralElementInstanceResource getStructuralElementInstanceResource() {
+	        return new StructuralElementInstanceResource(serverRepository);
+	    }
 
 		/** **/
 		@GET
@@ -308,20 +160,20 @@ public class ModelAccessResource {
 				produces = "application/json",
 				value = "Fetch a list of root SEIs",
 				httpMethod = "GET",
-				notes = "This service fetches the root StructuralElementInstances"
+				notes = "This service fetches the root StructuralElementInstances. "
 						+ "It can be used as an entry point into the data model.")
 		@ApiResponses(value = { 
 				@ApiResponse(
 						code = HttpStatus.OK_200,
 						response = ABeanStructuralElementInstance.class,
 						responseContainer = "List",
-						message = SUCCESSFUL_OPERATION),
+						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 				@ApiResponse(
 						code = HttpStatus.BAD_REQUEST_400, 
 						message = "Could not create bean for a root SEI"),
 				@ApiResponse(
 						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = SYNC_ERROR)})
+						message = ApiErrorHelper.SYNC_ERROR)})
 		public Response getRootSeis() {
 			try {
 				serverRepository.syncRepository();
@@ -337,106 +189,64 @@ public class ModelAccessResource {
 
 				return Response.ok(genericEntityList).build();
 			} catch (CoreException e) {
-				return createBadRequestResponse(e.getMessage());
+				return ApiErrorHelper.createBadRequestResponse(e.getMessage());
 			} catch (Exception e) {
-				return createSyncErrorResponse(e.getMessage());
+				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
 			}
 		}
 
 		/** **/
 		@GET
-		@Path(SEI + "/{seiUuid}")
+		@Path(CONCEPTS)
 		@Produces(MediaType.APPLICATION_JSON)
 		@ApiOperation(
 				produces = "application/json",
-				value = "Fetch SEI",
+				value = "Fetch a list of active Concepts",
 				httpMethod = "GET",
-				notes = "This service fetches a StructuralElementInstance.")
+				notes = "This service fetches the active Concepts")
 		@ApiResponses(value = { 
 				@ApiResponse(
 						code = HttpStatus.OK_200,
-						response = ABeanStructuralElementInstance.class,
-						message = SUCCESSFUL_OPERATION),
-				@ApiResponse(
-						code = HttpStatus.BAD_REQUEST_400, 
-						message = COULD_NOT_FIND_REQUESTED_SEI),
+						response = ServerConcept.class,
+						responseContainer = "List",
+						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 				@ApiResponse(
 						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = SYNC_ERROR)})
-		public Response getSei(@PathParam("seiUuid") @ApiParam(value = "Uuid of the SEI", required = true)  String seiUuid) {
+						message = ApiErrorHelper.SYNC_ERROR)})
+		public Response getConcepts(@DefaultValue("true") @QueryParam(QP_ONLY_ACTIVE_CONCEPTS) boolean onlyActiveConcepts) {
 			try {
-				serverRepository.syncRepository();
-				StructuralElementInstance sei = RepositoryUtility.findSei(seiUuid, repository);
-				IBeanStructuralElementInstance beanSei = new BeanStructuralElementInstanceFactory().getInstanceFor(sei);
-				return Response.ok(beanSei).build();
-			} catch (CoreException e) {
-				return createBadRequestResponse(e.getMessage());
-			} catch (Exception e) {
-				return createSyncErrorResponse(e.getMessage());
-			}
-		}
-
-		/** **/
-		@PUT
-		@Path(SEI)
-		@Consumes(MediaType.APPLICATION_JSON)
-		@ApiOperation(
-				consumes = "application/json",
-				value = "Put SEI",
-				httpMethod = "PUT",
-				notes = "This service updates an existing StructuralElementInstance")
-		@ApiResponses(value = { 
-				@ApiResponse(
-						code = HttpStatus.OK_200,
-						message = SUCCESSFUL_OPERATION),
-				@ApiResponse(
-						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = SYNC_ERROR)})
-		public Response putSei(@ApiParam(value = "SEI to put", required = true) ABeanStructuralElementInstance bean) {
-			try {
-				serverRepository.syncRepository();
-				return Response.status(Response.Status.OK).build();
-			} catch (Exception e) {
-				return createSyncErrorResponse(e.getMessage());
-			}
-		}
-			
-		/** **/
-		@DELETE
-		@Path(SEI + "/{seiUuid}")
-		@Produces(MediaType.APPLICATION_JSON)
-		@ApiOperation(
-				produces = "application/json",
-				value = "Delete SEI",
-				httpMethod = "DELETE",
-				notes = "This service deletes a StructuralElementInstance.")
-		@ApiResponses(value = { 
-				@ApiResponse(
-						code = HttpStatus.OK_200,
-						message = SUCCESSFUL_OPERATION),
-				@ApiResponse(
-						code = HttpStatus.BAD_REQUEST_400,
-						message = COULD_NOT_FIND_REQUESTED_SEI),
-				@ApiResponse(
-						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = SYNC_ERROR)})
-		public Response deleteSei(@PathParam("seiUuid") @ApiParam(value = "Uuid of the SEI", required = true)  String seiUuid) {
-			try {
-				// Sync before delete
 				serverRepository.syncRepository();
 				
-				// Delete Sei
-				StructuralElementInstance sei = RepositoryUtility.findSei(seiUuid, repository);
-				Command deleteCommand = CreateRemoveSeiWithFileStructureCommand.create(sei, RemoveFileStructureCommand.DELETE_RESOURCE_OPERATION_FUNCTION);
-				ed.getCommandStack().execute(deleteCommand);
+				List<ServerConcept> pojos = new ArrayList<ServerConcept>();
+				List<Concept> concepts;
 				
-				// Sync after delete
-				serverRepository.syncRepository();
-				return Response.ok().build();
-			} catch (CoreException e) {
-				return createBadRequestResponse(e.getMessage());
+				if (onlyActiveConcepts) {
+					concepts = repository.getActiveConcepts();
+				} else {
+					// Get all concepts from the registry
+					concepts = new ArrayList<Concept>();
+					IExtensionRegistry registry = Platform.getExtensionRegistry();
+					String extensionPoint = ActiveConceptConfigurationElement.EXTENSION_POINT_ID_CONCEPT;
+					
+					// Get the concept configuration elements
+					IConfigurationElement[] configurationElementsArray = registry.getConfigurationElementsFor(extensionPoint);
+					
+					// For each configuration element load the concept
+					for (IConfigurationElement configurationElement : configurationElementsArray) {
+						ActiveConceptConfigurationElement acce = new ActiveConceptConfigurationElement(configurationElement);
+						concepts.add(acce.loadConceptFromPlugin());
+					}
+				}
+				
+				for (Concept concept : concepts) {
+					pojos.add(new ServerConcept(concept));
+				}
+				
+				GenericEntity<List<ServerConcept>> entity = new GenericEntity<List<ServerConcept>>(pojos) { };
+				
+				return Response.ok(entity).build();
 			} catch (Exception e) {
-				return createSyncErrorResponse(e.getMessage());
+				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
 			}
 		}
 	
