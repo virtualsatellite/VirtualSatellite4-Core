@@ -38,6 +38,7 @@ import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.server.auth.ServerRoles;
 import de.dlr.sc.virsat.server.dataaccess.ServerConcept;
 import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProvider;
@@ -85,9 +86,11 @@ public class ModelAccessResource {
 	public static final String CA = "ca";
 	public static final String CA_AND_PROPERTIES = "caAndProperties";
 	public static final String PROPERTY = "property";
+	public static final String FORCE_SYNC = "forceSync";
 	
 	public static final String QP_ONLY_ACTIVE_CONCEPTS = "onlyActiveConcepts";
-	public static final String QP_SYNC = "synchronization";
+	public static final String QP_SYNC = "sync";
+	public static final String QP_BUILD = "build";
 
 	// List of all resource classes used in this class
 	// Used to register model specific filters
@@ -105,11 +108,19 @@ public class ModelAccessResource {
 	 * @return RepoModelAccessResource or null if the repo is not found
 	 */
 	@Path("{repoName}")
-	public RepoModelAccessResource getConcreteResource(@PathParam("repoName") @ApiParam(value = "Name of the repository", required = true) String repoName) {
+	// TODO move test cases, test build path param
+	public RepoModelAccessResource getConcreteResource(
+			@PathParam("repoName") @ApiParam(value = "Name of the repository", required = true) String repoName,
+			
+			@DefaultValue("true") @QueryParam(ModelAccessResource.QP_SYNC) 
+			@ApiParam(value = "If synchronizating with the repository on this request", required = false) boolean synchronize,
+			
+			@DefaultValue("true") @QueryParam(ModelAccessResource.QP_BUILD) 
+			@ApiParam(value = "If building when synchronizing on this request", required = false) boolean build) {
 		ServerRepository repo = RepoRegistry.getInstance().getRepository(repoName);
 		if (repo != null) {
 			provider.setServerRepository(repo);
-			return new RepoModelAccessResource(repo);
+			return new RepoModelAccessResource(repo, synchronize, build);
 		}
 
 		return null;
@@ -131,28 +142,75 @@ public class ModelAccessResource {
 	public static class RepoModelAccessResource {
 		
 		private Repository repository;
+		private VirSatTransactionalEditingDomain ed;
 		private ServerRepository serverRepository;
+		private boolean synchronize;
+		private boolean build;
 
-		public RepoModelAccessResource(ServerRepository serverRepository) {
+		public RepoModelAccessResource(ServerRepository serverRepository, boolean synchronize, boolean build) {
 			this.serverRepository = serverRepository;
+			this.synchronize = synchronize;
+			this.build = build;
 			repository = serverRepository.getResourceSet().getRepository();
+			ed = serverRepository.getEd();
 		}
 
+		/**
+		 * Synchronize depending on the synchronize and build query parameter
+		 * @throws Exception
+		 */
+		public void synchronize() throws Exception {
+			if (synchronize) {
+				serverRepository.syncRepository(build);
+			}
+		}
+
+		// Public getters for subresources
+		public Repository getRepository() {
+			return repository;
+		}
+		
+		public VirSatTransactionalEditingDomain getEd() {
+			return ed;
+		}
+
+		// Subresources
 		@Path(PROPERTY)
 		public PropertyResource getPropertyResource() {
-			return new PropertyResource(serverRepository);
+			return new PropertyResource(this);
 		}
 
 		@Path(CA)
 		public CategoryAssignmentResource getCategoryAssignmentResource() {
-			return new CategoryAssignmentResource(serverRepository);
+			return new CategoryAssignmentResource(this);
 		}
 		
 		@Path(SEI)
 		public StructuralElementInstanceResource getStructuralElementInstanceResource() {
-			return new StructuralElementInstanceResource(serverRepository);
+			return new StructuralElementInstanceResource(this);
 		}
 
+		// Actual resources
+		@GET
+		@Path(FORCE_SYNC)
+		@ApiOperation(
+				value = "Triggers synchronization with the backend",
+				httpMethod = "GET",
+				notes = "This service forces a synchronization with the backend.")
+		@ApiResponses(value = { 
+				@ApiResponse(
+						code = HttpStatus.OK_200,
+						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+				@ApiResponse(
+						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+						message = ApiErrorHelper.SYNC_ERROR)})
+		/** **/
+		// TODO: test
+		public Response forceSynchronize() throws Exception {
+			serverRepository.syncRepository(build);
+			return Response.ok().build();
+		}
+		
 		/** **/
 		@GET
 		@Path(ROOT_SEIS)
@@ -177,7 +235,8 @@ public class ModelAccessResource {
 						message = ApiErrorHelper.SYNC_ERROR)})
 		public Response getRootSeis() {
 			try {
-				serverRepository.syncRepository();
+				synchronize();
+				
 				List<StructuralElementInstance> rootSeis = repository.getRootEntities();
 				List<ABeanStructuralElementInstance> beans = new ArrayList<ABeanStructuralElementInstance>();
 				
@@ -187,7 +246,7 @@ public class ModelAccessResource {
 				
 				GenericEntity<List<ABeanStructuralElementInstance>> genericEntityList =
 						new GenericEntity<List<ABeanStructuralElementInstance>>(beans) { };
-
+				
 				return Response.ok(genericEntityList).build();
 			} catch (CoreException e) {
 				return ApiErrorHelper.createBadRequestResponse(e.getMessage());
@@ -216,7 +275,7 @@ public class ModelAccessResource {
 						message = ApiErrorHelper.SYNC_ERROR)})
 		public Response getConcepts(@DefaultValue("true") @QueryParam(QP_ONLY_ACTIVE_CONCEPTS) boolean onlyActiveConcepts) {
 			try {
-				serverRepository.syncRepository();
+				synchronize();
 				
 				List<ServerConcept> pojos = new ArrayList<ServerConcept>();
 				List<Concept> concepts;

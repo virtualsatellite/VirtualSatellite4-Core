@@ -10,13 +10,11 @@
 package de.dlr.sc.virsat.server.resources.modelaccess;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -25,12 +23,10 @@ import org.eclipse.jetty.http.HttpStatus;
 import de.dlr.sc.virsat.model.concept.types.IBeanObject;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanPropertyFactory;
 import de.dlr.sc.virsat.model.concept.types.property.ABeanProperty;
-import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
-import de.dlr.sc.virsat.server.repository.ServerRepository;
 import de.dlr.sc.virsat.server.resources.ApiErrorHelper;
-import de.dlr.sc.virsat.server.resources.ModelAccessResource;
+import de.dlr.sc.virsat.server.resources.ModelAccessResource.RepoModelAccessResource;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -42,14 +38,12 @@ public class PropertyResource {
 	
 	public static final String COULD_NOT_FIND_REQUESTED_PROPERTY = "Could not find requested property";
 	
-	private Repository repository;
-	private ServerRepository serverRepository;
+	private RepoModelAccessResource parentResource;
 	
-	public PropertyResource(ServerRepository serverRepository) {
-		this.serverRepository = serverRepository;
-		repository = serverRepository.getResourceSet().getRepository();
+	public PropertyResource(RepoModelAccessResource parentResource) {
+		this.parentResource = parentResource;
 	}
-	
+
 	/** **/
 	@GET
 	@Path("/{propertyUuid}")
@@ -70,14 +64,11 @@ public class PropertyResource {
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.SYNC_ERROR)})
-	public Response getProperty(@PathParam("propertyUuid") @ApiParam(value = "Uuid of the property", required = true) String propertyUuid,
-			@DefaultValue("true") @QueryParam(ModelAccessResource.QP_SYNC) boolean synchronize) {
+	public Response getProperty(@PathParam("propertyUuid") @ApiParam(value = "Uuid of the property", required = true) String propertyUuid) {
 		try {
-			if (synchronize) {
-				serverRepository.syncRepository();
-			}
+			parentResource.synchronize();
 			
-			APropertyInstance property = RepositoryUtility.findProperty(propertyUuid, repository);
+			APropertyInstance property = RepositoryUtility.findProperty(propertyUuid, parentResource.getRepository());
 			
 			if (property == null) {
 				return ApiErrorHelper.createBadRequestResponse(COULD_NOT_FIND_REQUESTED_PROPERTY);
@@ -108,7 +99,7 @@ public class PropertyResource {
 					message = ApiErrorHelper.SYNC_ERROR)})
 	public Response putProperty(@SuppressWarnings("rawtypes") @ApiParam(value = "Property to put", required = true) ABeanProperty bean) {
 		try {
-			serverRepository.syncRepository();
+			parentResource.synchronize();
 			return Response.status(Response.Status.OK).build();
 		} catch (Exception e) {
 			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());

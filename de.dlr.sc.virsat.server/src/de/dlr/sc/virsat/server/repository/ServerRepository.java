@@ -189,6 +189,16 @@ public class ServerRepository {
 	 * @throws Exception
 	 */
 	public void syncRepository() throws Exception {
+		syncRepository(true);
+	}
+	
+	/**
+	 * This method syncs the repository, which means it updates from remote
+	 * and then sends all the changes to remote
+	 * @param build if a build should be triggered
+	 * @throws Exception
+	 */
+	public void syncRepository(boolean build) throws Exception {
 		AtomicExceptionReference<Exception> atomicException = new AtomicExceptionReference<>();
 		String projectName = repositoryConfiguration.getProjectName();
 		
@@ -213,7 +223,9 @@ public class ServerRepository {
 				}
 				
 				// Run the builders
-				project.build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
+				if (build) {
+					project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, new NullProgressMonitor());
+				}
 				
 				// Commit and push the new state to the repository
 				Activator.getDefault().getLog().info("Server synchronization: " + "Push changes");
