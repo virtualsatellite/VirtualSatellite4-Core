@@ -20,6 +20,7 @@ import de.dlr.sc.virsat.server.configuration.ServerConfigurationTest;
 import de.dlr.sc.virsat.server.controller.RepoManagementControllerTest;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtilityTest;
 import de.dlr.sc.virsat.server.dataaccess.ServerConceptTest;
+import de.dlr.sc.virsat.server.dataaccess.ServerDisciplineTest;
 import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProviderTest;
 import de.dlr.sc.virsat.server.jetty.VirSatJettyServerTest;
 import de.dlr.sc.virsat.server.repository.ServerRepoHelperTest;
@@ -55,7 +56,8 @@ import junit.framework.JUnit4TestAdapter;
 	DocumentationResourceTest.class,
 	VirSatJettyServerTest.class,
 	CorsFilterTest.class,
-	ServerConceptTest.class
+	ServerConceptTest.class,
+	ServerDisciplineTest.class
 })
 
 public class AllTests {

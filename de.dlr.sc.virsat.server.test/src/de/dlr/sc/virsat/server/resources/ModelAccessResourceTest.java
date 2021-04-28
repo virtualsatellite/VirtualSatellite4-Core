@@ -149,4 +149,19 @@ public class ModelAccessResourceTest extends AModelAccessResourceTest {
 		assertEquals("No new commit on get without remote changes", commits, 
 				VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath()));
 	}
+	
+	@Test
+	public void testAllDisciplines() throws Exception {
+		int commits = VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath());
+		
+		String entityString = webTarget
+				.path(ModelAccessResource.DISCIPLINES)
+				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
+				.get(String.class);
+		assertTrue("Discipline for System should be returned", entityString.contains("System"));
+		
+		assertEquals("No new commit on get without remote changes", commits, 
+				VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath()));
+	}
 }

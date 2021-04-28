@@ -14,14 +14,16 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapter;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiModelProperty.AccessMode;
 
 @XmlRootElement
-@XmlType(name = "Discipline")
+//Ensure that the discipline (by uuid) gets unmarshalled first
+@XmlType(name = "Discipline", propOrder = {"discipline", "name", "user"})
 @XmlAccessorType(XmlAccessType.NONE)
 @ApiModel(value = "Discipline",
 	description = "A discipline with an assigned user that has rights over assigned elements.")
@@ -35,12 +37,14 @@ public class ServerDiscipline {
 		this.discipline = discipline;
 	}
 	
-	@ApiModelProperty(
-			value = "Unique identifier",
-			accessMode = AccessMode.READ_ONLY)
-	@XmlElement
-	public String getUuid() {
-		return discipline.getUuid().toString();
+	@XmlJavaTypeAdapter(IUuidAdapter.class)
+	@ApiModelProperty(name = "uuid", required = true)
+	public void setDiscipline(Discipline discipline) {
+		this.discipline = discipline;
+	}
+	
+	public Discipline getDiscipline() {
+		return discipline;
 	}
 	
 	@ApiModelProperty(value = "Name of the discipline")
@@ -50,7 +54,7 @@ public class ServerDiscipline {
 	}
 	
 	public void setName(String name) {
-		discipline.setName(null);
+		discipline.setName(name);
 	}
 	
 	@ApiModelProperty(value = "Name of the user assigned to the discipline")
