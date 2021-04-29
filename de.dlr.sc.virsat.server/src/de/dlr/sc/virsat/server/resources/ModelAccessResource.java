@@ -165,10 +165,12 @@ public class ModelAccessResource {
 		}
 
 		// Public getters for subresources
+		@ApiOperation(hidden = true, value = "")
 		public Repository getRepository() {
 			return repository;
 		}
 		
+		@ApiOperation(hidden = true, value = "")
 		public VirSatTransactionalEditingDomain getEd() {
 			return ed;
 		}

@@ -228,7 +228,7 @@ public class ServerRepository {
 				// Run the builders
 				if (build) {
 					Activator.getDefault().getLog().info(PREFIX_LOG_MESSAGE + "Run build");
-					project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, new NullProgressMonitor());
+					project.build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
 				}
 				
 				// Commit and push the new state to the repository
