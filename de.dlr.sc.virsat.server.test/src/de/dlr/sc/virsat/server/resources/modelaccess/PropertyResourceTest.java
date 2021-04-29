@@ -130,9 +130,4 @@ public class PropertyResourceTest extends AModelAccessResourceTest {
 				getTestRequestBuilder(ModelAccessResource.PROPERTY + "/unknown").get(), 
 				PropertyResource.COULD_NOT_FIND_REQUESTED_PROPERTY);
 	}
-	
-	@Test
-	public void testGetNoSync() {
-		assertGetNoSync(ModelAccessResource.PROPERTY, beanString.getUuid());
-	}
 }

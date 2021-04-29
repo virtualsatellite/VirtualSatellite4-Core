@@ -26,7 +26,6 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
@@ -108,21 +107,21 @@ public class ModelAccessResource {
 	 * @return RepoModelAccessResource or null if the repo is not found
 	 */
 	@Path("{repoName}")
-	// TODO move test cases, test build path param
 	public RepoModelAccessResource getConcreteResource(
 			@PathParam("repoName") @ApiParam(value = "Name of the repository", required = true) String repoName,
 			
-			@DefaultValue("true") @QueryParam(ModelAccessResource.QP_SYNC) 
-			@ApiParam(value = "If synchronizating with the repository on this request", required = false) boolean synchronize,
+			@ApiParam(value = "Synchronize with the repository on this request", required = false)
+			@QueryParam(ModelAccessResource.QP_SYNC) @DefaultValue("true") boolean synchronize,
 			
-			@DefaultValue("true") @QueryParam(ModelAccessResource.QP_BUILD) 
-			@ApiParam(value = "If building when synchronizing on this request", required = false) boolean build) {
+			@ApiParam(value = "Build when synchronizing on this request", required = false)
+			@QueryParam(ModelAccessResource.QP_BUILD) @DefaultValue("true") boolean build) {
+		
 		ServerRepository repo = RepoRegistry.getInstance().getRepository(repoName);
 		if (repo != null) {
 			provider.setServerRepository(repo);
 			return new RepoModelAccessResource(repo, synchronize, build);
 		}
-
+		
 		return null;
 	}
 	
@@ -191,6 +190,7 @@ public class ModelAccessResource {
 		}
 
 		// Actual resources
+		/** **/
 		@GET
 		@Path(FORCE_SYNC)
 		@ApiOperation(
@@ -204,10 +204,12 @@ public class ModelAccessResource {
 				@ApiResponse(
 						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 						message = ApiErrorHelper.SYNC_ERROR)})
-		/** **/
-		// TODO: test
-		public Response forceSynchronize() throws Exception {
-			serverRepository.syncRepository(build);
+		public Response forceSynchronize() {
+			try {
+				serverRepository.syncRepository(build);
+			} catch (Exception e) {
+				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			}
 			return Response.ok().build();
 		}
 		
@@ -228,9 +230,6 @@ public class ModelAccessResource {
 						responseContainer = "List",
 						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 				@ApiResponse(
-						code = HttpStatus.BAD_REQUEST_400, 
-						message = "Could not create bean for a root SEI"),
-				@ApiResponse(
 						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 						message = ApiErrorHelper.SYNC_ERROR)})
 		public Response getRootSeis() {
@@ -248,8 +247,6 @@ public class ModelAccessResource {
 						new GenericEntity<List<ABeanStructuralElementInstance>>(beans) { };
 				
 				return Response.ok(genericEntityList).build();
-			} catch (CoreException e) {
-				return ApiErrorHelper.createBadRequestResponse(e.getMessage());
 			} catch (Exception e) {
 				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
 			}
