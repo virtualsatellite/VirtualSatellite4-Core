@@ -30,6 +30,7 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.concept.types.category.BeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
+import de.dlr.sc.virsat.model.concept.types.roles.BeanDiscipline;
 import de.dlr.sc.virsat.model.concept.types.util.BeanCategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.concept.types.util.BeanStructuralElementInstanceHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
@@ -39,6 +40,7 @@ import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import de.dlr.sc.virsat.model.dvlm.inheritance.InheritancePackage;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanStructuralElementInstanceAdapter;
 import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapter;
+import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralPackage;
@@ -55,7 +57,7 @@ import io.swagger.annotations.ApiModelProperty;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement
 // Ensure that the sei (by uuid) gets unmarshalled first
-@XmlType(propOrder = {"structuralElementInstance", "name", "parent", "jaxbCategoryAssignments", "jaxbChildren", "jaxbSuperSeis"})
+@XmlType(propOrder = {"structuralElementInstance", "name", "parent", "jaxbCategoryAssignments", "jaxbChildren", "jaxbSuperSeis", "assignedDiscipline"})
 @ApiModel(description = "Abstract model class for bean SEIs."
 		+ " Instead return a concrete bean SEI that is identified by a type field."
 		+ " Currently concrete SEIs have no additional fields.")
@@ -433,5 +435,25 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 			return se.isIsRootStructuralElement();
 		}
 		return false;
+	}
+	
+	@XmlElement(nillable = true)
+	@ApiModelProperty(value = "Discipline that can edit this SEI")
+	@Override
+	public BeanDiscipline getAssignedDiscipline() {
+		Discipline assignedDiscipline = sei.getAssignedDiscipline();
+		
+		if (assignedDiscipline == null) {
+			return null;
+		}
+		
+		return new BeanDiscipline(assignedDiscipline);
+	}
+	
+	@Override
+	public void setAssignedDiscipline(BeanDiscipline disciplineBean) {
+		if (disciplineBean != null) {
+			sei.setAssignedDiscipline(disciplineBean.getDiscipline());
+		}
 	}
 }
