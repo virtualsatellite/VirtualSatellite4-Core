@@ -33,6 +33,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jetty.http.HttpStatus;
 
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
+import de.dlr.sc.virsat.model.concept.types.roles.BeanDiscipline;
 import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
@@ -41,7 +42,6 @@ import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.server.auth.ServerRoles;
 import de.dlr.sc.virsat.server.dataaccess.ServerConcept;
-import de.dlr.sc.virsat.server.dataaccess.ServerDiscipline;
 import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProvider;
 import de.dlr.sc.virsat.server.jetty.VirSatJettyServer;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
@@ -264,7 +264,7 @@ public class ModelAccessResource {
 		@ApiResponses(value = { 
 				@ApiResponse(
 						code = HttpStatus.OK_200,
-						response = ServerDiscipline.class,
+						response = BeanDiscipline.class,
 						responseContainer = "List",
 						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 				@ApiResponse(
@@ -274,14 +274,14 @@ public class ModelAccessResource {
 			try {
 				serverRepository.syncRepository();
 				
-				List<ServerDiscipline> pojos = new ArrayList<ServerDiscipline>();
+				List<BeanDiscipline> pojos = new ArrayList<BeanDiscipline>();
 				List<Discipline> disciplines = repository.getRoleManagement().getDisciplines();
 				
 				for (Discipline discipline : disciplines) {
-					pojos.add(new ServerDiscipline(discipline));
+					pojos.add(new BeanDiscipline(discipline));
 				}
 				
-				GenericEntity<List<ServerDiscipline>> entity = new GenericEntity<List<ServerDiscipline>>(pojos) { };
+				GenericEntity<List<BeanDiscipline>> entity = new GenericEntity<List<BeanDiscipline>>(pojos) { };
 				
 				return Response.ok(entity).build();
 			} catch (Exception e) {

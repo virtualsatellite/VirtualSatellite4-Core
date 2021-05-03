@@ -30,6 +30,7 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloatTest;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyIntTest;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResourceTest;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyStringTest;
+import de.dlr.sc.virsat.model.concept.types.roles.BeanDisciplineTest;
 import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstanceTest;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.provider.DVLMEnumValueDefinitionItemProviderTest;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.provider.DVLMPropertydefinitionsItemProviderAdapterFactoryTest;
@@ -144,7 +145,8 @@ import junit.framework.JUnit4TestAdapter;
 				IUuidAdapterTest.class,
 				UriAdapterTest.class,
 				ABeanStructuralElementInstanceAdapterTest.class,
-				BeanPropertyTypeAdapterTest.class
+				BeanPropertyTypeAdapterTest.class,
+				BeanDisciplineTest.class
 				})
 
 /**

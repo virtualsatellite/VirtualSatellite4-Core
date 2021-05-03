@@ -43,7 +43,6 @@ public class BeanDiscipline implements IBeanName, IBeanUuid {
 		this.discipline = discipline;
 	}
 	
-	// TODO: test
 	@Override
 	public String getUuid() {
 		return discipline.getUuid().toString();
@@ -71,7 +70,6 @@ public class BeanDiscipline implements IBeanName, IBeanUuid {
 		discipline.setName(name);
 	}
 	
-	// TODO: test
 	@Override
 	public Command setName(EditingDomain ed, String name) {
 		return SetCommand.create(ed, discipline, GeneralPackage.Literals.INAME__NAME, name);
