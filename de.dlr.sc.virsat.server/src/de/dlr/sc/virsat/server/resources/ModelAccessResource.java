@@ -44,7 +44,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationE
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
+import de.dlr.sc.virsat.model.dvlm.structural.util.StructuralInstantiator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommand;
 import de.dlr.sc.virsat.server.auth.ServerRoles;
@@ -304,14 +304,8 @@ public class ModelAccessResource {
 	 */
 	public static String createSeiFromFqn(String fullQualifiedName, EObject owner, VirSatTransactionalEditingDomain editingDomain) {
 		ActiveConceptHelper helper = new ActiveConceptHelper(editingDomain.getResourceSet().getRepository());
-		
-		StructuralElementInstance newSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		
-		// Add the correct type using the fqn
-		int idx = fullQualifiedName.lastIndexOf(".");
-		Concept concept = helper.getConcept(fullQualifiedName.substring(0, idx));
-		StructuralElement se = ActiveConceptHelper.getStructuralElement(concept, fullQualifiedName.substring(idx + 1));
-		newSei.setType(se);
+		StructuralElement se = helper.getStructuralElement(fullQualifiedName);
+		StructuralElementInstance newSei = new StructuralInstantiator().generateInstance(se, null);
 		
 		Command createCommand = CreateAddSeiWithFileStructureCommand.create(editingDomain, owner, newSei);
 		editingDomain.getCommandStack().execute(createCommand);

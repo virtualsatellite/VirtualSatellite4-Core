@@ -29,11 +29,10 @@ import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.dvlm.Repository;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
@@ -155,14 +154,8 @@ public class CategoryAssignmentResource {
 			}
 			
 			ActiveConceptHelper helper = new ActiveConceptHelper(ed.getResourceSet().getRepository());
-			
-			CategoryAssignment newCa = CategoriesFactory.eINSTANCE.createCategoryAssignment();
-			
-			// Add the correct type using the fqn
-			int idx = fullQualifiedName.lastIndexOf(".");
-			Concept concept = helper.getConcept(fullQualifiedName.substring(0, idx));
-			Category category = ActiveConceptHelper.getCategory(concept, fullQualifiedName.substring(idx + 1));
-			newCa.setType(category);
+			Category category = helper.getCategory(fullQualifiedName);
+			CategoryAssignment newCa = new CategoryInstantiator().generateInstance(category, null);
 			
 			Command createCommand = AddCommand.create(ed, parentSei, CategoriesPackage.Literals.ICATEGORY_ASSIGNMENT_CONTAINER__CATEGORY_ASSIGNMENTS, newCa);
 			ed.getCommandStack().execute(createCommand);
