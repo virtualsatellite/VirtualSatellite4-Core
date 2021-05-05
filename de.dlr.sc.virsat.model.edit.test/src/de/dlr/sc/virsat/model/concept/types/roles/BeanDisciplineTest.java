@@ -45,7 +45,7 @@ public class BeanDisciplineTest {
 	}
 	
 	@Test
-	public void testGetAndSet() throws JAXBException, IOException {
+	public void testGetAndSet() {
 		assertEquals(null, beanDiscipline.getDiscipline());
 		beanDiscipline.setDiscipline(testDiscipline);
 		assertEquals(testDiscipline, beanDiscipline.getDiscipline());

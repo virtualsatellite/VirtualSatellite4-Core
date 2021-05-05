@@ -50,6 +50,7 @@ public class BeanDiscipline implements IBeanName, IBeanUuid {
 	
 	@XmlJavaTypeAdapter(IUuidAdapter.class)
 	@ApiModelProperty(name = "uuid", required = true)
+	@XmlElement(name = "uuid")
 	public void setDiscipline(Discipline discipline) {
 		this.discipline = discipline;
 	}
@@ -58,8 +59,8 @@ public class BeanDiscipline implements IBeanName, IBeanUuid {
 		return discipline;
 	}
 	
-	@ApiModelProperty(value = "Name of the discipline")
-	@XmlElement
+	@ApiModelProperty(value = "Name of the discipline", required = true)
+	@XmlElement(nillable = true)
 	@Override
 	public String getName() {
 		return discipline.getName();
@@ -75,8 +76,8 @@ public class BeanDiscipline implements IBeanName, IBeanUuid {
 		return SetCommand.create(ed, discipline, GeneralPackage.Literals.INAME__NAME, name);
 	}
 	
-	@ApiModelProperty(value = "Name of the user assigned to the discipline")
-	@XmlElement
+	@ApiModelProperty(value = "Name of the user assigned to the discipline", required = true)
+	@XmlElement(nillable = true)
 	public String getUser() {
 		return discipline.getUser();
 	}

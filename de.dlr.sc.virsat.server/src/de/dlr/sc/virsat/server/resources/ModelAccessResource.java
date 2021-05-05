@@ -47,6 +47,7 @@ import de.dlr.sc.virsat.server.jetty.VirSatJettyServer;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
 import de.dlr.sc.virsat.server.resources.modelaccess.CategoryAssignmentResource;
+import de.dlr.sc.virsat.server.resources.modelaccess.DisciplineResource;
 import de.dlr.sc.virsat.server.resources.modelaccess.PropertyResource;
 import de.dlr.sc.virsat.server.resources.modelaccess.StructuralElementInstanceResource;
 import de.dlr.sc.virsat.server.servlet.VirSatModelAccessServlet;
@@ -83,6 +84,8 @@ public class ModelAccessResource {
 	public static final String ROOT_SEIS = "seis";
 	public static final String SEI = "sei";
 	public static final String DISCIPLINES = "disciplines";
+	public static final String DISCIPLINE = "discipline";
+	public static final String ROLEMANAGEMENT = "rolemanagement";
 	public static final String CONCEPTS = "concepts";
 	public static final String CA = "ca";
 	public static final String CA_AND_PROPERTIES = "caAndProperties";
@@ -153,6 +156,11 @@ public class ModelAccessResource {
 	    public StructuralElementInstanceResource getStructuralElementInstanceResource() {
 	        return new StructuralElementInstanceResource(serverRepository);
 	    }
+		
+		@Path(DISCIPLINE)
+		public DisciplineResource getDisciplineResource() {
+			return new DisciplineResource(serverRepository);
+		}
 
 		/** **/
 		@GET
@@ -252,6 +260,7 @@ public class ModelAccessResource {
 			}
 		}
 		
+		// TODO: use new sync
 		/** **/
 		@GET
 		@Path(DISCIPLINES)
@@ -284,6 +293,38 @@ public class ModelAccessResource {
 				GenericEntity<List<BeanDiscipline>> entity = new GenericEntity<List<BeanDiscipline>>(pojos) { };
 				
 				return Response.ok(entity).build();
+			} catch (Exception e) {
+				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			}
+		}
+		
+		/** **/
+		@GET
+		@Path(ROLEMANAGEMENT)
+		@Produces(MediaType.APPLICATION_JSON)
+		@ApiOperation(
+				produces = "application/json",
+				value = "Fetch discipline of the rolemanagement",
+				httpMethod = "GET",
+				notes = "This service fetches the discipline of the rolemanagement")
+		@ApiResponses(value = { 
+				@ApiResponse(
+						code = HttpStatus.OK_200,
+						response = BeanDiscipline.class,
+						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+				@ApiResponse(
+						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+						message = ApiErrorHelper.SYNC_ERROR)})
+		public Response getRolemanagementDiscipline() {
+			try {
+				serverRepository.syncRepository();
+				
+				Discipline discipline = repository.getRoleManagement().getAssignedDiscipline();
+				if (discipline == null) {
+					return Response.ok(null).build();
+				}
+				
+				return Response.ok(new BeanDiscipline(discipline)).build();
 			} catch (Exception e) {
 				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
 			}
