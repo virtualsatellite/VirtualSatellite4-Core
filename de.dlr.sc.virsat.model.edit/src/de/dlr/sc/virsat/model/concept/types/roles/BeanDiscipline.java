@@ -49,7 +49,9 @@ public class BeanDiscipline implements IBeanName, IBeanUuid {
 	}
 	
 	@XmlJavaTypeAdapter(IUuidAdapter.class)
-	@ApiModelProperty(name = "uuid", required = true)
+	@ApiModelProperty(name = "uuid", required = true,
+			value = "Unique identifier for a bean",
+			example = "b168b0df-84b6-4b7f-bede-69298b215f40")
 	@XmlElement(name = "uuid")
 	public void setDiscipline(Discipline discipline) {
 		this.discipline = discipline;

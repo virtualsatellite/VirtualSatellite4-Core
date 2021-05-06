@@ -99,7 +99,8 @@ public class ModelAccessResource {
 			RepoModelAccessResource.class,
 			StructuralElementInstanceResource.class,
 			CategoryAssignmentResource.class,
-			PropertyResource.class);
+			PropertyResource.class,
+			DisciplineResource.class);
 	
 	public ModelAccessResource() { }
 	
