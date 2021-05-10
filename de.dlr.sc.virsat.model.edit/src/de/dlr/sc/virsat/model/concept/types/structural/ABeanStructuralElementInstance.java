@@ -39,6 +39,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import de.dlr.sc.virsat.model.dvlm.inheritance.InheritancePackage;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanStructuralElementInstanceAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.BeanDisciplineAdapter;
 import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapter;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
@@ -438,7 +439,8 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	}
 	
 	@XmlElement(nillable = true)
-	@ApiModelProperty(value = "Discipline that can edit this SEI")
+	@ApiModelProperty(value = "Uuid of the referenced Discipline that can edit this SEI")
+	@XmlJavaTypeAdapter(BeanDisciplineAdapter.class)
 	@Override
 	public BeanDiscipline getAssignedDiscipline() {
 		Discipline assignedDiscipline = sei.getAssignedDiscipline();

@@ -24,9 +24,5 @@
       "uuid" : "e04ef537-36fb-4b16-b776-579c7fdacc8b",
       "name" : null
    } ],
-   "assignedDiscipline" : {
-      "discipline" : "e4e175f5-88c8-474f-bb25-2cdf1d3061cb",
-      "name" : "name",
-      "user" : "user"
-   }
+   "assignedDiscipline" : "e4e175f5-88c8-474f-bb25-2cdf1d3061cb"
 }

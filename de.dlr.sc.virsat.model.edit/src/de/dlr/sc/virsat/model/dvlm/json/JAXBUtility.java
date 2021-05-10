@@ -112,6 +112,9 @@ public class JAXBUtility {
 		ABeanStructuralElementInstanceAdapter aBeanSeiAdapter = new ABeanStructuralElementInstanceAdapter(resourceSet);
 		jsonUnmarshaller.setAdapter(aBeanSeiAdapter);
 		
+		BeanDisciplineAdapter beanDisciplineAdapter = new BeanDisciplineAdapter(resourceSet);
+		jsonUnmarshaller.setAdapter(beanDisciplineAdapter);
+		
 		return jsonUnmarshaller;
 	}
 }

@@ -64,11 +64,7 @@ public class ModelAccessResourceTest extends AModelAccessResourceTest {
 		// This would return a List<ABeanStructuralElementInstance>
 		// but because of problems with unmarshalling the list of abstract objects,
 		// we just use a String here
-		String entity = webTarget
-				.path(ModelAccessResource.ROOT_SEIS)
-				.request()
-				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
-				.get(String.class);
+		String entity = response.readEntity(String.class);
 		
 		assertTrue("Right Sei found", entity.contains(tSei.getUuid()));
 		

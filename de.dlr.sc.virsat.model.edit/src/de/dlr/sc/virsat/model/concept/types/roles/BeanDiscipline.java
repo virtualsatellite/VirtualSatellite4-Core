@@ -87,4 +87,19 @@ public class BeanDiscipline implements IBeanName, IBeanUuid {
 	public void setUser(String user) {
 		discipline.setUser(user);
 	}
+	
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof BeanDiscipline) {
+			BeanDiscipline beanDiscipline = (BeanDiscipline) obj;
+			return discipline.equals(beanDiscipline.getDiscipline());
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return discipline.hashCode();
+	}
 }
