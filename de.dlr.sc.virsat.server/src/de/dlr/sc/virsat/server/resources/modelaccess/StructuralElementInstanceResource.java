@@ -25,14 +25,12 @@ import org.eclipse.jetty.http.HttpStatus;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
 import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.structure.command.CreateRemoveSeiWithFileStructureCommand;
 import de.dlr.sc.virsat.project.structure.command.RemoveFileStructureCommand;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
-import de.dlr.sc.virsat.server.repository.ServerRepository;
 import de.dlr.sc.virsat.server.resources.ApiErrorHelper;
+import de.dlr.sc.virsat.server.resources.ModelAccessResource.RepoModelAccessResource;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -44,14 +42,10 @@ public class StructuralElementInstanceResource {
 	
 	public static final String COULD_NOT_FIND_REQUESTED_SEI = "Could not find requested SEI";
 	
-	private Repository repository;
-	private ServerRepository serverRepository;
-	private VirSatTransactionalEditingDomain ed;
+	private RepoModelAccessResource parentResource;
 	
-	public StructuralElementInstanceResource(ServerRepository serverRepository) {
-		this.serverRepository = serverRepository;
-		ed = serverRepository.getEd();
-		repository = serverRepository.getResourceSet().getRepository();
+	public StructuralElementInstanceResource(RepoModelAccessResource parentResource) {
+		this.parentResource = parentResource;
 	}
 
 	/** **/
@@ -74,10 +68,11 @@ public class StructuralElementInstanceResource {
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.SYNC_ERROR)})
-	public Response getSei(@PathParam("seiUuid") @ApiParam(value = "Uuid of the SEI", required = true)  String seiUuid) {
+	public Response getSei(@PathParam("seiUuid") @ApiParam(value = "Uuid of the SEI", required = true) String seiUuid) {
 		try {
-			serverRepository.syncRepository();
-			StructuralElementInstance sei = RepositoryUtility.findSei(seiUuid, repository);
+			parentResource.synchronize();
+			
+			StructuralElementInstance sei = RepositoryUtility.findSei(seiUuid, parentResource.getRepository());
 			
 			if (sei == null) {
 				return ApiErrorHelper.createBadRequestResponse(COULD_NOT_FIND_REQUESTED_SEI);
@@ -108,7 +103,7 @@ public class StructuralElementInstanceResource {
 					message = ApiErrorHelper.SYNC_ERROR)})
 	public Response putSei(@ApiParam(value = "SEI to put", required = true) ABeanStructuralElementInstance bean) {
 		try {
-			serverRepository.syncRepository();
+			parentResource.synchronize();
 			return Response.status(Response.Status.OK).build();
 		} catch (Exception e) {
 			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
@@ -137,19 +132,19 @@ public class StructuralElementInstanceResource {
 	public Response deleteSei(@PathParam("seiUuid") @ApiParam(value = "Uuid of the SEI", required = true)  String seiUuid) {
 		try {
 			// Sync before delete
-			serverRepository.syncRepository();
+			parentResource.synchronize();
 			
 			// Delete Sei
-			StructuralElementInstance sei = RepositoryUtility.findSei(seiUuid, repository);
+			StructuralElementInstance sei = RepositoryUtility.findSei(seiUuid, parentResource.getRepository());
 			if (sei == null) {
 				return ApiErrorHelper.createBadRequestResponse(COULD_NOT_FIND_REQUESTED_SEI);
 			}
 			
 			Command deleteCommand = CreateRemoveSeiWithFileStructureCommand.create(sei, RemoveFileStructureCommand.DELETE_RESOURCE_OPERATION_FUNCTION);
-			ed.getCommandStack().execute(deleteCommand);
+			parentResource.getEd().getCommandStack().execute(deleteCommand);
 			
 			// Sync after delete
-			serverRepository.syncRepository();
+			parentResource.synchronize();
 			return Response.ok().build();
 		} catch (Exception e) {
 			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());

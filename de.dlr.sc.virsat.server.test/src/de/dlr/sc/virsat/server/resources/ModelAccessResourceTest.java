@@ -30,6 +30,7 @@ import org.junit.Test;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
+import de.dlr.sc.virsat.server.Activator;
 import de.dlr.sc.virsat.server.test.VersionControlTestHelper;
 
 public class ModelAccessResourceTest extends AModelAccessResourceTest {
@@ -148,5 +149,48 @@ public class ModelAccessResourceTest extends AModelAccessResourceTest {
 		
 		assertEquals("No new commit on get without remote changes", commits, 
 				VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath()));
+	}
+	
+	@Test
+	public void testQueryParams() {
+		// Request without query params that should create a certain amount of log messages
+		CountingLogListener listener = new CountingLogListener();
+		Activator.getDefault().getLog().addLogListener(listener);
+		
+		assertEquals(0, listener.getCount());
+		
+		getTestRequestBuilder(ModelAccessResource.ROOT_SEIS).get();
+		
+		int countWithSync = listener.getCount();
+		assertThat("At least one log message because of synchronization", countWithSync, greaterThan(0));
+		
+		// Request one with the query param build = false that should create one less log message
+		listener.setCount(0);
+		getTestRequestBuilderWithQueryParam(ModelAccessResource.ROOT_SEIS, ModelAccessResource.QP_BUILD, "false").get();
+		
+		assertEquals("Build message missing", countWithSync - 1, listener.getCount());
+		
+		// Request with the query param sync = false that should create no messages
+		listener.setCount(0);
+		getTestRequestBuilderWithQueryParam(ModelAccessResource.ROOT_SEIS, ModelAccessResource.QP_SYNC, "false").get();
+		
+		assertEquals("No new messages", 0, listener.getCount());
+		
+		Activator.getDefault().getLog().removeLogListener(listener);
+	}
+	
+	@Test
+	public void testForceSyncGet() {
+		CountingLogListener listener = new CountingLogListener();
+		Activator.getDefault().getLog().addLogListener(listener);
+		
+		// Request with the query param sync = false should still create log no messages
+		listener.setCount(0);
+		getTestRequestBuilderWithQueryParam(ModelAccessResource.FORCE_SYNC, ModelAccessResource.QP_SYNC, "false").get();
+		
+		int countWithSync = listener.getCount();
+		assertThat("At least one log message because of synchronization", countWithSync, greaterThan(0));
+		
+		Activator.getDefault().getLog().removeLogListener(listener);
 	}
 }
