@@ -58,6 +58,7 @@ public class ServerRepository {
 	private File localRepository;
 	
 	protected static final String PREFIX_LOCAL_REPO_NAME = "repo_";
+	private static final String PREFIX_LOG_MESSAGE = "Server synchronization: ";
 	/**
 	 * Constructor for a Server Repository.
 	 * @param localRepositoryHome The repository home in which mostly all projects checkout to.
@@ -189,13 +190,24 @@ public class ServerRepository {
 	 * @throws Exception
 	 */
 	public void syncRepository() throws Exception {
+		syncRepository(true);
+	}
+	
+	/**
+	 * This method syncs the repository, which means it updates from remote
+	 * and then sends all the changes to remote
+	 * @param build if a build should be triggered
+	 * @throws Exception
+	 */
+	public void syncRepository(boolean build) throws Exception {
 		AtomicExceptionReference<Exception> atomicException = new AtomicExceptionReference<>();
 		String projectName = repositoryConfiguration.getProjectName();
 		
 		runInWorkspace((progress) -> {
 			try {
+				
 				Activator.getDefault().getLog().info("Server synchronizing project with backend: " + projectName);
-				Activator.getDefault().getLog().info("Server synchronization: " + "Saving all resources");
+				Activator.getDefault().getLog().info(PREFIX_LOG_MESSAGE + "Saving all resources");
 
 				// Ensure that all changes are saved on FS level
 				if (ed.isDirty()) {
@@ -203,20 +215,24 @@ public class ServerRepository {
 				}
 				
 				// Get remote changes
-				Activator.getDefault().getLog().info("Server synchronization: " + "Update from remote");
+				Activator.getDefault().getLog().info(PREFIX_LOG_MESSAGE + "Update from remote");
 				VersionControlUpdateResult result = versionControlBackEnd.update(project, new NullProgressMonitor());
 				
 				// Only reload if we detected changes in the update step
 				if (result.hasChanges()) {
+					Activator.getDefault().getLog().info(PREFIX_LOG_MESSAGE + "Reload all resources");
 					// Maybe we could reload only the changed resources here
 					ed.reloadAll();
 				}
 				
 				// Run the builders
-				project.build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
+				if (build) {
+					Activator.getDefault().getLog().info(PREFIX_LOG_MESSAGE + "Run build");
+					project.build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
+				}
 				
 				// Commit and push the new state to the repository
-				Activator.getDefault().getLog().info("Server synchronization: " + "Push changes");
+				Activator.getDefault().getLog().info(PREFIX_LOG_MESSAGE + "Push changes");
 				versionControlBackEnd.commit(project, SERVER_REPOSITORY_COMMIT_PUSH_MESSAGE + projectName, new NullProgressMonitor());
 				
 			} catch (Exception e) {

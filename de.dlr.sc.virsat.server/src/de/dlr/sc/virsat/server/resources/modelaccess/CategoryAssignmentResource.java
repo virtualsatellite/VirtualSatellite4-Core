@@ -28,18 +28,16 @@ import org.eclipse.jetty.http.HttpStatus;
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
-import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
-import de.dlr.sc.virsat.server.repository.ServerRepository;
 import de.dlr.sc.virsat.server.resources.ApiErrorHelper;
 import de.dlr.sc.virsat.server.resources.ModelAccessResource;
+import de.dlr.sc.virsat.server.resources.ModelAccessResource.RepoModelAccessResource;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -48,15 +46,11 @@ import io.swagger.annotations.ApiResponses;
 
 @Api(hidden = true)
 public class CategoryAssignmentResource {
-
-	private Repository repository;
-	private ServerRepository serverRepository;
-	private VirSatTransactionalEditingDomain ed;
 	
-	public CategoryAssignmentResource(ServerRepository serverRepository) {
-		this.serverRepository = serverRepository;
-		ed = serverRepository.getEd();
-		repository = serverRepository.getResourceSet().getRepository();
+	private RepoModelAccessResource parentResource;
+	
+	public CategoryAssignmentResource(RepoModelAccessResource parentResource) {
+		this.parentResource = parentResource;
 	}
 	
 	/** **/
@@ -81,9 +75,9 @@ public class CategoryAssignmentResource {
 					message = ApiErrorHelper.SYNC_ERROR)})
 	public Response getCa(@PathParam("caUuid") @ApiParam(value = "Uuid of the CA", required = true) String caUuid) {
 		try {
-			serverRepository.syncRepository();
+			parentResource.synchronize();
 			
-			CategoryAssignment ca = RepositoryUtility.findCa(caUuid, repository);
+			CategoryAssignment ca = RepositoryUtility.findCa(caUuid, parentResource.getRepository());
 			
 			if (ca == null) {
 				return ApiErrorHelper.createNotFoundErrorResponse();
@@ -114,7 +108,7 @@ public class CategoryAssignmentResource {
 					message = ApiErrorHelper.SYNC_ERROR)})
 	public Response putCa(@ApiParam(value = "CA to put", required = true) ABeanCategoryAssignment bean) {
 		try {
-			serverRepository.syncRepository();
+			parentResource.synchronize();
 			return Response.status(Response.Status.OK).build();
 		} catch (Exception e) {
 			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
@@ -145,22 +139,22 @@ public class CategoryAssignmentResource {
 			@QueryParam(value = ModelAccessResource.QP_FULL_QUALIFIED_NAME)
 			@ApiParam(value = "Full qualified name of the CA type", required = true) String fullQualifiedName) {
 		try {
-			serverRepository.syncRepository();
+			parentResource.synchronize();
 			
-			StructuralElementInstance parentSei = RepositoryUtility.findSei(parentUuid, repository);
+			StructuralElementInstance parentSei = RepositoryUtility.findSei(parentUuid, parentResource.getRepository());
 			
 			if (parentSei == null) {
 				return ApiErrorHelper.createNotFoundErrorResponse();
 			}
 			
-			ActiveConceptHelper helper = new ActiveConceptHelper(ed.getResourceSet().getRepository());
+			ActiveConceptHelper helper = new ActiveConceptHelper(parentResource.getEd().getResourceSet().getRepository());
 			Category category = helper.getCategory(fullQualifiedName);
 			CategoryAssignment newCa = new CategoryInstantiator().generateInstance(category, null);
 			
-			Command createCommand = AddCommand.create(ed, parentSei, CategoriesPackage.Literals.ICATEGORY_ASSIGNMENT_CONTAINER__CATEGORY_ASSIGNMENTS, newCa);
-			ed.getCommandStack().execute(createCommand);
+			Command createCommand = AddCommand.create(parentResource.getEd(), parentSei, CategoriesPackage.Literals.ICATEGORY_ASSIGNMENT_CONTAINER__CATEGORY_ASSIGNMENTS, newCa);
+			parentResource.getEd().getCommandStack().execute(createCommand);
 			
-			serverRepository.syncRepository();
+			parentResource.synchronize();
 			return Response.ok(newCa.getUuid().toString()).build();
 		} catch (Exception e) {
 			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
@@ -189,22 +183,23 @@ public class CategoryAssignmentResource {
 	public Response deleteCa(@PathParam("caUuid") @ApiParam(value = "Uuid of the CA", required = true)  String caUuid) {
 		try {
 			// Sync before delete
-			serverRepository.syncRepository();
+			parentResource.synchronize();
 			
 			// Delete CA
-			CategoryAssignment ca = RepositoryUtility.findCa(caUuid, repository);
+			CategoryAssignment ca = RepositoryUtility.findCa(caUuid, parentResource.getRepository());
 			if (ca == null) {
 				return ApiErrorHelper.createNotFoundErrorResponse();
 			}
 			
-			Command deleteCommand = new BeanCategoryAssignmentFactory().getInstanceFor(ca).delete(ed);
-			ed.getCommandStack().execute(deleteCommand);
+			Command deleteCommand = new BeanCategoryAssignmentFactory().getInstanceFor(ca).delete(parentResource.getEd());
+			parentResource.getEd().getCommandStack().execute(deleteCommand);
 			
 			// Sync after delete
-			serverRepository.syncRepository();
+			parentResource.synchronize();
 			return Response.ok().build();
 		} catch (Exception e) {
 			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
 		}
 	}
+	
 }

@@ -29,6 +29,8 @@ import javax.ws.rs.core.Response.Status;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.ILogListener;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.jetty.http.HttpStatus;
 import org.eclipse.jgit.api.Git;
@@ -417,6 +419,14 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 			.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER);
 	}
 	
+	protected Builder getTestRequestBuilderWithQueryParam(String path, String queryParam, String qpValue) {
+		return webTarget
+			.path(path)
+			.queryParam(queryParam, qpValue)
+			.request()
+			.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER);
+	}
+	
 	protected void assertErrorResponse(Response response, Status expectedStatus, String expectedMessage) {
 		assertEquals(expectedStatus.getStatusCode(), response.getStatus());
 		assertEquals(expectedMessage, response.readEntity(String.class));
@@ -460,5 +470,22 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 		}
 		
 		assertThat("Structural element instance is correctly added to repository", (List<IUuid>) ownerChildren, hasItem(obj));
+	}
+
+	protected static class CountingLogListener implements ILogListener {
+		private int logCount = 0;
+		
+		@Override
+		public void logging(IStatus status, String plugin) {
+			logCount++;
+		}
+		
+		public int getCount() {
+			return logCount;
+		}
+		
+		public void setCount(int logCount) {
+			this.logCount = logCount;
+		}
 	}
 }

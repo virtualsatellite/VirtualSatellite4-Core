@@ -23,11 +23,10 @@ import org.eclipse.jetty.http.HttpStatus;
 import de.dlr.sc.virsat.model.concept.types.IBeanObject;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanPropertyFactory;
 import de.dlr.sc.virsat.model.concept.types.property.ABeanProperty;
-import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
-import de.dlr.sc.virsat.server.repository.ServerRepository;
 import de.dlr.sc.virsat.server.resources.ApiErrorHelper;
+import de.dlr.sc.virsat.server.resources.ModelAccessResource.RepoModelAccessResource;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -37,12 +36,10 @@ import io.swagger.annotations.ApiResponses;
 @Api(hidden = true)
 public class PropertyResource {
 	
-	private Repository repository;
-	private ServerRepository serverRepository;
+	private RepoModelAccessResource parentResource;
 	
-	public PropertyResource(ServerRepository serverRepository) {
-		this.serverRepository = serverRepository;
-		repository = serverRepository.getResourceSet().getRepository();
+	public PropertyResource(RepoModelAccessResource parentResource) {
+		this.parentResource = parentResource;
 	}
 	
 	/** **/
@@ -67,9 +64,9 @@ public class PropertyResource {
 					message = ApiErrorHelper.SYNC_ERROR)})
 	public Response getProperty(@PathParam("propertyUuid") @ApiParam(value = "Uuid of the property", required = true) String propertyUuid) {
 		try {
-			serverRepository.syncRepository();
+			parentResource.synchronize();
 			
-			APropertyInstance property = RepositoryUtility.findProperty(propertyUuid, repository);
+			APropertyInstance property = RepositoryUtility.findProperty(propertyUuid, parentResource.getRepository());
 			
 			if (property == null) {
 				return ApiErrorHelper.createNotFoundErrorResponse();
@@ -100,7 +97,7 @@ public class PropertyResource {
 					message = ApiErrorHelper.SYNC_ERROR)})
 	public Response putProperty(@SuppressWarnings("rawtypes") @ApiParam(value = "Property to put", required = true) ABeanProperty bean) {
 		try {
-			serverRepository.syncRepository();
+			parentResource.synchronize();
 			return Response.status(Response.Status.OK).build();
 		} catch (Exception e) {
 			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
