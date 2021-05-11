@@ -1218,6 +1218,13 @@
             id="de.dlr.virsat.global.category.import.virsat"
             name="Virtual Satellite">
       </category>
+   <wizard
+         category="de.dlr.virsat.global.category.import.virsat"
+         class="de.dlr.sc.virsat.model.extension.requirements.ui.wizard.DoorsImportWizard"
+         icon="resources/icons/RequirementsSpecification.gif"
+         id="de.dlr.sc.virsat.model.extension.requirements.ui.wizard.doorsImport"
+         name="Requirements Doors Import Wizard">
+   </wizard>
 	</extension>
 	   <extension point="org.eclipse.ui.editors">
       <editor
