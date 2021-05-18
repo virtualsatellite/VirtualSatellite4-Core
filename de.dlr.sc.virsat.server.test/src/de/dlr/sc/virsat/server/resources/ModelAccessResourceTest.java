@@ -193,4 +193,18 @@ public class ModelAccessResourceTest extends AModelAccessResourceTest {
 		
 		Activator.getDefault().getLog().removeLogListener(listener);
 	}
+	
+	@Test
+	public void testCreateRootSei() throws Exception {
+		String wantedTypeFqn = tSei.getFullQualifiedSturcturalElementName();
+		
+		Response response = webTarget
+				.path(ModelAccessResource.ROOT_SEIS)
+				.queryParam(ModelAccessResource.QP_FULL_QUALIFIED_NAME, wantedTypeFqn)
+				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
+				.post(Entity.json(null));
+		
+		assertIUuidGotCreated(response, wantedTypeFqn, ed, ed.getResourceSet().getRepository().getRootEntities());
+	}
 }

@@ -16,8 +16,10 @@ import java.util.List;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -29,6 +31,8 @@ import javax.ws.rs.core.Response;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jetty.http.HttpStatus;
 
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
@@ -36,8 +40,12 @@ import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementIns
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.structural.util.StructuralInstantiator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
+import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommand;
 import de.dlr.sc.virsat.server.auth.ServerRoles;
 import de.dlr.sc.virsat.server.dataaccess.ServerConcept;
 import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProvider;
@@ -88,6 +96,7 @@ public class ModelAccessResource {
 	public static final String FORCE_SYNC = "forceSync";
 	
 	public static final String QP_ONLY_ACTIVE_CONCEPTS = "onlyActiveConcepts";
+	public static final String QP_FULL_QUALIFIED_NAME = "fullQualifiedName";
 	public static final String QP_SYNC = "sync";
 	public static final String QP_BUILD = "build";
 
@@ -136,7 +145,7 @@ public class ModelAccessResource {
 	 *   - Get and update ca with properties by uuid
 	 *   - Get and update properties by uuid
 	 */
-	@Api(hidden = true)
+	@Api(hidden = true, authorizations = {@Authorization(value = "basic")})
 	@RolesAllowed({ServerRoles.ADMIN, ServerRoles.USER})
 	public static class RepoModelAccessResource {
 		
@@ -253,6 +262,37 @@ public class ModelAccessResource {
 				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
 			}
 		}
+		
+		/** **/
+		@POST
+		@Path(ROOT_SEIS)
+		@Consumes(MediaType.APPLICATION_JSON)
+		@ApiOperation(
+				consumes = "application/json",
+				value = "Create root SEI",
+				httpMethod = "POST",
+				notes = "This service creates a new root StructuralElementInstance and returns its uuid")
+		@ApiResponses(value = { 
+				@ApiResponse(
+						code = HttpStatus.OK_200,
+						response = String.class,
+						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+				@ApiResponse(
+						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+						message = ApiErrorHelper.SYNC_ERROR)})
+		public Response createRootSei(@QueryParam(value = ModelAccessResource.QP_FULL_QUALIFIED_NAME) 
+			@ApiParam(value = "Full qualified name of the SEI type", required = true) String fullQualifiedName) {
+			try {
+				serverRepository.syncRepository();
+				
+				String newSeiUuid = createSeiFromFqn(fullQualifiedName, repository, ed);
+				
+				serverRepository.syncRepository();
+				return Response.ok(newSeiUuid).build();
+			} catch (Exception e) {
+				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			}
+		}
 
 		/** **/
 		@GET
@@ -309,5 +349,23 @@ public class ModelAccessResource {
 			}
 		}
 	
+	}
+	
+	/**
+	 * Create a new Sei typed by the Se identified by the fullQualifiedName
+	 * @param fullQualifiedName of the sei type (se)
+	 * @param owner of the sei (either another sei or the repository for root seis)
+	 * @param editingDomain
+	 * @return uuid of the created sei
+	 */
+	public static String createSeiFromFqn(String fullQualifiedName, EObject owner, VirSatTransactionalEditingDomain editingDomain) {
+		ActiveConceptHelper helper = new ActiveConceptHelper(editingDomain.getResourceSet().getRepository());
+		StructuralElement se = helper.getStructuralElement(fullQualifiedName);
+		StructuralElementInstance newSei = new StructuralInstantiator().generateInstance(se, null);
+		
+		Command createCommand = CreateAddSeiWithFileStructureCommand.create(editingDomain, owner, newSei);
+		editingDomain.getCommandStack().execute(createCommand);
+		
+		return newSei.getUuid().toString();
 	}
 }

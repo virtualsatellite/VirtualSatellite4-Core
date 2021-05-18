@@ -32,18 +32,17 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 
-@Api(hidden = true)
+@Api(hidden = true, authorizations = {@Authorization(value = "basic")})
 public class PropertyResource {
-	
-	public static final String COULD_NOT_FIND_REQUESTED_PROPERTY = "Could not find requested property";
 	
 	private RepoModelAccessResource parentResource;
 	
 	public PropertyResource(RepoModelAccessResource parentResource) {
 		this.parentResource = parentResource;
 	}
-
+	
 	/** **/
 	@GET
 	@Path("/{propertyUuid}")
@@ -60,7 +59,7 @@ public class PropertyResource {
 					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 			@ApiResponse(
 					code = HttpStatus.BAD_REQUEST_400, 
-					message = COULD_NOT_FIND_REQUESTED_PROPERTY),
+					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.SYNC_ERROR)})
@@ -71,7 +70,7 @@ public class PropertyResource {
 			APropertyInstance property = RepositoryUtility.findProperty(propertyUuid, parentResource.getRepository());
 			
 			if (property == null) {
-				return ApiErrorHelper.createBadRequestResponse(COULD_NOT_FIND_REQUESTED_PROPERTY);
+				return ApiErrorHelper.createNotFoundErrorResponse();
 			}
 			
 			IBeanObject<? extends APropertyInstance> beanProperty = new BeanPropertyFactory().getInstanceFor(property);

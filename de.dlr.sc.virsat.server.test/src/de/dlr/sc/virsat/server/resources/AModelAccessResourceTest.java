@@ -9,12 +9,16 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.resources;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItem;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.StringWriter;
+import java.util.List;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation.Builder;
@@ -24,6 +28,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ILogListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.transaction.RecordingCommand;
@@ -47,7 +52,10 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResource;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.Repository;
+import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.general.IUuid;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
@@ -62,6 +70,7 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
+import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.servlet.VirSatModelAccessServlet;
 import de.dlr.sc.virsat.server.test.AServerRepositoryTest;
 import de.dlr.sc.virsat.server.test.VersionControlTestHelper;
@@ -427,10 +436,42 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 		assertErrorResponse(response, Status.BAD_REQUEST, expectedMessage);
 	}
 	
+	protected void assertNotFoundResponse(Response response) {
+		assertBadRequestResponse(response, ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT);
+	}
+	
 	protected void assertSyncErrorResponse(Response response) {
 		assertErrorResponse(response, Status.INTERNAL_SERVER_ERROR, ApiErrorHelper.SYNC_ERROR);
 	}
 	
+	/**
+	 * Asserts if an sei or ca got correctly created from the server
+	 * @param response of the server containing the created elements uuid
+	 * @param wantedTypeFqn type string of the element
+	 * @param ed
+	 * @param ownerChildren list of the current children of the owner
+	 * @throws CoreException
+	 */
+	@SuppressWarnings("unchecked")
+	protected void assertIUuidGotCreated(Response response, String wantedTypeFqn, VirSatTransactionalEditingDomain ed, List<? extends IUuid> ownerChildren) throws CoreException {
+		Repository repository = ed.getResourceSet().getRepository();
+		
+		assertEquals(HttpStatus.OK_200, response.getStatus());
+		String uuid = response.readEntity(String.class);
+		
+		IUuid obj = RepositoryUtility.findObjectById(uuid, repository);
+		assertNotNull(obj);
+		
+		// Assert correctly typed
+		if (obj instanceof StructuralElementInstance) {
+			assertEquals(wantedTypeFqn, ((StructuralElementInstance) obj).getType().getFullQualifiedName());
+		} else {
+			assertEquals(wantedTypeFqn, ((ATypeInstance) obj).getType().getFullQualifiedName());
+		}
+		
+		assertThat("Structural element instance is correctly added to repository", (List<IUuid>) ownerChildren, hasItem(obj));
+	}
+
 	protected static class CountingLogListener implements ILogListener {
 		private int logCount = 0;
 		

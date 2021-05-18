@@ -12,10 +12,12 @@ package de.dlr.sc.virsat.server.resources.modelaccess;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -30,17 +32,17 @@ import de.dlr.sc.virsat.project.structure.command.CreateRemoveSeiWithFileStructu
 import de.dlr.sc.virsat.project.structure.command.RemoveFileStructureCommand;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.resources.ApiErrorHelper;
+import de.dlr.sc.virsat.server.resources.ModelAccessResource;
 import de.dlr.sc.virsat.server.resources.ModelAccessResource.RepoModelAccessResource;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 
-@Api(hidden = true)
+@Api(hidden = true, authorizations = {@Authorization(value = "basic")})
 public class StructuralElementInstanceResource {
-	
-	public static final String COULD_NOT_FIND_REQUESTED_SEI = "Could not find requested SEI";
 	
 	private RepoModelAccessResource parentResource;
 	
@@ -64,7 +66,7 @@ public class StructuralElementInstanceResource {
 					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 			@ApiResponse(
 					code = HttpStatus.BAD_REQUEST_400, 
-					message = COULD_NOT_FIND_REQUESTED_SEI),
+					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.SYNC_ERROR)})
@@ -75,7 +77,7 @@ public class StructuralElementInstanceResource {
 			StructuralElementInstance sei = RepositoryUtility.findSei(seiUuid, parentResource.getRepository());
 			
 			if (sei == null) {
-				return ApiErrorHelper.createBadRequestResponse(COULD_NOT_FIND_REQUESTED_SEI);
+				return ApiErrorHelper.createNotFoundErrorResponse();
 			}
 			
 			IBeanStructuralElementInstance beanSei = new BeanStructuralElementInstanceFactory().getInstanceFor(sei);
@@ -109,7 +111,48 @@ public class StructuralElementInstanceResource {
 			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
 		}
 	}
-		
+	
+	/** **/
+	@POST
+	@Path("/{parentUuid}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@ApiOperation(
+			consumes = "application/json",
+			value = "Create SEI",
+			httpMethod = "POST",
+			notes = "This service creates a new StructuralElementInstance and returns it")
+	@ApiResponses(value = { 
+			@ApiResponse(
+					code = HttpStatus.OK_200,
+					response = String.class,
+					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+			@ApiResponse(
+					code = HttpStatus.BAD_REQUEST_400, 
+					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.SYNC_ERROR)})
+	public Response createSei(@PathParam("parentUuid") @ApiParam(value = "parent uuid", required = true) String parentUuid,
+			@QueryParam(value = ModelAccessResource.QP_FULL_QUALIFIED_NAME)
+			@ApiParam(value = "Full qualified name of the SEI type", required = true) String fullQualifiedName) {
+		try {
+			parentResource.synchronize();
+			
+			StructuralElementInstance parentSei = RepositoryUtility.findSei(parentUuid, parentResource.getRepository());
+			
+			if (parentSei == null) {
+				return ApiErrorHelper.createNotFoundErrorResponse();
+			}
+			String newSeiUuid = ModelAccessResource.createSeiFromFqn(fullQualifiedName, parentSei, parentResource.getEd());
+			
+			parentResource.synchronize();
+			return Response.ok(newSeiUuid).build();
+		} catch (Exception e) {
+			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+		}
+	}
+	
+	
 	/** **/
 	@DELETE
 	@Path("/{seiUuid}")
@@ -125,7 +168,7 @@ public class StructuralElementInstanceResource {
 					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 			@ApiResponse(
 					code = HttpStatus.BAD_REQUEST_400,
-					message = COULD_NOT_FIND_REQUESTED_SEI),
+					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.SYNC_ERROR)})
@@ -137,7 +180,7 @@ public class StructuralElementInstanceResource {
 			// Delete Sei
 			StructuralElementInstance sei = RepositoryUtility.findSei(seiUuid, parentResource.getRepository());
 			if (sei == null) {
-				return ApiErrorHelper.createBadRequestResponse(COULD_NOT_FIND_REQUESTED_SEI);
+				return ApiErrorHelper.createNotFoundErrorResponse();
 			}
 			
 			Command deleteCommand = CreateRemoveSeiWithFileStructureCommand.create(sei, RemoveFileStructureCommand.DELETE_RESOURCE_OPERATION_FUNCTION);

@@ -122,13 +122,26 @@ public class CategoryAssignmentResourceTest extends AModelAccessResourceTest {
 	}
 	
 	@Test
-	public void testErrorResponses() {
-		assertBadRequestResponse(
-				getTestRequestBuilder(ModelAccessResource.CA + "/unknown").get(), 
-				CategoryAssignmentResource.COULD_NOT_FIND_REQUESTED_CA);
+	public void testCreateCa() throws Exception {
+		String wantedTypeFqn = tcBeanA.getFullQualifiedCategoryName();
 		
-		assertBadRequestResponse(
-				getTestRequestBuilder(ModelAccessResource.CA + "/unknown").delete(), 
-				CategoryAssignmentResource.COULD_NOT_FIND_REQUESTED_CA);
+		Response response = webTarget
+				.path(ModelAccessResource.CA)
+				.path(tSei.getUuid())
+				.queryParam(ModelAccessResource.QP_FULL_QUALIFIED_NAME, wantedTypeFqn)
+				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
+				.post(Entity.json(null));
+		
+		assertIUuidGotCreated(response, wantedTypeFqn, ed, tSei.getStructuralElementInstance().getCategoryAssignments());
+	}
+	
+	@Test
+	public void testErrorResponses() {
+		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.CA + "/unknown").get());
+		
+		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.CA + "/unknown").delete());
+		
+		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.CA + "/unknown").post(Entity.json(null)));
 	}
 }
