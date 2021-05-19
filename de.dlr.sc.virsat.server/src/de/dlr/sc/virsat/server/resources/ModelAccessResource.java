@@ -16,8 +16,10 @@ import java.util.List;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -26,10 +28,11 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jetty.http.HttpStatus;
 
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
@@ -38,8 +41,13 @@ import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementIns
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.structural.util.StructuralInstantiator;
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
+import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommand;
 import de.dlr.sc.virsat.server.auth.ServerRoles;
 import de.dlr.sc.virsat.server.dataaccess.ServerConcept;
 import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProvider;
@@ -90,8 +98,12 @@ public class ModelAccessResource {
 	public static final String CA = "ca";
 	public static final String CA_AND_PROPERTIES = "caAndProperties";
 	public static final String PROPERTY = "property";
+	public static final String FORCE_SYNC = "forceSync";
 	
 	public static final String QP_ONLY_ACTIVE_CONCEPTS = "onlyActiveConcepts";
+	public static final String QP_FULL_QUALIFIED_NAME = "fullQualifiedName";
+	public static final String QP_SYNC = "sync";
+	public static final String QP_BUILD = "build";
 
 	// List of all resource classes used in this class
 	// Used to register model specific filters
@@ -110,13 +122,21 @@ public class ModelAccessResource {
 	 * @return RepoModelAccessResource or null if the repo is not found
 	 */
 	@Path("{repoName}")
-	public RepoModelAccessResource getConcreteResource(@PathParam("repoName") @ApiParam(value = "Name of the repository", required = true) String repoName) {
+	public RepoModelAccessResource getConcreteResource(
+			@PathParam("repoName") @ApiParam(value = "Name of the repository", required = true) String repoName,
+			
+			@ApiParam(value = "Synchronize with the repository on this request", required = false)
+			@QueryParam(ModelAccessResource.QP_SYNC) @DefaultValue("true") boolean synchronize,
+			
+			@ApiParam(value = "Build when synchronizing on this request", required = false)
+			@QueryParam(ModelAccessResource.QP_BUILD) @DefaultValue("true") boolean build) {
+		
 		ServerRepository repo = RepoRegistry.getInstance().getRepository(repoName);
 		if (repo != null) {
 			provider.setServerRepository(repo);
-			return new RepoModelAccessResource(repo);
+			return new RepoModelAccessResource(repo, synchronize, build);
 		}
-
+		
 		return null;
 	}
 	
@@ -131,38 +151,90 @@ public class ModelAccessResource {
 	 *   - Get and update ca with properties by uuid
 	 *   - Get and update properties by uuid
 	 */
-	@Api(hidden = true)
+	@Api(hidden = true, authorizations = {@Authorization(value = "basic")})
 	@RolesAllowed({ServerRoles.ADMIN, ServerRoles.USER})
 	public static class RepoModelAccessResource {
 		
 		private Repository repository;
+		private VirSatTransactionalEditingDomain ed;
 		private ServerRepository serverRepository;
+		private boolean synchronize;
+		private boolean build;
 
-		public RepoModelAccessResource(ServerRepository serverRepository) {
+		public RepoModelAccessResource(ServerRepository serverRepository, boolean synchronize, boolean build) {
 			this.serverRepository = serverRepository;
+			this.synchronize = synchronize;
+			this.build = build;
 			repository = serverRepository.getResourceSet().getRepository();
+			ed = serverRepository.getEd();
 		}
 
+		/**
+		 * Synchronize depending on the synchronize and build query parameter
+		 * @throws Exception
+		 */
+		public void synchronize() throws Exception {
+			if (synchronize) {
+				serverRepository.syncRepository(build);
+			}
+		}
+
+		// Public getters for subresources
+		@ApiOperation(hidden = true, value = "")
+		public Repository getRepository() {
+			return repository;
+		}
+		
+		@ApiOperation(hidden = true, value = "")
+		public VirSatTransactionalEditingDomain getEd() {
+			return ed;
+		}
+
+		// Subresources
 		@Path(PROPERTY)
-	    public PropertyResource getPropertyResource() {
-	        return new PropertyResource(serverRepository);
-	    }
+		public PropertyResource getPropertyResource() {
+			return new PropertyResource(this);
+		}
 
 		@Path(CA)
-	    public CategoryAssignmentResource getCategoryAssignmentResource() {
-	        return new CategoryAssignmentResource(serverRepository);
-	    }
+		public CategoryAssignmentResource getCategoryAssignmentResource() {
+			return new CategoryAssignmentResource(this);
+		}
 		
 		@Path(SEI)
-	    public StructuralElementInstanceResource getStructuralElementInstanceResource() {
-	        return new StructuralElementInstanceResource(serverRepository);
-	    }
+		public StructuralElementInstanceResource getStructuralElementInstanceResource() {
+			return new StructuralElementInstanceResource(this);
+		}
 		
 		@Path(DISCIPLINE)
 		public DisciplineResource getDisciplineResource() {
 			return new DisciplineResource(serverRepository);
 		}
 
+		// Actual resources
+		/** **/
+		@GET
+		@Path(FORCE_SYNC)
+		@ApiOperation(
+				value = "Triggers synchronization with the backend",
+				httpMethod = "GET",
+				notes = "This service forces a synchronization with the backend.")
+		@ApiResponses(value = { 
+				@ApiResponse(
+						code = HttpStatus.OK_200,
+						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+				@ApiResponse(
+						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+						message = ApiErrorHelper.SYNC_ERROR)})
+		public Response forceSynchronize() {
+			try {
+				serverRepository.syncRepository(build);
+			} catch (Exception e) {
+				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			}
+			return Response.ok().build();
+		}
+		
 		/** **/
 		@GET
 		@Path(ROOT_SEIS)
@@ -180,14 +252,12 @@ public class ModelAccessResource {
 						responseContainer = "List",
 						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 				@ApiResponse(
-						code = HttpStatus.BAD_REQUEST_400, 
-						message = "Could not create bean for a root SEI"),
-				@ApiResponse(
 						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 						message = ApiErrorHelper.SYNC_ERROR)})
 		public Response getRootSeis() {
 			try {
-				serverRepository.syncRepository();
+				synchronize();
+				
 				List<StructuralElementInstance> rootSeis = repository.getRootEntities();
 				List<ABeanStructuralElementInstance> beans = new ArrayList<ABeanStructuralElementInstance>();
 				
@@ -197,10 +267,39 @@ public class ModelAccessResource {
 				
 				GenericEntity<List<ABeanStructuralElementInstance>> genericEntityList =
 						new GenericEntity<List<ABeanStructuralElementInstance>>(beans) { };
-
+				
 				return Response.ok(genericEntityList).build();
-			} catch (CoreException e) {
-				return ApiErrorHelper.createBadRequestResponse(e.getMessage());
+			} catch (Exception e) {
+				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			}
+		}
+		
+		/** **/
+		@POST
+		@Path(ROOT_SEIS)
+		@Consumes(MediaType.APPLICATION_JSON)
+		@ApiOperation(
+				consumes = "application/json",
+				value = "Create root SEI",
+				httpMethod = "POST",
+				notes = "This service creates a new root StructuralElementInstance and returns its uuid")
+		@ApiResponses(value = { 
+				@ApiResponse(
+						code = HttpStatus.OK_200,
+						response = String.class,
+						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+				@ApiResponse(
+						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+						message = ApiErrorHelper.SYNC_ERROR)})
+		public Response createRootSei(@QueryParam(value = ModelAccessResource.QP_FULL_QUALIFIED_NAME) 
+			@ApiParam(value = "Full qualified name of the SEI type", required = true) String fullQualifiedName) {
+			try {
+				serverRepository.syncRepository();
+				
+				String newSeiUuid = createSeiFromFqn(fullQualifiedName, repository, ed);
+				
+				serverRepository.syncRepository();
+				return Response.ok(newSeiUuid).build();
 			} catch (Exception e) {
 				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
 			}
@@ -226,7 +325,7 @@ public class ModelAccessResource {
 						message = ApiErrorHelper.SYNC_ERROR)})
 		public Response getConcepts(@DefaultValue("true") @QueryParam(QP_ONLY_ACTIVE_CONCEPTS) boolean onlyActiveConcepts) {
 			try {
-				serverRepository.syncRepository();
+				synchronize();
 				
 				List<ServerConcept> pojos = new ArrayList<ServerConcept>();
 				List<Concept> concepts;
@@ -331,5 +430,23 @@ public class ModelAccessResource {
 			}
 		}
 	
+	}
+	
+	/**
+	 * Create a new Sei typed by the Se identified by the fullQualifiedName
+	 * @param fullQualifiedName of the sei type (se)
+	 * @param owner of the sei (either another sei or the repository for root seis)
+	 * @param editingDomain
+	 * @return uuid of the created sei
+	 */
+	public static String createSeiFromFqn(String fullQualifiedName, EObject owner, VirSatTransactionalEditingDomain editingDomain) {
+		ActiveConceptHelper helper = new ActiveConceptHelper(editingDomain.getResourceSet().getRepository());
+		StructuralElement se = helper.getStructuralElement(fullQualifiedName);
+		StructuralElementInstance newSei = new StructuralInstantiator().generateInstance(se, null);
+		
+		Command createCommand = CreateAddSeiWithFileStructureCommand.create(editingDomain, owner, newSei);
+		editingDomain.getCommandStack().execute(createCommand);
+		
+		return newSei.getUuid().toString();
 	}
 }

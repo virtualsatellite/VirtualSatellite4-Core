@@ -9,12 +9,16 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.resources.modelaccess;
 
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Response;
+
 import org.junit.Test;
 
+import de.dlr.sc.virsat.server.resources.AModelAccessResourceTest;
 import de.dlr.sc.virsat.server.resources.ModelAccessResource;
-import de.dlr.sc.virsat.server.resources.ModelAccessResourceTest;
 
-public class StructuralElementInstanceResourceTest extends ModelAccessResourceTest {
+public class StructuralElementInstanceResourceTest extends AModelAccessResourceTest {
 
 	@Test
 	public void testSeiGet() throws Exception {
@@ -42,13 +46,26 @@ public class StructuralElementInstanceResourceTest extends ModelAccessResourceTe
 	}
 	
 	@Test
-	public void testErrorResponses() {
-		assertBadRequestResponse(
-				getTestRequestBuilder(ModelAccessResource.SEI + "/unknown").get(), 
-				StructuralElementInstanceResource.COULD_NOT_FIND_REQUESTED_SEI);
+	public void testCreateSei() throws Exception {
+		String wantedTypeFqn = tSei.getFullQualifiedSturcturalElementName();
 		
-		assertBadRequestResponse(
-				getTestRequestBuilder(ModelAccessResource.SEI + "/unknown").delete(), 
-				StructuralElementInstanceResource.COULD_NOT_FIND_REQUESTED_SEI);
+		Response response = webTarget
+				.path(ModelAccessResource.SEI)
+				.path(tSei.getUuid())
+				.queryParam(ModelAccessResource.QP_FULL_QUALIFIED_NAME, wantedTypeFqn)
+				.request()
+				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
+				.post(Entity.json(null));
+		
+		assertIUuidGotCreated(response, wantedTypeFqn, ed, tSei.getStructuralElementInstance().getChildren());
+	}
+	
+	@Test
+	public void testErrorResponses() {
+		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.SEI + "/unknown").get());
+		
+		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.SEI + "/unknown").delete());
+		
+		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.CA + "/unknown").post(Entity.json(null)));
 	}
 }
