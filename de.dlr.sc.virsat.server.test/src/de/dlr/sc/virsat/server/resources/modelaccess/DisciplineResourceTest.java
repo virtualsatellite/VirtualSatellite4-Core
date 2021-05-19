@@ -14,8 +14,6 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 
-import java.io.StringWriter;
-
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -24,16 +22,13 @@ import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.concept.types.roles.BeanDiscipline;
-import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.resources.AModelAccessResourceTest;
 import de.dlr.sc.virsat.server.resources.ModelAccessResource;
 import de.dlr.sc.virsat.server.test.VersionControlTestHelper;
 
-// TODO: add to alltests
 public class DisciplineResourceTest extends AModelAccessResourceTest {
-	private static final String NEW_NAME = "name";
 	
 	@Test
 	public void testDisciplineGet() throws Exception {
@@ -78,16 +73,10 @@ public class DisciplineResourceTest extends AModelAccessResourceTest {
 		assertThat(ed.getResourceSet().getRoleManagement().getDisciplines(), not(hasItem(discipline)));
 	}
 	
-	
-	// TODO: use new functions
 	@Test
 	public void testErrorResponses() {
-		assertBadRequestResponse(
-				getTestRequestBuilder(ModelAccessResource.DISCIPLINE + "/unknown").get(), 
-				DisciplineResource.COULD_NOT_FIND_REQUESTED_DISCIPLINE);
+		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.DISCIPLINE + "/unknown").get());
 		
-		assertBadRequestResponse(
-				getTestRequestBuilder(ModelAccessResource.DISCIPLINE + "/unknown").delete(), 
-				DisciplineResource.COULD_NOT_FIND_REQUESTED_DISCIPLINE);
+		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.DISCIPLINE + "/unknown").delete());
 	}
 }

@@ -26,13 +26,12 @@ import org.eclipse.emf.edit.command.RemoveCommand;
 import org.eclipse.jetty.http.HttpStatus;
 
 import de.dlr.sc.virsat.model.concept.types.roles.BeanDiscipline;
-import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
 import de.dlr.sc.virsat.model.dvlm.roles.RolesPackage;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
-import de.dlr.sc.virsat.server.repository.ServerRepository;
 import de.dlr.sc.virsat.server.resources.ApiErrorHelper;
+import de.dlr.sc.virsat.server.resources.ModelAccessResource.RepoModelAccessResource;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -42,19 +41,12 @@ import io.swagger.annotations.ApiResponses;
 @Api(hidden = true)
 public class DisciplineResource {
 	
-	private Repository repository;
-	private ServerRepository serverRepository;
-	// TODO: remove
-	public static final String COULD_NOT_FIND_REQUESTED_DISCIPLINE = "Could not find requested discipline";
+	private RepoModelAccessResource parentResource;
 	
-	// TODO: new constructor
-	public DisciplineResource(ServerRepository serverRepository) {
-		this.serverRepository = serverRepository;
-		repository = serverRepository.getResourceSet().getRepository();
+	public DisciplineResource(RepoModelAccessResource parentResource) {
+		this.parentResource = parentResource;
 	}
 	
-	// TODO: use new api helper
-	// TODO: use new sync
 	/** **/
 	@GET
 	@Path("/{disciplineUuid}")
@@ -71,18 +63,18 @@ public class DisciplineResource {
 					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 			@ApiResponse(
 					code = HttpStatus.BAD_REQUEST_400, 
-					message = COULD_NOT_FIND_REQUESTED_DISCIPLINE),
+					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.SYNC_ERROR)})
 	public Response getDiscipline(@PathParam("disciplineUuid") @ApiParam(value = "Uuid of the discipline", required = true) String disciplineUuid) {
 		try {
-			serverRepository.syncRepository();
+			parentResource.synchronize();
 			
-			Discipline discipline = RepositoryUtility.findDiscipline(disciplineUuid, repository);
+			Discipline discipline = RepositoryUtility.findDiscipline(disciplineUuid, parentResource.getRepository());
 			
 			if (discipline == null) {
-				return ApiErrorHelper.createBadRequestResponse(COULD_NOT_FIND_REQUESTED_DISCIPLINE);
+				return ApiErrorHelper.createNotFoundErrorResponse();
 			}
 			
 			BeanDiscipline beanDiscipline = new BeanDiscipline(discipline);
@@ -110,7 +102,7 @@ public class DisciplineResource {
 					message = ApiErrorHelper.SYNC_ERROR)})
 	public Response putDiscipline(@ApiParam(value = "Discipline to put", required = true) BeanDiscipline bean) {
 		try {
-			serverRepository.syncRepository();
+			parentResource.synchronize();
 			return Response.status(Response.Status.OK).build();
 		} catch (Exception e) {
 			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
@@ -136,14 +128,14 @@ public class DisciplineResource {
 					message = ApiErrorHelper.SYNC_ERROR)})
 	public Response createDiscipline() {
 		try {
-			serverRepository.syncRepository();
+			parentResource.synchronize();
 			
 			Discipline newDiscipline = RolesFactory.eINSTANCE.createDiscipline();
 			
-			Command command = AddCommand.create(serverRepository.getEd(), repository.getRoleManagement(), RolesPackage.ROLE_MANAGEMENT__DISCIPLINES, newDiscipline);
-			serverRepository.getEd().getCommandStack().execute(command);
+			Command command = AddCommand.create(parentResource.getEd(), parentResource.getRepository().getRoleManagement(), RolesPackage.ROLE_MANAGEMENT__DISCIPLINES, newDiscipline);
+			parentResource.getEd().getCommandStack().execute(command);
 			
-			serverRepository.syncRepository();
+			parentResource.synchronize();
 			return Response.ok(newDiscipline.getUuid().toString()).build();
 		} catch (Exception e) {
 			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
@@ -165,26 +157,26 @@ public class DisciplineResource {
 					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 			@ApiResponse(
 					code = HttpStatus.BAD_REQUEST_400,
-					message = COULD_NOT_FIND_REQUESTED_DISCIPLINE),
+					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.SYNC_ERROR)})
 	public Response deleteDiscipline(@PathParam("disciplineUuid") @ApiParam(value = "Uuid of the Discipline", required = true) String disciplineUuid) {
 		try {
 			// Sync before delete
-			serverRepository.syncRepository();
+			parentResource.synchronize();
 			
-			Discipline discipline = RepositoryUtility.findDiscipline(disciplineUuid, repository);
+			Discipline discipline = RepositoryUtility.findDiscipline(disciplineUuid, parentResource.getRepository());
 			if (discipline == null) {
-				return ApiErrorHelper.createBadRequestResponse(COULD_NOT_FIND_REQUESTED_DISCIPLINE);
+				return ApiErrorHelper.createNotFoundErrorResponse();
 			}
 			
 			// For delete we just remove it from the rolemanagement
-			Command command = RemoveCommand.create(serverRepository.getEd(), repository.getRoleManagement(), RolesPackage.ROLE_MANAGEMENT__DISCIPLINES, discipline);
-			serverRepository.getEd().getCommandStack().execute(command);
+			Command command = RemoveCommand.create(parentResource.getEd(), parentResource.getRepository().getRoleManagement(), RolesPackage.ROLE_MANAGEMENT__DISCIPLINES, discipline);
+			parentResource.getEd().getCommandStack().execute(command);
 			
 			// Sync after delete
-			serverRepository.syncRepository();
+			parentResource.synchronize();
 			return Response.ok().build();
 		} catch (Exception e) {
 			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());

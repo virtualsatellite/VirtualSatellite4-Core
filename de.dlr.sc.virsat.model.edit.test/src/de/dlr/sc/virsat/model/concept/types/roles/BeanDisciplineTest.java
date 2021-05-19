@@ -11,10 +11,6 @@ package de.dlr.sc.virsat.model.concept.types.roles;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
-
-import javax.xml.bind.JAXBException;
-
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;

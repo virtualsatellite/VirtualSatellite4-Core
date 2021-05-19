@@ -208,7 +208,7 @@ public class ModelAccessResource {
 		
 		@Path(DISCIPLINE)
 		public DisciplineResource getDisciplineResource() {
-			return new DisciplineResource(serverRepository);
+			return new DisciplineResource(this);
 		}
 
 		// Actual resources
@@ -360,7 +360,6 @@ public class ModelAccessResource {
 			}
 		}
 		
-		// TODO: use new sync
 		/** **/
 		@GET
 		@Path(DISCIPLINES)
@@ -381,7 +380,7 @@ public class ModelAccessResource {
 						message = ApiErrorHelper.SYNC_ERROR)})
 		public Response getDisciplines() {
 			try {
-				serverRepository.syncRepository();
+				synchronize();
 				
 				List<BeanDiscipline> pojos = new ArrayList<BeanDiscipline>();
 				List<Discipline> disciplines = repository.getRoleManagement().getDisciplines();
@@ -417,7 +416,7 @@ public class ModelAccessResource {
 						message = ApiErrorHelper.SYNC_ERROR)})
 		public Response getRolemanagementDiscipline() {
 			try {
-				serverRepository.syncRepository();
+				synchronize();
 				
 				Discipline discipline = repository.getRoleManagement().getAssignedDiscipline();
 				if (discipline == null) {
