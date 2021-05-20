@@ -1,0 +1,6 @@
+
+Lists of 4 third-party dependencies.
+     (Apache 2.0) Apache Commons Codec (commons-codec:commons-codec:1.9 - http://commons.apache.org/proper/commons-codec/)
+     (Apache 2.0) Apache Commons Logging (commons-logging:commons-logging:1.2 - http://commons.apache.org/proper/commons-logging/)
+     (Apache 2.0) Apache HttpClient (org.apache.httpcomponents:httpclient:4.5.2 - http://hc.apache.org/httpcomponents-client)
+     (Apache 2.0) Apache HttpCore (org.apache.httpcomponents:httpcore:4.4.4 - http://hc.apache.org/httpcomponents-core-ga)
