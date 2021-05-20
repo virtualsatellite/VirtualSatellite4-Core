@@ -15,20 +15,22 @@ Require-Bundle: org.eclipse.ui,
  de.dlr.sc.virsat.external.lib.lyo,
  org.eclipse.rmf.reqif10,
  org.eclipse.rmf.reqif10.xhtml,
- org.eclipse.rmf.reqif10.common
+ org.eclipse.rmf.reqif10.common,
+ de.dlr.sc.virsat.external.lib.jersey,
+ de.dlr.sc.virsat.external.lib.jersey.apache
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Export-Package: de.dlr.sc.virsat.model.extension.requirements,
  de.dlr.sc.virsat.model.extension.requirements.command,
  de.dlr.sc.virsat.model.extension.requirements.csv,
+ de.dlr.sc.virsat.model.extension.requirements.doors.client,
+ de.dlr.sc.virsat.model.extension.requirements.doors.client.util,
+ de.dlr.sc.virsat.model.extension.requirements.migrator,
  de.dlr.sc.virsat.model.extension.requirements.model,
-  de.dlr.sc.virsat.model.extension.requirements.reqif,
-  de.dlr.sc.virsat.model.extension.requirements.util,
-  de.dlr.sc.virsat.model.extension.requirements.migrator,
+ de.dlr.sc.virsat.model.extension.requirements.reqif,
+ de.dlr.sc.virsat.model.extension.requirements.util,
  de.dlr.sc.virsat.model.extension.requirements.validator,
  de.dlr.sc.virsat.model.extension.requirements.verification.build
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.requirements
 Bundle-Activator: de.dlr.sc.virsat.model.extension.requirements.Activator
-Import-Package: org.glassfish.jersey.apache.connector,
- org.glassfish.jersey.client
