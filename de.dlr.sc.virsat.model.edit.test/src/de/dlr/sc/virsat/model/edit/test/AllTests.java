@@ -57,6 +57,7 @@ import de.dlr.sc.virsat.model.dvlm.json.BeanDisciplineAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.ComposedBeanCategoryAssigmentAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.BeanPropertyTypeAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.DoubleAdapterTest;
+import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapterNoRoleManagementTest;
 import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtilityTest;
 import de.dlr.sc.virsat.model.dvlm.json.UriAdapterTest;
@@ -148,7 +149,8 @@ import junit.framework.JUnit4TestAdapter;
 				ABeanStructuralElementInstanceAdapterTest.class,
 				BeanPropertyTypeAdapterTest.class,
 				BeanDisciplineTest.class,
-				BeanDisciplineAdapterTest.class
+				BeanDisciplineAdapterTest.class,
+				IUuidAdapterNoRoleManagementTest.class
 				})
 
 /**

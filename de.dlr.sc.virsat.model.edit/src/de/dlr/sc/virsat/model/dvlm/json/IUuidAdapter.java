@@ -18,6 +18,8 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import de.dlr.sc.virsat.model.dvlm.general.IUuid;
+import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
+import de.dlr.sc.virsat.model.dvlm.roles.RightsHelper;
 
 /**
  * Adapter for a IUuid from/to a UUID
@@ -25,14 +27,18 @@ import de.dlr.sc.virsat.model.dvlm.general.IUuid;
 public class IUuidAdapter extends XmlAdapter<String, IUuid> {
 
 	private ResourceSet resourceSet;
+	private IUserContext userContext;
 	private Map<String, IUuid> objectMap = new HashMap<String, IUuid>();
 	
-	public IUuidAdapter() {
-		
-	}
+	public IUuidAdapter() { }
 	
 	public IUuidAdapter(ResourceSet resourceSet) {
 		this.resourceSet = resourceSet;
+	}
+	
+	public IUuidAdapter(ResourceSet resourceSet, IUserContext userContext) {
+		this.resourceSet = resourceSet;
+		this.userContext = userContext;
 	}
 	
 	@Override
@@ -64,6 +70,12 @@ public class IUuidAdapter extends XmlAdapter<String, IUuid> {
 		if (iuuid == null) {
 			throw new IllegalArgumentException("IUuid with uuid " + uuid + " not found");
 		}
+		
+		// Check rights
+		if (!(userContext == null) && !RightsHelper.hasWritePermission(iuuid, userContext)) {
+			throw new IllegalArgumentException("User " + userContext.getUserName() + " has no write permission for " + uuid);
+		}
+		
 		return iuuid;
 	}
 	
