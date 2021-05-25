@@ -14,8 +14,11 @@ import javax.ws.rs.core.Response;
 public class ApiErrorHelper {
 
 	public static final String SUCCESSFUL_OPERATION = "Successful operation";
+	// TODO: there can be other causes, so rename
 	public static final String SYNC_ERROR = "Synchronization error";
 	public static final String COULD_NOT_FIND_REQUESTED_ELEMENT = "Could not find requested element";
+	public static final String NO_RIGHTS = "User has no rights to modify this resource";
+	public static final String COMMAND_NOT_EXECUTEABLE = "Command was not executeable";
 	
 	private ApiErrorHelper() { };
 	
@@ -25,6 +28,10 @@ public class ApiErrorHelper {
 
 	public static Response createNotFoundErrorResponse() {
 		return createBadRequestResponse(COULD_NOT_FIND_REQUESTED_ELEMENT);
+	}
+
+	public static Response createNoRightsErrorResponse() {
+		return createBadRequestResponse(NO_RIGHTS);
 	}
 
 	public static Response createSyncErrorResponse(String msg) {

@@ -46,6 +46,7 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
 
 @Api(hidden = true, authorizations = {@Authorization(value = "basic")})
+// TODO: rolemanagement check
 public class CategoryAssignmentResource {
 	
 	private RepoModelAccessResource parentResource;

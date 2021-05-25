@@ -9,12 +9,18 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.resources.modelaccess;
 
+import static org.junit.Assert.assertEquals;
+
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 
+import org.eclipse.emf.transaction.RecordingCommand;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
+import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.resources.AModelAccessResourceTest;
 import de.dlr.sc.virsat.server.resources.ModelAccessResource;
 
@@ -36,6 +42,18 @@ public class StructuralElementInstanceResourceTest extends AModelAccessResourceT
 	}
 	
 	@Test
+	public void testSeiDeleteRoleManagement() throws Exception {
+		// Assert check sei discpline
+		setSeiDiscipline(tSei.getStructuralElementInstance(), null);
+		assertNoRightsResponse(getTestRequestBuilder(ModelAccessResource.SEI + "/" + tSei.getUuid()).delete());
+		
+		// Assert check sei children discpline
+		setSeiDiscipline(tSei.getStructuralElementInstance(), discipline);
+		setSeiDiscipline(tSeiChild.getStructuralElementInstance(), null);
+		assertNoRightsResponse(getTestRequestBuilder(ModelAccessResource.SEI + "/" + tSei.getUuid()).delete());
+	}
+	
+	@Test
 	public void testChildSeiGet() throws Exception {
 		testGetSei(tSeiChild);
 	}
@@ -49,15 +67,20 @@ public class StructuralElementInstanceResourceTest extends AModelAccessResourceT
 	public void testCreateSei() throws Exception {
 		String wantedTypeFqn = tSei.getFullQualifiedSturcturalElementName();
 		
-		Response response = webTarget
-				.path(ModelAccessResource.SEI)
-				.path(tSei.getUuid())
-				.queryParam(ModelAccessResource.QP_FULL_QUALIFIED_NAME, wantedTypeFqn)
-				.request()
-				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
-				.post(Entity.json(null));
+		Response response = getTestRequestBuilderWithQueryParam(ModelAccessResource.SEI + "/" + tSei.getUuid(), 
+				ModelAccessResource.QP_FULL_QUALIFIED_NAME, wantedTypeFqn).post(Entity.json(null));
 		
-		assertIUuidGotCreated(response, wantedTypeFqn, ed, tSei.getStructuralElementInstance().getChildren());
+		String entity = assertIUuidGotCreated(response, wantedTypeFqn, ed, tSei.getStructuralElementInstance().getChildren());
+		
+		StructuralElementInstance sei = RepositoryUtility.findSei(entity, ed.getResourceSet().getRepository());
+		assertEquals("Inherited parent discipline", tSei.getStructuralElementInstance().getAssignedDiscipline(), sei.getAssignedDiscipline());
+		
+		// Assert implicit parent discipline rights check
+		setSeiDiscipline(tSei.getStructuralElementInstance(), null);
+		
+		response = getTestRequestBuilderWithQueryParam(ModelAccessResource.SEI + "/" + tSei.getUuid(), 
+				ModelAccessResource.QP_FULL_QUALIFIED_NAME, wantedTypeFqn).post(Entity.json(null));
+		assertNoRightsResponse(response);
 	}
 	
 	@Test

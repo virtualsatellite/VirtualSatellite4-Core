@@ -27,6 +27,7 @@ import org.eclipse.jetty.http.HttpStatus;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
 import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.roles.UserHasNoRightsException;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.project.structure.command.CreateRemoveSeiWithFileStructureCommand;
 import de.dlr.sc.virsat.project.structure.command.RemoveFileStructureCommand;
@@ -130,6 +131,9 @@ public class StructuralElementInstanceResource {
 					code = HttpStatus.BAD_REQUEST_400, 
 					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
 			@ApiResponse(
+					code = HttpStatus.BAD_REQUEST_400,
+					message = ApiErrorHelper.NO_RIGHTS),
+			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.SYNC_ERROR)})
 	public Response createSei(@PathParam("parentUuid") @ApiParam(value = "parent uuid", required = true) String parentUuid,
@@ -143,16 +147,22 @@ public class StructuralElementInstanceResource {
 			if (parentSei == null) {
 				return ApiErrorHelper.createNotFoundErrorResponse();
 			}
-			String newSeiUuid = ModelAccessResource.createSeiFromFqn(fullQualifiedName, parentSei, parentResource.getEd());
+			String newSeiUuid = ModelAccessResource.createSeiFromFqn(fullQualifiedName, parentSei, parentResource.getEd(), parentResource.getUser());
 			
 			parentResource.synchronize();
 			return Response.ok(newSeiUuid).build();
+		} catch (RuntimeException e) {
+			if (e.getCause() instanceof UserHasNoRightsException) {
+				return ApiErrorHelper.createNoRightsErrorResponse();
+			}
+			// use default handling
+			throw e;
 		} catch (Exception e) {
 			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
 		}
 	}
 	
-	
+	// TODO: check swagger doc
 	/** **/
 	@DELETE
 	@Path("/{seiUuid}")
@@ -170,6 +180,9 @@ public class StructuralElementInstanceResource {
 					code = HttpStatus.BAD_REQUEST_400,
 					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
 			@ApiResponse(
+					code = HttpStatus.BAD_REQUEST_400,
+					message = ApiErrorHelper.NO_RIGHTS),
+			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.SYNC_ERROR)})
 	public Response deleteSei(@PathParam("seiUuid") @ApiParam(value = "Uuid of the SEI", required = true)  String seiUuid) {
@@ -184,11 +197,19 @@ public class StructuralElementInstanceResource {
 			}
 			
 			Command deleteCommand = CreateRemoveSeiWithFileStructureCommand.create(sei, RemoveFileStructureCommand.DELETE_RESOURCE_OPERATION_FUNCTION);
-			parentResource.getEd().getCommandStack().execute(deleteCommand);
+			// TODO: function ?
+			// TODO: move into error helper?
+			ModelAccessResource.executeCommandIffCanExecute(deleteCommand, parentResource.getEd(), parentResource.getUser());
 			
 			// Sync after delete
 			parentResource.synchronize();
 			return Response.ok().build();
+		} catch (RuntimeException e) {
+			if (e.getCause() instanceof UserHasNoRightsException) {
+				return ApiErrorHelper.createNoRightsErrorResponse();
+			}
+			// use default handling
+			throw e;
 		} catch (Exception e) {
 			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
 		}
