@@ -205,11 +205,11 @@ public class ModelAccessResourceTest extends AModelAccessResourceTest {
 		assertEquals("Inherited parent discipline", ed.getResourceSet().getRepository().getAssignedDiscipline(), sei.getAssignedDiscipline());
 		
 		// Assert implicit parent discipline rights check
-		setSeiDiscipline(ed.getResourceSet().getRepository(), null);
+		setDiscipline(ed.getResourceSet().getRepository(), anotherDiscipline);
 		
 		response = getTestRequestBuilderWithQueryParam(ModelAccessResource.ROOT_SEIS, 
 				ModelAccessResource.QP_FULL_QUALIFIED_NAME, wantedTypeFqn).post(Entity.json(null));
-		assertNoRightsResponse(response);
+		assertCommandNotExecuteableErrorResponse(response);
 	}
 	
 	@Test

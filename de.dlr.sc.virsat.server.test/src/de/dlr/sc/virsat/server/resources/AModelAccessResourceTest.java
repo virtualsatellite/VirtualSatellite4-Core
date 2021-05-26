@@ -106,10 +106,9 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 	protected BeanPropertyReference<TestCategoryAllProperty> beanReferenceCa;
 	protected VirSatProjectCommons projectCommons;
 	protected Discipline discipline;
+	protected Discipline anotherDiscipline;
 
 	protected static final String TEST_STRING = "testString";
-	// TODO: constant in super class?
-	protected static final String USER_NAME = "user2";
 	protected static final String DISCIPLINE_NAME = "testDiscipline";
 	
 	@BeforeClass
@@ -188,7 +187,10 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 		
 		discipline = RolesFactory.eINSTANCE.createDiscipline();
 		discipline.setName(DISCIPLINE_NAME);
-		discipline.setUser(USER_NAME);
+		discipline.setUser(USER_WITH_REPO_NAME);
+		
+		anotherDiscipline = RolesFactory.eINSTANCE.createDiscipline();
+		anotherDiscipline.setUser("another user");
 		
 		RecordingCommand recordingCommand = new RecordingCommand(ed) {
 			@Override
@@ -453,12 +455,12 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 		assertBadRequestResponse(response, ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT);
 	}
 	
-	protected void assertNoRightsResponse(Response response) {
-		assertBadRequestResponse(response, ApiErrorHelper.NO_RIGHTS);
+	protected void assertInternalErrorResponse(Response response, String expectedMessage) {
+		assertErrorResponse(response, Status.INTERNAL_SERVER_ERROR, ApiErrorHelper.INTERNAL_SERVER_ERROR + ": " + expectedMessage);
 	}
 	
-	protected void assertSyncErrorResponse(Response response) {
-		assertErrorResponse(response, Status.INTERNAL_SERVER_ERROR, ApiErrorHelper.SYNC_ERROR);
+	protected void assertCommandNotExecuteableErrorResponse(Response response) {
+		assertInternalErrorResponse(response, ApiErrorHelper.COMMAND_NOT_EXECUTEABLE);
 	}
 	
 	/**
@@ -513,7 +515,7 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 	 * @param element
 	 * @param discipline
 	 */
-	protected void setSeiDiscipline(IAssignedDiscipline element, Discipline discipline) {
+	protected void setDiscipline(IAssignedDiscipline element, Discipline discipline) {
 		RecordingCommand recordingCommand = new RecordingCommand(ed) {
 			@Override
 			protected void doExecute() {

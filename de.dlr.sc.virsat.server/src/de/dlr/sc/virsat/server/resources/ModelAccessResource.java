@@ -47,13 +47,13 @@ import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.general.IAssignedDiscipline;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
-import de.dlr.sc.virsat.model.dvlm.roles.UserHasNoRightsException;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.util.StructuralInstantiator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommand;
 import de.dlr.sc.virsat.server.auth.ServerRoles;
+import de.dlr.sc.virsat.server.auth.ServerUserContext;
 import de.dlr.sc.virsat.server.dataaccess.ServerConcept;
 import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProvider;
 import de.dlr.sc.virsat.server.jetty.VirSatJettyServer;
@@ -143,17 +143,7 @@ public class ModelAccessResource {
 			provider.setServerRepository(repo);
 			
 			// Override current user with a custom user context
-			IUserContext userContext = new IUserContext() {
-				@Override
-				public boolean isSuperUser() {
-					return sc.isUserInRole(ServerRoles.ADMIN);
-				}
-				
-				@Override
-				public String getUserName() {
-					return sc.getUserPrincipal().getName();
-				}
-			};
+			IUserContext userContext = new ServerUserContext(sc);
 			provider.setContext(userContext);
 			
 			return new RepoModelAccessResource(repo, synchronize, build, userContext);
@@ -261,18 +251,16 @@ public class ModelAccessResource {
 						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 				@ApiResponse(
 						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = ApiErrorHelper.SYNC_ERROR)})
+						message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 		public Response forceSynchronize() {
 			try {
 				serverRepository.syncRepository(build);
 			} catch (Exception e) {
-				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+				return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 			}
 			return Response.ok().build();
 		}
 		
-		// TODO: rolemanagement check
-		// TODO: swagger doc
 		/** **/
 		@GET
 		@Path(ROOT_SEIS)
@@ -291,7 +279,7 @@ public class ModelAccessResource {
 						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 				@ApiResponse(
 						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = ApiErrorHelper.SYNC_ERROR)})
+						message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 		public Response getRootSeis() {
 			try {
 				synchronize();
@@ -308,7 +296,7 @@ public class ModelAccessResource {
 				
 				return Response.ok(genericEntityList).build();
 			} catch (Exception e) {
-				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+				return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 			}
 		}
 		
@@ -327,11 +315,8 @@ public class ModelAccessResource {
 						response = String.class,
 						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 				@ApiResponse(
-						code = HttpStatus.BAD_REQUEST_400,
-						message = ApiErrorHelper.NO_RIGHTS),
-				@ApiResponse(
 						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = ApiErrorHelper.SYNC_ERROR)})
+						message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 		public Response createRootSei(@QueryParam(value = ModelAccessResource.QP_FULL_QUALIFIED_NAME) 
 			@ApiParam(value = "Full qualified name of the SEI type", required = true) String fullQualifiedName) {
 			try {
@@ -341,14 +326,8 @@ public class ModelAccessResource {
 				
 				serverRepository.syncRepository();
 				return Response.ok(newSeiUuid).build();
-			} catch (RuntimeException e) {
-				if (e.getCause() instanceof UserHasNoRightsException) {
-					return ApiErrorHelper.createNoRightsErrorResponse();
-				}
-				// use default handling
-				throw e;
 			} catch (Exception e) {
-				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+				return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 			}
 		}
 
@@ -369,7 +348,7 @@ public class ModelAccessResource {
 						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 				@ApiResponse(
 						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = ApiErrorHelper.SYNC_ERROR)})
+						message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 		public Response getConcepts(@DefaultValue("true") @QueryParam(QP_ONLY_ACTIVE_CONCEPTS) boolean onlyActiveConcepts) {
 			try {
 				synchronize();
@@ -403,7 +382,7 @@ public class ModelAccessResource {
 				
 				return Response.ok(entity).build();
 			} catch (Exception e) {
-				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+				return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 			}
 		}
 		
@@ -424,7 +403,7 @@ public class ModelAccessResource {
 						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 				@ApiResponse(
 						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = ApiErrorHelper.SYNC_ERROR)})
+						message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 		public Response getDisciplines() {
 			try {
 				synchronize();
@@ -440,7 +419,7 @@ public class ModelAccessResource {
 				
 				return Response.ok(entity).build();
 			} catch (Exception e) {
-				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+				return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 			}
 		}
 		
@@ -460,7 +439,7 @@ public class ModelAccessResource {
 						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 				@ApiResponse(
 						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = ApiErrorHelper.SYNC_ERROR)})
+						message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 		public Response getRolemanagementDiscipline() {
 			try {
 				synchronize();
@@ -472,7 +451,7 @@ public class ModelAccessResource {
 				
 				return Response.ok(new BeanDiscipline(discipline)).build();
 			} catch (Exception e) {
-				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+				return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 			}
 		}
 		
@@ -492,7 +471,7 @@ public class ModelAccessResource {
 						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 				@ApiResponse(
 						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = ApiErrorHelper.SYNC_ERROR)})
+						message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 		public Response getRepositpryDiscipline() {
 			try {
 				synchronize();
@@ -504,7 +483,7 @@ public class ModelAccessResource {
 				
 				return Response.ok(new BeanDiscipline(discipline)).build();
 			} catch (Exception e) {
-				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+				return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 			}
 		}
 	
@@ -529,16 +508,8 @@ public class ModelAccessResource {
 		}
 		
 		Command createCommand = CreateAddSeiWithFileStructureCommand.create(editingDomain, owner, newSei);
-		executeCommandIffCanExecute(createCommand, editingDomain, iUserContext);
+		ApiErrorHelper.executeCommandIffCanExecute(createCommand, editingDomain, iUserContext);
 		
 		return newSei.getUuid().toString();
-	}
-	
-	public static void executeCommandIffCanExecute(Command command, VirSatTransactionalEditingDomain ed, IUserContext iUserContext) {
-		if (command.canExecute()) {
-			ed.getVirSatCommandStack().executeNoUndo(command, iUserContext, false);
-		} else {
-			throw new RuntimeException(ApiErrorHelper.COMMAND_NOT_EXECUTEABLE);
-		}
 	}
 }
