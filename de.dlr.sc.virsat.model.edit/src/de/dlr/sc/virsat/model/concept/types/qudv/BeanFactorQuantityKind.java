@@ -12,12 +12,12 @@ package de.dlr.sc.virsat.model.concept.types.qudv;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanQuantityKindFactory;
 import de.dlr.sc.virsat.model.dvlm.qudv.QuantityKindFactor;
 
-public class BeanQuantityKindFactor {
+public class BeanFactorQuantityKind {
 	private QuantityKindFactor factor;
 	
-	public BeanQuantityKindFactor() { }
+	public BeanFactorQuantityKind() { }
 	
-	public BeanQuantityKindFactor(QuantityKindFactor factor) {
+	public BeanFactorQuantityKind(QuantityKindFactor factor) {
 		this.factor = factor;
 	}
 	

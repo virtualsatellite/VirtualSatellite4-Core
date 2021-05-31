@@ -15,27 +15,37 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
+import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
 
-public class ABeanUnit<U_TYPE extends AUnit> implements IBeanUnit {
+public class ABeanUnit<U_TYPE extends AUnit> implements IBeanUnit<U_TYPE> {
 
 	protected U_TYPE unit;
 	
 	public ABeanUnit() { }
 	
+	public ABeanUnit(U_TYPE unit) {
+		this.unit = unit;
+	}
+	
+	@Override
+	public AUnit getAUnit() {
+		return unit;
+	}
+
 	@SuppressWarnings("unchecked")
-	public ABeanUnit(AUnit unit) {
+	@Override
+	public void setAUnit(AUnit unit) {
 		this.unit = (U_TYPE) unit;
 	}
 	
 	@Override
-	public AUnit getUnit() {
+	public U_TYPE getUnit() {
 		return unit;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public void setUnit(AUnit unit) {
-		this.unit = (U_TYPE) unit;
+	public void setUnit(U_TYPE unit) {
+		this.unit = unit;
 	}
 	
 	@Override
@@ -65,7 +75,12 @@ public class ABeanUnit<U_TYPE extends AUnit> implements IBeanUnit {
 
 	@Override
 	public void setSymbol(String symbol) {
-		unit.getSymbol();
+		unit.setSymbol(symbol);
+	}
+
+	@Override
+	public Command setSymbol(EditingDomain ed, String symbol) {
+		return SetCommand.create(ed, unit, QudvPackage.Literals.AUNIT__SYMBOL, symbol);
 	}
 
 }

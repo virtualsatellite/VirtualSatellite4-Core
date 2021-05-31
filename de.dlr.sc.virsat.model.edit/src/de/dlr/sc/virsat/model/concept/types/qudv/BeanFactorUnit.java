@@ -10,15 +10,16 @@
 package de.dlr.sc.virsat.model.concept.types.qudv;
 
 import de.dlr.sc.virsat.model.concept.types.factory.BeanUnitFactory;
+import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.UnitFactor;
 
-public class BeanUnitFactor {
+public class BeanFactorUnit {
 
 	private UnitFactor factor;
 	
-	public BeanUnitFactor() { }
+	public BeanFactorUnit() { }
 	
-	public BeanUnitFactor(UnitFactor factor) {
+	public BeanFactorUnit(UnitFactor factor) {
 		this.factor = factor;
 	}
 	
@@ -38,11 +39,11 @@ public class BeanUnitFactor {
 		factor.setExponent(exponent);
 	}
 	
-	IBeanUnit getUnit() {
+	IBeanUnit<? extends AUnit> getUnit() {
 		return new BeanUnitFactory().getInstanceFor(factor.getUnit());
 	}
 	
-	void setUnit(IBeanUnit beanUnit) {
+	void setUnit(IBeanUnit<? extends AUnit> beanUnit) {
 		factor.setUnit(beanUnit.getUnit());
 	}
 }

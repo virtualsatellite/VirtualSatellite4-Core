@@ -27,35 +27,35 @@ public class BeanUnitFactory {
 
 	private BeanUnitFactorySwitch bufs = new BeanUnitFactorySwitch();
 	
-	public IBeanUnit getInstanceFor(AUnit unit) {
-		IBeanUnit beanUnit = bufs.doSwitch(unit);
-		beanUnit.setUnit(unit);
+	public IBeanUnit<? extends AUnit> getInstanceFor(AUnit unit) {
+		IBeanUnit<? extends AUnit> beanUnit = bufs.doSwitch(unit);
+		beanUnit.setAUnit(unit);
 		return beanUnit;
 	}
 	
-	private static class BeanUnitFactorySwitch extends QudvSwitch<IBeanUnit> {
+	private static class BeanUnitFactorySwitch extends QudvSwitch<IBeanUnit<? extends AUnit>> {
 		@Override
-		public IBeanUnit caseAffineConversionUnit(AffineConversionUnit object) {
+		public IBeanUnit<? extends AUnit> caseAffineConversionUnit(AffineConversionUnit object) {
 			return new BeanUnitAffineConversion();
 		}
 		
 		@Override
-		public IBeanUnit caseDerivedUnit(DerivedUnit object) {
+		public IBeanUnit<? extends AUnit> caseDerivedUnit(DerivedUnit object) {
 			return new BeanUnitDerived();
 		}
 		
 		@Override
-		public IBeanUnit caseLinearConversionUnit(LinearConversionUnit object) {
+		public IBeanUnit<? extends AUnit> caseLinearConversionUnit(LinearConversionUnit object) {
 			return new BeanUnitLinearConversion();
 		}
 		
 		@Override
-		public IBeanUnit casePrefixedUnit(PrefixedUnit object) {
+		public IBeanUnit<? extends AUnit> casePrefixedUnit(PrefixedUnit object) {
 			return new BeanUnitPrefixed();
 		}
 		
 		@Override
-		public IBeanUnit caseSimpleUnit(SimpleUnit object) {
+		public IBeanUnit<? extends AUnit> caseSimpleUnit(SimpleUnit object) {
 			return new BeanUnitSimple();
 		}
 	}

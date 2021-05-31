@@ -21,11 +21,11 @@ public class BeanQuantityKindDerived extends ABeanQuantityKind<DerivedQuantityKi
 	 * Get all factors
 	 * @return List of factors
 	 */
-	List<BeanQuantityKindFactor> getFactors() {
-		List<BeanQuantityKindFactor> factors = new ArrayList<BeanQuantityKindFactor>();
+	List<BeanFactorQuantityKind> getFactors() {
+		List<BeanFactorQuantityKind> factors = new ArrayList<BeanFactorQuantityKind>();
 		
 		for (QuantityKindFactor factor : quantityKind.getFactor()) {
-			factors.add(new BeanQuantityKindFactor(factor));
+			factors.add(new BeanFactorQuantityKind(factor));
 		}
 		
 		return factors;
@@ -35,11 +35,11 @@ public class BeanQuantityKindDerived extends ABeanQuantityKind<DerivedQuantityKi
 	 * Set all factors
 	 * @param newBeanFactors List of new factors
 	 */
-	void setFactors(List<BeanQuantityKindFactor> newBeanFactors) {
+	void setFactors(List<BeanFactorQuantityKind> newBeanFactors) {
 		List<QuantityKindFactor> currentFactors = quantityKind.getFactor();
 
 		List<QuantityKindFactor> newFactors = new ArrayList<QuantityKindFactor>();
-		for (BeanQuantityKindFactor beanFactor : newBeanFactors) {
+		for (BeanFactorQuantityKind beanFactor : newBeanFactors) {
 			newFactors.add(beanFactor.getFactor());
 		}
 		
@@ -47,11 +47,11 @@ public class BeanQuantityKindDerived extends ABeanQuantityKind<DerivedQuantityKi
 		currentFactors.addAll(newFactors);
 	}
 	
-	void addFactor(BeanQuantityKindFactor beanFactor) {
+	void addFactor(BeanFactorQuantityKind beanFactor) {
 		quantityKind.getFactor().add(beanFactor.getFactor());
 	}
 	
-	void removeFactor(BeanQuantityKindFactor beanFactor) {
+	void removeFactor(BeanFactorQuantityKind beanFactor) {
 		quantityKind.getFactor().remove(beanFactor.getFactor());
 	}
 }

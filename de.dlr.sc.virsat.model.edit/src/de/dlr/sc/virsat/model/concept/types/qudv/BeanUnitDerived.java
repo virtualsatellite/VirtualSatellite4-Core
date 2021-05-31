@@ -13,7 +13,13 @@ package de.dlr.sc.virsat.model.concept.types.qudv;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.edit.command.AddCommand;
+import org.eclipse.emf.edit.command.RemoveCommand;
+import org.eclipse.emf.edit.domain.EditingDomain;
+
 import de.dlr.sc.virsat.model.dvlm.qudv.DerivedUnit;
+import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
 import de.dlr.sc.virsat.model.dvlm.qudv.UnitFactor;
 
 public class BeanUnitDerived extends ABeanUnit<DerivedUnit> {
@@ -22,11 +28,11 @@ public class BeanUnitDerived extends ABeanUnit<DerivedUnit> {
 	 * Get all factors
 	 * @return List of factors
 	 */
-	List<BeanUnitFactor> getFactors() {
-		List<BeanUnitFactor> factors = new ArrayList<BeanUnitFactor>();
+	List<BeanFactorUnit> getFactorBeans() {
+		List<BeanFactorUnit> factors = new ArrayList<BeanFactorUnit>();
 		
 		for (UnitFactor factor : unit.getFactor()) {
-			factors.add(new BeanUnitFactor(factor));
+			factors.add(new BeanFactorUnit(factor));
 		}
 		
 		return factors;
@@ -36,11 +42,11 @@ public class BeanUnitDerived extends ABeanUnit<DerivedUnit> {
 	 * Set all factors
 	 * @param newBeanFactors List of new factors
 	 */
-	void setFactors(List<BeanUnitFactor> newBeanFactors) {
+	void setFactors(List<BeanFactorUnit> newBeanFactors) {
 		List<UnitFactor> currentFactors = unit.getFactor();
 
 		List<UnitFactor> newFactors = new ArrayList<UnitFactor>();
-		for (BeanUnitFactor beanFactor : newBeanFactors) {
+		for (BeanFactorUnit beanFactor : newBeanFactors) {
 			newFactors.add(beanFactor.getFactor());
 		}
 		
@@ -48,11 +54,19 @@ public class BeanUnitDerived extends ABeanUnit<DerivedUnit> {
 		currentFactors.addAll(newFactors);
 	}
 	
-	void addFactor(BeanUnitFactor beanFactor) {
+	void addFactor(BeanFactorUnit beanFactor) {
 		unit.getFactor().add(beanFactor.getFactor());
 	}
 	
-	void removeFactor(BeanUnitFactor beanFactor) {
+	void removeFactor(BeanFactorUnit beanFactor) {
 		unit.getFactor().remove(beanFactor.getFactor());
+	}
+	
+	Command addFactor(EditingDomain ed, BeanFactorUnit beanFactor) {
+		return AddCommand.create(ed, unit, QudvPackage.Literals.DERIVED_UNIT__FACTOR, beanFactor.getFactor());
+	}
+	
+	Command removeFactor(EditingDomain ed, BeanFactorUnit beanFactor) {
+		return RemoveCommand.create(ed, unit, QudvPackage.Literals.DERIVED_UNIT__FACTOR, beanFactor.getFactor());
 	}
 }

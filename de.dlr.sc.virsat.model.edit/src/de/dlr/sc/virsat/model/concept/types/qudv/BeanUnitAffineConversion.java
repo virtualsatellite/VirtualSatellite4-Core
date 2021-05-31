@@ -9,7 +9,12 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.qudv;
 
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.edit.command.SetCommand;
+import org.eclipse.emf.edit.domain.EditingDomain;
+
 import de.dlr.sc.virsat.model.dvlm.qudv.AffineConversionUnit;
+import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
 
 public class BeanUnitAffineConversion extends ABeanConversionBasedUnit<AffineConversionUnit> {
 
@@ -21,11 +26,19 @@ public class BeanUnitAffineConversion extends ABeanConversionBasedUnit<AffineCon
 		unit.setFactor(factor);
 	}
 	
+	public Command setFactor(EditingDomain ed, Double factor) {
+		return SetCommand.create(ed, unit, QudvPackage.Literals.AFFINE_CONVERSION_UNIT__FACTOR, factor);
+	}
+	
 	Double getOffset() {
 		return unit.getOffset();
 	}
 	
 	void setOffset(Double offset) {
 		unit.setOffset(offset);
+	}
+	
+	public Command setOffset(EditingDomain ed, Double offset) {
+		return SetCommand.create(ed, unit, QudvPackage.Literals.AFFINE_CONVERSION_UNIT__OFFSET, offset);
 	}
 }

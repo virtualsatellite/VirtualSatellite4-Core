@@ -9,23 +9,38 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.qudv;
 
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.edit.domain.EditingDomain;
+
 import de.dlr.sc.virsat.model.concept.types.IBeanName;
 import de.dlr.sc.virsat.model.concept.types.IBeanUuid;
 import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
 
-public interface IBeanUnit extends IBeanUuid, IBeanName {
+public interface IBeanUnit<U_TYPE extends AUnit> extends IBeanUuid, IBeanName {
 
 	/**
-	 * Get the unit wrapped in this bean
-	 * @return unit
+	 * Get the concrete unit wrapped in this bean
+	 * @return U_TYPE
 	 */
-	AUnit getUnit();
+	U_TYPE getUnit();
+	
+	/**
+	 * Set the concrete unit wrapped in this bean
+	 * @param U_TYPE
+	 */
+	void setUnit(U_TYPE unit);
+	
+	/**
+	 * Get the unit wrapped in this bean
+	 * @return AUnit
+	 */
+	AUnit getAUnit();
 	
 	/**
 	 * Set the unit wrapped in this bean
-	 * @param unit
+	 * @param AUnit
 	 */
-	void setUnit(AUnit unit);
+	void setAUnit(AUnit unit);
 	
 	/**
 	 * Get the symbol of the wrapped unit
@@ -38,4 +53,12 @@ public interface IBeanUnit extends IBeanUuid, IBeanName {
 	 * @param symbol
 	 */
 	void setSymbol(String symbol);
+	
+	/**
+	 * Set the symbol of the wrapped unit
+	 * @param ed The EditingDomain in which the command should act.
+	 * @param symbol
+	 * @return EMF command to set the symbol
+	 */
+	Command setSymbol(EditingDomain ed, String symbol);
 }
