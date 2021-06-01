@@ -18,6 +18,14 @@ import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
 
 public class BeanUnitAffineConversion extends ABeanConversionBasedUnit<AffineConversionUnit> {
 
+	public BeanUnitAffineConversion() { 
+		super();
+	}
+	
+	public BeanUnitAffineConversion(AffineConversionUnit unit) {
+		super(unit);
+	}
+	
 	Double getFactor() {
 		return unit.getFactor();
 	}

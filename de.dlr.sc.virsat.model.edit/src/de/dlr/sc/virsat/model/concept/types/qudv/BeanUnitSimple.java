@@ -13,4 +13,12 @@ import de.dlr.sc.virsat.model.dvlm.qudv.SimpleUnit;
 
 public class BeanUnitSimple extends ABeanUnit<SimpleUnit> {
 
+	public BeanUnitSimple() {
+		super();
+	}
+	
+	public BeanUnitSimple(SimpleUnit unit) {
+		super(unit);
+	}
+
 }

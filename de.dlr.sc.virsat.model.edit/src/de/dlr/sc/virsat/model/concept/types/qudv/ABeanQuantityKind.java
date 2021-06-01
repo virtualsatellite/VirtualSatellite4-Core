@@ -15,16 +15,16 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind;
-import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
 
 public class ABeanQuantityKind<QK_TYPE extends AQuantityKind> implements IBeanQuantityKind {
 
 	protected QK_TYPE quantityKind;
+	// TODO: change interface similar to unit
 	
 	public ABeanQuantityKind() { }
 	
 	@SuppressWarnings("unchecked")
-	public ABeanQuantityKind(AUnit quantityKind) {
+	public ABeanQuantityKind(AQuantityKind quantityKind) {
 		this.quantityKind = (QK_TYPE) quantityKind;
 	}
 	

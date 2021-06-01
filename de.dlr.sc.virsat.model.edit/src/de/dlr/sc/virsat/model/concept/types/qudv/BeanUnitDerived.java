@@ -24,6 +24,14 @@ import de.dlr.sc.virsat.model.dvlm.qudv.UnitFactor;
 
 public class BeanUnitDerived extends ABeanUnit<DerivedUnit> {
 
+	public BeanUnitDerived() { 
+		super();
+	}
+	
+	public BeanUnitDerived(DerivedUnit unit) {
+		super(unit);
+	}
+	
 	/**
 	 * Get all factors
 	 * @return List of factors

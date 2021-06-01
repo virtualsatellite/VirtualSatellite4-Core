@@ -18,6 +18,14 @@ import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
 
 public class BeanUnitPrefixed extends ABeanConversionBasedUnit<PrefixedUnit> {
 	
+	public BeanUnitPrefixed() { 
+		super();
+	}
+	
+	public BeanUnitPrefixed(PrefixedUnit unit) {
+		super(unit);
+	}
+	
 	BeanPrefix getPrefixBean() {
 		return new BeanPrefix(unit.getPrefix());
 	}

@@ -9,9 +9,17 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.qudv;
 
-import de.dlr.sc.virsat.model.dvlm.qudv.Prefix;
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.edit.command.SetCommand;
+import org.eclipse.emf.edit.domain.EditingDomain;
 
-public class BeanPrefix {
+import de.dlr.sc.virsat.model.concept.types.IBeanName;
+import de.dlr.sc.virsat.model.concept.types.IBeanUuid;
+import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
+import de.dlr.sc.virsat.model.dvlm.qudv.Prefix;
+import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
+
+public class BeanPrefix implements IBeanUuid, IBeanName {
 
 	private Prefix prefix;
 	
@@ -21,6 +29,25 @@ public class BeanPrefix {
 		this.prefix = prefix;
 	}
 	
+	@Override
+	public String getUuid() {
+		return prefix.getUuid().toString();
+	}
+	
+	@Override
+	public String getName() {
+		return prefix.getName();
+	}
+	
+	@Override
+	public void setName(String name) {
+		prefix.setName(name);
+	}
+	
+	@Override
+	public Command setName(EditingDomain ed, String name) {
+		return SetCommand.create(ed, prefix, GeneralPackage.Literals.INAME__NAME, name);
+	}
 	public Prefix getPrefix() {
 		return prefix;
 	}
@@ -34,7 +61,11 @@ public class BeanPrefix {
 	}
 
 	public void setSymbol(String symbol) {
-		prefix.getSymbol();
+		prefix.setSymbol(symbol);
+	}
+	
+	public Command setSymbol(EditingDomain ed, String symbol) {
+		return SetCommand.create(ed, prefix, QudvPackage.Literals.PREFIX__SYMBOL, symbol);
 	}
 	
 	Double getFactor() {
@@ -43,5 +74,9 @@ public class BeanPrefix {
 	
 	void setFactor(Double factor) {
 		prefix.setFactor(factor);
+	}
+	
+	public Command setFactor(EditingDomain ed, Double factor) {
+		return SetCommand.create(ed, prefix, QudvPackage.Literals.PREFIX__FACTOR, factor);
 	}
 }

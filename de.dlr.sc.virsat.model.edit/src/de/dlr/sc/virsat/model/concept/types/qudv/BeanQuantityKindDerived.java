@@ -17,6 +17,14 @@ import de.dlr.sc.virsat.model.dvlm.qudv.QuantityKindFactor;
 
 public class BeanQuantityKindDerived extends ABeanQuantityKind<DerivedQuantityKind> {
 
+	public BeanQuantityKindDerived() { 
+		super();
+	}
+	
+	public BeanQuantityKindDerived(DerivedQuantityKind quantityKind) {
+		super(quantityKind);
+	}
+	
 	/**
 	 * Get all factors
 	 * @return List of factors

@@ -13,4 +13,12 @@ import de.dlr.sc.virsat.model.dvlm.qudv.SimpleQuantityKind;
 
 public class BeanQuantityKindSimple extends ABeanQuantityKind<SimpleQuantityKind> {
 
+	public BeanQuantityKindSimple() { 
+		super();
+	}
+	
+	public BeanQuantityKindSimple(SimpleQuantityKind quantityKind) {
+		super(quantityKind);
+	}
+	
 }

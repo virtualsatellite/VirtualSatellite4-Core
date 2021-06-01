@@ -13,6 +13,14 @@ import de.dlr.sc.virsat.model.dvlm.qudv.AConversionBasedUnit;
 
 public class ABeanConversionBasedUnit<U_TYPE extends AConversionBasedUnit> extends ABeanUnit<U_TYPE> {
 
+	public ABeanConversionBasedUnit() {
+		super();
+	}
+	
+	public ABeanConversionBasedUnit(U_TYPE unit) {
+		super(unit);
+	}
+	
 	Boolean getIsInvertible() {
 		return unit.isIsInvertible();
 	}

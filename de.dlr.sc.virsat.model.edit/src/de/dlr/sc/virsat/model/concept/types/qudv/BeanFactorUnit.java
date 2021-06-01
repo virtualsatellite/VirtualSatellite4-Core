@@ -9,11 +9,17 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.qudv;
 
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.edit.command.SetCommand;
+import org.eclipse.emf.edit.domain.EditingDomain;
+
+import de.dlr.sc.virsat.model.concept.types.IBeanUuid;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanUnitFactory;
 import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
+import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
 import de.dlr.sc.virsat.model.dvlm.qudv.UnitFactor;
 
-public class BeanFactorUnit {
+public class BeanFactorUnit implements IBeanUuid {
 
 	private UnitFactor factor;
 	
@@ -21,6 +27,11 @@ public class BeanFactorUnit {
 	
 	public BeanFactorUnit(UnitFactor factor) {
 		this.factor = factor;
+	}
+	
+	@Override
+	public String getUuid() {
+		return factor.getUuid().toString();
 	}
 	
 	UnitFactor getFactor() {
@@ -39,11 +50,19 @@ public class BeanFactorUnit {
 		factor.setExponent(exponent);
 	}
 	
-	IBeanUnit<? extends AUnit> getUnit() {
+	public Command setExponent(EditingDomain ed, Double exponent) {
+		return SetCommand.create(ed, factor, QudvPackage.Literals.UNIT_FACTOR__EXPONENT, exponent);
+	}
+	
+	IBeanUnit<? extends AUnit> getUnitBean() {
 		return new BeanUnitFactory().getInstanceFor(factor.getUnit());
 	}
 	
-	void setUnit(IBeanUnit<? extends AUnit> beanUnit) {
+	void setUnitBean(IBeanUnit<? extends AUnit> beanUnit) {
 		factor.setUnit(beanUnit.getUnit());
+	}
+	
+	public Command setUnitBean(EditingDomain ed, IBeanUnit<? extends AUnit> beanUnit) {
+		return SetCommand.create(ed, factor, QudvPackage.Literals.UNIT_FACTOR__UNIT, beanUnit.getUnit());
 	}
 }

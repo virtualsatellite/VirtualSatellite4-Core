@@ -18,6 +18,14 @@ import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
 
 public class BeanUnitLinearConversion extends ABeanConversionBasedUnit<LinearConversionUnit> {
 
+	public BeanUnitLinearConversion() { 
+		super();
+	}
+	
+	public BeanUnitLinearConversion(LinearConversionUnit unit) {
+		super(unit);
+	}
+	
 	Double getFactor() {
 		return unit.getFactor();
 	}

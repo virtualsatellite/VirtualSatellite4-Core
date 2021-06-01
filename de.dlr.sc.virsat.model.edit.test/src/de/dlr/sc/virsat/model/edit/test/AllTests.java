@@ -30,6 +30,9 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloatTest;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyIntTest;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResourceTest;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyStringTest;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanFactorQuantityKindTest;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanFactorUnitTest;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanPrefixTest;
 import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitAffineConversionTest;
 import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitDerivedTest;
 import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitLinearConversionTest;
@@ -154,7 +157,10 @@ import junit.framework.JUnit4TestAdapter;
 				BeanUnitDerivedTest.class,
 				BeanUnitLinearConversionTest.class,
 				BeanUnitPrefixedTest.class,
-				BeanUnitSimpleTest.class
+				BeanUnitSimpleTest.class,
+				BeanPrefixTest.class,
+				BeanFactorUnitTest.class,
+				BeanFactorQuantityKindTest.class
 				})
 
 /**
