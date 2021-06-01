@@ -10,7 +10,7 @@
 	<parent>
 		<artifactId>de.dlr.sc.virsat.external.lib.maven.parent</artifactId>
 		<groupId>de.dlr.sc.virsat</groupId>
-		<version>4.12.1-SNAPSHOT</version>
+		<version>4.13.0-SNAPSHOT</version>
 		<relativePath>../de.dlr.sc.virsat.external.lib/maven/pom.xml</relativePath>
 	</parent>
 
@@ -27,17 +27,17 @@
 				<dependency>
 					<groupId>org.apache.poi</groupId>
 					<artifactId>poi</artifactId>
-					<version>3.14</version>
+					<version>3.17</version>
 				</dependency>
 				<dependency>
 					<groupId>org.apache.poi</groupId>
 					<artifactId>poi-ooxml</artifactId>
-					<version>3.14</version>
+					<version>3.17</version>
 				</dependency>
 				<dependency>
 					<groupId>org.apache.poi</groupId>
 					<artifactId>poi-scratchpad</artifactId>
-					<version>3.14</version>
+					<version>3.17</version>
 				</dependency>
 			</dependencies>
 		</profile>

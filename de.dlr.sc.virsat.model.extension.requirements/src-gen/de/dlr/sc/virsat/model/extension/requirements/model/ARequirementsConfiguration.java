@@ -63,6 +63,7 @@ public abstract class ARequirementsConfiguration extends GenericCategory impleme
 	// property name constants
 	public static final String PROPERTY_FILENAME = "fileName";
 	public static final String PROPERTY_TYPEDEFINITIONS = "typeDefinitions";
+	public static final String PROPERTY_LINKTYPEDEFINITIONS = "linkTypeDefinitions";
 	
 	
 	
@@ -144,6 +145,36 @@ public abstract class ARequirementsConfiguration extends GenericCategory impleme
 	public IBeanList<BeanPropertyComposed<RequirementType>> getTypeDefinitionsBean() {
 		safeAccessTypeDefinitionsBean();
 		return typeDefinitionsBean;
+	}
+	
+	// *****************************************************************
+	// * Array Attribute: linkTypeDefinitions
+	// *****************************************************************
+	private IBeanList<RequirementLinkType> linkTypeDefinitions = new TypeSafeComposedPropertyInstanceList<>(RequirementLinkType.class);
+	
+	private void safeAccessLinkTypeDefinitions() {
+		if (linkTypeDefinitions.getArrayInstance() == null) {
+			linkTypeDefinitions.setArrayInstance((ArrayInstance) helper.getPropertyInstance("linkTypeDefinitions"));
+		}
+	}
+	
+	public IBeanList<RequirementLinkType> getLinkTypeDefinitions() {
+		safeAccessLinkTypeDefinitions();
+		return linkTypeDefinitions;
+	}
+	
+	private IBeanList<BeanPropertyComposed<RequirementLinkType>> linkTypeDefinitionsBean = new TypeSafeComposedPropertyBeanList<>();
+	
+	private void safeAccessLinkTypeDefinitionsBean() {
+		if (linkTypeDefinitionsBean.getArrayInstance() == null) {
+			linkTypeDefinitionsBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("linkTypeDefinitions"));
+		}
+	}
+	
+	@XmlElement
+	public IBeanList<BeanPropertyComposed<RequirementLinkType>> getLinkTypeDefinitionsBean() {
+		safeAccessLinkTypeDefinitionsBean();
+		return linkTypeDefinitionsBean;
 	}
 	
 	

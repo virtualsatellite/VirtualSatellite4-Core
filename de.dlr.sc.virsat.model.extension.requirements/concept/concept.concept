@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"  description "Extension for Requirement Specification" version 0.4 beta 
+Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"  description "Extension for Requirement Specification" version 0.5 beta 
 {
 
 	StructuralElement RequirementsConfigurationCollection description "Storage for configuration elements of requirements" {
@@ -26,6 +26,7 @@ Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"
 		Applicable For [ RequirementsConfigurationCollection];
 		StringProperty fileName;
 		Type typeDefinitions [] of Category RequirementType;
+		Type linkTypeDefinitions [] of Category RequirementLinkType;
 	}
 	
 	Category VerificationConfiguration {
@@ -46,21 +47,32 @@ Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"
 		Type elements [] of Category AttributeValue;
 		EnumProperty status values [Open = 0, FullyCompliant = 1, PartialCompliant = 2, NonCompliant = 3, NotApplicable = 4];
 		Type verification[] of Category IVerification;
+		Type trace of Category RequirementTrace;
+		StringProperty descriptionText;
 	}
 	
 	Category RequirementLink {
-		EnumProperty type values [DependsOn = 1, Parent = 2];
+		Reference type of Type RequirementLinkType;
 		Reference subject of Type Requirement;
 		Reference targets[] of Type Requirement;
 	}
 	
+	Category RequirementTrace {
+		Reference target[] of Type GenericCategory;
+	}
+	
 	Category AttributeValue {
 		Reference attType of Type RequirementAttribute;
-		StringProperty value;
+		StringProperty value description "The raw value of this attribute";
+		StringProperty formattedValue description "Optional property containing the value of this attribute formatted by e.g. HTML";
 	}
 	
 	Category RequirementType description "Definition of a requirement type" {
 		Type attributes[] of Category RequirementAttribute;
+	}
+	
+	Category RequirementLinkType description "Definition of a requirement link type" {
+		StringProperty linkDescription;
 	}
 	
 	Category RequirementAttribute description "Attribute definition for requirements" {
@@ -68,6 +80,16 @@ Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"
 		Type enumeration of Category EnumerationDefinition;
 	}
 	
+	Category ImportConfiguration description "Mapping specification of imported requirements" {
+		Applicable For [ RequirementsConfigurationCollection];
+		Reference typeDefinitionsContainer of Type RequirementsConfiguration;
+		Type mappedSpecifications[] of Category SpecificationMapping;
+	}
+	
+	Category SpecificationMapping {
+		StringProperty externalIdentifier;
+		Reference specification of Type RequirementsSpecification;
+	}
 	
 	Category EnumerationDefinition {
 		Type literals [] of Category EnumerationLiteral;

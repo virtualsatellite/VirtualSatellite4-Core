@@ -250,6 +250,20 @@ public class ActiveConceptHelper {
 	}
 	
 	/**
+	 * Call this method to retrieve a Category from a Concept by its 
+	 * full qualified name consisting of the Concept and Category name
+	 * @param fullQualifiedName Concept name + "." + Category name
+	 * @return the Category in case it was found, otherwise null
+	 */
+	public Category getCategory(String fullQualifiedName) {
+		int idx = fullQualifiedName.lastIndexOf(".");
+		Concept concept = getConcept(fullQualifiedName.substring(0, idx));
+		String categoryFqn = fullQualifiedName.substring(idx + 1);
+		
+		return getCategory(concept, categoryFqn);
+	}
+	
+	/**
 	 * This method hands back the full qualified path of a type and the Concept as well
 	 * @param type the category or property to start searching from
 	 * @return the full qualified path being delimited with "."
@@ -401,6 +415,20 @@ public class ActiveConceptHelper {
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * Call this method to retrieve a Structural Element from a Concept by its 
+	 * full qualified name consisting of the Concept and Structural Element name
+	 * @param fullQualifiedName Concept name + "." + Structural Element name
+	 * @return the StructuralElement in case it was found, otherwise null
+	 */
+	public StructuralElement getStructuralElement(String fullQualifiedName) {
+		int idx = fullQualifiedName.lastIndexOf(".");
+		Concept concept = getConcept(fullQualifiedName.substring(0, idx));
+		String seName = fullQualifiedName.substring(idx + 1);
+		
+		return getStructuralElement(concept, seName);
 	}
 	
 	/**

@@ -38,7 +38,6 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferenceCategor
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferenceCategoryArrayStaticTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferencePropertyArrayDynamicTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferencePropertyArrayStaticTest;
-import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferenceTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElementInstanceTest;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomainNonDVLMTest;
 import de.dlr.sc.virsat.project.editingDomain.commands.VirSatClipboardCommandAcceptanceTest;
@@ -58,7 +57,6 @@ import junit.framework.JUnit4TestAdapter;
 				TestCategoryAllPropertyTest.class,
 				TestCategoryCompositionTest.class,
 				ArrayInstanceListIteratorTest.class,
-				TestCategoryReferenceTest.class,
 				TestCategoryIntrinsicArrayDynamicTest.class,
 				TestCategoryIntrinsicArrayStaticTest.class,
 				TestCategoryCompositionArrayDynamicTest.class,

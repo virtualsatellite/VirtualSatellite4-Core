@@ -10,7 +10,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.dlr.sc.virsat</groupId>
 	<artifactId>de.dlr.sc.virsat.parent</artifactId>
-	<version>4.12.1-SNAPSHOT</version>
+	<version>4.13.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<properties>
@@ -19,7 +19,7 @@
 		<maven-license-version>1.20</maven-license-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<build.version>4.12.1</build.version>
+		<build.version>4.13.0</build.version>
 		<build.qualifier>'t'yyyyMMddHHmm</build.qualifier>
 		<maven.build.timestamp.format>'t'yyyyMMddHHmm</maven.build.timestamp.format>
 		<build.folder.target>../builds</build.folder.target>
@@ -85,11 +85,11 @@
 				<build.deploy.release>true</build.deploy.release>
 				<build.qualifier>'r'yyyyMMddHHmm</build.qualifier>
 				<maven.build.timestamp.format>'r'yyyyMMddHHmm</maven.build.timestamp.format>
-				<build.folder.type>release/${build.version}/${TRAVIS_BUILD_NUMBER}</build.folder.type>
-				<build.file.core.win32>VirSat_Core_Release_${build.version}_${github.sha}_Win32.zip</build.file.core.win32>
-				<build.file.core.linux>VirSat_Core_Release_${build.version}_${github.sha}_Linux.tar.gz</build.file.core.linux>
-				<build.file.server.win32>VirSat_Server_Release_${build.version}_${github.sha}_Win32.zip</build.file.server.win32>
-				<build.file.server.linux>VirSat_Server_Release_${build.version}_${github.sha}_Linux.tar.gz</build.file.server.linux>
+				<build.folder.type>release/${build.version}/${env.GITHUB_SHA}</build.folder.type>
+				<build.file.core.win32>VirSat_Core_Release_${build.version}_${env.GITHUB_SHA}_Win32.zip</build.file.core.win32>
+				<build.file.core.linux>VirSat_Core_Release_${build.version}_${env.GITHUB_SHA}_Linux.tar.gz</build.file.core.linux>
+				<build.file.server.win32>VirSat_Server_Release_${build.version}_${env.GITHUB_SHA}_Win32.zip</build.file.server.win32>
+				<build.file.server.linux>VirSat_Server_Release_${build.version}_${env.GITHUB_SHA}_Linux.tar.gz</build.file.server.linux>
 			</properties>
 		</profile>
 		<profile>
@@ -184,6 +184,7 @@
 							<redirectTestOutputToFile>true</redirectTestOutputToFile>
 							<showEclipseLog>false</showEclipseLog>
 							<testFailureIgnore>false</testFailureIgnore>
+							<failIfNoTests>false</failIfNoTests>
 							<trimStackTrace>false</trimStackTrace>
 							<!-- <argLine>-ea -Xms256m -Xmx512m -javaagent:%USERPROFILE%\.m2\repository\org\jacoco\org.jacoco.agent\0.7.4.201502262128\org.jacoco.agent-0.7.4.201502262128-runtime.jar=destfile='${sonar.jacoco.reportPath}',append=true</argLine> -->
 							<useUIHarness>false</useUIHarness>
@@ -280,7 +281,7 @@
 						<artifact>
 							<groupId>de.dlr.sc.virsat</groupId>
 							<artifactId>de.dlr.sc.virsat.target</artifactId>
-							<version>4.12.1-SNAPSHOT</version>
+							<version>4.13.0-SNAPSHOT</version>
 							<classifier>virsat_windows</classifier>
 						</artifact>
 					</target>

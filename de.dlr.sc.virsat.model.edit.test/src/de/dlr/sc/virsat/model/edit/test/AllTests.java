@@ -52,7 +52,8 @@ import de.dlr.sc.virsat.model.dvlm.command.UndoableAddCommandTest;
 import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElementTest;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanStructuralElementInstanceAdapterTest;
-import de.dlr.sc.virsat.model.dvlm.json.AnyTypeAdapterTest;
+import de.dlr.sc.virsat.model.dvlm.json.ComposedBeanCategoryAssigmentAdapterTest;
+import de.dlr.sc.virsat.model.dvlm.json.BeanPropertyTypeAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.DoubleAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtilityTest;
@@ -137,12 +138,13 @@ import junit.framework.JUnit4TestAdapter;
 				TypeSafeReferencePropertyBeanListTest.class,
 				TypeSafeComposedPropertyBeanListTest.class,
 				ABeanObjectAdapterTest.class,
-				AnyTypeAdapterTest.class,
+				ComposedBeanCategoryAssigmentAdapterTest.class,
 				DoubleAdapterTest.class,
 				JAXBUtilityTest.class,
 				IUuidAdapterTest.class,
 				UriAdapterTest.class,
-				ABeanStructuralElementInstanceAdapterTest.class
+				ABeanStructuralElementInstanceAdapterTest.class,
+				BeanPropertyTypeAdapterTest.class
 				})
 
 /**

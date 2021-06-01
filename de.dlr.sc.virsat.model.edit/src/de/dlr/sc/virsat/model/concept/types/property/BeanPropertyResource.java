@@ -26,6 +26,8 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ResourcePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.json.UriAdapter;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModelProperty.AccessMode;
 
 /**
  * Class to wrap Resource Property Instance
@@ -73,6 +75,9 @@ public class BeanPropertyResource extends ABeanProperty<ResourcePropertyInstance
 	 */
 	@XmlElement(nillable = true)
 	@XmlJavaTypeAdapter(UriAdapter.class)
+	@ApiModelProperty(
+		dataType = "String",
+		value = "Platform String of a URI")
 	public URI getValue() {
 		return ti.getUri();
 	}
@@ -115,5 +120,14 @@ public class BeanPropertyResource extends ABeanProperty<ResourcePropertyInstance
 		}
 		
 		return null;
+	}
+	
+	@ApiModelProperty(
+			value = "Always returns constant: \"resource\"", 
+			example = "resource",
+			accessMode = AccessMode.READ_ONLY)
+	@Override
+	public BeanPropertyType getPropertyType() {
+		return BeanPropertyType.RESOURCE;
 	}
 }

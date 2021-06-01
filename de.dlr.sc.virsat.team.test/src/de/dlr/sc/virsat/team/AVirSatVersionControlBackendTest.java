@@ -14,12 +14,15 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.net.URI;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.eclipse.core.internal.resources.Resource;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -217,7 +220,10 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 		assertTrue("File exsists on filesystem", seiNewDownstreamFile.getRawLocation().toFile().exists());
 		
 		// Update project in local2
-		backend.update(projectRepoLocal2, new NullProgressMonitor());
+		VersionControlUpdateResult result = backend.update(projectRepoLocal2, new NullProgressMonitor());
+		assertTrue("Found changes from the remote pull", result.hasChanges());
+		final int NUMBER_OF_CHANGES = 4;
+		assertEquals("", NUMBER_OF_CHANGES, result.getChanges().size());
 
 		// Reload the downstream sei which should now have the name of the upstream sei
 		rs.reloadResource(seiDownstreamResource);
@@ -309,4 +315,51 @@ public abstract class AVirSatVersionControlBackendTest extends AProjectTestCase 
 		IFile seiInLocalRepo1Workspace = projectRepoLocal1.getFile(seiFile.getFullPath().removeFirstSegments(1));
 		assertTrue("File also exists in workspace", seiInLocalRepo1Workspace.exists());
 	}
+	
+	@Test
+	public void testCommitIgnoredFiles() throws Exception {
+		backend.commit(projectRepoLocal1, "Initial commit", new NullProgressMonitor());
+
+		// Create an ignored folder with a file
+		String ignoredFolderName = "ignoredFolder";
+		String ignoredFileName = "ignoredFile.txt";
+		IFolder ignoredFolder = projectRepoLocal1.getFolder(ignoredFolderName);
+		ignoredFolder.create(false, true, null);
+		IFile ignoredFile = ignoredFolder.getFile(ignoredFileName);
+		ignoredFile.create(new ByteArrayInputStream(new byte[0]), false, null);
+
+		// Create a tracked file
+		String trackedFileName = "trackedFile.txt";
+		IFile trackedFile = projectRepoLocal1.getFile(trackedFileName);
+		trackedFile.create(new ByteArrayInputStream(new byte[0]), false, null);
+
+		assertTrue("File exsists in workspace", ignoredFile.exists());
+		assertTrue("File exsists in workspace", trackedFile.exists());
+		
+		addToIgnore(ignoredFolder);
+		
+		// Commit repository
+		backend.commit(projectRepoLocal1, "Commit without ignored folder", new NullProgressMonitor());
+
+		// Create the project again using another file system repository
+		projectRepoLocal1.delete(true, null);
+		IProject projectRepoLocal2 = createTestProject(PROJECT_LOCAL_NAME, pathRepoLocal2, true);
+
+		// Checkout to local2 and see if ignored directory is present
+		backend.update(projectRepoLocal2, new NullProgressMonitor());
+
+		Path project2Root = pathRepoLocal2.resolve(PROJECT_LOCAL_NAME);
+		assertRetry(
+			ASSERT_RETRY_COUNT,
+			ASSERT_RETRY_TIME,
+			() -> assertTrue("Tracked file exists in local2 after pull", Files.exists(project2Root.resolve(trackedFileName)))
+		);		
+
+		assertFalse("Ignored folder not created", Files.exists(project2Root.resolve(ignoredFolderName)));
+	}
+
+	/**
+	 * Backend-specific method to add the given folder to ignore, so that it is not committed
+	 */
+	protected abstract void addToIgnore(IFolder ignoredFolder) throws Exception;
 }

@@ -23,6 +23,7 @@ import javax.ws.rs.core.UriBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jetty.http.HttpScheme;
 import org.eclipse.jetty.security.HashLoginService;
 import org.glassfish.jersey.client.ClientConfig;
 import org.junit.After;
@@ -38,11 +39,17 @@ public abstract class AJettyServerTest extends AConceptTestCase {
 
 	private static VirSatJettyServer server;
 	private static final File WORKSPACE_ROOT = ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile();
+
+	public static final String ALLOW_HEADERS = "sun.net.http.allowRestrictedHeaders";
 	
 	// Test users
 	public static final String ADMIN = "admin:password";
 	public static final String USER_NO_REPO = "user:password";
 	public static final String USER_WITH_REPO = "user2:password";
+	// Test user headers
+	public static final String ADMIN_HEADER = getAuthHeader(ADMIN);
+	public static final String USER_NO_REPO_HEADER = getAuthHeader(USER_NO_REPO);
+	public static final String USER_WITH_REPO_HEADER = getAuthHeader(USER_WITH_REPO);
 	
 	protected static WebTarget webTarget;
 	
@@ -56,6 +63,9 @@ public abstract class AJettyServerTest extends AConceptTestCase {
 	
 	@BeforeClass
 	public static void setUpClass() throws InterruptedException, Exception {
+		// System property to set headers
+		System.setProperty(ALLOW_HEADERS, "true");
+		
 		server = new VirSatJettyServer();
 		server.init();
 		
@@ -66,7 +76,7 @@ public abstract class AJettyServerTest extends AConceptTestCase {
 		ClientConfig config = new ClientConfig();
 		Client client = ClientBuilder.newClient(config);
 		
-		URI uri = UriBuilder.fromUri("http://localhost:8000/").build();
+		URI uri = UriBuilder.fromUri(HttpScheme.HTTP.asString() + "://localhost:" + VirSatJettyServer.VIRSAT_JETTY_PORT).build();
 		webTarget = client.target(uri).path("/rest");
 	}
 
@@ -87,5 +97,7 @@ public abstract class AJettyServerTest extends AConceptTestCase {
 	public static void tearDownClass() throws Exception { 
 		server.stop();
 		server.join();
+
+		System.setProperty(ALLOW_HEADERS, "false");
 	}
 }
