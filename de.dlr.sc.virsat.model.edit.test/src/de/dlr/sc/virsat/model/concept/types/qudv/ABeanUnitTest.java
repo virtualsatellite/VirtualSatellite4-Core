@@ -29,6 +29,8 @@ import de.dlr.sc.virsat.model.dvlm.concepts.provider.ConceptsItemProviderAdapter
 import de.dlr.sc.virsat.model.dvlm.general.provider.GeneralItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.provider.DVLMDVLMItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
+import de.dlr.sc.virsat.model.dvlm.qudv.QudvFactory;
+import de.dlr.sc.virsat.model.dvlm.qudv.SimpleQuantityKind;
 import de.dlr.sc.virsat.model.dvlm.qudv.provider.QudvItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.roles.provider.RolesItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.structural.provider.DVLMStructuralItemProviderAdapterFactory;
@@ -41,6 +43,7 @@ public abstract class ABeanUnitTest {
 	
 	protected ABeanUnit<?> aBeanUnit;
 	protected AUnit aUnit;
+	protected SimpleQuantityKind simpleQuantityKind;
 	
 	protected static final String TEST_NAME = "name";
 	protected static final String TEST_SYMBOL = "symbol";
@@ -63,6 +66,8 @@ public abstract class ABeanUnitTest {
 		adapterFactory.addAdapterFactory(new QudvItemProviderAdapterFactory());
 		
 		ed = new AdapterFactoryEditingDomain(adapterFactory, new BasicCommandStack());
+		
+		simpleQuantityKind = QudvFactory.eINSTANCE.createSimpleQuantityKind();
 	}
 	
 	@Test
@@ -96,13 +101,13 @@ public abstract class ABeanUnitTest {
 	@Test
 	public void testGetSymbol() {
 		aUnit.setSymbol(TEST_SYMBOL);
-		assertEquals("Got correct name", TEST_SYMBOL, aBeanUnit.getSymbol());
+		assertEquals("Got correct symbol", TEST_SYMBOL, aBeanUnit.getSymbol());
 	}
 
 	@Test
 	public void testSetSymbol() {
 		aBeanUnit.setSymbol(TEST_SYMBOL);
-		assertEquals("Got correct name", TEST_SYMBOL, aUnit.getSymbol());
+		assertEquals("Got correct symbol", TEST_SYMBOL, aUnit.getSymbol());
 	}
 	
 	@Test
@@ -112,5 +117,27 @@ public abstract class ABeanUnitTest {
 		
 		setCommand.execute();
 		assertEquals("Got correct symbol", TEST_SYMBOL, aUnit.getSymbol());
+	}
+	
+	@Test
+	public void testGetQuanityKind() {
+		assertNull("Got empty bean for no quantityKind", aBeanUnit.getQuantityKindBean());
+		aUnit.setQuantityKind(simpleQuantityKind);
+		assertEquals("Got correct quantityKind", simpleQuantityKind, aBeanUnit.getQuantityKindBean().getQuantityKind());
+	}
+
+	@Test
+	public void testSetQuanityKind() {
+		aBeanUnit.setQuantityKindBean(new BeanQuantityKindSimple(simpleQuantityKind));
+		assertEquals("Got correct quantityKind", simpleQuantityKind, aBeanUnit.getQuantityKindBean().getQuantityKind());
+	}
+	
+	@Test
+	public void testSetQuanityKindEditingDomain() {
+		Command setCommand = aBeanUnit.setQuantityKindBean(ed, new BeanQuantityKindSimple(simpleQuantityKind));
+		assertNull("Command was not yet executed", aBeanUnit.getQuantityKindBean());
+		
+		setCommand.execute();
+		assertEquals("Got correct quantityKind", simpleQuantityKind, aBeanUnit.getQuantityKindBean().getQuantityKind());
 	}
 }

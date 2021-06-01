@@ -13,7 +13,9 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
+import de.dlr.sc.virsat.model.concept.types.factory.BeanQuantityKindFactory;
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
+import de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind;
 import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
 
@@ -81,6 +83,25 @@ public class ABeanUnit<U_TYPE extends AUnit> implements IBeanUnit<U_TYPE> {
 	@Override
 	public Command setSymbol(EditingDomain ed, String symbol) {
 		return SetCommand.create(ed, unit, QudvPackage.Literals.AUNIT__SYMBOL, symbol);
+	}
+
+	@Override
+	public IBeanQuantityKind<? extends AQuantityKind> getQuantityKindBean() {
+		if (unit.getQuantityKind() == null) {
+			return null;
+		}
+		
+		return new BeanQuantityKindFactory().getInstanceFor(unit.getQuantityKind());
+	}
+
+	@Override
+	public void setQuantityKindBean(IBeanQuantityKind<? extends AQuantityKind> quantityKindBean) {
+		unit.setQuantityKind(quantityKindBean.getQuantityKind());
+	}
+
+	@Override
+	public Command setQuantityKindBean(EditingDomain ed, IBeanQuantityKind<? extends AQuantityKind> quantityKindBean) {
+		return SetCommand.create(ed, unit, QudvPackage.Literals.AUNIT__QUANTITY_KIND, quantityKindBean.getQuantityKind());
 	}
 
 }

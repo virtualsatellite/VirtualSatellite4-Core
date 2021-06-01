@@ -10,6 +10,8 @@
 package de.dlr.sc.virsat.model.concept.types.qudv;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.eclipse.emf.common.command.Command;
 import org.junit.Before;
@@ -58,5 +60,28 @@ public class BeanUnitLinearConversionTest extends ABeanUnitTest {
 		cmd.execute();
 		
 		assertEquals("Value correctly set", TEST_FACTOR, linearConversionUnit.getFactor(), EPSILON);
+	}
+	
+	@Test
+	public void getIsInvertable() {
+		linearConversionUnit.setIsInvertible(true);
+		assertEquals("Got right value", linearConversionUnit.isIsInvertible(), linearConversionBeanUnit.getIsInvertible());
+	}
+	
+	@Test
+	public void testSetIsInvertable() {
+		assertFalse("Is false initial", linearConversionUnit.isIsInvertible());
+		linearConversionBeanUnit.setIsInvertible(true);
+		
+		assertTrue("Value correctly set", linearConversionUnit.isIsInvertible());
+	}
+	
+	@Test
+	public void testSetIsInvertableEditingDomain() {
+		assertFalse("Is false initial", linearConversionUnit.isIsInvertible());
+		Command cmd = linearConversionBeanUnit.setIsInvertible(ed, true);
+		cmd.execute();
+		
+		assertTrue("Value correctly set", linearConversionUnit.isIsInvertible());
 	}
 }

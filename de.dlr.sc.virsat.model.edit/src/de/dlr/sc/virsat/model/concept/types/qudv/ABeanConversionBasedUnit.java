@@ -9,9 +9,14 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.qudv;
 
-import de.dlr.sc.virsat.model.dvlm.qudv.AConversionBasedUnit;
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.edit.command.SetCommand;
+import org.eclipse.emf.edit.domain.EditingDomain;
 
-public class ABeanConversionBasedUnit<U_TYPE extends AConversionBasedUnit> extends ABeanUnit<U_TYPE> {
+import de.dlr.sc.virsat.model.dvlm.qudv.AConversionBasedUnit;
+import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
+
+public class ABeanConversionBasedUnit<U_TYPE extends AConversionBasedUnit> extends ABeanUnit<U_TYPE> implements IBeanConversionBasedUnit {
 
 	public ABeanConversionBasedUnit() {
 		super();
@@ -21,11 +26,18 @@ public class ABeanConversionBasedUnit<U_TYPE extends AConversionBasedUnit> exten
 		super(unit);
 	}
 	
-	Boolean getIsInvertible() {
+	@Override
+	public Boolean getIsInvertible() {
 		return unit.isIsInvertible();
 	}
 	
-	void setIsInvertible(Boolean isInverible) {
+	@Override
+	public void setIsInvertible(Boolean isInverible) {
 		unit.setIsInvertible(isInverible);
+	}
+
+	@Override
+	public Command setIsInvertible(EditingDomain ed, Boolean isInverible) {
+		return SetCommand.create(ed, unit, QudvPackage.Literals.ACONVERSION_BASED_UNIT__IS_INVERTIBLE, isInverible);
 	}
 }

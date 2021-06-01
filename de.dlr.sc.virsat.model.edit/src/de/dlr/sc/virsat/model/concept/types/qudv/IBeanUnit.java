@@ -14,6 +14,7 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.concept.types.IBeanName;
 import de.dlr.sc.virsat.model.concept.types.IBeanUuid;
+import de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind;
 import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
 
 public interface IBeanUnit<U_TYPE extends AUnit> extends IBeanUuid, IBeanName {
@@ -61,4 +62,24 @@ public interface IBeanUnit<U_TYPE extends AUnit> extends IBeanUuid, IBeanName {
 	 * @return EMF command to set the symbol
 	 */
 	Command setSymbol(EditingDomain ed, String symbol);
+	
+	/**
+	 * Get the quantityKindBean
+	 * @return quantityKindBean bean wrapping a quantityKind
+	 */
+	IBeanQuantityKind<? extends AQuantityKind> getQuantityKindBean();
+	
+	/**
+	 * Set the quantityKind of the wrapped unit
+	 * @param quantityKindBean bean wrapping a quantityKind
+	 */
+	void setQuantityKindBean(IBeanQuantityKind<? extends AQuantityKind> quantityKindBean);
+	
+	/**
+	 * Set the quantityKind of the wrapped unit
+	 * @param ed The EditingDomain in which the command should act.
+	 * @param quantityKind
+	 * @return EMF command to set the quantityKind
+	 */
+	Command setQuantityKindBean(EditingDomain ed, IBeanQuantityKind<? extends AQuantityKind> quantityKindBean);
 }
