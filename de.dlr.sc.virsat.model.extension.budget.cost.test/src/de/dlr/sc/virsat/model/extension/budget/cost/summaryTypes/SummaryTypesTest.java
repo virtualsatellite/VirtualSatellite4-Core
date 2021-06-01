@@ -14,6 +14,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
 
+import org.eclipse.core.runtime.CoreException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,8 +28,9 @@ import de.dlr.sc.virsat.model.extension.budget.cost.model.CostEquipment;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostSummary;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostTableEntry;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostType;
+import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
-public class SummaryTypesTest {
+public class SummaryTypesTest extends AProjectTestCase {
 
 	protected Concept concept;
 	protected StructuralInstantiator structInstantiator;
@@ -41,9 +43,11 @@ public class SummaryTypesTest {
 	private static final double COSTVALUE_FIVE_POINT_ZERO = 5.0d;
 	private static final double ROUNDING_VALUE = 0.0001;
 	
-	
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() throws CoreException {
+		super.setUp();
+		addEditingDomainAndRepository();
+		
 		String conceptXmiPluginPath = "de.dlr.sc.virsat.model.extension.budget.cost/concept/concept.xmi";
 		concept = de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader.loadConceptFromPlugin(conceptXmiPluginPath);
 	
