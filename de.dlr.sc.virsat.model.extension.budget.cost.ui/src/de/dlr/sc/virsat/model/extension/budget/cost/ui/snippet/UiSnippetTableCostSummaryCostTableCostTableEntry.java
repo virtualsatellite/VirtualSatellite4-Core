@@ -9,9 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.budget.cost.ui.snippet;
 
-import java.util.Collection;
-import java.util.Map;
-
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.swt.SWT;
@@ -22,10 +19,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostSummary;
-import de.dlr.sc.virsat.model.extension.budget.cost.model.CostTableEntry;
-import de.dlr.sc.virsat.model.extension.budget.cost.model.CostType;
 import de.dlr.sc.virsat.model.extension.budget.cost.summaryTypes.SummaryTypes;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
@@ -41,7 +35,7 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
  */
 public class UiSnippetTableCostSummaryCostTableCostTableEntry extends AUiSnippetTableCostSummaryCostTableCostTableEntry
 		implements IUiSnippet {
-	protected StructuralElementInstance sei;
+	protected SummaryTypes summaryTypes = new SummaryTypes();
 
 	@Override
 	// created a Button in CostSummary (Update CostEquipment)
@@ -62,21 +56,9 @@ public class UiSnippetTableCostSummaryCostTableCostTableEntry extends AUiSnippet
 					// created a CostSummary in the Variable (costSummary)
 					CostSummary costSummary = new CostSummary((CategoryAssignment) model);
 					// created a SummaryTypes in the Variable (summaryTypes)
-					SummaryTypes summaryTypes = new SummaryTypes();
-					// called the SummaryTypes.class with the costSummary and returned the Values of the costSummary
-					// in the Map and splited the Values to the different CostTypes
-					Map<CostType, CostTableEntry> summaryMap = summaryTypes.summaryTyp(costSummary);
-					// put the Values of the Map in a Collection (mapValues)
-					Collection<CostTableEntry> mapValues = summaryMap.values();
-						
-					costSummary.getCostTable().clear();
-
-					// created a loop and put every Value of the (mapValues) in (values)
-					for (CostTableEntry values : mapValues) {
-						// every one Value become a Command to put the Value to the CostTableEntry
-						Command valuesCommand = costSummary.getCostTable().add(virSatEd, values);
-						virSatEd.getCommandStack().execute(valuesCommand);
-					}
+					
+					Command updateCommand = summaryTypes.createUpdateCostSummaryCommand(costSummary, virSatEd);
+					virSatEd.getVirSatCommandStack().execute(updateCommand);
 				}
 			}
 			

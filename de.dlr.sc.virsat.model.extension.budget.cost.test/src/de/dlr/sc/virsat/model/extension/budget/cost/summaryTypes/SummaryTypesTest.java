@@ -55,7 +55,7 @@ public class SummaryTypesTest {
 	public void testEmpty() {
 		CostSummary costSummary = new CostSummary(concept);
 		SummaryTypes summaryTyp = new SummaryTypes();
-		Map<CostType, CostTableEntry> summary = summaryTyp.summaryTyp(costSummary);
+		Map<CostType, CostTableEntry> summary = summaryTyp.createSummaryMap(costSummary);
 		
 		assertTrue(summary.isEmpty());
 	}
@@ -84,7 +84,7 @@ public class SummaryTypesTest {
 		
 		SummaryTypes summaryTyp = new SummaryTypes();
 		
-		Map<CostType, CostTableEntry> summary = summaryTyp.summaryTyp(costSummary);
+		Map<CostType, CostTableEntry> summary = summaryTyp.createSummaryMap(costSummary);
 
 		assertEquals(1, summary.size());
 		CostTableEntry entry = summary.get(materialCost);
@@ -116,7 +116,7 @@ public class SummaryTypesTest {
 
 		SummaryTypes summaryTyp = new SummaryTypes();
 		
-		Map<CostType, CostTableEntry> summary = summaryTyp.summaryTyp(costSummary);
+		Map<CostType, CostTableEntry> summary = summaryTyp.createSummaryMap(costSummary);
 		
 		assertEquals(2, summary.size());
 		CostTableEntry totalMaterial = summary.get(materialCost);
@@ -154,7 +154,7 @@ public class SummaryTypesTest {
 
 		SummaryTypes summaryTyp = new SummaryTypes();
 		
-		Map<CostType, CostTableEntry> summary = summaryTyp.summaryTyp(costSummary);
+		Map<CostType, CostTableEntry> summary = summaryTyp.createSummaryMap(costSummary);
 
 		assertEquals(1, summary.size());
 		CostTableEntry cost = summary.get(materialCost);

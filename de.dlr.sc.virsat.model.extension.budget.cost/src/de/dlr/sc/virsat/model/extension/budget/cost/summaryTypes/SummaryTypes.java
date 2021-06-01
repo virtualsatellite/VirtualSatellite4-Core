@@ -10,9 +10,14 @@
 package de.dlr.sc.virsat.model.extension.budget.cost.summaryTypes;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.transaction.RecordingCommand;
+import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
 import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
@@ -35,7 +40,7 @@ public class SummaryTypes {
 	 * @param costSummary
 	 * @return the CostType with the Value of the cost.
 	 */
-	public Map<CostType, CostTableEntry> summaryTyp(CostSummary costSummary) {
+	public Map<CostType, CostTableEntry> createSummaryMap(CostSummary costSummary) {
 		Map<CostType, CostTableEntry> map = new HashMap<>();
 
 		StructuralElementInstance sei = (StructuralElementInstance) costSummary.getTypeInstance()
@@ -44,6 +49,7 @@ public class SummaryTypes {
 		if (sei == null) {
 			return map;
 		}
+		
 		IBeanStructuralElementInstance beanParent = new BeanStructuralElementInstance(sei);
 
 		List<IBeanStructuralElementInstance> beanSeis = new ArrayList<>(
@@ -66,11 +72,34 @@ public class SummaryTypes {
 				entry.setType(type);
 			}
 		}
+		
 		for (CostTableEntry entry : map.values()) {
-			
 			entry.setCostMargin(entry.getCostWithMargin() - entry.getCost());
 			entry.setMargin(FACTOR_HUNDRED * entry.getCostMargin() / entry.getCost());
 		}
+		
 		return map;
+	}
+	
+	/**
+	 * Creates the command to update the cost summary
+	 * @param costSummary the cost summary
+	 * @param ed the editing domain
+	 * @return the update command
+	 */
+	public Command createUpdateCostSummaryCommand(CostSummary costSummary, TransactionalEditingDomain ed) {
+		Map<CostType, CostTableEntry> summaryMap = createSummaryMap(costSummary);
+		Collection<CostTableEntry> mapValues = summaryMap.values();
+		
+		return new RecordingCommand(ed, "Update CostSummary") {
+			@Override
+			protected void doExecute() {
+				// Clear old entries and create new ones
+				costSummary.getCostTable().clear();
+				for (CostTableEntry values : mapValues) {
+					costSummary.getCostTable().add(values);
+				}
+			}
+		};
 	}
 }
