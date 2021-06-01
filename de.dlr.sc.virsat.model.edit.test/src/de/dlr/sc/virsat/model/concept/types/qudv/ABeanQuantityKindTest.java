@@ -28,19 +28,19 @@ import de.dlr.sc.virsat.model.dvlm.categories.provider.DVLMCategoriesItemProvide
 import de.dlr.sc.virsat.model.dvlm.concepts.provider.ConceptsItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.general.provider.GeneralItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.provider.DVLMDVLMItemProviderAdapterFactory;
-import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
+import de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind;
 import de.dlr.sc.virsat.model.dvlm.qudv.provider.QudvItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.roles.provider.RolesItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.structural.provider.DVLMStructuralItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.units.provider.UnitsItemProviderAdapterFactory;
 
-public abstract class ABeanUnitTest {
-
+public abstract class ABeanQuantityKindTest {
+	
 	protected ComposedAdapterFactory adapterFactory;
 	protected EditingDomain ed;
 	
-	protected ABeanUnit<?> aBeanUnit;
-	protected AUnit aUnit;
+	protected ABeanQuantityKind<?> aBeanQuantityKind;
+	protected AQuantityKind aQuantityKind;
 	
 	protected static final String TEST_NAME = "name";
 	protected static final String TEST_SYMBOL = "symbol";
@@ -67,50 +67,50 @@ public abstract class ABeanUnitTest {
 	
 	@Test
 	public void testGetUuid() {
-		String beanUuid = aBeanUnit.getUuid();
-		String unitUuid = aUnit.getUuid().toString();
+		String beanUuid = aBeanQuantityKind.getUuid();
+		String unitUuid = aQuantityKind.getUuid().toString();
 		assertEquals("Got correct UUID of bean", unitUuid, beanUuid);
 	}
 	
 	@Test
 	public void testGetName() {
-		aUnit.setName(TEST_NAME);
-		assertEquals("Got correct name", TEST_NAME, aBeanUnit.getName());
+		aQuantityKind.setName(TEST_NAME);
+		assertEquals("Got correct name", TEST_NAME, aBeanQuantityKind.getName());
 	}
 
 	@Test
 	public void testSetName() {
-		aBeanUnit.setName(TEST_NAME);
-		assertEquals("Got correct name", TEST_NAME, aUnit.getName());
+		aBeanQuantityKind.setName(TEST_NAME);
+		assertEquals("Got correct name", TEST_NAME, aQuantityKind.getName());
 	}
 
 	@Test
 	public void testSetNameEditingDomain() {
-		Command setCommand = aBeanUnit.setName(ed, TEST_NAME);
-		assertNull("Command was not yet executed", aUnit.getName());
+		Command setCommand = aBeanQuantityKind.setName(ed, TEST_NAME);
+		assertNull("Command was not yet executed", aQuantityKind.getName());
 		
 		setCommand.execute();
-		assertEquals("Name is correctly set", TEST_NAME, aUnit.getName());
+		assertEquals("Name is correctly set", TEST_NAME, aQuantityKind.getName());
 	}
 	
 	@Test
 	public void testGetSymbol() {
-		aUnit.setSymbol(TEST_SYMBOL);
-		assertEquals("Got correct name", TEST_SYMBOL, aBeanUnit.getSymbol());
+		aQuantityKind.setSymbol(TEST_SYMBOL);
+		assertEquals("Got correct name", TEST_SYMBOL, aBeanQuantityKind.getSymbol());
 	}
 
 	@Test
 	public void testSetSymbol() {
-		aBeanUnit.setSymbol(TEST_SYMBOL);
-		assertEquals("Got correct name", TEST_SYMBOL, aUnit.getSymbol());
+		aBeanQuantityKind.setSymbol(TEST_SYMBOL);
+		assertEquals("Got correct name", TEST_SYMBOL, aQuantityKind.getSymbol());
 	}
 	
 	@Test
 	public void testSetSymbolEditingDomain() {
-		Command setCommand = aBeanUnit.setSymbol(ed, TEST_SYMBOL);
-		assertNull("Command was not yet executed", aUnit.getSymbol());
+		Command setCommand = aBeanQuantityKind.setSymbol(ed, TEST_SYMBOL);
+		assertNull("Command was not yet executed", aQuantityKind.getSymbol());
 		
 		setCommand.execute();
-		assertEquals("Got correct symbol", TEST_SYMBOL, aUnit.getSymbol());
+		assertEquals("Got correct symbol", TEST_SYMBOL, aQuantityKind.getSymbol());
 	}
 }

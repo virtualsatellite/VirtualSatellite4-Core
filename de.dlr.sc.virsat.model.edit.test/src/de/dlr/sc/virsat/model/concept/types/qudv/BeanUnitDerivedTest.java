@@ -16,7 +16,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.common.util.EList;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -61,7 +60,7 @@ public class BeanUnitDerivedTest extends ABeanUnitTest {
 		assertTrue("Initial no factors", derivedBeanUnit.getFactorBeans().isEmpty());
 		derivedBeanUnit.setFactors(Arrays.asList(beanFactor));
 		
-		EList<UnitFactor> factors = derivedUnit.getFactor();
+		List<UnitFactor> factors = derivedUnit.getFactor();
 		assertEquals("Right amount of elements", 1, factors.size());
 		assertEquals("Right element found", factor, factors.get(0));
 	}
@@ -71,7 +70,7 @@ public class BeanUnitDerivedTest extends ABeanUnitTest {
 		assertTrue("Initial no factors", derivedBeanUnit.getFactorBeans().isEmpty());
 		derivedBeanUnit.addFactor(beanFactor);
 		
-		EList<UnitFactor> factors = derivedUnit.getFactor();
+		List<UnitFactor> factors = derivedUnit.getFactor();
 		assertEquals("Right amount of elements", 1, factors.size());
 		assertEquals("Right element found", factor, factors.get(0));
 	}
@@ -82,7 +81,7 @@ public class BeanUnitDerivedTest extends ABeanUnitTest {
 		Command cmd = derivedBeanUnit.addFactor(ed, beanFactor);
 		cmd.execute();
 		
-		EList<UnitFactor> factors = derivedUnit.getFactor();
+		List<UnitFactor> factors = derivedUnit.getFactor();
 		assertEquals("Right amount of elements", 1, factors.size());
 		assertEquals("Right element found", factor, factors.get(0));
 	}

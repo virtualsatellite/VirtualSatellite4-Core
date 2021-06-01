@@ -91,11 +91,8 @@ public class BeanPrefixTest {
 	@Test
 	public void testSetNameEditingDomain() {
 		Command setCommand = prefixBean.setName(ed, TEST_NAME);
-		
-		// The command is not yet executed, the name should not have changed
 		assertNull("Command was not yet executed", prefix.getName());
 		
-		// Now we execute the command and the name should be correctly set
 		setCommand.execute();
 		assertEquals("Name is correctly set", TEST_NAME, prefix.getName());
 	}
@@ -115,11 +112,8 @@ public class BeanPrefixTest {
 	@Test
 	public void testSetSymbolEditingDomain() {
 		Command setCommand = prefixBean.setSymbol(ed, TEST_SYMBOL);
-		
-		// The command is not yet executed, the name should not have changed
 		assertNull("Command was not yet executed", prefix.getSymbol());
 		
-		// Now we execute the command and the name should be correctly set
 		setCommand.execute();
 		assertEquals("Got correct symbol", TEST_SYMBOL, prefix.getSymbol());
 	}

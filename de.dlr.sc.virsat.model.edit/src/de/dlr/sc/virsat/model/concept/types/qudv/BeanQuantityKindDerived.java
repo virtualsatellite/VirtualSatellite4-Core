@@ -12,8 +12,14 @@ package de.dlr.sc.virsat.model.concept.types.qudv;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.edit.command.AddCommand;
+import org.eclipse.emf.edit.command.RemoveCommand;
+import org.eclipse.emf.edit.domain.EditingDomain;
+
 import de.dlr.sc.virsat.model.dvlm.qudv.DerivedQuantityKind;
 import de.dlr.sc.virsat.model.dvlm.qudv.QuantityKindFactor;
+import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
 
 public class BeanQuantityKindDerived extends ABeanQuantityKind<DerivedQuantityKind> {
 
@@ -29,7 +35,7 @@ public class BeanQuantityKindDerived extends ABeanQuantityKind<DerivedQuantityKi
 	 * Get all factors
 	 * @return List of factors
 	 */
-	List<BeanFactorQuantityKind> getFactors() {
+	List<BeanFactorQuantityKind> getFactorBeans() {
 		List<BeanFactorQuantityKind> factors = new ArrayList<BeanFactorQuantityKind>();
 		
 		for (QuantityKindFactor factor : quantityKind.getFactor()) {
@@ -43,7 +49,7 @@ public class BeanQuantityKindDerived extends ABeanQuantityKind<DerivedQuantityKi
 	 * Set all factors
 	 * @param newBeanFactors List of new factors
 	 */
-	void setFactors(List<BeanFactorQuantityKind> newBeanFactors) {
+	void setFactorBeans(List<BeanFactorQuantityKind> newBeanFactors) {
 		List<QuantityKindFactor> currentFactors = quantityKind.getFactor();
 
 		List<QuantityKindFactor> newFactors = new ArrayList<QuantityKindFactor>();
@@ -61,5 +67,13 @@ public class BeanQuantityKindDerived extends ABeanQuantityKind<DerivedQuantityKi
 	
 	void removeFactor(BeanFactorQuantityKind beanFactor) {
 		quantityKind.getFactor().remove(beanFactor.getFactor());
+	}
+	
+	Command addFactor(EditingDomain ed, BeanFactorQuantityKind beanFactor) {
+		return AddCommand.create(ed, quantityKind, QudvPackage.Literals.DERIVED_QUANTITY_KIND__FACTOR, beanFactor.getFactor());
+	}
+	
+	Command removeFactor(EditingDomain ed, BeanFactorQuantityKind beanFactor) {
+		return RemoveCommand.create(ed, quantityKind, QudvPackage.Literals.DERIVED_QUANTITY_KIND__FACTOR, beanFactor.getFactor());
 	}
 }

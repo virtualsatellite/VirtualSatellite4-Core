@@ -21,20 +21,20 @@ public class BeanQuantityKindFactory {
 
 	private BeanQuantityKindFactorySwitch bufs = new BeanQuantityKindFactorySwitch();
 	
-	public IBeanQuantityKind getInstanceFor(AQuantityKind quantityKind) {
-		IBeanQuantityKind beanQuantityKind = bufs.doSwitch(quantityKind);
-		beanQuantityKind.setQuantityKind(quantityKind);
+	public IBeanQuantityKind<? extends AQuantityKind> getInstanceFor(AQuantityKind quantityKind) {
+		IBeanQuantityKind<? extends AQuantityKind> beanQuantityKind = bufs.doSwitch(quantityKind);
+		beanQuantityKind.setAQuantityKind(quantityKind);
 		return beanQuantityKind;
 	}
 	
-	private static class BeanQuantityKindFactorySwitch extends QudvSwitch<IBeanQuantityKind> {
+	private static class BeanQuantityKindFactorySwitch extends QudvSwitch<IBeanQuantityKind<? extends AQuantityKind>> {
 		@Override
-		public IBeanQuantityKind caseDerivedQuantityKind(DerivedQuantityKind object) {
+		public IBeanQuantityKind<? extends AQuantityKind> caseDerivedQuantityKind(DerivedQuantityKind object) {
 			return new BeanQuantityKindDerived();
 		}
 		
 		@Override
-		public IBeanQuantityKind caseSimpleQuantityKind(SimpleQuantityKind object) {
+		public IBeanQuantityKind<? extends AQuantityKind> caseSimpleQuantityKind(SimpleQuantityKind object) {
 			return new BeanQuantityKindSimple();
 		}
 	}

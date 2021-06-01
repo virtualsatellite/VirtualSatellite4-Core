@@ -15,11 +15,11 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind;
+import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
 
-public class ABeanQuantityKind<QK_TYPE extends AQuantityKind> implements IBeanQuantityKind {
+public class ABeanQuantityKind<QK_TYPE extends AQuantityKind> implements IBeanQuantityKind<QK_TYPE> {
 
 	protected QK_TYPE quantityKind;
-	// TODO: change interface similar to unit
 	
 	public ABeanQuantityKind() { }
 	
@@ -29,15 +29,24 @@ public class ABeanQuantityKind<QK_TYPE extends AQuantityKind> implements IBeanQu
 	}
 	
 	@Override
-	public AQuantityKind getQuantityKind() {
+	public AQuantityKind getAQuantityKind() {
 		return quantityKind;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void setQuantityKind(AQuantityKind quantityKind) {
+	public void setAQuantityKind(AQuantityKind quantityKind) {
 		this.quantityKind = (QK_TYPE) quantityKind;
+	}
 
+	@Override
+	public QK_TYPE getQuantityKind() {
+		return quantityKind;
+	}
+
+	@Override
+	public void setQuantityKind(QK_TYPE quantityKind) {
+		this.quantityKind = quantityKind;
 	}
 
 	@Override
@@ -67,7 +76,12 @@ public class ABeanQuantityKind<QK_TYPE extends AQuantityKind> implements IBeanQu
 
 	@Override
 	public void setSymbol(String symbol) {
-		quantityKind.getSymbol();
+		quantityKind.setSymbol(symbol);
+	}
+
+	@Override
+	public Command setSymbol(EditingDomain ed, String symbol) {
+		return SetCommand.create(ed, quantityKind, QudvPackage.Literals.AQUANTITY_KIND__SYMBOL, symbol);
 	}
 
 }

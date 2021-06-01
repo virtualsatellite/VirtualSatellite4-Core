@@ -15,6 +15,7 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.concept.types.IBeanUuid;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanQuantityKindFactory;
+import de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind;
 import de.dlr.sc.virsat.model.dvlm.qudv.QuantityKindFactor;
 import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
 
@@ -52,15 +53,15 @@ public class BeanFactorQuantityKind implements IBeanUuid {
 		return SetCommand.create(ed, factor, QudvPackage.Literals.QUANTITY_KIND_FACTOR__EXPONENT, exponent);
 	}
 	
-	IBeanQuantityKind getQuantityKindBean() {
+	IBeanQuantityKind<? extends AQuantityKind> getQuantityKindBean() {
 		return new BeanQuantityKindFactory().getInstanceFor(factor.getQuantityKind());
 	}
 	
-	void setQuantityKindBean(IBeanQuantityKind beanQuantityKind) {
+	void setQuantityKindBean(IBeanQuantityKind<? extends AQuantityKind> beanQuantityKind) {
 		factor.setQuantityKind(beanQuantityKind.getQuantityKind());
 	}
 	
-	public Command setQuantityKindBean(EditingDomain ed, IBeanQuantityKind beanQuantityKind) {
+	public Command setQuantityKindBean(EditingDomain ed, IBeanQuantityKind<? extends AQuantityKind> beanQuantityKind) {
 		return SetCommand.create(ed, factor, QudvPackage.Literals.QUANTITY_KIND_FACTOR__QUANTITY_KIND, beanQuantityKind.getQuantityKind());
 	}
 }
