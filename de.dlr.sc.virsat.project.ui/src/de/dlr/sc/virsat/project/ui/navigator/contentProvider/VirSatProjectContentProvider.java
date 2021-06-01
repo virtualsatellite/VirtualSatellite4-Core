@@ -28,6 +28,7 @@ import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.calculation.AExpression;
 import de.dlr.sc.virsat.model.dvlm.calculation.Equation;
 import de.dlr.sc.virsat.model.dvlm.calculation.EquationSection;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.provider.DVLMCategoriesItemProviderAdapterFactory;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.general.provider.GeneralItemProviderAdapterFactory;
@@ -85,9 +86,18 @@ public class VirSatProjectContentProvider extends VirSatTransactionalAdapterFact
 						!(child instanceof EquationSection)
 					&&	!(child instanceof Equation)
 					&&  !(child instanceof AExpression)
-					&&  !(child instanceof Concept)
-				).toArray();
+					&&  !(child instanceof Concept))
+					.map(child -> {
+						if (child instanceof ComposedPropertyInstance) {
+							ComposedPropertyInstance cpi = (ComposedPropertyInstance) child;
+							return cpi.getTypeInstance();
+						}
+						return child;
+					})
+					.toArray();
 				setResult(result);
+				
+				
 			}
 		});
 	}

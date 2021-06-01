@@ -12,6 +12,7 @@ package de.dlr.sc.virsat.server.repository;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
@@ -22,7 +23,10 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -31,6 +35,8 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.revwalk.RevCommit;
@@ -38,9 +44,16 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
+import de.dlr.sc.virsat.model.dvlm.DVLMPackage;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
+import de.dlr.sc.virsat.project.resources.command.CreateSeiResourceAndFileCommand;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 import de.dlr.sc.virsat.project.test.AProjectTestCase;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
+import de.dlr.sc.virsat.server.test.VersionControlTestHelper;
 import de.dlr.sc.virsat.team.Activator;
 import de.dlr.sc.virsat.team.VersionControlSystem;
 import de.dlr.sc.virsat.team.git.VirSatGitVersionControlBackend;
@@ -74,7 +87,7 @@ public class ServerRepositoryTest extends AProjectTestCase {
 		
 		testRepoConfig = new RepositoryConfiguration(
 			TEST_PROJECT_NAME,
-			"",
+			TEST_PROJECT_NAME,
 			pathRepoRemote.toUri().toString(),
 			VersionControlSystem.GIT,
 			"",
@@ -179,7 +192,7 @@ public class ServerRepositoryTest extends AProjectTestCase {
 	}
 	
 	@Test
-	public void testSyncProject() throws Exception {
+	public void testSyncRepository() throws Exception {
 		ServerRepository testServerRepository = new ServerRepository(localRepoHome, testRepoConfig);
 		testServerRepository.checkoutRepository();
 
@@ -195,6 +208,76 @@ public class ServerRepositoryTest extends AProjectTestCase {
 		
 		assertThat("Commit before pull message expected", logAfterSync.getFullMessage(),
 				containsString(VirSatGitVersionControlBackend.BACKEND_REPOSITORY_COMMIT_PULL_MESSAGE));
+	}
+	
+	@Test
+	public void testSyncRepositoryModelChanges() throws Exception {
+		// This test case tests the server synchronization with the following steps:
+		// 1. Checkout a repository, setup a sei with an dangling se,
+		//    synchronize it with the remote, the project should not be dirty now
+		// 2. Synchronize again, this should not create any changes/commit because local
+		//    and remote should not have changed
+		// 3. Checkout the remote in a second local repository, change the seis name one the file system level
+		//    in the second repository, push the changes and assert the state before synchronizing
+		// 4. Synchronize again, this should pull the changes, the name of the sei in the model should have changed 
+		//    and the dangling reference to the se should be removed by the builders after reloading
+		
+		ServerRepository testServerRepository = new ServerRepository(localRepoHome, testRepoConfig);
+		testServerRepository.checkoutRepository();
+		
+		String testString = "test";
+		StructuralElement testSe = StructuralFactory.eINSTANCE.createStructuralElement();
+		testSe.setIsRootStructuralElement(true);
+		testSe.setName("se");
+		StructuralElementInstance testSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		testSei.setType(testSe);
+		testSei.setName(testString);
+		VirSatTransactionalEditingDomain ed = testServerRepository.getEd();
+		
+		Command addSeiToRepo = AddCommand.create(ed, ed.getResourceSet().getRepository(), 
+				DVLMPackage.eINSTANCE.getRepository_RootEntities(), testSei);
+		ed.getCommandStack().execute(addSeiToRepo);
+		Command createSei = new CreateSeiResourceAndFileCommand(ed.getResourceSet(), testSei);
+		ed.getCommandStack().execute(createSei);
+
+		String seiResource = testSei.eResource().getURI().toPlatformString(false);
+		
+		testServerRepository.syncRepository();
+		assertFalse(ed.isDirty());
+		int initialCommits = VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath());
+		
+		// No changes don't create a commit
+		testServerRepository.syncRepository();
+		assertEquals("No new commit", initialCommits, VersionControlTestHelper.countCommits(pathRepoRemote.toFile()));
+		
+		// Checkout the remote again and create a change that has to be 
+		// resolved in the writeTo method
+		Path localRepo = VirSatFileUtils.createAutoDeleteTempDirectory("localRepo");
+		Git git = Git.cloneRepository()
+				.setDirectory(localRepo.toFile())
+				.setURI(testServerRepository.getRepositoryConfiguration().getRemoteUri())
+				.call();
+		
+		String newString = "new";
+		Path seiPathInLocal = Paths.get(localRepo.toString(), seiResource);
+		String content = new String(Files.readAllBytes(seiPathInLocal), StandardCharsets.UTF_8);
+		content = content.replaceAll(testString, newString);
+		Files.write(seiPathInLocal, content.getBytes(StandardCharsets.UTF_8));
+		
+		git.add().addFilepattern(".").call();
+		git.commit().setAll(true).setMessage("Added file").call();
+		git.push().call();
+
+		// Assert state before sync
+		assertEquals(testString, testSei.getName());
+		assertEquals(testSe, testSei.getType());
+		
+		// Sync with remote
+		testServerRepository.syncRepository();
+		assertEquals("Two new commits", initialCommits + 2, VersionControlTestHelper.countCommits(pathRepoRemote.toFile()));
+		StructuralElementInstance sei = ed.getResourceSet().getRepository().getRootEntities().get(0);
+		assertEquals("Name changed", newString, sei.getName());
+		assertNull("Dangling reference removed by builders", sei.getType());
 	}
 	
 	@Test

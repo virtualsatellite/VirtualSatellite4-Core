@@ -13,6 +13,9 @@ package de.dlr.sc.virsat.model.extension.requirements.model;
 // * Import Statements
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+
+import javax.xml.bind.annotation.XmlType;
+
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 
 // *****************************************************************
@@ -27,6 +30,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
  * Attribute definition for requirements
  * 
  */
+@XmlType(name = ARequirementAttribute.FULL_QUALIFIED_CATEGORY_NAME)
 public  class RequirementAttribute extends ARequirementAttribute {
 	
 	/**

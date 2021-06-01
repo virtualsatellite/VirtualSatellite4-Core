@@ -1,10 +1,11 @@
 
-Lists of 8 third-party dependencies.
-     (BSD License) curvesapi (com.github.virtuald:curvesapi:1.03 - https://github.com/virtuald/curvesapi)
+Lists of 9 third-party dependencies.
+     (BSD License) curvesapi (com.github.virtuald:curvesapi:1.04 - https://github.com/virtuald/curvesapi)
      (Apache 2.0) Apache Commons Codec (commons-codec:commons-codec:1.10 - http://commons.apache.org/proper/commons-codec/)
-     (Apache 2.0) Apache POI (org.apache.poi:poi:3.14 - http://poi.apache.org/)
-     (Apache 2.0) Apache POI (org.apache.poi:poi-ooxml:3.14 - http://poi.apache.org/)
-     (Apache 2.0) Apache POI (org.apache.poi:poi-ooxml-schemas:3.14 - http://poi.apache.org/)
-     (Apache 2.0) Apache POI (org.apache.poi:poi-scratchpad:3.14 - http://poi.apache.org/)
+     (Apache 2.0) Apache Commons Collections (org.apache.commons:commons-collections4:4.1 - http://commons.apache.org/proper/commons-collections/)
+     (Apache 2.0) Apache POI (org.apache.poi:poi:3.17 - http://poi.apache.org/)
+     (Apache 2.0) Apache POI (org.apache.poi:poi-ooxml:3.17 - http://poi.apache.org/)
+     (Apache 2.0) Apache POI (org.apache.poi:poi-ooxml-schemas:3.17 - http://poi.apache.org/)
+     (Apache 2.0) Apache POI (org.apache.poi:poi-scratchpad:3.17 - http://poi.apache.org/)
      (Apache 2.0) XmlBeans (org.apache.xmlbeans:xmlbeans:2.6.0 - http://xmlbeans.apache.org)
      (Apache 2.0) StAX API (stax:stax-api:1.0.1 - http://stax.codehaus.org/)

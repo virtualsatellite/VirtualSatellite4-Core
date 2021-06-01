@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import javax.ws.rs.WebApplicationException;
@@ -33,10 +32,8 @@ import javax.xml.bind.JAXBException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.AddCommand;
-import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.NoHeadException;
-import org.eclipse.jgit.revwalk.RevCommit;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -59,7 +56,9 @@ public class TransactionalJsonProviderTest extends AServerRepositoryTest {
 	private Class<?> type;
 	private Set<Class<?>> beanClass = new HashSet<>();
 	private MediaType mediaType;
-	private String testString = "test";
+	private String testString = "testString";
+	private String newString = "new";	
+	private StructuralElementInstance testSei;
 
 	@Before
 	public void setUp() throws Exception {
@@ -75,7 +74,7 @@ public class TransactionalJsonProviderTest extends AServerRepositoryTest {
 		testSe.setIsRootStructuralElement(true);
 		testSe.setName("testSe");
 
-		StructuralElementInstance testSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		testSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
 		testSei.setType(testSe);
 		testSei.setName(testString);
 		
@@ -94,12 +93,6 @@ public class TransactionalJsonProviderTest extends AServerRepositoryTest {
 		beanClass.add(type);
 		
 		mediaType = MediaType.APPLICATION_JSON_TYPE;
-		
-		// Initial commit to have a valid HEAD
-		Git git = Git.open(testServerRepository.getLocalRepositoryPath());
-		git.add().addFilepattern(".").call();
-		git.commit().setAll(true).setMessage("Initial commit").call();
-		git.push().call();
 	}
 	
 	@After
@@ -115,7 +108,7 @@ public class TransactionalJsonProviderTest extends AServerRepositoryTest {
 	 * @throws WebApplicationException
 	 * @throws IOException
 	 */
-	private String writeToAndAssert() throws WebApplicationException, IOException {
+	private String writeToAndAssert(String testString) throws WebApplicationException, IOException {
 		OutputStream entityStream = new ByteArrayOutputStream();
 		provider.writeTo(testBean, type, type, null, mediaType, (MultivaluedMap<String, Object>) null, entityStream);
 		
@@ -127,56 +120,29 @@ public class TransactionalJsonProviderTest extends AServerRepositoryTest {
 
 	// Test the marshalling
 	@Test
-	public void testWriteTo() throws WebApplicationException, IOException {
-		writeToAndAssert();
-	}
-	
-	/**
-	 * Open the remote repository and count the commits
-	 * @return number of commits in remote
-	 * @throws IOException
-	 * @throws NoHeadException
-	 * @throws GitAPIException
-	 * @throws InterruptedException
-	 */
-	private int countCommits() throws IOException, NoHeadException, GitAPIException, InterruptedException {
-		Git git = Git.open(pathRepoRemote.toFile());
-		Iterator<RevCommit> iterator = git.log().call().iterator();
-		int commits = 0;
-		while (iterator.hasNext()) {
-			iterator.next();
-			commits++;
-		}
-		git.close();
-		return commits;
+	public void testWriteTo() throws WebApplicationException, IOException, NoHeadException, GitAPIException, InterruptedException {
+		writeToAndAssert(testString);
 	}
 	
 	// Test the unmarshalling
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testReadFrom() throws WebApplicationException, IOException, NoHeadException, GitAPIException, InterruptedException {
-
-		int initialCommits = countCommits();
 		
-		String output = writeToAndAssert();
+		String output = writeToAndAssert(testString);
 		
-		// No changes don't create a commit
-		StringBuffer buf = new StringBuffer(output);
-		InputStream entityStream = new ByteArrayInputStream(buf.toString().getBytes());
+		// Write did not cause any changes
+		InputStream entityStream = new ByteArrayInputStream(output.getBytes());
 		provider.readFrom((Class<Object>) type, type, null, mediaType, null, entityStream);
 		
 		assertEquals(testString, testBean.getName());
-		assertEquals("No new commit", initialCommits, countCommits());
 		
-		// Changes result in a commit
-		String newValue = "new";
-		output = output.replace(testString, newValue);
-		buf = new StringBuffer(output);
-		entityStream = new ByteArrayInputStream(buf.toString().getBytes());
+		// Changes
+		output = output.replace(testString, newString);
+		entityStream = new ByteArrayInputStream(output.getBytes());
 		provider.readFrom((Class<Object>) type, type, null, mediaType, null, entityStream);
 		
-		assertEquals(newValue, testBean.getName());
-		assertEquals("One new commit", initialCommits + 1, countCommits());
+		assertEquals(newString, testBean.getName());
 	}
 
 	@Test

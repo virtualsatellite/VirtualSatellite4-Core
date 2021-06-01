@@ -13,6 +13,9 @@ package de.dlr.sc.virsat.model.extension.ps.model;
 // * Import Statements
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+
+import javax.xml.bind.annotation.XmlType;
+
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 
 // *****************************************************************
@@ -27,6 +30,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
  * A component representing the specification of it
  * 
  */	
+@XmlType(name = AElementDefinition.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME)
 public class ElementDefinition extends AElementDefinition {
 	
 	/**

@@ -8,9 +8,27 @@
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
  Concept de.dlr.sc.virsat.model.extension.budget.cost displayname "Cost Budget" description "Cost Budget Concept" version 1.0 {
-	
+
+	StructuralElement CostTypesCollection description "A Container to summarize all CostTypes" {
+		IsRootStructuralElement;
+	}	 
+
+	Category CostType shortname CT description "InterfaceTypes such as MIL or CAN to type communication of InterfaceEnds" {
+		Applicable For [CostTypesCollection];
+	}
+
 	Category ACostParameters description "Definition of the equipment cost" {
 		IsAbstract;
+		FloatProperty cost description "The Equipment costs" default 0.0 quantityKind "Dimensionless" unit "Euro";
+		FloatProperty costWithMargin description "The equipment cost plus the safety margin" default 0.0 quantityKind "Dimensionless" unit "Euro";
+		FloatProperty costMargin description "The actual amount of margin cost" default 0.0 quantityKind "Dimensionless" unit "Euro";
+		FloatProperty margin description "The margin to be added as safety factor" default 20.0 quantityKind "Dimensionless" unit "Percent"; 
+				
+	}
+	
+	Category CostTableEntry description "Definition the equipment cost of the type" {
+		Reference type of Type CostType;
+		
 		FloatProperty cost description "The Equipment costs" default 0.0 quantityKind "Dimensionless" unit "Euro";
 		FloatProperty costWithMargin description "The equipment cost plus the safety margin" default 0.0 quantityKind "Dimensionless" unit "Euro";
 		FloatProperty costMargin description "The actual amount of margin cost" default 0.0 quantityKind "Dimensionless" unit "Euro";
@@ -18,21 +36,23 @@
 	}
 	
 	Category CostEquipment extends ACostParameters description "Definition of the equipment cost" {
-		Applicable For All;
-		Cardinality 1;   
+		Applicable For All; 
+		Reference type of Type CostType;
 		
 		Ref:ACostParameters.costWithMargin = ACostParameters.cost * (1 + ACostParameters.margin);
 		Ref:ACostParameters.costMargin = ACostParameters.costWithMargin - ACostParameters.cost;
 	} 
 	
-	Category CostSummary extends ACostParameters description "Summary of all nested equipment masses" {
+	Category CostSummary extends ACostParameters description "Summary of all nested equipment costs" {
 		Applicable For All;
 		Cardinality 1;
+		
+		Type costTable[] of Category CostTableEntry;
 		
 		Ref:ACostParameters.cost = summary{ACostParameters.cost};
 		Ref:ACostParameters.costWithMargin = summary{ACostParameters.costWithMargin};
 		Ref:ACostParameters.costMargin = ACostParameters.costWithMargin - ACostParameters.cost;
 		Ref:ACostParameters.margin = ACostParameters.costMargin / ACostParameters.cost;
-	} 
+	}
 }
 

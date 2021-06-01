@@ -63,9 +63,10 @@ public class ServerRepoHelper {
 	
 	public static void registerRepositoryConfiguration(RepositoryConfiguration repositoryConfiguration) throws URISyntaxException, IOException {
 		ServerRepository serverRepository = new ServerRepository(new File(ServerConfiguration.getProjectRepositoriesDir()), repositoryConfiguration);
-		RepoRegistry.getInstance().addRepository(repositoryConfiguration.getProjectName(), serverRepository);
-		
 		saveRepositoryConfiguration(repositoryConfiguration);
+		
+		// Register the repo only if saving the configuration did not throw an error
+		RepoRegistry.getInstance().addRepository(repositoryConfiguration.getProjectName(), serverRepository);
 	}
 	
 	/**

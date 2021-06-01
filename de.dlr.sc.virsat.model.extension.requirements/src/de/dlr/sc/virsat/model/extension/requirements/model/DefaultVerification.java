@@ -14,6 +14,8 @@ package de.dlr.sc.virsat.model.extension.requirements.model;
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 
+import javax.xml.bind.annotation.XmlType;
+
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -32,6 +34,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
  * 
  * 
  */
+@XmlType(name = ADefaultVerification.FULL_QUALIFIED_CATEGORY_NAME)
 public  class DefaultVerification extends ADefaultVerification {
 	
 	/**

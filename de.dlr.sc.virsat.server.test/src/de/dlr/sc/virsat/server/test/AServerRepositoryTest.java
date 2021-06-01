@@ -44,7 +44,7 @@ public abstract class AServerRepositoryTest extends AJettyServerTest {
 		VersionControlSystem backend = VersionControlSystem.GIT;
 		String username = "";
 		String password = "";
-		String localPath = "";
+		String localPath = projectName;
 
 		RepositoryConfiguration testProjectConfiguration = new RepositoryConfiguration(projectName, localPath, uri, backend, username, password);
 

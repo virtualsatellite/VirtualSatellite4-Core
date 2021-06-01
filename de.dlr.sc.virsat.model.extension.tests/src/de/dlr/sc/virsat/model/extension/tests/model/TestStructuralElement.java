@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.tests.model;
 
+import javax.xml.bind.annotation.XmlType;
+
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 // *****************************************************************
 // * Import Statements
@@ -27,6 +29,7 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
  * StructuralElement for testing code generator
  * 
  */	
+@XmlType(name = ATestStructuralElement.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME)
 public class TestStructuralElement extends ATestStructuralElement {
 	
 	/**

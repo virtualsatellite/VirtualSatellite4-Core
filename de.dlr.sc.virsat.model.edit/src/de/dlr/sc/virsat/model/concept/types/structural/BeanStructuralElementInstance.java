@@ -10,12 +10,15 @@
 package de.dlr.sc.virsat.model.concept.types.structural;
 
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import io.swagger.annotations.ApiModel;
 
 /**
  * Convenience class to access CAs and Properties of a Sei more easily
  * @author fisc_ph
  *
  */
+@ApiModel(description = "Convenience bean SEI that can be used for every concrete SEI."
+		+ " Instances of this only contain the fields of ABeanStructuralElement.")
 public class BeanStructuralElementInstance extends ABeanStructuralElementInstance {
 
 	/**

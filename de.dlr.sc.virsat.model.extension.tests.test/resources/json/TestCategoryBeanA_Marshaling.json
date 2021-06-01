@@ -1,5 +1,5 @@
 {
-	"type" :"testCategoryBeanA",
-	"uuid" :"f34d30b0-80f5-4c96-864f-29ab4d3ae9f2",
-	"name" :"TestCategoryBeanA"
+   "type" : "de.dlr.sc.virsat.model.extension.tests.TestCategoryBeanA",
+   "uuid" : "f34d30b0-80f5-4c96-864f-29ab4d3ae9f2",
+   "name" : "TestCategoryBeanA"
 }

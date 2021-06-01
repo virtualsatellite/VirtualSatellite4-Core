@@ -48,6 +48,7 @@ import de.dlr.sc.virsat.model.concept.project.filecontent.ConceptPluginExampleCo
 import de.dlr.sc.virsat.model.concept.project.filecontent.ConceptPluginManifestGeneratorTest;
 import de.dlr.sc.virsat.model.concept.project.filecontent.ConceptPluginUiBuildPropertiesGeneratorTest;
 import de.dlr.sc.virsat.model.concept.project.filecontent.ConceptPluginUiManifestGeneratorTest;
+import de.dlr.sc.virsat.model.concept.resources.ConceptResourceLoaderTest;
 import junit.framework.JUnit4TestAdapter;
 
 /**
@@ -56,6 +57,7 @@ import junit.framework.JUnit4TestAdapter;
 @RunWith(Suite.class)
 
 @SuiteClasses({
+				ConceptResourceLoaderTest.class,
 				ConceptLanguageTest.class,
 				GenerateDmfCategoriesTest.class,
 				GenerateStructuralElementBeansTest.class,

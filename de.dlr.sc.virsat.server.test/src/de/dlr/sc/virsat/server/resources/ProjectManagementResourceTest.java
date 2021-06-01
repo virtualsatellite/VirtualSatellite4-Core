@@ -19,9 +19,11 @@ import java.util.List;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -113,6 +115,7 @@ public class ProjectManagementResourceTest extends AJettyServerTest {
 				.path(ProjectManagementResource.PATH)
 				.path("/nonExistingProject")
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, ADMIN_HEADER)
 				.accept(MediaType.APPLICATION_JSON)
 				.get();
 		
@@ -126,6 +129,7 @@ public class ProjectManagementResourceTest extends AJettyServerTest {
 				.path(ProjectManagementResource.PATH)
 				.path("/someProject")
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, ADMIN_HEADER)
 				.put(Entity.json("{\"name\":\"raspberry\"}"));
 		
 		assertEquals(Response.Status.BAD_REQUEST, response.getStatusInfo().toEnum());
@@ -138,36 +142,84 @@ public class ProjectManagementResourceTest extends AJettyServerTest {
 		
 		assertEquals(Response.Status.BAD_REQUEST, response.getStatusInfo().toEnum());
 	}
+	
+	@Test
+	public void testAuthentication() {
+		assertEquals(HttpStatus.FORBIDDEN_403, getAllProjectsRequestResponse(USER_NO_REPO_HEADER).getStatus());
+		
+		assertEquals(HttpStatus.FORBIDDEN_403, getAllProjectsRequestResponse(USER_WITH_REPO_HEADER).getStatus());
+		
+		assertEquals(HttpStatus.OK_200, getAllProjectsRequestResponse(ADMIN_HEADER).getStatus());
+	}
 
+	/**
+	 * Put request to update the configuration of a project identified by its name
+	 * @param projectName to identify the project
+	 * @param configuration new configuration
+	 * @return Response
+	 */
 	private Response putRequest(String projectName, RepositoryConfiguration configuration) {
 		return webTarget.path(RepoManagementServlet.MANAGEMENT_API)
 				.path(ProjectManagementResource.PATH)
 				.path("/" + projectName)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, ADMIN_HEADER)
 				.put(Entity.entity(configuration, MediaType.APPLICATION_JSON));
 	}
 
+	/**
+	 * Get request to access the configuration of a project identified by its name
+	 * @param projectName to identify the project
+	 * @return RepositoryConfiguration
+	 */
 	private RepositoryConfiguration getRequest(String projectName) {
 		return webTarget.path(RepoManagementServlet.MANAGEMENT_API)
-				.path(ProjectManagementResource.PATH).path("/" + projectName)
+				.path(ProjectManagementResource.PATH)
+				.path("/" + projectName)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, ADMIN_HEADER)
 				.accept(MediaType.APPLICATION_JSON)
 				.get(RepositoryConfiguration.class);
 	}
 
+	/**
+	 * Delete request to delete the configuration of a project identified by its name
+	 * @param projectName to identify the project
+	 * @return Response
+	 */
 	private Response deleteRequest(String projectName) {
 		return webTarget.path(RepoManagementServlet.MANAGEMENT_API)
 				.path(ProjectManagementResource.PATH)
 				.path("/" + projectName)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, ADMIN_HEADER)
 				.delete();
 	}
 
+	/**
+	 * Get request to get the names of all projects
+	 * @return List<String> containing the names
+	 */
 	private List<String> getAllProjectsRequest() {
 		return webTarget.path(RepoManagementServlet.MANAGEMENT_API)
 				.path(ProjectManagementResource.PATH)
 				.request()
+				.header(HttpHeaders.AUTHORIZATION, ADMIN_HEADER)
 				.accept(MediaType.APPLICATION_JSON)
 				.get(new GenericType<List<String>>() { });
+	}
+	
+	/**
+	 * Get request to get the names of all projects with custom header
+	 * @param header the authorization header
+	 * @return Response
+	 */
+	private Response getAllProjectsRequestResponse(String header) {
+		return webTarget.path(RepoManagementServlet.MANAGEMENT_API)
+				.path(ProjectManagementResource.PATH)
+				.request()
+				.header(HttpHeaders.AUTHORIZATION, header)
+				.accept(MediaType.APPLICATION_JSON)
+				.get();
 	}
 }

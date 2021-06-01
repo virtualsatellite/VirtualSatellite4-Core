@@ -59,5 +59,5 @@ public interface IVirSatVersionControlBackend {
 	 * @param monitor an update monitor
 	 * @throws Exception
 	 */
-	void update(IProject project, IProgressMonitor monitor) throws Exception;
+	VersionControlUpdateResult update(IProject project, IProgressMonitor monitor) throws Exception;
 }

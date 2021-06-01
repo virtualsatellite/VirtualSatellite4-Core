@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: de.dlr.sc.virsat.model.external.tests.edit;singleton:=true
 Automatic-Module-Name: de.dlr.sc.virsat.model.external.tests.edit
-Bundle-Version: 4.12.1.qualifier
+Bundle-Version: 4.13.0.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: de.dlr.sc.virsat.model.external.tests.provider.ExternalModelEditPlugin$Implementation
 Bundle-Vendor: %providerName

@@ -14,10 +14,8 @@ package de.dlr.sc.virsat.model.extension.requirements.model;
 // *****************************************************************
 import javax.xml.bind.annotation.XmlAccessorType;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnum;
 import de.dlr.sc.virsat.model.concept.list.TypeSafeReferencePropertyBeanList;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance;
 import javax.xml.bind.annotation.XmlRootElement;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
@@ -68,12 +66,6 @@ public abstract class ARequirementLink extends GenericCategory implements IBeanC
 	public static final String PROPERTY_SUBJECT = "subject";
 	public static final String PROPERTY_TARGETS = "targets";
 	
-	// Type enumeration value names
-	public static final String TYPE_DependsOn_NAME = "DependsOn";
-	public static final String TYPE_Parent_NAME = "Parent";
-	// Type enumeration values
-	public static final String TYPE_DependsOn_VALUE = "1";
-	public static final String TYPE_Parent_VALUE = "2";
 	
 	
 	// *****************************************************************
@@ -97,36 +89,31 @@ public abstract class ARequirementLink extends GenericCategory implements IBeanC
 	// *****************************************************************
 	// * Attribute: type
 	// *****************************************************************
-	private BeanPropertyEnum type = new BeanPropertyEnum();
+	private BeanPropertyReference<RequirementLinkType> type = new BeanPropertyReference<>();
 	
 	private void safeAccessType() {
-		if (type.getTypeInstance() == null) {
-			type.setTypeInstance((EnumUnitPropertyInstance) helper.getPropertyInstance("type"));
-		}
+		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("type");
+		type.setTypeInstance(propertyInstance);
 	}
 	
-	public Command setType(EditingDomain ed, String value) {
-		safeAccessType();
-		return this.type.setValue(ed, value);
-	}
-	
-	public void setType(String value) {
-		safeAccessType();
-		this.type.setValue(value);
-	}
-	
-	public String getType() {
+	@XmlElement(nillable = true)
+	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
+	public RequirementLinkType getType() {
 		safeAccessType();
 		return type.getValue();
 	}
 	
-	public double getTypeEnum() {
+	public Command setType(EditingDomain ed, RequirementLinkType value) {
 		safeAccessType();
-		return type.getEnumValue();
+		return type.setValue(ed, value);
 	}
 	
-	@XmlElement
-	public BeanPropertyEnum getTypeBean() {
+	public void setType(RequirementLinkType value) {
+		safeAccessType();
+		type.setValue(value);
+	}
+	
+	public BeanPropertyReference<RequirementLinkType> getTypeBean() {
 		safeAccessType();
 		return type;
 	}

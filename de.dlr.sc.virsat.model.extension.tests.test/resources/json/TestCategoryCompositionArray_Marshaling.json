@@ -1,12 +1,12 @@
 {
-   "type" : "testCategoryCompositionArray",
+   "type" : "de.dlr.sc.virsat.model.extension.tests.TestCategoryCompositionArray",
    "uuid" : "f5d016ac-65fa-4b9d-ae94-582d4f73138a",
    "name" : "TestCategoryCompositionArray",
    "testCompositionArrayDynamicBean" : [ {
       "uuid" : "25ed5be7-de0d-4672-95be-8ccce3a7e2e2",
       "propertyType" : "composed",
       "value" : {
-         "type" : "testCategoryAllProperty",
+         "type" : "de.dlr.sc.virsat.model.extension.tests.TestCategoryAllProperty",
          "uuid" : "f34d30b0-80f5-4c96-864f-29ab4d3ae9f4",
          "name" : "TestCategoryAllProperty",
          "testBoolBean" : {
@@ -48,7 +48,7 @@
       "uuid" : "45e18c9d-ef85-4ab8-ba2a-c5916697a0b0",
       "propertyType" : "composed",
       "value" : {
-         "type" : "testCategoryAllProperty",
+         "type" : "de.dlr.sc.virsat.model.extension.tests.TestCategoryAllProperty",
          "uuid" : "f34d30b0-80f5-4c96-864f-29ab4d3ae9f0",
          "name" : "testCompositionArrayStatic",
          "testBoolBean" : {
@@ -89,7 +89,7 @@
       "uuid" : "45e18c9d-ef85-4ab8-ba2a-c5916697a0b1",
       "propertyType" : "composed",
       "value" : {
-         "type" : "testCategoryAllProperty",
+         "type" : "de.dlr.sc.virsat.model.extension.tests.TestCategoryAllProperty",
          "uuid" : "f34d30b0-80f5-4c96-864f-29ab4d3ae9f1",
          "name" : "testCompositionArrayStatic",
          "testBoolBean" : {
@@ -130,7 +130,7 @@
       "uuid" : "45e18c9d-ef85-4ab8-ba2a-c5916697a0b2",
       "propertyType" : "composed",
       "value" : {
-         "type" : "testCategoryAllProperty",
+         "type" : "de.dlr.sc.virsat.model.extension.tests.TestCategoryAllProperty",
          "uuid" : "f34d30b0-80f5-4c96-864f-29ab4d3ae9f2",
          "name" : "testCompositionArrayStatic",
          "testBoolBean" : {
@@ -171,7 +171,7 @@
       "uuid" : "45e18c9d-ef85-4ab8-ba2a-c5916697a0b3",
       "propertyType" : "composed",
       "value" : {
-         "type" : "testCategoryAllProperty",
+         "type" : "de.dlr.sc.virsat.model.extension.tests.TestCategoryAllProperty",
          "uuid" : "f34d30b0-80f5-4c96-864f-29ab4d3ae9f3",
          "name" : "testCompositionArrayStatic",
          "testBoolBean" : {

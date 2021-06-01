@@ -15,7 +15,7 @@
 		<relativePath>../maven/pom.xml</relativePath>
 		<groupId>de.dlr.sc.virsat</groupId>
 		<artifactId>de.dlr.sc.virsat.parent</artifactId>
-		<version>4.12.1-SNAPSHOT</version>
+		<version>4.13.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>de.dlr.sc.virsat.product</artifactId>
@@ -103,14 +103,30 @@
 										<zip destfile="${build.file.core.win32.fullpath}"
 											basedir="./target/products/de.dlr.virsat.core.product/win32/win32/x86_64" />
 										<tar destfile="${build.file.core.linux.fullpath}"
-											basedir="./target/products/de.dlr.virsat.core.product/linux/gtk/x86_64"
-											compression="gzip" />
+											compression="gzip"
+											longfile="gnu" >
+											<tarfileset dir="./target/products/de.dlr.virsat.core.product/linux/gtk/x86_64" >
+												<include name="**" />
+												<exclude name="VirSat4_Core" />
+											</tarfileset>
+											<tarfileset dir="./target/products/de.dlr.virsat.core.product/linux/gtk/x86_64" filemode="755" >
+												<include name="VirSat4_Core" />
+											</tarfileset>
+										</tar>
 										
 										<zip destfile="${build.file.server.win32.fullpath}"
 											basedir="./target/products/de.dlr.virsat.server.product/win32/win32/x86_64" />
 										<tar destfile="${build.file.server.linux.fullpath}"
-											basedir="./target/products/de.dlr.virsat.server.product/linux/gtk/x86_64"
-											compression="gzip" />
+											compression="gzip" 
+											longfile="gnu" >
+											<tarfileset dir="./target/products/de.dlr.virsat.core.product/linux/gtk/x86_64" >
+												<include name="**" />
+												<exclude name="VirSat4_Server" />
+											</tarfileset>
+											<tarfileset dir="./target/products/de.dlr.virsat.core.product/linux/gtk/x86_64" filemode="755" >
+												<include name="VirSat4_Server" />
+											</tarfileset>
+										</tar>
 										
 										<!-- ANT Script Stop -->
 									</target>

@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.statemachines.model;
 
+import javax.xml.bind.annotation.XmlType;
+
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 // *****************************************************************
 // * Import Statements
@@ -27,6 +29,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
  * A state explicitly allows another state
  * 
  */	
+@XmlType(name = AAllowsConstraint.FULL_QUALIFIED_CATEGORY_NAME)
 public  class AllowsConstraint extends AAllowsConstraint {
 	
 	/**

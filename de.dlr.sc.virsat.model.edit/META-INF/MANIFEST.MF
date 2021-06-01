@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: de.dlr.sc.virsat.model.edit;singleton:=true
-Bundle-Version: 4.12.1.qualifier
+Bundle-Version: 4.13.0.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin$Implementation
 Bundle-Vendor: %providerName
@@ -60,7 +60,8 @@ Require-Bundle: org.eclipse.osgi,
  org.eclipse.emf.compare;visibility:=reexport,
  com.google.guava,
  de.dlr.sc.virsat.commons,
- de.dlr.sc.virsat.external.lib.matlabfile
+ de.dlr.sc.virsat.external.lib.matlabfile,
+ de.dlr.sc.virsat.external.lib.swagger,
+ de.dlr.sc.virsat.external.lib.jersey
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: de.dlr.sc.virsat.model.edit
-Import-Package: org.eclipse.persistence.jaxb

@@ -2,7 +2,7 @@
 <feature
       id="de.dlr.sc.virsat.docs.feature"
       label="VirSat Core Documents and Release Notes Feature"
-      version="4.12.1.qualifier"
+      version="4.13.0.qualifier"
       provider-name="DLR (German Aerospace Center)"
       plugin="de.dlr.sc.virsat.branding.ui"
       license-feature="de.dlr.sc.virsat.license.feature">
@@ -21,5 +21,11 @@ by German Aerospace Center (DLR e.V.)
    <license url="%licenseURL">
       %license
    </license>
+
+   <requires>
+      <!-- Ensure that the static server documentation is generated beforehand,
+         because it is included into the server manual -->
+      <import feature="de.dlr.sc.virsat.server.feature" version="4.13.0.qualifier"/>
+   </requires>
 
 </feature>
