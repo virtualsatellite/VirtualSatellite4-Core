@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ASCII"?>
+<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v8/c" xmlns:dvlm_cp="http://www.virsat.sc.dlr.de/dvlm/v8/cp" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppd" name="de.dlr.sc.virsat.model.extension.sequencing" description="Sequencing Concept" displayName="Sequencing">
+  <imports importedNamespace="de.dlr.sc.virsat.model.extension.ps.*"/>
+  <imports importedNamespace="de.dlr.sc.virsat.model.extension.statemachines.*"/>
+  <imports importedNamespace="de.dlr.sc.virsat.model.extension.funcelectrical.*"/>
+  <imports importedNamespace="de.dlr.sc.virsat.model.ext.core.*"/>
+  <categories name="EventToInterfaceEndMapping">
+    <applicableFor href="platform:/resource/de.dlr.sc.virsat.model.extension.ps/concept/concept.concept#de.dlr.sc.virsat.model.extension.ps.ElementDefinition"/>
+    <applicableFor href="platform:/resource/de.dlr.sc.virsat.model.extension.ps/concept/concept.concept#de.dlr.sc.virsat.model.extension.ps.ElementConfiguration"/>
+    <applicableFor href="platform:/resource/de.dlr.sc.virsat.model.extension.ps/concept/concept.concept#de.dlr.sc.virsat.model.extension.ps.ElementOccurence"/>
+    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="event">
+      <referenceType xsi:type="dvlm_cp:Category" href="platform:/resource/de.dlr.sc.virsat.model.extension.statemachines/concept/concept.concept#de.dlr.sc.virsat.model.extension.statemachines.TransitionTriggerEvent"/>
+    </properties>
+    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="interfaceEnd">
+      <referenceType xsi:type="dvlm_cp:Category" href="platform:/resource/de.dlr.sc.virsat.model.extension.funcelectrical/concept/concept.concept#de.dlr.sc.virsat.model.extension.funcelectrical.InterfaceEnd"/>
+    </properties>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
+  <categories name="SequenceEntry">
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="time" quantityKindName="Time" unitName="Second" defaultValue="0"/>
+    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="event">
+      <referenceType xsi:type="dvlm_cp:Category" href="platform:/resource/de.dlr.sc.virsat.model.extension.statemachines/concept/concept.concept#de.dlr.sc.virsat.model.extension.statemachines.TransitionTriggerEvent"/>
+    </properties>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
+  <categories name="Sequence" isApplicableForAll="true">
+    <properties xsi:type="dvlm_cppd:ComposedProperty" name="sequenceEntries" type="de.dlr.sc.virsat.model.extension.sequencing.SequenceEntry"/>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
+</dvlm_c:Concept>
