@@ -12,6 +12,7 @@ package de.dlr.sc.virsat.model.extension.budget.cost.ui.snippet;
 import java.util.Collection;
 import java.util.Map;
 
+import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -42,7 +43,6 @@ public class UiSnippetTableCostSummaryCostTableCostTableEntry extends AUiSnippet
 		implements IUiSnippet {
 	protected StructuralElementInstance sei;
 
-	
 	@Override
 	// created a Button in CostSummary (Update CostEquipment)
 	public void createButtons(FormToolkit toolkit, EditingDomain editingDomain, Composite sectionBody) {
@@ -68,29 +68,14 @@ public class UiSnippetTableCostSummaryCostTableCostTableEntry extends AUiSnippet
 					Map<CostType, CostTableEntry> summaryMap = summaryTypes.summaryTyp(costSummary);
 					// put the Values of the Map in a Collection (mapValues)
 					Collection<CostTableEntry> mapValues = summaryMap.values();
-
-					// Check is the CostTable empty...
-					if (!costSummary.getCostTable().isEmpty()) {
 						
-						// ... is the CostTable NOT empty, clear the CostTable
-						costSummary.getCostTable().clear();
+					costSummary.getCostTable().clear();
 
-						// created a loop and put every Value of the (mapValues) in (values)
-						for (CostTableEntry values : mapValues) {
-							// every one Value become a Command to put the Value to the CostTableEntry
-							org.eclipse.emf.common.command.Command valuesCommand = costSummary.getCostTable()
-									.add(virSatEd, values);
-							virSatEd.getCommandStack().execute(valuesCommand);
-						}
-						// else... the CostTable is empty! put the Values of the Map (mapValues) in the CostTableEntry
-					} else {
-						// created a loop and put every one Value of the (mapValues) in (values)
-						for (CostTableEntry values : mapValues) {
-							// every one Value become a Command to put the Value to the CostTableEntry
-							org.eclipse.emf.common.command.Command valuesCommand = costSummary.getCostTable()
-									.add(virSatEd, values);
-							virSatEd.getCommandStack().execute(valuesCommand);
-						}
+					// created a loop and put every Value of the (mapValues) in (values)
+					for (CostTableEntry values : mapValues) {
+						// every one Value become a Command to put the Value to the CostTableEntry
+						Command valuesCommand = costSummary.getCostTable().add(virSatEd, values);
+						virSatEd.getCommandStack().execute(valuesCommand);
 					}
 				}
 			}
