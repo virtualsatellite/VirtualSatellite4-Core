@@ -9,8 +9,23 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.ui.wizard;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
+
 import org.eclipse.core.resources.IContainer;
+import org.eclipse.equinox.security.storage.ISecurePreferences;
+import org.eclipse.equinox.security.storage.SecurePreferencesFactory;
+import org.eclipse.equinox.security.storage.StorageException;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.lyo.client.OslcClient;
+import org.eclipse.lyo.client.exception.ResourceNotFoundException;
+import org.eclipse.lyo.oslc4j.core.model.ServiceProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -22,6 +37,8 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.extension.requirements.doors.client.DoorsSynchroClient;
+import de.dlr.sc.virsat.model.extension.requirements.doors.client.util.DoorsUtil;
 import de.dlr.sc.virsat.model.extension.requirements.model.ImportConfiguration;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollection;
@@ -39,39 +56,36 @@ public class DoorsConfigurationSelectionPage extends AImportExportPage {
 	private static final String DOORS_PROJECT_NAME_LABEL = "Doors Project Name:";
 	private static final String DOORS_USER_ID_LABEL = "Doors User ID:";
 	private static final String DOORS_PASSWORD_LABEL = "Doors Password:";
-	
+
 	private Text serverUrlField;
 	private Text projectNameField;
 	private Text userIdField;
 	private Text passwordField;
-	
+
 	protected static final int COLUMNS = 2;
 	protected static final int WITH_TEXT = 200;
-	
+
 	protected RequirementType reqType = null;
 
 	/**
 	 * Standard constructor
 	 * 
-	 * @param model
-	 *            the root model
+	 * @param model            the root model
 	 * @param containingWizard the containing wizard
-	 * @param typeReviewPage
-	 * 			  the page that recieves the requirement type
+	 * @param typeReviewPage   the page that receives the requirement type
 	 */
 	protected DoorsConfigurationSelectionPage(IContainer model, DoorsMappingPage typeReviewPage) {
 		super(PAGE_TITEL);
 		setTitle(PAGE_TITEL);
 		setModel(model);
-		setDescription("Please specify a doors connection and a requirement configuration collection to store the configurations in.");
+		setDescription(
+				"Please specify a doors connection and a requirement configuration collection to store the configurations in.");
 	}
 
 	@Override
 	public void createControl(Composite parent) {
 		super.createControl(parent);
-
 		createDoorsPropertiesUI(parent);
-
 		createTreeViewer();
 
 	}
@@ -79,8 +93,7 @@ public class DoorsConfigurationSelectionPage extends AImportExportPage {
 	/**
 	 * Create the UI for ReqIF properties
 	 * 
-	 * @param parent
-	 *            the parent composite
+	 * @param parent the parent composite
 	 */
 	private void createDoorsPropertiesUI(Composite parent) {
 		Composite propertiesComposite = new Composite((Composite) getControl(), SWT.FILL);
@@ -96,7 +109,7 @@ public class DoorsConfigurationSelectionPage extends AImportExportPage {
 		data.horizontalAlignment = SWT.END;
 		data.widthHint = WITH_TEXT;
 		serverUrlField.setLayoutData(data);
-		
+
 		Label projectNameLabel = new Label(propertiesComposite, SWT.NONE);
 		projectNameLabel.setText(DOORS_PROJECT_NAME_LABEL);
 
@@ -105,7 +118,7 @@ public class DoorsConfigurationSelectionPage extends AImportExportPage {
 		data.horizontalAlignment = SWT.END;
 		data.widthHint = WITH_TEXT;
 		projectNameField.setLayoutData(data);
-		
+
 		Label userIdLabel = new Label(propertiesComposite, SWT.NONE);
 		userIdLabel.setText(DOORS_USER_ID_LABEL);
 
@@ -114,11 +127,11 @@ public class DoorsConfigurationSelectionPage extends AImportExportPage {
 		data.horizontalAlignment = SWT.END;
 		data.widthHint = WITH_TEXT;
 		userIdField.setLayoutData(data);
-		
+
 		Label passwordLabel = new Label(propertiesComposite, SWT.NONE);
 		passwordLabel.setText(DOORS_PASSWORD_LABEL);
 
-		passwordField = new Text(propertiesComposite, SWT.SINGLE | SWT.BORDER);
+		passwordField = new Text(propertiesComposite, SWT.SINGLE | SWT.BORDER | SWT.PASSWORD);
 		data = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
 		data.horizontalAlignment = SWT.END;
 		data.widthHint = WITH_TEXT;
@@ -136,9 +149,9 @@ public class DoorsConfigurationSelectionPage extends AImportExportPage {
 		filteredCp.addClassFilter(CategoryAssignment.class);
 		filteredCp.addClassFilter(ArrayInstance.class);
 		filteredCp.addClassFilter(ComposedPropertyInstance.class);
-		filteredCp.addStructuralElementIdFilter(RequirementsConfigurationCollection.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME);
+		filteredCp.addStructuralElementIdFilter(
+				RequirementsConfigurationCollection.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME);
 		filteredCp.addCategoryIdFilter(ImportConfiguration.FULL_QUALIFIED_CATEGORY_NAME);
-
 	}
 
 	@Override
@@ -153,42 +166,87 @@ public class DoorsConfigurationSelectionPage extends AImportExportPage {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Check if specified destination is valid
+	 * 
 	 * @return
 	 */
-	public boolean isDestinationValid() {
-		if (!isDestinationSelected && destinationField == null) {
-			return false;
+	public boolean isDoorsConnectionValid() {
+		String server = serverUrlField.getText();
+		String project = projectNameField.getText();
+		String user = userIdField.getText();
+		String password = passwordField.getText();
+		try {
+			OslcClient client = DoorsUtil.getClient(password, user, server);
+			try {
+				String serviceProviderUrl = DoorsSynchroClient.lookUpServiceProviderUrl(client, project);
+				ServiceProvider serviceProvider = DoorsSynchroClient.getServiceProvider(client, serviceProviderUrl);
+				String title = serviceProvider.getTitle();
+				if (title.equals(project)) {
+					saveUserCredentials(user, password);
+					return true;
+				}
+			} catch (ResourceNotFoundException | URISyntaxException e) {
+				e.printStackTrace();
+			}
+		} catch (KeyManagementException e) {
+			e.printStackTrace();
+		} catch (UnrecoverableKeyException e) {
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (KeyStoreException e) {
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (CertificateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		return false;
 	}
 	
 	/**
-	 * If an existing configuration is selected the wizard can be finished otherwise we need the next side
+	 * 
+	 * @param user
+	 * @param password
+	 */
+	public void saveUserCredentials(String user, String password) {
+		ISecurePreferences securePreferences = SecurePreferencesFactory.getDefault();
+		ISecurePreferences node = securePreferences.node("DoorsNG user credentials");
+		try {
+			node.put("user", user, true);
+			node.put("password", password, true);
+		} catch (StorageException e1) {
+			e1.printStackTrace();
+		}
+	}
+
+	/**
+	 * If an existing configuration is selected the wizard can be finished otherwise
+	 * we need the next side
+	 * 
 	 * @return if wizard can be finished
 	 */
 	public boolean canFinish() {
 		Object selection = getSelection();
 		if (selection instanceof CategoryAssignment) {
 			String categoryFqn = ((CategoryAssignment) selection).getType().getFullQualifiedName();
-			return categoryFqn.equals(ImportConfiguration.FULL_QUALIFIED_CATEGORY_NAME) && isDestinationValid();
+			return categoryFqn.equals(ImportConfiguration.FULL_QUALIFIED_CATEGORY_NAME) && isDoorsConnectionValid();
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean canFlipToNextPage() {
 		return super.canFlipToNextPage() && !canFinish();
 	}
 
-
 	@Override
 	public boolean isComplete() {
-		return isDestinationValid() 
-				&& isCurrentPage() 
-				&& isSelectionValid();
+		return isCurrentPage() && isSelectionValid() && isDoorsConnectionValid();
 	}
 
 	@Override
@@ -204,5 +262,4 @@ public class DoorsConfigurationSelectionPage extends AImportExportPage {
 	public DoorsImportWizard getWizard() {
 		return (DoorsImportWizard) super.getWizard();
 	}
-
 }

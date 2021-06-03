@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/org.eclipse.equinox.security.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/commons-logging.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/httpcore.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/httpclient.jar"/>

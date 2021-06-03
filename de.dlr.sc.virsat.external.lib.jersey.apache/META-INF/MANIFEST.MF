@@ -11,7 +11,8 @@ Automatic-Module-Name: de.dlr.sc.virsat.external.lib.jersey.apache
 Bundle-ClassPath: .,
  externalLib/maven/httpclient.jar,
  externalLib/maven/httpcore.jar,
- externalLib/maven/commons-logging.jar
+ externalLib/maven/commons-logging.jar,
+ externalLib/maven/org.eclipse.equinox.security.jar
 Export-Package: org.apache.commons.logging,
  org.apache.commons.logging.impl,
  org.apache.http,
@@ -54,4 +55,17 @@ Export-Package: org.apache.commons.logging,
  org.apache.http.pool,
  org.apache.http.protocol,
  org.apache.http.ssl,
- org.apache.http.util
+ org.apache.http.util,
+ org.eclipse.equinox.internal.security.auth,
+ org.eclipse.equinox.internal.security.auth.events,
+ org.eclipse.equinox.internal.security.auth.ext.loader,
+ org.eclipse.equinox.internal.security.auth.nls,
+ org.eclipse.equinox.internal.security.credentials,
+ org.eclipse.equinox.internal.security.storage,
+ org.eclipse.equinox.internal.security.storage.friends,
+ org.eclipse.equinox.internal.security.storage.provider,
+ org.eclipse.equinox.security.auth,
+ org.eclipse.equinox.security.auth.credentials,
+ org.eclipse.equinox.security.auth.module,
+ org.eclipse.equinox.security.storage,
+ org.eclipse.equinox.security.storage.provider
