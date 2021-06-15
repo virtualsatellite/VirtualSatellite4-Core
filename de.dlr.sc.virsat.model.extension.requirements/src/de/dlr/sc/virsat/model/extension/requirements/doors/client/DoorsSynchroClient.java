@@ -11,47 +11,28 @@
 package de.dlr.sc.virsat.model.extension.requirements.doors.client;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableKeyException;
-import java.security.cert.CertificateException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Properties;
 
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.Response;
 
-import org.apache.http.conn.ssl.NoopHostnameVerifier;
-import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
-import org.apache.http.ssl.SSLContextBuilder;
-import org.apache.wink.client.ClientResponse;
-import org.eclipse.lyo.client.JEEFormAuthenticator;
 import org.eclipse.lyo.client.OSLCConstants;
 import org.eclipse.lyo.client.OslcClient;
 import org.eclipse.lyo.client.exception.ResourceNotFoundException;
-import org.eclipse.lyo.client.oslc.resources.RmUtil;
 import org.eclipse.lyo.client.query.OslcQuery;
 import org.eclipse.lyo.client.query.OslcQueryParameters;
 import org.eclipse.lyo.client.query.OslcQueryResult;
 import org.eclipse.lyo.oslc.domains.rm.Requirement;
 import org.eclipse.lyo.oslc.domains.rm.RequirementCollection;
-import org.eclipse.lyo.oslc4j.core.exception.OslcCoreApplicationException;
 import org.eclipse.lyo.oslc4j.core.model.CreationFactory;
-import org.eclipse.lyo.oslc4j.core.model.OslcConstants;
+import org.eclipse.lyo.oslc4j.core.model.Link;
 import org.eclipse.lyo.oslc4j.core.model.OslcMediaType;
-import org.eclipse.lyo.oslc4j.core.model.Property;
 import org.eclipse.lyo.oslc4j.core.model.ResourceShape;
 import org.eclipse.lyo.oslc4j.core.model.Service;
 import org.eclipse.lyo.oslc4j.core.model.ServiceProvider;
-import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
-import org.glassfish.jersey.client.ClientConfig;
 
 public class DoorsSynchroClient {
 
@@ -59,37 +40,21 @@ public class DoorsSynchroClient {
 
 	}
 
-	private static final String SERVER_NAME = "https://gk-sl0002.intra.dlr.de:9443/rm/";
+//	private static final String SERVER_NAME = "https://gk-sl0002.intra.dlr.de:9443/rm/";
 	private static final String CATALOG_URL = "https://gk-sl0002.intra.dlr.de:9443/rm/oslc_rm/catalog";
-	private static final String PROJECT_NAME = "MBSE4GK Testprojekt";
+//	private static final String PROJECT_NAME = "MBSE4GK Testprojekt";
+	private static final int SUCCESCFULL_HTTP_STATUS = 200;
 
-	/**
-	 * 
-	 * @param args
-	 * @throws Exception
-	 */
-	public static void main(String[] args) throws Exception {
-		ClientBuilder clientBuilder = configureClientBuilder();
-		OslcClient doorsClient = new OslcClient(clientBuilder);
+	private static ArrayList<RequirementCollection> reqSpecificationsList = new ArrayList<RequirementCollection>();
+	private static HashMap<RequirementCollection, ArrayList<Requirement>> mapOfRequirements = new HashMap<RequirementCollection, ArrayList<Requirement>>();
 
-		String serviceProviderUrl = lookUpServiceProviderUrl(doorsClient, PROJECT_NAME);
-		String queryCapabilityUrl = lookUpQueryCapability(doorsClient, serviceProviderUrl);
-		Response responseserver = doorsClient.getResource(serviceProviderUrl, OslcMediaType.APPLICATION_RDF_XML);
-		ServiceProvider sp = responseserver.readEntity(ServiceProvider.class);
-
-		getResourceShapes(sp, doorsClient);
-
-		queryRequirements(doorsClient, queryCapabilityUrl);
-		queryRequirementsCollection(doorsClient, queryCapabilityUrl);
-	}
-
-	private static String lookUpServiceProviderUrl(OslcClient client, String projectName)
+	public static String lookUpServiceProviderUrl(OslcClient client, String projectName)
 			throws ResourceNotFoundException, IOException, URISyntaxException {
 		String serviceProviderUrl = client.lookupServiceProviderUrl(CATALOG_URL, projectName);
 		return serviceProviderUrl;
 	}
 
-	private static String lookUpQueryCapability(OslcClient client, String serviceProvider)
+	public static String lookUpQueryCapability(OslcClient client, String serviceProvider)
 			throws ResourceNotFoundException, IOException, URISyntaxException {
 		String queryCapabilty = client.lookupQueryCapability(serviceProvider, OSLCConstants.OSLC_RM_V2,
 				OSLCConstants.RM_REQUIREMENT_TYPE);
@@ -98,11 +63,32 @@ public class DoorsSynchroClient {
 
 	/**
 	 * 
+	 * @param client
+	 * @param serviceProviderUrl
+	 * @return
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 * @throws ResourceNotFoundException
+	 */
+	public static ServiceProvider getServiceProvider(OslcClient client, String serverName)
+			throws ResourceNotFoundException, IOException, URISyntaxException {
+		String serviceProviderUrl = lookUpServiceProviderUrl(client, serverName);
+		Response responseServer = client.getResource(serviceProviderUrl, OslcMediaType.APPLICATION_RDF_XML);
+		if (responseServer.getStatus() == SUCCESCFULL_HTTP_STATUS) {
+			ServiceProvider serviceProvider = responseServer.readEntity(ServiceProvider.class);
+			return serviceProvider;
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * 
 	 * @param serviceProvider
 	 * @param client
 	 * @return
 	 */
-	private static ResourceShape getResourceShapes(ServiceProvider serviceProvider, OslcClient client) {
+	public static ArrayList<ResourceShape> getResourceShapes(ServiceProvider serviceProvider, OslcClient client) {
 		for (Service service : serviceProvider.getServices()) {
 			URI domain = service.getDomain();
 			String oslcDomain = OSLCConstants.OSLC_RM_V2;
@@ -115,12 +101,14 @@ public class DoorsSynchroClient {
 									&& resourceType.toString().equals(OSLCConstants.RM_REQUIREMENT_TYPE)) {
 								URI[] instanceShapes = creationFactory.getResourceShapes();
 								if (instanceShapes != null) {
+									ArrayList<ResourceShape> resourceShapes = new ArrayList<ResourceShape>();
 									for (URI typeURI : instanceShapes) {
 										Response response = client.getResource(typeURI.toString(),
 												OSLCConstants.CT_RDF);
 										ResourceShape resourceShape = response.readEntity(ResourceShape.class);
-										return resourceShape;
+										resourceShapes.add(resourceShape);
 									}
+									return resourceShapes;
 								}
 							}
 						}
@@ -135,102 +123,63 @@ public class DoorsSynchroClient {
 	 * 
 	 * @param client
 	 * @param queryCapability
-	 */
-	private static void queryRequirements(OslcClient client, String queryCapability) {
-		OslcQueryParameters queryParams = new OslcQueryParameters();
-		queryParams.setSelect("rdf:property");
-		queryParams.setPrefix(
-				"rdf=<http://www.w3.org/1999/02/22-rdf-syntax-ns%23>,dcterms=<http://purl.org/dc/terms/>,oslc_rm=<http://open-services.net/ns/rm%23>");
-		queryParams.setWhere("rdf:type=<http://open-services.net/ns/rm%23Requirement>");
-		OslcQuery query = new OslcQuery(client, queryCapability, queryParams);
-		OslcQueryResult result = query.submit();
-		parseQuery(result, false);
-	}
-
-	/**
-	 * 
-	 * @param client
-	 * @param queryCapability
+	 * @return
 	 * @return
 	 * @throws IOException
+	 * @throws URISyntaxException
+	 * @throws ResourceNotFoundException
 	 */
-	private static void queryRequirementsCollection(OslcClient client, String queryCapability) throws IOException {
+	public static ArrayList<RequirementCollection> queryRequirementsSpecifications(OslcClient client,
+			String projectName) throws IOException, ResourceNotFoundException, URISyntaxException {
+		String serviceProvider = lookUpServiceProviderUrl(client, projectName);
+		String queryCapability = lookUpQueryCapability(client, serviceProvider);
+
+		// query requirementCollections which are the specifications in virsat
 		OslcQueryParameters queryParams = new OslcQueryParameters();
 		queryParams.setSelect("*");
 		queryParams.setPrefix(
 				"rdf=<http://www.w3.org/1999/02/22-rdf-syntax-ns%23>,dcterms=<http://purl.org/dc/terms/>,oslc_rm=<http://open-services.net/ns/rm%23");
 		queryParams.setWhere("rdf:type=<http://open-services.net/ns/rm%23RequirementCollection>");
+		OslcQuery queryReqCollections = new OslcQuery(client, queryCapability, queryParams);
+		OslcQueryResult result = queryReqCollections.submit();
 
-		OslcQuery query = new OslcQuery(client, queryCapability, queryParams);
-		OslcQueryResult result = query.submit();
-		parseQuery(result, true);
-	}
-
-	/**
-	 * 
-	 * @param result
-	 * @param isRequirementCollection
-	 * @throws OslcCoreApplicationException
-	 */
-	private static void parseQuery(OslcQueryResult result, boolean isRequirementCollection) {
-
-		if (isRequirementCollection) {
-			Iterator<RequirementCollection> requirementCollection = result.getMembers(RequirementCollection.class)
-					.iterator();
-			while (requirementCollection.hasNext()) {
-				RequirementCollection nextRequirement = requirementCollection.next();
-				Field[] attributes = nextRequirement.getClass().getDeclaredFields();
-				for (Field field : attributes) {
-					field.getName();
-				}
-			}
-		} else {
-			Iterator<Requirement> requirement = result.getMembers(Requirement.class).iterator();
-			while (requirement.hasNext()) {
-				Requirement nextRequirement = requirement.next();
-				// get attributes from type
-				Iterator<URI> types = nextRequirement.getTypes().iterator();
-				while (types.hasNext()) {
-					URI reqType = types.next();
-					System.out.println(reqType.getFragment());
-				}
-			}
+		ArrayList<RequirementCollection> reqSpecifications = reqSpecificationsList;
+		Iterator<RequirementCollection> reqCollectionsIterator = result.getMembers(RequirementCollection.class)
+				.iterator();
+		while (reqCollectionsIterator.hasNext()) {
+			RequirementCollection reqCollection = reqCollectionsIterator.next();
+			reqSpecifications.add(reqCollection);
 		}
+		return reqSpecifications;
 	}
 
 	/**
 	 * 
-	 * @return
-	 * @throws NoSuchAlgorithmException
-	 * @throws KeyStoreException
-	 * @throws KeyManagementException
-	 * @throws MalformedURLException
+	 * @param client
+	 * @param projectName
+	 * @throws ResourceNotFoundException
 	 * @throws IOException
-	 * @throws CertificateException
-	 * @throws UnrecoverableKeyException
+	 * @throws URISyntaxException
 	 */
-	private static ClientBuilder configureClientBuilder()
-			throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException, MalformedURLException,
-			IOException, CertificateException, UnrecoverableKeyException {
+	public static void queryRequirements(OslcClient client, String projectName)
+			throws ResourceNotFoundException, IOException, URISyntaxException {
+		for (RequirementCollection reqCollection : reqSpecificationsList) {
 
-		ClientConfig clientConfig = new ClientConfig().connectorProvider(new ApacheConnectorProvider());
-		ClientBuilder clientBuilder = ClientBuilder.newBuilder();
-		clientBuilder.withConfig(clientConfig);
-
-		// Setup SSL support to ignore self-assigned SSL certificates - for testing
-		// only!!
-		SSLContextBuilder sslContextBuilder = new SSLContextBuilder();
-		sslContextBuilder.loadTrustMaterial(TrustSelfSignedStrategy.INSTANCE);
-		clientBuilder.sslContext(sslContextBuilder.build());
-		clientBuilder.hostnameVerifier(NoopHostnameVerifier.INSTANCE);
-
-		// Authenticate
-		String loginPasswordFile = "../../../Requirements/client_virsat/DoorsLogin.txt";
-		String login = Files.readAllLines(Paths.get(loginPasswordFile)).get(0);
-		String password = Files.readAllLines(Paths.get(loginPasswordFile)).get(1);
-		JEEFormAuthenticator authenticator = new JEEFormAuthenticator(SERVER_NAME, login, password);
-		clientBuilder.register(authenticator);
-
-		return clientBuilder;
+			// do another get on the collection to have access to getUses(), which are the
+			// underlying requirements
+			Response requirementGet = client.getResource(reqCollection.getAbout().toURL().toString(),
+					OslcMediaType.APPLICATION_RDF_XML);
+			RequirementCollection requirementCollection = requirementGet.readEntity(RequirementCollection.class);
+			ArrayList<Requirement> listOfRequirements = new ArrayList<Requirement>();
+			if (requirementCollection.getUses() != null) {
+				for (Link uses : requirementCollection.getUses()) {
+					Response reqResource = client.getResource(uses.getValue().toString(),
+							OslcMediaType.APPLICATION_RDF_XML);
+					Requirement req = reqResource.readEntity(Requirement.class);
+					listOfRequirements.add(req);
+				}
+			}
+			mapOfRequirements.put(reqCollection, listOfRequirements);
+		}
 	}
 }
