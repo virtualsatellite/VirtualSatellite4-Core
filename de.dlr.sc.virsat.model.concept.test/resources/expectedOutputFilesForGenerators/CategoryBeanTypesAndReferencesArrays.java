@@ -13,12 +13,14 @@ package testConcept.model;
 // * Import Statements
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import javax.xml.bind.annotation.XmlType;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 
 // *****************************************************************
 // * Class Declaration
 // *****************************************************************
 
+@XmlType(name = ATestCategoryB.FULL_QUALIFIED_CATEGORY_NAME)
 /**
  * Auto Generated Class inheriting from Generator Gap Class
  * 
@@ -53,4 +55,3 @@ public  class TestCategoryB extends ATestCategoryB {
 		super(categoryAssignment);
 	}
 }
-

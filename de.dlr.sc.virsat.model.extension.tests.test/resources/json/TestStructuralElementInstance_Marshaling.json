@@ -1,5 +1,5 @@
 {
-   "type" : "testStructuralElement",
+   "type" : "de.dlr.sc.virsat.model.extension.tests.TestStructuralElement",
    "uuid" : "f2d3ef60-389f-4fec-87a6-bd928da08f2c",
    "name" : "name",
    "parent" : "f2d3ef60-389f-4fec-87a6-bd928da08f2a",
