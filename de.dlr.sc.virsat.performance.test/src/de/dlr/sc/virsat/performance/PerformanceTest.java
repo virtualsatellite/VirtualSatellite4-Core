@@ -26,7 +26,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.EList;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,6 +35,7 @@ import org.junit.runners.Parameterized.Parameters;
 
 import de.dlr.sc.virsat.apps.api.external.ModelAPI;
 import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
+import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
@@ -51,7 +51,21 @@ public class PerformanceTest extends AConceptProjectTestCase {
     public static final int MIN_STUDY_SIZE = 200;
     public static final int MAX_STUDY_SIZE = 10000;
     public static final int STUDY_SIZE_INCREASE_STEP = 200;
-    
+
+	protected ModelAPI modelAPI;
+	protected Concept testConcept;
+
+    /**
+	 * (Study size -> (Measure -> Elapsed Time))
+     */
+    protected static Map<Integer, Map<String, Long>> performanceMeasures;
+
+	/**
+	 * For injecting parameters of a parameterized test
+	 */
+	@Parameter
+	public int testNumberOfElements;
+
     /**
      * Collection of study sizes for parameterized test. These values will be injected into field testNumberOfElements
      * @return collection of arrays of size one containing study sizes
@@ -65,20 +79,7 @@ public class PerformanceTest extends AConceptProjectTestCase {
         return studySizes;
     }
 
-	/*
-	 * (Study size -> (Measure -> Elapsed Time))
-	 */
-	private static Map<Integer, Map<String, Long>> performanceMeasures;
-	
-	private ModelAPI modelAPI;
-	private Concept testConcept;
-
 	@Override
-	public void initializeTimeOutRule() {
-		// No timeout
-	}
-	
-	@Before
 	public void setUp() throws CoreException {
 		super.setUp();
 		addEditingDomainAndRepository();
@@ -96,27 +97,13 @@ public class PerformanceTest extends AConceptProjectTestCase {
 		};
 	}
 
-	/**
-	 * method to create new structural element
-	 * @param name name of the structural element
-	 * @return structural element
-	 * @throws IOException 
-	 */
-	public TestStructuralElement createSE(String name) throws IOException {
-		TestStructuralElement se = new TestStructuralElement(testConcept);
-		se.setName(name);
-		modelAPI.createSeiStorage(se);
-		return se;
+	@Override
+	public void initializeTimeOutRule() {
+		// No timeout
 	}
 
-	@Parameter
-	//CHECKSTYLE:OFF
-	// For injecting parameters of a parameterized test
-	public int testNumberOfElements;
-	//CHECKSTYLE:ON
-	
 	/**
-	 * Before the tests are executed prepare a storage for timing of all tests
+	 * Prepare storage for timing results of all tests
 	 */
 	@BeforeClass
 	public static void init() {
@@ -124,17 +111,15 @@ public class PerformanceTest extends AConceptProjectTestCase {
 	}
 	
 	/**
-	 * Logs a performance measurement result
+	 * After the tests are executed write the test timings into a file
+	 * @throws IOException 
 	 */
-	private void logTime(String measure, long value) {
-		if (!performanceMeasures.containsKey(testNumberOfElements)) {
-			performanceMeasures.put(testNumberOfElements, new LinkedHashMap<>());
-		}
-		assertFalse("No duplicate measures", performanceMeasures.get(testNumberOfElements).containsKey(measure));
-		performanceMeasures.get(testNumberOfElements).put(measure, value);
+	@AfterClass
+	public static void end() throws IOException {
+		Files.write(Paths.get("performanceTestReport.csv"), getPerformanceReportCsv());
 	}
 
-	private static List<String> getPerformanceReportCsv() {
+	protected static List<String> getPerformanceReportCsv() {
 		List<String> result = new ArrayList<>();
 		List<String> measures = new ArrayList<>(performanceMeasures.get(MIN_STUDY_SIZE).keySet());
 		String header = "Number of elements," + String.join(",", measures);
@@ -151,20 +136,27 @@ public class PerformanceTest extends AConceptProjectTestCase {
 		return result;
 	}
 
-	/**
-	 * After the tests are executed write the test timings into a file
-	 * @throws IOException 
-	 */
-	@AfterClass
-	public static void end() throws IOException {
-		Files.write(Paths.get("performanceTestReport.csv"), getPerformanceReportCsv());
-	}
-	
+
 	@Test
 	public final void testSaveAndLoad() throws CoreException, IOException {
 		long start = System.currentTimeMillis();
-		
-		generateRandomTreeWithReferences(testNumberOfElements);
+
+		// Add a category with random values to all SEIs
+		new StudyGenerator() {
+			
+			@Override
+			public IBeanStructuralElementInstance createSei(String name) {
+				IBeanStructuralElementInstance sei = super.createSei(name);
+
+				TestCategoryBase cat = new TestCategoryBase(testConcept);
+				cat.setTestBaseProperty(ThreadLocalRandom.current().nextInt());
+				cat.setTestReference(getRandomPreviousSei().getFirst(TestCategoryBase.class));
+
+				sei.add(cat);
+				return sei;
+			}
+		}
+		.generate();
 		
 		long timestampCreated = System.currentTimeMillis();
 		modelAPI.performInheritance();
@@ -186,7 +178,29 @@ public class PerformanceTest extends AConceptProjectTestCase {
 
 	@Test
 	public final void testInheritance() throws CoreException, IOException {
-		generateRandomTreeWithInheritance(testNumberOfElements);
+
+		// Add random inheritance to the generated SEIs, and a CA only to the root SEI
+		new StudyGenerator() {
+			
+			public IBeanStructuralElementInstance createRootSei(String name) {
+				IBeanStructuralElementInstance sei = super.createSei(name);
+
+				TestCategoryBase cat = new TestCategoryBase(testConcept);
+				cat.setTestBaseProperty(ThreadLocalRandom.current().nextInt());
+				cat.setTestReference((TestCategoryBase) getRandomPreviousSei());
+				sei.add(cat);
+
+				return sei;
+			};
+			
+			public IBeanStructuralElementInstance createSei(String name) {
+				IBeanStructuralElementInstance sei = super.createSei(name);
+				IBeanStructuralElementInstance superSei = getRandomPreviousSei();
+				sei.addSuperSei(superSei);
+				return sei;
+			}
+		}
+		.generate();
 		
 		long timestampCreated = System.currentTimeMillis();
 		modelAPI.performInheritance();
@@ -212,6 +226,36 @@ public class PerformanceTest extends AConceptProjectTestCase {
 		logTime("Reload With Inheritance", timestampAllLoaded - timestampAllSaved);
 	}
 	
+		
+	/**
+	 * Logs a performance measurement result
+	 */
+	private void logTime(String measure, long value) {
+		if (!performanceMeasures.containsKey(testNumberOfElements)) {
+			performanceMeasures.put(testNumberOfElements, new LinkedHashMap<>());
+		}
+		assertFalse("No duplicate measures", performanceMeasures.get(testNumberOfElements).containsKey(measure));
+		performanceMeasures.get(testNumberOfElements).put(measure, value);
+	}
+	
+
+	/**
+	 * Make sure that all SEIs have inherited the same value from root super SEI
+	 */
+	private void assertAllSeisHaveSameInheritedValue() {
+		TestStructuralElement rootSei = modelAPI.getRootSeis(TestStructuralElement.class).get(0);
+		TestCategoryBase rootCat = rootSei.getAll(TestCategoryBase.class).get(0);
+		long rootValue = rootCat.getTestBaseProperty();
+		EList<StructuralElementInstance> allInherited = rootSei.getStructuralElementInstance().getDeepChildren();
+		assertEquals(testNumberOfElements - 1, allInherited.size());
+		for (StructuralElementInstance sei : allInherited) {
+			assertEquals(1, sei.getCategoryAssignments().size());
+			CategoryAssignment ca = sei.getCategoryAssignments().get(0);
+			TestCategoryBase caBean = new TestCategoryBase(ca);
+			assertEquals(rootValue, caBean.getTestBaseProperty());
+		}
+	}
+
 	/**
 	 * Make sure that after changing random inheritance parameters some values are different
 	 * from root super SEI value
@@ -233,23 +277,6 @@ public class PerformanceTest extends AConceptProjectTestCase {
 			}
 		}
 		assertTrue(differentValue);
-	}
-
-	/**
-	 * Make sure that all SEIs have inherited the same value from root super SEI
-	 */
-	private void assertAllSeisHaveSameInheritedValue() {
-		TestStructuralElement rootSei = modelAPI.getRootSeis(TestStructuralElement.class).get(0);
-		TestCategoryBase rootCat = rootSei.getAll(TestCategoryBase.class).get(0);
-		long rootValue = rootCat.getTestBaseProperty();
-		EList<StructuralElementInstance> allInherited = rootSei.getStructuralElementInstance().getDeepChildren();
-		assertEquals(testNumberOfElements - 1, allInherited.size());
-		for (StructuralElementInstance sei : allInherited) {
-			assertEquals(1, sei.getCategoryAssignments().size());
-			CategoryAssignment ca = sei.getCategoryAssignments().get(0);
-			TestCategoryBase caBean = new TestCategoryBase(ca);
-			assertEquals(rootValue, caBean.getTestBaseProperty());
-		}
 	}
 
 	private void changeRandomInheritanceParameters() {
@@ -292,60 +319,55 @@ public class PerformanceTest extends AConceptProjectTestCase {
 		}
 		assertEquals(testNumberOfElements, elementCount);
 	}
-	
-	
-	/**
-	 * method to create random tree with structural element
-	 * @param n size of the tree
-	 * @throws IOException 
-	 */
-	private void generateRandomTreeWithReferences(int n) throws IOException {
-		TestStructuralElement root = createSE("root");
-		TestCategoryBase cat = new TestCategoryBase(testConcept);
-		cat.setTestBaseProperty(ThreadLocalRandom.current().nextInt());
-		root.add(cat);
-		modelAPI.addRootSei(root);
-		List<TestStructuralElement> allElements = new ArrayList<>();
-		allElements.add(root);
-		for (int i = 0; i < n - 1; i++) {
-			TestStructuralElement newElement = createSE("element_" + (i + 1));
-			TestStructuralElement parent = allElements.get(ThreadLocalRandom.current().nextInt(allElements.size()));
-			parent.add(newElement);
 
-			TestStructuralElement referenceTo = allElements.get(ThreadLocalRandom.current().nextInt(allElements.size()));
-			TestCategoryBase referencedCa = referenceTo.getAll(TestCategoryBase.class).get(0);
-			cat = new TestCategoryBase(testConcept);
-			cat.setTestBaseProperty(ThreadLocalRandom.current().nextInt());
-			cat.setTestReference(referencedCa);
-			newElement.add(cat);
-			
-			allElements.add(newElement);
-		}
-	}
 
 	/**
-	 * method to create random tree with inheritance
-	 * @param n size of the tree
-	 * @throws IOException 
+	 * Generator of a study for the test cases
 	 */
-	private void generateRandomTreeWithInheritance(int n) throws IOException {
-		TestStructuralElement root = createSE("root");
-		TestCategoryBase cat = new TestCategoryBase(testConcept);
-		cat.setTestBaseProperty(ThreadLocalRandom.current().nextInt());
-		root.add(cat);
-		modelAPI.addRootSei(root);
-		List<TestStructuralElement> allElements = new ArrayList<>();
-		allElements.add(root);
-		for (int i = 0; i < n - 1; i++) {
-			TestStructuralElement newElement = createSE("element_" + (i + 1));
-			TestStructuralElement parent = allElements.get(ThreadLocalRandom.current().nextInt(allElements.size()));
-			parent.add(newElement);
+	class StudyGenerator {
+		protected List<IBeanStructuralElementInstance> addedElements;
 
-			TestStructuralElement inheritsFrom = allElements.get(ThreadLocalRandom.current().nextInt(allElements.size()));
-			newElement.addSuperSei(inheritsFrom);
+
+		public IBeanStructuralElementInstance createRootSei(String name) {
+			TestStructuralElement sei = new TestStructuralElement(testConcept);
+			sei.setName(name);
+			return sei;
+		}
+
+		public IBeanStructuralElementInstance createSei(String name) {
+			TestStructuralElement se = new TestStructuralElement(testConcept);
+			se.setName(name);
+			return se;
+		}
+		
+		public void generate() throws IOException {
+			addedElements = new ArrayList<>();
+
+			IBeanStructuralElementInstance root = createRootSei("root");
+			modelAPI.createSeiStorage(root);
+			modelAPI.addRootSei(root);
+			addedElements.add(root);
+
+			for (int i = 0; i < testNumberOfElements - 1; i++) {
+				IBeanStructuralElementInstance newElement = createSei("element_" + (i + 1));
+				modelAPI.createSeiStorage(newElement);
+
+				IBeanStructuralElementInstance parent = getRandomPreviousSei();
+				parent.add(newElement);
+
+				addedElements.add(newElement);
+			}
 			
-			allElements.add(newElement);
+		}
+		
+		/**
+		 * @return one of previously generated SEIs or null if nothing has been generated yet
+		 */
+		public IBeanStructuralElementInstance getRandomPreviousSei() {
+			if (addedElements.isEmpty()) {
+				return null;
+			}
+			return addedElements.get(ThreadLocalRandom.current().nextInt(addedElements.size()));
 		}
 	}
-
 }
