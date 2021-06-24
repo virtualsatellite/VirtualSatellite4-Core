@@ -608,7 +608,8 @@ public class InheritanceCopier implements IInheritanceCopier {
 		// Since inheritance is considered to go across trees and references are supposed to stay within trees
 		// we now have to find the common subset of StructuralElements. Therefore identify all SEIs which are part of the current tree.
 		// After that loop over all of them and find out which ones inherit from one of the referenced SEIs in the SuperTRee
-		Set<StructuralElementInstance>  subTreeSeis = getCompleteTree(subSei);
+		StructuralElementInstance rootSei = (StructuralElementInstance) EcoreUtil.getRootContainer(subSei, true);
+		Set<StructuralElementInstance>  subTreeSeis = getCompleteTree(rootSei);
 		
 		for (StructuralElementInstance subTreeSei: subTreeSeis) {
 			if (!Collections.disjoint(subTreeSei.getSuperSeis(), referencedSuperSeis)) {
@@ -627,21 +628,18 @@ public class InheritanceCopier implements IInheritanceCopier {
 	 * @param sei a SEI within the tree
 	 * @return A HashSet with all SEIs which are part of the Tree
 	 */
-	protected Set<StructuralElementInstance> getCompleteTree(StructuralElementInstance sei) {
+	protected Set<StructuralElementInstance> getCompleteTree(StructuralElementInstance rootSei) {
 		Set<StructuralElementInstance> treeSeis = new HashSet<>();
 		
-		StructuralElementInstance rootSei = (StructuralElementInstance) EcoreUtil.getRootContainer(sei, true);
 		treeSeis.add(rootSei);
-		
-		EcoreUtil.getAllContents(rootSei, true).forEachRemaining((iObject) -> {
+		EcoreUtil.getAllProperContents(rootSei, true).forEachRemaining((iObject) -> {
 			if (iObject instanceof StructuralElementInstance) {
 				treeSeis.add((StructuralElementInstance) iObject);
 			}
-		});
+		}); 
 		
 		return treeSeis;
 	}
-	
 	/**
 	 * This method hands back the origin/ root TI in terms of inheritance from a given TI
 	 * @param subTi the SUbTi of which to find the superRootTi
