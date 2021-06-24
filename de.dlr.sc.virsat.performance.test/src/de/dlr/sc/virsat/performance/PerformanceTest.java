@@ -17,42 +17,28 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.rules.Timeout;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
-import de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader;
 import de.dlr.sc.virsat.apps.api.external.ModelAPI;
-import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
-import de.dlr.sc.virsat.model.dvlm.Repository;
+import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.roles.RoleManagement;
-import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
-import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBase;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
-import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
-import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
-import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
-import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 
 /**
  * This class creates study with several element instances and check the system performance
@@ -61,7 +47,7 @@ import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
  *
  */
 @RunWith(Parameterized.class)
-public class PerformanceTest {
+public class PerformanceTest extends AConceptProjectTestCase {
     
     public static final int MIN_STUDY_SIZE = 200;
     public static final int MAX_STUDY_SIZE = 10000;
@@ -80,73 +66,33 @@ public class PerformanceTest {
         return studySizes;
     }
 
-	private static final String TEST_PROJECT_NAME = "PerformanceTestProject";
-
-	public static final String ID_CONCEPT_TEST = "de.dlr.sc.virsat.model.extension.tests";
-
 	private static List<String> performanceMeasuresNoInheritance;
 	private static List<String> performanceMeasuresInheritance;
 	
 	private ModelAPI modelAPI;
 	private Concept testConcept;
-	private IProject testProject; 
-		
+
+	@Override
+	public void initializeTimeOutRule() {
+		// Disable timeout
+		globalTimeout = Timeout.seconds(0);
+	}
+	
 	@Before
-	public void setUp() throws CoreException, IOException {
+	public void setUp() throws CoreException {
+		super.setUp();
+		addEditingDomainAndRepository();
+		activateCoreConcept();
 		
-		UserRegistry.getInstance().setSuperUser(true);
+		// Test concept depends on maturity concept
+		executeAsCommand(() -> loadConceptAndInstallToRepository(de.dlr.sc.virsat.model.extension.maturity.Activator.getPluginId()));
+		testConcept = executeAsCommand(() -> loadConceptAndInstallToRepository(de.dlr.sc.virsat.model.extension.tests.Activator.getPluginId()));
 		
-		IWorkspaceRoot wsRoot = ResourcesPlugin.getWorkspace().getRoot();
-
-		testProject = wsRoot.getProject(TEST_PROJECT_NAME);
-		if (testProject.exists()) {
-			testProject.delete(IResource.ALWAYS_DELETE_PROJECT_CONTENT, null);
-		}
-		testProject.create(null);
-		testProject.open(null);
-		
-		VirSatProjectCommons projectCommons = new VirSatProjectCommons(testProject);
-		projectCommons.createProjectStructure(null);
-		
-		String conceptXmiPluginPath = ID_CONCEPT_TEST + "/concept/concept.xmi";
-	    testConcept = ConceptXmiLoader.loadConceptFromPlugin(conceptXmiPluginPath);
-
-	    
-	    Repository repo = DVLMFactory.eINSTANCE.createRepository();
-	    repo.getActiveConcepts().add(testConcept);
-
-	    RoleManagement roleManage = RolesFactory.eINSTANCE.createRoleManagement();
-	    repo.setRoleManagement(roleManage);
-	    VirSatResourceSet resSet = VirSatResourceSet.createUnmanagedResourceSet(testProject);
-		resSet.getResources().clear();
-		
-	    Resource repoResource = resSet.getRepositoryResource();
-	    repoResource.getContents().clear();
-	    
-	    repoResource.getContents().add(repo);
-	    
-    	repoResource.save(Collections.EMPTY_MAP);
-    	
-    	Resource rmResource = resSet.getRoleManagementResource();
-    	rmResource.getContents().clear();
-    	rmResource.getContents().add(roleManage);
-    	rmResource.save(Collections.EMPTY_MAP);
-		
-		modelAPI = new ModelAPI() {
-				@Override
-				protected void initialize() {
-					resourceSet = resSet;
-				}
-				
-				@Override
-				public Repository getRepository() {
-					return repo;
-				}
+		modelAPI = new ModelAPI() {			
 			@Override
 			public String getCurrentProjectAbsolutePath() {
-				return Paths.get(wsRoot.getLocation().toString(), testProject.getFullPath().toString()).toString();
+				return testProject.getLocation().toString();
 			}
-
 		};
 	}
 
@@ -206,8 +152,10 @@ public class PerformanceTest {
 		
 		long timestampAllSaved = System.currentTimeMillis();
 		
-		testLoadProject();
+		reloadResources();
+		assertProjectHasElements();
 		long timestampAllLoaded = System.currentTimeMillis();
+
 		long timeToCreate = timestampCreated - start;
 		long timeToDoInheritance = timestampInheritance - timestampCreated;
 		long timeToSave = timestampAllSaved - timestampInheritance;
@@ -236,8 +184,10 @@ public class PerformanceTest {
 		
 		long timestampAllSaved = System.currentTimeMillis();
 		
-		testLoadProject();
+		reloadResources();
+		assertProjectHasElements();
 		long timestampAllLoaded = System.currentTimeMillis();
+
 		long timeToCreate = timestampCreated - start;
 		long timeToDoInitialInheritance = timestampInitialInheritance - timestampCreated;
 		long timeToDoSecondInheritance = timestampAfterSecondInheritance - timestampBeforeSecondInheritance;
@@ -319,30 +269,17 @@ public class PerformanceTest {
 			caBean.getTestBasePropertyBean().getTypeInstance().setOverride(true);
 		}
 	}
-	
-	/**
-	 * Reloads the test project
-	 * @throws CoreException 
-	 */
-	public final void testLoadProject() throws CoreException {
-		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
-		IProject testProject = null;
-		for (IProject p : projects) {
-			if (p.getName().equals(TEST_PROJECT_NAME)) {
-				testProject = p;
-			}
-		}
-		testProject.open(null);
 
-		VirSatResourceSet resSet = VirSatResourceSet.getResourceSet(testProject);
-		VirSatTransactionalEditingDomain rsEd = VirSatEditingDomainRegistry.INSTANCE.getEd(testProject);
-		rsEd.reloadAll();
-		Repository repo = resSet.getRepository();
+	public final void reloadResources() {
+		editingDomain.reloadAll();
+		repository = rs.getRepository();
+	}
+	
+	public void assertProjectHasElements() {
 		int elementCount = 0;
-		for (StructuralElementInstance root : repo.getRootEntities()) {
+		for (StructuralElementInstance root : repository.getRootEntities()) {
 			elementCount += 1 + root.getDeepChildren().size();
 		}
-		
 		assertEquals(testNumberOfElements, elementCount);
 	}
 	
