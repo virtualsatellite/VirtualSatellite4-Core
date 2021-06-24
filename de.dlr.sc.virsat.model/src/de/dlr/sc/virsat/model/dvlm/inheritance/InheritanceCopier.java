@@ -12,9 +12,11 @@ package de.dlr.sc.virsat.model.dvlm.inheritance;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -52,6 +54,7 @@ public class InheritanceCopier implements IInheritanceCopier {
 	 * the underlying EcoreCopier and the standard VirSat Access Rights behavior
 	 */
 	public InheritanceCopier() {
+		cacheRootSeiToReferencedSubSeis = new HashMap<>();
 		inheritanceCopier = new EcoreInheritanceCopier();
 		userContext = UserRegistry.getInstance();
 	}
@@ -64,6 +67,7 @@ public class InheritanceCopier implements IInheritanceCopier {
 	 * @param userContext A customized UserContext to verify write Permissions
 	 */
 	public InheritanceCopier(IUserContext userContext) {
+		cacheRootSeiToReferencedSubSeis = new HashMap<>();
 		inheritanceCopier = new EcoreInheritanceCopier();
 		this.userContext = userContext;
 	}
@@ -575,6 +579,7 @@ public class InheritanceCopier implements IInheritanceCopier {
 		return subSeis;
 	}
 
+	private Map<StructuralElementInstance, Set<StructuralElementInstance>> cacheRootSeiToReferencedSubSeis;
 	
 	/**
 	 * Call this method to find out which SEI are or may be referenced by the given SEI. May reference means
@@ -583,7 +588,6 @@ public class InheritanceCopier implements IInheritanceCopier {
 	 * @return a HashSet with all referenced SEIs in the current Tree
 	 */
 	protected Set<StructuralElementInstance> getReferencesInTree(StructuralElementInstance subSei) {
-		Set<StructuralElementInstance> referencedSubSeis = new HashSet<>();
 		Set<StructuralElementInstance> referencedSuperSeis = new HashSet<>();
 		
 		// Find out which SEIs are SuperSEIs to the given ones. See
@@ -609,9 +613,14 @@ public class InheritanceCopier implements IInheritanceCopier {
 		// we now have to find the common subset of StructuralElements. Therefore identify all SEIs which are part of the current tree.
 		// After that loop over all of them and find out which ones inherit from one of the referenced SEIs in the SuperTRee
 		StructuralElementInstance rootSei = (StructuralElementInstance) EcoreUtil.getRootContainer(subSei, true);
-		Set<StructuralElementInstance>  subTreeSeis = getCompleteTree(rootSei);
+		Set<StructuralElementInstance> subTreeSeis = cacheRootSeiToReferencedSubSeis.get(rootSei);
+		if (subTreeSeis == null) {
+			subTreeSeis = getCompleteTree(rootSei);
+			cacheRootSeiToReferencedSubSeis.put(rootSei, subTreeSeis);
+		} 
 		
-		for (StructuralElementInstance subTreeSei: subTreeSeis) {
+		Set<StructuralElementInstance> referencedSubSeis = new HashSet<>();
+		for (StructuralElementInstance subTreeSei : subTreeSeis) {
 			if (!Collections.disjoint(subTreeSei.getSuperSeis(), referencedSuperSeis)) {
 				referencedSubSeis.add(subTreeSei);
 			}
@@ -632,14 +641,11 @@ public class InheritanceCopier implements IInheritanceCopier {
 		Set<StructuralElementInstance> treeSeis = new HashSet<>();
 		
 		treeSeis.add(rootSei);
-		EcoreUtil.getAllProperContents(rootSei, true).forEachRemaining((iObject) -> {
-			if (iObject instanceof StructuralElementInstance) {
-				treeSeis.add((StructuralElementInstance) iObject);
-			}
-		}); 
+		treeSeis.addAll(rootSei.getDeepChildren());
 		
 		return treeSeis;
 	}
+	
 	/**
 	 * This method hands back the origin/ root TI in terms of inheritance from a given TI
 	 * @param subTi the SUbTi of which to find the superRootTi
@@ -732,6 +738,8 @@ public class InheritanceCopier implements IInheritanceCopier {
 	 */
 	@Override
 	public Set<CategoryAssignment> updateAllInOrder(Repository repo, IProgressMonitor monitor) {
+		cacheRootSeiToReferencedSubSeis.clear();
+		
 		final int THREE_TASKS = 3;
 		SubMonitor subMonitor = SubMonitor.convert(monitor, THREE_TASKS);
 		subMonitor.beginTask("Get Inheritance Order", THREE_TASKS);
@@ -759,6 +767,8 @@ public class InheritanceCopier implements IInheritanceCopier {
 	 */
 	@Override
 	public Set<CategoryAssignment> updateInOrderFrom(StructuralElementInstance subSei, Repository repo, IProgressMonitor monitor) {
+		cacheRootSeiToReferencedSubSeis.clear();
+		
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 2);
 		subMonitor.beginTask("Get Inheritance Order", 2);
 		List<StructuralElementInstance> inheritanceOrder = getInheritanceOrder(subSei, repo);
