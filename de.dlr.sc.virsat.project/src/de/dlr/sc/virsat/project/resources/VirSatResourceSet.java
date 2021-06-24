@@ -1271,7 +1271,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 		BasicDiagnostic returnDiagnostic = VirSatEcoreUtil.createDiagnosticOk("Model Diagnostics:");
 		
 		// Now check the state of each eObject if it can be resolved and if it is contained
-		EcoreUtil.getAllProperContents(resource, true).forEachRemaining((object) -> {
+		EcoreUtil.getAllProperContents(resource, false).forEachRemaining((object) -> {
 			if (object instanceof EObject) {
 				EObject eObject = (EObject) object;
 
