@@ -9,7 +9,11 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.ecore.xmi.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
@@ -20,9 +24,14 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
  */
 public class DvlmXMIResourceFactoryImpl extends XMIResourceFactoryImpl implements Resource.Factory {
 
+	Map<String, EObject> idToEObjectMap =  new HashMap<>();
+	
 	@Override
 	public Resource createResource(URI uri) {
-		return new DvlmXMIResourceImpl(uri);
+		DvlmXMIResourceImpl resource = new DvlmXMIResourceImpl(uri);
+		resource.setIntrinsicIDToEObjectMap(idToEObjectMap);
+		
+		return resource;
 	}
 	
 }

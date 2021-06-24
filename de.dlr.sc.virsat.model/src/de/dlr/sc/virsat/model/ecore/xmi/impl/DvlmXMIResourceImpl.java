@@ -44,35 +44,44 @@ public class DvlmXMIResourceImpl extends XMIResourceImpl implements Resource {
 
 	@Override
 	protected EObject getEObjectByID(String id) {
-		final EAttribute eAttributeFqn = GeneralPackage.Literals.IQUALIFIED_NAME__FULL_QUALIFIED_NAME;
-		final String fqnEAttributeFqn = VirSatEcoreUtil.getFullQualifiedAttributeName(eAttributeFqn);
+		EObject returnObject = getIDToEObjectMap().get(id);
 		
-		for (TreeIterator<EObject> i = getAllProperContents(getContents()); i.hasNext();) {			
-			EObject eObject = i.next();
-			// Only handle dynamic EObjects. Static EMF is handled as usual.
-			if (eObject instanceof DynamicEObjectImpl) {
-			    EClass eClass = eObject.eClass();
-			    EAttribute eIDAttribute = eClass.getEIDAttribute();
-		
-			    // if there is no ID attribute nothing more needs to be done
-			    if (eIDAttribute != null) {
-				    String fqnEAttributeCurrent = VirSatEcoreUtil.getFullQualifiedAttributeName(eIDAttribute);
-				    boolean isFqnEattributeFqn = fqnEAttributeCurrent.equals(fqnEAttributeFqn);
-		
-				    // In case the object is of type IQualifedName then we have to act as if we 
-				    // try to get the FQN using the static EMF model
-				    if (isFqnEattributeFqn) {
-				    	String eObjectId = ActiveConceptHelper.getFullQualifiedId(eObject);
-				    	if (id.equals(eObjectId)) {
-				    		return eObject;
-				    	}
+		if (returnObject == null) {
+			
+			final EAttribute eAttributeFqn = GeneralPackage.Literals.IQUALIFIED_NAME__FULL_QUALIFIED_NAME;
+			final String fqnEAttributeFqn = VirSatEcoreUtil.getFullQualifiedAttributeName(eAttributeFqn);
+			
+			for (TreeIterator<EObject> i = getAllProperContents(getContents()); i.hasNext();) {			
+				EObject eObject = i.next();
+				// Only handle dynamic EObjects. Static EMF is handled as usual.
+				if (eObject instanceof DynamicEObjectImpl) {
+				    EClass eClass = eObject.eClass();
+				    EAttribute eIDAttribute = eClass.getEIDAttribute();
+			
+				    // if there is no ID attribute nothing more needs to be done
+				    if (eIDAttribute != null) {
+					    String fqnEAttributeCurrent = VirSatEcoreUtil.getFullQualifiedAttributeName(eIDAttribute);
+					    boolean isFqnEattributeFqn = fqnEAttributeCurrent.equals(fqnEAttributeFqn);
+			
+					    // In case the object is of type IQualifedName then we have to act as if we 
+					    // try to get the FQN using the static EMF model
+					    if (isFqnEattributeFqn) {
+					    	String eObjectId = ActiveConceptHelper.getFullQualifiedId(eObject);
+					    	if (id.equals(eObjectId)) {
+					    		setID(eObject, id);
+					    		return eObject;
+					    	}
+					    }
 				    }
-			    }
+				}
 			}
+			
+			returnObject = super.getEObjectByID(id);
+			setID(returnObject, id);
 		}
 		
 		// All other calls are forwarded to the standard XMIResource functionality
-		return super.getEObjectByID(id);
+		return returnObject;
 	}
 	
 	@Override
