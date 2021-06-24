@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.performance;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -17,7 +18,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.eclipse.core.runtime.CoreException;
@@ -26,7 +29,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.rules.Timeout;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
@@ -41,10 +43,7 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBase;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 
 /**
- * This class creates study with several element instances and check the system performance
- * 
- * @author desh_me
- *
+ * This class creates a study with many elements and tests system performance on different operations
  */
 @RunWith(Parameterized.class)
 public class PerformanceTest extends AConceptProjectTestCase {
@@ -66,16 +65,17 @@ public class PerformanceTest extends AConceptProjectTestCase {
         return studySizes;
     }
 
-	private static List<String> performanceMeasuresNoInheritance;
-	private static List<String> performanceMeasuresInheritance;
+	/*
+	 * (Study size -> (Measure -> Elapsed Time))
+	 */
+	private static Map<Integer, Map<String, Long>> performanceMeasures;
 	
 	private ModelAPI modelAPI;
 	private Concept testConcept;
 
 	@Override
 	public void initializeTimeOutRule() {
-		// Disable timeout
-		globalTimeout = Timeout.seconds(0);
+		// No timeout
 	}
 	
 	@Before
@@ -116,15 +116,39 @@ public class PerformanceTest extends AConceptProjectTestCase {
 	//CHECKSTYLE:ON
 	
 	/**
-	 * Before the tests are executed prepare an array for timing of all tests
+	 * Before the tests are executed prepare a storage for timing of all tests
 	 */
 	@BeforeClass
 	public static void init() {
-		performanceMeasuresNoInheritance = new ArrayList<>();
-		performanceMeasuresNoInheritance.add("Number of elements\tCreate time\tInheritance\tSave time\tLoad time");
+		performanceMeasures = new LinkedHashMap<>();
+	}
+	
+	/**
+	 * Logs a performance measurement result
+	 */
+	private void logTime(String measure, long value) {
+		if (!performanceMeasures.containsKey(testNumberOfElements)) {
+			performanceMeasures.put(testNumberOfElements, new LinkedHashMap<>());
+		}
+		assertFalse("No duplicate measures", performanceMeasures.get(testNumberOfElements).containsKey(measure));
+		performanceMeasures.get(testNumberOfElements).put(measure, value);
+	}
 
-		performanceMeasuresInheritance = new ArrayList<>();
-		performanceMeasuresInheritance.add("Number of elements\tCreate time\tInitial inheritance propagation\tSecond inheritance\tSave time\tLoad time");
+	private static List<String> getPerformanceReportCsv() {
+		List<String> result = new ArrayList<>();
+		List<String> measures = new ArrayList<>(performanceMeasures.get(MIN_STUDY_SIZE).keySet());
+		String header = "Number of elements," + String.join(",", measures);
+		result.add(header);
+		
+		for (Map.Entry<Integer, Map<String, Long>> e : performanceMeasures.entrySet()) {
+			StringBuilder sb = new StringBuilder();
+			sb.append(e.getKey());
+			for (String measure : measures) {
+				sb.append("," + e.getValue().get(measure));
+			}
+			result.add(sb.toString());
+		}
+		return result;
 	}
 
 	/**
@@ -133,8 +157,7 @@ public class PerformanceTest extends AConceptProjectTestCase {
 	 */
 	@AfterClass
 	public static void end() throws IOException {
-		Files.write(Paths.get("performanceTestReport.tsv"), performanceMeasuresNoInheritance);
-		Files.write(Paths.get("performanceTestReportInheritance.tsv"), performanceMeasuresInheritance);
+		Files.write(Paths.get("performanceTestReport.csv"), getPerformanceReportCsv());
 	}
 	
 	@Test
@@ -142,7 +165,6 @@ public class PerformanceTest extends AConceptProjectTestCase {
 		long start = System.currentTimeMillis();
 		
 		generateRandomTreeWithReferences(testNumberOfElements);
-		
 		
 		long timestampCreated = System.currentTimeMillis();
 		modelAPI.performInheritance();
@@ -156,17 +178,14 @@ public class PerformanceTest extends AConceptProjectTestCase {
 		assertProjectHasElements();
 		long timestampAllLoaded = System.currentTimeMillis();
 
-		long timeToCreate = timestampCreated - start;
-		long timeToDoInheritance = timestampInheritance - timestampCreated;
-		long timeToSave = timestampAllSaved - timestampInheritance;
-		long timeToLoad = timestampAllLoaded - timestampAllSaved;
-		performanceMeasuresNoInheritance.add(testNumberOfElements + "\t" + timeToCreate + "\t" + timeToDoInheritance + "\t" + timeToSave + "\t" + timeToLoad);
+		logTime("Create", timestampCreated - start);
+		logTime("Empty Inheritance Propagation", timestampInheritance - timestampCreated);
+		logTime("Save", timestampAllSaved - timestampInheritance);
+		logTime("Reload", timestampAllLoaded - timestampAllSaved);
 	}
 
 	@Test
 	public final void testInheritance() throws CoreException, IOException {
-		long start = System.currentTimeMillis();
-		
 		generateRandomTreeWithInheritance(testNumberOfElements);
 		
 		long timestampCreated = System.currentTimeMillis();
@@ -179,7 +198,7 @@ public class PerformanceTest extends AConceptProjectTestCase {
 		modelAPI.performInheritance();
 		long timestampAfterSecondInheritance = System.currentTimeMillis();
 		assertNotAllSeisHaveSameInheritedValue();
-		long timestampBeforeSave = System.currentTimeMillis();
+
 		modelAPI.saveAll();
 		
 		long timestampAllSaved = System.currentTimeMillis();
@@ -188,12 +207,9 @@ public class PerformanceTest extends AConceptProjectTestCase {
 		assertProjectHasElements();
 		long timestampAllLoaded = System.currentTimeMillis();
 
-		long timeToCreate = timestampCreated - start;
-		long timeToDoInitialInheritance = timestampInitialInheritance - timestampCreated;
-		long timeToDoSecondInheritance = timestampAfterSecondInheritance - timestampBeforeSecondInheritance;
-		long timeToSave = timestampAllSaved - timestampBeforeSave;
-		long timeToLoad = timestampAllLoaded - timestampAllSaved;
-		performanceMeasuresInheritance.add(testNumberOfElements + "\t" + timeToCreate + "\t" + timeToDoInitialInheritance + "\t" + timeToDoSecondInheritance + "\t" + timeToSave + "\t" + timeToLoad);
+		logTime("Initial Inheritance Propagation", timestampInitialInheritance - timestampCreated);
+		logTime("Inheritance Propagation After Change", timestampAfterSecondInheritance - timestampBeforeSecondInheritance);
+		logTime("Reload With Inheritance", timestampAllLoaded - timestampAllSaved);
 	}
 	
 	/**
@@ -236,17 +252,11 @@ public class PerformanceTest extends AConceptProjectTestCase {
 		}
 	}
 
-	/**
-	 * 
-	 */
 	private void changeRandomInheritanceParameters() {
 		changeValueInInheritanceRoot();
 		randomlyChangeOverrideFlagAndInheritedValueInInheritedSeis();
 	}
 
-	/**
-	 * 
-	 */
 	private void changeValueInInheritanceRoot() {
 		TestStructuralElement rootSei = modelAPI.getRootSeis(TestStructuralElement.class).get(0);
 		TestCategoryBase rootCat = rootSei.getAll(TestCategoryBase.class).get(0);
