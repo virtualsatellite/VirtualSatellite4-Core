@@ -54,7 +54,7 @@ public class InheritanceCopier implements IInheritanceCopier {
 	 * the underlying EcoreCopier and the standard VirSat Access Rights behavior
 	 */
 	public InheritanceCopier() {
-		cacheRootSeiToReferencedSubSeis = new HashMap<>();
+		cacheRootSeiToSubTreeSeis = new HashMap<>();
 		inheritanceCopier = new EcoreInheritanceCopier();
 		userContext = UserRegistry.getInstance();
 	}
@@ -67,7 +67,7 @@ public class InheritanceCopier implements IInheritanceCopier {
 	 * @param userContext A customized UserContext to verify write Permissions
 	 */
 	public InheritanceCopier(IUserContext userContext) {
-		cacheRootSeiToReferencedSubSeis = new HashMap<>();
+		cacheRootSeiToSubTreeSeis = new HashMap<>();
 		inheritanceCopier = new EcoreInheritanceCopier();
 		this.userContext = userContext;
 	}
@@ -578,8 +578,6 @@ public class InheritanceCopier implements IInheritanceCopier {
 		
 		return subSeis;
 	}
-
-	private Map<StructuralElementInstance, Set<StructuralElementInstance>> cacheRootSeiToReferencedSubSeis;
 	
 	/**
 	 * Call this method to find out which SEI are or may be referenced by the given SEI. May reference means
@@ -612,13 +610,7 @@ public class InheritanceCopier implements IInheritanceCopier {
 		// Since inheritance is considered to go across trees and references are supposed to stay within trees
 		// we now have to find the common subset of StructuralElements. Therefore identify all SEIs which are part of the current tree.
 		// After that loop over all of them and find out which ones inherit from one of the referenced SEIs in the SuperTRee
-		StructuralElementInstance rootSei = (StructuralElementInstance) EcoreUtil.getRootContainer(subSei, true);
-		Set<StructuralElementInstance> subTreeSeis = cacheRootSeiToReferencedSubSeis.get(rootSei);
-		if (subTreeSeis == null) {
-			subTreeSeis = getCompleteTree(rootSei);
-			cacheRootSeiToReferencedSubSeis.put(rootSei, subTreeSeis);
-		} 
-		
+		Set<StructuralElementInstance> subTreeSeis = getCompleteTree(subSei);
 		Set<StructuralElementInstance> referencedSubSeis = new HashSet<>();
 		for (StructuralElementInstance subTreeSei : subTreeSeis) {
 			if (!Collections.disjoint(subTreeSei.getSuperSeis(), referencedSuperSeis)) {
@@ -632,18 +624,27 @@ public class InheritanceCopier implements IInheritanceCopier {
 		return referencedSubSeis;
 	}
 	
+	
+	private Map<StructuralElementInstance, Set<StructuralElementInstance>> cacheRootSeiToSubTreeSeis;
+	
 	/**
 	 * Call this method to get all SEIs of the current tree
 	 * @param sei a SEI within the tree
 	 * @return A HashSet with all SEIs which are part of the Tree
 	 */
-	protected Set<StructuralElementInstance> getCompleteTree(StructuralElementInstance rootSei) {
-		Set<StructuralElementInstance> treeSeis = new HashSet<>();
+	protected Set<StructuralElementInstance> getCompleteTree(StructuralElementInstance sei) {
+		StructuralElementInstance rootSei = (StructuralElementInstance) EcoreUtil.getRootContainer(sei, true);
+		Set<StructuralElementInstance> subTreeSeis = cacheRootSeiToSubTreeSeis.get(rootSei);
 		
-		treeSeis.add(rootSei);
-		treeSeis.addAll(rootSei.getDeepChildren());
+		if (subTreeSeis == null) {
+			subTreeSeis = new HashSet<>();
+			subTreeSeis.add(rootSei);
+			subTreeSeis.addAll(rootSei.getDeepChildren());
+			
+			cacheRootSeiToSubTreeSeis.put(rootSei, subTreeSeis);
+		} 
 		
-		return treeSeis;
+		return subTreeSeis;
 	}
 	
 	/**
@@ -738,7 +739,7 @@ public class InheritanceCopier implements IInheritanceCopier {
 	 */
 	@Override
 	public Set<CategoryAssignment> updateAllInOrder(Repository repo, IProgressMonitor monitor) {
-		cacheRootSeiToReferencedSubSeis.clear();
+		cacheRootSeiToSubTreeSeis.clear();
 		
 		final int THREE_TASKS = 3;
 		SubMonitor subMonitor = SubMonitor.convert(monitor, THREE_TASKS);
@@ -767,7 +768,7 @@ public class InheritanceCopier implements IInheritanceCopier {
 	 */
 	@Override
 	public Set<CategoryAssignment> updateInOrderFrom(StructuralElementInstance subSei, Repository repo, IProgressMonitor monitor) {
-		cacheRootSeiToReferencedSubSeis.clear();
+		cacheRootSeiToSubTreeSeis.clear();
 		
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 2);
 		subMonitor.beginTask("Get Inheritance Order", 2);
