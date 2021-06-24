@@ -64,7 +64,9 @@ public class PerformanceTest extends AConceptProjectTestCase {
 	 * For injecting parameters of a parameterized test
 	 */
 	@Parameter
+	//CHECKSTYLE:OFF
 	public int testNumberOfElements;
+	//CHECKSTYLE:ON
 
     /**
      * Collection of study sizes for parameterized test. These values will be injected into field testNumberOfElements
@@ -119,6 +121,10 @@ public class PerformanceTest extends AConceptProjectTestCase {
 		Files.write(Paths.get("performanceTestReport.csv"), getPerformanceReportCsv());
 	}
 
+	/**
+	 * Formats collected timing values as a CSV table
+	 * @return lines of a CSV file
+	 */
 	protected static List<String> getPerformanceReportCsv() {
 		List<String> result = new ArrayList<>();
 		List<String> measures = new ArrayList<>(performanceMeasures.get(MIN_STUDY_SIZE).keySet());
@@ -155,8 +161,7 @@ public class PerformanceTest extends AConceptProjectTestCase {
 				sei.add(cat);
 				return sei;
 			}
-		}
-		.generate();
+		}.generate();
 		
 		long timestampCreated = System.currentTimeMillis();
 		modelAPI.performInheritance();
@@ -199,8 +204,7 @@ public class PerformanceTest extends AConceptProjectTestCase {
 				sei.addSuperSei(superSei);
 				return sei;
 			}
-		}
-		.generate();
+		}.generate();
 		
 		long timestampCreated = System.currentTimeMillis();
 		modelAPI.performInheritance();
@@ -340,6 +344,9 @@ public class PerformanceTest extends AConceptProjectTestCase {
 			return se;
 		}
 		
+		/**
+		 * Generates study data and adds it to the test project using modelAPI
+		 */
 		public void generate() throws IOException {
 			addedElements = new ArrayList<>();
 
