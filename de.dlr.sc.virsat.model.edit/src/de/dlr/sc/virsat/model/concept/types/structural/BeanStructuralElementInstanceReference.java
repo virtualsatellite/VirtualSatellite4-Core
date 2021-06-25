@@ -13,10 +13,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapterNoRoleManagement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModelProperty.AccessMode;
 
 /**
  * Lightweight POJO class that represents a reference to a SEI on the bean level
@@ -49,9 +50,9 @@ public class BeanStructuralElementInstanceReference {
 	}
 
 	@XmlElement(nillable = true)
-	@ApiModelProperty(required = true)
+	@ApiModelProperty(required = true, accessMode = AccessMode.READ_ONLY)
 	public void setName(String seiName) {
-		sei.setName(seiName);
+		// As this bean has no role management, we can't set the name here
 	}
 
 	public StructuralElementInstance getStructuralElementInstance() {
@@ -62,7 +63,7 @@ public class BeanStructuralElementInstanceReference {
 	@ApiModelProperty(name = "uuid", required = true,
 		value = "Unique identifier for a bean",
 		example = "b168b0df-84b6-4b7f-bede-69298b215f40")
-	@XmlJavaTypeAdapter(IUuidAdapter.class)
+	@XmlJavaTypeAdapter(IUuidAdapterNoRoleManagement.class)
 	public void setStructuralElementInstance(StructuralElementInstance sei) {
 		this.sei = sei;
 	}

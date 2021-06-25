@@ -55,8 +55,11 @@ import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementIns
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.general.IAssignedDiscipline;
 import de.dlr.sc.virsat.model.dvlm.general.IUuid;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
+import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
+import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
@@ -102,8 +105,11 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 	protected BeanPropertyComposed<TestCategoryAllProperty> beanComposed;
 	protected BeanPropertyReference<TestCategoryAllProperty> beanReferenceCa;
 	protected VirSatProjectCommons projectCommons;
+	protected Discipline discipline;
+	protected Discipline anotherDiscipline;
 
 	protected static final String TEST_STRING = "testString";
+	protected static final String DISCIPLINE_NAME = "testDiscipline";
 	
 	@BeforeClass
 	public static void setUpTargetAndUser() {
@@ -179,6 +185,13 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 		beanBool.setValue(false);
 		beanComposed.getValue().setTestBool(false);
 		
+		discipline = RolesFactory.eINSTANCE.createDiscipline();
+		discipline.setName(DISCIPLINE_NAME);
+		discipline.setUser(USER_WITH_REPO_NAME);
+		
+		anotherDiscipline = RolesFactory.eINSTANCE.createDiscipline();
+		anotherDiscipline.setUser("another user");
+		
 		RecordingCommand recordingCommand = new RecordingCommand(ed) {
 			@Override
 			protected void doExecute() {
@@ -186,6 +199,13 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 				resourceSet.getRepository().getRootEntities().add(sei);
 				resourceSet.getAndAddStructuralElementInstanceResource(sei);
 				resourceSet.getAndAddStructuralElementInstanceResource(tSeiChild.getStructuralElementInstance());
+				
+				// role management
+				ed.getResourceSet().getRoleManagement().getDisciplines().add(discipline);
+				sei.setAssignedDiscipline(discipline);
+				resourceSet.getRepository().setAssignedDiscipline(discipline);
+				resourceSet.getRoleManagement().setAssignedDiscipline(discipline);
+				tSeiChild.getStructuralElementInstance().setAssignedDiscipline(discipline);
 			}
 		};
 		ed.getCommandStack().execute(recordingCommand);
@@ -248,12 +268,7 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 		
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 		
-		String entity = webTarget
-				.path(path)
-				.path(uuid)
-				.request()
-				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
-				.get(String.class);
+		String entity = response.readEntity(String.class);
 		
 		// Compare with the expected
 		JAXBUtility jaxbUtility = new JAXBUtility(classes);
@@ -440,8 +455,12 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 		assertBadRequestResponse(response, ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT);
 	}
 	
-	protected void assertSyncErrorResponse(Response response) {
-		assertErrorResponse(response, Status.INTERNAL_SERVER_ERROR, ApiErrorHelper.SYNC_ERROR);
+	protected void assertInternalErrorResponse(Response response, String expectedMessage) {
+		assertErrorResponse(response, Status.INTERNAL_SERVER_ERROR, ApiErrorHelper.INTERNAL_SERVER_ERROR + ": " + expectedMessage);
+	}
+	
+	protected void assertCommandNotExecuteableErrorResponse(Response response) {
+		assertInternalErrorResponse(response, ApiErrorHelper.COMMAND_NOT_EXECUTEABLE);
 	}
 	
 	/**
@@ -450,10 +469,11 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 	 * @param wantedTypeFqn type string of the element
 	 * @param ed
 	 * @param ownerChildren list of the current children of the owner
+	 * @return uuid
 	 * @throws CoreException
 	 */
 	@SuppressWarnings("unchecked")
-	protected void assertIUuidGotCreated(Response response, String wantedTypeFqn, VirSatTransactionalEditingDomain ed, List<? extends IUuid> ownerChildren) throws CoreException {
+	protected String assertIUuidGotCreated(Response response, String wantedTypeFqn, VirSatTransactionalEditingDomain ed, List<? extends IUuid> ownerChildren) throws CoreException {
 		Repository repository = ed.getResourceSet().getRepository();
 		
 		assertEquals(HttpStatus.OK_200, response.getStatus());
@@ -470,6 +490,7 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 		}
 		
 		assertThat("Structural element instance is correctly added to repository", (List<IUuid>) ownerChildren, hasItem(obj));
+		return uuid;
 	}
 
 	protected static class CountingLogListener implements ILogListener {
@@ -487,5 +508,20 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 		public void setCount(int logCount) {
 			this.logCount = logCount;
 		}
+	}
+
+	/**
+	 * Change assigned discipline of element via command
+	 * @param element
+	 * @param discipline
+	 */
+	protected void setDiscipline(IAssignedDiscipline element, Discipline discipline) {
+		RecordingCommand recordingCommand = new RecordingCommand(ed) {
+			@Override
+			protected void doExecute() {
+				element.setAssignedDiscipline(discipline);
+			}
+		};
+		ed.getCommandStack().execute(recordingCommand);
 	}
 }

@@ -17,26 +17,20 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.AddCommand;
+import org.eclipse.emf.edit.command.RemoveCommand;
 import org.eclipse.jetty.http.HttpStatus;
 
-import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
-import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
-import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage;
-import de.dlr.sc.virsat.model.dvlm.categories.Category;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
-import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.concept.types.roles.BeanDiscipline;
+import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
+import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
+import de.dlr.sc.virsat.model.dvlm.roles.RolesPackage;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.resources.ApiErrorHelper;
-import de.dlr.sc.virsat.server.resources.ModelAccessResource;
 import de.dlr.sc.virsat.server.resources.ModelAccessResource.RepoModelAccessResource;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -46,27 +40,27 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
 
 @Api(hidden = true, authorizations = {@Authorization(value = "basic")})
-public class CategoryAssignmentResource {
+public class DisciplineResource {
 	
 	private RepoModelAccessResource parentResource;
 	
-	public CategoryAssignmentResource(RepoModelAccessResource parentResource) {
+	public DisciplineResource(RepoModelAccessResource parentResource) {
 		this.parentResource = parentResource;
 	}
 	
 	/** **/
 	@GET
-	@Path("/{caUuid}")
+	@Path("/{disciplineUuid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(
 			produces = "application/json",
-			value = "Fetch CA",
+			value = "Fetch Discipline",
 			httpMethod = "GET",
-			notes = "This service fetches a CategoryAssignment")
+			notes = "This service fetches a Discipline")
 	@ApiResponses(value = { 
 			@ApiResponse(
 					code = HttpStatus.OK_200,
-					response = ABeanCategoryAssignment.class,
+					response = BeanDiscipline.class,
 					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 			@ApiResponse(
 					code = HttpStatus.BAD_REQUEST_400, 
@@ -74,18 +68,18 @@ public class CategoryAssignmentResource {
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
-	public Response getCa(@PathParam("caUuid") @ApiParam(value = "Uuid of the CA", required = true) String caUuid) {
+	public Response getDiscipline(@PathParam("disciplineUuid") @ApiParam(value = "Uuid of the discipline", required = true) String disciplineUuid) {
 		try {
 			parentResource.synchronize();
 			
-			CategoryAssignment ca = RepositoryUtility.findCa(caUuid, parentResource.getRepository());
+			Discipline discipline = RepositoryUtility.findDiscipline(disciplineUuid, parentResource.getRepository());
 			
-			if (ca == null) {
+			if (discipline == null) {
 				return ApiErrorHelper.createNotFoundErrorResponse();
 			}
 			
-			IBeanCategoryAssignment beanCa = new BeanCategoryAssignmentFactory().getInstanceFor(ca);
-			return Response.status(Response.Status.OK).entity(beanCa).build();
+			BeanDiscipline beanDiscipline = new BeanDiscipline(discipline);
+			return Response.status(Response.Status.OK).entity(beanDiscipline).build();
 		} catch (Exception e) {
 			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
@@ -96,10 +90,10 @@ public class CategoryAssignmentResource {
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@ApiOperation(
-			produces = "application/json",
-			value = "Put CA",
+			consumes = "application/json",
+			value = "Put Discipline",
 			httpMethod = "PUT",
-			notes = "This service updates an existing CategoryAssignment")
+			notes = "This service updates an existing Discipline")
 	@ApiResponses(value = { 
 			@ApiResponse(
 					code = HttpStatus.OK_200,
@@ -107,7 +101,7 @@ public class CategoryAssignmentResource {
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
-	public Response putCa(@ApiParam(value = "CA to put", required = true) ABeanCategoryAssignment bean) {
+	public Response putDiscipline(@ApiParam(value = "Discipline to put", required = true) BeanDiscipline bean) {
 		try {
 			parentResource.synchronize();
 			return Response.status(Response.Status.OK).build();
@@ -118,45 +112,32 @@ public class CategoryAssignmentResource {
 	
 	/** **/
 	@POST
-	@Path("/{parentUuid}")
+	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@ApiOperation(
 			consumes = "application/json",
-			value = "Create CA",
+			value = "Create Discipline",
 			httpMethod = "POST",
-			notes = "This service creates a new CategoryAssignment and returns it")
+			notes = "This service creates a new Discipline and returns the uuid")
 	@ApiResponses(value = { 
 			@ApiResponse(
 					code = HttpStatus.OK_200,
 					response = String.class,
 					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 			@ApiResponse(
-					code = HttpStatus.BAD_REQUEST_400, 
-					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
-			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
-	public Response createCa(@PathParam("parentUuid") @ApiParam(value = "parent uuid", required = true) String parentUuid,
-			@QueryParam(value = ModelAccessResource.QP_FULL_QUALIFIED_NAME)
-			@ApiParam(value = "Full qualified name of the CA type", required = true) String fullQualifiedName) {
+	public Response createDiscipline() {
 		try {
 			parentResource.synchronize();
 			
-			StructuralElementInstance parentSei = RepositoryUtility.findSei(parentUuid, parentResource.getRepository());
+			Discipline newDiscipline = RolesFactory.eINSTANCE.createDiscipline();
 			
-			if (parentSei == null) {
-				return ApiErrorHelper.createNotFoundErrorResponse();
-			}
-			
-			ActiveConceptHelper helper = new ActiveConceptHelper(parentResource.getEd().getResourceSet().getRepository());
-			Category category = helper.getCategory(fullQualifiedName);
-			CategoryAssignment newCa = new CategoryInstantiator().generateInstance(category, null);
-			
-			Command createCommand = AddCommand.create(parentResource.getEd(), parentSei, CategoriesPackage.Literals.ICATEGORY_ASSIGNMENT_CONTAINER__CATEGORY_ASSIGNMENTS, newCa);
-			ApiErrorHelper.executeCommandIffCanExecute(createCommand, parentResource.getEd(), parentResource.getUser());
+			Command addCommand = AddCommand.create(parentResource.getEd(), parentResource.getRepository().getRoleManagement(), RolesPackage.ROLE_MANAGEMENT__DISCIPLINES, newDiscipline);
+			ApiErrorHelper.executeCommandIffCanExecute(addCommand, parentResource.getEd(), parentResource.getUser());
 			
 			parentResource.synchronize();
-			return Response.ok(newCa.getUuid().toString()).build();
+			return Response.ok(newDiscipline.getUuid().toString()).build();
 		} catch (Exception e) {
 			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
@@ -164,13 +145,13 @@ public class CategoryAssignmentResource {
 	
 	/** **/
 	@DELETE
-	@Path("/{caUuid}")
+	@Path("/{disciplineUuid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(
 			produces = "application/json",
-			value = "Delete CA",
+			value = "Delete Discipline",
 			httpMethod = "DELETE",
-			notes = "This service deletes a CategoryAssignment.")
+			notes = "This service deletes a Discipline")
 	@ApiResponses(value = { 
 			@ApiResponse(
 					code = HttpStatus.OK_200,
@@ -181,19 +162,19 @@ public class CategoryAssignmentResource {
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
-	public Response deleteCa(@PathParam("caUuid") @ApiParam(value = "Uuid of the CA", required = true)  String caUuid) {
+	public Response deleteDiscipline(@PathParam("disciplineUuid") @ApiParam(value = "Uuid of the Discipline", required = true) String disciplineUuid) {
 		try {
 			// Sync before delete
 			parentResource.synchronize();
 			
-			// Delete CA
-			CategoryAssignment ca = RepositoryUtility.findCa(caUuid, parentResource.getRepository());
-			if (ca == null) {
+			Discipline discipline = RepositoryUtility.findDiscipline(disciplineUuid, parentResource.getRepository());
+			if (discipline == null) {
 				return ApiErrorHelper.createNotFoundErrorResponse();
 			}
 			
-			Command deleteCommand = new BeanCategoryAssignmentFactory().getInstanceFor(ca).delete(parentResource.getEd());
-			ApiErrorHelper.executeCommandIffCanExecute(deleteCommand, parentResource.getEd(), parentResource.getUser());
+			// For delete we just remove it from the rolemanagement
+			Command removeCommand = RemoveCommand.create(parentResource.getEd(), parentResource.getRepository().getRoleManagement(), RolesPackage.ROLE_MANAGEMENT__DISCIPLINES, discipline);
+			ApiErrorHelper.executeCommandIffCanExecute(removeCommand, parentResource.getEd(), parentResource.getUser());
 			
 			// Sync after delete
 			parentResource.synchronize();
@@ -202,5 +183,4 @@ public class CategoryAssignmentResource {
 			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
-	
 }

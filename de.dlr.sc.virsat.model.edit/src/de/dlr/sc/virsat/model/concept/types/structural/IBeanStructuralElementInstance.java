@@ -15,6 +15,7 @@ import java.util.Set;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
+import de.dlr.sc.virsat.model.concept.types.IBeanAssignedDiscipline;
 import de.dlr.sc.virsat.model.concept.types.IBeanDelete;
 import de.dlr.sc.virsat.model.concept.types.IBeanName;
 import de.dlr.sc.virsat.model.concept.types.IBeanUuid;
@@ -29,7 +30,7 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
  * @author fisc_ph
  *
  */
-public interface IBeanStructuralElementInstance extends IBeanUuid, IBeanDelete, IBeanName {
+public interface IBeanStructuralElementInstance extends IBeanUuid, IBeanDelete, IBeanName, IBeanAssignedDiscipline {
 
 	/**
 	 * Call this method to get the full qualified name of the underlying StructuralElement

@@ -62,7 +62,7 @@ public class PropertyResource {
 					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response getProperty(@PathParam("propertyUuid") @ApiParam(value = "Uuid of the property", required = true) String propertyUuid) {
 		try {
 			parentResource.synchronize();
@@ -76,7 +76,7 @@ public class PropertyResource {
 			IBeanObject<? extends APropertyInstance> beanProperty = new BeanPropertyFactory().getInstanceFor(property);
 			return Response.status(Response.Status.OK).entity(beanProperty).build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 
@@ -95,13 +95,13 @@ public class PropertyResource {
 					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response putProperty(@SuppressWarnings("rawtypes") @ApiParam(value = "Property to put", required = true) ABeanProperty bean) {
 		try {
 			parentResource.synchronize();
 			return Response.status(Response.Status.OK).build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 

@@ -125,13 +125,8 @@ public class CategoryAssignmentResourceTest extends AModelAccessResourceTest {
 	public void testCreateCa() throws Exception {
 		String wantedTypeFqn = tcBeanA.getFullQualifiedCategoryName();
 		
-		Response response = webTarget
-				.path(ModelAccessResource.CA)
-				.path(tSei.getUuid())
-				.queryParam(ModelAccessResource.QP_FULL_QUALIFIED_NAME, wantedTypeFqn)
-				.request()
-				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
-				.post(Entity.json(null));
+		Response response = getTestRequestBuilderWithQueryParam(ModelAccessResource.CA + "/" + tSei.getUuid(), 
+				ModelAccessResource.QP_FULL_QUALIFIED_NAME, wantedTypeFqn).post(Entity.json(null));
 		
 		assertIUuidGotCreated(response, wantedTypeFqn, ed, tSei.getStructuralElementInstance().getCategoryAssignments());
 	}
@@ -143,5 +138,16 @@ public class CategoryAssignmentResourceTest extends AModelAccessResourceTest {
 		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.CA + "/unknown").delete());
 		
 		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.CA + "/unknown").post(Entity.json(null)));
+		
+		// Assert check ca discipline via sei
+		setDiscipline(tSei.getStructuralElementInstance(), anotherDiscipline);
+		assertCommandNotExecuteableErrorResponse(getTestRequestBuilder(ModelAccessResource.CA + "/" + tcAllProperty.getUuid()).delete());
+		
+		setDiscipline(tSei.getStructuralElementInstance(), anotherDiscipline);
+		String wantedTypeFqn = tcBeanA.getFullQualifiedCategoryName();
+		
+		Response response = getTestRequestBuilderWithQueryParam(ModelAccessResource.CA + "/" + tSei.getUuid(), 
+				ModelAccessResource.QP_FULL_QUALIFIED_NAME, wantedTypeFqn).post(Entity.json(null));
+		assertCommandNotExecuteableErrorResponse(response);
 	}
 }
