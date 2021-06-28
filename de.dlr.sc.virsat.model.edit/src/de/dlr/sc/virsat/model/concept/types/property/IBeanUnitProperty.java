@@ -12,6 +12,9 @@ package de.dlr.sc.virsat.model.concept.types.property;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
+import de.dlr.sc.virsat.model.concept.types.qudv.IBeanUnit;
+import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
+
 /**
  * Common signature for all bean properties that support units such as INTs
  * floats and also the enumerator beans
@@ -41,4 +44,23 @@ public interface IBeanUnitProperty {
 	 */
 	Command setUnit(EditingDomain ed, String unitName);
 
+	/**
+	 * Returns a bean wrapping the unit
+	 * @return IBeanUnit
+	 */
+	IBeanUnit<? extends AUnit> getUnitBean();
+
+	/**
+	 * Set the unit wrapped in an unitBean
+	 * @param unitBean
+	 */
+	void setUnitBean(IBeanUnit<? extends AUnit> unitBean);
+	
+	/**
+	 * Set the unit wrapped in an unitBean
+	 * @param ed the editing domain to be used when creating the command
+	 * @param unitBean
+	 * @return the command that changes the unit
+	 */
+	Command setUnitBean(EditingDomain ed, IBeanUnit<? extends AUnit> unitBean);
 }

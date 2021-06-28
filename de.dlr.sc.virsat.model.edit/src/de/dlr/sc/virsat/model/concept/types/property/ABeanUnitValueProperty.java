@@ -13,11 +13,17 @@ import javax.xml.bind.annotation.XmlElement;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CompoundCommand;
+import org.eclipse.emf.common.command.UnexecutableCommand;
+import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
+import de.dlr.sc.virsat.model.concept.types.factory.BeanUnitFactory;
+import de.dlr.sc.virsat.model.concept.types.qudv.IBeanUnit;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyInstanceHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyInstanceValueSwitch;
+import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -72,8 +78,28 @@ public abstract class ABeanUnitValueProperty<V_TYPE> extends ABeanValueProperty<
 	}
 	
 	@Override
+	public IBeanUnit<? extends AUnit> getUnitBean() {
+		return new BeanUnitFactory().getInstanceFor(ti.getUnit());
+	}
+	
+	@Override
+	public void setUnitBean(IBeanUnit<? extends AUnit> unitBean) {
+		if (unitBean != null) {
+			ti.setUnit(unitBean.getUnit());
+		}
+	}
+	
+	@Override
+	public Command setUnitBean(EditingDomain ed, IBeanUnit<? extends AUnit> unitBean) {
+		if (unitBean != null) {
+			return SetCommand.create(ed, ti, PropertyinstancesPackage.Literals.IUNIT_PROPERTY_INSTANCE__UNIT, unitBean.getUnit());
+		}
+		return UnexecutableCommand.INSTANCE;
+	}
+	
 	@XmlElement(nillable = true)
 	@ApiModelProperty(value = "Unit of the bean")
+	@Override
 	public String getUnit() {
 		return new PropertyInstanceHelper().getUnit(ti);
 	}
