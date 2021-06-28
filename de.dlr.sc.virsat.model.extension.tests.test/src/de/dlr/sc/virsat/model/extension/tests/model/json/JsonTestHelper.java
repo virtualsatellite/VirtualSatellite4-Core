@@ -14,6 +14,7 @@ import static de.dlr.sc.virsat.model.extension.tests.test.TestActivator.assertEq
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Arrays;
 import java.util.Collection;
 
 import javax.xml.bind.JAXBException;
@@ -90,7 +91,17 @@ public class JsonTestHelper {
 		
 		unitManagement.setSystemOfUnit(sou);
 		repo.setUnitManagement(unitManagement);
-		repo.getActiveConcepts().add(concept);
+		
+		if (concept != null) {
+			repo.getActiveConcepts().add(concept);
+		}
+		
+		// Set uuids for units used in the test cases
+		QudvUnitHelper.getInstance().getUnitByName(sou, "Kilometer").setUuid(new VirSatUuid("e2203b42-e703-4429-9bf9-dbd4882c341c"));
+		QudvUnitHelper.getInstance().getUnitByName(sou, "Meter").setUuid(new VirSatUuid("efb2d32a-42c4-4f33-820c-88a1e61ccfd0"));
+		QudvUnitHelper.getInstance().getUnitByName(sou, "Minute").setUuid(new VirSatUuid("51e5304f-1645-420a-b949-c72b8c1befcd"));
+		QudvUnitHelper.getInstance().getUnitByName(sou, "Byte").setUuid(new VirSatUuid("c54347d1-80b2-4db4-9d3d-e10d3b50be08"));
+		QudvUnitHelper.getInstance().getUnitByName(sou, "Meter Per Second").setUuid(new VirSatUuid("ee1d23de-786f-4eb6-ae34-c864fb72ea1a"));
 		
 		return repo;
 	}
@@ -127,6 +138,10 @@ public class JsonTestHelper {
 		
 		String expectedJson = TestActivator.getResourceContentAsString(resource);
 		assertEqualsNoWs("Json is as expected", expectedJson, sw.toString());
+	}
+	
+	public static Unmarshaller getUnmarshaller(JAXBUtility jaxbUtility, EObject modelObject) throws JAXBException, IOException {
+		return getUnmarshaller(jaxbUtility, Arrays.asList(modelObject));
 	}
 	
 	/**

@@ -17,7 +17,7 @@ import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.concept.types.factory.BeanUnitFactory;
-import de.dlr.sc.virsat.model.concept.types.qudv.IBeanUnit;
+import de.dlr.sc.virsat.model.concept.types.qudv.ABeanUnit;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumPropertyHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumValueDefinition;
@@ -106,19 +106,19 @@ public class BeanPropertyEnum extends ABeanProperty<EnumUnitPropertyInstance, St
 	}
 
 	@Override
-	public IBeanUnit<? extends AUnit> getUnitBean() {
-		return new BeanUnitFactory().getInstanceFor(ti.getUnit());
+	public ABeanUnit<? extends AUnit> getUnitBean() {
+		return (ABeanUnit<? extends AUnit>) new BeanUnitFactory().getInstanceFor(ti.getUnit());
 	}
 	
 	@Override
-	public void setUnitBean(IBeanUnit<? extends AUnit> unitBean) {
+	public void setUnitBean(ABeanUnit<? extends AUnit> unitBean) {
 		if (unitBean != null) {
 			ti.setUnit(unitBean.getUnit());
 		}
 	}
 	
 	@Override
-	public Command setUnitBean(EditingDomain ed, IBeanUnit<? extends AUnit> unitBean) {
+	public Command setUnitBean(EditingDomain ed, ABeanUnit<? extends AUnit> unitBean) {
 		if (unitBean != null) {
 			return SetCommand.create(ed, ti, PropertyinstancesPackage.Literals.IUNIT_PROPERTY_INSTANCE__UNIT, unitBean.getUnit());
 		}

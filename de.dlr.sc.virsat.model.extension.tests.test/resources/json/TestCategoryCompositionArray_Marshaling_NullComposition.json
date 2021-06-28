@@ -28,13 +28,13 @@
          "testFloatBean" : {
             "uuid" : "2870876e-4d6c-4128-801d-54fa109f3821",
             "propertyType" : "float",
-            "unit" : "",
+            "unitBean" : null,
             "value" : null
          },
          "testIntBean" : {
             "uuid" : "0f37aff6-ccc0-436f-a592-bd466f74bd81",
             "propertyType" : "int",
-            "unit" : "",
+            "unitBean" : null,
             "value" : null
          },
          "testResourceBean" : {
@@ -69,13 +69,13 @@
          "testFloatBean" : {
             "uuid" : "2870876e-4d6c-4128-801d-54fa109f3822",
             "propertyType" : "float",
-            "unit" : "",
+            "unitBean" : null,
             "value" : null
          },
          "testIntBean" : {
             "uuid" : "0f37aff6-ccc0-436f-a592-bd466f74bd82",
             "propertyType" : "int",
-            "unit" : "",
+            "unitBean" : null,
             "value" : null
          },
          "testResourceBean" : {
@@ -110,13 +110,13 @@
          "testFloatBean" : {
             "uuid" : "2870876e-4d6c-4128-801d-54fa109f3823",
             "propertyType" : "float",
-            "unit" : "",
+            "unitBean" : null,
             "value" : null
          },
          "testIntBean" : {
             "uuid" : "0f37aff6-ccc0-436f-a592-bd466f74bd83",
             "propertyType" : "int",
-            "unit" : "",
+            "unitBean" : null,
             "value" : null
          },
          "testResourceBean" : {

@@ -64,6 +64,7 @@ import de.dlr.sc.virsat.model.dvlm.command.UndoableAddCommandTest;
 import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElementTest;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanStructuralElementInstanceAdapterTest;
+import de.dlr.sc.virsat.model.dvlm.json.ABeanUnitAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.ComposedBeanCategoryAssigmentAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.BeanPropertyTypeAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.DoubleAdapterTest;
@@ -168,7 +169,8 @@ import junit.framework.JUnit4TestAdapter;
 				BeanQuantityKindSimpleTest.class,
 				BeanQuantityKindDerivedTest.class,
 				BeanQuantityKindFactoryTest.class,
-				BeanUnitFactoryTest.class
+				BeanUnitFactoryTest.class,
+				ABeanUnitAdapterTest.class
 				})
 
 /**

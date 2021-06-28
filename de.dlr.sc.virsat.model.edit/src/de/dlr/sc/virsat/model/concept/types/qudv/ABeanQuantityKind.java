@@ -17,7 +17,7 @@ import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind;
 import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
 
-public class ABeanQuantityKind<QK_TYPE extends AQuantityKind> implements IBeanQuantityKind<QK_TYPE> {
+public abstract class ABeanQuantityKind<QK_TYPE extends AQuantityKind> implements IBeanQuantityKind<QK_TYPE> {
 
 	protected QK_TYPE quantityKind;
 	

@@ -16,13 +16,13 @@
    "testFloatBean" : {
       "uuid" : "2870876e-4d6c-4128-801d-54fa109f3820",
       "propertyType" : "float",
-      "unit" : "",
+      "unitBean" : null,
       "value" : null
    },
    "testIntBean" : {
       "uuid" : "0f37aff6-ccc0-436f-a592-bd466f74bd80",
       "propertyType" : "int",
-      "unit" : "",
+      "unitBean" : null,
       "value" : null
    },
    "testResourceBean" : {
