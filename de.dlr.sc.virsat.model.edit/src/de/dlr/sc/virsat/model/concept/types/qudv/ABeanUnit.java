@@ -35,7 +35,7 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement
-@ApiModel(discriminator = "unitType",
+@ApiModel(
 	description = "Abstract model class for bean units."
 		+ " Resources that return this will instead return concrete bean units.",
 	subTypes = {
@@ -122,12 +122,12 @@ public abstract class ABeanUnit<U_TYPE extends AUnit> implements IBeanUnit<U_TYP
 
 	// TODO enable
 	@Override
-	public IBeanQuantityKind<? extends AQuantityKind> getQuantityKindBean() {
+	public ABeanQuantityKind<? extends AQuantityKind> getQuantityKindBean() {
 		if (unit.getQuantityKind() == null) {
 			return null;
 		}
 		
-		return new BeanQuantityKindFactory().getInstanceFor(unit.getQuantityKind());
+		return (ABeanQuantityKind<? extends AQuantityKind>) new BeanQuantityKindFactory().getInstanceFor(unit.getQuantityKind());
 	}
 
 	@Override

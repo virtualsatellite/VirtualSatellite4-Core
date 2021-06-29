@@ -36,6 +36,8 @@ import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
+import de.dlr.sc.virsat.model.dvlm.qudv.DerivedUnit;
+import de.dlr.sc.virsat.model.dvlm.qudv.PrefixedUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfUnits;
 import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
@@ -97,11 +99,21 @@ public class JsonTestHelper {
 		}
 		
 		// Set uuids for units used in the test cases
-		QudvUnitHelper.getInstance().getUnitByName(sou, "Kilometer").setUuid(new VirSatUuid("e2203b42-e703-4429-9bf9-dbd4882c341c"));
 		QudvUnitHelper.getInstance().getUnitByName(sou, "Meter").setUuid(new VirSatUuid("efb2d32a-42c4-4f33-820c-88a1e61ccfd0"));
+		QudvUnitHelper.getInstance().getUnitByName(sou, "Second").setUuid(new VirSatUuid("408835d3-11b5-474c-a97c-ee9b4ff53a89"));
+		
+		PrefixedUnit kmUnit = (PrefixedUnit) QudvUnitHelper.getInstance().getUnitByName(sou, "Kilometer");
+		kmUnit.setUuid(new VirSatUuid("e2203b42-e703-4429-9bf9-dbd4882c341c"));
+		kmUnit.getPrefix().setUuid(new VirSatUuid("ca6c002a-b269-41b1-9afe-b805a30f8c29"));
+		
 		QudvUnitHelper.getInstance().getUnitByName(sou, "Minute").setUuid(new VirSatUuid("51e5304f-1645-420a-b949-c72b8c1befcd"));
 		QudvUnitHelper.getInstance().getUnitByName(sou, "Byte").setUuid(new VirSatUuid("c54347d1-80b2-4db4-9d3d-e10d3b50be08"));
-		QudvUnitHelper.getInstance().getUnitByName(sou, "Meter Per Second").setUuid(new VirSatUuid("ee1d23de-786f-4eb6-ae34-c864fb72ea1a"));
+		
+		DerivedUnit mpsUnit = (DerivedUnit) QudvUnitHelper.getInstance().getUnitByName(sou, "Meter Per Second");
+		mpsUnit.setUuid(new VirSatUuid("ee1d23de-786f-4eb6-ae34-c864fb72ea1a"));
+		// TODO: inconsistent?
+		mpsUnit.getFactor().get(0).setUuid(new VirSatUuid("d4cf8e6e-bc81-425f-af9a-a3458f7f3bd4"));
+		mpsUnit.getFactor().get(1).setUuid(new VirSatUuid("05c8c9d3-9bf0-43cb-8372-e71ff8d54840"));
 		
 		return repo;
 	}

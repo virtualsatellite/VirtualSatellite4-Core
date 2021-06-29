@@ -9,12 +9,15 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.qudv;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.dvlm.qudv.LinearConversionUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
+import io.swagger.annotations.ApiModelProperty;
 
 public class BeanUnitLinearConversion extends ABeanConversionBasedUnit<LinearConversionUnit> {
 
@@ -26,15 +29,17 @@ public class BeanUnitLinearConversion extends ABeanConversionBasedUnit<LinearCon
 		super(unit);
 	}
 	
-	Double getFactor() {
+	@ApiModelProperty(required = true)
+	@XmlElement(nillable = true)
+	double getFactor() {
 		return unit.getFactor();
 	}
 	
-	void setFactor(Double factor) {
+	void setFactor(double factor) {
 		unit.setFactor(factor);
 	}
 	
-	public Command setFactor(EditingDomain ed, Double factor) {
+	public Command setFactor(EditingDomain ed, double factor) {
 		return SetCommand.create(ed, unit, QudvPackage.Literals.LINEAR_CONVERSION_UNIT__FACTOR, factor);
 	}
 }

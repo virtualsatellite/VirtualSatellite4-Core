@@ -106,6 +106,7 @@ public abstract class ABeanUnitValueProperty<V_TYPE> extends ABeanValueProperty<
 	}
 	
 	@Override
+	@ApiModelProperty(hidden = true)
 	public String getUnit() {
 		return new PropertyInstanceHelper().getUnit(ti);
 	}

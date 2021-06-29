@@ -2,5 +2,6 @@
    "type" : "beanUnitLinearConversion",
    "uuid" : "c54347d1-80b2-4db4-9d3d-e10d3b50be08",
    "name" : "Byte",
-   "symbol" : "byte"
+   "symbol" : "byte",
+   "factor" : 8.0
 }
