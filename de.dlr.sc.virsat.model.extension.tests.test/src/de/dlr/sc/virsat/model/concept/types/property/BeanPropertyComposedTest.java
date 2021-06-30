@@ -18,6 +18,11 @@ import org.eclipse.emf.common.command.Command;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.model.dvlm.calculation.CalculationFactory;
+import de.dlr.sc.virsat.model.dvlm.calculation.Equation;
+import de.dlr.sc.virsat.model.dvlm.calculation.EquationSection;
+import de.dlr.sc.virsat.model.dvlm.calculation.TypeInstanceResult;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
@@ -91,6 +96,33 @@ public class BeanPropertyComposedTest extends AConceptTestCase {
 		beanPropertyComposed.unset();
 		
 		assertTrue("A ca is still set", beanPropertyComposed.isSet());
+	}
+	
+	@Test
+	public void testIsCalculated() {
+		assertFalse(beanPropertyComposed.getIsCalculated());
+		
+		// New ca containing the cpi
+		CategoryAssignment ca = CategoriesFactory.eINSTANCE.createCategoryAssignment();
+		ca.getPropertyInstances().add(cpiToCategory);
+		
+		// Setup some simple equation referencing the composed ca
+		EquationSection eqSection = CalculationFactory.eINSTANCE.createEquationSection();
+		Equation eq = CalculationFactory.eINSTANCE.createEquation();
+		TypeInstanceResult tir = CalculationFactory.eINSTANCE.createTypeInstanceResult();
+		tir.setReference(testCategoryAllProperty.getATypeInstance());
+		eq.setResult(tir);
+		eq.setExpression(CalculationFactory.eINSTANCE.createNumberLiteral());
+		eqSection.getEquations().add(eq);
+		
+		// Add it to the ca containing the cpi
+		ca.setEquationSection(eqSection);
+		
+		assertTrue(beanPropertyComposed.getIsCalculated());
+		
+		cpiToCategory.setTypeInstance(null);
+		
+		assertFalse(beanPropertyComposed.getIsCalculated());
 	}
 
 }
