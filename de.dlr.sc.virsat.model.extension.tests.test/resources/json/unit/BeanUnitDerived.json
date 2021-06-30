@@ -2,6 +2,7 @@
    "type" : "beanUnitDerived",
    "uuid" : "ee1d23de-786f-4eb6-ae34-c864fb72ea1a",
    "name" : "Meter Per Second",
+   "quantityKindBean" : "ad796ad1-bc2f-4ff0-932f-8bf70ad0d9c1",
    "symbol" : "m¹ s⁻¹",
    "factorBeans" : [ {
       "uuid" : "d4cf8e6e-bc81-425f-af9a-a3458f7f3bd4",

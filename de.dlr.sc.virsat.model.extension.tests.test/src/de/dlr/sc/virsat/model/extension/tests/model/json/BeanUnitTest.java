@@ -21,8 +21,11 @@ import org.eclipse.emf.ecore.EObject;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.model.concept.types.factory.BeanQuantityKindFactory;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanUnitFactory;
 import de.dlr.sc.virsat.model.concept.types.qudv.BeanPrefix;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanQuantityKindDerived;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanQuantityKindSimple;
 import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitAffineConversion;
 import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitDerived;
 import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitLinearConversion;
@@ -45,6 +48,8 @@ public class BeanUnitTest {
 	private BeanUnitLinearConversion beanUnitLinearConversion;
 	private BeanUnitDerived beanUnitDerived;
 	private BeanPrefix beanPrefix;
+	private BeanQuantityKindSimple beanQuantityKindSimple;
+	private BeanQuantityKindDerived beanQuantityKindDerived;
 	
 	// TODO: rename?
 	private static final String RESOURCE_PATH = "/resources/json/unit/%s.json";
@@ -57,7 +62,9 @@ public class BeanUnitTest {
 			BeanUnitAffineConversion.class,
 			BeanUnitLinearConversion.class,
 			BeanUnitDerived.class,
-			BeanPrefix.class
+			BeanPrefix.class,
+			BeanQuantityKindSimple.class,
+			BeanQuantityKindDerived.class
 		});
 		
 		Repository repo = JsonTestHelper.createRepositoryWithUnitManagement(null);
@@ -65,6 +72,7 @@ public class BeanUnitTest {
 		
 		AUnit meterUnit = QudvUnitHelper.getInstance().getUnitByName(sou, "Meter");
 		beanUnitSimple = (BeanUnitSimple) new BeanUnitFactory().getInstanceFor(meterUnit);
+		beanQuantityKindSimple = (BeanQuantityKindSimple) new BeanQuantityKindFactory().getInstanceFor(meterUnit.getQuantityKind());
 		
 		AUnit kmUnit = QudvUnitHelper.getInstance().getUnitByName(sou, "Kilometer");
 		beanUnitPrefixed = (BeanUnitPrefixed) new BeanUnitFactory().getInstanceFor(kmUnit);
@@ -78,6 +86,7 @@ public class BeanUnitTest {
 		
 		AUnit meterPerSecondUnit = QudvUnitHelper.getInstance().getUnitByName(sou, "Meter Per Second");
 		beanUnitDerived = (BeanUnitDerived) new BeanUnitFactory().getInstanceFor(meterPerSecondUnit);
+		beanQuantityKindDerived = (BeanQuantityKindDerived) new BeanQuantityKindFactory().getInstanceFor(meterPerSecondUnit.getQuantityKind());
 	}
 	
 	private String getResource(Object testSubject) {
@@ -110,6 +119,8 @@ public class BeanUnitTest {
 		testMarshall(beanUnitDerived);
 		
 		// QuantityKinds
+		testMarshall(beanQuantityKindSimple);
+		testMarshall(beanQuantityKindDerived);
 		
 		// Referenced classes
 		testMarshall(beanPrefix);
@@ -118,24 +129,39 @@ public class BeanUnitTest {
 	@Test
 	public void testJsonUnmarshalling() throws JAXBException, IOException {
 		// Units
-		testUnmarshall(beanUnitSimple, beanUnitSimple.getUnit());
+		testUnmarshall(beanUnitSimple, Arrays.asList(
+				beanUnitSimple.getUnit(),
+				beanUnitSimple.getUnit().getQuantityKind()));
 		
 		testUnmarshall(beanUnitPrefixed, Arrays.asList(
-				beanUnitPrefixed.getUnit(), 
+				beanUnitPrefixed.getUnit(),
+				beanUnitPrefixed.getUnit().getQuantityKind(),
 				beanUnitPrefixed.getPrefixBean().getPrefix()));
 		
-		testUnmarshall(beanUnitAffineConversion, beanUnitAffineConversion.getUnit());
+		testUnmarshall(beanUnitAffineConversion, Arrays.asList(
+				beanUnitAffineConversion.getUnit(),
+				beanUnitAffineConversion.getUnit().getQuantityKind()));
 		
-		testUnmarshall(beanUnitLinearConversion, beanUnitLinearConversion.getUnit());
+		testUnmarshall(beanUnitLinearConversion, Arrays.asList(
+				beanUnitLinearConversion.getUnit(),
+				beanUnitLinearConversion.getUnit().getQuantityKind()));
 		
 		testUnmarshall(beanUnitDerived, Arrays.asList(
 				beanUnitDerived.getUnit(),
+				beanUnitDerived.getUnit().getQuantityKind(),
 				beanUnitDerived.getUnit().getFactor().get(0),
 				beanUnitDerived.getUnit().getFactor().get(1),
 				beanUnitDerived.getUnit().getFactor().get(0).getUnit(),
 				beanUnitDerived.getUnit().getFactor().get(1).getUnit()));
 		
 		// QuantityKinds
+		testUnmarshall(beanQuantityKindSimple, beanQuantityKindSimple.getQuantityKind());
+		testUnmarshall(beanQuantityKindDerived, Arrays.asList(
+				beanQuantityKindDerived.getQuantityKind(),
+				beanQuantityKindDerived.getQuantityKind().getFactor().get(0),
+				beanQuantityKindDerived.getQuantityKind().getFactor().get(1),
+				beanQuantityKindDerived.getQuantityKind().getFactor().get(0).getQuantityKind(),
+				beanQuantityKindDerived.getQuantityKind().getFactor().get(1).getQuantityKind()));
 		
 		// Referenced classes
 		testUnmarshall(beanPrefix, beanPrefix.getPrefix());

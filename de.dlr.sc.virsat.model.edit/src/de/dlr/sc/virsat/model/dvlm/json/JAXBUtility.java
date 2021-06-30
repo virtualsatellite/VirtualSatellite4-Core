@@ -119,6 +119,9 @@ public class JAXBUtility {
 		BeanPrefixAdapter beanPrefixAdapter = new BeanPrefixAdapter(resourceSet);
 		jsonUnmarshaller.setAdapter(beanPrefixAdapter);
 		
+		ABeanQuantityKindAdapter aBeanQuanityKindAdapter = new ABeanQuantityKindAdapter(resourceSet);
+		jsonUnmarshaller.setAdapter(aBeanQuanityKindAdapter);
+		
 		return jsonUnmarshaller;
 	}
 }

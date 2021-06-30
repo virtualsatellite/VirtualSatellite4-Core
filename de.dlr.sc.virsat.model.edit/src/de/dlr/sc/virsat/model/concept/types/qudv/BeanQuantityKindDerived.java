@@ -12,6 +12,8 @@ package de.dlr.sc.virsat.model.concept.types.qudv;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.RemoveCommand;
@@ -20,6 +22,7 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import de.dlr.sc.virsat.model.dvlm.qudv.DerivedQuantityKind;
 import de.dlr.sc.virsat.model.dvlm.qudv.QuantityKindFactor;
 import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
+import io.swagger.annotations.ApiModelProperty;
 
 public class BeanQuantityKindDerived extends ABeanQuantityKind<DerivedQuantityKind> {
 
@@ -35,6 +38,8 @@ public class BeanQuantityKindDerived extends ABeanQuantityKind<DerivedQuantityKi
 	 * Get all factors
 	 * @return List of factors
 	 */
+	@ApiModelProperty(required = true)
+	@XmlElement(nillable = true)
 	List<BeanFactorQuantityKind> getFactorBeans() {
 		List<BeanFactorQuantityKind> factors = new ArrayList<BeanFactorQuantityKind>();
 		

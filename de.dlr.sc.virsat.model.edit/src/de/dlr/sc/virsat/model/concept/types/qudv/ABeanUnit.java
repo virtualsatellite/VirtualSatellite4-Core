@@ -21,6 +21,7 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.concept.types.factory.BeanQuantityKindFactory;
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
+import de.dlr.sc.virsat.model.dvlm.json.ABeanQuantityKindAdapter;
 import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapter;
 import de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind;
 import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
@@ -120,7 +121,9 @@ public abstract class ABeanUnit<U_TYPE extends AUnit> implements IBeanUnit<U_TYP
 		return SetCommand.create(ed, unit, QudvPackage.Literals.AUNIT__SYMBOL, symbol);
 	}
 
-	// TODO enable
+	@ApiModelProperty(required = true)
+	@XmlElement(nillable = true)
+	@XmlJavaTypeAdapter(ABeanQuantityKindAdapter.class)
 	@Override
 	public ABeanQuantityKind<? extends AQuantityKind> getQuantityKindBean() {
 		if (unit.getQuantityKind() == null) {
@@ -131,12 +134,12 @@ public abstract class ABeanUnit<U_TYPE extends AUnit> implements IBeanUnit<U_TYP
 	}
 
 	@Override
-	public void setQuantityKindBean(IBeanQuantityKind<? extends AQuantityKind> quantityKindBean) {
+	public void setQuantityKindBean(ABeanQuantityKind<? extends AQuantityKind> quantityKindBean) {
 		unit.setQuantityKind(quantityKindBean.getQuantityKind());
 	}
 
 	@Override
-	public Command setQuantityKindBean(EditingDomain ed, IBeanQuantityKind<? extends AQuantityKind> quantityKindBean) {
+	public Command setQuantityKindBean(EditingDomain ed, ABeanQuantityKind<? extends AQuantityKind> quantityKindBean) {
 		return SetCommand.create(ed, unit, QudvPackage.Literals.AUNIT__QUANTITY_KIND, quantityKindBean.getQuantityKind());
 	}
 	

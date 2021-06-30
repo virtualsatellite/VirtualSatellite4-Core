@@ -2,5 +2,6 @@
    "type" : "beanUnitSimple",
    "uuid" : "efb2d32a-42c4-4f33-820c-88a1e61ccfd0",
    "name" : "Meter",
+   "quantityKindBean" : "882b2e01-712d-4557-bc25-3158cd4ff316",
    "symbol" : "m"
 }
