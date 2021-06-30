@@ -117,5 +117,19 @@ public abstract class ABeanQuantityKind<QK_TYPE extends AQuantityKind> implement
 	public Command setSymbol(EditingDomain ed, String symbol) {
 		return SetCommand.create(ed, quantityKind, QudvPackage.Literals.AQUANTITY_KIND__SYMBOL, symbol);
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof ABeanQuantityKind<?>) {
+			ABeanQuantityKind<?> beanQk = (ABeanQuantityKind<?>) obj;
+			return quantityKind.equals(beanQk.getQuantityKind());
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return quantityKind.hashCode();
+	}
 
 }

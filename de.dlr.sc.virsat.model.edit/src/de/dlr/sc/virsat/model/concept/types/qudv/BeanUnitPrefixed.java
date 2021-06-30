@@ -33,7 +33,6 @@ public class BeanUnitPrefixed extends ABeanConversionBasedUnit<PrefixedUnit> {
 	
 	@ApiModelProperty(required = true)
 	@XmlElement(nillable = true)
-	// TODO: alternative?
 	@XmlJavaTypeAdapter(BeanPrefixAdapter.class)
 	public BeanPrefix getPrefixBean() {
 		return new BeanPrefix(unit.getPrefix());

@@ -16,8 +16,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import de.dlr.sc.virsat.model.concept.types.qudv.BeanPrefix;
 import de.dlr.sc.virsat.model.dvlm.qudv.Prefix;
 
-// TODO: test, alternative?
-
 /**
  * Adapter for a referenced BeanPrefix from/to a UUID
  * that uses the IUuidAdapter

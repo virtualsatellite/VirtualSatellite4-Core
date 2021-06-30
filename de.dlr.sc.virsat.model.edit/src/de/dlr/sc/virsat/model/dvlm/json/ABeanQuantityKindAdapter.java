@@ -17,7 +17,6 @@ import de.dlr.sc.virsat.model.concept.types.factory.BeanQuantityKindFactory;
 import de.dlr.sc.virsat.model.concept.types.qudv.ABeanQuantityKind;
 import de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind;
 
-// TODO: test
 @SuppressWarnings("rawtypes")
 /**
  * Adapter for a referenced AQuantityKind from/to a UUID

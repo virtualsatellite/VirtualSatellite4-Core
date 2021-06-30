@@ -115,7 +115,6 @@ public class JAXBUtility {
 		ABeanUnitAdapter aBeanUnitAdapter = new ABeanUnitAdapter(resourceSet);
 		jsonUnmarshaller.setAdapter(aBeanUnitAdapter);
 		
-		// TODO
 		BeanPrefixAdapter beanPrefixAdapter = new BeanPrefixAdapter(resourceSet);
 		jsonUnmarshaller.setAdapter(beanPrefixAdapter);
 		

@@ -105,4 +105,18 @@ public class BeanPrefix implements IBeanUuid, IBeanName {
 	public Command setFactor(EditingDomain ed, double factor) {
 		return SetCommand.create(ed, prefix, QudvPackage.Literals.PREFIX__FACTOR, factor);
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof BeanPrefix) {
+			BeanPrefix beanPrefix = (BeanPrefix) obj;
+			return prefix.equals(beanPrefix.getPrefix());
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return prefix.hashCode();
+	}
 }
