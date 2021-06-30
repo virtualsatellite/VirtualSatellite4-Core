@@ -39,7 +39,7 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferenceCategor
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferencePropertyArrayDynamicTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferencePropertyArrayStaticTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElementInstanceTest;
-import de.dlr.sc.virsat.model.extension.tests.model.json.BeanUnitTest;
+import de.dlr.sc.virsat.model.extension.tests.model.json.BeanQudvTest;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomainNonDVLMTest;
 import de.dlr.sc.virsat.project.editingDomain.commands.VirSatClipboardCommandAcceptanceTest;
 import de.dlr.sc.virsat.project.resources.dmf.DmfResourceTest;
@@ -87,7 +87,7 @@ import junit.framework.JUnit4TestAdapter;
 				de.dlr.sc.virsat.model.extension.tests.model.json.TestCategoryCompositionArrayTest.class,
 				de.dlr.sc.virsat.model.extension.tests.model.json.TestCategoryReferenceArrayTest.class,
 				de.dlr.sc.virsat.model.extension.tests.model.json.TestStructuralElementInstanceTest.class,
-				BeanUnitTest.class
+				BeanQudvTest.class
 })
 
 /**

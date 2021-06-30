@@ -37,9 +37,7 @@ import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfUnits;
 import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
 
-// TODO: rename to qudv?
-// TODO: improve field doc
-public class BeanUnitTest {
+public class BeanQudvTest {
 	
 	private JAXBUtility jaxbUtility;
 	private BeanUnitSimple beanUnitSimple;
@@ -50,9 +48,8 @@ public class BeanUnitTest {
 	private BeanPrefix beanPrefix;
 	private BeanQuantityKindSimple beanQuantityKindSimple;
 	private BeanQuantityKindDerived beanQuantityKindDerived;
-	
-	// TODO: rename?
-	private static final String RESOURCE_PATH = "/resources/json/unit/%s.json";
+
+	private static final String RESOURCE_PATH = "/resources/json/qudv/%s.json";
 	
 	@Before
 	public void setup() throws JAXBException {
