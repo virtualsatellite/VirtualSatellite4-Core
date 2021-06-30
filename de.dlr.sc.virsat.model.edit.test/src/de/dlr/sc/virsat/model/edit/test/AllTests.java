@@ -31,6 +31,18 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyIntTest;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResourceTest;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyStringTest;
 import de.dlr.sc.virsat.model.concept.types.roles.BeanDisciplineTest;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanFactorQuantityKindTest;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanFactorUnitTest;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanPrefixTest;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanQuantityKindDerivedTest;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanQuantityKindFactoryTest;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanQuantityKindSimpleTest;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitAffineConversionTest;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitDerivedTest;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitFactoryTest;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitLinearConversionTest;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitPrefixedTest;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitSimpleTest;
 import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstanceTest;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.provider.DVLMEnumValueDefinitionItemProviderTest;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.provider.DVLMPropertydefinitionsItemProviderAdapterFactoryTest;
@@ -148,7 +160,19 @@ import junit.framework.JUnit4TestAdapter;
 				ABeanStructuralElementInstanceAdapterTest.class,
 				BeanPropertyTypeAdapterTest.class,
 				BeanDisciplineTest.class,
-				BeanDisciplineAdapterTest.class
+				BeanDisciplineAdapterTest.class,
+				BeanUnitAffineConversionTest.class,
+				BeanUnitDerivedTest.class,
+				BeanUnitLinearConversionTest.class,
+				BeanUnitPrefixedTest.class,
+				BeanUnitSimpleTest.class,
+				BeanPrefixTest.class,
+				BeanFactorUnitTest.class,
+				BeanFactorQuantityKindTest.class,
+				BeanQuantityKindSimpleTest.class,
+				BeanQuantityKindDerivedTest.class,
+				BeanQuantityKindFactoryTest.class,
+				BeanUnitFactoryTest.class
 				})
 
 /**
