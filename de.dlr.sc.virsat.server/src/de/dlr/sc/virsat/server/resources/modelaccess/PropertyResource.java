@@ -93,7 +93,7 @@ public class PropertyResource {
 	@Path("/{propertyUuid}/" + RESOURCE)
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
 	@ApiOperation(
-			produces = "application/json",
+			produces = "application/octet-stream",
 			value = "Fetch property resource",
 			httpMethod = "GET",
 			notes = "This service fetches the resource of a property")

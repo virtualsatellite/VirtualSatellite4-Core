@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.resources.modelaccess;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayInputStream;
@@ -143,14 +144,15 @@ public class PropertyResourceTest extends AModelAccessResourceTest {
 	
 	@Test
 	public void testResourceGet() throws CoreException {
-		// Initial the bean does not contain a valid resource
+		// Initially the bean does not contain a valid resource
 		assertBadRequestResponse(
 				getTestRequestBuilder(ModelAccessResource.PROPERTY + "/" + beanResource.getUuid().toString() + "/" + PropertyResource.RESOURCE).get(),
 				PropertyResource.PROPERTY_DOES_NOT_CONTAIN_A_SERVEABLE_RESOURCE);
 		
 		// Now create a valid file
-		IFile file = ed.getResourceSet().getProject().getFile("file[2].xls");
-		file.create(new ByteArrayInputStream(TEST_STRING.getBytes()), IResource.FORCE, null);
+		IFile file = ed.getResourceSet().getProject().getFile("file.bin");
+		byte[] testBytes = TEST_STRING.getBytes();
+		file.create(new ByteArrayInputStream(testBytes), IResource.FORCE, null);
 		
 		// Add it to the resource
 		Command setCommand = beanResource.setValue(ed, URI.createPlatformResourceURI(file.getFullPath().toString(), true));
@@ -160,7 +162,7 @@ public class PropertyResourceTest extends AModelAccessResourceTest {
 		Response response = getTestRequestBuilder(ModelAccessResource.PROPERTY + "/" + beanResource.getUuid().toString() + "/" + PropertyResource.RESOURCE).get();
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 		
-		String entity = response.readEntity(String.class);
-		assertEquals(TEST_STRING, entity);
+		byte[] entity = response.readEntity(byte[].class);
+		assertArrayEquals(testBytes, entity);
 	}
 }
