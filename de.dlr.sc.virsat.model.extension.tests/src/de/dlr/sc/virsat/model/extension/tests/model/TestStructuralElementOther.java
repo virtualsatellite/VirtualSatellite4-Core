@@ -13,6 +13,9 @@ package de.dlr.sc.virsat.model.extension.tests.model;
 // * Import Statements
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+
+import javax.xml.bind.annotation.XmlType;
+
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 
 // *****************************************************************
@@ -27,6 +30,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
  * Another StructuralElement for bean structural element instance helper
  * 
  */	
+@XmlType(name = ATestStructuralElementOther.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME)
 public class TestStructuralElementOther extends ATestStructuralElementOther {
 	
 	/**

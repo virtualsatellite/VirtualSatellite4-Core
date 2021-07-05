@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.statemachines.model;
 
+import javax.xml.bind.annotation.XmlType;
+
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 // *****************************************************************
@@ -28,6 +30,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
  * General constraint in statemachines 
  * 
  */	
+@XmlType(name = AAConstraint.FULL_QUALIFIED_CATEGORY_NAME)
 public abstract class AConstraint extends AAConstraint {
 	private static final String PROPERTYNAME1 = "stateConstraining";
 	private static final String PROPERTYNAME2 = "stateInfluenced";

@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.model;
 
+import javax.xml.bind.annotation.XmlType;
+
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
@@ -31,6 +33,7 @@ import de.dlr.sc.virsat.model.extension.requirements.util.RequirementHelper;
  * 
  * 
  */
+@XmlType(name = ARequirement.FULL_QUALIFIED_CATEGORY_NAME)
 public  class Requirement extends ARequirement {
 	
 	public static final String REQUIREMENT_NAME_PREFIX = "Req";

@@ -149,6 +149,12 @@ public class ActiveConceptHelperTest {
 	}
 
 	@Test
+	public void testGetCategoryByFqn() {
+		Category category = acHelper.getCategory(testCategoryOne.getFullQualifiedName());
+		assertEquals("Found the correct Category", testCategoryOne, category);
+	}
+
+	@Test
 	public void testGetCategoryByConceptAndCategoryFqn() {
 		Category category = ActiveConceptHelper.getCategory(testConcept, TEST_CONCEPT_ID + "." + TEST_CATEGORY_ID_ONE);
 		assertEquals("Found the correct Category", testCategoryOne, category);
@@ -317,7 +323,7 @@ public class ActiveConceptHelperTest {
 	
 	@Test
 	public void testGetConcept() {
-		AProperty propertyOne = PropertydefinitionsFactory.eINSTANCE.createBooleanProperty();				
+		AProperty propertyOne = PropertydefinitionsFactory.eINSTANCE.createBooleanProperty();
 		testCategoryOne.getProperties().add(propertyOne);
 		
 		Concept returnedConceptOfCategory = ActiveConceptHelper.getConcept(testCategoryOne);
@@ -340,6 +346,9 @@ public class ActiveConceptHelperTest {
 		
 		StructuralElement seNull = ActiveConceptHelper.getStructuralElement(testConcept, TEST_INVALID_ID);
 		assertNull("Found null object", seNull);
+		
+		StructuralElement seByFqn = acHelper.getStructuralElement(seOne.getFullQualifiedName());
+		assertEquals("return the correct concept of the category one", testSeOne, seByFqn);
 	}
 	
 	@Test

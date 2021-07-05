@@ -142,6 +142,7 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 		unmarshaller.setEventHandler(eventHandler);
 		unmarshaller.setAdapter(new IUuidAdapter(resourceSet));
 		unmarshaller.setAdapter(new ABeanObjectAdapter(resourceSet));
+		unmarshaller.setAdapter(new ABeanStructuralElementInstanceAdapter(resourceSet));
 	}
 	
 	@Override
