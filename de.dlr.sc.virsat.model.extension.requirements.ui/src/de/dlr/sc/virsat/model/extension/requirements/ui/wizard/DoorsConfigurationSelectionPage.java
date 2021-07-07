@@ -17,14 +17,18 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
+import java.util.ArrayList;
 
 import org.eclipse.core.resources.IContainer;
+import org.eclipse.emf.common.command.CompoundCommand;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.equinox.security.storage.ISecurePreferences;
 import org.eclipse.equinox.security.storage.SecurePreferencesFactory;
 import org.eclipse.equinox.security.storage.StorageException;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.lyo.client.OslcClient;
 import org.eclipse.lyo.client.exception.ResourceNotFoundException;
+import org.eclipse.lyo.oslc.domains.rm.RequirementCollection;
 import org.eclipse.lyo.oslc4j.core.model.ServiceProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -33,15 +37,21 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.requirements.doors.client.DoorsSynchroClient;
 import de.dlr.sc.virsat.model.extension.requirements.doors.client.util.DoorsUtil;
 import de.dlr.sc.virsat.model.extension.requirements.model.ImportConfiguration;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollection;
+import de.dlr.sc.virsat.model.extension.requirements.model.SynchronizationConfiguration;
+import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
+import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.ui.contentProvider.VirSatFilteredWrappedTreeContentProvider;
 import de.dlr.sc.virsat.uiengine.ui.wizard.AImportExportPage;
 
@@ -65,6 +75,7 @@ public class DoorsConfigurationSelectionPage extends AImportExportPage {
 	protected static final int COLUMNS = 2;
 	protected static final int WITH_TEXT = 200;
 
+	private DoorsMappingPage mappingPage;
 	protected RequirementType reqType = null;
 
 	/**
@@ -78,6 +89,7 @@ public class DoorsConfigurationSelectionPage extends AImportExportPage {
 		super(PAGE_TITEL);
 		setTitle(PAGE_TITEL);
 		setModel(model);
+		this.mappingPage = typeReviewPage;
 		setDescription(
 				"Please specify a doors connection and a requirement configuration collection to store the configurations in.");
 	}
@@ -140,7 +152,7 @@ public class DoorsConfigurationSelectionPage extends AImportExportPage {
 
 	/**
 	 * Create a tree viewer with filters to show only relevant tree elements for
-	 * ReqIF import /export
+	 * Doors import /export
 	 */
 	protected void createTreeViewer() {
 		TreeViewer treeViewer = createTreeUI();
@@ -168,54 +180,92 @@ public class DoorsConfigurationSelectionPage extends AImportExportPage {
 	}
 
 	/**
-	 * Check if specified destination is valid
+	 * Check if specified destination to doors server is valid Create a
+	 * SynchronizationConfiguration
 	 * 
 	 * @return
 	 */
 	public boolean isDoorsConnectionValid() {
-		String server = serverUrlField.getText();
-		String project = projectNameField.getText();
-		String user = userIdField.getText();
-		String password = passwordField.getText();
-		try {
-			OslcClient client = DoorsUtil.getClient(password, user, server);
+		Object currentSelection = getSelection();
+		if (currentSelection instanceof StructuralElementInstance) {
+			Concept concept = (Concept) ((StructuralElementInstance) currentSelection).getType().eContainer();
+			String server = serverUrlField.getText();
+			String project = projectNameField.getText();
+			String user = userIdField.getText();
+			String password = passwordField.getText();
 			try {
-				String serviceProviderUrl = DoorsSynchroClient.lookUpServiceProviderUrl(client, project);
-				ServiceProvider serviceProvider = DoorsSynchroClient.getServiceProvider(client, serviceProviderUrl);
+				OslcClient client = DoorsUtil.getClient(password, user, server);
+				ServiceProvider serviceProvider = DoorsSynchroClient.getServiceProvider(client, project);
 				String title = serviceProvider.getTitle();
 				if (title.equals(project)) {
-					saveUserCredentials(user, password);
+					addSynchronizationConfiguration(concept, server, project);
+
+					saveUserCredentials(user, password, project);
+					ArrayList<RequirementCollection> specList = DoorsSynchroClient
+							.queryRequirementsSpecifications(client, project);
+					DoorsSynchroClient.queryRequirements(client, project);
+
+					Repository repository = VirSatResourceSet.getVirSatResourceSet((EObject) currentSelection)
+							.getRepository();
+					mappingPage.setInput(specList, repository);
 					return true;
 				}
-			} catch (ResourceNotFoundException | URISyntaxException e) {
+
+			} catch (KeyManagementException e) {
+				e.printStackTrace();
+			} catch (UnrecoverableKeyException e) {
+				e.printStackTrace();
+			} catch (NoSuchAlgorithmException e) {
+				e.printStackTrace();
+			} catch (KeyStoreException e) {
+				e.printStackTrace();
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			} catch (CertificateException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ResourceNotFoundException e) {
+				e.printStackTrace();
+			} catch (URISyntaxException e) {
 				e.printStackTrace();
 			}
-		} catch (KeyManagementException e) {
-			e.printStackTrace();
-		} catch (UnrecoverableKeyException e) {
-			e.printStackTrace();
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		} catch (KeyStoreException e) {
-			e.printStackTrace();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (CertificateException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 		return false;
+
 	}
-	
+
+	/**
+	 * 
+	 * @param concept
+	 * @param serverUrl
+	 * @param projectName
+	 */
+	private void addSynchronizationConfiguration(Concept concept, String serverUrl, String projectName) {
+		SynchronizationConfiguration synchroConfig = new SynchronizationConfiguration(concept);
+		synchroConfig.setServerUrl(serverUrl);
+		synchroConfig.setProjectName(projectName);
+
+		EObject reqConfiguration = (EObject) getSelection();
+		RequirementsConfigurationCollection collection = new RequirementsConfigurationCollection(
+				(StructuralElementInstance) reqConfiguration);
+		Repository repository = VirSatResourceSet.getVirSatResourceSet((EObject) reqConfiguration).getRepository();
+		VirSatTransactionalEditingDomain editingDomain = VirSatEditingDomainRegistry.INSTANCE.getEd(repository);
+		CompoundCommand cc = new CompoundCommand();
+
+		cc.append(collection.add(editingDomain, synchroConfig));
+		editingDomain.getCommandStack().execute(cc);
+
+	}
+
 	/**
 	 * 
 	 * @param user
 	 * @param password
 	 */
-	public void saveUserCredentials(String user, String password) {
+	public void saveUserCredentials(String user, String password, String projectName) {
 		ISecurePreferences securePreferences = SecurePreferencesFactory.getDefault();
-		ISecurePreferences node = securePreferences.node("DoorsNG user credentials");
+		ISecurePreferences node = securePreferences.node("DoorsNG user credentials (" + projectName + ")");
 		try {
 			node.put("user", user, true);
 			node.put("password", password, true);

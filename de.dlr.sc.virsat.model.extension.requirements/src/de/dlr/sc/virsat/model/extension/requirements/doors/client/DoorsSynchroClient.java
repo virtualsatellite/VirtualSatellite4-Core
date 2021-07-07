@@ -171,15 +171,21 @@ public class DoorsSynchroClient {
 					OslcMediaType.APPLICATION_RDF_XML);
 			RequirementCollection requirementCollection = requirementGet.readEntity(RequirementCollection.class);
 			ArrayList<Requirement> listOfRequirements = new ArrayList<Requirement>();
-			if (requirementCollection.getUses() != null) {
-				for (Link uses : requirementCollection.getUses()) {
-					Response reqResource = client.getResource(uses.getValue().toString(),
-							OslcMediaType.APPLICATION_RDF_XML);
-					Requirement req = reqResource.readEntity(Requirement.class);
-					listOfRequirements.add(req);
+			try {
+				if (requirementCollection != null) {
+					if (requirementCollection.getUses() != null) {
+						for (Link uses : requirementCollection.getUses()) {
+							Response reqResource = client.getResource(uses.getValue().toString(),
+									OslcMediaType.APPLICATION_RDF_XML);
+							Requirement req = reqResource.readEntity(Requirement.class);
+							listOfRequirements.add(req);
+						}
+						mapOfRequirements.put(requirementCollection, listOfRequirements);
+					}
 				}
+			} catch (NullPointerException np) {
+				np.getStackTrace();
 			}
-			mapOfRequirements.put(reqCollection, listOfRequirements);
 		}
 	}
 }
