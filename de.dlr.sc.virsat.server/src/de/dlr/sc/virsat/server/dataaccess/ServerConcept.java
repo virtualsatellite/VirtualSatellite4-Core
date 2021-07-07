@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.general.IQualifiedName;
@@ -24,8 +25,10 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiModelProperty.AccessMode;
 
 @XmlRootElement
+@XmlType(name = "Concept")
 @XmlAccessorType(XmlAccessType.NONE)
-@ApiModel(description = "A concept that can be activated on the current repository. "
+@ApiModel(value = "Concept",
+		description = "A concept that can be activated on the current repository. "
 		+ "It is identified by it's full qualified name and contains it's categories and structural elements. "
 		+ "Which can be instantiated as CategoryAssignments and StructurelElementInstances.")
 public class ServerConcept {

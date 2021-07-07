@@ -57,6 +57,8 @@ import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.general.IUuid;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
+import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
+import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
@@ -102,6 +104,7 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 	protected BeanPropertyComposed<TestCategoryAllProperty> beanComposed;
 	protected BeanPropertyReference<TestCategoryAllProperty> beanReferenceCa;
 	protected VirSatProjectCommons projectCommons;
+	protected Discipline discipline;
 
 	protected static final String TEST_STRING = "testString";
 	
@@ -179,6 +182,8 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 		beanBool.setValue(false);
 		beanComposed.getValue().setTestBool(false);
 		
+		discipline = RolesFactory.eINSTANCE.createDiscipline();
+		
 		RecordingCommand recordingCommand = new RecordingCommand(ed) {
 			@Override
 			protected void doExecute() {
@@ -186,6 +191,7 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 				resourceSet.getRepository().getRootEntities().add(sei);
 				resourceSet.getAndAddStructuralElementInstanceResource(sei);
 				resourceSet.getAndAddStructuralElementInstanceResource(tSeiChild.getStructuralElementInstance());
+				ed.getResourceSet().getRoleManagement().getDisciplines().add(discipline);
 			}
 		};
 		ed.getCommandStack().execute(recordingCommand);
@@ -248,12 +254,7 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 		
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 		
-		String entity = webTarget
-				.path(path)
-				.path(uuid)
-				.request()
-				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
-				.get(String.class);
+		String entity = response.readEntity(String.class);
 		
 		// Compare with the expected
 		JAXBUtility jaxbUtility = new JAXBUtility(classes);

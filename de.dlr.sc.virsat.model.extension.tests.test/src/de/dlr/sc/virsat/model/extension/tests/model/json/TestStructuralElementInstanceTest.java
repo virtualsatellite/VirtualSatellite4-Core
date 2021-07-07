@@ -23,8 +23,11 @@ import javax.xml.transform.stream.StreamSource;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.model.concept.types.roles.BeanDiscipline;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
+import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
+import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
@@ -40,6 +43,7 @@ public class TestStructuralElementInstanceTest extends AConceptTestCase {
 	private static final String RESOURCE_DEFAULTS = "/resources/json/TestStructuralElementInstance_Marshaling_Defaults.json";
 	private static final String RESOURCE = "/resources/json/TestStructuralElementInstance_Marshaling.json";
 	private static final String NAME = "name";
+	private static final String USERNAME = "user";
 	
 	private TestStructuralElement tse;
 	private TestStructuralElement tseParent;
@@ -54,6 +58,8 @@ public class TestStructuralElementInstanceTest extends AConceptTestCase {
 
 	private TestCategoryBeanA tcBA;
 	private TestCategoryAllProperty tcAP;
+	
+	private BeanDiscipline beanDiscipline;
 	
 	@Before
 	public void setup() throws JAXBException {
@@ -87,6 +93,12 @@ public class TestStructuralElementInstanceTest extends AConceptTestCase {
 		
 		tcBA.getATypeInstance().setUuid(new VirSatUuid("98197a0b-78ec-416c-a685-5d7416808585"));
 		tcAP.getATypeInstance().setUuid(new VirSatUuid("19e979e8-944b-4ae5-9906-0d4c5a634b9f"));
+		
+		Discipline discipline = RolesFactory.eINSTANCE.createDiscipline();
+		discipline.setName(NAME);
+		discipline.setUser(USERNAME);
+		discipline.setUuid(new VirSatUuid("e4e175f5-88c8-474f-bb25-2cdf1d3061cb"));
+		beanDiscipline = new BeanDiscipline(discipline);
 	}
 	
 	/**
@@ -104,6 +116,8 @@ public class TestStructuralElementInstanceTest extends AConceptTestCase {
 		
 		tse.addSuperSei(tseSuperSei1);
 		tse.addSuperSei(tseSuperSei2);
+		
+		tse.setAssignedDiscipline(beanDiscipline);
 	}
 	
 	@Test
@@ -128,7 +142,8 @@ public class TestStructuralElementInstanceTest extends AConceptTestCase {
 				tseSuperSei1.getStructuralElementInstance(),
 				tseSuperSei2.getStructuralElementInstance(),
 				tcBA.getATypeInstance(),
-				tcAP.getATypeInstance()
+				tcAP.getATypeInstance(),
+				beanDiscipline.getDiscipline()
 		));
 		
 		assertNull("Initial no name", sei.getName());

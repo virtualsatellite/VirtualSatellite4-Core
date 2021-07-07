@@ -28,6 +28,7 @@ import de.dlr.sc.virsat.server.resources.DocumentationResourceTest;
 import de.dlr.sc.virsat.server.resources.ModelAccessResourceTest;
 import de.dlr.sc.virsat.server.resources.ProjectManagementResourceTest;
 import de.dlr.sc.virsat.server.resources.modelaccess.CategoryAssignmentResourceTest;
+import de.dlr.sc.virsat.server.resources.modelaccess.DisciplineResourceTest;
 import de.dlr.sc.virsat.server.resources.modelaccess.PropertyResourceTest;
 import de.dlr.sc.virsat.server.resources.modelaccess.StructuralElementInstanceResourceTest;
 import junit.framework.JUnit4TestAdapter;
@@ -55,7 +56,8 @@ import junit.framework.JUnit4TestAdapter;
 	DocumentationResourceTest.class,
 	VirSatJettyServerTest.class,
 	CorsFilterTest.class,
-	ServerConceptTest.class
+	ServerConceptTest.class,
+	DisciplineResourceTest.class
 })
 
 public class AllTests {

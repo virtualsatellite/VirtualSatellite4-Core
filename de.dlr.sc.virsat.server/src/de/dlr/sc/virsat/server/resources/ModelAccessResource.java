@@ -36,11 +36,13 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jetty.http.HttpStatus;
 
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
+import de.dlr.sc.virsat.model.concept.types.roles.BeanDiscipline;
 import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.util.StructuralInstantiator;
@@ -53,6 +55,7 @@ import de.dlr.sc.virsat.server.jetty.VirSatJettyServer;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
 import de.dlr.sc.virsat.server.resources.modelaccess.CategoryAssignmentResource;
+import de.dlr.sc.virsat.server.resources.modelaccess.DisciplineResource;
 import de.dlr.sc.virsat.server.resources.modelaccess.PropertyResource;
 import de.dlr.sc.virsat.server.resources.modelaccess.StructuralElementInstanceResource;
 import de.dlr.sc.virsat.server.servlet.VirSatModelAccessServlet;
@@ -89,6 +92,8 @@ public class ModelAccessResource {
 	public static final String ROOT_SEIS = "seis";
 	public static final String SEI = "sei";
 	public static final String DISCIPLINES = "disciplines";
+	public static final String DISCIPLINE = "discipline";
+	public static final String ROLEMANAGEMENT = "rolemanagement";
 	public static final String CONCEPTS = "concepts";
 	public static final String CA = "ca";
 	public static final String CA_AND_PROPERTIES = "caAndProperties";
@@ -106,7 +111,8 @@ public class ModelAccessResource {
 			RepoModelAccessResource.class,
 			StructuralElementInstanceResource.class,
 			CategoryAssignmentResource.class,
-			PropertyResource.class);
+			PropertyResource.class,
+			DisciplineResource.class);
 	
 	public ModelAccessResource() { }
 	
@@ -198,6 +204,11 @@ public class ModelAccessResource {
 		@Path(SEI)
 		public StructuralElementInstanceResource getStructuralElementInstanceResource() {
 			return new StructuralElementInstanceResource(this);
+		}
+		
+		@Path(DISCIPLINE)
+		public DisciplineResource getDisciplineResource() {
+			return new DisciplineResource(this);
 		}
 
 		// Actual resources
@@ -344,6 +355,75 @@ public class ModelAccessResource {
 				GenericEntity<List<ServerConcept>> entity = new GenericEntity<List<ServerConcept>>(pojos) { };
 				
 				return Response.ok(entity).build();
+			} catch (Exception e) {
+				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			}
+		}
+		
+		/** **/
+		@GET
+		@Path(DISCIPLINES)
+		@Produces(MediaType.APPLICATION_JSON)
+		@ApiOperation(
+				produces = "application/json",
+				value = "Fetch a list of all Disciplines",
+				httpMethod = "GET",
+				notes = "This service fetches the existing Disciplines")
+		@ApiResponses(value = { 
+				@ApiResponse(
+						code = HttpStatus.OK_200,
+						response = BeanDiscipline.class,
+						responseContainer = "List",
+						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+				@ApiResponse(
+						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+						message = ApiErrorHelper.SYNC_ERROR)})
+		public Response getDisciplines() {
+			try {
+				synchronize();
+				
+				List<BeanDiscipline> pojos = new ArrayList<BeanDiscipline>();
+				List<Discipline> disciplines = repository.getRoleManagement().getDisciplines();
+				
+				for (Discipline discipline : disciplines) {
+					pojos.add(new BeanDiscipline(discipline));
+				}
+				
+				GenericEntity<List<BeanDiscipline>> entity = new GenericEntity<List<BeanDiscipline>>(pojos) { };
+				
+				return Response.ok(entity).build();
+			} catch (Exception e) {
+				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			}
+		}
+		
+		/** **/
+		@GET
+		@Path(ROLEMANAGEMENT)
+		@Produces(MediaType.APPLICATION_JSON)
+		@ApiOperation(
+				produces = "application/json",
+				value = "Fetch discipline of the rolemanagement",
+				httpMethod = "GET",
+				notes = "This service fetches the discipline of the rolemanagement")
+		@ApiResponses(value = { 
+				@ApiResponse(
+						code = HttpStatus.OK_200,
+						response = BeanDiscipline.class,
+						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+				@ApiResponse(
+						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+						message = ApiErrorHelper.SYNC_ERROR)})
+		public Response getRolemanagementDiscipline() {
+			try {
+				synchronize();
+				
+				Discipline discipline = repository.getRoleManagement().getAssignedDiscipline();
+				if (discipline == null) {
+					return Response.ok(null).build();
+				}
+				
+				return Response.ok(new BeanDiscipline(discipline)).build();
 			} catch (Exception e) {
 				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
 			}

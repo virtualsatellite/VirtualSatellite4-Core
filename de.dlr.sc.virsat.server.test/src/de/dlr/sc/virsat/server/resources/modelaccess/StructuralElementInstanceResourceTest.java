@@ -66,6 +66,6 @@ public class StructuralElementInstanceResourceTest extends AModelAccessResourceT
 		
 		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.SEI + "/unknown").delete());
 		
-		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.CA + "/unknown").post(Entity.json(null)));
+		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.SEI + "/unknown").post(Entity.json(null)));
 	}
 }
