@@ -9,6 +9,7 @@ Require-Bundle: org.junit,
  de.dlr.sc.virsat.apps,
  de.dlr.sc.virsat.model,
  de.dlr.sc.virsat.model.extension.tests,
+ de.dlr.sc.virsat.model.extension.maturity,
  de.dlr.sc.virsat.project,
  org.eclipse.core.resources,
  de.dlr.sc.virsat.concept.unittest.util
