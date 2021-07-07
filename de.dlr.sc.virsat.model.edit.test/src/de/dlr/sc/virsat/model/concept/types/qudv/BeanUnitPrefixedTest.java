@@ -53,7 +53,7 @@ public class BeanUnitPrefixedTest extends ABeanUnitTest {
 	@Test
 	public void testSetPrefix() {
 		assertNull("Is null initial", prefixedUnit.getPrefix());
-		prefixedBeanUnit.setPrefix(beanPrefix);
+		prefixedBeanUnit.setPrefixBean(beanPrefix);
 		
 		assertEquals("Value correctly set", prefix, prefixedUnit.getPrefix());
 	}
@@ -61,7 +61,7 @@ public class BeanUnitPrefixedTest extends ABeanUnitTest {
 	@Test
 	public void testSetPrefixEditingDomain() {
 		assertNull("Is null initial", prefixedUnit.getPrefix());
-		Command cmd = prefixedBeanUnit.setPrefix(ed, beanPrefix);
+		Command cmd = prefixedBeanUnit.setPrefixBean(ed, beanPrefix);
 		cmd.execute();
 		
 		assertEquals("Value correctly set", prefix, prefixedUnit.getPrefix());

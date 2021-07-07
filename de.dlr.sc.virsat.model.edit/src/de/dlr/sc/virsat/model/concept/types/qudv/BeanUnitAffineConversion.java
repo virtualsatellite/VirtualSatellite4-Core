@@ -9,12 +9,17 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.qudv;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
+import de.dlr.sc.virsat.model.dvlm.json.DoubleAdapter;
 import de.dlr.sc.virsat.model.dvlm.qudv.AffineConversionUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
+import io.swagger.annotations.ApiModelProperty;
 
 public class BeanUnitAffineConversion extends ABeanConversionBasedUnit<AffineConversionUnit> {
 
@@ -26,6 +31,9 @@ public class BeanUnitAffineConversion extends ABeanConversionBasedUnit<AffineCon
 		super(unit);
 	}
 	
+	@ApiModelProperty(required = true)
+	@XmlElement(nillable = true)
+	@XmlJavaTypeAdapter(DoubleAdapter.class)
 	Double getFactor() {
 		return unit.getFactor();
 	}
@@ -38,15 +46,17 @@ public class BeanUnitAffineConversion extends ABeanConversionBasedUnit<AffineCon
 		return SetCommand.create(ed, unit, QudvPackage.Literals.AFFINE_CONVERSION_UNIT__FACTOR, factor);
 	}
 	
-	Double getOffset() {
+	@ApiModelProperty(required = true)
+	@XmlElement(nillable = true)
+	double getOffset() {
 		return unit.getOffset();
 	}
 	
-	void setOffset(Double offset) {
+	void setOffset(double offset) {
 		unit.setOffset(offset);
 	}
 	
-	public Command setOffset(EditingDomain ed, Double offset) {
+	public Command setOffset(EditingDomain ed, double offset) {
 		return SetCommand.create(ed, unit, QudvPackage.Literals.AFFINE_CONVERSION_UNIT__OFFSET, offset);
 	}
 }

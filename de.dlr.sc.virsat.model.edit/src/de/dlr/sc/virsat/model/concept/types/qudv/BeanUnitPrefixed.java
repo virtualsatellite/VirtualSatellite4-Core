@@ -9,12 +9,17 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.qudv;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
+import de.dlr.sc.virsat.model.dvlm.json.BeanPrefixAdapter;
 import de.dlr.sc.virsat.model.dvlm.qudv.PrefixedUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
+import io.swagger.annotations.ApiModelProperty;
 
 public class BeanUnitPrefixed extends ABeanConversionBasedUnit<PrefixedUnit> {
 	
@@ -26,15 +31,18 @@ public class BeanUnitPrefixed extends ABeanConversionBasedUnit<PrefixedUnit> {
 		super(unit);
 	}
 	
-	BeanPrefix getPrefixBean() {
+	@ApiModelProperty(required = true)
+	@XmlElement(nillable = true)
+	@XmlJavaTypeAdapter(BeanPrefixAdapter.class)
+	public BeanPrefix getPrefixBean() {
 		return new BeanPrefix(unit.getPrefix());
 	}
 	
-	void setPrefix(BeanPrefix beanPrefix) {
+	public void setPrefixBean(BeanPrefix beanPrefix) {
 		unit.setPrefix(beanPrefix.getPrefix());
 	}
 	
-	public Command setPrefix(EditingDomain ed, BeanPrefix beanPrefix) {
+	public Command setPrefixBean(EditingDomain ed, BeanPrefix beanPrefix) {
 		return SetCommand.create(ed, unit, QudvPackage.Literals.PREFIXED_UNIT__PREFIX, beanPrefix.getPrefix());
 	}
 }

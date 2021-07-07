@@ -1,0 +1,15 @@
+{
+   "type" : "beanQuantityKindDerived",
+   "uuid" : "ad796ad1-bc2f-4ff0-932f-8bf70ad0d9c1",
+   "name" : "Velocity",
+   "symbol" : "L¹ T⁻¹",
+   "factorBeans" : [ {
+      "uuid" : "92fd020c-8b12-4d8a-9711-8a8976cfc39b",
+      "exponent" : -1.0,
+      "quantityKindBean" : "b4b5ca4f-cc40-4e66-af06-583d982781e1"
+   }, {
+      "uuid" : "e7559cc7-42b9-41c6-b57d-8b31e761f293",
+      "exponent" : 1.0,
+      "quantityKindBean" : "882b2e01-712d-4557-bc25-3158cd4ff316"
+   } ]
+}
