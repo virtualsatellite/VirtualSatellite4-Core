@@ -26,6 +26,7 @@ import de.dlr.sc.virsat.model.concept.types.factory.BeanUnitFactory;
 import de.dlr.sc.virsat.model.concept.types.qudv.BeanPrefix;
 import de.dlr.sc.virsat.model.concept.types.qudv.BeanQuantityKindDerived;
 import de.dlr.sc.virsat.model.concept.types.qudv.BeanQuantityKindSimple;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanSystemOfQuantities;
 import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitAffineConversion;
 import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitDerived;
 import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitLinearConversion;
@@ -34,6 +35,7 @@ import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitSimple;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
 import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
+import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfQuantities;
 import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfUnits;
 import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
 
@@ -48,6 +50,7 @@ public class BeanQudvTest {
 	private BeanPrefix beanPrefix;
 	private BeanQuantityKindSimple beanQuantityKindSimple;
 	private BeanQuantityKindDerived beanQuantityKindDerived;
+	private BeanSystemOfQuantities beanSystemOfQuantities;
 
 	private static final String RESOURCE_PATH = "/resources/json/qudv/%s.json";
 	
@@ -61,11 +64,14 @@ public class BeanQudvTest {
 			BeanUnitDerived.class,
 			BeanPrefix.class,
 			BeanQuantityKindSimple.class,
-			BeanQuantityKindDerived.class
+			BeanQuantityKindDerived.class,
+			BeanSystemOfQuantities.class
 		});
 		
 		Repository repo = JsonTestHelper.createRepositoryWithUnitManagement(null);
 		SystemOfUnits sou = repo.getUnitManagement().getSystemOfUnit();
+		SystemOfQuantities soq = repo.getUnitManagement().getSystemOfUnit().getSystemOfQuantities().get(0);
+		beanSystemOfQuantities = new BeanSystemOfQuantities(soq);
 		
 		AUnit meterUnit = QudvUnitHelper.getInstance().getUnitByName(sou, "Meter");
 		beanUnitSimple = (BeanUnitSimple) new BeanUnitFactory().getInstanceFor(meterUnit);
@@ -116,6 +122,7 @@ public class BeanQudvTest {
 		testMarshall(beanUnitDerived);
 		
 		// QuantityKinds
+		testMarshall(beanSystemOfQuantities);
 		testMarshall(beanQuantityKindSimple);
 		testMarshall(beanQuantityKindDerived);
 		
@@ -152,6 +159,7 @@ public class BeanQudvTest {
 				beanUnitDerived.getUnit().getFactor().get(1).getUnit()));
 		
 		// QuantityKinds
+		testUnmarshall(beanSystemOfQuantities, beanSystemOfQuantities.getSystemOfQuantites());
 		testUnmarshall(beanQuantityKindSimple, beanQuantityKindSimple.getQuantityKind());
 		testUnmarshall(beanQuantityKindDerived, Arrays.asList(
 				beanQuantityKindDerived.getQuantityKind(),
