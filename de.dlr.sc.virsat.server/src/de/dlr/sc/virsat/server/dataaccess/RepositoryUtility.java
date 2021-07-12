@@ -22,6 +22,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.general.IUuid;
+import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfQuantities;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
@@ -157,6 +158,21 @@ public class RepositoryUtility {
 		for (Discipline discipline : disciplines) {
 			if (discipline.getUuid().toString().equals(uuid)) {
 				return discipline;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Finds a SystemOfQuantites instance by it's uuid
+	 * @param uuid
+	 * @return the SystemOfQuantites or null
+	 */
+	public static SystemOfQuantities findSystemOfQuantites(String uuid, Repository repository) {
+		List<SystemOfQuantities> systemsOfQuantites = repository.getUnitManagement().getSystemOfUnit().getSystemOfQuantities();
+		for (SystemOfQuantities systemOfQuantites : systemsOfQuantites) {
+			if (systemOfQuantites.getUuid().toString().equals(uuid)) {
+				return systemOfQuantites;
 			}
 		}
 		return null;

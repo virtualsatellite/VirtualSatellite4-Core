@@ -35,18 +35,29 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jetty.http.HttpStatus;
 
+import de.dlr.sc.virsat.model.concept.types.factory.BeanQuantityKindFactory;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
+import de.dlr.sc.virsat.model.concept.types.factory.BeanUnitFactory;
+import de.dlr.sc.virsat.model.concept.types.qudv.ABeanQuantityKind;
+import de.dlr.sc.virsat.model.concept.types.qudv.ABeanUnit;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanPrefix;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanSystemOfQuantities;
 import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind;
+import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
+import de.dlr.sc.virsat.model.dvlm.qudv.Prefix;
+import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfQuantities;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.util.StructuralInstantiator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommand;
 import de.dlr.sc.virsat.server.auth.ServerRoles;
+import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.dataaccess.ServerConcept;
 import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProvider;
 import de.dlr.sc.virsat.server.jetty.VirSatJettyServer;
@@ -94,6 +105,10 @@ public class ModelAccessResource {
 	public static final String CA_AND_PROPERTIES = "caAndProperties";
 	public static final String PROPERTY = "property";
 	public static final String FORCE_SYNC = "forceSync";
+	public static final String PREFIXES = "prefixes";
+	public static final String SYSTEMS_OF_QUANTITES = "systemsOfQuantites";
+	public static final String UNITS = "units";
+	public static final String QUANTITY_KINDS = "quantityKinds";
 	
 	public static final String QP_ONLY_ACTIVE_CONCEPTS = "onlyActiveConcepts";
 	public static final String QP_FULL_QUALIFIED_NAME = "fullQualifiedName";
@@ -199,6 +214,17 @@ public class ModelAccessResource {
 		public StructuralElementInstanceResource getStructuralElementInstanceResource() {
 			return new StructuralElementInstanceResource(this);
 		}
+		
+
+		// TODO resources, swagger doc
+		
+		// QK resource
+		// /quantityKind
+		// GET PUT POST DELETE
+
+		// UnitResource
+		// /unit
+		// GET PUT POST DELETE
 
 		// Actual resources
 		/** **/
@@ -342,6 +368,165 @@ public class ModelAccessResource {
 				}
 				
 				GenericEntity<List<ServerConcept>> entity = new GenericEntity<List<ServerConcept>>(pojos) { };
+				
+				return Response.ok(entity).build();
+			} catch (Exception e) {
+				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			}
+		}
+		
+		// TODO: test endpoints
+		/** **/
+		@GET
+		@Path(PREFIXES)
+		@Produces(MediaType.APPLICATION_JSON)
+		@ApiOperation(
+				produces = "application/json",
+				value = "Fetch a list of prefixes",
+				httpMethod = "GET",
+				notes = "This service fetches the Prefixes")
+		@ApiResponses(value = { 
+				@ApiResponse(
+						code = HttpStatus.OK_200,
+						response = BeanPrefix.class,
+						responseContainer = "List",
+						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+				@ApiResponse(
+						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+						message = ApiErrorHelper.SYNC_ERROR)})
+		public Response getPrefixes() {
+			try {
+				synchronize();
+				
+				List<Prefix> prefixes = repository.getUnitManagement().getSystemOfUnit().getPrefix();
+				List<BeanPrefix> beanPrefixes = new ArrayList<BeanPrefix>();
+				
+				for (Prefix prefix : prefixes) {
+					beanPrefixes.add(new BeanPrefix(prefix));
+				}
+				
+				GenericEntity<List<BeanPrefix>> entity = new GenericEntity<List<BeanPrefix>>(beanPrefixes) { };
+				
+				return Response.ok(entity).build();
+			} catch (Exception e) {
+				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			}
+		}
+		
+		/** **/
+		@GET
+		@Path(SYSTEMS_OF_QUANTITES)
+		@Produces(MediaType.APPLICATION_JSON)
+		@ApiOperation(
+				produces = "application/json",
+				value = "Fetch a list of system of quantities",
+				httpMethod = "GET",
+				notes = "This service fetches the SystemOfQuantities")
+		@ApiResponses(value = { 
+				@ApiResponse(
+						code = HttpStatus.OK_200,
+						response = BeanSystemOfQuantities.class,
+						responseContainer = "List",
+						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+				@ApiResponse(
+						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+						message = ApiErrorHelper.SYNC_ERROR)})
+		public Response getSystemsOfQuantites() {
+			try {
+				synchronize();
+				
+				List<SystemOfQuantities> systemsOfQuantites = repository.getUnitManagement().getSystemOfUnit().getSystemOfQuantities();
+				List<BeanSystemOfQuantities> beanSystemsOfQuantites = new ArrayList<BeanSystemOfQuantities>();
+				
+				for (SystemOfQuantities systemOfQuantites : systemsOfQuantites) {
+					beanSystemsOfQuantites.add(new BeanSystemOfQuantities(systemOfQuantites));
+				}
+				
+				GenericEntity<List<BeanSystemOfQuantities>> entity = new GenericEntity<List<BeanSystemOfQuantities>>(beanSystemsOfQuantites) { };
+				
+				return Response.ok(entity).build();
+			} catch (Exception e) {
+				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			}
+		}
+		
+		/** **/
+		@GET
+		@Path(SYSTEMS_OF_QUANTITES + "/{systemOfQuantitesUuid}/" + QUANTITY_KINDS)
+		@Produces(MediaType.APPLICATION_JSON)
+		@ApiOperation(
+				produces = "application/json",
+				value = "Fetch a list of quantity kinds",
+				httpMethod = "GET",
+				notes = "This service fetches the QuantityKinds")
+		@ApiResponses(value = { 
+				@ApiResponse(
+						code = HttpStatus.OK_200,
+						response = ABeanQuantityKind.class,
+						responseContainer = "List",
+						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+				@ApiResponse(
+						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+						message = ApiErrorHelper.SYNC_ERROR)})
+		@SuppressWarnings("rawtypes")
+		public Response getQuantityKinds(@PathParam("systemOfQuantitesUuid") @ApiParam(value = "Uuid of the systemOfQuantities", required = true) String systemOfQuantitesUuid) {
+			try {
+				synchronize();
+				
+				SystemOfQuantities systemOfQuantites = RepositoryUtility.findSystemOfQuantites(systemOfQuantitesUuid, repository);
+				
+				if (systemOfQuantites == null) {
+					return ApiErrorHelper.createNotFoundErrorResponse();
+				}
+				
+				List<ABeanQuantityKind> beanQuantityKinds = new ArrayList<>();
+				
+				for (AQuantityKind quantityKind : systemOfQuantites.getQuantityKind()) {
+					ABeanQuantityKind<? extends AQuantityKind> beanQuantityKind = (ABeanQuantityKind<? extends AQuantityKind>) new BeanQuantityKindFactory().getInstanceFor(quantityKind);
+					beanQuantityKinds.add(beanQuantityKind);
+				}
+				
+				GenericEntity<List<ABeanQuantityKind>> entity = new GenericEntity<List<ABeanQuantityKind>>(beanQuantityKinds) { };
+				
+				return Response.ok(entity).build();
+			} catch (Exception e) {
+				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			}
+		}
+		
+		
+		/** **/
+		@GET
+		@Path(UNITS)
+		@Produces(MediaType.APPLICATION_JSON)
+		@ApiOperation(
+				produces = "application/json",
+				value = "Fetch a list of units",
+				httpMethod = "GET",
+				notes = "This service fetches the Units")
+		@ApiResponses(value = { 
+				@ApiResponse(
+						code = HttpStatus.OK_200,
+						response = ABeanUnit.class,
+						responseContainer = "List",
+						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+				@ApiResponse(
+						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+						message = ApiErrorHelper.SYNC_ERROR)})
+		@SuppressWarnings("rawtypes")
+		public Response getUnits() {
+			try {
+				synchronize();
+				
+				List<AUnit> units = repository.getUnitManagement().getSystemOfUnit().getUnit();
+				List<ABeanUnit> beanUnits = new ArrayList<>();
+				
+				for (AUnit unit : units) {
+					ABeanUnit<? extends AUnit> beanUnit = (ABeanUnit<? extends AUnit>) new BeanUnitFactory().getInstanceFor(unit);
+					beanUnits.add(beanUnit);
+				}
+				
+				GenericEntity<List<ABeanUnit>> entity = new GenericEntity<List<ABeanUnit>>(beanUnits) { };
 				
 				return Response.ok(entity).build();
 			} catch (Exception e) {

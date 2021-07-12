@@ -43,11 +43,15 @@ import de.dlr.sc.virsat.commons.exception.AtomicExceptionReference;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
+import de.dlr.sc.virsat.model.concept.types.qudv.ABeanQuantityKind;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.ABeanQuantityKindAdapter;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanStructuralElementInstanceAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.ABeanUnitAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.BeanPrefixAdapter;
 import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapter;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
@@ -67,7 +71,12 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 	private static final Set<Class<?>> LIST_CLASSES = new HashSet<Class<?>>(
 			Arrays.asList(
 				IUuidAdapter.class,
-				ABeanStructuralElementInstanceAdapter.class
+				ABeanObjectAdapter.class,
+				ABeanStructuralElementInstanceAdapter.class,
+				ABeanUnitAdapter.class,
+				ABeanQuantityKindAdapter.class,
+				BeanPrefixAdapter.class,
+				ABeanQuantityKind.class
 	));
 	
 	public TransactionalJsonProvider() {
@@ -143,6 +152,9 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 		unmarshaller.setAdapter(new IUuidAdapter(resourceSet));
 		unmarshaller.setAdapter(new ABeanObjectAdapter(resourceSet));
 		unmarshaller.setAdapter(new ABeanStructuralElementInstanceAdapter(resourceSet));
+		unmarshaller.setAdapter(new ABeanUnitAdapter(resourceSet));
+		unmarshaller.setAdapter(new BeanPrefixAdapter(resourceSet));
+		unmarshaller.setAdapter(new ABeanQuantityKindAdapter(resourceSet));
 	}
 	
 	@Override
@@ -282,7 +294,7 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 		// And we don't want to register the CA because their depending classes
 		// (e.g. the property beans) won't be resolved either and result in errors.
 		if (domainClasses.contains(List.class)) {
-			// Currently this is only the case for the RootSeis,
+			// Currently this is only the case for the RootSeis, Units, QuantityKinds and Prefixes
 			// so we only register those missing classes here.
 			domainClasses.addAll(LIST_CLASSES);
 		} else {
