@@ -30,10 +30,6 @@ import org.junit.Test;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
-import de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind;
-import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
-import de.dlr.sc.virsat.model.dvlm.qudv.Prefix;
-import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfQuantities;
 import de.dlr.sc.virsat.server.Activator;
 import de.dlr.sc.virsat.server.test.VersionControlTestHelper;
 
@@ -210,80 +206,5 @@ public class ModelAccessResourceTest extends AModelAccessResourceTest {
 				.post(Entity.json(null));
 		
 		assertIUuidGotCreated(response, wantedTypeFqn, ed, ed.getResourceSet().getRepository().getRootEntities());
-	}
-	
-	@Test
-	public void testPrefixesGet() throws Exception {
-		int commits = VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath());
-		
-		List<String> entity = webTarget
-				.path(ModelAccessResource.PREFIXES)
-				.request()
-				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
-				.get(new GenericType<List<String>>() { });
-		
-		List<Prefix> prefixes = resourceSet.getRepository().getUnitManagement().getSystemOfUnit().getPrefix();
-		assertEquals(entity.size(), prefixes.size());
-		assertTrue(entity.contains(prefixes.get(0).getUuid().toString()));
-		
-		assertEquals("No new commit on get without remote changes", commits, 
-				VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath()));
-	}
-	
-	@Test
-	public void testSystemOfQuantitesGet() throws Exception {
-		int commits = VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath());
-		
-		List<String> entity = webTarget
-				.path(ModelAccessResource.SYSTEMS_OF_QUANTITES)
-				.request()
-				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
-				.get(new GenericType<List<String>>() { });
-		
-		List<SystemOfQuantities> systemOfQuantites = resourceSet.getRepository().getUnitManagement().getSystemOfUnit().getSystemOfQuantities();
-		assertEquals(entity.size(), systemOfQuantites.size());
-		assertTrue(entity.contains(systemOfQuantites.get(0).getUuid().toString()));
-		
-		assertEquals("No new commit on get without remote changes", commits, 
-				VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath()));
-	}
-	
-	@Test
-	public void testQuantityKindsGet() throws Exception {
-		int commits = VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath());
-		SystemOfQuantities soq = resourceSet.getRepository().getUnitManagement().getSystemOfUnit().getSystemOfQuantities().get(0);
-		 
-		List<String> entity = webTarget
-				.path(ModelAccessResource.SYSTEMS_OF_QUANTITES)
-				.path(soq.getUuid().toString())
-				.path(ModelAccessResource.QUANTITY_KINDS)
-				.request()
-				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
-				.get(new GenericType<List<String>>() { });
-		
-		List<AQuantityKind> quantityKinds = soq.getQuantityKind();
-		assertEquals(entity.size(), quantityKinds.size());
-		assertTrue(entity.contains(quantityKinds.get(0).getUuid().toString()));
-		
-		assertEquals("No new commit on get without remote changes", commits, 
-				VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath()));
-	}
-	
-	@Test
-	public void testUnitsGet() throws Exception {
-		int commits = VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath());
-		
-		List<String> entity = webTarget
-				.path(ModelAccessResource.UNITS)
-				.request()
-				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
-				.get(new GenericType<List<String>>() { });
-		
-		List<AUnit> units = resourceSet.getRepository().getUnitManagement().getSystemOfUnit().getUnit();
-		assertEquals(entity.size(), units.size());
-		assertTrue(entity.contains(units.get(0).getUuid().toString()));
-		
-		assertEquals("No new commit on get without remote changes", commits, 
-				VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath()));
 	}
 }

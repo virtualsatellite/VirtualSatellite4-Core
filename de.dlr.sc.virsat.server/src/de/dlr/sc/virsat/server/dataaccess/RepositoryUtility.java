@@ -22,6 +22,8 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.general.IUuid;
+import de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind;
+import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfQuantities;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
@@ -164,6 +166,26 @@ public class RepositoryUtility {
 	}
 	
 	/**
+	 * Finds a se instance by it's fullQualifiedName
+	 * @param fullQualifiedName of the se
+	 * @param repository to search
+	 * @return the StructuralElement or null or null
+	 */
+	public static StructuralElement findSe(String fullQualifiedName, Repository repository) {
+		EList<Concept> concepts = repository.getActiveConcepts();
+		for (Concept concept : concepts) {
+			for (StructuralElement se : concept.getStructuralElements()) {
+				if (se.getFullQualifiedName().equals(fullQualifiedName)) {
+					return se;
+				}
+			}
+		}
+		return null;
+	}
+	
+	// TODO: test
+	
+	/**
 	 * Finds a SystemOfQuantites instance by it's uuid
 	 * @param uuid
 	 * @return the SystemOfQuantites or null
@@ -177,19 +199,33 @@ public class RepositoryUtility {
 		}
 		return null;
 	}
+
+	/**
+	 * Finds a unit instance by it's uuid
+	 * @param uuid the units uuid
+	 * @return the AUnit or null
+	 */
+	public static AUnit findUnit(String uuid, Repository repository) {
+		List<AUnit> units = repository.getUnitManagement().getSystemOfUnit().getUnit();
+		for (AUnit unit : units) {
+			if (unit.getUuid().toString().equals(uuid)) {
+				return unit;
+			}
+		}
+		return null;
+	}
 	
 	/**
-	 * Finds a se instance by it's fullQualifiedName
-	 * @param fullQualifiedName of the se
-	 * @param repository to search
-	 * @return the StructuralElement or null or null
+	 * Finds a quantityKind instance by it's uuid
+	 * @param uuid the quantityKinds uuid
+	 * @return the AQuantityKind or null
 	 */
-	public static StructuralElement findSe(String fullQualifiedName, Repository repository) {
-		EList<Concept> concepts = repository.getActiveConcepts();
-		for (Concept concept : concepts) {
-			for (StructuralElement se : concept.getStructuralElements()) {
-				if (se.getFullQualifiedName().equals(fullQualifiedName)) {
-					return se;
+	public static AQuantityKind findQuantityKind(String uuid, Repository repository) {
+		List<SystemOfQuantities> systemsOfQuantities = repository.getUnitManagement().getSystemOfUnit().getSystemOfQuantities();
+		for (SystemOfQuantities systemOfQuantities : systemsOfQuantities) {
+			for (AQuantityKind quantityKind : systemOfQuantities.getQuantityKind()) {
+				if (quantityKind.getUuid().toString().equals(uuid)) {
+					return quantityKind;
 				}
 			}
 		}
