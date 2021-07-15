@@ -53,7 +53,7 @@ jobs:
       # handed in by known users
       #---------------------------------------------
       - name: Verify - Authors Sanity Check
-        uses: virtualsatellite/ci-actions/ci-verify-authors-action@v2
+        uses: virtualsatellite/ci-actions/ci-verify-authors-action@v3-beta
       # Actions can also be accessed by other refs such as the latest from branch when using @master such as: 
       # uses: virtualsatellite/ci-actions/ci-verify-authors-action@master   
   # -----------------------------------------------------
