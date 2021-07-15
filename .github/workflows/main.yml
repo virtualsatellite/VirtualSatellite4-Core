@@ -46,7 +46,7 @@ jobs:
       # Checks out a copy of the repository
       # --------------------------------------------
       - name: Setup - Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
         
       # --------------------------------------------
       # Run a quick sanity check if all commits are
@@ -69,7 +69,7 @@ jobs:
       # Checks out a copy of the repository
       # --------------------------------------------
       - name: Setup - Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
       
       # --------------------------------------------
       # Setup caching for m2 repository
@@ -118,7 +118,7 @@ jobs:
       # Checks out a copy of your repository
       # --------------------------------------------
       - name: Setup - Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       # --------------------------------------------
       # Setup caching for m2 repository
@@ -192,7 +192,7 @@ jobs:
       # Checks out a copy of your repository
       # --------------------------------------------
       - name: Setup - Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
       
       # --------------------------------------------
       # Setup caching for m2 repository
@@ -242,7 +242,7 @@ jobs:
       # Checks out a copy of your repository
       # --------------------------------------------
       - name: Setup - Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       # --------------------------------------------
       # Setup caching for m2 repository
