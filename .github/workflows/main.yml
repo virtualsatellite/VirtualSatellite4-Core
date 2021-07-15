@@ -75,7 +75,7 @@ jobs:
       # Setup caching for m2 repository
       # --------------------------------------------
       - name: Setup - Cache local Maven repository
-        uses: actions/cache@v3
+        uses: actions/cache@v2
         with:
           path: ~/.m2/repository/
           key: ${{ runner.os }}-local-maven-spotbugs-${{ hashFiles('**/pom.xml') }}
@@ -124,7 +124,7 @@ jobs:
       # Setup caching for m2 repository
       # --------------------------------------------
       - name: Setup - Cache local Maven repository
-        uses: actions/cache@v3
+        uses: actions/cache@v2
         with:
           path: ~/.m2/repository/
           key: ${{ runner.os }}-local-maven-surefire-{{ hashFiles('**/pom.xml') }}
@@ -162,7 +162,7 @@ jobs:
       # --------------------------------------------
       - name: Build and Test - Upload SWTBot Screenshots on Failure
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: SWTBot Screenshots
           path: 
@@ -173,7 +173,7 @@ jobs:
       # --------------------------------------------            
       - name: Build and Test - Upload Surefire Reports on Failure
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: Surefire Reports
           path: 
@@ -198,7 +198,7 @@ jobs:
       # Setup caching for m2 repository
       # --------------------------------------------      
       - name: Setup - Cache local Maven repository
-        uses: actions/cache@v3
+        uses: actions/cache@v2
         with:
           path: ~/.m2/repository/
           key: ${{ runner.os }}-local-maven-checkstyle-${{ hashFiles('**/pom.xml') }}
@@ -248,7 +248,7 @@ jobs:
       # Setup caching for m2 repository
       # --------------------------------------------
       - name: Setup - Cache local Maven repository
-        uses: actions/cache@v3
+        uses: actions/cache@v2
         with:
           path: ~/.m2/repository/
           key: ${{ runner.os }}-local-maven-deploy-${{ hashFiles('**/pom.xml') }}
@@ -282,7 +282,7 @@ jobs:
       # Upload SWTBout screenshots to github artifacts
       # --------------------------------------------
       - name: Build - Upload Build Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: Deployable Applications
           path: |
