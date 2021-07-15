@@ -46,14 +46,14 @@ jobs:
       # Checks out a copy of the repository
       # --------------------------------------------
       - name: Setup - Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         
       # --------------------------------------------
       # Run a quick sanity check if all commits are
       # handed in by known users
       #---------------------------------------------
       - name: Verify - Authors Sanity Check
-        uses: virtualsatellite/ci-actions/ci-verify-authors-action@v4-beta
+        uses: virtualsatellite/ci-actions/ci-verify-authors-action@v3
       # Actions can also be accessed by other refs such as the latest from branch when using @master such as: 
       # uses: virtualsatellite/ci-actions/ci-verify-authors-action@master   
   # -----------------------------------------------------
@@ -69,13 +69,13 @@ jobs:
       # Checks out a copy of the repository
       # --------------------------------------------
       - name: Setup - Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       
       # --------------------------------------------
       # Setup caching for m2 repository
       # --------------------------------------------
       - name: Setup - Cache local Maven repository
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.m2/repository/
           key: ${{ runner.os }}-local-maven-spotbugs-${{ hashFiles('**/pom.xml') }}
@@ -87,20 +87,20 @@ jobs:
       # Perform various setup operations
       # --------------------------------------------      
       - name: Setup - Prepare OS
-        uses: virtualsatellite/ci-actions/ci-setup-action@v2
+        uses: virtualsatellite/ci-actions/ci-setup-action@v3
 
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
       - name: Build - Build and Deploy Decision
         id: build_decision
-        uses: virtualsatellite/ci-actions/ci-build-decision-action@v2
+        uses: virtualsatellite/ci-actions/ci-build-decision-action@v3
 
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
       - name: Build and Test - Spotbugs
-        uses: virtualsatellite/ci-actions/ci-maven-build-action@v2
+        uses: virtualsatellite/ci-actions/ci-maven-build-action@v3
         with:
           build_job: spotbugs
           build_profile: ${{ steps.build_decision.outputs.build_type }}
@@ -118,13 +118,13 @@ jobs:
       # Checks out a copy of your repository
       # --------------------------------------------
       - name: Setup - Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # --------------------------------------------
       # Setup caching for m2 repository
       # --------------------------------------------
       - name: Setup - Cache local Maven repository
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.m2/repository/
           key: ${{ runner.os }}-local-maven-surefire-{{ hashFiles('**/pom.xml') }}
@@ -136,7 +136,7 @@ jobs:
       # Perform various setup operations
       # --------------------------------------------      
       - name: Setup - Prepare OS
-        uses: virtualsatellite/ci-actions/ci-setup-action@v2
+        uses: virtualsatellite/ci-actions/ci-setup-action@v3
         with:
            xvfb: -x
            pkgs_file: apt_vtk_zmq_packages
@@ -146,13 +146,13 @@ jobs:
       # --------------------------------------------
       - name: Build - Build and Deploy Decision
         id: build_decision
-        uses: virtualsatellite/ci-actions/ci-build-decision-action@v2
+        uses: virtualsatellite/ci-actions/ci-build-decision-action@v3
 
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
       - name: Build and Test - Surefire
-        uses: virtualsatellite/ci-actions/ci-maven-build-action@v2
+        uses: virtualsatellite/ci-actions/ci-maven-build-action@v3
         with:
           build_job: sureheadless
           build_profile: ${{ steps.build_decision.outputs.build_type }}
@@ -162,7 +162,7 @@ jobs:
       # --------------------------------------------
       - name: Build and Test - Upload SWTBot Screenshots on Failure
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: SWTBot Screenshots
           path: 
@@ -173,7 +173,7 @@ jobs:
       # --------------------------------------------            
       - name: Build and Test - Upload Surefire Reports on Failure
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Surefire Reports
           path: 
@@ -192,13 +192,13 @@ jobs:
       # Checks out a copy of your repository
       # --------------------------------------------
       - name: Setup - Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       
       # --------------------------------------------
       # Setup caching for m2 repository
       # --------------------------------------------      
       - name: Setup - Cache local Maven repository
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.m2/repository/
           key: ${{ runner.os }}-local-maven-checkstyle-${{ hashFiles('**/pom.xml') }}
@@ -211,20 +211,20 @@ jobs:
       # Perform various setup operations
       # --------------------------------------------      
       - name: Setup - Prepare OS
-        uses: virtualsatellite/ci-actions/ci-setup-action@v2
+        uses: virtualsatellite/ci-actions/ci-setup-action@v3
 
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
       - name: Build - Build and Deploy Decision
         id: build_decision
-        uses: virtualsatellite/ci-actions/ci-build-decision-action@v2
+        uses: virtualsatellite/ci-actions/ci-build-decision-action@v3
 
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
       - name: Build and Test - Checkstyle
-        uses: virtualsatellite/ci-actions/ci-maven-build-action@v2
+        uses: virtualsatellite/ci-actions/ci-maven-build-action@v3
         with:
           build_job: checkstyle
           build_profile: ${{ steps.build_decision.outputs.build_type }}
@@ -242,13 +242,13 @@ jobs:
       # Checks out a copy of your repository
       # --------------------------------------------
       - name: Setup - Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # --------------------------------------------
       # Setup caching for m2 repository
       # --------------------------------------------
       - name: Setup - Cache local Maven repository
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.m2/repository/
           key: ${{ runner.os }}-local-maven-deploy-${{ hashFiles('**/pom.xml') }}
@@ -260,20 +260,20 @@ jobs:
       # Perform various setup operations
       # --------------------------------------------
       - name: Setup - Prepare OS
-        uses: virtualsatellite/ci-actions/ci-setup-action@v2
+        uses: virtualsatellite/ci-actions/ci-setup-action@v3
 
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
       - name: Build - Build and Deploy Decision
         id: build_decision
-        uses: virtualsatellite/ci-actions/ci-build-decision-action@v2
+        uses: virtualsatellite/ci-actions/ci-build-decision-action@v3
 
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
       - name: Build - Assemble
-        uses: virtualsatellite/ci-actions/ci-maven-build-action@v2
+        uses: virtualsatellite/ci-actions/ci-maven-build-action@v3
         with:
           build_job: assemble
           build_profile: ${{ steps.build_decision.outputs.build_type }}
@@ -282,7 +282,7 @@ jobs:
       # Upload SWTBout screenshots to github artifacts
       # --------------------------------------------
       - name: Build - Upload Build Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Deployable Applications
           path: |
@@ -294,7 +294,7 @@ jobs:
       # Deploying to github releases
       # --------------------------------------------
       - name: Build - Deploy GH
-        uses: virtualsatellite/ci-actions/ci-deploy-gh-product-action@v2
+        uses: virtualsatellite/ci-actions/ci-deploy-gh-product-action@v3
         with:
           build_profile: ${{ steps.build_decision.outputs.build_type }}
           gh_token: ${{ secrets.GITHUB_TOKEN }}
@@ -304,7 +304,7 @@ jobs:
       # SF Deploy still to be done
       # ----------------------------------------------
       - name: Build - Deploy SF (Core)
-        uses: virtualsatellite/ci-actions/ci-deploy-sf-product-action@v2
+        uses: virtualsatellite/ci-actions/ci-deploy-sf-product-action@v3
         with:
           build_profile: ${{ steps.build_decision.outputs.build_type }}
           openssl_pass: ${{ secrets.SF_SSH_KEY_OPENSSL_PASS }}
@@ -314,7 +314,7 @@ jobs:
         if: ${{ steps.build_decision.outputs.deploy_type == 'deploy' }}
       
       - name: Build - Deploy SF (IDE Tools)
-        uses: virtualsatellite/ci-actions/ci-deploy-sf-product-action@v2
+        uses: virtualsatellite/ci-actions/ci-deploy-sf-product-action@v3
         with:
           build_profile: ${{ steps.build_decision.outputs.build_type }}
           openssl_pass: ${{ secrets.SF_SSH_KEY_OPENSSL_PASS }}
