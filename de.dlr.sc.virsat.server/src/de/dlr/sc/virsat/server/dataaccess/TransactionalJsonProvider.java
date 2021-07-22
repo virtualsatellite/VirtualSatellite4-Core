@@ -43,7 +43,13 @@ import de.dlr.sc.virsat.commons.exception.AtomicExceptionReference;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
-import de.dlr.sc.virsat.model.concept.types.qudv.ABeanQuantityKind;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanQuantityKindDerived;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanQuantityKindSimple;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitAffineConversion;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitDerived;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitLinearConversion;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitPrefixed;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitSimple;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
@@ -75,8 +81,18 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 				ABeanStructuralElementInstanceAdapter.class,
 				ABeanUnitAdapter.class,
 				ABeanQuantityKindAdapter.class,
-				BeanPrefixAdapter.class,
-				ABeanQuantityKind.class
+				BeanPrefixAdapter.class
+	));
+	
+	private static final Set<Class<?>> QUDV_CLASSES = new HashSet<Class<?>>(
+			Arrays.asList(
+				BeanQuantityKindSimple.class,
+				BeanQuantityKindDerived.class,
+				BeanUnitSimple.class,
+				BeanUnitPrefixed.class,
+				BeanUnitDerived.class,
+				BeanUnitAffineConversion.class,
+				BeanUnitLinearConversion.class
 	));
 	
 	public TransactionalJsonProvider() {
@@ -303,6 +319,9 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 			if (ed != null) {
 				domainClasses.addAll(getClassesToRegister());
 			}
+			// As they are not registered dynamically and jaxb has problems resolving the inheritance
+			// Register the concrete qudv classes here
+			domainClasses.addAll(QUDV_CLASSES);
 		}
 		
 		// But the contexts are being cashed on domainClasses

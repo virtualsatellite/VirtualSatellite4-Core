@@ -36,7 +36,6 @@ import de.dlr.sc.virsat.model.concept.types.qudv.BeanPrefixTest;
 import de.dlr.sc.virsat.model.concept.types.qudv.BeanQuantityKindDerivedTest;
 import de.dlr.sc.virsat.model.concept.types.qudv.BeanQuantityKindFactoryTest;
 import de.dlr.sc.virsat.model.concept.types.qudv.BeanQuantityKindSimpleTest;
-import de.dlr.sc.virsat.model.concept.types.qudv.BeanSystemOfQuantities;
 import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitAffineConversionTest;
 import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitDerivedTest;
 import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitFactoryTest;
@@ -175,8 +174,7 @@ import junit.framework.JUnit4TestAdapter;
 				BeanUnitFactoryTest.class,
 				ABeanUnitAdapterTest.class,
 				ABeanQuantityKindAdapterTest.class,
-				BeanPrefixAdapterTest.class,
-				BeanSystemOfQuantities.class
+				BeanPrefixAdapterTest.class
 				})
 
 /**

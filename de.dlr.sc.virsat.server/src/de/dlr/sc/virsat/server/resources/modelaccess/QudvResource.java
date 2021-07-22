@@ -13,20 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.edit.command.DeleteCommand;
 import org.eclipse.jetty.http.HttpStatus;
 
 import de.dlr.sc.virsat.model.concept.types.factory.BeanQuantityKindFactory;
@@ -34,14 +29,12 @@ import de.dlr.sc.virsat.model.concept.types.factory.BeanUnitFactory;
 import de.dlr.sc.virsat.model.concept.types.qudv.ABeanQuantityKind;
 import de.dlr.sc.virsat.model.concept.types.qudv.ABeanUnit;
 import de.dlr.sc.virsat.model.concept.types.qudv.BeanPrefix;
-import de.dlr.sc.virsat.model.concept.types.qudv.BeanSystemOfQuantities;
 import de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind;
 import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.Prefix;
 import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfQuantities;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.resources.ApiErrorHelper;
-import de.dlr.sc.virsat.server.resources.ModelAccessResource;
 import de.dlr.sc.virsat.server.resources.ModelAccessResource.RepoModelAccessResource;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -54,13 +47,11 @@ import io.swagger.annotations.Authorization;
 public class QudvResource {
 
 	public static final String PREFIXES = "prefixes";
-	public static final String SYSTEMS_OF_QUANTITES = "systemsOfQuantites";
 	public static final String UNITS = "units";
 	public static final String QUANTITY_KINDS = "quantityKinds";
 	public static final String UNIT = "unit";
 	public static final String QUANTITY_KIND = "quantityKind";
 
-	// TODO: general create and delete enpoint
 	private RepoModelAccessResource parentResource;
 	
 	public QudvResource(RepoModelAccessResource parentResource) {
@@ -107,44 +98,7 @@ public class QudvResource {
 	
 	/** **/
 	@GET
-	@Path(SYSTEMS_OF_QUANTITES)
-	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(
-			produces = "application/json",
-			value = "Fetch a list of system of quantities",
-			httpMethod = "GET",
-			notes = "This service fetches the SystemOfQuantities")
-	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					response = BeanSystemOfQuantities.class,
-					responseContainer = "List",
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
-	public Response getSystemsOfQuantites() {
-		try {
-			parentResource.synchronize();
-			
-			List<SystemOfQuantities> systemsOfQuantites = parentResource.getRepository().getUnitManagement().getSystemOfUnit().getSystemOfQuantities();
-			List<BeanSystemOfQuantities> beanSystemsOfQuantites = new ArrayList<BeanSystemOfQuantities>();
-			
-			for (SystemOfQuantities systemOfQuantites : systemsOfQuantites) {
-				beanSystemsOfQuantites.add(new BeanSystemOfQuantities(systemOfQuantites));
-			}
-			
-			GenericEntity<List<BeanSystemOfQuantities>> entity = new GenericEntity<List<BeanSystemOfQuantities>>(beanSystemsOfQuantites) { };
-			
-			return Response.ok(entity).build();
-		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
-		}
-	}
-	
-	/** **/
-	@GET
-	@Path(SYSTEMS_OF_QUANTITES + "/{systemOfQuantitesUuid}/" + QUANTITY_KINDS)
+	@Path(QUANTITY_KINDS)
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(
 			produces = "application/json",
@@ -161,15 +115,11 @@ public class QudvResource {
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.SYNC_ERROR)})
 	@SuppressWarnings("rawtypes")
-	public Response getQuantityKinds(@PathParam("systemOfQuantitesUuid") @ApiParam(value = "Uuid of the systemOfQuantities", required = true) String systemOfQuantitesUuid) {
+	public Response getQuantityKinds() {
 		try {
 			parentResource.synchronize();
 			
-			SystemOfQuantities systemOfQuantites = RepositoryUtility.findSystemOfQuantites(systemOfQuantitesUuid, parentResource.getRepository());
-			
-			if (systemOfQuantites == null) {
-				return ApiErrorHelper.createNotFoundErrorResponse();
-			}
+			SystemOfQuantities systemOfQuantites = parentResource.getRepository().getUnitManagement().getSystemOfUnit().getSystemOfQuantities().get(0);
 			
 			List<ABeanQuantityKind> beanQuantityKinds = new ArrayList<>();
 			
@@ -225,8 +175,6 @@ public class QudvResource {
 			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
 		}
 	}
-	
-	// TODO: test
 	
 	/** **/
 	@SuppressWarnings("rawtypes")
@@ -345,91 +293,10 @@ public class QudvResource {
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.SYNC_ERROR)})
-	public Response putUnit(@SuppressWarnings("rawtypes") @ApiParam(value = "QuantityKind to put", required = true) ABeanQuantityKind bean) {
+	public Response putQuantityKind(@SuppressWarnings("rawtypes") @ApiParam(value = "QuantityKind to put", required = true) ABeanQuantityKind bean) {
 		try {
 			parentResource.synchronize();
 			return Response.status(Response.Status.OK).build();
-		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
-		}
-	}
-	
-
-	// TODO: general create and delete endpoint
-	
-	/** **/
-	@POST
-	@Path("/{unitUuid}")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@ApiOperation(
-			consumes = "application/json",
-			value = "Create Unit",
-			httpMethod = "POST",
-			notes = "This service creates a new Unit and returns it")
-	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					response = String.class,
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
-	public Response createUnit(@QueryParam(value = ModelAccessResource.QP_FULL_QUALIFIED_NAME)
-			@ApiParam(value = "Full qualified name of the Unit type", required = true) String fullQualifiedName) {
-		// TODO
-//		try {
-//			parentResource.synchronize();
-//			
-//			EClass eClass = (EClass) QudvFactory.eINSTANCE.getEPackage().getEClassifier("MyClass");
-//			QudvFactory.eINSTANCE.create(eClass)
-//			
-//			Command createCommand = AddCommand.create(parentResource.getEd(), parentSei, UnittegoriesPackage.Literals.IUnitTEGORY_ASSIGNMENT_CONTAINER__UnitTEGORY_ASSIGNMENTS, newUnit);
-//			parentResource.getEd().getCommandStack().execute(createCommand);
-//			
-//			parentResource.synchronize();
-//			return Response.ok(newUnit.getUuid().toString()).build();
-//		} catch (Exception e) {
-//			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
-//		}
-		return null;
-	}
-	
-	/** **/
-	@DELETE
-	@Path("/{unitUuid}")
-	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(
-			produces = "application/json",
-			value = "Delete Unit",
-			httpMethod = "DELETE",
-			notes = "This service deletes a Unit.")
-	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.BAD_REQUEST_400,
-					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
-	public Response deleteUnit(@PathParam("unitUuid") @ApiParam(value = "Uuid of the Unit", required = true)  String unitUuid) {
-		try {
-//			// Sync before delete
-//			parentResource.synchronize();
-//			
-//			// Delete Unit
-//			AUnit unit = RepositoryUtility.findUnit(unitUuid, parentResource.getRepository());
-//			if (unit == null) {
-//				return ApiErrorHelper.createNotFoundErrorResponse();
-//			}
-//			
-//			Command deleteCommand = DeleteCommand.create(parentResource.getEd(), unit);
-//			parentResource.getEd().getCommandStack().execute(deleteCommand);
-//			
-//			// Sync after delete
-//			parentResource.synchronize();
-			return Response.ok().build();
 		} catch (Exception e) {
 			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
 		}

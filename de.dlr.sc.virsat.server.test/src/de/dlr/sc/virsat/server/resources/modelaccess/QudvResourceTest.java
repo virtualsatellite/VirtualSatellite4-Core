@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2021 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *******************************************************************************/
 package de.dlr.sc.virsat.server.resources.modelaccess;
 
 import static org.junit.Assert.assertEquals;
@@ -10,30 +19,26 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.xml.bind.JAXBException;
 
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.concept.types.IBeanUuid;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanQuantityKindFactory;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanUnitFactory;
-import de.dlr.sc.virsat.model.concept.types.qudv.ABeanUnit;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanQuantityKindSimple;
 import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitSimple;
 import de.dlr.sc.virsat.model.concept.types.qudv.IBeanQuantityKind;
 import de.dlr.sc.virsat.model.concept.types.qudv.IBeanUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind;
 import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.Prefix;
-import de.dlr.sc.virsat.model.dvlm.qudv.QudvFactory;
-import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
 import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfQuantities;
 import de.dlr.sc.virsat.server.resources.AModelAccessResourceTest;
 import de.dlr.sc.virsat.server.resources.ModelAccessResource;
 
 public class QudvResourceTest extends AModelAccessResourceTest {
-	
-	// TODO register in all
 	
 	@Test
 	public void testPrefixesGet() throws Exception {
@@ -50,27 +55,11 @@ public class QudvResourceTest extends AModelAccessResourceTest {
 	}
 	
 	@Test
-	public void testSystemOfQuantitesGet() throws Exception {
-		List<String> entity = webTarget
-				.path(ModelAccessResource.QUDV)
-				.path(QudvResource.SYSTEMS_OF_QUANTITES)
-				.request()
-				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
-				.get(new GenericType<List<String>>() { });
-		
-		List<SystemOfQuantities> systemOfQuantites = resourceSet.getRepository().getUnitManagement().getSystemOfUnit().getSystemOfQuantities();
-		assertEquals(entity.size(), systemOfQuantites.size());
-		assertTrue(entity.contains(systemOfQuantites.get(0).getUuid().toString()));
-	}
-	
-	@Test
 	public void testQuantityKindsGet() throws Exception {
 		SystemOfQuantities soq = resourceSet.getRepository().getUnitManagement().getSystemOfUnit().getSystemOfQuantities().get(0);
 		 
 		List<String> entity = webTarget
 				.path(ModelAccessResource.QUDV)
-				.path(QudvResource.SYSTEMS_OF_QUANTITES)
-				.path(soq.getUuid().toString())
 				.path(QudvResource.QUANTITY_KINDS)
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
@@ -112,7 +101,7 @@ public class QudvResourceTest extends AModelAccessResourceTest {
 				.path(QudvResource.UNIT)
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
-				.put(Entity.entity(new BeanUnitSimple(QudvFactory.eINSTANCE.createSimpleUnit()), MediaType.APPLICATION_JSON_TYPE));
+				.put(Entity.entity((BeanUnitSimple) unitBean, MediaType.APPLICATION_JSON_TYPE));
 		
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 	}
@@ -125,7 +114,7 @@ public class QudvResourceTest extends AModelAccessResourceTest {
 	}
 	
 	@Test
-	public void testQuantityKindPut() {
+	public void testQuantityKindPut() throws JAXBException {
 		AQuantityKind quantityKind = resourceSet.getRepository().getUnitManagement().getSystemOfUnit().getSystemOfQuantities().get(0).getQuantityKind().get(0);
 		IBeanQuantityKind<? extends AQuantityKind> quantityKindBean = new BeanQuantityKindFactory().getInstanceFor(quantityKind);
 		
@@ -134,16 +123,8 @@ public class QudvResourceTest extends AModelAccessResourceTest {
 				.path(QudvResource.QUANTITY_KIND)
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
-				.put(Entity.entity(quantityKindBean, MediaType.APPLICATION_JSON_TYPE));
+				.put(Entity.entity((BeanQuantityKindSimple) quantityKindBean, MediaType.APPLICATION_JSON_TYPE));
 		
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 	}
-	
-//	@Test
-//	public void test() {
-//		EClass eClass = (EClass) QudvPackage.eINSTANCE.getEClassifier("SimpleUnit");
-//		assertTrue(AUnit.class.isAssignableFrom(eClass.getInstanceClass()));
-//		QudvFactory.eINSTANCE.create(eClass);
-//		System.out.println("");
-//	}
 }

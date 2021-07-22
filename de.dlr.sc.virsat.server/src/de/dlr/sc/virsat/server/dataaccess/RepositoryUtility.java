@@ -183,23 +183,6 @@ public class RepositoryUtility {
 		return null;
 	}
 	
-	// TODO: test
-	
-	/**
-	 * Finds a SystemOfQuantites instance by it's uuid
-	 * @param uuid
-	 * @return the SystemOfQuantites or null
-	 */
-	public static SystemOfQuantities findSystemOfQuantites(String uuid, Repository repository) {
-		List<SystemOfQuantities> systemsOfQuantites = repository.getUnitManagement().getSystemOfUnit().getSystemOfQuantities();
-		for (SystemOfQuantities systemOfQuantites : systemsOfQuantites) {
-			if (systemOfQuantites.getUuid().toString().equals(uuid)) {
-				return systemOfQuantites;
-			}
-		}
-		return null;
-	}
-
 	/**
 	 * Finds a unit instance by it's uuid
 	 * @param uuid the units uuid

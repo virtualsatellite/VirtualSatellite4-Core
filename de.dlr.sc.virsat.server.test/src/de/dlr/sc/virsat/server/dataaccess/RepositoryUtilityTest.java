@@ -26,6 +26,11 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.Propertyinstance
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
+import de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind;
+import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
+import de.dlr.sc.virsat.model.dvlm.qudv.QudvFactory;
+import de.dlr.sc.virsat.model.dvlm.qudv.SimpleQuantityKind;
+import de.dlr.sc.virsat.model.dvlm.qudv.SimpleUnit;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
@@ -133,6 +138,28 @@ public class RepositoryUtilityTest extends AProjectTestCase {
 		
 		property = (APropertyInstance) RepositoryUtility.findObjectById(testPropertyInstance.getUuid().toString(), repository);
 		assertEquals(testPropertyInstance, property);
+	}
+	
+	@Test
+	public void testFindUnit() {
+		AUnit unit = RepositoryUtility.findUnit("", repository);
+		assertNull(unit);
+		
+		SimpleUnit testUnit = QudvFactory.eINSTANCE.createSimpleUnit();
+		repository.getUnitManagement().getSystemOfUnit().getUnit().add(testUnit);
+		unit = RepositoryUtility.findUnit(testUnit.getUuid().toString(), repository);
+		assertEquals(testUnit, unit);
+	}
+	
+	@Test
+	public void testFindQuantityKind() {
+		AQuantityKind quantityKind = RepositoryUtility.findQuantityKind("", repository);
+		assertNull(quantityKind);
+		
+		SimpleQuantityKind testQuantityKind = QudvFactory.eINSTANCE.createSimpleQuantityKind();
+		repository.getUnitManagement().getSystemOfUnit().getSystemOfQuantities().get(0).getQuantityKind().add(testQuantityKind);
+		quantityKind = RepositoryUtility.findQuantityKind(testQuantityKind.getUuid().toString(), repository);
+		assertEquals(testQuantityKind, quantityKind);
 	}
 
 }

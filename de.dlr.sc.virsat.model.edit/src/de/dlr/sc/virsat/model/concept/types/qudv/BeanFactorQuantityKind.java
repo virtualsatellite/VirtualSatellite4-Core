@@ -84,7 +84,8 @@ public class BeanFactorQuantityKind implements IBeanUuid {
 		return (ABeanQuantityKind) new BeanQuantityKindFactory().getInstanceFor(factor.getQuantityKind());
 	}
 	
-	void setQuantityKindBean(IBeanQuantityKind<? extends AQuantityKind> beanQuantityKind) {
+	@SuppressWarnings("rawtypes")
+	void setQuantityKindBean(ABeanQuantityKind beanQuantityKind) {
 		factor.setQuantityKind(beanQuantityKind.getQuantityKind());
 	}
 	
