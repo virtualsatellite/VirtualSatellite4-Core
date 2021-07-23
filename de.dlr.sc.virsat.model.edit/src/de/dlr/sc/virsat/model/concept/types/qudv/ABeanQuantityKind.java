@@ -9,15 +9,38 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.qudv;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
+import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapter;
 import de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind;
 import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
-public class ABeanQuantityKind<QK_TYPE extends AQuantityKind> implements IBeanQuantityKind<QK_TYPE> {
+/**
+ * General bean for a quantity kind of the type U_TYPE
+ * 
+ * @param <QK_TYPE> type of the wrapped quantity kind
+ */
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlRootElement
+@ApiModel(
+	description = "Abstract model class for bean quantity kinds."
+		+ " Resources that return this will instead return concrete bean quantity kinds.",
+	subTypes = {
+		BeanQuantityKindSimple.class,
+		BeanQuantityKindDerived.class
+})
+public abstract class ABeanQuantityKind<QK_TYPE extends AQuantityKind> implements IBeanQuantityKind<QK_TYPE> {
 
 	protected QK_TYPE quantityKind;
 	
@@ -28,6 +51,11 @@ public class ABeanQuantityKind<QK_TYPE extends AQuantityKind> implements IBeanQu
 		this.quantityKind = (QK_TYPE) quantityKind;
 	}
 	
+	@ApiModelProperty(name = "uuid", required = true,
+			value = "Unique identifier for a bean",
+			example = "b168b0df-84b6-4b7f-bede-69298b215f40")
+	@XmlElement(name = "uuid")
+	@XmlJavaTypeAdapter(IUuidAdapter.class)
 	@Override
 	public AQuantityKind getAQuantityKind() {
 		return quantityKind;
@@ -39,6 +67,7 @@ public class ABeanQuantityKind<QK_TYPE extends AQuantityKind> implements IBeanQu
 		this.quantityKind = (QK_TYPE) quantityKind;
 	}
 
+	@ApiModelProperty(hidden = true)
 	@Override
 	public QK_TYPE getQuantityKind() {
 		return quantityKind;
@@ -49,11 +78,14 @@ public class ABeanQuantityKind<QK_TYPE extends AQuantityKind> implements IBeanQu
 		this.quantityKind = quantityKind;
 	}
 
+	@ApiModelProperty(hidden = true)
 	@Override
 	public String getUuid() {
 		return quantityKind.getUuid().toString();
 	}
 
+	@ApiModelProperty(required = true)
+	@XmlElement(nillable = true)
 	@Override
 	public String getName() {
 		return quantityKind.getName();
@@ -69,6 +101,8 @@ public class ABeanQuantityKind<QK_TYPE extends AQuantityKind> implements IBeanQu
 		return SetCommand.create(ed, quantityKind, GeneralPackage.Literals.INAME__NAME, name);
 	}
 
+	@ApiModelProperty(required = true)
+	@XmlElement(nillable = true)
 	@Override
 	public String getSymbol() {
 		return quantityKind.getSymbol();
@@ -82,6 +116,20 @@ public class ABeanQuantityKind<QK_TYPE extends AQuantityKind> implements IBeanQu
 	@Override
 	public Command setSymbol(EditingDomain ed, String symbol) {
 		return SetCommand.create(ed, quantityKind, QudvPackage.Literals.AQUANTITY_KIND__SYMBOL, symbol);
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof ABeanQuantityKind<?>) {
+			ABeanQuantityKind<?> beanQk = (ABeanQuantityKind<?>) obj;
+			return quantityKind.equals(beanQk.getQuantityKind());
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return quantityKind.hashCode();
 	}
 
 }

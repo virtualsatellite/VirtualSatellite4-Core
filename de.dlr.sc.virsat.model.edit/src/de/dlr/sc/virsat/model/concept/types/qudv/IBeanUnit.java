@@ -67,13 +67,13 @@ public interface IBeanUnit<U_TYPE extends AUnit> extends IBeanUuid, IBeanName {
 	 * Get the quantityKindBean
 	 * @return quantityKindBean bean wrapping a quantityKind
 	 */
-	IBeanQuantityKind<? extends AQuantityKind> getQuantityKindBean();
+	ABeanQuantityKind<? extends AQuantityKind> getQuantityKindBean();
 	
 	/**
 	 * Set the quantityKind of the wrapped unit
 	 * @param quantityKindBean bean wrapping a quantityKind
 	 */
-	void setQuantityKindBean(IBeanQuantityKind<? extends AQuantityKind> quantityKindBean);
+	void setQuantityKindBean(ABeanQuantityKind<? extends AQuantityKind> quantityKindBean);
 	
 	/**
 	 * Set the quantityKind of the wrapped unit
@@ -81,5 +81,5 @@ public interface IBeanUnit<U_TYPE extends AUnit> extends IBeanUuid, IBeanName {
 	 * @param quantityKind
 	 * @return EMF command to set the quantityKind
 	 */
-	Command setQuantityKindBean(EditingDomain ed, IBeanQuantityKind<? extends AQuantityKind> quantityKindBean);
+	Command setQuantityKindBean(EditingDomain ed, ABeanQuantityKind<? extends AQuantityKind> quantityKindBean);
 }

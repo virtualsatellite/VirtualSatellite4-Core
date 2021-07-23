@@ -58,7 +58,7 @@ public class BeanUnitDerivedTest extends ABeanUnitTest {
 	@Test
 	public void testSetFactors() {
 		assertTrue("Initial no factors", derivedBeanUnit.getFactorBeans().isEmpty());
-		derivedBeanUnit.setFactors(Arrays.asList(beanFactor));
+		derivedBeanUnit.setFactorBeans(Arrays.asList(beanFactor));
 		
 		List<UnitFactor> factors = derivedUnit.getFactor();
 		assertEquals("Right amount of elements", 1, factors.size());

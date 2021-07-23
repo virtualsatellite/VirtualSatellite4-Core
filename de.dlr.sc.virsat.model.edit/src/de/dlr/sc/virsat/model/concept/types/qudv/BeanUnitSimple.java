@@ -20,5 +20,4 @@ public class BeanUnitSimple extends ABeanUnit<SimpleUnit> {
 	public BeanUnitSimple(SimpleUnit unit) {
 		super(unit);
 	}
-
 }
