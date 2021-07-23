@@ -25,8 +25,13 @@ import org.eclipse.emf.common.util.URI;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.model.concept.types.factory.BeanUnitFactory;
+import de.dlr.sc.virsat.model.concept.types.qudv.ABeanUnit;
+import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
+import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
+import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
 import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 public class TestCategoryAllPropertyTest extends AConceptTestCase {
@@ -34,6 +39,7 @@ public class TestCategoryAllPropertyTest extends AConceptTestCase {
 	private TestCategoryAllProperty tcAllProperty;
 	private JAXBUtility jaxbUtility;
 	private Concept concept;
+	private ABeanUnit<? extends AUnit> kmBean;
 	
 	private static final String RESOURCE_WITH_DEFAULTS = "/resources/json/TestCategoryAllProperty_Marshaling_Defaults.json";
 	private static final String RESOURCE_WITH_VALUES = "/resources/json/TestCategoryAllProperty_Marshaling.json";
@@ -57,7 +63,10 @@ public class TestCategoryAllPropertyTest extends AConceptTestCase {
 		
 		tcAllProperty  = new TestCategoryAllProperty(concept);
 		JsonTestHelper.setTestCategoryAllPropertyUuids(tcAllProperty);
-		JsonTestHelper.createRepositoryWithUnitManagement(concept);
+		Repository repo = JsonTestHelper.createRepositoryWithUnitManagement(concept);
+		
+		AUnit unit = QudvUnitHelper.getInstance().getUnitByName(repo.getUnitManagement().getSystemOfUnit(), "Kilometer");
+		kmBean = (ABeanUnit<? extends AUnit>) new BeanUnitFactory().getInstanceFor(unit);
 	}
 	
 	/**
@@ -65,7 +74,9 @@ public class TestCategoryAllPropertyTest extends AConceptTestCase {
 	 */
 	public void initProperties() {
 		tcAllProperty.setTestInt(TEST_INT);
+		tcAllProperty.getTestIntBean().setUnitBean(kmBean);
 		tcAllProperty.setTestFloat(TEST_FLOAT);
+		tcAllProperty.getTestFloatBean().setUnitBean(kmBean);
 		tcAllProperty.setTestEnum(TEST_ENUM);
 		tcAllProperty.setTestResource(URI.createPlatformPluginURI(TEST_RESOURCE, false));
 		tcAllProperty.setTestString(TEST_STRING);
@@ -92,7 +103,8 @@ public class TestCategoryAllPropertyTest extends AConceptTestCase {
 	 */
 	public void unmarshalWithResource(String resource) throws JAXBException, IOException {
 		Unmarshaller jsonUnmarshaller = JsonTestHelper.getUnmarshaller(jaxbUtility, Arrays.asList(
-				tcAllProperty.getATypeInstance()
+				tcAllProperty.getATypeInstance(),
+				kmBean.getUnit()
 		));
 		
 		StreamSource inputSource = JsonTestHelper.getResourceAsStreamSource(resource);

@@ -20,7 +20,6 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.viewers.ColumnViewer;
-import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -63,7 +62,6 @@ import de.dlr.sc.virsat.project.ui.contentProvider.VirSatFilteredWrappedTreeCont
 import de.dlr.sc.virsat.project.ui.labelProvider.VirSatTransactionalAdapterFactoryLabelProvider;
 import de.dlr.sc.virsat.uieingine.ui.dnd.ADropSelectionTargetListener;
 import de.dlr.sc.virsat.uieingine.ui.dnd.DropHelper;
-import de.dlr.sc.virsat.uiengine.ui.cellEditor.aproperties.PropertyInstanceEditingSupportFactory;
 import de.dlr.sc.virsat.uiengine.ui.cellEditor.emfattributes.EStringCellEditingSupport;
 
 /**
@@ -482,16 +480,6 @@ public abstract class AUiSnippetGenericCategoryAssignmentTable extends AUiSnippe
 		setButtonAddEnabled(isValid);
 		//disable remove button if no object is selected
 		setButtonRemoveEnabled(!columnViewer.getSelection().isEmpty());
-	}
-	/**
-	 * An overridable method for creating an Editing Support
-	 * @param editingDomain the editing domain
-	 * @param property the property
-	 * @return the editing support
-	 */
-	protected EditingSupport createEditingSupport(EditingDomain editingDomain, AProperty property) {
-		return PropertyInstanceEditingSupportFactory.INSTANCE.createEditingSupportFor(editingDomain, columnViewer, property);
-		
 	}
 	
 	/**

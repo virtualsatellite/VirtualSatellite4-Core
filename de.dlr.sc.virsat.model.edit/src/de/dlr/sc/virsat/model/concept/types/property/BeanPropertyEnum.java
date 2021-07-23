@@ -12,9 +12,12 @@ package de.dlr.sc.virsat.model.concept.types.property;
 import javax.xml.bind.annotation.XmlElement;
 
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.command.UnexecutableCommand;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
+import de.dlr.sc.virsat.model.concept.types.factory.BeanUnitFactory;
+import de.dlr.sc.virsat.model.concept.types.qudv.ABeanUnit;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumPropertyHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumValueDefinition;
@@ -102,6 +105,26 @@ public class BeanPropertyEnum extends ABeanProperty<EnumUnitPropertyInstance, St
 		return value;
 	}
 
+	@Override
+	public ABeanUnit<? extends AUnit> getUnitBean() {
+		return (ABeanUnit<? extends AUnit>) new BeanUnitFactory().getInstanceFor(ti.getUnit());
+	}
+	
+	@Override
+	public void setUnitBean(ABeanUnit<? extends AUnit> unitBean) {
+		if (unitBean != null) {
+			ti.setUnit(unitBean.getUnit());
+		}
+	}
+	
+	@Override
+	public Command setUnitBean(EditingDomain ed, ABeanUnit<? extends AUnit> unitBean) {
+		if (unitBean != null) {
+			return SetCommand.create(ed, ti, PropertyinstancesPackage.Literals.IUNIT_PROPERTY_INSTANCE__UNIT, unitBean.getUnit());
+		}
+		return UnexecutableCommand.INSTANCE;
+	}
+	
 	@Override
 	@XmlElement(nillable = true)
 	public String getUnit() {

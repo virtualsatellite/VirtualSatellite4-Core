@@ -13,11 +13,14 @@ package de.dlr.sc.virsat.model.concept.types.property;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
 import org.eclipse.emf.common.command.Command;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.dlr.sc.virsat.model.concept.types.factory.BeanUnitFactory;
+import de.dlr.sc.virsat.model.concept.types.qudv.ABeanUnit;
 import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
@@ -283,5 +286,56 @@ public class BeanPropertyFloatTest extends ABeanPropertyTest {
 		final double EPSILON = 0.001;
 		assertEquals("Unit has been set correctly", other.getUnit(), beanProperty.getUnit());
 		assertEquals("Value has been set correctly", other.getValue(), beanProperty.getValue(), EPSILON);
+	}
+	
+	@Test
+	public void testSetUnitBeanEditingDomain() {
+		setUpRepo();
+		
+		AUnit kmUnit = QudvUnitHelper.getInstance().getUnitByName(sou, "Kilometer");
+		ABeanUnit<? extends AUnit> kmBean = (ABeanUnit<? extends AUnit>) new BeanUnitFactory().getInstanceFor(kmUnit);
+		beanProperty.setUnitBean(ed, kmBean).execute();
+		assertEquals("Unit has been set correctly", kmUnit, uvpi.getUnit());
+		
+		AUnit gUnit = QudvUnitHelper.getInstance().getUnitByName(sou, "Gram");
+		ABeanUnit<? extends AUnit> gBean = (ABeanUnit<? extends AUnit>) new BeanUnitFactory().getInstanceFor(gUnit);
+		beanProperty.setUnitBean(ed, gBean).execute();
+		assertEquals("Unit has been changed correctly", gUnit, uvpi.getUnit());
+
+		Command cmd = beanProperty.setUnitBean(ed, null);
+		assertFalse("The unit can not been changed", cmd.canExecute());
+	}
+
+	@Test
+	public void testSetUnitBean() {
+		setUpRepo();
+		
+		AUnit kmUnit = QudvUnitHelper.getInstance().getUnitByName(sou, "Kilometer");
+		ABeanUnit<? extends AUnit> kmBean = (ABeanUnit<? extends AUnit>) new BeanUnitFactory().getInstanceFor(kmUnit);
+		beanProperty.setUnitBean(kmBean);
+		assertEquals("Unit has been set correctly", kmUnit, uvpi.getUnit());
+		
+		AUnit gUnit = QudvUnitHelper.getInstance().getUnitByName(sou, "Gram");
+		ABeanUnit<? extends AUnit> gBean = (ABeanUnit<? extends AUnit>) new BeanUnitFactory().getInstanceFor(gUnit);
+		beanProperty.setUnitBean(gBean);
+		assertEquals("Unit has been changed correctly", gUnit, uvpi.getUnit());
+
+		beanProperty.setUnitBean(null);
+		assertEquals("The unit has not been changed", gUnit, uvpi.getUnit());
+	}
+	
+	@Test
+	public void testGetUnitBean() {
+		setUpRepo();
+		
+		AUnit kmUnit = QudvUnitHelper.getInstance().getUnitByName(sou, "Kilometer");
+		ABeanUnit<? extends AUnit> kmBean = (ABeanUnit<? extends AUnit>) new BeanUnitFactory().getInstanceFor(kmUnit);
+		beanProperty.setUnitBean(kmBean);
+		assertEquals("Got correct unit", kmBean.getUnit(), beanProperty.getUnitBean().getUnit());
+		
+		AUnit gUnit = QudvUnitHelper.getInstance().getUnitByName(sou, "Gram");
+		ABeanUnit<? extends AUnit> gBean = (ABeanUnit<? extends AUnit>) new BeanUnitFactory().getInstanceFor(gUnit);
+		beanProperty.setUnitBean(gBean);
+		assertEquals("Got correct unit", gBean.getUnit(), beanProperty.getUnitBean().getUnit());
 	}
 }
