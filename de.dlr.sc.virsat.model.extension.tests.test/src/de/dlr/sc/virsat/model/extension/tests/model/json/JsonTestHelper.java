@@ -99,7 +99,6 @@ public class JsonTestHelper {
 		
 		unitManagement.setSystemOfUnit(sou);
 		repo.setUnitManagement(unitManagement);
-		sou.getSystemOfQuantities().get(0).setUuid(new VirSatUuid("ac2cd914-3f98-4272-9537-443c1eb0c1b6"));
 		
 		if (concept != null) {
 			repo.getActiveConcepts().add(concept);

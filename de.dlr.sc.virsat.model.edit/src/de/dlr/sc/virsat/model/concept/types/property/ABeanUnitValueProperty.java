@@ -79,19 +79,21 @@ public abstract class ABeanUnitValueProperty<V_TYPE> extends ABeanValueProperty<
 		return valueSwitch.getValueString(ti);
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@XmlElement(nillable = true)
 	@ApiModelProperty(value = "Unit of the bean")
 	@XmlJavaTypeAdapter(ABeanUnitAdapter.class)
 	@Override
-	public ABeanUnit<? extends AUnit> getUnitBean() {
+	public ABeanUnit getUnitBean() {
 		if (ti.getUnit() == null) {
 			return null;
 		}
 		return (ABeanUnit<? extends AUnit>) new BeanUnitFactory().getInstanceFor(ti.getUnit());
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@Override
-	public void setUnitBean(ABeanUnit<? extends AUnit> unitBean) {
+	public void setUnitBean(ABeanUnit unitBean) {
 		if (unitBean != null) {
 			ti.setUnit(unitBean.getUnit());
 		}

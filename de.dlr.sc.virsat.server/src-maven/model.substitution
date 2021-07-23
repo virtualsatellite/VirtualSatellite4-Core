@@ -2,3 +2,8 @@ de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance : java.lang.String
 de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance : java.lang.String
 de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance : java.lang.String
 de.dlr.sc.virsat.model.dvlm.roles.Discipline : java.lang.String
+de.dlr.sc.virsat.model.dvlm.qudv.AUnit : java.lang.String
+de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind : java.lang.String
+de.dlr.sc.virsat.model.dvlm.qudv.Prefix : java.lang.String
+de.dlr.sc.virsat.model.dvlm.qudv.QuantityKindFactor : java.lang.String
+de.dlr.sc.virsat.model.dvlm.qudv.UnitFactor : java.lang.String

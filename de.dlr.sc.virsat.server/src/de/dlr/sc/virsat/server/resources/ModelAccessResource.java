@@ -113,7 +113,9 @@ public class ModelAccessResource {
 			RepoModelAccessResource.class,
 			StructuralElementInstanceResource.class,
 			CategoryAssignmentResource.class,
-			PropertyResource.class);
+			PropertyResource.class,
+			DisciplineResource.class,
+			QudvResource.class);
 	
 	public ModelAccessResource() { }
 	
@@ -222,7 +224,7 @@ public class ModelAccessResource {
 		@GET
 		@Path(FORCE_SYNC)
 		@ApiOperation(
-				value = "Triggers synchronization with the backend",
+				value = "Trigger synchronization with the backend",
 				httpMethod = "GET",
 				notes = "This service forces a synchronization with the backend.")
 		@ApiResponses(value = { 
