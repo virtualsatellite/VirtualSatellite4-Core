@@ -58,6 +58,7 @@ import de.dlr.sc.virsat.model.dvlm.json.ABeanQuantityKindAdapter;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanStructuralElementInstanceAdapter;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanUnitAdapter;
 import de.dlr.sc.virsat.model.dvlm.json.BeanPrefixAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.BeanDisciplineAdapter;
 import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapter;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
@@ -79,6 +80,7 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 				IUuidAdapter.class,
 				ABeanObjectAdapter.class,
 				ABeanStructuralElementInstanceAdapter.class,
+				BeanDisciplineAdapter.class,
 				ABeanUnitAdapter.class,
 				ABeanQuantityKindAdapter.class,
 				BeanPrefixAdapter.class
@@ -171,6 +173,7 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 		unmarshaller.setAdapter(new ABeanUnitAdapter(resourceSet));
 		unmarshaller.setAdapter(new BeanPrefixAdapter(resourceSet));
 		unmarshaller.setAdapter(new ABeanQuantityKindAdapter(resourceSet));
+		unmarshaller.setAdapter(new BeanDisciplineAdapter(resourceSet));
 	}
 	
 	@Override
