@@ -42,6 +42,7 @@ import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitFactoryTest;
 import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitLinearConversionTest;
 import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitPrefixedTest;
 import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitSimpleTest;
+import de.dlr.sc.virsat.model.concept.types.roles.BeanDisciplineTest;
 import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstanceTest;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.provider.DVLMEnumValueDefinitionItemProviderTest;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.provider.DVLMPropertydefinitionsItemProviderAdapterFactoryTest;
@@ -66,6 +67,7 @@ import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanQuantityKindAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanStructuralElementInstanceAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanUnitAdapterTest;
+import de.dlr.sc.virsat.model.dvlm.json.BeanDisciplineAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.BeanPrefixAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.BeanPropertyTypeAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.ComposedBeanCategoryAssigmentAdapterTest;
@@ -160,6 +162,8 @@ import junit.framework.JUnit4TestAdapter;
 				UriAdapterTest.class,
 				ABeanStructuralElementInstanceAdapterTest.class,
 				BeanPropertyTypeAdapterTest.class,
+				BeanDisciplineTest.class,
+				BeanDisciplineAdapterTest.class,
 				BeanUnitAffineConversionTest.class,
 				BeanUnitDerivedTest.class,
 				BeanUnitLinearConversionTest.class,
