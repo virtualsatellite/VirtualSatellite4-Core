@@ -114,7 +114,7 @@ public class StructuralElementInstanceResource {
 	
 	/** **/
 	@POST
-	@Path("/{parentUuid}")
+	@Path("/{seiUuid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@ApiOperation(
 			consumes = "application/json",
@@ -132,7 +132,7 @@ public class StructuralElementInstanceResource {
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.SYNC_ERROR)})
-	public Response createSei(@PathParam("parentUuid") @ApiParam(value = "parent uuid", required = true) String parentUuid,
+	public Response createSei(@PathParam("seiUuid") @ApiParam(value = "parent uuid", required = true) String parentUuid,
 			@QueryParam(value = ModelAccessResource.QP_FULL_QUALIFIED_NAME)
 			@ApiParam(value = "Full qualified name of the SEI type", required = true) String fullQualifiedName) {
 		try {

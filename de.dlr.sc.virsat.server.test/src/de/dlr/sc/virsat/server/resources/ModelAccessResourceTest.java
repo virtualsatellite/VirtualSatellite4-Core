@@ -65,11 +65,7 @@ public class ModelAccessResourceTest extends AModelAccessResourceTest {
 		// This would return a List<ABeanStructuralElementInstance>
 		// but because of problems with unmarshalling the list of abstract objects,
 		// we just use a String here
-		String entity = webTarget
-				.path(ModelAccessResource.ROOT_SEIS)
-				.request()
-				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
-				.get(String.class);
+		String entity = response.readEntity(String.class);
 		
 		assertTrue("Right Sei found", entity.contains(tSei.getUuid()));
 		
@@ -206,5 +202,21 @@ public class ModelAccessResourceTest extends AModelAccessResourceTest {
 				.post(Entity.json(null));
 		
 		assertIUuidGotCreated(response, wantedTypeFqn, ed, ed.getResourceSet().getRepository().getRootEntities());
+	}
+	
+	@Test
+	public void testDisciplinesGet() throws Exception {
+		int commits = VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath());
+		
+		// Test all disciplines
+		String entityString = getTestRequestBuilder(ModelAccessResource.DISCIPLINES).get(String.class);
+		assertTrue("Discipline for System should be returned", entityString.contains("System"));
+		
+		// Test role management discipline
+		entityString = getTestRequestBuilder(ModelAccessResource.ROLEMANAGEMENT).get(String.class);
+		assertTrue("Discipline for System should be returned", entityString.contains("System"));
+		
+		assertEquals("No new commit on get without remote changes", commits, 
+				VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath()));
 	}
 }
