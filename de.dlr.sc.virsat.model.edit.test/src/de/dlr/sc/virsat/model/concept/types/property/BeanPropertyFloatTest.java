@@ -26,8 +26,6 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.FloatProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.PropertydefinitionsFactory;
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.FloatPropertyImpl;
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.PropertydefinitionsFactoryImpl;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
@@ -160,49 +158,6 @@ public class BeanPropertyFloatTest extends ABeanPropertyTest {
 		Command cmdOk2 = beanProperty.setValueAsBaseUnit(ed, INPUT_VALUE);
 		cmdOk2.execute();
 		assertEquals("Value correctly set", INPUT_VALUE_AS_KM, uvpi.getValue());
-	}
-
-	@Test
-	public void testGetValueInDefaultUnit() {
-		final String TEST_STRING = "2.1";
-		final double TEST_FLOAT_SECOND_TO_DEFAULT = 2100;		
-		final double TEST_FLOAT_MUNITE_TO_DEFAULT = 126000;
-		final double EPSILON = 0.001;
-		
-		SystemOfUnits sou = QudvUnitHelper.getInstance().initializeSystemOfUnits("SystemOfUnits", "SoU", "the system of Units", "http://the.system.of.units.de");
-		AUnit unitS = QudvUnitHelper.getInstance().getUnitByName(sou, "Second");
-		AUnit unitM = QudvUnitHelper.getInstance().getUnitByName(sou, "Minute");
-		
-		FloatPropertyImpl fpi = (FloatPropertyImpl) new PropertydefinitionsFactoryImpl().createFloatProperty();
-		fpi.setUnitName("Millisecond");
-		
-		uvpi.setValue(TEST_STRING);
-		uvpi.setUnit(unitS);
-		uvpi.setType(fpi);
-		
-		assertEquals("Value correctly set", TEST_FLOAT_SECOND_TO_DEFAULT, beanProperty.getValueInDefaultUnit(), EPSILON);
-		
-		uvpi.setUnit(unitM);
-		
-		assertEquals("Value correctly set", TEST_FLOAT_MUNITE_TO_DEFAULT, beanProperty.getValueInDefaultUnit(), EPSILON);
-	}
-	
-	@Test
-	public void testGetValueInUnit() {
-		final String TEST_STRING = "2.1";
-		final double TEST_FLOAT_SECOND_TO_MILLISECOND = 2100;
-		final double TEST_FLOAT_SECOND_TO_MINUTE = 0.035;
-		final double EPSILON = 0.001;
-		
-		SystemOfUnits sou = QudvUnitHelper.getInstance().initializeSystemOfUnits("SystemOfUnits", "SoU", "the system of Units", "http://the.system.of.units.de");
-		AUnit unitS = QudvUnitHelper.getInstance().getUnitByName(sou, "Second");
-		
-		uvpi.setValue(TEST_STRING);
-		uvpi.setUnit(unitS);
-		
-		assertEquals("Value correctly set", TEST_FLOAT_SECOND_TO_MILLISECOND, beanProperty.getValueInUnit("Millisecond"), EPSILON);
-		
-		assertEquals("Value correctly set", TEST_FLOAT_SECOND_TO_MINUTE, beanProperty.getValueInUnit("Minute"), EPSILON);
 	}
 	
 	private Repository repo;
@@ -381,5 +336,50 @@ public class BeanPropertyFloatTest extends ABeanPropertyTest {
 		IBeanUnit<? extends AUnit> gBean = new BeanUnitFactory().getInstanceFor(gUnit);
 		beanProperty.setUnitBean(gBean);
 		assertEquals("Got correct unit", gBean.getUnit(), beanProperty.getUnitBean().getUnit());
+	}
+	
+	@Test
+	public void testGetValueInDefaultUnit() {
+		setUpRepo();
+		
+		final String TEST_STRING = "2.1";
+		final double TEST_FLOAT_SECOND_TO_DEFAULT = 2100;		
+		final double TEST_FLOAT_MINUTE_TO_DEFAULT = 126000;
+		final double EPSILON = 0.001;
+		
+		AUnit unitS = QudvUnitHelper.getInstance().getUnitByName(sou, "Second");
+		AUnit unitM = QudvUnitHelper.getInstance().getUnitByName(sou, "Minute");
+		
+		propertyOne.setUnitName("Millisecond");
+		
+		uvpi.setType(propertyOne);
+		uvpi.setValue(TEST_STRING);
+		uvpi.setUnit(unitS);
+		
+		assertEquals("Got correct value", TEST_FLOAT_SECOND_TO_DEFAULT, beanProperty.getValueInDefaultUnit(), EPSILON);
+		
+		uvpi.setUnit(unitM);
+		
+		assertEquals("Got correct value", TEST_FLOAT_MINUTE_TO_DEFAULT, beanProperty.getValueInDefaultUnit(), EPSILON);
+	}
+	
+	@Test
+	public void testGetValueInUnit() {
+		setUpRepo();
+		
+		final String TEST_STRING = "2.1";
+		final double TEST_FLOAT_SECOND_TO_MILLISECOND = 2100;
+		final double TEST_FLOAT_SECOND_TO_MINUTE = 0.035;
+		final double EPSILON = 0.001;
+		
+		AUnit unitS = QudvUnitHelper.getInstance().getUnitByName(sou, "Second");
+		
+		uvpi.setType(propertyOne);
+		uvpi.setValue(TEST_STRING);
+		uvpi.setUnit(unitS);
+		
+		assertEquals("Got correct value", TEST_FLOAT_SECOND_TO_MILLISECOND, beanProperty.getValueInUnit("Millisecond"), EPSILON);
+		
+		assertEquals("Got correct value", TEST_FLOAT_SECOND_TO_MINUTE, beanProperty.getValueInUnit("Minute"), EPSILON);
 	}
 }
