@@ -16,8 +16,7 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AQudvTypeProperty;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.FloatProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
@@ -114,15 +113,14 @@ public class BeanPropertyFloat extends ABeanUnitValueProperty<Double> {
 	 * @return Returns a double value in the default unit
 	 */
 	public double getValueInDefaultUnit() {
-		QudvUnitHelper unitHelper = QudvUnitHelper.getInstance();
 		SystemOfUnits sou = CategoryAssignmentHelper.getSystemOfUnits(ti);
 
 		double sourceValue = getValue();
 		AUnit sourceUnit = ti.getUnit();
-		String targetUnitName = ((AQudvTypeProperty) ((AProperty) ti.getType())).getUnitName();
-		AUnit targetUnit = unitHelper.getUnitByName(sou, targetUnitName);
+		String targetUnitName = ((FloatProperty) ti.getType()).getUnitName();
+		AUnit targetUnit = QudvUnitHelper.getInstance().getUnitByName(sou, targetUnitName);
 		
-		return unitHelper.convertFromSourceToTargetUnit(sourceUnit, sourceValue, targetUnit);
+		return QudvUnitHelper.getInstance().convertFromSourceToTargetUnit(sourceUnit, sourceValue, targetUnit);
 	}
 
 	/**
@@ -131,14 +129,13 @@ public class BeanPropertyFloat extends ABeanUnitValueProperty<Double> {
 	 * @return Returns a double value in the specified unit
 	 */
 	public double getValueInUnit(String targetUnitName) {
-		QudvUnitHelper unitHelper = QudvUnitHelper.getInstance();
 		SystemOfUnits sou = CategoryAssignmentHelper.getSystemOfUnits(ti);
 		
 		double sourceValue = getValue();
 		AUnit sourceUnit = ti.getUnit();
-		AUnit targetUnit = unitHelper.getUnitByName(sou, targetUnitName);
+		AUnit targetUnit = QudvUnitHelper.getInstance().getUnitByName(sou, targetUnitName);
 		
-		return unitHelper.convertFromSourceToTargetUnit(sourceUnit, sourceValue, targetUnit);
+		return QudvUnitHelper.getInstance().convertFromSourceToTargetUnit(sourceUnit, sourceValue, targetUnit);
 	}
 	
 	@ApiModelProperty(
