@@ -16,6 +16,8 @@ public class ApiErrorHelper {
 	public static final String SUCCESSFUL_OPERATION = "Successful operation";
 	public static final String SYNC_ERROR = "Synchronization error";
 	public static final String COULD_NOT_FIND_REQUESTED_ELEMENT = "Could not find requested element";
+	public static final String INVALID_TYPE_ERROR = "Is not a valid type";
+	public static final String NOT_EXECUTEABLE = "Command was not executeable";
 	
 	private ApiErrorHelper() { };
 	
@@ -27,7 +29,15 @@ public class ApiErrorHelper {
 		return createBadRequestResponse(COULD_NOT_FIND_REQUESTED_ELEMENT);
 	}
 
+	public static Response createInvalidTypeErrorResponse(String type) {
+		return createBadRequestResponse(INVALID_TYPE_ERROR + ": " + type);
+	}
+
 	public static Response createSyncErrorResponse(String msg) {
 		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ApiErrorHelper.SYNC_ERROR + ": " + msg).build();
+	}
+
+	public static Response createNotExecuteableErrorResponse() {
+		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(NOT_EXECUTEABLE).build();
 	}
 }

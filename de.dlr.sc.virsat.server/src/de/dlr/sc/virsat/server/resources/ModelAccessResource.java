@@ -104,6 +104,7 @@ public class ModelAccessResource {
 	
 	public static final String QP_ONLY_ACTIVE_CONCEPTS = "onlyActiveConcepts";
 	public static final String QP_FULL_QUALIFIED_NAME = "fullQualifiedName";
+	public static final String QP_NAME = "name";
 	public static final String QP_SYNC = "sync";
 	public static final String QP_BUILD = "build";
 
