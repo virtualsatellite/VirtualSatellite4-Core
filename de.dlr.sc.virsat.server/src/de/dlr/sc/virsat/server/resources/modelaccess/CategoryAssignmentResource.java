@@ -45,7 +45,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
 
-@Api(hidden = true, authorizations = {@Authorization(value = "basic")})
+@Api(hidden = true, authorizations = {@Authorization(value = "basic")}, tags = {ModelAccessResource.TAG_CA})
 public class CategoryAssignmentResource {
 	
 	private RepoModelAccessResource parentResource;
@@ -56,7 +56,7 @@ public class CategoryAssignmentResource {
 	
 	/** **/
 	@GET
-	@Path("/{caUuid}")
+	@Path("/{uuid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(
 			produces = "application/json",
@@ -74,7 +74,7 @@ public class CategoryAssignmentResource {
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.SYNC_ERROR)})
-	public Response getCa(@PathParam("caUuid") @ApiParam(value = "Uuid of the CA", required = true) String caUuid) {
+	public Response getCa(@PathParam("uuid") @ApiParam(value = "Uuid of the CA", required = true) String caUuid) {
 		try {
 			parentResource.synchronize();
 			
@@ -118,7 +118,7 @@ public class CategoryAssignmentResource {
 	
 	/** **/
 	@POST
-	@Path("/{caUuid}")
+	@Path("/{uuid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@ApiOperation(
 			consumes = "application/json",
@@ -136,7 +136,7 @@ public class CategoryAssignmentResource {
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.SYNC_ERROR)})
-	public Response createCa(@PathParam("caUuid") @ApiParam(value = "parent uuid", required = true) String parentUuid,
+	public Response createCa(@PathParam("uuid") @ApiParam(value = "parent uuid", required = true) String parentUuid,
 			@QueryParam(value = ModelAccessResource.QP_FULL_QUALIFIED_NAME)
 			@ApiParam(value = "Full qualified name of the CA type", required = true) String fullQualifiedName) {
 		try {
@@ -164,7 +164,7 @@ public class CategoryAssignmentResource {
 	
 	/** **/
 	@DELETE
-	@Path("/{caUuid}")
+	@Path("/{uuid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(
 			produces = "application/json",
@@ -181,7 +181,7 @@ public class CategoryAssignmentResource {
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.SYNC_ERROR)})
-	public Response deleteCa(@PathParam("caUuid") @ApiParam(value = "Uuid of the CA", required = true)  String caUuid) {
+	public Response deleteCa(@PathParam("uuid") @ApiParam(value = "Uuid of the CA", required = true)  String caUuid) {
 		try {
 			// Sync before delete
 			parentResource.synchronize();

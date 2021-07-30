@@ -41,7 +41,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
 
-@Api(hidden = true, authorizations = {@Authorization(value = "basic")})
+@Api(hidden = true, authorizations = {@Authorization(value = "basic")}, tags = {ModelAccessResource.TAG_SEI})
 public class StructuralElementInstanceResource {
 	
 	private RepoModelAccessResource parentResource;

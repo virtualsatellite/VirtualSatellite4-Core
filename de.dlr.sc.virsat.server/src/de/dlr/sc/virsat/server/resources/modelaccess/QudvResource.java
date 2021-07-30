@@ -72,7 +72,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
 
-@Api(hidden = true, authorizations = {@Authorization(value = "basic")})
+@Api(hidden = true, authorizations = {@Authorization(value = "basic")}, tags = {ModelAccessResource.TAG_QUDV})
 public class QudvResource {
 
 	public static final String PREFIXES = "prefixes";
@@ -663,7 +663,7 @@ public class QudvResource {
 	// so we only provide create and delete endpoints for factors
 	/** **/
 	@POST
-	@Path(UNIT_FACTOR + "/{unitFactorParentUuid}")
+	@Path(UNIT_FACTOR + "/{uuid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@ApiOperation(
 			consumes = "application/json",
@@ -684,7 +684,7 @@ public class QudvResource {
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.SYNC_ERROR)})
-	public Response createUnitFactor(@ApiParam(value = "Parent unit of the unit factor", required = true) @PathParam("unitFactorParentUuid") String unitFactorParentUuid) {
+	public Response createUnitFactor(@ApiParam(value = "Parent unit of the unit factor", required = true) @PathParam("uuid") String unitFactorParentUuid) {
 		try {
 			parentResource.synchronize();
 			
@@ -713,7 +713,7 @@ public class QudvResource {
 	
 	/** **/
 	@DELETE
-	@Path(UNIT_FACTOR + "/{unitFactorUuid}")
+	@Path(UNIT_FACTOR + "/{uuid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(
 			produces = "application/json",
@@ -730,7 +730,7 @@ public class QudvResource {
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.SYNC_ERROR)})
-	public Response deleteUnitFactor(@PathParam("unitFactorUuid") @ApiParam(value = "Uuid of the unit factor", required = true) String unitFactorUuid) {
+	public Response deleteUnitFactor(@PathParam("uuid") @ApiParam(value = "Uuid of the unit factor", required = true) String unitFactorUuid) {
 		try {
 			parentResource.synchronize();
 			
@@ -751,7 +751,7 @@ public class QudvResource {
 	
 	/** **/
 	@POST
-	@Path(QUANTITY_KIND_FACTOR + "/{quantityKindFactorParentUuid}")
+	@Path(QUANTITY_KIND_FACTOR + "/{uuid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@ApiOperation(
 			consumes = "application/json",
@@ -772,7 +772,7 @@ public class QudvResource {
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.SYNC_ERROR)})
-	public Response createQuantityKindFactor(@ApiParam(value = "Parent quantity kind of the quantity kind factor", required = true) @PathParam("quantityKindFactorParentUuid") String quantityKindFactorParentUuid) {
+	public Response createQuantityKindFactor(@ApiParam(value = "Parent quantity kind of the quantity kind factor", required = true) @PathParam("uuid") String quantityKindFactorParentUuid) {
 		try {
 			parentResource.synchronize();
 			
@@ -801,7 +801,7 @@ public class QudvResource {
 	
 	/** **/
 	@DELETE
-	@Path(QUANTITY_KIND_FACTOR + "/{quantityKindFactorUuid}")
+	@Path(QUANTITY_KIND_FACTOR + "/{uuid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(
 			produces = "application/json",
@@ -818,7 +818,7 @@ public class QudvResource {
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.SYNC_ERROR)})
-	public Response deleteQuantityKindFactor(@PathParam("quantityKindFactorUuid") @ApiParam(value = "Uuid of the quantity kind factor", required = true) String quantityKindFactorUuid) {
+	public Response deleteQuantityKindFactor(@PathParam("uuid") @ApiParam(value = "Uuid of the quantity kind factor", required = true) String quantityKindFactorUuid) {
 		try {
 			parentResource.synchronize();
 			

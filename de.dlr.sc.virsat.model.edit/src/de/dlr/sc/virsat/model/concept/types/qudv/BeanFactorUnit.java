@@ -54,37 +54,38 @@ public class BeanFactorUnit implements IBeanUuid {
 			example = "b168b0df-84b6-4b7f-bede-69298b215f40")
 	@XmlElement(name = "uuid")
 	@XmlJavaTypeAdapter(IUuidAdapter.class)
-	UnitFactor getFactor() {
+	public UnitFactor getFactor() {
 		return factor;
 	}
 	
-	void setFactor(UnitFactor factor) {
+	public void setFactor(UnitFactor factor) {
 		this.factor = factor;
 	}
 	
 	@ApiModelProperty(required = true)
-	@XmlElement(nillable = true)
-	double getExponent() {
+	@XmlElement
+	public double getExponent() {
 		return factor.getExponent();
 	}
 	
-	void setExponent(double exponent) {
+	public void setExponent(double exponent) {
 		factor.setExponent(exponent);
 	}
 	
 	public Command setExponent(EditingDomain ed, double exponent) {
 		return SetCommand.create(ed, factor, QudvPackage.Literals.UNIT_FACTOR__EXPONENT, exponent);
 	}
-	
 
+	@SuppressWarnings("rawtypes")
 	@ApiModelProperty(required = true)
 	@XmlElement(nillable = true)
 	@XmlJavaTypeAdapter(ABeanUnitAdapter.class)
-	IBeanUnit<? extends AUnit> getUnitBean() {
-		return new BeanUnitFactory().getInstanceFor(factor.getUnit());
+	public ABeanUnit getUnitBean() {
+		return (ABeanUnit) new BeanUnitFactory().getInstanceFor(factor.getUnit());
 	}
 	
-	void setUnitBean(IBeanUnit<? extends AUnit> beanUnit) {
+	@SuppressWarnings("rawtypes")
+	public void setUnitBean(ABeanUnit beanUnit) {
 		factor.setUnit(beanUnit.getUnit());
 	}
 	

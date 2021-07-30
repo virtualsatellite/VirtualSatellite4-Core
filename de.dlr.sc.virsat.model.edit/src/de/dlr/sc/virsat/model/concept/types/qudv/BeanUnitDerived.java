@@ -40,8 +40,8 @@ public class BeanUnitDerived extends ABeanUnit<DerivedUnit> {
 	 * @return List of factors
 	 */
 	@ApiModelProperty(required = true)
-	@XmlElement(nillable = true)
-	List<BeanFactorUnit> getFactorBeans() {
+	@XmlElement
+	public List<BeanFactorUnit> getFactorBeans() {
 		List<BeanFactorUnit> factors = new ArrayList<BeanFactorUnit>();
 		
 		for (UnitFactor factor : unit.getFactor()) {
@@ -55,7 +55,7 @@ public class BeanUnitDerived extends ABeanUnit<DerivedUnit> {
 	 * Set all factors
 	 * @param newBeanFactors List of new factors
 	 */
-	void setFactorBeans(List<BeanFactorUnit> newBeanFactors) {
+	public void setFactorBeans(List<BeanFactorUnit> newBeanFactors) {
 		List<UnitFactor> currentFactors = unit.getFactor();
 
 		List<UnitFactor> newFactors = new ArrayList<UnitFactor>();
@@ -67,19 +67,19 @@ public class BeanUnitDerived extends ABeanUnit<DerivedUnit> {
 		currentFactors.addAll(newFactors);
 	}
 	
-	void addFactor(BeanFactorUnit beanFactor) {
+	public void addFactor(BeanFactorUnit beanFactor) {
 		unit.getFactor().add(beanFactor.getFactor());
 	}
 	
-	void removeFactor(BeanFactorUnit beanFactor) {
+	public void removeFactor(BeanFactorUnit beanFactor) {
 		unit.getFactor().remove(beanFactor.getFactor());
 	}
 	
-	Command addFactor(EditingDomain ed, BeanFactorUnit beanFactor) {
+	public Command addFactor(EditingDomain ed, BeanFactorUnit beanFactor) {
 		return AddCommand.create(ed, unit, QudvPackage.Literals.DERIVED_UNIT__FACTOR, beanFactor.getFactor());
 	}
 	
-	Command removeFactor(EditingDomain ed, BeanFactorUnit beanFactor) {
+	public Command removeFactor(EditingDomain ed, BeanFactorUnit beanFactor) {
 		return RemoveCommand.create(ed, unit, QudvPackage.Literals.DERIVED_UNIT__FACTOR, beanFactor.getFactor());
 	}
 }

@@ -68,6 +68,7 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
 import io.swagger.annotations.Info;
 import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
 
 /**
  * The resource to access the VirSat data model of a server repository
@@ -80,7 +81,14 @@ import io.swagger.annotations.SwaggerDefinition;
 		title = "The Model API",
 		description = "API to access the Virtual Satellite data model"
 	),
-	basePath = VirSatJettyServer.PATH + VirSatModelAccessServlet.MODEL_API
+	basePath = VirSatJettyServer.PATH + VirSatModelAccessServlet.MODEL_API,
+	tags = {
+			@Tag(name = ModelAccessResource.TAG_QUDV, description = "Quantity Kinds and Units"),
+			@Tag(name = ModelAccessResource.TAG_SEI, description = "Structural Element Instances"),
+			@Tag(name = ModelAccessResource.TAG_CA, description = "Category Assignments"),
+			@Tag(name = ModelAccessResource.TAG_PROPERTY, description = "Properties of Category Assignments"),
+			@Tag(name = ModelAccessResource.TAG_DISCIPLINE, description = "Disciplines for Rolemanagement")
+	}
 )
 @Path(ModelAccessResource.PATH)
 public class ModelAccessResource {
@@ -107,6 +115,12 @@ public class ModelAccessResource {
 	public static final String QP_NAME = "name";
 	public static final String QP_SYNC = "sync";
 	public static final String QP_BUILD = "build";
+
+	public static final String TAG_QUDV = "QUDV";
+	public static final String TAG_SEI = "SEIs";
+	public static final String TAG_CA = "CAs";
+	public static final String TAG_PROPERTY = "Properties";
+	public static final String TAG_DISCIPLINE = "Disciplines";
 
 	// List of all resource classes used in this class
 	// Used to register model specific filters
