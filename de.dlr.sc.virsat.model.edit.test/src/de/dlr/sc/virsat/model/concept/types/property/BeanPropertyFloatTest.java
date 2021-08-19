@@ -160,7 +160,7 @@ public class BeanPropertyFloatTest extends ABeanPropertyTest {
 		cmdOk2.execute();
 		assertEquals("Value correctly set", INPUT_VALUE_AS_KM, uvpi.getValue());
 	}
-
+	
 	private Repository repo;
 	private Concept concept;
 	private UnitManagement unitManagement;
@@ -337,5 +337,50 @@ public class BeanPropertyFloatTest extends ABeanPropertyTest {
 		ABeanUnit<? extends AUnit> gBean = (ABeanUnit<? extends AUnit>) new BeanUnitFactory().getInstanceFor(gUnit);
 		beanProperty.setUnitBean(gBean);
 		assertEquals("Got correct unit", gBean.getUnit(), beanProperty.getUnitBean().getUnit());
+	}
+	
+	@Test
+	public void testGetValueInDefaultUnit() {
+		setUpRepo();
+		
+		final String TEST_STRING = "2.1";
+		final double TEST_FLOAT_SECOND_TO_DEFAULT = 2100;		
+		final double TEST_FLOAT_MINUTE_TO_DEFAULT = 126000;
+		final double EPSILON = 0.001;
+		
+		AUnit unitS = QudvUnitHelper.getInstance().getUnitByName(sou, "Second");
+		AUnit unitM = QudvUnitHelper.getInstance().getUnitByName(sou, "Minute");
+		
+		propertyOne.setUnitName("Millisecond");
+		
+		uvpi.setType(propertyOne);
+		uvpi.setValue(TEST_STRING);
+		uvpi.setUnit(unitS);
+		
+		assertEquals("Got correct value", TEST_FLOAT_SECOND_TO_DEFAULT, beanProperty.getValueInDefaultUnit(), EPSILON);
+		
+		uvpi.setUnit(unitM);
+		
+		assertEquals("Got correct value", TEST_FLOAT_MINUTE_TO_DEFAULT, beanProperty.getValueInDefaultUnit(), EPSILON);
+	}
+	
+	@Test
+	public void testGetValueInUnit() {
+		setUpRepo();
+		
+		final String TEST_STRING = "2.1";
+		final double TEST_FLOAT_SECOND_TO_MILLISECOND = 2100;
+		final double TEST_FLOAT_SECOND_TO_MINUTE = 0.035;
+		final double EPSILON = 0.001;
+		
+		AUnit unitS = QudvUnitHelper.getInstance().getUnitByName(sou, "Second");
+		
+		uvpi.setType(propertyOne);
+		uvpi.setValue(TEST_STRING);
+		uvpi.setUnit(unitS);
+		
+		assertEquals("Got correct value", TEST_FLOAT_SECOND_TO_MILLISECOND, beanProperty.getValueInUnit("Millisecond"), EPSILON);
+		
+		assertEquals("Got correct value", TEST_FLOAT_SECOND_TO_MINUTE, beanProperty.getValueInUnit("Minute"), EPSILON);
 	}
 }
