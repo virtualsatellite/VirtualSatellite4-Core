@@ -38,6 +38,7 @@ public abstract class ATreeViewerPage  extends WizardPage {
 	
 	protected Object model;
 	protected Object selection;
+	protected int treeViewerStyle = SWT.BORDER;
 	
 	
 	/**
@@ -64,7 +65,7 @@ public abstract class ATreeViewerPage  extends WizardPage {
 	 * @return the created tree viewer
 	 */
 	public TreeViewer createTreeUI() {
-		TreeViewer treeViewer = new TreeViewer((Composite) getControl(), SWT.BORDER);
+		TreeViewer treeViewer = new TreeViewer((Composite) getControl(), treeViewerStyle);
 		treeViewer.getTree().setLayoutData(new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL));
 		VirSatComposedContentProvider cp = new VirSatComposedContentProvider();
 		cp.registerSubContentProvider(new VirSatWorkspaceContentProvider());
