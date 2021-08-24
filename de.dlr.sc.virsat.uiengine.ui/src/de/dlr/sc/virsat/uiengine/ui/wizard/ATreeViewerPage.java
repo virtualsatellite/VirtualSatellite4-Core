@@ -87,6 +87,12 @@ public abstract class ATreeViewerPage  extends WizardPage {
 		treeViewer.setInput(model);
 		treeViewer.setComparator(new VirSatNavigatorSeiSorter());
 
+		addTreeSelectionListener(treeViewer);
+		
+		return treeViewer;
+	}
+	
+	protected void addTreeSelectionListener(TreeViewer treeViewer) {
 		treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
@@ -97,8 +103,6 @@ public abstract class ATreeViewerPage  extends WizardPage {
 				}
 			}
 		});
-		
-		return treeViewer;
 	}
 	
 	/**
