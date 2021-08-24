@@ -92,6 +92,10 @@ public abstract class ATreeViewerPage  extends WizardPage {
 		return treeViewer;
 	}
 	
+	/**
+	 * Adds a selection changed listener to the given TreeViewer.
+	 * @param treeViewer 
+	 */
 	protected void addTreeSelectionListener(TreeViewer treeViewer) {
 		treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
