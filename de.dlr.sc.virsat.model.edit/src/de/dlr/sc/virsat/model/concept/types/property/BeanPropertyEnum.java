@@ -150,4 +150,13 @@ public class BeanPropertyEnum extends ABeanProperty<EnumUnitPropertyInstance, St
 	public BeanPropertyType getPropertyType() {
 		return BeanPropertyType.ENUM;
 	}
+	
+	@XmlElement
+	public boolean getOverride() {
+		return ti.isOverride();
+	}
+	
+	public void setOverride(boolean override) {
+		ti.setOverride(override);
+	}
 }

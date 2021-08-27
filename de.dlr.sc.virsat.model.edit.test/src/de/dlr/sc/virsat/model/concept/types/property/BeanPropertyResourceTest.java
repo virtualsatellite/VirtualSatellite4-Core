@@ -130,4 +130,14 @@ public class BeanPropertyResourceTest extends ABeanPropertyTest {
 		rpi.setResourceUri(null);
 		assertNull("Got a null and didnt crash", beanProperty.getFile());
 	}
+	
+	@Test
+	public void testGetAndSetOverride() {
+		assertEquals(false, beanProperty.getOverride());
+		
+		beanProperty.setOverride(true);
+		
+		assertEquals(true, beanProperty.getOverride());
+		assertEquals(true, rpi.isOverride());
+	}
 }
