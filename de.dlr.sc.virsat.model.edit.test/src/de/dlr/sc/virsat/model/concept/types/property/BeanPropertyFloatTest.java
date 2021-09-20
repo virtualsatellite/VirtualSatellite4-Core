@@ -383,4 +383,14 @@ public class BeanPropertyFloatTest extends ABeanPropertyTest {
 		
 		assertEquals("Got correct value", TEST_FLOAT_SECOND_TO_MINUTE, beanProperty.getValueInUnit("Minute"), EPSILON);
 	}
+	
+	@Test
+	public void testGetAndSetOverride() {
+		assertEquals(false, beanProperty.getOverride());
+		
+		beanProperty.setOverride(true);
+		
+		assertEquals(true, beanProperty.getOverride());
+		assertEquals(true, uvpi.isOverride());
+	}
 }
