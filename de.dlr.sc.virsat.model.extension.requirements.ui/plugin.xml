@@ -100,6 +100,10 @@
 		pathToImage="resources/icons/ExistenceVerification.gif">
 	</conceptImage>
 	<conceptImage
+		fullQualifiedID="de.dlr.sc.virsat.model.extension.requirements.BoundedValueVerification"
+		pathToImage="resources/icons/BoundedValueVerification.gif">
+	</conceptImage>
+	<conceptImage
 		fullQualifiedID="de.dlr.sc.virsat.model.extension.requirements.RequirementsConfigurationCollection"
 		pathToImage="resources/icons/RequirementsConfigurationCollection.gif">
 	</conceptImage>
@@ -176,6 +180,10 @@
 	<command
 		id="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddExistenceVerification"
 		name="Add ExistenceVerification">
+	</command>
+	<command
+		id="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddBoundedValueVerification"
+		name="Add BoundedValueVerification">
 	</command>
 	<command
 		id="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddRequirementsConfigurationCollection"
@@ -274,6 +282,11 @@
 	      icon="resources/icons/ExistenceVerification.gif">
 	</image>
 	<image
+	      commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddBoundedValueVerification"
+	      disabledIcon="resources/icons/BoundedValueVerification_disabled.gif"
+	      icon="resources/icons/BoundedValueVerification.gif">
+	</image>
+	<image
 	      commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddRequirementsConfigurationCollection"
 	      disabledIcon="resources/icons/RequirementsConfigurationCollection_disabled.gif"
 	      icon="resources/icons/RequirementsConfigurationCollection.gif">
@@ -351,6 +364,10 @@
 	<handler
 		class="de.dlr.sc.virsat.model.extension.requirements.ui.handler.AddExistenceVerificationHandler"
 		commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddExistenceVerification">
+	</handler>
+	<handler
+		class="de.dlr.sc.virsat.model.extension.requirements.ui.handler.AddBoundedValueVerificationHandler"
+		commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddBoundedValueVerification">
 	</handler>
 	<handler
 		class="de.dlr.sc.virsat.model.extension.requirements.ui.handler.AddStructuralElementInstanceRequirementsConfigurationCollectionHandler"
@@ -797,6 +814,28 @@
 				</with>
 			</visibleWhen>
 		</command>
+		<command
+			commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddBoundedValueVerification"
+			style="push">
+			<visibleWhen
+				checkEnabled="true">
+				<with
+					variable="selection">
+					<iterate
+						ifEmpty="false"
+						operator="and">
+						<test 
+							property="de.dlr.sc.virsat.model.extension.requirements.ui.propertyTester.conceptEnabled"
+							value="true" 
+							forcePluginActivation="true">
+						</test>		
+						<instanceof
+							value="de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer">
+						</instanceof>
+					</iterate>
+				</with>
+			</visibleWhen>
+		</command>
 		</menuContribution>
 		<menuContribution allPopups="false"
 			locationURI="popup:de.dlr.sc.virsat.model.extension.requirements.menu?after=structuralElements">
@@ -946,6 +985,11 @@
 		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementVerificationExistenceVerification"
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationExistenceVerification">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementVerificationBoundedValueVerification"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationBoundedValueVerification">
 		</uiSnippet>
 		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementLink"
@@ -1106,6 +1150,16 @@
 		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetExistenceVerificationTarget"
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableExistenceVerificationTarget">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetBoundedValueVerification"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableBoundedValueVerification">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.section.uiSnippetBoundedValueVerification"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetSectionBoundedValueVerification">
 		</uiSnippet>
 	</extension>
 	<!-- Plugin.XML Protected Region Start -->

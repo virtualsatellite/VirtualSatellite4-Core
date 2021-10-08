@@ -89,6 +89,10 @@
 			id="de.dlr.sc.virsat.model.extension.requirements.ExistenceVerification"
 			caBean="de.dlr.sc.virsat.model.extension.requirements.model.ExistenceVerification">
 		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.requirements.BoundedValueVerification"
+			caBean="de.dlr.sc.virsat.model.extension.requirements.model.BoundedValueVerification">
+		</CategoryAssignmentBean>
 	</extension>
 	<extension point="de.dlr.sc.virsat.model.edit.ConceptTypeFactorySeiBeanRegistration">
 		<StructuralElementInstanceBean

@@ -27,6 +27,7 @@ import de.dlr.sc.virsat.model.extension.requirements.model.SpecificationMappingT
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollectionTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementTypeTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementLinkTest;
+import de.dlr.sc.virsat.model.extension.requirements.model.BoundedValueVerificationTest;
 import de.dlr.sc.virsat.model.extension.requirements.migrator.Migrator0v2Test;
 import de.dlr.sc.virsat.model.extension.requirements.model.VerificationConfigurationTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementTest;
@@ -69,6 +70,7 @@ import de.dlr.sc.virsat.model.extension.requirements.model.RequirementLinkTypeTe
 	DefaultVerificationTest.class,
 	VerificationTypeTest.class,
 	ExistenceVerificationTest.class,
+	BoundedValueVerificationTest.class,
 	RequirementsConfigurationCollectionTest.class,
 	Migrator0v1Test.class,
 	Migrator0v2Test.class,
