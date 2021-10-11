@@ -84,6 +84,7 @@ import javax.xml.bind.annotation.XmlAccessType
 import javax.xml.bind.annotation.XmlElement
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter
 import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapter
+import javax.xml.bind.annotation.XmlType
 
 /**
  * This class is the generator for the category beans of our model extension.
@@ -235,10 +236,12 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 	override declareClass(Concept concept, Category category, ImportManager importManager) '''
 	«importManager.register(Concept)»
 	«importManager.register(CategoryAssignment)»
+	«importManager.register(XmlType)»
 	// *****************************************************************
 	// * Class Declaration
 	// *****************************************************************
 	
+	@XmlType(name = A«category.name.toFirstUpper».FULL_QUALIFIED_CATEGORY_NAME)
 	«ConceptGeneratorUtil.generateClassHeader(category)»
 	public «declareIfAbstract(category)» class «category.name.toFirstUpper» extends A«category.name.toFirstUpper» {
 		

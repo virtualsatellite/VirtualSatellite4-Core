@@ -13,6 +13,9 @@ package de.dlr.sc.virsat.model.extension.funcelectrical.model;
 // * Import Statements
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+
+import javax.xml.bind.annotation.XmlType;
+
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 
@@ -28,6 +31,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropert
  * 
  * 
  */	
+@XmlType(name = AInterfaceEnd.FULL_QUALIFIED_CATEGORY_NAME)
 public class InterfaceEnd extends AInterfaceEnd {
 	
 	/**
