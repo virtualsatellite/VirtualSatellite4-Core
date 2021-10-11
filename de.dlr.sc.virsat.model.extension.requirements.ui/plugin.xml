@@ -1227,14 +1227,14 @@
 	     category="de.dlr.virsat.global.category.import.virsat"
 	     class="de.dlr.sc.virsat.model.extension.requirements.ui.wizard.CsvImportWizard"
 	     id="de.dlr.sc.virsat.model.extension.requirements.ui.wizard.csvImport"
-	     icon="resources/icons/RequirementsSpecification.gif"
+	     icon="resources/icons/CSVImport.gif"
 	     name="Requirements CSV Import Wizard">
 	   </wizard>
 	   <wizard
 	     category="de.dlr.virsat.global.category.import.virsat"
 	     class="de.dlr.sc.virsat.model.extension.requirements.ui.wizard.ReqIfImportWizard"
 	     id="de.dlr.sc.virsat.model.extension.requirements.ui.wizard.reqIFImport"
-	     icon="resources/icons/RequirementsSpecification.gif"
+	     icon="resources/icons/ReqIFImport.gif"
 	     name="Requirements ReqIF Import Wizard">
 	   </wizard>
 	  <category
