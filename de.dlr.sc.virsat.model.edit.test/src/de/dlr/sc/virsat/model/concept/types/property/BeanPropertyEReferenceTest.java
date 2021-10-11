@@ -87,5 +87,15 @@ public class BeanPropertyEReferenceTest {
 		BeanPropertyEReference<CategoryAssignment> beanProperty2 = new BeanPropertyEReference<>(eRPI);
 		assertEquals("Beans are identical", beanProperty2, beanProperty);
 	}
+	
+	@Test
+	public void testGetAndSetOverride() {
+		assertEquals(false, testBean.getOverride());
+		
+		testBean.setOverride(true);
+		
+		assertEquals(true, testBean.getOverride());
+		assertEquals(true, testBean.getTypeInstance().isOverride());
+	}
 
 }

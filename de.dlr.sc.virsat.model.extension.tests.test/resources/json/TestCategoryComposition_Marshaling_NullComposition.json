@@ -1,5 +1,5 @@
 {
-   "type" : "testCategoryComposition",
+   "type" : "de.dlr.sc.virsat.model.extension.tests.TestCategoryComposition",
    "uuid" : "028a6e1b-e7c4-4937-886b-d65452426bfd",
    "name" : "TestCategoryComposition",
    "testSubCategory" : null
