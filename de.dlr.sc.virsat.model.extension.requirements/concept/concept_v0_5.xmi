@@ -52,6 +52,9 @@
     </properties>
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="trace" type="de.dlr.sc.virsat.model.extension.requirements.RequirementTrace"/>
     <properties xsi:type="dvlm_cppd:StringProperty" name="descriptionText"/>
+    <properties xsi:type="dvlm_cppd:ComposedProperty" name="children" type="de.dlr.sc.virsat.model.extension.requirements.Requirement">
+      <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
+    </properties>
   </categories>
   <categories name="RequirementLink">
     <properties xsi:type="dvlm_cppd:ReferenceProperty" name="type" referenceType="de.dlr.sc.virsat.model.extension.requirements.RequirementLinkType"/>

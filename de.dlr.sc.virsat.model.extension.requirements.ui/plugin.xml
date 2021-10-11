@@ -948,6 +948,11 @@
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationExistenceVerification">
 		</uiSnippet>
 		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementChildrenRequirement"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementChildrenRequirement">
+		</uiSnippet>
+		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementLink"
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementLink">
@@ -1112,12 +1117,25 @@
 <extension
 	       point="de.dlr.sc.virsat.uiengine.ui.EditorSection">
 	    <editorSection
+	          id="de.dlr.sc.virsat.model.extension.requirements.ui.Section.Important"
+	          topRanking="500">
+	    </editorSection>
+	    <editorSection
 	          id="de.dlr.sc.virsat.model.extension.requirements.ui.Section.Verifications"
 	          topRanking="2000">
 	    </editorSection>
+	    <editorSection
+	          id="de.dlr.sc.virsat.model.extension.requirements.ui.Section.ReqChildren"
+	          topRanking="2100">
+	    </editorSection>
 	 </extension>
 	 <extension point="de.dlr.sc.virsat.uiengine.ui.EditorUiSnippets">
-	 <uiSnippet
+	 	<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementsConfigurationTypeDefinitionsRequirementType"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section.Important"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementsConfigurationTypeDefinitionsRequirementType">
+		</uiSnippet>
+	 	<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementVerificationDefaultVerification"
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section.Verifications"
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationDefaultVerification">
@@ -1126,6 +1144,11 @@
 		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementVerificationExistenceVerification"
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section.Verifications"
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationExistenceVerification">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementChildrenRequirement"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section.ReqChildren"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementChildrenRequirement">
 		</uiSnippet>
 		</extension>
 <extension
