@@ -73,9 +73,26 @@ public  class Requirement extends ARequirement {
 	
 	/**
 	 * Update the requirement name to the name of its identifying attributes
+	 * @param ed the editing domain
+	 * @return the command
+	 */
+	public Command updateNameFromAttributes(EditingDomain ed, String addition) {
+		return setName(ed, getNameFromAttributes() + new RequirementHelper().cleanEntityName(addition));
+	}
+	
+	/**
+	 * Update the requirement name to the name of its identifying attributes
 	 */
 	public void updateNameFromAttributes() {
 		setName(getNameFromAttributes());
+	}
+	
+	/**
+	 * Update the requirement name to the name of its identifying attributes and give a customization 
+	 * @param addition customization / description
+	 */
+	public void updateNameFromAttributes(String addition) {
+		setName(getNameFromAttributes() + new RequirementHelper().cleanEntityName(addition));
 	}
 	
 	/**

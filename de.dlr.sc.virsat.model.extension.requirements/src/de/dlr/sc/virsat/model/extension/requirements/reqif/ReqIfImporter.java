@@ -89,6 +89,8 @@ public class ReqIfImporter {
 	protected Concept concept = null;
 	protected ReqIF reqIfContent;
 	protected List<INativeRequirementAttributeMapping> mappingImpls = new ArrayList<INativeRequirementAttributeMapping>();
+	protected boolean groupSupport = false;
+	protected static final int MAX_LENGTH_NAME_DESCRIPTION = 50;
 	
 
 	/**
@@ -165,12 +167,12 @@ public class ReqIfImporter {
 			RequirementObject current = reqIfUtils.findExisting(reqList, rootChild);
 			
 			// Import atomic requirements first
-			if (rootChild.getChildren() == null || rootChild.getChildren().isEmpty()) {
+			if (!groupSupport || (rootChild.getChildren() == null || rootChild.getChildren().isEmpty())) {
 				if (current == null) {
 					Requirement newReq = createRequirementBase(rootChild.getObject().getType());
 					if (newReq.getReqType() != null) {
 						createSpecHierarchyRequirement(newReq, rootChild);
-						newReq.updateNameFromAttributes();
+						updateRequirementName(newReq, rootChild);
 						cc.append(reqList.add(editingDomain, newReq));
 					}
 				} else {
@@ -198,14 +200,12 @@ public class ReqIfImporter {
 	 * @param reqIfSpecificationList the ReqIF container of the list of requirements 
 	 */
 	protected void createSpecHierarchyGroup(RequirementGroup reqGroup, SpecHierarchy reqIfSpecificationList) {
-		reqGroup.setName(reqIfSpecificationList.getObject().getType().getLongName());
-		
 		for (SpecHierarchy spec : reqIfSpecificationList.getChildren()) {
 			if (spec.getChildren() == null || spec.getChildren().isEmpty()) {
 				Requirement newRequirement = createRequirementBase(spec.getObject().getType());
 				if (newRequirement.getReqType() != null) {
 					createSpecHierarchyRequirement(newRequirement, spec);
-					newRequirement.updateNameFromAttributes();
+					updateRequirementName(newRequirement, spec);
 					reqGroup.getChildren().add(newRequirement);
 				}
 			} else {
@@ -240,6 +240,17 @@ public class ReqIfImporter {
 				attValue.setAttType(attDef);
 				attValue.setName(attName);
 				conceptRequirement.getElements().add(attValue);
+			}
+		}
+		
+		if (reqIfRequirement.getChildren() != null && !reqIfRequirement.getChildren().isEmpty()) {
+			for (SpecHierarchy spec : reqIfRequirement.getChildren()) {
+				Requirement newRequirement = createRequirementBase(spec.getObject().getType());
+				if (newRequirement.getReqType() != null) {
+					createSpecHierarchyRequirement(newRequirement, spec);
+					updateRequirementName(newRequirement, spec);
+					conceptRequirement.getChildren().add(newRequirement);
+				}
 			}
 		}
 	}
@@ -636,6 +647,20 @@ public class ReqIfImporter {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * Update name of requirement element (must not be persisted yet)
+	 * @param requirement the requirement to be updated
+	 * @param spec the ReqIF spec of the requirement
+	 */
+	protected void updateRequirementName(Requirement requirement, SpecHierarchy spec) {
+		String description = reqIfUtils.getReqIFRequirementName(spec);
+		if (description.length() < MAX_LENGTH_NAME_DESCRIPTION) {
+			requirement.updateNameFromAttributes(description);
+		} else {
+			requirement.updateNameFromAttributes();
+		}
 	}
 
 }
