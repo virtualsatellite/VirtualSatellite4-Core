@@ -13,6 +13,7 @@ package de.dlr.sc.virsat.model.extension.requirements.model;
 // * Import Statements
 // *****************************************************************
 import javax.xml.bind.annotation.XmlAccessorType;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeArrayInstanceList;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -20,6 +21,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import javax.xml.bind.annotation.XmlAccessType;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
@@ -63,6 +65,7 @@ public abstract class AImportConfiguration extends GenericCategory implements IB
 	}
 	
 	// property name constants
+	public static final String PROPERTY_SELECTEDTYPEKEYS = "selectedTypeKeys";
 	public static final String PROPERTY_TYPEDEFINITIONSCONTAINER = "typeDefinitionsContainer";
 	public static final String PROPERTY_MAPPEDSPECIFICATIONS = "mappedSpecifications";
 	
@@ -85,6 +88,23 @@ public abstract class AImportConfiguration extends GenericCategory implements IB
 		setTypeInstance(categoryAssignement);
 	}
 	
+	
+	// *****************************************************************
+	// * Array Attribute: selectedTypeKeys
+	// *****************************************************************
+	private IBeanList<BeanPropertyString> selectedTypeKeysBean = new TypeSafeArrayInstanceList<>(BeanPropertyString.class);
+	
+	private void safeAccessSelectedTypeKeysBean() {
+		if (selectedTypeKeysBean.getArrayInstance() == null) {
+			selectedTypeKeysBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("selectedTypeKeys"));
+		}
+	}
+	
+	@XmlElement
+	public IBeanList<BeanPropertyString> getSelectedTypeKeysBean() {
+		safeAccessSelectedTypeKeysBean();
+		return selectedTypeKeysBean;
+	}
 	
 	// *****************************************************************
 	// * Attribute: typeDefinitionsContainer

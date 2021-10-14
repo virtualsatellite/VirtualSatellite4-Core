@@ -84,6 +84,7 @@ Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"
 	
 	Category ImportConfiguration description "Mapping specification of imported requirements" {
 		Applicable For [ RequirementsConfigurationCollection];
+		StringProperty selectedTypeKeys[] description "List of requirement types to be imported, using ReqIF identifiers";
 		Reference typeDefinitionsContainer of Type RequirementsConfiguration;
 		Type mappedSpecifications[] of Category SpecificationMapping;
 	}
