@@ -54,6 +54,7 @@ public class ReqIfImportWizard extends Wizard implements IWorkbenchWizard {
 
 	private ReqIfFileConfigurationSelectionPage importPage;
 	private ReqIfMappingPage mappingPage;
+	private ReqIfTypeSelectionPage typeSelectionPage;
 	private IContainer model;
 	private ReqIfImporter importer = new ReqIfImporter();
 
@@ -90,7 +91,7 @@ public class ReqIfImportWizard extends Wizard implements IWorkbenchWizard {
 
 		final EObject reqConfiguration = (EObject) importPage.getSelection();
 		final Map<Specification, StructuralElementInstance> specMapping = mappingPage.getSpecificationMapping();
-		final RequirementsConfiguration typeContainer = mappingPage.getRequirementTypeContainer();
+		final RequirementsConfiguration typeContainer = typeSelectionPage.getRequirementTypeContainer();
 
 		// Do the import
 		Job importJob = new Job("Performing Requirements ReqIF Import") {
@@ -186,10 +187,12 @@ public class ReqIfImportWizard extends Wizard implements IWorkbenchWizard {
 
 	@Override
 	public void addPages() {
-		mappingPage = new ReqIfMappingPage();
+		typeSelectionPage = new ReqIfTypeSelectionPage();
+		mappingPage = new ReqIfMappingPage(typeSelectionPage);
 		importPage = new ReqIfFileConfigurationSelectionPage(model, mappingPage);
 		addPage(importPage);
 		addPage(mappingPage);
+		addPage(typeSelectionPage);
 	}
 
 }
