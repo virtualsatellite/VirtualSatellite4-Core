@@ -49,6 +49,7 @@ import org.eclipse.rmf.reqif10.Specification;
 import org.eclipse.rmf.reqif10.common.util.ReqIF10XhtmlUtil;
 
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesFactory;
@@ -167,9 +168,11 @@ public class ReqIfImporter {
 			if (rootChild.getChildren() == null || rootChild.getChildren().isEmpty()) {
 				if (current == null) {
 					Requirement newReq = createRequirementBase(rootChild.getObject().getType());
-					createSpecHierarchyRequirement(newReq, rootChild);
-					newReq.updateNameFromAttributes();
-					cc.append(reqList.add(editingDomain, newReq));
+					if (newReq.getReqType() != null) {
+						createSpecHierarchyRequirement(newReq, rootChild);
+						newReq.updateNameFromAttributes();
+						cc.append(reqList.add(editingDomain, newReq));
+					}
 				} else {
 					reImportSpecHierarchyRequirement(editingDomain, cc, (Requirement) current, rootChild);
 				}
@@ -200,9 +203,11 @@ public class ReqIfImporter {
 		for (SpecHierarchy spec : reqIfSpecificationList.getChildren()) {
 			if (spec.getChildren() == null || spec.getChildren().isEmpty()) {
 				Requirement newRequirement = createRequirementBase(spec.getObject().getType());
-				createSpecHierarchyRequirement(newRequirement, spec);
-				newRequirement.updateNameFromAttributes();
-				reqGroup.getChildren().add(newRequirement);
+				if (newRequirement.getReqType() != null) {
+					createSpecHierarchyRequirement(newRequirement, spec);
+					newRequirement.updateNameFromAttributes();
+					reqGroup.getChildren().add(newRequirement);
+				}
 			} else {
 				RequirementGroup newGroup = new RequirementGroup(concept);
 				createSpecHierarchyGroup(newGroup, spec);
@@ -336,10 +341,12 @@ public class ReqIfImporter {
 		for (SpecType type : importContent.getSpecTypes().stream().
 					filter(type -> type instanceof SpecObjectType).collect(Collectors.toList())) {
 			SpecObjectType reqIfRequirementType = (SpecObjectType) type; // List is filtered to only contain spec object types
+			
 			String reqTypeName = reqIfUtils.cleanAttName(reqIfRequirementType.getLongName());
 			
 			// We're not overwriting the requirement types to ensure these can be customized
-			if (!reqIfUtils.contains(typeContainer.getTypeDefinitions(), reqTypeName)) {
+			if (!reqIfUtils.contains(typeContainer.getTypeDefinitions(), reqTypeName) 
+					&& isSelectedForImport(reqIfRequirementType.getLongName())) {
 				RequirementType conceptRequirementType = new RequirementType(concept);
 				conceptRequirementType.setName(reqHelper.cleanEntityName(reqIfRequirementType.getLongName()));
 				
@@ -615,6 +622,20 @@ public class ReqIfImporter {
 	
 	protected String getImportTitle() {
 		return this.reqIfContent.eResource().getURI().trimFileExtension().lastSegment();
+	}
+	
+	/**
+	 * Check if name of requirement type is in list of selected types for import
+	 * @param name the requirement type name as specified in ReqIF
+	 * @return true if type should be imported, false otherwise
+	 */
+	protected boolean isSelectedForImport(String name) {
+		for (BeanPropertyString bean : importConfiguration.getSelectedTypeKeysBean()) {
+			if (bean.getValue().equals(name)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
