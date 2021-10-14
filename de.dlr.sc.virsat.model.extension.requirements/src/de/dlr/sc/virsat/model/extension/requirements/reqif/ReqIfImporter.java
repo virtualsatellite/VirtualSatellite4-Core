@@ -50,6 +50,9 @@ import org.eclipse.rmf.reqif10.common.util.ReqIF10XhtmlUtil;
 
 import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesFactory;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
@@ -556,9 +559,18 @@ public class ReqIfImporter {
 	 * @param configurationContainer the container for the new configuration element
 	 * @return the command to be executed
 	 */
-	public Command persistSpecificationMapping(EditingDomain editingDomain, Map<Specification, StructuralElementInstance> mapping, ReqIF reqIFContent, RequirementsConfigurationCollection configurationContainer) {
+	public Command persistSpecificationMapping(EditingDomain editingDomain, Map<Specification, StructuralElementInstance> mapping, ReqIF reqIFContent, List<String> requirementTypeList, RequirementsConfigurationCollection configurationContainer) {
 		importConfiguration = new ImportConfiguration(concept);
 		importConfiguration.setName(IMPORT_CONFIC_PREFIX + getImportTitle());
+
+		// Specify which types are supposed to be imported
+		for (String typeKey : requirementTypeList) {
+			ArrayInstance ai = importConfiguration.getSelectedTypeKeysBean().getArrayInstance();
+			ValuePropertyInstance vpi = PropertyinstancesFactory.eINSTANCE.createValuePropertyInstance();
+			vpi.setValue(typeKey);
+			vpi.setType(ai.getType());
+			ai.getArrayInstances().add(vpi);
+		}
 		
 		CompoundCommand cc = new CompoundCommand();
 		for (Entry<Specification, StructuralElementInstance> entry : mapping.entrySet()) {

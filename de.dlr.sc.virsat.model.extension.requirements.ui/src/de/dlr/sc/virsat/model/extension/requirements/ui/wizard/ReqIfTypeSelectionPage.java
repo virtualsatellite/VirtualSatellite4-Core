@@ -160,6 +160,20 @@ public class ReqIfTypeSelectionPage extends WizardPage implements SelectionListe
 		}
 		return null;
 	}
+	
+	/**
+	 * Return the list of selected requirement types for import
+	 * @return the list of identifiers of the requirement types
+	 */
+	public List<String> getListOfRequirementTypeKeys() {
+		List<String> typeList = new ArrayList<String>();
+		for (TableItem item : tableItems) {
+			if (item.getChecked()) {
+				typeList.add(item.getText());
+			}
+		}
+		return typeList;
+	}
 
 	@Override
 	public void widgetSelected(SelectionEvent e) {

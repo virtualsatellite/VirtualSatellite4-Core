@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.ui.wizard;
 
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IContainer;
@@ -92,6 +93,7 @@ public class ReqIfImportWizard extends Wizard implements IWorkbenchWizard {
 		final EObject reqConfiguration = (EObject) importPage.getSelection();
 		final Map<Specification, StructuralElementInstance> specMapping = mappingPage.getSpecificationMapping();
 		final RequirementsConfiguration typeContainer = typeSelectionPage.getRequirementTypeContainer();
+		final List<String> requirementTypeList = typeSelectionPage.getListOfRequirementTypeKeys();
 
 		// Do the import
 		Job importJob = new Job("Performing Requirements ReqIF Import") {
@@ -103,7 +105,7 @@ public class ReqIfImportWizard extends Wizard implements IWorkbenchWizard {
 				ReqIF reqIfContent = mappingPage.getReqIfContent();
 				
 				if (reqConfiguration instanceof StructuralElementInstance) {
-					doImport(editingDomain, reqIfContent, specMapping, new RequirementsConfigurationCollection((StructuralElementInstance) reqConfiguration), typeContainer, monitor);
+					doImport(editingDomain, reqIfContent, specMapping, new RequirementsConfigurationCollection((StructuralElementInstance) reqConfiguration), typeContainer, requirementTypeList, monitor);
 				} else  {
 					doReimport(editingDomain, reqIfContent, new ImportConfiguration((CategoryAssignment) reqConfiguration), monitor);
 				}
@@ -135,13 +137,13 @@ public class ReqIfImportWizard extends Wizard implements IWorkbenchWizard {
 	 * @param typeContainer the container element for new requirement types imported from ReqIF
 	 * @param monitor the progress monitor
 	 */
-	public void doImport(EditingDomain editingDomain, ReqIF reqIfContent, Map<Specification, StructuralElementInstance> specMapping, RequirementsConfigurationCollection configurationContainer, RequirementsConfiguration typeContainer, IProgressMonitor monitor) {
+	public void doImport(EditingDomain editingDomain, ReqIF reqIfContent, Map<Specification, StructuralElementInstance> specMapping, RequirementsConfigurationCollection configurationContainer, RequirementsConfiguration typeContainer, List<String> requirementTypeList, IProgressMonitor monitor) {
 		SubMonitor importSubMonitor = SubMonitor.convert(monitor, NUMBER_PROGRESS_TICKS_IMPORT);
 		
 		importer.init(reqIfContent, configurationContainer);
 		
 		// Preparation
-		editingDomain.getCommandStack().execute(importer.persistSpecificationMapping(editingDomain, specMapping, reqIfContent, configurationContainer));
+		editingDomain.getCommandStack().execute(importer.persistSpecificationMapping(editingDomain, specMapping, reqIfContent, requirementTypeList, configurationContainer));
 		importSubMonitor.worked(1);
 		editingDomain.getCommandStack().execute(importer.persistRequirementTypeContainer(editingDomain, typeContainer));
 		importSubMonitor.worked(1);
