@@ -49,6 +49,7 @@ public class RequirementTest extends AConceptProjectTestCase {
 	private static final String INITIAL_REQUIREMENT_NAME = "Requirement1";
 	private static final String IDENTIFIER_ATTRIBUTE_VALUE = "Attribute1";
 	private static final String STRING_ATTRIBUTE_VALUE = "Attribute1";
+	private static final String DETAILS = "Customized";
 	
 	Concept concept = loadConceptFromPlugin(Activator.getPluginId());
 	
@@ -66,6 +67,22 @@ public class RequirementTest extends AConceptProjectTestCase {
 		assertEquals(testRequirement.getName(), INITIAL_REQUIREMENT_NAME);
 		testRequirement.updateNameFromAttributes();
 		assertEquals(testRequirement.getName(), Requirement.REQUIREMENT_NAME_PREFIX + IDENTIFIER_ATTRIBUTE_VALUE);
+	}
+	
+	@Test
+	public void testUpdateNameFromAttributesCustomized() {
+		Requirement testRequirement = new Requirement(concept);
+		testRequirement.setName(INITIAL_REQUIREMENT_NAME);
+		AttributeValue attValue = new AttributeValue(concept);
+		RequirementAttribute attDefinition = new RequirementAttribute(concept);
+		attDefinition.setType(RequirementAttribute.TYPE_Identifier_NAME);
+		attValue.setAttType(attDefinition);
+		attValue.setValue(IDENTIFIER_ATTRIBUTE_VALUE);
+		testRequirement.getElements().add(attValue);
+		
+		assertEquals(testRequirement.getName(), INITIAL_REQUIREMENT_NAME);
+		testRequirement.updateNameFromAttributes(DETAILS);
+		assertEquals(testRequirement.getName(), Requirement.REQUIREMENT_NAME_PREFIX + IDENTIFIER_ATTRIBUTE_VALUE + DETAILS);
 	}
 	
 	@Test
@@ -114,6 +131,23 @@ public class RequirementTest extends AConceptProjectTestCase {
 		Command command = testRequirement.updateNameFromAttributes(editingDomain);
 		command.execute();
 		assertEquals(testRequirement.getName(), Requirement.REQUIREMENT_NAME_PREFIX + IDENTIFIER_ATTRIBUTE_VALUE);
+	}
+	
+	@Test
+	public void testUpdateNameFromAttributesWithCommandCustomized() {
+		Requirement testRequirement = new Requirement(concept);
+		testRequirement.setName(INITIAL_REQUIREMENT_NAME);
+		AttributeValue attValue = new AttributeValue(concept);
+		RequirementAttribute attDefinition = new RequirementAttribute(concept);
+		attDefinition.setType(RequirementAttribute.TYPE_Identifier_NAME);
+		attValue.setAttType(attDefinition);
+		attValue.setValue(IDENTIFIER_ATTRIBUTE_VALUE);
+		testRequirement.getElements().add(attValue);
+		
+		assertEquals(testRequirement.getName(), INITIAL_REQUIREMENT_NAME);
+		Command command = testRequirement.updateNameFromAttributes(editingDomain, DETAILS);
+		command.execute();
+		assertEquals(testRequirement.getName(), Requirement.REQUIREMENT_NAME_PREFIX + IDENTIFIER_ATTRIBUTE_VALUE + DETAILS);
 	}
 	
 	@Test

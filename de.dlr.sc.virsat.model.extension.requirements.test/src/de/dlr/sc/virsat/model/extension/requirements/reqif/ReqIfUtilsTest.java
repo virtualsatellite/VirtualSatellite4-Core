@@ -64,6 +64,7 @@ public class ReqIfUtilsTest extends AConceptProjectTestCase {
 	private static final String TEST_DEFAULT_ATTRIBUTE_VALUE = "Some requirement value";
 	private static final String TEST_GROUP_NAME = "RequirementGroup";
 	private static final String TEST_REQUIREMENT_NAME = "TestRequirement";
+	private static final String TEST_REQUIREMENT_NAME_TOO_LONG = "TestRequirementTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOLOOOOOOOOOOOOOOOOOOOOOONNNNNNGGG";
 	private static final int TEST_FIXED_INDEX = 0;
 	private AttributeValue nativeAttributeValue = null;
 	private ReqIfUtils reqIfUtils;
@@ -299,6 +300,23 @@ public class ReqIfUtilsTest extends AConceptProjectTestCase {
 				Requirement.REQUIREMENT_NAME_PREFIX
 				+ TEST_ID_ATTRIBUTE_VALUE
 				+ TEST_REQUIREMENT_NAME);
+	}
+	
+	@Test
+	public void testUpdateRequirementNameFromReqIFNameToLong() throws IOException {
+		SpecObject specObject = ReqIF10Factory.eINSTANCE.createSpecObject();
+		SpecHierarchy hierarchyObject = ReqIF10Factory.eINSTANCE.createSpecHierarchy();
+		hierarchyObject.setObject(specObject);
+		hierarchyObject = createBasicReqIfRequirement(TEST_DEFAULT_ATTRIBUTE_VALUE, TEST_ID_ATTRIBUTE_VALUE);
+		setReqIFName(hierarchyObject, TEST_REQUIREMENT_NAME_TOO_LONG);
+		
+		Requirement req = createBasicLocalRequirement("", TEST_ID_ATTRIBUTE_VALUE);
+		reqIfUtils.updateRequirementNameFromReqIF(req, hierarchyObject);
+		
+		
+		assertEquals("Name should be as set as a combination of ID and description", req.getName(), 
+				Requirement.REQUIREMENT_NAME_PREFIX
+				+ TEST_ID_ATTRIBUTE_VALUE);
 	}
 	
 	@Test

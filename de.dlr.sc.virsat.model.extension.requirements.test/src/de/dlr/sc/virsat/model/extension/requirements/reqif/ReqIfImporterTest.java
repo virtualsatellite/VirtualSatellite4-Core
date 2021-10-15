@@ -321,6 +321,55 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 	}
 	
 	@Test
+	public void testImportRequirementsFilteredTypes() {
+		registerEPackageReqIF();
+		URI modelURI = URI.createPlatformPluginURI(PLATFORM_REQ_IF_MODEL_PATH, true);
+		Resource modelResource = rs.getResource(modelURI, true);
+		ReqIF reqIfFileContent = (ReqIF) modelResource.getContents().get(0);
+		importerUnderTest.init(reqIfFileContent, rcc);
+		
+		// Simply map all specifications into childSei
+		Map<Specification, StructuralElementInstance> map = new HashMap<Specification, StructuralElementInstance>();
+		for (Specification spec : reqIfFileContent.getCoreContent().getSpecifications()) {
+			map.put(spec, childSei);
+		}
+
+		// Prepare import
+		editingDomain.getCommandStack().execute(importerUnderTest.persistSpecificationMapping(editingDomain, map, reqIfFileContent, getRequirementTypeListNoSystemRequirements(), true, rcc));
+		editingDomain.getCommandStack().execute(importerUnderTest.persistRequirementTypeContainer(editingDomain, null));
+		editingDomain.getCommandStack().execute(importerUnderTest.importRequirementTypes(editingDomain, reqIfFileContent));
+		
+		// Do the actual import
+		Command importCommand = importerUnderTest.importRequirements(editingDomain, reqIfFileContent);
+		editingDomain.getCommandStack().execute(importCommand);
+		
+		RequirementsSpecification systemSpec = null;
+		RequirementsSpecification hardwareSpec = null;
+		for (CategoryAssignment cA : childSei.getCategoryAssignments()) {
+			if (cA.getName().equals(SYSTEM_SPEC_NAME)) {
+				systemSpec = new RequirementsSpecification(cA);
+			} else if (cA.getName().equals(HARDWARE_SPEC_NAME)) {
+				hardwareSpec = new RequirementsSpecification(cA);
+			}
+		}
+
+		RequirementGroup firstGroup = (RequirementGroup) systemSpec.getRequirements().stream()
+				.filter((child) -> child instanceof RequirementGroup)
+				.collect(Collectors.toList())
+				.get(0);
+		
+		assertEquals(SYSTEM_REQUIREMENT_GROUP_NAME, firstGroup.getName());
+		
+		assertTrue("System requirements are not imported anymore", firstGroup.getChildren().isEmpty());
+		
+		// Hardware requirements are imported
+		RequirementGroup hardwareMissionObjectives = (RequirementGroup) hardwareSpec.getRequirements().get(0);
+		assertEquals(HARDWARE_REQUIREMENT_GROUP_NAME, hardwareMissionObjectives.getName());
+		Requirement firstHardwareRequirement = (Requirement) hardwareMissionObjectives.getChildren().get(0);
+		assertEquals(HARDWARE_REQUIREMENT_GROUP_CHILD_TEXT, getRequirementValue(firstHardwareRequirement, TEXT_ATTRIBUTE_NAME));
+	}
+	
+	@Test
 	public void testReCreateRequirementElements() {
 		registerEPackageReqIF();
 		URI modelURI = URI.createPlatformPluginURI(PLATFORM_REQ_IF_MODEL_PATH, true);
@@ -629,6 +678,13 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 	protected List<String> getRequirementTypeList() {
 		List<String> typeList = new ArrayList<String>();
 		typeList.add(TYPE_1_NAME);
+		typeList.add(TYPE_2_NAME);
+		typeList.add(TYPE_3_NAME);
+		return typeList;
+	}
+	
+	protected List<String> getRequirementTypeListNoSystemRequirements() {
+		List<String> typeList = new ArrayList<String>();
 		typeList.add(TYPE_2_NAME);
 		typeList.add(TYPE_3_NAME);
 		return typeList;
