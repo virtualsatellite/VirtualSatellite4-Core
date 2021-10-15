@@ -150,7 +150,7 @@ public class ReqIfUtils {
 	 * @param hierarchyObject the ReqIF requirement hierarchy element
 	 * @return the existing requirement object or null
 	 */
-	protected RequirementObject findExisting(IBeanList<RequirementObject> reqList, SpecHierarchy hierarchyObject) {
+	protected RequirementObject findExisting(IBeanList<? extends RequirementObject> reqList, SpecHierarchy hierarchyObject) {
 		String requirementIdentifier = getReqIFRequirementIdentifier(hierarchyObject);
 		String groupName = getReqIFRequirementName(hierarchyObject);
 		for (RequirementObject requirementObject : reqList) {

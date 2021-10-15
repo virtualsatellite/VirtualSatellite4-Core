@@ -27,7 +27,9 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -43,6 +45,7 @@ public class ReqIfMappingPage extends WizardPage implements SelectionListener, M
 
 	private static final String PAGE_TITLE = "ReqIF Mapping";
 	private static final String DESCRIPTION_LABEL = "Check the specification elements to import and their container element in the system model.";
+	private static final String GROUP_SUPPORT_LABEL = "Import ReqIF objects with children as RequirementGroup (otherwise also imported as Requirement):";
 	
 	private static final String COLUMN_SPECIFICATION_LABEL = "Specification";
 	private static final String COLUMN_CONTAINER_LABEL = "Container";
@@ -57,6 +60,7 @@ public class ReqIfMappingPage extends WizardPage implements SelectionListener, M
 	private Table table;
 	private List<TableItem> tableItems = new ArrayList<TableItem>();
 	private List<CCombo> editors = new ArrayList<CCombo>();
+	private Button checkBox;
 	
 	private ReqIFImpl reqIfContent;
 
@@ -80,6 +84,17 @@ public class ReqIfMappingPage extends WizardPage implements SelectionListener, M
 		content.setLayout(new GridLayout());
 		content.setLayoutData(new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL | GridData.GRAB_HORIZONTAL));
 		setControl(content);
+		
+		Composite groupSupportComposite = new Composite(content, SWT.NONE);
+		groupSupportComposite.setLayout(new GridLayout(2, false));
+		GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
+		groupSupportComposite.setLayoutData(data);
+
+		Label label = new Label(groupSupportComposite, SWT.NONE);
+		label.setText(GROUP_SUPPORT_LABEL);
+		
+		checkBox = new Button(groupSupportComposite, SWT.CHECK);
+		checkBox.setSelection(true);
 
 		table = new Table(content, SWT.CHECK | SWT.BORDER | SWT.H_SCROLL);
 		table.setLayout(new GridLayout());
@@ -251,6 +266,9 @@ public class ReqIfMappingPage extends WizardPage implements SelectionListener, M
 		return mapSeiToSpec;
 	}
 	
+	public boolean getGroupSupport() {
+		return checkBox.getSelection();
+	}
 	
 	/**
 	 * @return the reqIfContent

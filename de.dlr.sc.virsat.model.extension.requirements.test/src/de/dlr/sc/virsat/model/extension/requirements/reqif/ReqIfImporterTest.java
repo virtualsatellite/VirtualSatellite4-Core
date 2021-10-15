@@ -105,10 +105,12 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 	private static final String SYSTEM_REQUIREMENT_PRIORITY = "High";
 	
 	private static final String SYSTEM_REQUIREMENT_GROUP_NAME = "MissionRequirements";
+	private static final String SYSTEM_REQUIREMENT_GROUP_NAME_WITH_ID = "Req99096MissionRequirements";
 	private static final String SYSTEM_REQUIREMENT_GROUP_CHILD_TEXT = "Test Child Requirement";
 	private static final String SYSTEM_REQUIREMENT_LINK_NAME = "Req99097SatisfactionReq99095";
 	
 	private static final String HARDWARE_REQUIREMENT_GROUP_NAME = "MissionObjectives";
+	private static final String HARDWARE_REQUIREMENT_GROUP_NAME_WITH_ID = "Req99099MissionObjectives";
 	private static final String HARDWARE_REQUIREMENT_GROUP_CHILD_TEXT = "Test Hardware Requirement";
 	private static final String HARDWARE_REQUIREMENT_GROUP_CHILD_TEXT_UPDATED = "Test Hardware Requirement Updated";
 	
@@ -159,7 +161,7 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 	@Test
 	public void testPersistSpecificationMapping() {
 		importerUnderTest.init(reqIFContent, rcc);
-		Command importCmd = importerUnderTest.persistSpecificationMapping(editingDomain, getBasicSpecMapping(), reqIFContent, new ArrayList<String>(), rcc);
+		Command importCmd = importerUnderTest.persistSpecificationMapping(editingDomain, getBasicSpecMapping(), reqIFContent, new ArrayList<String>(), true, rcc);
 		editingDomain.getCommandStack().execute(importCmd);
 		
 		// Check that new specifications have been created
@@ -217,7 +219,7 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 		}
 
 		// Prepare import
-		editingDomain.getCommandStack().execute(importerUnderTest.persistSpecificationMapping(editingDomain, map, reqIfFileContent, getRequirementTypeList(), rcc));
+		editingDomain.getCommandStack().execute(importerUnderTest.persistSpecificationMapping(editingDomain, map, reqIfFileContent, getRequirementTypeList(), true, rcc));
 		editingDomain.getCommandStack().execute(importerUnderTest.persistRequirementTypeContainer(editingDomain, null));
 		editingDomain.getCommandStack().execute(importerUnderTest.importRequirementTypes(editingDomain, reqIfFileContent));
 		
@@ -261,6 +263,64 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 	}
 	
 	@Test
+	public void testImportRequirementsNoGroups() {
+		registerEPackageReqIF();
+		URI modelURI = URI.createPlatformPluginURI(PLATFORM_REQ_IF_MODEL_PATH, true);
+		Resource modelResource = rs.getResource(modelURI, true);
+		ReqIF reqIfFileContent = (ReqIF) modelResource.getContents().get(0);
+		importerUnderTest.init(reqIfFileContent, rcc);
+		
+		// Simply map all specifications into childSei
+		Map<Specification, StructuralElementInstance> map = new HashMap<Specification, StructuralElementInstance>();
+		for (Specification spec : reqIfFileContent.getCoreContent().getSpecifications()) {
+			map.put(spec, childSei);
+		}
+
+		// Prepare import
+		editingDomain.getCommandStack().execute(importerUnderTest.persistSpecificationMapping(editingDomain, map, reqIfFileContent, getRequirementTypeList(), false, rcc));
+		editingDomain.getCommandStack().execute(importerUnderTest.persistRequirementTypeContainer(editingDomain, null));
+		editingDomain.getCommandStack().execute(importerUnderTest.importRequirementTypes(editingDomain, reqIfFileContent));
+		
+		// Do the actual import
+		Command importCommand = importerUnderTest.importRequirements(editingDomain, reqIfFileContent);
+		editingDomain.getCommandStack().execute(importCommand);
+		
+		RequirementsSpecification systemSpec = null;
+		RequirementsSpecification hardwareSpec = null;
+		for (CategoryAssignment cA : childSei.getCategoryAssignments()) {
+			if (cA.getName().equals(SYSTEM_SPEC_NAME)) {
+				systemSpec = new RequirementsSpecification(cA);
+			} else if (cA.getName().equals(HARDWARE_SPEC_NAME)) {
+				hardwareSpec = new RequirementsSpecification(cA);
+			}
+		}
+
+		Requirement firstRequirement = (Requirement) systemSpec.getRequirements().stream()
+				.filter((child) -> ((Requirement) child).getChildren().isEmpty())
+				.collect(Collectors.toList())
+				.get(0);
+		assertEquals("Should be Requirement Prefix + its ID + name", Requirement.REQUIREMENT_NAME_PREFIX + SYSTEM_REQUIREMENT_ID + REQUIREMENT_NAME, firstRequirement.getName());
+		assertEquals(SYSTEM_REQUIREMENT_TEXT, getRequirementValue(firstRequirement, TEXT_ATTRIBUTE_NAME));
+		assertEquals(SYSTEM_REQUIREMENT_ID, getRequirementValue(firstRequirement, ID_ATTRIBUTE_NAME));
+		assertEquals(SYSTEM_REQUIREMENT_PRIORITY, getRequirementValue(firstRequirement, PRIORITY_ATTRIBUTE_NAME));
+		
+		Requirement firstGroup = (Requirement) systemSpec.getRequirements().stream()
+				.filter((child) -> !((Requirement) child).getChildren().isEmpty())
+				.collect(Collectors.toList())
+				.get(0);
+		
+		assertEquals(SYSTEM_REQUIREMENT_GROUP_NAME_WITH_ID, firstGroup.getName());
+		
+		Requirement firstChildRequirement = (Requirement) firstGroup.getChildren().get(0);
+		assertEquals(SYSTEM_REQUIREMENT_GROUP_CHILD_TEXT, getRequirementValue(firstChildRequirement, TEXT_ATTRIBUTE_NAME));
+		
+		Requirement hardwareMissionObjectives = (Requirement) hardwareSpec.getRequirements().get(0);
+		assertEquals(HARDWARE_REQUIREMENT_GROUP_NAME_WITH_ID, hardwareMissionObjectives.getName());
+		Requirement firstHardwareRequirement = (Requirement) hardwareMissionObjectives.getChildren().get(0);
+		assertEquals(HARDWARE_REQUIREMENT_GROUP_CHILD_TEXT, getRequirementValue(firstHardwareRequirement, TEXT_ATTRIBUTE_NAME));
+	}
+	
+	@Test
 	public void testReCreateRequirementElements() {
 		registerEPackageReqIF();
 		URI modelURI = URI.createPlatformPluginURI(PLATFORM_REQ_IF_MODEL_PATH, true);
@@ -275,7 +335,7 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 		}
 
 		// Prepare import
-		editingDomain.getCommandStack().execute(importerUnderTest.persistSpecificationMapping(editingDomain, map, reqIfFileContent, getRequirementTypeList(), rcc));
+		editingDomain.getCommandStack().execute(importerUnderTest.persistSpecificationMapping(editingDomain, map, reqIfFileContent, getRequirementTypeList(), true, rcc));
 		editingDomain.getCommandStack().execute(importerUnderTest.persistRequirementTypeContainer(editingDomain, null));
 		editingDomain.getCommandStack().execute(importerUnderTest.importRequirementTypes(editingDomain, reqIfFileContent));
 		
@@ -344,7 +404,7 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 		}
 
 		// Do first import
-		editingDomain.getCommandStack().execute(importerUnderTest.persistSpecificationMapping(editingDomain, map, reqIfFileContent, getRequirementTypeList(), rcc));
+		editingDomain.getCommandStack().execute(importerUnderTest.persistSpecificationMapping(editingDomain, map, reqIfFileContent, getRequirementTypeList(), true, rcc));
 		editingDomain.getCommandStack().execute(importerUnderTest.persistRequirementTypeContainer(editingDomain, null));
 		editingDomain.getCommandStack().execute(importerUnderTest.importRequirementTypes(editingDomain, reqIfFileContent));
 		editingDomain.getCommandStack().execute(importerUnderTest.importRequirements(editingDomain, reqIfFileContent));
@@ -357,6 +417,47 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 			}
 		}
 		RequirementGroup hardwareMissionObjectives = (RequirementGroup) hardwareSpec.getRequirements().get(0);
+		Requirement firstHardwareRequirement = (Requirement) hardwareMissionObjectives.getChildren().get(0);
+		assertEquals(HARDWARE_REQUIREMENT_GROUP_CHILD_TEXT, getRequirementValue(firstHardwareRequirement, TEXT_ATTRIBUTE_NAME));
+		
+		
+		// Now do re-import and check if value changed
+		URI reImportModelURI = URI.createPlatformPluginURI(PLATFORM_REQ_IF_MODEL_PATH_REIMPORT, true);
+		modelResource = rs.getResource(reImportModelURI, true);
+		reqIfFileContent = (ReqIF) modelResource.getContents().get(0);
+		editingDomain.getCommandStack().execute(importerUnderTest.importRequirements(editingDomain, reqIfFileContent));
+
+		assertEquals(HARDWARE_REQUIREMENT_GROUP_CHILD_TEXT_UPDATED, getRequirementValue(firstHardwareRequirement, TEXT_ATTRIBUTE_NAME));
+	}
+	
+	@Test
+	public void testReImportRequirementsNoGroups() {
+		registerEPackageReqIF();
+		URI modelURI = URI.createPlatformPluginURI(PLATFORM_REQ_IF_MODEL_PATH, true);
+		Resource modelResource = rs.getResource(modelURI, true);
+		ReqIF reqIfFileContent = (ReqIF) modelResource.getContents().get(0);
+		importerUnderTest.init(reqIfFileContent, rcc);
+		
+		// Simply map all specifications into childSei
+		Map<Specification, StructuralElementInstance> map = new HashMap<Specification, StructuralElementInstance>();
+		for (Specification spec : reqIfFileContent.getCoreContent().getSpecifications()) {
+			map.put(spec, childSei);
+		}
+
+		// Do first import
+		editingDomain.getCommandStack().execute(importerUnderTest.persistSpecificationMapping(editingDomain, map, reqIfFileContent, getRequirementTypeList(), false, rcc));
+		editingDomain.getCommandStack().execute(importerUnderTest.persistRequirementTypeContainer(editingDomain, null));
+		editingDomain.getCommandStack().execute(importerUnderTest.importRequirementTypes(editingDomain, reqIfFileContent));
+		editingDomain.getCommandStack().execute(importerUnderTest.importRequirements(editingDomain, reqIfFileContent));
+		
+		// Get some nested requirement to check on if values are updated
+		RequirementsSpecification hardwareSpec = null;
+		for (CategoryAssignment cA : childSei.getCategoryAssignments()) {
+			if (cA.getName().equals(HARDWARE_SPEC_NAME)) {
+				hardwareSpec = new RequirementsSpecification(cA);
+			}
+		}
+		Requirement hardwareMissionObjectives = (Requirement) hardwareSpec.getRequirements().get(0);
 		Requirement firstHardwareRequirement = (Requirement) hardwareMissionObjectives.getChildren().get(0);
 		assertEquals(HARDWARE_REQUIREMENT_GROUP_CHILD_TEXT, getRequirementValue(firstHardwareRequirement, TEXT_ATTRIBUTE_NAME));
 		
@@ -385,7 +486,7 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 		}
 
 		// Do import
-		editingDomain.getCommandStack().execute(importerUnderTest.persistSpecificationMapping(editingDomain, map, reqIfFileContent, getRequirementTypeList(), rcc));
+		editingDomain.getCommandStack().execute(importerUnderTest.persistSpecificationMapping(editingDomain, map, reqIfFileContent, getRequirementTypeList(), true, rcc));
 		editingDomain.getCommandStack().execute(importerUnderTest.persistRequirementTypeContainer(editingDomain, null));
 		editingDomain.getCommandStack().execute(importerUnderTest.importRequirementTypes(editingDomain, reqIfFileContent));
 		editingDomain.getCommandStack().execute(importerUnderTest.importRequirements(editingDomain, reqIfFileContent));
@@ -445,7 +546,7 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 		}
 
 		// Do import
-		editingDomain.getCommandStack().execute(importerUnderTest.persistSpecificationMapping(editingDomain, map, reqIfFileContent, getRequirementTypeList(), rcc));
+		editingDomain.getCommandStack().execute(importerUnderTest.persistSpecificationMapping(editingDomain, map, reqIfFileContent, getRequirementTypeList(), true, rcc));
 		editingDomain.getCommandStack().execute(importerUnderTest.persistRequirementTypeContainer(editingDomain, null));
 		editingDomain.getCommandStack().execute(importerUnderTest.importRequirementTypes(editingDomain, reqIfFileContent));
 		editingDomain.getCommandStack().execute(importerUnderTest.importRequirements(editingDomain, reqIfFileContent));

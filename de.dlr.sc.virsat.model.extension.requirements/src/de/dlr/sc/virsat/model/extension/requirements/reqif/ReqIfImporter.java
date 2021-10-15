@@ -89,7 +89,6 @@ public class ReqIfImporter {
 	protected Concept concept = null;
 	protected ReqIF reqIfContent;
 	protected List<INativeRequirementAttributeMapping> mappingImpls = new ArrayList<INativeRequirementAttributeMapping>();
-	protected boolean groupSupport = true;
 	
 
 	/**
@@ -166,7 +165,7 @@ public class ReqIfImporter {
 			RequirementObject current = reqIfUtils.findExisting(reqList, rootChild);
 			
 			// Import atomic requirements first
-			if (!groupSupport || (rootChild.getChildren() == null || rootChild.getChildren().isEmpty())) {
+			if (!importConfiguration.getGroupSupport() || (rootChild.getChildren() == null || rootChild.getChildren().isEmpty())) {
 				if (current == null) {
 					Requirement newReq = createRequirementBase(rootChild.getObject().getType());
 					if (newReq.getReqType() != null) {
@@ -267,6 +266,7 @@ public class ReqIfImporter {
 		for (AttributeValue att : reqObject.getValues()) {
 			setAttributeValue(editingDomain, cc, conceptRequirement, att);
 		}
+		importRequirementList(editingDomain, cc, conceptRequirement.getChildren(), hierarchyLevel.getChildren());
 		return cc;
 	}
 	
@@ -576,9 +576,10 @@ public class ReqIfImporter {
 	 * @param configurationContainer the container for the new configuration element
 	 * @return the command to be executed
 	 */
-	public Command persistSpecificationMapping(EditingDomain editingDomain, Map<Specification, StructuralElementInstance> mapping, ReqIF reqIFContent, List<String> requirementTypeList, RequirementsConfigurationCollection configurationContainer) {
+	public Command persistSpecificationMapping(EditingDomain editingDomain, Map<Specification, StructuralElementInstance> mapping, ReqIF reqIFContent, List<String> requirementTypeList, boolean groupSupport, RequirementsConfigurationCollection configurationContainer) {
 		importConfiguration = new ImportConfiguration(concept);
 		importConfiguration.setName(IMPORT_CONFIC_PREFIX + getImportTitle());
+		importConfiguration.setGroupSupport(groupSupport);
 
 		// Specify which types are supposed to be imported
 		for (String typeKey : requirementTypeList) {

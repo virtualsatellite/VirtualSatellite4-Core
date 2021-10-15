@@ -294,7 +294,7 @@ public abstract class ARequirement extends RequirementObject implements IBeanCat
 	// *****************************************************************
 	// * Array Attribute: children
 	// *****************************************************************
-	private IBeanList<Requirement> children = new TypeSafeComposedPropertyInstanceList<>(Requirement.class);
+	private IBeanList<RequirementObject> children = new TypeSafeComposedPropertyInstanceList<>(RequirementObject.class);
 	
 	private void safeAccessChildren() {
 		if (children.getArrayInstance() == null) {
@@ -302,12 +302,12 @@ public abstract class ARequirement extends RequirementObject implements IBeanCat
 		}
 	}
 	
-	public IBeanList<Requirement> getChildren() {
+	public IBeanList<RequirementObject> getChildren() {
 		safeAccessChildren();
 		return children;
 	}
 	
-	private IBeanList<BeanPropertyComposed<Requirement>> childrenBean = new TypeSafeComposedPropertyBeanList<>();
+	private IBeanList<BeanPropertyComposed<RequirementObject>> childrenBean = new TypeSafeComposedPropertyBeanList<>();
 	
 	private void safeAccessChildrenBean() {
 		if (childrenBean.getArrayInstance() == null) {
@@ -316,7 +316,7 @@ public abstract class ARequirement extends RequirementObject implements IBeanCat
 	}
 	
 	@XmlElement
-	public IBeanList<BeanPropertyComposed<Requirement>> getChildrenBean() {
+	public IBeanList<BeanPropertyComposed<RequirementObject>> getChildrenBean() {
 		safeAccessChildrenBean();
 		return childrenBean;
 	}
