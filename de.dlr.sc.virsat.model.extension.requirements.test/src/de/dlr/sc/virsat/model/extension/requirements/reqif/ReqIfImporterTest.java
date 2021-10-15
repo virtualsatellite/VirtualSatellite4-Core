@@ -17,6 +17,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -70,10 +71,15 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 	
 	private static final String TREE_NAME = "ConfigurationTree";
 	private static final String TREE_CHILD_NAME = "ElementConfiguration";
+	private static final String REQUIREMENT_NAME = "TestRequirement";
 	
 	private static final String SPEC_1_NAME = "FirstSpec";
 	private static final String SPEC_2_NAME = "SecondSpec";
 	private static final String SPEC_3_NAME = "ThirdSpec";
+	
+	private static final String TYPE_1_NAME = "System Requirement";
+	private static final String TYPE_2_NAME = "Heading";
+	private static final String TYPE_3_NAME = "Hardware Requirement";
 	
 	private Resource reqIfModel;
 	private IFile reqIfModelFile;
@@ -153,7 +159,7 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 	@Test
 	public void testPersistSpecificationMapping() {
 		importerUnderTest.init(reqIFContent, rcc);
-		Command importCmd = importerUnderTest.persistSpecificationMapping(editingDomain, getBasicSpecMapping(), reqIFContent, rcc);
+		Command importCmd = importerUnderTest.persistSpecificationMapping(editingDomain, getBasicSpecMapping(), reqIFContent, new ArrayList<String>(), rcc);
 		editingDomain.getCommandStack().execute(importCmd);
 		
 		// Check that new specifications have been created
@@ -211,7 +217,7 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 		}
 
 		// Prepare import
-		editingDomain.getCommandStack().execute(importerUnderTest.persistSpecificationMapping(editingDomain, map, reqIfFileContent, rcc));
+		editingDomain.getCommandStack().execute(importerUnderTest.persistSpecificationMapping(editingDomain, map, reqIfFileContent, getRequirementTypeList(), rcc));
 		editingDomain.getCommandStack().execute(importerUnderTest.persistRequirementTypeContainer(editingDomain, null));
 		editingDomain.getCommandStack().execute(importerUnderTest.importRequirementTypes(editingDomain, reqIfFileContent));
 		
@@ -233,7 +239,7 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 				.filter((child) -> child instanceof Requirement)
 				.collect(Collectors.toList())
 				.get(0);
-		assertEquals("Should be Requirement Prefix + its ID", Requirement.REQUIREMENT_NAME_PREFIX + SYSTEM_REQUIREMENT_ID, firstRequirement.getName());
+		assertEquals("Should be Requirement Prefix + its ID + name", Requirement.REQUIREMENT_NAME_PREFIX + SYSTEM_REQUIREMENT_ID + REQUIREMENT_NAME, firstRequirement.getName());
 		assertEquals(SYSTEM_REQUIREMENT_TEXT, getRequirementValue(firstRequirement, TEXT_ATTRIBUTE_NAME));
 		assertEquals(SYSTEM_REQUIREMENT_ID, getRequirementValue(firstRequirement, ID_ATTRIBUTE_NAME));
 		assertEquals(SYSTEM_REQUIREMENT_PRIORITY, getRequirementValue(firstRequirement, PRIORITY_ATTRIBUTE_NAME));
@@ -269,7 +275,7 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 		}
 
 		// Prepare import
-		editingDomain.getCommandStack().execute(importerUnderTest.persistSpecificationMapping(editingDomain, map, reqIfFileContent, rcc));
+		editingDomain.getCommandStack().execute(importerUnderTest.persistSpecificationMapping(editingDomain, map, reqIfFileContent, getRequirementTypeList(), rcc));
 		editingDomain.getCommandStack().execute(importerUnderTest.persistRequirementTypeContainer(editingDomain, null));
 		editingDomain.getCommandStack().execute(importerUnderTest.importRequirementTypes(editingDomain, reqIfFileContent));
 		
@@ -338,7 +344,7 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 		}
 
 		// Do first import
-		editingDomain.getCommandStack().execute(importerUnderTest.persistSpecificationMapping(editingDomain, map, reqIfFileContent, rcc));
+		editingDomain.getCommandStack().execute(importerUnderTest.persistSpecificationMapping(editingDomain, map, reqIfFileContent, getRequirementTypeList(), rcc));
 		editingDomain.getCommandStack().execute(importerUnderTest.persistRequirementTypeContainer(editingDomain, null));
 		editingDomain.getCommandStack().execute(importerUnderTest.importRequirementTypes(editingDomain, reqIfFileContent));
 		editingDomain.getCommandStack().execute(importerUnderTest.importRequirements(editingDomain, reqIfFileContent));
@@ -379,7 +385,7 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 		}
 
 		// Do import
-		editingDomain.getCommandStack().execute(importerUnderTest.persistSpecificationMapping(editingDomain, map, reqIfFileContent, rcc));
+		editingDomain.getCommandStack().execute(importerUnderTest.persistSpecificationMapping(editingDomain, map, reqIfFileContent, getRequirementTypeList(), rcc));
 		editingDomain.getCommandStack().execute(importerUnderTest.persistRequirementTypeContainer(editingDomain, null));
 		editingDomain.getCommandStack().execute(importerUnderTest.importRequirementTypes(editingDomain, reqIfFileContent));
 		editingDomain.getCommandStack().execute(importerUnderTest.importRequirements(editingDomain, reqIfFileContent));
@@ -402,7 +408,7 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 				.filter((child) -> child instanceof Requirement)
 				.collect(Collectors.toList())
 				.get(0);
-		assertEquals("Should be Requirement Prefix + its ID", Requirement.REQUIREMENT_NAME_PREFIX + SYSTEM_REQUIREMENT_ID, firstRequirement.getName());
+		assertEquals("Should be Requirement Prefix + its ID + name", Requirement.REQUIREMENT_NAME_PREFIX + SYSTEM_REQUIREMENT_ID + REQUIREMENT_NAME, firstRequirement.getName());
 		assertEquals(SYSTEM_REQUIREMENT_TEXT, getRequirementValue(firstRequirement, TEXT_ATTRIBUTE_NAME));
 		assertEquals(SYSTEM_REQUIREMENT_ID, getRequirementValue(firstRequirement, ID_ATTRIBUTE_NAME));
 		assertEquals(SYSTEM_REQUIREMENT_PRIORITY, getRequirementValue(firstRequirement, PRIORITY_ATTRIBUTE_NAME));
@@ -439,7 +445,7 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 		}
 
 		// Do import
-		editingDomain.getCommandStack().execute(importerUnderTest.persistSpecificationMapping(editingDomain, map, reqIfFileContent, rcc));
+		editingDomain.getCommandStack().execute(importerUnderTest.persistSpecificationMapping(editingDomain, map, reqIfFileContent, getRequirementTypeList(), rcc));
 		editingDomain.getCommandStack().execute(importerUnderTest.persistRequirementTypeContainer(editingDomain, null));
 		editingDomain.getCommandStack().execute(importerUnderTest.importRequirementTypes(editingDomain, reqIfFileContent));
 		editingDomain.getCommandStack().execute(importerUnderTest.importRequirements(editingDomain, reqIfFileContent));
@@ -460,7 +466,7 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 				.filter((child) -> child instanceof Requirement)
 				.collect(Collectors.toList())
 				.get(0);
-		assertEquals("Should be Requirement Prefix + its ID", Requirement.REQUIREMENT_NAME_PREFIX + SYSTEM_REQUIREMENT_ID, firstRequirement.getName());
+		assertEquals("Should be Requirement Prefix + its ID + name", Requirement.REQUIREMENT_NAME_PREFIX + SYSTEM_REQUIREMENT_ID + REQUIREMENT_NAME, firstRequirement.getName());
 		assertEquals(SYSTEM_REQUIREMENT_TEXT, getRequirementValue(firstRequirement, TEXT_ATTRIBUTE_NAME));
 		assertEquals(SYSTEM_REQUIREMENT_ID, getRequirementValue(firstRequirement, ID_ATTRIBUTE_NAME));
 		assertEquals(SYSTEM_REQUIREMENT_PRIORITY, getRequirementValue(firstRequirement, PRIORITY_ATTRIBUTE_NAME));
@@ -517,6 +523,14 @@ public class ReqIfImporterTest extends AConceptProjectTestCase {
 			}
 		}
 		return null;
+	}
+	
+	protected List<String> getRequirementTypeList() {
+		List<String> typeList = new ArrayList<String>();
+		typeList.add(TYPE_1_NAME);
+		typeList.add(TYPE_2_NAME);
+		typeList.add(TYPE_3_NAME);
+		return typeList;
 	}
 	
 	/**

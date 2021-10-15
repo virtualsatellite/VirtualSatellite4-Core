@@ -102,11 +102,18 @@ public  class Requirement extends ARequirement {
 	protected String getNameFromAttributes() {
 		StringBuilder newReqName = new StringBuilder();
 		newReqName.append(REQUIREMENT_NAME_PREFIX);
+		newReqName.append(getIdentifier());
+		return new RequirementHelper().cleanEntityName(newReqName.toString());
+	}
+	
+	@Override
+	public String getIdentifier() {
+		StringBuilder newReqName = new StringBuilder();
 		for (AttributeValue child : getElements()) {
 			if (child.getAttType().getType().equals(RequirementAttribute.TYPE_Identifier_NAME)) {
 				newReqName.append(child.getValue());
 			}
 		}
-		return new RequirementHelper().cleanEntityName(newReqName.toString());
+		return newReqName.toString();
 	}
 }

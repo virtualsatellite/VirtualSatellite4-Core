@@ -150,12 +150,12 @@ public class ReqIfUtils {
 	 * @return the existing requirement object or null
 	 */
 	protected RequirementObject findExisting(IBeanList<RequirementObject> reqList, SpecHierarchy hierarchyObject) {
-		String requirementName = Requirement.REQUIREMENT_NAME_PREFIX + getReqIFRequirementIdentifier(hierarchyObject);
+		String requirementIdentifier = getReqIFRequirementIdentifier(hierarchyObject);
 		String groupName = getReqIFRequirementName(hierarchyObject);
-		for (RequirementObject namedElement : reqList) {
-			if (namedElement.getName().equals(requirementName) 
-					|| namedElement.getName().equals(groupName)) {
-				return namedElement;
+		for (RequirementObject requirementObject : reqList) {
+			if (requirementObject.getIdentifier().equals(requirementIdentifier) 
+					|| requirementObject.getIdentifier().equals(groupName)) {
+				return requirementObject;
 			}
 		}
 		return null;

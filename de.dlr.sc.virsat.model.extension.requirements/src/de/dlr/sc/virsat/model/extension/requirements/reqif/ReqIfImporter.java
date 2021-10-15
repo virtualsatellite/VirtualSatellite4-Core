@@ -89,7 +89,7 @@ public class ReqIfImporter {
 	protected Concept concept = null;
 	protected ReqIF reqIfContent;
 	protected List<INativeRequirementAttributeMapping> mappingImpls = new ArrayList<INativeRequirementAttributeMapping>();
-	protected boolean groupSupport = false;
+	protected boolean groupSupport = true;
 	protected static final int MAX_LENGTH_NAME_DESCRIPTION = 50;
 	
 
@@ -417,8 +417,8 @@ public class ReqIfImporter {
 				Activator.getDefault().getLog().info("Could not resolve relateion target / source reference");
 				return;
 			}
-			String sourceReqName = Requirement.REQUIREMENT_NAME_PREFIX + reqIfUtils.getReqIFRequirementIdentifier(source);
-			String targetReqName = Requirement.REQUIREMENT_NAME_PREFIX + reqIfUtils.getReqIFRequirementIdentifier(target);
+			String sourceReqIdentifier = reqIfUtils.getReqIFRequirementIdentifier(source);
+			String targetReqIdentifier =  reqIfUtils.getReqIFRequirementIdentifier(target);
 			String linkName = Requirement.REQUIREMENT_NAME_PREFIX + reqIfUtils.getReqIFRequirementIdentifier(relation.getSource()) 
 					+ relation.getType().getLongName() 
 					+ Requirement.REQUIREMENT_NAME_PREFIX + reqIfUtils.getReqIFRequirementIdentifier(relation.getTarget());
@@ -428,8 +428,8 @@ public class ReqIfImporter {
 			Requirement localTargetRequirement = null;
 			for (SpecificationMapping mappedSpec : importConfiguration.getMappedSpecifications()) {
 				RequirementsSpecification spec = mappedSpec.getSpecification();
-				Requirement localSourceRequirementTmp = reqHelper.findRequirement(spec.getRequirements(), sourceReqName, true);
-				Requirement localTargetRequirementTmp = reqHelper.findRequirement(spec.getRequirements(), targetReqName, true);
+				Requirement localSourceRequirementTmp = reqHelper.findRequirement(spec.getRequirements(), sourceReqIdentifier, true);
+				Requirement localTargetRequirementTmp = reqHelper.findRequirement(spec.getRequirements(), targetReqIdentifier, true);
 				if (localSourceRequirementTmp != null) {
 					localSourceRequirement = localSourceRequirementTmp;
 					containerSpec = spec;
