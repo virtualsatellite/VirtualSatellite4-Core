@@ -90,7 +90,6 @@ public class ReqIfImporter {
 	protected ReqIF reqIfContent;
 	protected List<INativeRequirementAttributeMapping> mappingImpls = new ArrayList<INativeRequirementAttributeMapping>();
 	protected boolean groupSupport = true;
-	protected static final int MAX_LENGTH_NAME_DESCRIPTION = 50;
 	
 
 	/**
@@ -172,7 +171,7 @@ public class ReqIfImporter {
 					Requirement newReq = createRequirementBase(rootChild.getObject().getType());
 					if (newReq.getReqType() != null) {
 						createSpecHierarchyRequirement(newReq, rootChild);
-						updateRequirementName(newReq, rootChild);
+						reqIfUtils.updateRequirementNameFromReqIF(newReq, rootChild);
 						cc.append(reqList.add(editingDomain, newReq));
 					}
 				} else {
@@ -205,7 +204,7 @@ public class ReqIfImporter {
 				Requirement newRequirement = createRequirementBase(spec.getObject().getType());
 				if (newRequirement.getReqType() != null) {
 					createSpecHierarchyRequirement(newRequirement, spec);
-					updateRequirementName(newRequirement, spec);
+					reqIfUtils.updateRequirementNameFromReqIF(newRequirement, spec);
 					reqGroup.getChildren().add(newRequirement);
 				}
 			} else {
@@ -248,7 +247,7 @@ public class ReqIfImporter {
 				Requirement newRequirement = createRequirementBase(spec.getObject().getType());
 				if (newRequirement.getReqType() != null) {
 					createSpecHierarchyRequirement(newRequirement, spec);
-					updateRequirementName(newRequirement, spec);
+					reqIfUtils.updateRequirementNameFromReqIF(newRequirement, spec);
 					conceptRequirement.getChildren().add(newRequirement);
 				}
 			}
@@ -647,20 +646,6 @@ public class ReqIfImporter {
 			}
 		}
 		return false;
-	}
-	
-	/**
-	 * Update name of requirement element (must not be persisted yet)
-	 * @param requirement the requirement to be updated
-	 * @param spec the ReqIF spec of the requirement
-	 */
-	protected void updateRequirementName(Requirement requirement, SpecHierarchy spec) {
-		String description = reqIfUtils.getReqIFRequirementName(spec);
-		if (description.length() < MAX_LENGTH_NAME_DESCRIPTION) {
-			requirement.updateNameFromAttributes(description);
-		} else {
-			requirement.updateNameFromAttributes();
-		}
 	}
 
 }

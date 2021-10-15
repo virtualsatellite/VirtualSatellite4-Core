@@ -284,6 +284,24 @@ public class ReqIfUtilsTest extends AConceptProjectTestCase {
 	}
 	
 	@Test
+	public void testUpdateRequirementNameFromReqIF() throws IOException {
+		SpecObject specObject = ReqIF10Factory.eINSTANCE.createSpecObject();
+		SpecHierarchy hierarchyObject = ReqIF10Factory.eINSTANCE.createSpecHierarchy();
+		hierarchyObject.setObject(specObject);
+		hierarchyObject = createBasicReqIfRequirement(TEST_DEFAULT_ATTRIBUTE_VALUE, TEST_ID_ATTRIBUTE_VALUE);
+		setReqIFName(hierarchyObject, TEST_REQUIREMENT_NAME);
+		
+		Requirement req = createBasicLocalRequirement("", TEST_ID_ATTRIBUTE_VALUE);
+		reqIfUtils.updateRequirementNameFromReqIF(req, hierarchyObject);
+		
+		
+		assertEquals("Name should be as set as a combination of ID and description", req.getName(), 
+				Requirement.REQUIREMENT_NAME_PREFIX
+				+ TEST_ID_ATTRIBUTE_VALUE
+				+ TEST_REQUIREMENT_NAME);
+	}
+	
+	@Test
 	public void testCleanAttName() {
 		String crazyAttributeName = " .. \\ " + System.lineSeparator() + TEST_DEFAULT_ATTRIBUTE_NAME + " .. / ";
 		

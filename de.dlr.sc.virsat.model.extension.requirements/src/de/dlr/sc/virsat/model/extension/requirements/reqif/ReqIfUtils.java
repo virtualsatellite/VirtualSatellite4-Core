@@ -43,6 +43,7 @@ public class ReqIfUtils {
 	public static final String XHTML_PARSER_ERROR = "Could not parse XHTML!";
 	public static final String DUPLICATE_NATIVE_ATTRIBUTE_MAPPING = "Duplicate implementation for native attribute mapping defined! For attribute: ";
 	public static final String REQIF_NAME_ATTRIBUTE_NAME = "ReqIF.Name";
+	protected static final int MAX_LENGTH_NAME_DESCRIPTION = 50;
 	
 	protected List<INativeRequirementAttributeMapping> mappingImpls;
 	
@@ -241,6 +242,20 @@ public class ReqIfUtils {
 	 */
 	protected String getReqIFRequirementName(SpecHierarchy hierarchyObject) {
 		return getReqIFRequirementName(hierarchyObject.getObject());
+	}
+	
+	/**
+	 * Update name of requirement element (must not be persisted yet)
+	 * @param requirement the requirement to be updated
+	 * @param spec the ReqIF spec of the requirement
+	 */
+	protected void updateRequirementNameFromReqIF(Requirement requirement, SpecHierarchy spec) {
+		String description = getReqIFRequirementName(spec);
+		if (description.length() < MAX_LENGTH_NAME_DESCRIPTION) {
+			requirement.updateNameFromAttributes(description);
+		} else {
+			requirement.updateNameFromAttributes();
+		}
 	}
 	
 	/**
