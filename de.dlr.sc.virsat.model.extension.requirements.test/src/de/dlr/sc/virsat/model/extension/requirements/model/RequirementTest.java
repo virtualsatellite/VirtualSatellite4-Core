@@ -115,5 +115,54 @@ public class RequirementTest extends AConceptProjectTestCase {
 		command.execute();
 		assertEquals(testRequirement.getName(), Requirement.REQUIREMENT_NAME_PREFIX + IDENTIFIER_ATTRIBUTE_VALUE);
 	}
+	
+	@Test
+	public void testGetIdentifier() {
+		Requirement testRequirement = new Requirement(concept);
+		
+		AttributeValue attValue1 = new AttributeValue(concept);
+		RequirementAttribute attDefinition1 = new RequirementAttribute(concept);
+		attDefinition1.setType(RequirementAttribute.TYPE_Identifier_NAME);
+		attValue1.setAttType(attDefinition1);
+		attValue1.setValue(IDENTIFIER_ATTRIBUTE_VALUE);
+		testRequirement.getElements().add(attValue1);
+		
+		AttributeValue attValue2 = new AttributeValue(concept);
+		RequirementAttribute attDefinition2 = new RequirementAttribute(concept);
+		attDefinition2.setType(RequirementAttribute.TYPE_String_NAME);
+		attValue2.setAttType(attDefinition2);
+		attValue2.setValue(STRING_ATTRIBUTE_VALUE);
+		testRequirement.getElements().add(attValue2);
+		
+		assertEquals(testRequirement.getIdentifier(), IDENTIFIER_ATTRIBUTE_VALUE);
+	}
+	
+	@Test
+	public void testGetIdentifierMultipleIdentifierAttributes() {
+		Requirement testRequirement = new Requirement(concept);
+		
+		AttributeValue attValue1 = new AttributeValue(concept);
+		RequirementAttribute attDefinition1 = new RequirementAttribute(concept);
+		attDefinition1.setType(RequirementAttribute.TYPE_Identifier_NAME);
+		attValue1.setAttType(attDefinition1);
+		attValue1.setValue(IDENTIFIER_ATTRIBUTE_VALUE);
+		testRequirement.getElements().add(attValue1);
+		
+		AttributeValue attValue2 = new AttributeValue(concept);
+		RequirementAttribute attDefinition2 = new RequirementAttribute(concept);
+		attDefinition2.setType(RequirementAttribute.TYPE_Identifier_NAME);
+		attValue2.setAttType(attDefinition2);
+		attValue2.setValue(IDENTIFIER_ATTRIBUTE_VALUE);
+		testRequirement.getElements().add(attValue2);
+		
+		AttributeValue attValue3 = new AttributeValue(concept);
+		RequirementAttribute attDefinition3 = new RequirementAttribute(concept);
+		attDefinition3.setType(RequirementAttribute.TYPE_String_NAME);
+		attValue3.setAttType(attDefinition3);
+		attValue3.setValue(STRING_ATTRIBUTE_VALUE);
+		testRequirement.getElements().add(attValue3);
+		
+		assertEquals(testRequirement.getIdentifier(), IDENTIFIER_ATTRIBUTE_VALUE + IDENTIFIER_ATTRIBUTE_VALUE);
+	}
 
 }
