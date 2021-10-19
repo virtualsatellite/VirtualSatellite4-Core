@@ -72,7 +72,7 @@ public class UiSnippetTableRequirementsViewRequirementsRequirement
 		Composite compositeButtons = toolkit.createComposite(sectionBody);
 		compositeButtons.setLayoutData(new GridData());
 		compositeButtons.setLayout(new FillLayout(SWT.HORIZONTAL));
-		createUpdateButton(toolkit, compositeButtons);
+		createUpdateButton(toolkit, editingDomain, compositeButtons);
 		createRemoveButton(toolkit, editingDomain, compositeButtons);
 		createEditorButton(toolkit, compositeButtons);
 		createExcelButton(toolkit, compositeButtons, columnViewer);
@@ -83,11 +83,12 @@ public class UiSnippetTableRequirementsViewRequirementsRequirement
 	 * @param toolkit  the toolkit to be used to create the button
 	 * @param compositeButtons  the composite in which the button should be placed
 	 */
-	protected void createUpdateButton(FormToolkit toolkit, Composite compositeButtons) {
+	protected void createUpdateButton(FormToolkit toolkit, EditingDomain editingDomain, Composite compositeButtons) {
 		Button buttonUpdate = toolkit.createButton(compositeButtons, BUTTON_UPDATE_TEXT, SWT.PUSH);
 		buttonUpdate.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				refreshTable(editingDomain);
 				setTableViewerInput();
 			}
 
