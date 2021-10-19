@@ -19,6 +19,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import junit.framework.JUnit4TestAdapter;
 
+import de.dlr.sc.virsat.model.extension.requirements.migrator.Migrator0v6Test;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementGroupTest;
 import de.dlr.sc.virsat.model.extension.requirements.migrator.Migrator0v1Test;
 import de.dlr.sc.virsat.model.extension.requirements.model.VerificationTypeTest;
@@ -75,6 +76,7 @@ import de.dlr.sc.virsat.model.extension.requirements.model.RequirementLinkTypeTe
 	Migrator0v3Test.class,
 	Migrator0v4Test.class,
 	Migrator0v5Test.class,
+	Migrator0v6Test.class,
 	RequirementsValidatorTest.class,
 				})
 
