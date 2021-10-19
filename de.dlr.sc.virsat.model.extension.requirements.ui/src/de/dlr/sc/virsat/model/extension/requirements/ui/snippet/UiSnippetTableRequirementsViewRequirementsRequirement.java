@@ -30,6 +30,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.extension.requirements.model.IRequirementTreeElement;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsView;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
 
@@ -97,10 +98,28 @@ public class UiSnippetTableRequirementsViewRequirementsRequirement
 		
 		for (CategoryAssignment child : children) {
 			EObject container = child.eContainer();
-			if (container instanceof APropertyInstance) {
+			if (container instanceof APropertyInstance && isSelectedType(child)) {
 				set.add((APropertyInstance) container);
 			}
 		}
+	}
+	
+	/**
+	 * Check weather a requirement is filtered via type or not
+	 * @param req the requirement
+	 * @return true id requirement should be visible
+	 */
+	protected boolean isSelectedType(CategoryAssignment req) {
+		if (!getViewElement().getReqTypesToView().isEmpty()) {
+			Requirement requirement = new Requirement(req);
+			for (RequirementType type : getViewElement().getReqTypesToView()) {
+				if (requirement.getReqType().getName().equals(type.getName())) {
+					return true;
+				}
+			}
+			return false;	// Type not found in list
+		}
+		return true;		// No types specified, show all
 	}
 	
 	@Override
