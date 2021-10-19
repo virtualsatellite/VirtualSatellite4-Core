@@ -7,28 +7,16 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.requirements.migrator;
+package de.dlr.sc.virsat.model.extension.requirements.ui.handler;
 
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.concept.migrator.IMigrator;
-
-
-// *****************************************************************
-// * Class Declaration
-// *****************************************************************
 
 /**
  * Auto Generated Class inheriting from Generator Gap Class
  * 
  * This class is generated once, do your changes here
  * 
- * Extension for Requirement Specification
+ * 
  * 
  */
-public class Migrator0v6 extends AMigrator0v6 implements IMigrator {
-
-	@Override
-	public void migrate(Concept concept, IMigrator previousMigrator) {
-		super.migrate(concept, previousMigrator);
-	}
+public class AddIRequirementTreeElementHandler extends AAddIRequirementTreeElementHandler {
 }

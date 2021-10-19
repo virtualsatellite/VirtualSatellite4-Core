@@ -14,12 +14,23 @@ Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"
 		IsRootStructuralElement;
 	}
 
-	Category RequirementsSpecification {
+	Category IRequirementTreeElement {}
+
+	Category RequirementsSpecification extends IRequirementTreeElement {
 		Applicable For All;
 		
 		Resource exportFile;
 		Type requirements [] of Category RequirementObject;
 		Type links [] of Category RequirementLink;
+	}
+	
+	Category RequirementsView {
+		Applicable For All;
+		
+		Reference treeElementToView of Type IRequirementTreeElement description "Specifies from where requirements are shown, if non pointing to the element itself";
+		BooleanProperty showDeepChildren;
+		
+		Reference reqTypesToView[] of Type RequirementType;
 	}	
 	
 	Category RequirementsConfiguration {
@@ -34,7 +45,7 @@ Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"
 		Type verificationTypes [] of Category VerificationType;
 	}
 	
-	Category RequirementObject description "Interface for specification objects" {
+	Category RequirementObject extends IRequirementTreeElement description "Interface for specification objects" {
 		IsAbstract;
 	}
 	

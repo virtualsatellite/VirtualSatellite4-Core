@@ -18,8 +18,16 @@
 	</extension>
 	<extension point="de.dlr.sc.virsat.model.edit.ConceptTypeFactoryCaBeanRegistration">
 		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.requirements.IRequirementTreeElement"
+			caBean="de.dlr.sc.virsat.model.extension.requirements.model.IRequirementTreeElement">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
 			id="de.dlr.sc.virsat.model.extension.requirements.RequirementsSpecification"
 			caBean="de.dlr.sc.virsat.model.extension.requirements.model.RequirementsSpecification">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.requirements.RequirementsView"
+			caBean="de.dlr.sc.virsat.model.extension.requirements.model.RequirementsView">
 		</CategoryAssignmentBean>
 		<CategoryAssignmentBean
 			id="de.dlr.sc.virsat.model.extension.requirements.RequirementsConfiguration"
