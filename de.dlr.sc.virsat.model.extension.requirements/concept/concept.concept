@@ -49,7 +49,9 @@ Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"
 		Type verification[] of Category IVerification;
 		Type trace of Category RequirementTrace;
 		StringProperty descriptionText;
+		Type children [] of Category RequirementObject;
 	}
+	
 	
 	Category RequirementLink {
 		Reference type of Type RequirementLinkType;
@@ -82,8 +84,10 @@ Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"
 	
 	Category ImportConfiguration description "Mapping specification of imported requirements" {
 		Applicable For [ RequirementsConfigurationCollection];
+		StringProperty selectedTypeKeys[] description "List of requirement types to be imported, using ReqIF identifiers";
 		Reference typeDefinitionsContainer of Type RequirementsConfiguration;
 		Type mappedSpecifications[] of Category SpecificationMapping;
+		BooleanProperty groupSupport description "If true using RequirementGroups for requirement objects with children";
 	}
 	
 	Category SpecificationMapping {

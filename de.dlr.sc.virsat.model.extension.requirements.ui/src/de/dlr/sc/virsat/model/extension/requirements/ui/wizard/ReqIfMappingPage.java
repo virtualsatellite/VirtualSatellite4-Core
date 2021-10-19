@@ -21,11 +21,13 @@ import org.eclipse.rmf.reqif10.impl.ReqIFImpl;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.TableEditor;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
@@ -34,47 +36,44 @@ import org.eclipse.swt.widgets.TableItem;
 
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfiguration;
-import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollection;
 
 /**
  * A wizard page to review the requirement type which is used for imports
  *
  */
-public class ReqIfMappingPage extends WizardPage implements SelectionListener {
+public class ReqIfMappingPage extends WizardPage implements SelectionListener, ModifyListener {
 
 	private static final String PAGE_TITLE = "ReqIF Mapping";
+	private static final String DESCRIPTION_LABEL = "Check the specification elements to import and their container element in the system model.";
+	private static final String GROUP_SUPPORT_LABEL = "Import ReqIF objects with children as RequirementGroup (otherwise also imported as Requirement):";
 	
 	private static final String COLUMN_SPECIFICATION_LABEL = "Specification";
 	private static final String COLUMN_CONTAINER_LABEL = "Container";
 	
 
-	private static final int COMBO_TYPE_WIDTH = 500;
-
 	private static final int COLUMN_SPECIFICATION_WIDTH = 300;
 	private static final int COLUMN_CONTAINER_WIDTH = 300;
 
-	private static final String TYPE_CONTAINER_LABEL = "Requirement Type Container:";
-	private static final String TYPE_CONTAINER_DEFAULT_TEXT = "Create New Container";
 
 	private static final int SPEC_COLUMN_INDEX = 1;
 
 	private Table table;
 	private List<TableItem> tableItems = new ArrayList<TableItem>();
 	private List<CCombo> editors = new ArrayList<CCombo>();
-	
-	private Combo combo;
+	private Button checkBox;
 	
 	private ReqIFImpl reqIfContent;
 
 	private Repository repository;
+	private ReqIfTypeSelectionPage typeSelectionPage;
 	/**
 	 * Constructor
 	 */
-	protected ReqIfMappingPage() {
+	protected ReqIfMappingPage(ReqIfTypeSelectionPage typeSelectionPage) {
 		super(PAGE_TITLE);
 		setTitle(PAGE_TITLE);
-		setDescription("Check the specification elements to import and their container element in the system model.");
+		setDescription(DESCRIPTION_LABEL);
+		this.typeSelectionPage = typeSelectionPage;
 	}
 
 
@@ -86,20 +85,16 @@ public class ReqIfMappingPage extends WizardPage implements SelectionListener {
 		content.setLayoutData(new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL | GridData.GRAB_HORIZONTAL));
 		setControl(content);
 		
-		Composite typeNameComposite = new Composite(content, SWT.NONE);
-		typeNameComposite.setLayout(new GridLayout(2, false));
+		Composite groupSupportComposite = new Composite(content, SWT.NONE);
+		groupSupportComposite.setLayout(new GridLayout(2, false));
 		GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
-		typeNameComposite.setLayoutData(data);
+		groupSupportComposite.setLayoutData(data);
 
-		Label label = new Label(typeNameComposite, SWT.NONE);
-		label.setText(TYPE_CONTAINER_LABEL);
+		Label label = new Label(groupSupportComposite, SWT.NONE);
+		label.setText(GROUP_SUPPORT_LABEL);
 		
-		combo = new Combo(typeNameComposite, SWT.NONE);
-		GridData comboData = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
-		comboData.horizontalAlignment = SWT.END;
-		comboData.minimumWidth = COMBO_TYPE_WIDTH;
-		combo.setLayoutData(comboData);
-		combo.setText(TYPE_CONTAINER_DEFAULT_TEXT);
+		checkBox = new Button(groupSupportComposite, SWT.CHECK);
+		checkBox.setSelection(true);
 
 		table = new Table(content, SWT.CHECK | SWT.BORDER | SWT.H_SCROLL);
 		table.setLayout(new GridLayout());
@@ -146,14 +141,7 @@ public class ReqIfMappingPage extends WizardPage implements SelectionListener {
 			}
 			createDropDownEditor(item, containerNamerList);
 		}
-		for (StructuralElementInstance rootSei : projectRepo.getRootEntities()) {
-			if (rootSei.getType().getFullQualifiedName().equals(RequirementsConfigurationCollection.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME)) {
-				RequirementsConfigurationCollection rcc = new RequirementsConfigurationCollection(rootSei);
-				for (RequirementsConfiguration config : rcc.getAll(RequirementsConfiguration.class)) {
-					combo.add(config.getATypeInstance().getFullQualifiedInstanceName());
-				}
-			}
-		}
+		
 		// Clean up old unused editors
 		for (int i = specList.size(); i < tableItems.size(); i++) {
 			TableItem item = tableItems.get(i);
@@ -163,6 +151,8 @@ public class ReqIfMappingPage extends WizardPage implements SelectionListener {
 			tableItems.remove(item);
 			editors.remove(editor);
 		}
+		typeSelectionPage.setInput(reqIFImpl, projectRepo);
+		updateCompleteState();
 	}
 
 	/**
@@ -190,16 +180,26 @@ public class ReqIfMappingPage extends WizardPage implements SelectionListener {
 		final TableEditor editor = new TableEditor(table);
 		editor.grabHorizontal = true;
 		editor.setEditor(typeDropdown, item, SPEC_COLUMN_INDEX);
+		typeDropdown.addModifyListener(this);
 	}
 	
-	@Override
-	public boolean isPageComplete() {
+	/**
+	 * Update complete status of this page
+	 */
+	public void updateCompleteState() {
+		boolean allCheckedFilled = true;
+		boolean oneChecked = false;
+		String editorText;
 		for (TableItem item : tableItems) {
-			if (item.getChecked() && item.getText(1).equals("")) {
-				return false;
+			if (item.getChecked()) {
+				oneChecked = true;
+				editorText = editors.get(tableItems.indexOf(item)).getText();
+				if (editorText.equals("")) {
+					allCheckedFilled = false;
+				}
 			}
 		}
-		return isCurrentPage();
+		super.setPageComplete(allCheckedFilled && oneChecked);
 	}
 	
 	
@@ -222,6 +222,7 @@ public class ReqIfMappingPage extends WizardPage implements SelectionListener {
 			CCombo editor = editors.get(tableItems.indexOf(item));
 			editor.setEditable(item.getChecked());
 		}
+		updateCompleteState();
 	}
 
 	@Override
@@ -265,22 +266,8 @@ public class ReqIfMappingPage extends WizardPage implements SelectionListener {
 		return mapSeiToSpec;
 	}
 	
-	/**
-	 * Get the selected requirements type container or null if a new one should be created
-	 * @return the configuration element or null
-	 */
-	public RequirementsConfiguration getRequirementTypeContainer() {
-		for (StructuralElementInstance rootSei : repository.getRootEntities()) {
-			if (rootSei.getType().getFullQualifiedName().equals(RequirementsConfigurationCollection.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME)) {
-				RequirementsConfigurationCollection rcc = new RequirementsConfigurationCollection(rootSei);
-				for (RequirementsConfiguration config : rcc.getAll(RequirementsConfiguration.class)) {
-					if (config.getATypeInstance().getFullQualifiedInstanceName().equals(combo.getText())) {
-						return config;
-					}
-				}
-			}
-		}
-		return null;
+	public boolean getGroupSupport() {
+		return checkBox.getSelection();
 	}
 	
 	/**
@@ -288,6 +275,11 @@ public class ReqIfMappingPage extends WizardPage implements SelectionListener {
 	 */
 	public ReqIFImpl getReqIfContent() {
 		return reqIfContent;
+	}
+
+	@Override
+	public void modifyText(ModifyEvent e) {
+		updateCompleteState();
 	}
 
 }
