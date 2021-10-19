@@ -21,6 +21,14 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.forms.widgets.FormToolkit;
 
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
@@ -45,6 +53,8 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
 public class UiSnippetTableRequirementsViewRequirementsRequirement
 		extends UiSnippetCustomRequirementsAttributeTable implements IUiSnippet {
 	
+	private static final String BUTTON_UPDATE_TEXT = "Update Filters";
+	
 	/**
 	 * 
 	 */
@@ -56,17 +66,47 @@ public class UiSnippetTableRequirementsViewRequirementsRequirement
 			"de.dlr.sc.virsat.model.extension.requirements.Requirement",
 			STYLE_REMOVE_BUTTON | STYLE_EDITOR_BUTTON);
 	}
+
+	@Override
+	protected void createButtons(FormToolkit toolkit, EditingDomain editingDomain, Composite sectionBody) {
+		Composite compositeButtons = toolkit.createComposite(sectionBody);
+		compositeButtons.setLayoutData(new GridData());
+		compositeButtons.setLayout(new FillLayout(SWT.HORIZONTAL));
+		createUpdateButton(toolkit, compositeButtons);
+		createRemoveButton(toolkit, editingDomain, compositeButtons);
+		createEditorButton(toolkit, compositeButtons);
+		createExcelButton(toolkit, compositeButtons, columnViewer);
+	}
+	
+	/**
+	 * this method creates the button for adding the drill down functionality to the given table
+	 * @param toolkit  the toolkit to be used to create the button
+	 * @param compositeButtons  the composite in which the button should be placed
+	 */
+	protected void createUpdateButton(FormToolkit toolkit, Composite compositeButtons) {
+		Button buttonUpdate = toolkit.createButton(compositeButtons, BUTTON_UPDATE_TEXT, SWT.PUSH);
+		buttonUpdate.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				setTableViewerInput();
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				widgetSelected(e);
+			}
+		});
+	}
 	
 	@Override
 	protected Collection<APropertyInstance> getTableObjects() {
 		return getArrayInstances();
 	}
+
 	
 	@Override
 	protected void setTableViewerInput() {
-		if (model instanceof CategoryAssignment) {
-			columnViewer.setInput(getArrayInstances());
-		}
+		columnViewer.setInput(getArrayInstances());
 	}
 	
 	@Override
