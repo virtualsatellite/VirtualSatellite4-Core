@@ -23,10 +23,12 @@ import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
+import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.extension.requirements.model.IRequirementTreeElement;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsView;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
@@ -70,20 +72,35 @@ public class UiSnippetTableRequirementsViewRequirementsRequirement
 	protected List<APropertyInstance> getArrayInstances() {
 		Set<APropertyInstance> cummulatedResult = new HashSet<APropertyInstance>();
 		IBeanCategoryAssignment elementToView = getElementToView();
+		if (elementToView != null) {
+			addAllChildren(cummulatedResult, elementToView);
+		} else {
+			IBeanStructuralElementInstance seiBean = getViewElement().getParent();
+			for (IBeanCategoryAssignment rootElement : seiBean.getAll(IRequirementTreeElement.class)) {
+				addAllChildren(cummulatedResult, rootElement);
+			}
+		}
 		
+		return new ArrayList<APropertyInstance>(cummulatedResult);
+	}
+	
+	/**
+	 * Adds all child requirements of a CaBean to a given set
+	 * @param set the set
+	 * @param caBean the ca bean which is searched
+	 */
+	protected void addAllChildren(Set<APropertyInstance> set, IBeanCategoryAssignment caBean) {
 		List<CategoryAssignment> children = CategoryAssignmentHelper.getNestedCategoryAssignments(
-				(CategoryAssignment) elementToView.getTypeInstance(), 
+				(CategoryAssignment) caBean.getTypeInstance(), 
 				Requirement.FULL_QUALIFIED_CATEGORY_NAME,
 				getViewElement().getShowDeepChildren());
 		
 		for (CategoryAssignment child : children) {
 			EObject container = child.eContainer();
 			if (container instanceof APropertyInstance) {
-				cummulatedResult.add((APropertyInstance) container);
+				set.add((APropertyInstance) container);
 			}
 		}
-		
-		return new ArrayList<APropertyInstance>(cummulatedResult);
 	}
 	
 	@Override
@@ -97,9 +114,6 @@ public class UiSnippetTableRequirementsViewRequirementsRequirement
 	
 	protected IBeanCategoryAssignment getElementToView() {
 		IBeanCategoryAssignment treeElement = getViewElement().getTreeElementToView();
-		if (treeElement == null) {
-			treeElement = getViewElement();
-		}
 		return treeElement;
 	}
 	
