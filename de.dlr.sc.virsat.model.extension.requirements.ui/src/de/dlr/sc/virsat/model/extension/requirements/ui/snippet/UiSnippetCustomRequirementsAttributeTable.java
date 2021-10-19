@@ -42,7 +42,9 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition;
+import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ReferenceProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
@@ -50,6 +52,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedProperty
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.requirements.command.InitializeRequirementCommand;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
@@ -128,8 +131,7 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 		if (colStatus == null) {
 			colStatus = (TableViewerColumn) createDefaultColumn(COLUMN_TEXT_STATUS);
 
-			colStatus.setEditingSupport(createEditingSupport(editingDomain, categoryModel.getProperties()
-					.get(RequirementsAttributeLabelProvider.REQUIREMENT_STATUS_PROPERTY_NUMBER)));
+			colStatus.setEditingSupport(createEditingSupport(editingDomain, getActiveStatusProperty()));
 
 			colStatus.getColumn().setWidth(STATUS_COLUMN_WIDTH);
 			colStatus.getColumn().addControlListener(this);
@@ -151,17 +153,14 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 
 			colTracing.getColumn().setWidth(TRACE_COLUMN_WIDTH);
 			colTracing.getColumn().addControlListener(this);
-			colTracing.setEditingSupport(new RequirementTraceEditingSupport(editingDomain, columnViewer, categoryModel.getProperties()
-					.get(RequirementsAttributeLabelProvider.REQUIREMENT_TRACE_PROPERTY_NUMBER), toolkit));
+			colTracing.setEditingSupport(new RequirementTraceEditingSupport(editingDomain, columnViewer, getActiveTraceProperty(), toolkit));
 			attColumns.add(colTracing);
 		}
 
 		if (model instanceof CategoryAssignment) {
 
 			// Find all necessary requirement types
-			CategoryAssignmentHelper helper = new CategoryAssignmentHelper((CategoryAssignment) model);
-			ArrayInstance array = (ArrayInstance) helper.getPropertyInstance(arrayInstanceID);
-			List<APropertyInstance> arrayInstances = array.getArrayInstances();
+			List<APropertyInstance> arrayInstances = getArrayInstances();
 
 			// Some ugly casting is necessary here because beans cannot be used as the array
 			// property can be in different CAs
@@ -210,6 +209,12 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 			}
 		}
 		restoreColumnWitdh();
+	}
+	
+	protected List<APropertyInstance> getArrayInstances() {
+		CategoryAssignmentHelper helper = new CategoryAssignmentHelper((CategoryAssignment) model);
+		ArrayInstance array = (ArrayInstance) helper.getPropertyInstance(arrayInstanceID);
+		return array.getArrayInstances();
 	}
 	
 	@Override
@@ -422,6 +427,18 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	
 	@Override
 	public void controlMoved(ControlEvent e) {
+	}
+	
+	protected AProperty getActiveStatusProperty() {
+		Concept concept = ActiveConceptHelper.getConcept(categoryModel);
+		Category category = ActiveConceptHelper.getCategory(concept, Requirement.FULL_QUALIFIED_CATEGORY_NAME);
+		return ActiveConceptHelper.getProperty(category, Requirement.PROPERTY_STATUS);
+	}
+	
+	protected AProperty getActiveTraceProperty() {
+		Concept concept = ActiveConceptHelper.getConcept(categoryModel);
+		Category category = ActiveConceptHelper.getCategory(concept, Requirement.FULL_QUALIFIED_CATEGORY_NAME);
+		return ActiveConceptHelper.getProperty(category, Requirement.PROPERTY_TRACE);
 	}
 
 }

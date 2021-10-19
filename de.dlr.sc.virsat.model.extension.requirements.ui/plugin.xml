@@ -1263,6 +1263,11 @@
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section.ReqChildren"
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementChildrenRequirement">
 		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetTableRequirementsViewRequirementsRequirement"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementsViewRequirementsRequirement">
+		</uiSnippet>
 		</extension>
 <extension
          point="org.eclipse.ui.commands">
