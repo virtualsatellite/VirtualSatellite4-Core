@@ -12,7 +12,6 @@ package de.dlr.sc.virsat.model.dvlm.categories.util;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.not;
-import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
 
 import java.io.IOException;
 import java.util.List;
