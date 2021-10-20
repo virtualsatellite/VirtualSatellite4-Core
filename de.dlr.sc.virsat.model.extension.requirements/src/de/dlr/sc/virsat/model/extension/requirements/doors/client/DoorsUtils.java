@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.requirements.doors.client.util;
+package de.dlr.sc.virsat.model.extension.requirements.doors.client;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -16,9 +16,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
-
 import javax.ws.rs.client.ClientBuilder;
-
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.ssl.SSLContextBuilder;
@@ -27,39 +25,43 @@ import org.eclipse.lyo.client.OslcClient;
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
 
+import de.dlr.sc.virsat.model.extension.requirements.Activator;
+
 /**
  * Utility methods for Doors requirement handling
  *
  */
-public class DoorsUtil {
+public class DoorsUtils {
 
-	private DoorsUtil() {
-
+	protected String server;
+	protected String user;
+	protected String password;
+	
+	public DoorsUtils(String doorsServer, String doorsUser, String doorsPassword) {
+		this.server = doorsServer;
+		this.user = doorsUser;
+		this.password = doorsPassword;
 	}
 	
-	private static final String SERVER_NAME = "https://gk-sl0002.intra.dlr.de:9443/rm/";
-	
-	public static OslcClient getClient(String password, String login, String server) throws KeyManagementException, UnrecoverableKeyException, NoSuchAlgorithmException, KeyStoreException, MalformedURLException, CertificateException, IOException {
-		ClientBuilder clientBuilder = configureClientBuilder(password, login, server);
+	/**
+	 * Get OslcClient to communicate with Doors server
+	 * @return the client
+	 * @throws UnrecoverableKeyException
+	 * @throws MalformedURLException
+	 * @throws CertificateException
+	 * @throws IOException
+	 */
+	protected OslcClient getClient() throws UnrecoverableKeyException, MalformedURLException, CertificateException, IOException {
+		ClientBuilder clientBuilder = configureClientBuilder();
 		OslcClient client = new OslcClient(clientBuilder);
 		return client;
 	}
 	
 	/**
-	 * 
-	 * @return
-	 * @throws NoSuchAlgorithmException
-	 * @throws KeyStoreException
-	 * @throws KeyManagementException
-	 * @throws MalformedURLException
-	 * @throws IOException
-	 * @throws CertificateException
-	 * @throws UnrecoverableKeyException
+	 * Configure clientBuilder to authenticate to the Doors server
+	 * @return the clientBuilder
 	 */
-	private static ClientBuilder configureClientBuilder(String password, String login, String server)
-			throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException, MalformedURLException,
-			IOException, CertificateException, UnrecoverableKeyException {
-
+	protected ClientBuilder configureClientBuilder() {
 		ClientConfig clientConfig = new ClientConfig().connectorProvider(new ApacheConnectorProvider());
 		ClientBuilder clientBuilder = ClientBuilder.newBuilder();
 		clientBuilder.withConfig(clientConfig);
@@ -67,20 +69,17 @@ public class DoorsUtil {
 		// Setup SSL support to ignore self-assigned SSL certificates - for testing
 		// only!!
 		SSLContextBuilder sslContextBuilder = new SSLContextBuilder();
-		sslContextBuilder.loadTrustMaterial(TrustSelfSignedStrategy.INSTANCE);
-		clientBuilder.sslContext(sslContextBuilder.build());
+		try {
+			sslContextBuilder.loadTrustMaterial(TrustSelfSignedStrategy.INSTANCE);
+			clientBuilder.sslContext(sslContextBuilder.build());
+		} catch (NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
+			Activator.getDefault().getLog().error(e.getMessage());
+		}
 		clientBuilder.hostnameVerifier(NoopHostnameVerifier.INSTANCE);
 
 		// Authenticate
-//		String loginPasswordFile = "../../Requirements/client_virsat/DoorsLogin.txt";
-//		String login = Files.readAllLines(Paths.get(loginPasswordFile)).get(0);
-//		String password = Files.readAllLines(Paths.get(loginPasswordFile)).get(1);
-		JEEFormAuthenticator authenticator = new JEEFormAuthenticator(server, login, password);
+		JEEFormAuthenticator authenticator = new JEEFormAuthenticator(server, user, password);
 		clientBuilder.register(authenticator);
-
 		return clientBuilder;
 	}
-	
-	
-	
 }
