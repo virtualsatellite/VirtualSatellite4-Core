@@ -9,6 +9,13 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.ui.snippet;
 
+import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.jface.viewers.EditingSupport;
+
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ReferenceProperty;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementTrace;
+import de.dlr.sc.virsat.model.extension.requirements.ui.celleditor.RequirementTargetReferenceCellEditingSupport;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
 
 
@@ -21,4 +28,12 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
  * 
  */
 public class UiSnippetTableRequirementTraceTarget extends AUiSnippetTableRequirementTraceTarget implements IUiSnippet {
+	
+	@Override
+	protected EditingSupport createEditingSupport(EditingDomain editingDomain, AProperty property) {
+		if (property.getName().equals(RequirementTrace.PROPERTY_TARGET)) {
+			return new RequirementTargetReferenceCellEditingSupport(editingDomain, columnViewer, (ReferenceProperty) property);
+		}
+		return super.createEditingSupport(editingDomain, property);
+	}
 }
