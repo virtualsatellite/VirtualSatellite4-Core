@@ -1269,10 +1269,17 @@
       </category>
    <wizard
          category="de.dlr.virsat.global.category.import.virsat"
-         class="de.dlr.sc.virsat.model.extension.requirements.ui.wizard.DoorsImportWizard"
+         class="de.dlr.sc.virsat.model.extension.requirements.ui.wizard.DoorsAddSynchronizationWizard"
          icon="resources/icons/RequirementsSpecification.gif"
-         id="de.dlr.sc.virsat.model.extension.requirements.ui.wizard.doorsImport"
-         name="Requirements Doors Import Wizard">
+         id="de.dlr.sc.virsat.model.extension.requirements.ui.wizard.doorsAddSynchronizationWizard"
+         name="Requirements Add Doors Synchronizer Wizard">
+   </wizard>
+   <wizard
+         category="de.dlr.virsat.global.category.import.virsat"
+         class="de.dlr.sc.virsat.model.extension.requirements.ui.wizard.DoorsActivateSynchronizationWizard"
+         icon="resources/icons/RequirementsSpecification.gif"
+         id="de.dlr.sc.virsat.model.extension.requirements.ui.wizard.doorsActivateSynchronizationWizard"
+         name="Requirements Activate Doors Synchronizer Wizard">
    </wizard>
 	</extension>
 	   <extension point="org.eclipse.ui.editors">

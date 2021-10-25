@@ -15,7 +15,6 @@ import java.util.List;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
-import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -39,28 +38,20 @@ import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigura
 public class DoorsMappingPage extends WizardPage implements SelectionListener {
 
 	private static final String PAGE_TITLE = "Doors Mapping";
-	
 	private static final String COLUMN_SPECIFICATION_LABEL = "Specification";
 	private static final String COLUMN_CONTAINER_LABEL = "Container";
-	
-
 	private static final int COMBO_TYPE_WIDTH = 500;
-
 	private static final int COLUMN_SPECIFICATION_WIDTH = 300;
 	private static final int COLUMN_CONTAINER_WIDTH = 300;
-
 	private static final String TYPE_CONTAINER_LABEL = "Requirement Type Container:";
 	private static final String TYPE_CONTAINER_DEFAULT_TEXT = "Create New Container";
-
-	private static final int SPEC_COLUMN_INDEX = 1;
 
 	private Table table;
 	private List<TableItem> tableItems = new ArrayList<TableItem>();
 	private List<CCombo> editors = new ArrayList<CCombo>();
-	
 	private Combo combo;
-	
 	private Repository repository;
+
 	/**
 	 * Constructor
 	 */
@@ -70,10 +61,8 @@ public class DoorsMappingPage extends WizardPage implements SelectionListener {
 		setDescription("Check the specification elements to import and their container element in the system model.");
 	}
 
-
 	@Override
 	public void createControl(Composite parent) {
-
 		Composite content = new Composite(parent, SWT.NONE);
 		content.setLayout(new GridLayout());
 		content.setLayoutData(new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL | GridData.GRAB_HORIZONTAL));
@@ -107,34 +96,6 @@ public class DoorsMappingPage extends WizardPage implements SelectionListener {
 		TableColumn columnContainer = new TableColumn(table, SWT.NONE | SWT.DROP_DOWN);
 		columnContainer.setText(COLUMN_CONTAINER_LABEL);
 		columnContainer.setWidth(COLUMN_CONTAINER_WIDTH);
-
-	}
-
-	/**
-	 * Method to create a drop down editor for the type column
-	 * 
-	 * @param item
-	 *            the item for which the editor should be created
-	 * @param options
-	 *            the input options
-	 */
-	private void createDropDownEditor(TableItem item, List<String> options) {
-		int index = tableItems.indexOf(item);
-		CCombo typeDropdown;
-		if (editors.size() > index) {
-			typeDropdown = editors.get(index);
-			typeDropdown.removeAll();
-		} else {
-			typeDropdown = new CCombo(table, SWT.NONE);
-			editors.add(typeDropdown);
-		}
-		typeDropdown.setText(item.getText(SPEC_COLUMN_INDEX));
-		for (String option : options) {
-			typeDropdown.add(option);
-		}
-		final TableEditor editor = new TableEditor(table);
-		editor.grabHorizontal = true;
-		editor.setEditor(typeDropdown, item, SPEC_COLUMN_INDEX);
 	}
 	
 	@Override
@@ -147,7 +108,6 @@ public class DoorsMappingPage extends WizardPage implements SelectionListener {
 		return isCurrentPage();
 	}
 	
-	
 	/**
 	 * Clean table items if they have been used already
 	 */
@@ -157,7 +117,6 @@ public class DoorsMappingPage extends WizardPage implements SelectionListener {
 			item.setText(1, "");
 			item.setChecked(false);
 		}
-		
 	}
 	
 	@Override
@@ -191,5 +150,4 @@ public class DoorsMappingPage extends WizardPage implements SelectionListener {
 		}
 		return null;
 	}
-	
 }
