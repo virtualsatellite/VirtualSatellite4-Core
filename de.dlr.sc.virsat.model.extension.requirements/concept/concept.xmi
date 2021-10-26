@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="ASCII"?>
-<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v8/c" xmlns:dvlm_cp="http://www.virsat.sc.dlr.de/dvlm/v8/cp" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppd" name="de.dlr.sc.virsat.model.extension.requirements" description="Extension for Requirement Specification" version="0.5" displayName="Requirements" beta="true">
+<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v8/c" xmlns:dvlm_cp="http://www.virsat.sc.dlr.de/dvlm/v8/cp" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppd" name="de.dlr.sc.virsat.model.extension.requirements" description="Extension for Requirement Specification" version="0.6" displayName="Requirements" beta="true">
   <imports importedNamespace="de.dlr.sc.virsat.model.ext.core.*"/>
-  <categories name="RequirementsSpecification" isApplicableForAll="true">
+  <categories name="IRequirementTreeElement">
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
+  <categories name="RequirementsSpecification" isApplicableForAll="true" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.IRequirementTreeElement">
     <properties xsi:type="dvlm_cppd:ResourceProperty" name="exportFile"/>
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="requirements" type="de.dlr.sc.virsat.model.extension.requirements.RequirementObject">
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
     </properties>
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="links" type="de.dlr.sc.virsat.model.extension.requirements.RequirementLink">
+      <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
+    </properties>
+  </categories>
+  <categories name="RequirementsView" isApplicableForAll="true">
+    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="treeElementToView" description="Specifies from where requirements are shown, if non pointing to the element itself" referenceType="de.dlr.sc.virsat.model.extension.requirements.IRequirementTreeElement"/>
+    <properties xsi:type="dvlm_cppd:BooleanProperty" name="showDeepChildren"/>
+    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="reqTypesToView" referenceType="de.dlr.sc.virsat.model.extension.requirements.RequirementType">
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
     </properties>
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
@@ -27,9 +37,7 @@
     </properties>
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
-  <categories name="RequirementObject" description="Interface for specification objects" isAbstract="true">
-    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
-  </categories>
+  <categories name="RequirementObject" description="Interface for specification objects" isAbstract="true" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.IRequirementTreeElement"/>
   <categories name="RequirementGroup" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.RequirementObject">
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="children" type="de.dlr.sc.virsat.model.extension.requirements.RequirementObject">
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
@@ -88,7 +96,7 @@
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="RequirementAttribute" description="Attribute definition for requirements">
-    <properties xsi:type="dvlm_cppd:EnumProperty" name="type" defaultValue="//@categories.11/@properties.0/@values.5">
+    <properties xsi:type="dvlm_cppd:EnumProperty" name="type" defaultValue="//@categories.13/@properties.0/@values.5">
       <values name="Boolean" value="0"/>
       <values name="Date" value="1"/>
       <values name="Enumeration" value="2"/>

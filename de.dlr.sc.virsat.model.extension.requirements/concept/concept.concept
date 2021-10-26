@@ -7,19 +7,30 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"  description "Extension for Requirement Specification" version 0.5 beta 
+Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"  description "Extension for Requirement Specification" version 0.6 beta 
 {
 
 	StructuralElement RequirementsConfigurationCollection description "Storage for configuration elements of requirements" {
 		IsRootStructuralElement;
 	}
 
-	Category RequirementsSpecification {
+	Category IRequirementTreeElement {}
+
+	Category RequirementsSpecification extends IRequirementTreeElement {
 		Applicable For All;
 		
 		Resource exportFile;
 		Type requirements [] of Category RequirementObject;
 		Type links [] of Category RequirementLink;
+	}
+	
+	Category RequirementsView {
+		Applicable For All;
+		
+		Reference treeElementToView of Type IRequirementTreeElement description "Specifies from where requirements are shown, if non pointing to the element itself";
+		BooleanProperty showDeepChildren;
+		
+		Reference reqTypesToView[] of Type RequirementType;
 	}	
 	
 	Category RequirementsConfiguration {
@@ -34,7 +45,7 @@ Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"
 		Type verificationTypes [] of Category VerificationType;
 	}
 	
-	Category RequirementObject description "Interface for specification objects" {
+	Category RequirementObject extends IRequirementTreeElement description "Interface for specification objects" {
 		IsAbstract;
 	}
 	

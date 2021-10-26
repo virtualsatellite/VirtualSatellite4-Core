@@ -52,9 +52,6 @@
     </properties>
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="trace" type="de.dlr.sc.virsat.model.extension.requirements.RequirementTrace"/>
     <properties xsi:type="dvlm_cppd:StringProperty" name="descriptionText"/>
-    <properties xsi:type="dvlm_cppd:ComposedProperty" name="children" type="de.dlr.sc.virsat.model.extension.requirements.RequirementObject">
-      <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
-    </properties>
   </categories>
   <categories name="RequirementLink">
     <properties xsi:type="dvlm_cppd:ReferenceProperty" name="type" referenceType="de.dlr.sc.virsat.model.extension.requirements.RequirementLinkType"/>
@@ -101,14 +98,10 @@
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="ImportConfiguration" description="Mapping specification of imported requirements" applicableFor="de.dlr.sc.virsat.model.extension.requirements.RequirementsConfigurationCollection">
-    <properties xsi:type="dvlm_cppd:StringProperty" name="selectedTypeKeys" description="List of requirement types to be imported, using ReqIF identifiers">
-      <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
-    </properties>
     <properties xsi:type="dvlm_cppd:ReferenceProperty" name="typeDefinitionsContainer" referenceType="de.dlr.sc.virsat.model.extension.requirements.RequirementsConfiguration"/>
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="mappedSpecifications" type="de.dlr.sc.virsat.model.extension.requirements.SpecificationMapping">
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
     </properties>
-    <properties xsi:type="dvlm_cppd:BooleanProperty" name="groupSupport" description="If true using RequirementGroups for requirement objects with children"/>
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="SpecificationMapping">
