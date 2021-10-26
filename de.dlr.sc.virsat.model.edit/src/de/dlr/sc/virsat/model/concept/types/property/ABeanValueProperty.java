@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.property;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import io.swagger.annotations.ApiModel;
 
@@ -44,6 +46,15 @@ public abstract class ABeanValueProperty<P_TYPE extends ValuePropertyInstance, V
 	@Override
 	public void unset() {
 		ti.setValue(null);
+	}
+	
+	@XmlElement
+	public boolean getOverride() {
+		return ti.isOverride();
+	}
+	
+	public void setOverride(boolean override) {
+		ti.setOverride(override);
 	}
 
 }

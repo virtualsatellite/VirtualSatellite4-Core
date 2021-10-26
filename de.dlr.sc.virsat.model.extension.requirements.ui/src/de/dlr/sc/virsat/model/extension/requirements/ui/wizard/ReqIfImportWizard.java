@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.ui.wizard;
 
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IContainer;
@@ -54,6 +55,7 @@ public class ReqIfImportWizard extends Wizard implements IWorkbenchWizard {
 
 	private ReqIfFileConfigurationSelectionPage importPage;
 	private ReqIfMappingPage mappingPage;
+	private ReqIfTypeSelectionPage typeSelectionPage;
 	private IContainer model;
 	private ReqIfImporter importer = new ReqIfImporter();
 
@@ -90,7 +92,9 @@ public class ReqIfImportWizard extends Wizard implements IWorkbenchWizard {
 
 		final EObject reqConfiguration = (EObject) importPage.getSelection();
 		final Map<Specification, StructuralElementInstance> specMapping = mappingPage.getSpecificationMapping();
-		final RequirementsConfiguration typeContainer = mappingPage.getRequirementTypeContainer();
+		final RequirementsConfiguration typeContainer = typeSelectionPage.getRequirementTypeContainer();
+		final List<String> requirementTypeList = typeSelectionPage.getListOfRequirementTypeKeys();
+		final boolean groupSupport = mappingPage.getGroupSupport();
 
 		// Do the import
 		Job importJob = new Job("Performing Requirements ReqIF Import") {
@@ -102,7 +106,7 @@ public class ReqIfImportWizard extends Wizard implements IWorkbenchWizard {
 				ReqIF reqIfContent = mappingPage.getReqIfContent();
 				
 				if (reqConfiguration instanceof StructuralElementInstance) {
-					doImport(editingDomain, reqIfContent, specMapping, new RequirementsConfigurationCollection((StructuralElementInstance) reqConfiguration), typeContainer, monitor);
+					doImport(editingDomain, reqIfContent, specMapping, new RequirementsConfigurationCollection((StructuralElementInstance) reqConfiguration), typeContainer, requirementTypeList, groupSupport, monitor);
 				} else  {
 					doReimport(editingDomain, reqIfContent, new ImportConfiguration((CategoryAssignment) reqConfiguration), monitor);
 				}
@@ -132,15 +136,23 @@ public class ReqIfImportWizard extends Wizard implements IWorkbenchWizard {
 	 * @param specMapping the mapping as map
 	 * @param configurationContainer the container in which the import configuration shall be created
 	 * @param typeContainer the container element for new requirement types imported from ReqIF
+	 * @param groupSupport If true using RequirementGroups for requirement objects with children
 	 * @param monitor the progress monitor
 	 */
-	public void doImport(EditingDomain editingDomain, ReqIF reqIfContent, Map<Specification, StructuralElementInstance> specMapping, RequirementsConfigurationCollection configurationContainer, RequirementsConfiguration typeContainer, IProgressMonitor monitor) {
+	public void doImport(EditingDomain editingDomain, 
+			ReqIF reqIfContent, 
+			Map<Specification, StructuralElementInstance> specMapping, 
+			RequirementsConfigurationCollection configurationContainer, 
+			RequirementsConfiguration typeContainer, 
+			List<String> requirementTypeList, 
+			boolean groupSupport, 
+			IProgressMonitor monitor) {
 		SubMonitor importSubMonitor = SubMonitor.convert(monitor, NUMBER_PROGRESS_TICKS_IMPORT);
 		
 		importer.init(reqIfContent, configurationContainer);
 		
 		// Preparation
-		editingDomain.getCommandStack().execute(importer.persistSpecificationMapping(editingDomain, specMapping, reqIfContent, configurationContainer));
+		editingDomain.getCommandStack().execute(importer.persistSpecificationMapping(editingDomain, specMapping, reqIfContent, requirementTypeList, groupSupport, configurationContainer));
 		importSubMonitor.worked(1);
 		editingDomain.getCommandStack().execute(importer.persistRequirementTypeContainer(editingDomain, typeContainer));
 		importSubMonitor.worked(1);
@@ -186,10 +198,12 @@ public class ReqIfImportWizard extends Wizard implements IWorkbenchWizard {
 
 	@Override
 	public void addPages() {
-		mappingPage = new ReqIfMappingPage();
+		typeSelectionPage = new ReqIfTypeSelectionPage();
+		mappingPage = new ReqIfMappingPage(typeSelectionPage);
 		importPage = new ReqIfFileConfigurationSelectionPage(model, mappingPage);
 		addPage(importPage);
 		addPage(mappingPage);
+		addPage(typeSelectionPage);
 	}
 
 }

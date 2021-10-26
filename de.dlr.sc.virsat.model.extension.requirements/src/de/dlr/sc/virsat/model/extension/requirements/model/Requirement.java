@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.model;
 
+import javax.xml.bind.annotation.XmlType;
+
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
@@ -31,6 +33,7 @@ import de.dlr.sc.virsat.model.extension.requirements.util.RequirementHelper;
  * 
  * 
  */
+@XmlType(name = ARequirement.FULL_QUALIFIED_CATEGORY_NAME)
 public  class Requirement extends ARequirement {
 	
 	public static final String REQUIREMENT_NAME_PREFIX = "Req";
@@ -70,9 +73,26 @@ public  class Requirement extends ARequirement {
 	
 	/**
 	 * Update the requirement name to the name of its identifying attributes
+	 * @param ed the editing domain
+	 * @return the command
+	 */
+	public Command updateNameFromAttributes(EditingDomain ed, String addition) {
+		return setName(ed, getNameFromAttributes() + new RequirementHelper().cleanEntityName(addition));
+	}
+	
+	/**
+	 * Update the requirement name to the name of its identifying attributes
 	 */
 	public void updateNameFromAttributes() {
 		setName(getNameFromAttributes());
+	}
+	
+	/**
+	 * Update the requirement name to the name of its identifying attributes and give a customization 
+	 * @param addition customization / description
+	 */
+	public void updateNameFromAttributes(String addition) {
+		setName(getNameFromAttributes() + new RequirementHelper().cleanEntityName(addition));
 	}
 	
 	/**
@@ -82,11 +102,18 @@ public  class Requirement extends ARequirement {
 	protected String getNameFromAttributes() {
 		StringBuilder newReqName = new StringBuilder();
 		newReqName.append(REQUIREMENT_NAME_PREFIX);
+		newReqName.append(getIdentifier());
+		return new RequirementHelper().cleanEntityName(newReqName.toString());
+	}
+	
+	@Override
+	public String getIdentifier() {
+		StringBuilder newReqName = new StringBuilder();
 		for (AttributeValue child : getElements()) {
 			if (child.getAttType().getType().equals(RequirementAttribute.TYPE_Identifier_NAME)) {
 				newReqName.append(child.getValue());
 			}
 		}
-		return new RequirementHelper().cleanEntityName(newReqName.toString());
+		return newReqName.toString();
 	}
 }
