@@ -158,12 +158,7 @@
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="ModelVerification" isAbstract="true" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.IVerification"/>
-  <categories name="ExistenceVerification" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.ModelVerification">
-    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="target">
-      <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
-      <referenceType xsi:type="dvlm_cp:Category" href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.concept#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
-    </properties>
-  </categories>
+  <categories name="ExistenceVerification" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.ModelVerification"/>
   <categories name="BoundedValueVerification" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.ModelVerification">
     <properties xsi:type="dvlm_cppd:FloatProperty" name="lowerBound"/>
     <properties xsi:type="dvlm_cppd:FloatProperty" name="upperBound"/>

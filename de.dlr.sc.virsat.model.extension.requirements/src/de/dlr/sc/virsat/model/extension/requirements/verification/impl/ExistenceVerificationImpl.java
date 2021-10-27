@@ -29,7 +29,7 @@ public class ExistenceVerificationImpl extends AbstractAutomaticVerification imp
 		this.verification = verification;
 		
 		if (verification instanceof ExistenceVerification) {
-			if (((ExistenceVerification) verification).getTarget().isEmpty()) {
+			if (requirement.getTrace().getTarget().isEmpty()) {
 				setStatusOpen();
 			} else if (verification.getStatus().equals(IVerification.STATUS_Open_NAME)) {
 				setStatusPartlyCompliant();

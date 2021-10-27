@@ -1265,11 +1265,6 @@
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetSectionExistenceVerification">
 		</uiSnippet>
 		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetExistenceVerificationTarget"
-		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableExistenceVerificationTarget">
-		</uiSnippet>
-		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetBoundedValueVerification"
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableBoundedValueVerification">

@@ -131,7 +131,6 @@ Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"
 	}
 	
 	Category ExistenceVerification extends ModelVerification {
-		Reference target[] of Type GenericCategory;
 	}
 	
 	Category BoundedValueVerification extends ModelVerification {
