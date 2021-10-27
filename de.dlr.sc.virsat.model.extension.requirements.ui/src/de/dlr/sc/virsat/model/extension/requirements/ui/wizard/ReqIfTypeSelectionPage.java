@@ -114,6 +114,7 @@ public class ReqIfTypeSelectionPage extends WizardPage implements SelectionListe
 					filter(type -> type instanceof SpecObjectType).collect(Collectors.toList())) {
 			String typeName = type.getLongName();
 			TableItem item = new TableItem(table, SWT.NULL);
+			item.setChecked(true);
 			tableItems.add(item);
 			item.setText(typeName);
 		}
