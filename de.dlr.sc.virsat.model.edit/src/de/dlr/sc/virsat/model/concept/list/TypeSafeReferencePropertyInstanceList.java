@@ -15,8 +15,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.core.runtime.CoreException;
+
 import de.dlr.sc.virsat.model.concept.types.IBeanObject;
+import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesFactory;
@@ -181,15 +185,17 @@ public class TypeSafeReferencePropertyInstanceList<BEAN_TYPE extends IBeanObject
 		return !removeCpis.isEmpty();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public BEAN_TYPE get(int index) {
 		BEAN_TYPE bean = null;
-		try {
-			bean = beanClazz.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
 		ATypeInstance ca = ((ReferencePropertyInstance) ai.getArrayInstances().get(index)).getReference();
+		try {
+			BeanCategoryAssignmentFactory factory = new BeanCategoryAssignmentFactory();
+			bean = (BEAN_TYPE) factory.getInstanceFor((Category) ca.getType());
+		} catch (CoreException e) {
+	
+		}
 		bean.setATypeInstance(ca);
 		return bean;
 	}
