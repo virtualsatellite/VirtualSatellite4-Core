@@ -232,5 +232,12 @@
 		</uiSnippet>
 	</extension>
 	<!-- Plugin.XML Protected Region Start -->
+	<extension point="de.dlr.sc.virsat.uiengine.ui.EditorUiSnippets">
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetTableRequirementVerificationMassRequirementsVerification"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section.Verifications"
+		      snippet="de.dlr.sc.virsat.model.extension.budget.mass.ui.snippet.UiSnippetTableRequirementVerificationMassRequirementsVerification">
+		</uiSnippet>
+	</extension>
 	<!-- Plugin.XML Protected Region End -->
 </plugin>
