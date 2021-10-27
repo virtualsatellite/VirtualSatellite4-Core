@@ -57,5 +57,13 @@
 </extension>
 	<!-- Plugin.XML Protected Region End -->
 	<!-- Plugin.XML Protected Region Start -->
+<extension
+      name="Mass Limit Verification"
+      point="de.dlr.sc.virsat.model.extension.requirements.verification">
+   <verification
+         model_element="de.dlr.sc.virsat.model.extension.budget.mass.model.MassRequirementsVerification"
+         verification_impl="de.dlr.sc.virsat.model.extension.budget.mass.verification.MassRequirementsVerificationImpl">
+   </verification>
+</extension>
 	<!-- Plugin.XML Protected Region End -->
 </plugin>

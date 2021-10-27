@@ -27,6 +27,7 @@ Export-Package: de.dlr.sc.virsat.model.extension.requirements,
  de.dlr.sc.virsat.model.extension.requirements.util,
  de.dlr.sc.virsat.model.extension.requirements.validator,
  de.dlr.sc.virsat.model.extension.requirements.verification.build,
+ de.dlr.sc.virsat.model.extension.requirements.verification.build.steps,
  de.dlr.sc.virsat.model.extension.requirements.verification.impl
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.requirements
 Bundle-Activator: de.dlr.sc.virsat.model.extension.requirements.Activator
