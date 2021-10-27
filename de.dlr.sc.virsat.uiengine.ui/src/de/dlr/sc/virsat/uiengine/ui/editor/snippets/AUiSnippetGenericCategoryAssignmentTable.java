@@ -460,8 +460,7 @@ public abstract class AUiSnippetGenericCategoryAssignmentTable extends AUiSnippe
 	@Override
 	public boolean isActive(EObject model) {
 		initializeHelperForModel(model);
-		boolean hasActiveConcept = categoryModel != null;
-		if (!hasActiveConcept) {
+		if (!isConceptActive()) {
 			return false;
 		}
 		
@@ -469,6 +468,17 @@ public abstract class AUiSnippetGenericCategoryAssignmentTable extends AUiSnippe
 		boolean isCategoryAssignmentContainer = model instanceof ICategoryAssignmentContainer;
 		DVLMIsActiveCheck check = new DVLMIsActiveCheck(model, true);
 		return isCategoryAssignmentContainer && check.isValidObject(ca);
+	}
+	
+	/**
+	 * Check weather this snippets concepts is active or not
+	 * @return true if active
+	 */
+	protected boolean isConceptActive() {
+		if (model == null) {
+			return false; 
+		}
+		return acHelper.getConcept(conceptId) != null;
 	}
 	
 	@Override
