@@ -18,22 +18,22 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
-import de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableExistenceVerificationTarget;
+import de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementTraceTarget;
 
 /**
  *
  */
-public class ExistenceVerificationTargetEditingDialog extends AUiSnippetEditDialog {
+public class RequirementTraceTargetEditingDialog extends AUiSnippetEditDialog {
 
 	protected FormToolkit toolkit;
-	protected static final String DIALOG_TITEL = "Model Existence Verification Target Selection"; 
+	protected static final String DIALOG_TITEL = "Trace Target Selection"; 
 	
 	/**
 	 * @param parent
 	 * @param editingDomain
 	 * @param initModel
 	 */
-	public ExistenceVerificationTargetEditingDialog(Shell parent, FormToolkit toolkit,  EditingDomain editingDomain, EObject initModel) {
+	public RequirementTraceTargetEditingDialog(Shell parent, FormToolkit toolkit,  EditingDomain editingDomain, EObject initModel) {
 		super(parent, editingDomain, initModel);
 		this.toolkit = toolkit;
 	}
@@ -55,7 +55,7 @@ public class ExistenceVerificationTargetEditingDialog extends AUiSnippetEditDial
 		// create the dialog area and button bar
 		dialogArea = createDialogArea(composite);
 
-		new UiSnippetTableExistenceVerificationTarget().createSwt(toolkit, editingDomain, composite,
+		new UiSnippetTableRequirementTraceTarget().createSwt(toolkit, editingDomain, composite,
 				initModel);
 		
 		buttonBar = createButtonBar(composite);

@@ -26,7 +26,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 import de.dlr.sc.virsat.model.extension.requirements.model.ExistenceVerification;
-import de.dlr.sc.virsat.model.extension.requirements.ui.snippet.dialog.ExistenceVerificationTargetEditingDialog;
+import de.dlr.sc.virsat.model.extension.requirements.ui.snippet.dialog.RequirementTraceTargetEditingDialog;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.uiengine.ui.cellEditor.aproperties.APropertyCellEditingSupport;
 
@@ -34,7 +34,7 @@ import de.dlr.sc.virsat.uiengine.ui.cellEditor.aproperties.APropertyCellEditingS
  * Implements a customized editing support for selecting the target of an existence editing support
  * 
  */
-public class ExisitenceVerificationTargetEditingSupport extends APropertyCellEditingSupport {
+public class RequirementTraceTargetEditingSupport extends APropertyCellEditingSupport {
 
 	protected FormToolkit toolkit;
 	
@@ -44,7 +44,7 @@ public class ExisitenceVerificationTargetEditingSupport extends APropertyCellEdi
 	 * @param viewer the table viewer
 	 * @param property an aproperty
 	 */
-	public ExisitenceVerificationTargetEditingSupport(EditingDomain editingDomain, ColumnViewer viewer, AProperty property, FormToolkit toolkit) {
+	public RequirementTraceTargetEditingSupport(EditingDomain editingDomain, ColumnViewer viewer, AProperty property, FormToolkit toolkit) {
 		super(editingDomain, viewer, property);
 		this.toolkit = toolkit;
 	}
@@ -61,7 +61,7 @@ public class ExisitenceVerificationTargetEditingSupport extends APropertyCellEdi
 				protected Object openDialogBox(Control cellEditorWindow) {
 					EditingDomain editingDomain = VirSatEditingDomainRegistry.INSTANCE.getEd(referencedTypeInstance);
 					if (referencedTypeInstance != null) {
-						Dialog dialog = new ExistenceVerificationTargetEditingDialog(
+						Dialog dialog = new RequirementTraceTargetEditingDialog(
 								PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), toolkit, editingDomain,
 								referencedTypeInstance);
 						if (dialog.open() == Dialog.OK) {

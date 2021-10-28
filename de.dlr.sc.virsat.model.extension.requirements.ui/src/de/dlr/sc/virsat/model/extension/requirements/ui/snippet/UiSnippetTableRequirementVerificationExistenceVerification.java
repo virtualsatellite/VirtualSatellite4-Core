@@ -18,7 +18,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ReferenceProperty;
-import de.dlr.sc.virsat.model.extension.requirements.ui.celleditor.ExisitenceVerificationTargetEditingSupport;
+import de.dlr.sc.virsat.model.extension.requirements.ui.celleditor.RequirementTraceTargetEditingSupport;
 import de.dlr.sc.virsat.uiengine.ui.cellEditor.aproperties.PropertyInstanceEditingSupportFactory;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
 
@@ -41,7 +41,7 @@ public class UiSnippetTableRequirementVerificationExistenceVerification extends 
 	protected EditingSupport createEditingSupport(EditingDomain editingDomain, AProperty property) {
 		
 		if (property instanceof ReferenceProperty) {
-			return new ExisitenceVerificationTargetEditingSupport(editingDomain, columnViewer, (ReferenceProperty) property, toolkit);
+			return new RequirementTraceTargetEditingSupport(editingDomain, columnViewer, (ReferenceProperty) property, toolkit);
 		}
 		
 		return PropertyInstanceEditingSupportFactory.INSTANCE.createEditingSupportFor(editingDomain, columnViewer, property);
