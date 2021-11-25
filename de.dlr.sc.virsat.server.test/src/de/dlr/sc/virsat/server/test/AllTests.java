@@ -59,8 +59,7 @@ import junit.framework.JUnit4TestAdapter;
 	CorsFilterTest.class,
 	ServerConceptTest.class,
 	QudvResourceTest.class,
-	DisciplineResourceTest.class,
-	QudvResourceTest.class
+	DisciplineResourceTest.class
 })
 
 public class AllTests {

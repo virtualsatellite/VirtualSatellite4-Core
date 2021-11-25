@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Abstract implementation to the interface dealing with Attributes without QUDV unit
@@ -49,6 +50,9 @@ public abstract class ABeanValueProperty<P_TYPE extends ValuePropertyInstance, V
 	}
 	
 	@XmlElement
+	@ApiModelProperty(
+			value = "If true this property overrides a super property"
+	)
 	public boolean getOverride() {
 		return ti.isOverride();
 	}
