@@ -368,7 +368,11 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	
 	@Override
 	public void setParent(BeanStructuralElementInstance newParent) {
-		sei.setParent(newParent.getStructuralElementInstance());
+		if (newParent == null) {
+			sei.setParent(null);
+		} else {
+			sei.setParent(newParent.getStructuralElementInstance());
+		}
 	}
 	
 	@Override
