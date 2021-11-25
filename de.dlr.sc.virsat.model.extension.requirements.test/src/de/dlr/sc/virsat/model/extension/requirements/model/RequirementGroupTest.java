@@ -9,6 +9,14 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.model;
 
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
+import de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.extension.requirements.Activator;
+
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
@@ -28,5 +36,20 @@ package de.dlr.sc.virsat.model.extension.requirements.model;
  * 
  */
 public class RequirementGroupTest extends ARequirementGroupTest {
+	
+	public static final String GROUP_NAME = "GROUP_1";
+	
+	@Test
+	public void testGetIdentifier() {
+		String conceptXmiPluginPath = Activator.getPluginId() + "/concept/concept.xmi";
+		Concept concept = ConceptXmiLoader.loadConceptFromPlugin(conceptXmiPluginPath);
+		
+		RequirementGroup group = new RequirementGroup(concept);
+		group.setName(GROUP_NAME);
+		
+		assertEquals("Name should be used as ID for groups", GROUP_NAME, group.getIdentifier());
+	}
+	
+
 
 }
