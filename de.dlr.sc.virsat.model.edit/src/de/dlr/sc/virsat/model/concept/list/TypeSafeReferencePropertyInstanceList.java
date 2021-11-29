@@ -25,6 +25,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstanc
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
+import de.dlr.sc.virsat.model.edit.Activator;
 
 /**
  * Core functionality for the type safe referenced property instance list and implementation to the interface bean list
@@ -193,10 +194,10 @@ public class TypeSafeReferencePropertyInstanceList<BEAN_TYPE extends IBeanObject
 		try {
 			BeanCategoryAssignmentFactory factory = new BeanCategoryAssignmentFactory();
 			bean = (BEAN_TYPE) factory.getInstanceFor((Category) ca.getType());
+			bean.setATypeInstance(ca);
 		} catch (CoreException e) {
-	
+			Activator.getDefault().getLog().error("Could not instantiate bean for category", e);
 		}
-		bean.setATypeInstance(ca);
 		return bean;
 	}
 
