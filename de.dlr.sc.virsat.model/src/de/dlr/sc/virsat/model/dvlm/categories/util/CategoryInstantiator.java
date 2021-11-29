@@ -85,7 +85,7 @@ public class CategoryInstantiator {
 	 * @return a category assignment with corresponding property instances
 	 */
 	public CategoryAssignment generateInstance(Category category, String instanceName) {
-		if (category.isIsAbstract()) {
+		if (category == null || category.isIsAbstract()) {
 			return null;
 		}
 		
