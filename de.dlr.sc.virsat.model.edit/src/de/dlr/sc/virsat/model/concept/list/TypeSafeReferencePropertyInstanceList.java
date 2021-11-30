@@ -19,7 +19,6 @@ import org.eclipse.core.runtime.CoreException;
 
 import de.dlr.sc.virsat.model.concept.types.IBeanObject;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
-import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
@@ -192,8 +191,7 @@ public class TypeSafeReferencePropertyInstanceList<BEAN_TYPE extends IBeanObject
 	public BEAN_TYPE get(int index) {
 		BEAN_TYPE bean = null;
 		ATypeInstance ca = ((ReferencePropertyInstance) ai.getArrayInstances().get(index)).getReference();
-		ATypeDefinition typeDef = ca.getType();
-		if (typeDef instanceof Category) {
+		if (ca != null && ca.getType() instanceof Category) {
 			try {
 				BeanCategoryAssignmentFactory factory = new BeanCategoryAssignmentFactory();
 				bean = (BEAN_TYPE) factory.getInstanceFor((Category) ca.getType());
