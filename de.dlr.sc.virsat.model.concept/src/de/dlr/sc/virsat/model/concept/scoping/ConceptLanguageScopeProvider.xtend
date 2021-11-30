@@ -16,6 +16,11 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.naming.IQualifiedNameConverter
 import org.eclipse.xtext.scoping.impl.ImportNormalizer
 import org.eclipse.xtext.scoping.impl.ImportedNamespaceAwareLocalScopeProvider
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.APropertyImpl
+import org.eclipse.xtext.scoping.IScope
+import de.dlr.sc.virsat.model.dvlm.categories.Category
+import org.eclipse.xtext.scoping.Scopes
 
 /**
  * Class that implements the scoping of the concept language. Base class divers from
@@ -24,6 +29,15 @@ import org.eclipse.xtext.scoping.impl.ImportedNamespaceAwareLocalScopeProvider
 class ConceptLanguageScopeProvider extends ImportedNamespaceAwareLocalScopeProvider {
 
 	override getScope(EObject context, EReference reference) {
+		
+		if (context instanceof AProperty  && reference.name.equals("verificationType")) {
+			var scope = super.getScope(context, reference)
+			var filteredScope = scope.allElements.
+				map[t | t.EObjectOrProxy]
+				.filter[t| t instanceof Category && (t as Category).isIsVerification]
+			return Scopes.scopeFor(filteredScope, IScope.NULLSCOPE);
+		}
+		
 		super.getScope(context, reference)
 	}
 	

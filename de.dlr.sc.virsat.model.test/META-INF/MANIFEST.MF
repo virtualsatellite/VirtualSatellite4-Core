@@ -1,21 +1,37 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: VirSat Core Data Model Tests
+Bundle-Name: %pluginName
 Bundle-SymbolicName: de.dlr.sc.virsat.model.test;singleton:=true
 Bundle-Version: 4.13.0.qualifier
 Bundle-ClassPath: .
-Bundle-Vendor: DLR (German Aerospace Center)
+Bundle-Vendor: %providerName
 Fragment-Host: de.dlr.sc.virsat.model
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: org.eclipse.emf.ecore.xmi,
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.emf.ecore;visibility:=reexport,
+ org.eclipse.emf.ecore.xmi;visibility:=reexport,
  org.eclipse.core.resources,
- org.junit,
+ org.junit;visibility:=reexport,
  org.hamcrest.library,
  de.dlr.sc.virsat.model.external.tests
 Bundle-ActivationPolicy: lazy
 Export-Package: de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util,
  de.dlr.sc.virsat.model.dvlm.categories.util,
  de.dlr.sc.virsat.model.dvlm.types.impl,
- de.dlr.sc.virsat.model.test
+ de.dlr.sc.virsat.model.test,
+ de.dlr.sc.virsat.model.dvlm.calculation.tests,
+ de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.tests,
+ de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.tests,
+ de.dlr.sc.virsat.model.dvlm.categories.tests,
+ de.dlr.sc.virsat.model.dvlm.concepts.tests,
+ de.dlr.sc.virsat.model.dvlm.dmf.tests,
+ de.dlr.sc.virsat.model.dvlm.general.tests,
+ de.dlr.sc.virsat.model.dvlm.inheritance.tests,
+ de.dlr.sc.virsat.model.dvlm.qudv.tests,
+ de.dlr.sc.virsat.model.dvlm.roles.tests,
+ de.dlr.sc.virsat.model.dvlm.structural.tests,
+ de.dlr.sc.virsat.model.dvlm.tests,
+ de.dlr.sc.virsat.model.dvlm.types.tests,
+ de.dlr.sc.virsat.model.dvlm.units.tests
 Automatic-Module-Name: de.dlr.sc.virsat.model.test

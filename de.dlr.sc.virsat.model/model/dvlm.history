@@ -5392,5 +5392,63 @@
       <element href="dvlm.ecore#//dmf"/>
     </changes>
   </releases>
-  <releases xmi:id="_z9zaEIL0EeqQ2L2u1ztINA"/>
+  <releases xmi:id="_z9zaEIL0EeqQ2L2u1ztINA">
+    <changes xsi:type="history:Create" xmi:id="_oFXccFIiEey7cs0vuDBPzA" referenceName="eClassifiers">
+      <target href="dvlm.ecore#//categories/propertydefinitions"/>
+      <element href="dvlm.ecore#//categories/propertydefinitions/IVerificationSpecification"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_tH8lgFIiEey7cs0vuDBPzA" featureName="name" dataValue="IVerificationSpecification">
+      <element href="dvlm.ecore#//categories/propertydefinitions/IVerificationSpecification"/>
+    </changes>
+    <changes xsi:type="history:Create" xmi:id="_urmJkFIiEey7cs0vuDBPzA" referenceName="eStructuralFeatures">
+      <target href="dvlm.ecore#//categories/propertydefinitions/AProperty"/>
+      <element href="dvlm.ecore#//categories/propertydefinitions/AProperty/verification"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_vwCCEFIiEey7cs0vuDBPzA" featureName="name" dataValue="veri">
+      <element href="dvlm.ecore#//categories/propertydefinitions/AProperty/verification"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_00Fx0FIiEey7cs0vuDBPzA" featureName="name" dataValue="verification" oldDataValue="veri">
+      <element href="dvlm.ecore#//categories/propertydefinitions/AProperty/verification"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_1xo_MFIiEey7cs0vuDBPzA" featureName="eType">
+      <element href="dvlm.ecore#//categories/propertydefinitions/AProperty/verification"/>
+      <referenceValue href="dvlm.ecore#//categories/propertydefinitions/IVerificationSpecification"/>
+    </changes>
+    <changes xsi:type="history:Create" xmi:id="_3xKm8FIiEey7cs0vuDBPzA" referenceName="eClassifiers">
+      <target href="dvlm.ecore#//categories/propertydefinitions"/>
+      <element href="dvlm.ecore#//categories/propertydefinitions/VerificationTypeSpecification"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_-OHcQFIiEey7cs0vuDBPzA" featureName="name" dataValue="VerificationTypeSpecification">
+      <element href="dvlm.ecore#//categories/propertydefinitions/VerificationTypeSpecification"/>
+    </changes>
+    <changes xsi:type="history:Create" xmi:id="__OtWkFIiEey7cs0vuDBPzA" referenceName="eStructuralFeatures">
+      <target href="dvlm.ecore#//categories/propertydefinitions/VerificationTypeSpecification"/>
+      <element href="dvlm.ecore#//categories/propertydefinitions/VerificationTypeSpecification/verificationType"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_DR5fMFIjEey7cs0vuDBPzA" featureName="name" dataValue="verificationType">
+      <element href="dvlm.ecore#//categories/propertydefinitions/VerificationTypeSpecification/verificationType"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_HO45MFIjEey7cs0vuDBPzA" featureName="eType">
+      <element href="dvlm.ecore#//categories/propertydefinitions/VerificationTypeSpecification/verificationType"/>
+      <referenceValue href="dvlm.ecore#//categories/ATypeDefinition"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_In-zEFIjEey7cs0vuDBPzA" featureName="containment" dataValue="true" oldDataValue="false">
+      <element href="dvlm.ecore#//categories/propertydefinitions/AProperty/verification"/>
+    </changes>
+    <changes xsi:type="history:Add" xmi:id="_Ni-bgFIlEey7cs0vuDBPzA" featureName="eSuperTypes">
+      <element href="dvlm.ecore#//categories/propertydefinitions/VerificationTypeSpecification"/>
+      <referenceValue href="dvlm.ecore#//categories/propertydefinitions/IVerificationSpecification"/>
+    </changes>
+    <changes xsi:type="history:Create" xmi:id="_EoZbQFInEey7cs0vuDBPzA" referenceName="eStructuralFeatures">
+      <target href="dvlm.ecore#//categories/Category"/>
+      <element href="dvlm.ecore#//categories/Category/isVerification"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_G0WVcFInEey7cs0vuDBPzA" featureName="eType">
+      <element href="dvlm.ecore#//categories/Category/isVerification"/>
+      <referenceValue href="../../../plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_Iu-PEFInEey7cs0vuDBPzA" featureName="name" dataValue="isVerification">
+      <element href="dvlm.ecore#//categories/Category/isVerification"/>
+    </changes>
+  </releases>
 </history:History>
