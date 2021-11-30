@@ -13,6 +13,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.edit.domain.EditingDomain;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,7 +23,6 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.extension.budget.mass.model.MassEquipment;
 import de.dlr.sc.virsat.model.extension.budget.mass.model.MassRequirementsVerification;
 import de.dlr.sc.virsat.model.extension.budget.mass.model.MassSummary;
-import de.dlr.sc.virsat.model.extension.requirements.model.BoundedValueVerification;
 import de.dlr.sc.virsat.model.extension.requirements.model.IVerification;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 
@@ -47,30 +48,38 @@ public class MassRequirementsVerificationImplTest extends AConceptProjectTestCas
 		conceptMass = loadConceptAndInstallToRepository(MASS_CONCEPT_ID, repository);
 	}
 	
-	public class TestMassRequirementsVerification extends MassRequirementsVerificationImpl {
+	public class TestMassRequirementsVerification extends MassRequirementsVerification {
 		boolean statusCompliant = false;
 		boolean statusOpen = false;
 		boolean statusNonCompliant = false;
 		boolean statusPartlyCompliant = false;
 		
+		public TestMassRequirementsVerification() {
+			super(conceptMass);
+		}
+		
 		@Override
-		protected void setStatusCompliant() {
+		protected Command setStatusCompliant(EditingDomain editingDomain) {
 			statusCompliant = true;
+			return null;
 		}
 		
 		@Override
-		protected void setStatusOpen() {
+		protected Command setStatusOpen(EditingDomain editingDomain) {
 			statusOpen = true;
+			return null;
 		}
 		
 		@Override
-		protected void setStatusNonCompliant() {
+		protected Command setStatusNonCompliant(EditingDomain editingDomain) {
 			statusNonCompliant = true;
+			return null;
 		}
 		
 		@Override
-		protected void setStatusPartlyCompliant() {
+		protected Command setStatusPartlyCompliant(EditingDomain editingDomain) {
 			statusPartlyCompliant = true;
+			return null;
 		}
 	}
 	
@@ -78,7 +87,6 @@ public class MassRequirementsVerificationImplTest extends AConceptProjectTestCas
 	public void testRunCustomVerificationNoTrace() {
 		TestMassRequirementsVerification testObject = new TestMassRequirementsVerification();
 		
-		MassRequirementsVerification massVerification = new MassRequirementsVerification(conceptMass);
 		Requirement requirementObject = new Requirement(conceptRequirements);
 		
 		assertFalse("No status should be set", testObject.statusCompliant);
@@ -86,7 +94,7 @@ public class MassRequirementsVerificationImplTest extends AConceptProjectTestCas
 		assertFalse("No status should be set", testObject.statusNonCompliant);
 		assertFalse("No status should be set", testObject.statusPartlyCompliant);
 		
-		testObject.runCustomVerification(null, massVerification, requirementObject, null);
+		testObject.runCustomVerification(null, requirementObject, null);
 		
 		assertTrue("As no trace was set, status should be open", testObject.statusOpen);
 		
@@ -99,10 +107,9 @@ public class MassRequirementsVerificationImplTest extends AConceptProjectTestCas
 	public void testRunCustomVerificationCompliant() {
 		TestMassRequirementsVerification testObject = new TestMassRequirementsVerification();
 		
-		MassRequirementsVerification massVerification = new MassRequirementsVerification(conceptMass);
-		massVerification.setUpperBound(UPPER_LIMIT);
-		massVerification.setLowerBound(LOWER_LIMIT);
-		massVerification.setStatus(IVerification.STATUS_Open_NAME);
+		testObject.setUpperBound(UPPER_LIMIT);
+		testObject.setLowerBound(LOWER_LIMIT);
+		testObject.setStatus(IVerification.STATUS_Open_NAME);
 		
 		Requirement requirementObject = new Requirement(conceptRequirements);
 		
@@ -110,7 +117,7 @@ public class MassRequirementsVerificationImplTest extends AConceptProjectTestCas
 		someMassEquipment.setMassWithMargin(VALUE_COMPLIANT);
 		requirementObject.getTrace().getTarget().add(someMassEquipment);
 		
-		testObject.runCustomVerification(null, massVerification, requirementObject, null);
+		testObject.runCustomVerification(null, requirementObject, null);
 		
 		assertTrue("As value was in range, status should be compliant", testObject.statusCompliant);
 		
@@ -123,10 +130,9 @@ public class MassRequirementsVerificationImplTest extends AConceptProjectTestCas
 	public void testRunCustomVerificationTooLow() {
 		TestMassRequirementsVerification testObject = new TestMassRequirementsVerification();
 		
-		MassRequirementsVerification massVerification = new MassRequirementsVerification(conceptMass);
-		massVerification.setUpperBound(UPPER_LIMIT);
-		massVerification.setLowerBound(LOWER_LIMIT);
-		massVerification.setStatus(IVerification.STATUS_FullyCompliant_NAME);
+		testObject.setUpperBound(UPPER_LIMIT);
+		testObject.setLowerBound(LOWER_LIMIT);
+		testObject.setStatus(IVerification.STATUS_FullyCompliant_NAME);
 		
 		Requirement requirementObject = new Requirement(conceptRequirements);
 		
@@ -134,7 +140,7 @@ public class MassRequirementsVerificationImplTest extends AConceptProjectTestCas
 		someMassEquipment.setMassWithMargin(VALUE_TOO_LOW);
 		requirementObject.getTrace().getTarget().add(someMassEquipment);
 		
-		testObject.runCustomVerification(null, massVerification, requirementObject, null);
+		testObject.runCustomVerification(null, requirementObject, null);
 		
 		assertTrue("As value was not in range, status should not be compliant", testObject.statusNonCompliant);
 		
@@ -147,10 +153,9 @@ public class MassRequirementsVerificationImplTest extends AConceptProjectTestCas
 	public void testRunCustomVerificationTooHigh() {
 		TestMassRequirementsVerification testObject = new TestMassRequirementsVerification();
 		
-		MassRequirementsVerification massVerification = new MassRequirementsVerification(conceptMass);
-		massVerification.setUpperBound(UPPER_LIMIT);
-		massVerification.setLowerBound(LOWER_LIMIT);
-		massVerification.setStatus(IVerification.STATUS_FullyCompliant_NAME);
+		testObject.setUpperBound(UPPER_LIMIT);
+		testObject.setLowerBound(LOWER_LIMIT);
+		testObject.setStatus(IVerification.STATUS_FullyCompliant_NAME);
 		
 		Requirement requirementObject = new Requirement(conceptRequirements);
 		
@@ -158,7 +163,7 @@ public class MassRequirementsVerificationImplTest extends AConceptProjectTestCas
 		someMassEquipment.setMassWithMargin(VALUE_TOO_HIGH);
 		requirementObject.getTrace().getTarget().add(someMassEquipment);
 		
-		testObject.runCustomVerification(null, massVerification, requirementObject, null);
+		testObject.runCustomVerification(null, requirementObject, null);
 		
 		assertTrue("As value was not in range, status should not be compliant", testObject.statusNonCompliant);
 		
@@ -167,28 +172,14 @@ public class MassRequirementsVerificationImplTest extends AConceptProjectTestCas
 		assertFalse(testObject.statusPartlyCompliant);
 	}
 	
-	@Test
-	public void testRunCustomVerificationOtherVerification() {
-		TestMassRequirementsVerification testObject = new TestMassRequirementsVerification();
-		BoundedValueVerification otherVerification = new BoundedValueVerification(conceptRequirements);
-		Requirement reqiurement = new Requirement(conceptRequirements);
-		
-		testObject.runCustomVerification(null, otherVerification, reqiurement, null); // Well, and this one should not throw an exception
-		
-		assertFalse("No status should be set", testObject.statusCompliant);
-		assertFalse("No status should be set", testObject.statusOpen);
-		assertFalse("No status should be set", testObject.statusNonCompliant);
-		assertFalse("No status should be set", testObject.statusPartlyCompliant);
-	}
 	
 	@Test
 	public void testRunCustomVerificationMassSummary() {
 		TestMassRequirementsVerification testObject = new TestMassRequirementsVerification();
 		
-		MassRequirementsVerification massVerification = new MassRequirementsVerification(conceptMass);
-		massVerification.setUpperBound(UPPER_LIMIT);
-		massVerification.setLowerBound(LOWER_LIMIT);
-		massVerification.setStatus(IVerification.STATUS_Open_NAME);
+		testObject.setUpperBound(UPPER_LIMIT);
+		testObject.setLowerBound(LOWER_LIMIT);
+		testObject.setStatus(IVerification.STATUS_Open_NAME);
 		
 		Requirement requirementObject = new Requirement(conceptRequirements);
 		
@@ -196,7 +187,7 @@ public class MassRequirementsVerificationImplTest extends AConceptProjectTestCas
 		someMassEquipment.setMassWithMargin(VALUE_COMPLIANT);
 		requirementObject.getTrace().getTarget().add(someMassEquipment);
 		
-		testObject.runCustomVerification(null, massVerification, requirementObject, null);
+		testObject.runCustomVerification(null, requirementObject, null);
 		
 		assertTrue("As value was in range, status should be compliant", testObject.statusCompliant);
 		

@@ -13,6 +13,16 @@ package de.dlr.sc.virsat.model.extension.budget.mass.model;
 // * Import Statements
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
+import de.dlr.sc.virsat.model.extension.requirements.model.IVerification;
+import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
+import de.dlr.sc.virsat.model.extension.requirements.verification.build.steps.IAutomaticVerification;
+
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.command.CompoundCommand;
+import org.eclipse.emf.edit.domain.EditingDomain;
+
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 
 // *****************************************************************
@@ -27,8 +37,8 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
  * 
  * 
  */
-public  class MassRequirementsVerification extends AMassRequirementsVerification {
-	
+public class MassRequirementsVerification extends AMassRequirementsVerification implements IAutomaticVerification {
+
 	/**
 	 * Constructor of Concept Class
 	 */
@@ -37,19 +47,104 @@ public  class MassRequirementsVerification extends AMassRequirementsVerification
 	}
 
 	/**
-	 * Constructor of Concept Class which will instantiate 
-	 * a CategoryAssignment in the background from the given concept
-	 * @param concept the concept where it will find the correct Category to instantiate from
+	 * Constructor of Concept Class which will instantiate a CategoryAssignment in
+	 * the background from the given concept
+	 * 
+	 * @param concept the concept where it will find the correct Category to
+	 *                instantiate from
 	 */
 	public MassRequirementsVerification(Concept concept) {
 		super(concept);
-	}	
+	}
 
 	/**
-	 * Constructor of Concept Class that can be initialized manually by a given Category Assignment
-	 * @param categoryAssignment The category Assignment to be used for background initialization of the Category bean
+	 * Constructor of Concept Class that can be initialized manually by a given
+	 * Category Assignment
+	 * 
+	 * @param categoryAssignment The category Assignment to be used for background
+	 *                           initialization of the Category bean
 	 */
 	public MassRequirementsVerification(CategoryAssignment categoryAssignment) {
 		super(categoryAssignment);
 	}
+
+	@Override
+	public Command runCustomVerification(EditingDomain editingDomain, Requirement requirement,
+			IProgressMonitor monitor) {
+		CompoundCommand cc = new CompoundCommand();
+
+		double upperLimit = Double.MAX_VALUE;
+		double lowerLimit = -Double.MAX_VALUE;
+		if (isSetLowerBound()) {
+			lowerLimit = getLowerBound();
+		}
+		if (isSetUpperBound()) {
+			upperLimit = getUpperBound();
+		}
+
+		if (requirement.getTrace().getTarget().isEmpty()) {
+			cc.append(setStatusOpen(editingDomain));
+		} else {
+			for (GenericCategory target : requirement.getTrace().getTarget()) {
+				boolean isCompliant = false;
+				if (target instanceof MassEquipment) {
+					isCompliant = isCompliant((MassEquipment) target, lowerLimit, upperLimit);
+				} else if (target instanceof MassSummary) {
+					isCompliant = isCompliant((MassSummary) target, lowerLimit, upperLimit);
+				}
+				updateStatus(editingDomain, cc, isCompliant);
+			}
+		}
+
+		return cc;
+	}
+
+	/**
+	 * Check if mass equipment is compliant
+	 * 
+	 * @param verificationMethod
+	 * @param massEquipment
+	 * @return
+	 */
+	public boolean isCompliant(MassSummary massSummary, double lowerLimit, double upperLimit) {
+		double value = massSummary.getMassWithMargin();
+		if (value >= lowerLimit && value <= upperLimit) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Check if mass equipment is compliant
+	 * 
+	 * @param verificationMethod
+	 * @param massEquipment
+	 * @return
+	 */
+	public boolean isCompliant(MassEquipment massEquipment, double lowerLimit, double upperLimit) {
+		double value = massEquipment.getMassWithMargin();
+		if (value >= lowerLimit && value <= upperLimit) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Update the status of the verification method based on the compliance status
+	 * of the values
+	 * 
+	 * @param isCompliant the values compliance status
+	 */
+	protected void updateStatus(EditingDomain editingDomain, CompoundCommand cc, boolean isCompliant) {
+		if (isCompliant && getStatus().equals(IVerification.STATUS_Open_NAME)
+				|| getStatus().equals(IVerification.STATUS_NonCompliant_NAME)) {
+			cc.append(setStatusCompliant(editingDomain));
+			// If all values changed to be complaint set status to be complaint
+		} else if (!isCompliant) {
+			cc.append(setStatusNonCompliant(editingDomain));
+			// If status was non or partly compliant and values changed to be non-complaint
+			// set status to be non-complaint
+		}
+	}
+
 }

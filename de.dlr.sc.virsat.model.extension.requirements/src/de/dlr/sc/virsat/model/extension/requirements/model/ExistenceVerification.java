@@ -13,8 +13,13 @@ package de.dlr.sc.virsat.model.extension.requirements.model;
 // * Import Statements
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.extension.requirements.verification.build.steps.IAutomaticVerification;
 
 import javax.xml.bind.annotation.XmlType;
+
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 
@@ -31,7 +36,18 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
  * 
  */
 @XmlType(name = AExistenceVerification.FULL_QUALIFIED_CATEGORY_NAME)
-public  class ExistenceVerification extends AExistenceVerification {
+public  class ExistenceVerification extends AExistenceVerification implements IAutomaticVerification {
+
+	@Override
+	public Command runCustomVerification(EditingDomain editingDomain, Requirement requirement, IProgressMonitor monitor) {
+		
+		if (requirement.getTrace().getTarget().isEmpty()) {
+			return setStatusOpen(editingDomain);
+		} else if (getStatus().equals(IVerification.STATUS_Open_NAME)) {
+			return setStatusPartlyCompliant(editingDomain);
+		}
+		return null;
+	}
 	
 	/**
 	 * Constructor of Concept Class
