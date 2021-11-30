@@ -54,16 +54,25 @@ public class QudvResourceTest extends AModelAccessResourceTest {
 	private List<AQuantityKind> quantityKinds;
 	private List<AUnit> units;
 	private Prefix prefix;
+	private int prefixCount;
 	private AUnit unitNotDerived;
 	private AQuantityKind qkNotDerived;
 	private DerivedUnit unitDerived;
 	private DerivedQuantityKind qkDerived;
+
+	static final String UNKNOWN = "unknown";
+	static final String UNIT_URI = ModelAccessResource.QUDV + "/" + QudvResource.UNIT;
+	static final String QK_URI = ModelAccessResource.QUDV + "/" + QudvResource.QUANTITY_KIND;
+	static final String PREFIX_URI = ModelAccessResource.QUDV + "/" + QudvResource.PREFIX;
+	static final String UNIT_FACTOR_URI = ModelAccessResource.QUDV + "/" + QudvResource.UNIT_FACTOR;
+	static final String QK_FACTOR_URI = ModelAccessResource.QUDV + "/" + QudvResource.QUANTITY_KIND_FACTOR;
 	
 	@Before
 	public void setUpModel() throws Exception {
 		super.setUpModel();
 		
 		prefixes = unitManagement.getSystemOfUnit().getPrefix();
+		prefixCount = prefixes.size();
 		quantityKinds = systemOfQuantities.getQuantityKind();
 		units = unitManagement.getSystemOfUnit().getUnit();
 		
@@ -104,14 +113,14 @@ public class QudvResourceTest extends AModelAccessResourceTest {
 	@Test
 	public void testUnitGet() throws Exception {
 		IBeanUuid unitBean = new BeanUnitFactory().getInstanceFor(unitNotDerived);
-		testGet(unitBean, ModelAccessResource.QUDV + "/" + QudvResource.UNIT, new Class[] {unitBean.getClass()});
+		testGet(unitBean, UNIT_URI, new Class[] {unitBean.getClass()});
 	}
 	
 	@Test
 	public void testUnitPut() {
 		IBeanUnit<? extends AUnit> unitBean = new BeanUnitFactory().getInstanceFor(unitNotDerived);
 		
-		Response response = getTestRequestBuilder(ModelAccessResource.QUDV + "/" + QudvResource.UNIT)
+		Response response = getTestRequestBuilder(UNIT_URI)
 				.put(Entity.entity((BeanUnitSimple) unitBean, MediaType.APPLICATION_JSON_TYPE));
 		
 		assertEquals(HttpStatus.OK_200, response.getStatus());
@@ -121,7 +130,7 @@ public class QudvResourceTest extends AModelAccessResourceTest {
 	public void testUnitCreate() {
 		int unitCount = units.size();
 		Response response = getTestRequestBuilderWithQueryParam(
-				ModelAccessResource.QUDV + "/" + QudvResource.UNIT, ModelAccessResource.QP_NAME, BeanUnitSimple.class.getSimpleName())
+				UNIT_URI, ModelAccessResource.QP_NAME, BeanUnitSimple.class.getSimpleName())
 				.post(Entity.json(null));
 		
 		assertEquals(HttpStatus.OK_200, response.getStatus());
@@ -137,7 +146,7 @@ public class QudvResourceTest extends AModelAccessResourceTest {
 	@Test
 	public void testUnitDelete() {
 		int unitCount = units.size();
-		Response response = getTestRequestBuilder(ModelAccessResource.QUDV + "/" + QudvResource.UNIT + "/" + unitNotDerived.getUuid().toString()).delete();
+		Response response = getTestRequestBuilder(UNIT_URI + "/" + unitNotDerived.getUuid().toString()).delete();
 		
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 		assertEquals("One unit removed", unitCount - 1, unitManagement.getSystemOfUnit().getUnit().size());
@@ -146,14 +155,14 @@ public class QudvResourceTest extends AModelAccessResourceTest {
 	@Test
 	public void testQuantityKindGet() throws Exception {
 		IBeanUuid quantityKindBean = new BeanQuantityKindFactory().getInstanceFor(qkNotDerived);
-		testGet(quantityKindBean, ModelAccessResource.QUDV + "/" + QudvResource.QUANTITY_KIND, new Class[] {quantityKindBean.getClass()});
+		testGet(quantityKindBean, QK_URI, new Class[] {quantityKindBean.getClass()});
 	}
 	
 	@Test
 	public void testQuantityKindPut() throws JAXBException {
 		IBeanQuantityKind<? extends AQuantityKind> quantityKindBean = new BeanQuantityKindFactory().getInstanceFor(qkNotDerived);
 		
-		Response response = getTestRequestBuilder(ModelAccessResource.QUDV + "/" + QudvResource.QUANTITY_KIND)
+		Response response = getTestRequestBuilder(QK_URI)
 				.put(Entity.entity((BeanQuantityKindSimple) quantityKindBean, MediaType.APPLICATION_JSON_TYPE));
 		
 		assertEquals(HttpStatus.OK_200, response.getStatus());
@@ -163,7 +172,7 @@ public class QudvResourceTest extends AModelAccessResourceTest {
 	public void testQuantityKindCreate() {
 		int qkCount = quantityKinds.size();
 		Response response = getTestRequestBuilderWithQueryParam(
-				ModelAccessResource.QUDV + "/" + QudvResource.QUANTITY_KIND, ModelAccessResource.QP_NAME, BeanQuantityKindSimple.class.getSimpleName())
+				QK_URI, ModelAccessResource.QP_NAME, BeanQuantityKindSimple.class.getSimpleName())
 				.post(Entity.json(null));
 		
 		assertEquals(HttpStatus.OK_200, response.getStatus());
@@ -179,7 +188,7 @@ public class QudvResourceTest extends AModelAccessResourceTest {
 	@Test
 	public void testQuantityKindDelete() {
 		int qkCount = quantityKinds.size();
-		Response response = getTestRequestBuilder(ModelAccessResource.QUDV + "/" + QudvResource.QUANTITY_KIND + "/" + qkNoReference.getUuid().toString()).delete();
+		Response response = getTestRequestBuilder(QK_URI + "/" + qkNoReference.getUuid().toString()).delete();
 		
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 		assertEquals("One quantity kind removed", qkCount - 1, quantityKinds.size());
@@ -188,14 +197,14 @@ public class QudvResourceTest extends AModelAccessResourceTest {
 	@Test
 	public void testPrefixGet() throws Exception {
 		IBeanUuid prefixBean = new BeanPrefix(prefix);
-		testGet(prefixBean, ModelAccessResource.QUDV + "/" + QudvResource.PREFIX, new Class[] {prefixBean.getClass()});
+		testGet(prefixBean, PREFIX_URI, new Class[] {prefixBean.getClass()});
 	}
 	
 	@Test
 	public void testPrefixPut() throws JAXBException {
 		IBeanUuid prefixBean = new BeanPrefix(prefix);
 		
-		Response response = getTestRequestBuilder(ModelAccessResource.QUDV + "/" + QudvResource.PREFIX)
+		Response response = getTestRequestBuilder(PREFIX_URI)
 				.put(Entity.entity(prefixBean, MediaType.APPLICATION_JSON_TYPE));
 		
 		assertEquals(HttpStatus.OK_200, response.getStatus());
@@ -203,8 +212,7 @@ public class QudvResourceTest extends AModelAccessResourceTest {
 	
 	@Test
 	public void testPrefixCreate() {
-		int prefixCount = prefixes.size();
-		Response response = getTestRequestBuilder(ModelAccessResource.QUDV + "/" + QudvResource.PREFIX)
+		Response response = getTestRequestBuilder(PREFIX_URI)
 				.post(Entity.json(null));
 		
 		assertEquals(HttpStatus.OK_200, response.getStatus());
@@ -218,8 +226,7 @@ public class QudvResourceTest extends AModelAccessResourceTest {
 	
 	@Test
 	public void testPrefixDelete() {
-		int prefixCount = prefixes.size();
-		Response response = getTestRequestBuilder(ModelAccessResource.QUDV + "/" + QudvResource.PREFIX + "/" + prefix.getUuid().toString()).delete();
+		Response response = getTestRequestBuilder(PREFIX_URI + "/" + prefix.getUuid().toString()).delete();
 		
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 		assertEquals("One prefix removed", prefixCount - 1, prefixes.size());
@@ -229,7 +236,7 @@ public class QudvResourceTest extends AModelAccessResourceTest {
 	public void testQuantityKindFactorCreate() {
 		int qkFactorCount = qkDerived.getFactor().size();
 		Response response = getTestRequestBuilder(
-				ModelAccessResource.QUDV + "/" + QudvResource.QUANTITY_KIND_FACTOR + "/" + qkDerived.getUuid().toString())
+				QK_FACTOR_URI + "/" + qkDerived.getUuid().toString())
 				.post(Entity.json(null));
 		
 		assertEquals(HttpStatus.OK_200, response.getStatus());
@@ -239,7 +246,7 @@ public class QudvResourceTest extends AModelAccessResourceTest {
 	@Test
 	public void testQuantityKindFactorDelete() {
 		int qkFactorCount = qkDerived.getFactor().size();
-		Response response = getTestRequestBuilder(ModelAccessResource.QUDV + "/" + QudvResource.QUANTITY_KIND_FACTOR + "/" + qkDerived.getFactor().get(0).getUuid().toString()).delete();
+		Response response = getTestRequestBuilder(QK_FACTOR_URI + "/" + qkDerived.getFactor().get(0).getUuid().toString()).delete();
 		
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 		assertEquals("One unit factor removed", qkFactorCount - 1, qkDerived.getFactor().size());
@@ -249,7 +256,7 @@ public class QudvResourceTest extends AModelAccessResourceTest {
 	public void testUnitFactorCreate() {
 		int unitFactorCount = unitDerived.getFactor().size();
 		Response response = getTestRequestBuilder(
-				ModelAccessResource.QUDV + "/" + QudvResource.UNIT_FACTOR + "/" + unitDerived.getUuid().toString())
+				UNIT_FACTOR_URI + "/" + unitDerived.getUuid().toString())
 				.post(Entity.json(null));
 		
 		assertEquals(HttpStatus.OK_200, response.getStatus());
@@ -259,7 +266,7 @@ public class QudvResourceTest extends AModelAccessResourceTest {
 	@Test
 	public void testUnitFactorDelete() {
 		int unitFactorCount = unitDerived.getFactor().size();
-		Response response = getTestRequestBuilder(ModelAccessResource.QUDV + "/" + QudvResource.UNIT_FACTOR + "/" + unitDerived.getFactor().get(0).getUuid().toString()).delete();
+		Response response = getTestRequestBuilder(UNIT_FACTOR_URI + "/" + unitDerived.getFactor().get(0).getUuid().toString()).delete();
 		
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 		assertEquals("One unit factor removed", unitFactorCount - 1, unitDerived.getFactor().size());
@@ -267,32 +274,32 @@ public class QudvResourceTest extends AModelAccessResourceTest {
 	
 	@Test
 	public void testErrorResponses() {
-		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.QUDV + "/" + QudvResource.UNIT + "/unknown").get());
+		assertNotFoundResponse(getTestRequestBuilder(UNIT_URI + "/" + UNKNOWN).get());
 		assertBadRequestResponse(getTestRequestBuilderWithQueryParam(
-				ModelAccessResource.QUDV + "/" + QudvResource.UNIT, ModelAccessResource.QP_NAME, "unknown").post(Entity.json(null)),
+				UNIT_URI, ModelAccessResource.QP_NAME, UNKNOWN).post(Entity.json(null)),
 				ApiErrorHelper.INVALID_TYPE_ERROR + ": unknown");
-		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.QUDV + "/" + QudvResource.UNIT + "/unknown").delete());
+		assertNotFoundResponse(getTestRequestBuilder(UNIT_URI + "/" + UNKNOWN).delete());
 		
-		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.QUDV + "/" + QudvResource.QUANTITY_KIND + "/unknown").get());
+		assertNotFoundResponse(getTestRequestBuilder(QK_URI + "/" + UNKNOWN).get());
 		assertBadRequestResponse(getTestRequestBuilderWithQueryParam(
-				ModelAccessResource.QUDV + "/" + QudvResource.QUANTITY_KIND, ModelAccessResource.QP_NAME, "unknown").post(Entity.json(null)),
+				QK_URI, ModelAccessResource.QP_NAME, UNKNOWN).post(Entity.json(null)),
 				ApiErrorHelper.INVALID_TYPE_ERROR + ": unknown");
-		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.QUDV + "/" + QudvResource.QUANTITY_KIND + "/unknown").delete());
-		assertNotExecuteableErrorResponse(getTestRequestBuilder(ModelAccessResource.QUDV + "/" + QudvResource.QUANTITY_KIND + "/" + qkNotDerived.getUuid().toString()).delete());
+		assertNotFoundResponse(getTestRequestBuilder(QK_URI + "/unknown").delete());
+		assertNotExecuteableErrorResponse(getTestRequestBuilder(QK_URI + "/" + qkNotDerived.getUuid().toString()).delete());
 		
-		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.QUDV + "/" + QudvResource.PREFIX + "/unknown").get());
-		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.QUDV + "/" + QudvResource.PREFIX + "/unknown").delete());
+		assertNotFoundResponse(getTestRequestBuilder(PREFIX_URI + "/" + UNKNOWN).get());
+		assertNotFoundResponse(getTestRequestBuilder(PREFIX_URI + "/" + UNKNOWN).delete());
 		
-		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.QUDV + "/" + QudvResource.UNIT_FACTOR + "/unknown").post(Entity.json(null)));
-		assertBadRequestResponse(getTestRequestBuilder(ModelAccessResource.QUDV + "/" + QudvResource.UNIT_FACTOR + "/"
+		assertNotFoundResponse(getTestRequestBuilder(UNIT_FACTOR_URI + "/" + UNKNOWN).post(Entity.json(null)));
+		assertBadRequestResponse(getTestRequestBuilder(UNIT_FACTOR_URI + "/"
 				+ unitNotDerived.getUuid().toString()).post(Entity.json(null)),
 				ApiErrorHelper.INVALID_TYPE_ERROR + ": " + QudvResource.NOT_DERIVED);
-		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.QUDV + "/" + QudvResource.UNIT_FACTOR + "/unknown").delete());
+		assertNotFoundResponse(getTestRequestBuilder(UNIT_FACTOR_URI + "/" + UNKNOWN).delete());
 		
-		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.QUDV + "/" + QudvResource.QUANTITY_KIND_FACTOR + "/unknown").post(Entity.json(null)));
-		assertBadRequestResponse(getTestRequestBuilder(ModelAccessResource.QUDV + "/" + QudvResource.QUANTITY_KIND_FACTOR + "/"
+		assertNotFoundResponse(getTestRequestBuilder(QK_FACTOR_URI + "/" + UNKNOWN).post(Entity.json(null)));
+		assertBadRequestResponse(getTestRequestBuilder(QK_FACTOR_URI + "/"
 				+ qkNotDerived.getUuid().toString()).post(Entity.json(null)),
 				ApiErrorHelper.INVALID_TYPE_ERROR + ": " + QudvResource.NOT_DERIVED);
-		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.QUDV + "/" + QudvResource.QUANTITY_KIND_FACTOR + "/unknown").delete());
+		assertNotFoundResponse(getTestRequestBuilder(QK_FACTOR_URI + "/" + UNKNOWN).delete());
 	}
 }
