@@ -1080,19 +1080,19 @@
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementElementsAttributeValue">
 		</uiSnippet>
 		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementVerificationDefaultVerification"
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementVerificationsDefaultVerification"
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationDefaultVerification">
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationsDefaultVerification">
 		</uiSnippet>
 		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementVerificationExistenceVerification"
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementVerificationsExistenceVerification"
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationExistenceVerification">
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationsExistenceVerification">
 		</uiSnippet>
 		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementVerificationBoundedValueVerification"
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementVerificationsBoundedValueVerification"
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationBoundedValueVerification">
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationsBoundedValueVerification">
 		</uiSnippet>
 		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementChildrenRequirementGroup"
@@ -1300,12 +1300,12 @@
 	 	<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementVerificationDefaultVerification"
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section.Verifications"
-		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationDefaultVerification">
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationsDefaultVerification">
 		</uiSnippet>
 		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementVerificationExistenceVerification"
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section.Verifications"
-		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationExistenceVerification">
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationsExistenceVerification">
 		</uiSnippet>
 		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementChildrenRequirement"

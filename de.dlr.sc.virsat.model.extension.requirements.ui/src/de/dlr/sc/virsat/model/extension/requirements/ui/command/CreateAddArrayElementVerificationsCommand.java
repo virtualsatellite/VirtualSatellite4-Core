@@ -7,11 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.requirements.ui.snippet;
-
-import org.eclipse.emf.ecore.EObject;
-
-import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
+package de.dlr.sc.virsat.model.extension.requirements.ui.command;
 
 
 /**
@@ -22,11 +18,5 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
  * 
  * 
  */
-public class UiSnippetTableRequirementVerificationBoundedValueVerification extends AUiSnippetTableRequirementVerificationBoundedValueVerification implements IUiSnippet {
-	
-	@Override
-	public boolean isActive(EObject model) {
-		return false;
-	}
-	
+public class CreateAddArrayElementVerificationsCommand extends ACreateAddArrayElementVerificationsCommand {
 }

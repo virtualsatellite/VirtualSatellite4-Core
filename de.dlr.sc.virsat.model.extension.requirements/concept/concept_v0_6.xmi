@@ -56,7 +56,7 @@
       <values name="NonCompliant" value="3"/>
       <values name="NotApplicable" value="4"/>
     </properties>
-    <properties xsi:type="dvlm_cppd:ComposedProperty" name="verification" type="de.dlr.sc.virsat.model.extension.requirements.IVerification">
+    <properties xsi:type="dvlm_cppd:ComposedProperty" name="verifications" type="de.dlr.sc.virsat.model.extension.requirements.IVerification">
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
     </properties>
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="trace" type="de.dlr.sc.virsat.model.extension.requirements.RequirementTrace"/>

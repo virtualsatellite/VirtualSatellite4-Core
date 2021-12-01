@@ -270,12 +270,12 @@ public class RequirementsAttributeLabelProvider extends VirSatTransactionalAdapt
 	 * @return the label
 	 */
 	protected String getVerificationLabel(Requirement req) {
-		if (req.getVerification().isEmpty()) {
+		if (req.getVerifications().isEmpty()) {
 			return EMPTY_TRACE_STRING;
 		} else {
 			List<String> verificationStringArtifacts = new ArrayList<String>();
 			
-			for (IVerification verification : req.getVerification()) {
+			for (IVerification verification : req.getVerifications()) {
 				verificationStringArtifacts.add(verification.getName());
 			}
 
