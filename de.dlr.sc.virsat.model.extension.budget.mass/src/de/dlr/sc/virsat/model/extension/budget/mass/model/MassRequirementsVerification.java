@@ -85,15 +85,15 @@ public class MassRequirementsVerification extends AMassRequirementsVerification 
 		if (requirement.getTrace().getTarget().isEmpty()) {
 			cc.append(setStatusOpen(editingDomain));
 		} else {
+			boolean isCompliantForAllTargets = true;
 			for (GenericCategory target : requirement.getTrace().getTarget()) {
-				boolean isCompliant = false;
 				if (target instanceof MassEquipment) {
-					isCompliant = isCompliant((MassEquipment) target, lowerLimit, upperLimit);
+					isCompliantForAllTargets &= isCompliant((MassEquipment) target, lowerLimit, upperLimit);
 				} else if (target instanceof MassSummary) {
-					isCompliant = isCompliant((MassSummary) target, lowerLimit, upperLimit);
+					isCompliantForAllTargets &= isCompliant((MassSummary) target, lowerLimit, upperLimit);
 				}
-				updateStatus(editingDomain, cc, isCompliant);
 			}
+			updateStatus(editingDomain, cc, isCompliantForAllTargets);
 		}
 
 		return cc;
