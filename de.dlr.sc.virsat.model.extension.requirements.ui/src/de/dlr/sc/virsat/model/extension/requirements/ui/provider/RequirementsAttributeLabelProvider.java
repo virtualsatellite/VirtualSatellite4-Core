@@ -26,6 +26,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyInstanceValueSwitch;
+import de.dlr.sc.virsat.model.dvlm.general.IName;
 import de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue;
 import de.dlr.sc.virsat.model.extension.requirements.model.IVerification;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
@@ -301,8 +302,8 @@ public class RequirementsAttributeLabelProvider extends VirSatTransactionalAdapt
 			for (APropertyInstance targetRPI : ((ArrayInstance) targetProperty).getArrayInstances()) {
 				CategoryAssignment target = (CategoryAssignment) ((ReferencePropertyInstance) targetRPI)
 						.getReference();
-				if (target != null) {
-					traceStringArtifacts.add(target.getName());
+				if (target != null && target.eContainer() != null && target.eContainer() instanceof IName) {
+					traceStringArtifacts.add(((IName) target.eContainer()).getName());
 				}
 			}
 
