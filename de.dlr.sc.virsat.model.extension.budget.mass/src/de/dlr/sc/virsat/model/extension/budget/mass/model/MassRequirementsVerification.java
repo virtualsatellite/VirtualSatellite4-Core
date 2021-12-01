@@ -136,8 +136,8 @@ public class MassRequirementsVerification extends AMassRequirementsVerification 
 	 * @param isCompliant the values compliance status
 	 */
 	protected void updateStatus(EditingDomain editingDomain, CompoundCommand cc, boolean isCompliant) {
-		if (isCompliant && getStatus().equals(IVerification.STATUS_Open_NAME)
-				|| getStatus().equals(IVerification.STATUS_NonCompliant_NAME)) {
+		if (isCompliant && (getStatus().equals(IVerification.STATUS_Open_NAME)
+				|| getStatus().equals(IVerification.STATUS_NonCompliant_NAME))) {
 			cc.append(setStatusCompliant(editingDomain));
 			// If all values changed to be complaint set status to be complaint
 		} else if (!isCompliant) {
