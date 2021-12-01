@@ -9,17 +9,11 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.ui.snippet;
 
-import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ReferenceProperty;
-import de.dlr.sc.virsat.model.extension.requirements.ui.celleditor.RequirementTraceTargetEditingSupport;
-import de.dlr.sc.virsat.uiengine.ui.cellEditor.aproperties.PropertyInstanceEditingSupportFactory;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
 
 
@@ -31,21 +25,20 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
  * 
  * 
  */
-public class UiSnippetTableRequirementVerificationsExistenceVerification extends AUiSnippetTableRequirementVerificationsExistenceVerification implements IUiSnippet {
+public class UiSnippetTableRequirementVerificationsExistenceVerification extends AUISnippetTableRequirementsVerification implements IUiSnippet {
 	
+	public UiSnippetTableRequirementVerificationsExistenceVerification() {
+		super("de.dlr.sc.virsat.model.extension.requirements",
+				"de.dlr.sc.virsat.model.extension.requirements",
+				"ExistenceVerification",
+				"de.dlr.sc.virsat.model.extension.requirements.ExistenceVerification",
+				STYLE_ADD_BUTTON | STYLE_REMOVE_BUTTON | STYLE_EDITOR_BUTTON);
+	}
+
 	private static final int TABLE_HIGHT = 80;
 	private static final String SECTION_HEADING = "System Model Existence Verification";
-	private static final String SECTION_DESCRIPTION = "Verificication method to ensure that a particular system model element is created.";
+	private static final String SECTION_DESCRIPTION = "Verification method to ensure that a particular system model element is created.";
 
-	@Override
-	protected EditingSupport createEditingSupport(EditingDomain editingDomain, AProperty property) {
-
-		if (property instanceof ReferenceProperty) {
-			return new RequirementTraceTargetEditingSupport(editingDomain, columnViewer, (ReferenceProperty) property, toolkit);
-		}
-
-		return PropertyInstanceEditingSupportFactory.INSTANCE.createEditingSupportFor(editingDomain, columnViewer, property);
-	}
 
 	@Override
 	protected Table createDefaultTable(FormToolkit toolkit, Composite sectionBody) {
@@ -56,8 +49,12 @@ public class UiSnippetTableRequirementVerificationsExistenceVerification extends
 	}
 
 	@Override
-	public Composite createSectionBody(FormToolkit toolkit, String sectionHeading, String sectionDescription,
-			int numberColumns) {
-		return super.createSectionBody(toolkit, SECTION_HEADING, SECTION_DESCRIPTION, numberColumns);
+	protected String getSnippetTitle() {
+		return SECTION_HEADING;
+	}
+	
+	@Override
+	protected String getSnippetDescription() {
+		return SECTION_DESCRIPTION;
 	}
 }

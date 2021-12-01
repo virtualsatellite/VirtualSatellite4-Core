@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.budget.mass.ui.snippet;
 
+import de.dlr.sc.virsat.model.extension.requirements.ui.snippet.AUISnippetTableRequirementsVerification;
+
 public class UiSnippetTableRequirementVerificationMassRequirementsVerification extends AUISnippetTableRequirementsVerification {
 
 	/**

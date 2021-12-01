@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.budget.mass.ui.snippet;
+package de.dlr.sc.virsat.model.extension.requirements.ui.snippet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,16 +69,11 @@ public abstract class AUISnippetTableRequirementsVerification extends AUiSnippet
 	@Override
 	public Composite createSectionBody(FormToolkit toolkit, String sectionHeading, String sectionDescription,
 			int numberColumns) {
-		return super.createSectionBody(toolkit, "Add a " + categoryId + " for elements of the " + getConceptName(activeForConcept) + " Concept", 
-				getSnippetDescription(), numberColumns);
+		return super.createSectionBody(toolkit, getSnippetTitle(), getSnippetDescription(), numberColumns);
 	}
 	
-	protected String getConceptName(Concept concept) {
-		if (!concept.getDisplayName().isEmpty()) {
-			return concept.getDisplayName();
-		} else {
-			return concept.getName();
-		}
+	protected String getSnippetTitle() {
+		return "Add a " + categoryId + " for elements of the " + getConceptName(activeForConcept) + " Concept";
 	}
 	
 	protected String getSnippetDescription() {
@@ -86,6 +81,14 @@ public abstract class AUISnippetTableRequirementsVerification extends AUiSnippet
 			return GENERIC_SNIPPET_DESCRIPTION;
 		} else {
 			return DESCRIPTION_WITH_SPECIFIC_PROPERTIES + getPropertyList();
+		}
+	}
+	
+	protected String getConceptName(Concept concept) {
+		if (!concept.getDisplayName().isEmpty()) {
+			return concept.getDisplayName();
+		} else {
+			return concept.getName();
 		}
 	}
 	
