@@ -1298,12 +1298,12 @@
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementsConfigurationTypeDefinitionsRequirementType">
 		</uiSnippet>
 	 	<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementVerificationDefaultVerification"
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementVerificationsDefaultVerification"
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section.Verifications"
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationsDefaultVerification">
 		</uiSnippet>
 		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementVerificationExistenceVerification"
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementVerificationsExistenceVerification"
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section.Verifications"
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationsExistenceVerification">
 		</uiSnippet>
