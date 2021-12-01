@@ -159,5 +159,13 @@
 </extension>
 	<!-- Plugin.XML Protected Region End -->
 	<!-- Plugin.XML Protected Region Start -->
+	<extension
+         id="de.dlr.sc.virsat.model.extension.requirements.build.verification"
+         name="VirSat Requirements Verification Builder"
+         point="org.eclipse.core.resources.builders">
+      <builder hasNature="true">
+         <run class="de.dlr.sc.virsat.model.extension.requirements.verification.build.RequirementsVerificationBuilder" />
+      </builder>
+   </extension>
 	<!-- Plugin.XML Protected Region End -->
 </plugin>
