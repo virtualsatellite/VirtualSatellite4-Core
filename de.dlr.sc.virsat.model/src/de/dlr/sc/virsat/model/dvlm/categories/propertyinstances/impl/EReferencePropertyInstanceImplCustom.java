@@ -44,8 +44,8 @@ public class EReferencePropertyInstanceImplCustom extends EReferencePropertyInst
 		if (type.getName().equals(E_OBJECT_NAME) || equalsEClass(type, newInstanceEClass)) {
 			return true;
 		} else {
-			for (EClass superType : type.getEAllSuperTypes()) {
-				if (equalsEClass(newInstanceEClass, superType)) {
+			for (EClass superType : newInstanceEClass.getEAllSuperTypes()) {
+				if (equalsEClass(type, superType)) {
 					return true;
 				}
 			}
