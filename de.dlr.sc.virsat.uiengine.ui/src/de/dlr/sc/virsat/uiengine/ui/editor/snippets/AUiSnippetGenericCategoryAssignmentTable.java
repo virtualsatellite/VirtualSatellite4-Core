@@ -41,6 +41,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyInstanceValueSwitch;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
@@ -49,6 +50,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import de.dlr.sc.virsat.model.dvlm.general.IInstance;
 import de.dlr.sc.virsat.model.dvlm.general.IName;
+import de.dlr.sc.virsat.model.dvlm.general.IQualifiedName;
 import de.dlr.sc.virsat.model.dvlm.inheritance.IInheritanceLink;
 import de.dlr.sc.virsat.model.dvlm.inheritance.InheritanceCopier;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
@@ -197,7 +199,16 @@ public abstract class AUiSnippetGenericCategoryAssignmentTable extends AUiSnippe
 									ATypeInstance tiArrayInstance = valueSwitch.doSwitch(piArrayInstance);
 									redirectNotification(tiArrayInstance, object);
 								}
+							} 
+							if (propertyInstance instanceof EReferencePropertyInstance) {
+								EObject value = ((EReferencePropertyInstance) propertyInstance).getReference();
+								if (value instanceof IName) {
+									return ((IName) value).getName();
+								} else if (value instanceof IQualifiedName) {
+									return ((IQualifiedName) value).getName();
+								}
 							}
+							
 							
 							return valueSwitch.getValueString(propertyInstance);
 						}

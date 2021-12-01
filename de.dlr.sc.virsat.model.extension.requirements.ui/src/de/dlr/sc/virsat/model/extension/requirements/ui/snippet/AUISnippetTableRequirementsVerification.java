@@ -129,7 +129,7 @@ public abstract class AUISnippetTableRequirementsVerification extends AUiSnippet
 			super.createAddButton(toolkit, editingDomain, compositeButtons);
 		} else {
 			for (AProperty prop : specificProperties) {
-				Button buttonAdd = toolkit.createButton(compositeButtons, "Add Verification for" + prop.getName(), SWT.PUSH);
+				Button buttonAdd = toolkit.createButton(compositeButtons, "Add Verification for " + prop.getName(), SWT.PUSH);
 				buttonAdd.addSelectionListener(new SelectionListener() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
