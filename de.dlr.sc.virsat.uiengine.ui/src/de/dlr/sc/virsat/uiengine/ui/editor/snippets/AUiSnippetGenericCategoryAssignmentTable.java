@@ -102,10 +102,7 @@ public abstract class AUiSnippetGenericCategoryAssignmentTable extends AUiSnippe
 			}
 			
 			for (AProperty property : categoryModel.getAllProperties()) {
-				
-				TableViewerColumn colProperty = (TableViewerColumn) createDefaultColumn(property.getName());
-				colProperty.getColumn().setToolTipText(property.getDescription());
-				colProperty.setEditingSupport(createEditingSupport(editingDomain, property));
+				createPropertyTableColumn(editingDomain, property);
 			}
 			
 			if (model instanceof StructuralElementInstance) {
@@ -114,6 +111,19 @@ public abstract class AUiSnippetGenericCategoryAssignmentTable extends AUiSnippe
 					createDefaultColumn(COLUMN_TEXT_ORIGIN);
 				}
 			}
+		}
+
+		/**
+		 * Create a table column for a property, may be overwritten to customize the column
+		 * @param editingDomain the editing domain
+		 * @param property the property for which the column is created
+		 * @return the table view column in case it is to be customized
+		 */
+		protected TableViewerColumn createPropertyTableColumn(EditingDomain editingDomain, AProperty property) {
+			TableViewerColumn colProperty = (TableViewerColumn) createDefaultColumn(property.getName());
+			colProperty.getColumn().setToolTipText(property.getDescription());
+			colProperty.setEditingSupport(createEditingSupport(editingDomain, property));
+			return colProperty;
 		}
 		
 		/**
