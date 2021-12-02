@@ -30,13 +30,13 @@ class ConceptLanguageScopeProvider extends ImportedNamespaceAwareLocalScopeProvi
 
 	override getScope(EObject context, EReference reference) {
 		
-		if (context instanceof AProperty  && reference.name.equals("verificationType")) {
-			var scope = super.getScope(context, reference)
-			var filteredScope = scope.allElements.
-				map[t | t.EObjectOrProxy]
-				.filter[t| t instanceof Category && (t as Category).isIsVerification]
-			return Scopes.scopeFor(filteredScope, IScope.NULLSCOPE);
-		}
+//		if (context instanceof AProperty  && reference.name.equals("verificationType")) {
+//			var scope = super.getScope(context, reference)
+//			var filteredScope = scope.allElements.
+//				map[t | t.EObjectOrProxy]
+//				.filter[t| t instanceof Category && (t as Category).isIsVerification]
+//			return Scopes.scopeFor(filteredScope, IScope.NULLSCOPE);
+//		}
 		
 		super.getScope(context, reference)
 	}
