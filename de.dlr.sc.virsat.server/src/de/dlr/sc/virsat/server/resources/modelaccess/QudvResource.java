@@ -323,7 +323,7 @@ public class QudvResource {
 			
 			Command addCommand = AddCommand.create(parentResource.getEd(), parentResource.getRepository().getUnitManagement().getSystemOfUnit(),
 					QudvPackage.SYSTEM_OF_UNITS__UNIT, createdObject);
-			parentResource.getEd().getCommandStack().execute(addCommand);
+			ApiErrorHelper.executeCommandIffCanExecute(addCommand, parentResource.getEd(), parentResource.getUser());
 			
 			parentResource.synchronize();
 			return Response.ok(createdObject.getUuid().toString()).build();
@@ -361,7 +361,7 @@ public class QudvResource {
 			}
 			
 			Command removeCommand = RemoveCommand.create(parentResource.getEd(), parentResource.getRepository().getUnitManagement().getSystemOfUnit(), QudvPackage.SYSTEM_OF_UNITS__UNIT, unit);
-			parentResource.getEd().getCommandStack().execute(removeCommand);
+			ApiErrorHelper.executeCommandIffCanExecute(removeCommand, parentResource.getEd(), parentResource.getUser());
 			
 			parentResource.synchronize();
 			return Response.ok().build();
@@ -467,7 +467,7 @@ public class QudvResource {
 			
 			Command addCommand = AddCommand.create(parentResource.getEd(), parentResource.getRepository().getUnitManagement().getSystemOfUnit().getSystemOfQuantities().get(0),
 					QudvPackage.SYSTEM_OF_QUANTITIES__QUANTITY_KIND, createdObject);
-			parentResource.getEd().getCommandStack().execute(addCommand);
+			ApiErrorHelper.executeCommandIffCanExecute(addCommand, parentResource.getEd(), parentResource.getUser());
 			
 			parentResource.synchronize();
 			return Response.ok(createdObject.getUuid().toString()).build();
@@ -492,6 +492,7 @@ public class QudvResource {
 			@ApiResponse(
 					code = HttpStatus.BAD_REQUEST_400,
 					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
+			// TODO: this should be everwhere were we call executeCommandIff in all classes
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.NOT_EXECUTEABLE),
@@ -511,10 +512,7 @@ public class QudvResource {
 					QudvPackage.SYSTEM_OF_QUANTITIES__QUANTITY_KIND, qk);
 			
 			// Not executable if there exists an reference where this qk is used (e.g. in a unit)
-			if (!removeCommand.canExecute()) {
-				return ApiErrorHelper.createNotExecuteableErrorResponse();
-			}
-			parentResource.getEd().getCommandStack().execute(removeCommand);
+			ApiErrorHelper.executeCommandIffCanExecute(removeCommand, parentResource.getEd(), parentResource.getUser());
 			
 			parentResource.synchronize();
 			return Response.ok().build();
@@ -610,7 +608,7 @@ public class QudvResource {
 			Prefix prefix = QudvFactory.eINSTANCE.createPrefix();
 			Command addCommand = AddCommand.create(parentResource.getEd(), parentResource.getRepository().getUnitManagement().getSystemOfUnit(),
 					QudvPackage.SYSTEM_OF_UNITS__PREFIX, prefix);
-			parentResource.getEd().getCommandStack().execute(addCommand);
+			ApiErrorHelper.executeCommandIffCanExecute(addCommand, parentResource.getEd(), parentResource.getUser());
 			
 			parentResource.synchronize();
 			return Response.ok(prefix.getUuid().toString()).build();
@@ -649,7 +647,7 @@ public class QudvResource {
 			
 			Command removeCommand = RemoveCommand.create(parentResource.getEd(), parentResource.getRepository().getUnitManagement().getSystemOfUnit(),
 					QudvPackage.SYSTEM_OF_UNITS__PREFIX, prefix);
-			parentResource.getEd().getCommandStack().execute(removeCommand);
+			ApiErrorHelper.executeCommandIffCanExecute(removeCommand, parentResource.getEd(), parentResource.getUser());
 			
 			parentResource.synchronize();
 			return Response.ok().build();
@@ -702,7 +700,7 @@ public class QudvResource {
 			UnitFactor factor = QudvFactory.eINSTANCE.createUnitFactor();
 			Command addCommand = AddCommand.create(parentResource.getEd(), unit,
 					QudvPackage.DERIVED_UNIT__FACTOR, factor);
-			parentResource.getEd().getCommandStack().execute(addCommand);
+			ApiErrorHelper.executeCommandIffCanExecute(addCommand, parentResource.getEd(), parentResource.getUser());
 			
 			parentResource.synchronize();
 			return Response.ok(factor.getUuid().toString()).build();
@@ -740,7 +738,7 @@ public class QudvResource {
 			}
 			
 			Command removeCommand = RemoveCommand.create(parentResource.getEd(), factor.eContainer(), QudvPackage.DERIVED_UNIT__FACTOR, factor);
-			parentResource.getEd().getCommandStack().execute(removeCommand);
+			ApiErrorHelper.executeCommandIffCanExecute(removeCommand, parentResource.getEd(), parentResource.getUser());
 			
 			parentResource.synchronize();
 			return Response.ok().build();
@@ -790,7 +788,7 @@ public class QudvResource {
 			QuantityKindFactor factor = QudvFactory.eINSTANCE.createQuantityKindFactor();
 			Command addCommand = AddCommand.create(parentResource.getEd(), quantityKind,
 					QudvPackage.DERIVED_QUANTITY_KIND, factor);
-			parentResource.getEd().getCommandStack().execute(addCommand);
+			ApiErrorHelper.executeCommandIffCanExecute(addCommand, parentResource.getEd(), parentResource.getUser());
 			
 			parentResource.synchronize();
 			return Response.ok(factor.getUuid().toString()).build();
@@ -828,7 +826,7 @@ public class QudvResource {
 			}
 			
 			Command removeCommand = RemoveCommand.create(parentResource.getEd(), factor.eContainer(), QudvPackage.DERIVED_QUANTITY_KIND, factor);
-			parentResource.getEd().getCommandStack().execute(removeCommand);
+			ApiErrorHelper.executeCommandIffCanExecute(removeCommand, parentResource.getEd(), parentResource.getUser());
 			
 			parentResource.synchronize();
 			return Response.ok().build();

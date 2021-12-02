@@ -285,7 +285,7 @@ public class QudvResourceTest extends AModelAccessResourceTest {
 				QK_URI, ModelAccessResource.QP_NAME, UNKNOWN).post(Entity.json(null)),
 				ApiErrorHelper.INVALID_TYPE_ERROR + ": unknown");
 		assertNotFoundResponse(getTestRequestBuilder(QK_URI + "/unknown").delete());
-		assertNotExecuteableErrorResponse(getTestRequestBuilder(QK_URI + "/" + qkNotDerived.getUuid().toString()).delete());
+		assertCommandNotExecuteableErrorResponse(getTestRequestBuilder(QK_URI + "/" + qkNotDerived.getUuid().toString()).delete());
 		
 		assertNotFoundResponse(getTestRequestBuilder(PREFIX_URI + "/" + UNKNOWN).get());
 		assertNotFoundResponse(getTestRequestBuilder(PREFIX_URI + "/" + UNKNOWN).delete());
@@ -301,5 +301,33 @@ public class QudvResourceTest extends AModelAccessResourceTest {
 				+ qkNotDerived.getUuid().toString()).post(Entity.json(null)),
 				ApiErrorHelper.INVALID_TYPE_ERROR + ": " + QudvResource.NOT_DERIVED);
 		assertNotFoundResponse(getTestRequestBuilder(QK_FACTOR_URI + "/" + UNKNOWN).delete());
+		
+		// Test role management
+		// Every endpoint of the unit management that changes the model
+		// becomes unaccessible if the unit does not have the rights
+		setDiscipline(unitManagement, anotherDiscipline);
+		assertCommandNotExecuteableErrorResponse(getTestRequestBuilderWithQueryParam(
+				UNIT_URI, ModelAccessResource.QP_NAME, BeanUnitSimple.class.getSimpleName()).post(Entity.json(null)));
+		assertCommandNotExecuteableErrorResponse(getTestRequestBuilder(
+				UNIT_URI + "/" + unitNotDerived.getUuid().toString()).delete());
+		
+		assertCommandNotExecuteableErrorResponse(getTestRequestBuilderWithQueryParam(
+				QK_URI, ModelAccessResource.QP_NAME, BeanQuantityKindSimple.class.getSimpleName()).post(Entity.json(null)));
+		assertCommandNotExecuteableErrorResponse(getTestRequestBuilder(
+				QK_URI + "/" + qkNoReference.getUuid().toString()).delete());
+		
+		assertCommandNotExecuteableErrorResponse(getTestRequestBuilder(PREFIX_URI).post(Entity.json(null)));
+		assertCommandNotExecuteableErrorResponse(getTestRequestBuilder(
+				PREFIX_URI + "/" + prefix.getUuid().toString()).delete());
+		
+		assertCommandNotExecuteableErrorResponse(getTestRequestBuilder(
+				QK_FACTOR_URI + "/" + qkDerived.getUuid().toString()).post(Entity.json(null)));
+		assertCommandNotExecuteableErrorResponse(getTestRequestBuilder(
+				UNIT_FACTOR_URI + "/" + unitDerived.getFactor().get(0).getUuid().toString()).delete());
+		
+		assertCommandNotExecuteableErrorResponse(getTestRequestBuilder(
+				QK_FACTOR_URI + "/" + qkDerived.getUuid().toString()).post(Entity.json(null)));
+		assertCommandNotExecuteableErrorResponse(getTestRequestBuilder(
+				QK_FACTOR_URI + "/" + qkDerived.getFactor().get(0).getUuid().toString()).delete());
 	}
 }
