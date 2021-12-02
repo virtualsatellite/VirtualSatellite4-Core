@@ -31,14 +31,16 @@ import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
 import de.dlr.sc.virsat.model.dvlm.roles.RolesPackage;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.resources.ApiErrorHelper;
+import de.dlr.sc.virsat.server.resources.ModelAccessResource;
 import de.dlr.sc.virsat.server.resources.ModelAccessResource.RepoModelAccessResource;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 
-@Api(hidden = true)
+@Api(hidden = true, authorizations = {@Authorization(value = "basic")}, tags = {ModelAccessResource.TAG_DISCIPLINE})
 public class DisciplineResource {
 	
 	private RepoModelAccessResource parentResource;
