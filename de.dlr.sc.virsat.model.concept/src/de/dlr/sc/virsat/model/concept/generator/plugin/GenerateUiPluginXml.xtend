@@ -26,6 +26,7 @@ import de.dlr.sc.virsat.model.dvlm.general.IQualifiedName
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.generator.IFileSystemAccess
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.VerificationTypeSpecification
 
 class GenerateUiPluginXml {
 	
@@ -112,6 +113,9 @@ class GenerateUiPluginXml {
 				«FOR category : concept.nonAbstractCategories»
 					«declareUiSnippetTables(concept, category)»
 					«declareUiSnippetSections(concept, category)»
+					«IF category.isIsVerification»
+					«declareUiSnippetVerificationTables(concept, category)»
+					«ENDIF»
 					«FOR property : category.allProperties»
 						«IF (property.arrayModifier !== null)»
 							«IF (property.arrayModifier instanceof DynamicArrayModifier && property instanceof ComposedProperty)»
@@ -124,6 +128,9 @@ class GenerateUiPluginXml {
 							«ELSE»
 								«declareUiSnippetArrayTables(concept, property, category)»
 							«ENDIF»
+						«ENDIF»
+						«IF property.verification !== null && property.verification instanceof VerificationTypeSpecification»
+						«declareUiSnippetVerificationTables(concept, (property.verification as VerificationTypeSpecification).verificationType as Category)»
 						«ENDIF»
 					«ENDFOR»
 				«ENDFOR»
@@ -292,6 +299,14 @@ class GenerateUiPluginXml {
           id="«concept.name».table.uiSnippet«ConceptGeneratorUtil.getPropertyId(property, category) + extendingCategory.name.toFirstUpper»"
           section="«concept.name».ui.Section"
           snippet="«concept.name».ui.snippet.«GenerateCategoryUiSnippetArrayTable.getConcreteClassName(property, category, extendingCategory)»">
+    </uiSnippet>
+	'''
+	
+	def declareUiSnippetVerificationTables(Concept conceptToBeVerified, Category verificationCategory) '''
+    <uiSnippet
+          id="«conceptToBeVerified.name».table.uISnippetTableRequirementVerifications«verificationCategory.name.toFirstUpper»"
+          section="«conceptToBeVerified.name».ui.Section"
+          snippet="«conceptToBeVerified.name».ui.snippet.UiSnippetTableRequirementVerifications«verificationCategory.name.toFirstUpper»">
     </uiSnippet>
 	'''
 	
