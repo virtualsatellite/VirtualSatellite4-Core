@@ -62,6 +62,7 @@ import de.dlr.sc.virsat.server.repository.ServerRepository;
 import de.dlr.sc.virsat.server.resources.modelaccess.CategoryAssignmentResource;
 import de.dlr.sc.virsat.server.resources.modelaccess.DisciplineResource;
 import de.dlr.sc.virsat.server.resources.modelaccess.PropertyResource;
+import de.dlr.sc.virsat.server.resources.modelaccess.QudvResource;
 import de.dlr.sc.virsat.server.resources.modelaccess.StructuralElementInstanceResource;
 import de.dlr.sc.virsat.server.servlet.VirSatModelAccessServlet;
 import io.swagger.annotations.Api;
@@ -72,6 +73,7 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
 import io.swagger.annotations.Info;
 import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
 
 /**
  * The resource to access the VirSat data model of a server repository
@@ -84,7 +86,14 @@ import io.swagger.annotations.SwaggerDefinition;
 		title = "The Model API",
 		description = "API to access the Virtual Satellite data model"
 	),
-	basePath = VirSatJettyServer.PATH + VirSatModelAccessServlet.MODEL_API
+	basePath = VirSatJettyServer.PATH + VirSatModelAccessServlet.MODEL_API,
+	tags = {
+			@Tag(name = ModelAccessResource.TAG_QUDV, description = "Quantity Kinds and Units"),
+			@Tag(name = ModelAccessResource.TAG_SEI, description = "Structural Element Instances"),
+			@Tag(name = ModelAccessResource.TAG_CA, description = "Category Assignments"),
+			@Tag(name = ModelAccessResource.TAG_PROPERTY, description = "Properties of Category Assignments"),
+			@Tag(name = ModelAccessResource.TAG_DISCIPLINE, description = "Disciplines for Rolemanagement")
+	}
 )
 @Path(ModelAccessResource.PATH)
 public class ModelAccessResource {
@@ -105,11 +114,19 @@ public class ModelAccessResource {
 	public static final String CA_AND_PROPERTIES = "caAndProperties";
 	public static final String PROPERTY = "property";
 	public static final String FORCE_SYNC = "forceSync";
+	public static final String QUDV = "qudv";
 	
 	public static final String QP_ONLY_ACTIVE_CONCEPTS = "onlyActiveConcepts";
 	public static final String QP_FULL_QUALIFIED_NAME = "fullQualifiedName";
+	public static final String QP_NAME = "name";
 	public static final String QP_SYNC = "sync";
 	public static final String QP_BUILD = "build";
+
+	public static final String TAG_QUDV = "QUDV";
+	public static final String TAG_SEI = "SEIs";
+	public static final String TAG_CA = "CAs";
+	public static final String TAG_PROPERTY = "Properties";
+	public static final String TAG_DISCIPLINE = "Disciplines";
 
 	// List of all resource classes used in this class
 	// Used to register model specific filters
@@ -118,7 +135,8 @@ public class ModelAccessResource {
 			StructuralElementInstanceResource.class,
 			CategoryAssignmentResource.class,
 			PropertyResource.class,
-			DisciplineResource.class);
+			DisciplineResource.class,
+			QudvResource.class);
 	
 	public ModelAccessResource() { }
 	
@@ -236,13 +254,18 @@ public class ModelAccessResource {
 		public DisciplineResource getDisciplineResource() {
 			return new DisciplineResource(this);
 		}
-
+		
+		@Path(QUDV)
+		public QudvResource getQudvResource() {
+			return new QudvResource(this);
+		}
+		
 		// Actual resources
 		/** **/
 		@GET
 		@Path(FORCE_SYNC)
 		@ApiOperation(
-				value = "Triggers synchronization with the backend",
+				value = "Trigger synchronization with the backend",
 				httpMethod = "GET",
 				notes = "This service forces a synchronization with the backend.")
 		@ApiResponses(value = { 

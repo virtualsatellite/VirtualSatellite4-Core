@@ -58,10 +58,14 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.general.IAssignedDiscipline;
 import de.dlr.sc.virsat.model.dvlm.general.IUuid;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
+import de.dlr.sc.virsat.model.dvlm.qudv.QudvFactory;
+import de.dlr.sc.virsat.model.dvlm.qudv.SimpleQuantityKind;
+import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfQuantities;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.units.UnitManagement;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBeanA;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryComposition;
@@ -82,6 +86,8 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 	protected Concept conceptTest;
 	protected VirSatResourceSet resourceSet;
 	protected VirSatTransactionalEditingDomain ed;
+	protected UnitManagement unitManagement;
+	protected SystemOfQuantities systemOfQuantities;
 	
 	protected TestStructuralElement tSei;
 	protected TestStructuralElement tSeiChild;
@@ -107,6 +113,7 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 	protected VirSatProjectCommons projectCommons;
 	protected Discipline discipline;
 	protected Discipline anotherDiscipline;
+	protected SimpleQuantityKind qkNoReference;
 
 	protected static final String TEST_STRING = "testString";
 	protected static final String DISCIPLINE_NAME = "testDiscipline";
@@ -129,6 +136,8 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 	public void setUpModel() throws Exception {
 		ed = testServerRepository.getEd();
 		resourceSet = ed.getResourceSet();
+		unitManagement = resourceSet.getRepository().getUnitManagement();
+		systemOfQuantities = unitManagement.getSystemOfUnit().getSystemOfQuantities().get(0);
 
 		projectCommons = new VirSatProjectCommons(resourceSet.getProject());
 
@@ -188,6 +197,7 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 		discipline = RolesFactory.eINSTANCE.createDiscipline();
 		discipline.setName(DISCIPLINE_NAME);
 		discipline.setUser(USER_WITH_REPO_NAME);
+		qkNoReference = QudvFactory.eINSTANCE.createSimpleQuantityKind();
 		
 		anotherDiscipline = RolesFactory.eINSTANCE.createDiscipline();
 		anotherDiscipline.setUser("another user");
@@ -206,7 +216,9 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 				resourceSet.getRepository().setAssignedDiscipline(discipline);
 				resourceSet.getRoleManagement().setAssignedDiscipline(discipline);
 				tSeiChild.getStructuralElementInstance().setAssignedDiscipline(discipline);
-			}
+				systemOfQuantities.getQuantityKind().add(qkNoReference);
+				unitManagement.setAssignedDiscipline(discipline);
+				}
 		};
 		ed.getCommandStack().execute(recordingCommand);
 		
@@ -460,7 +472,11 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 	}
 	
 	protected void assertCommandNotExecuteableErrorResponse(Response response) {
-		assertInternalErrorResponse(response, ApiErrorHelper.COMMAND_NOT_EXECUTEABLE);
+		assertInternalErrorResponse(response, ApiErrorHelper.NOT_EXECUTEABLE);
+	}
+	
+	protected void assertNotExecuteableErrorResponse(Response response) {
+		assertErrorResponse(response, Status.INTERNAL_SERVER_ERROR, ApiErrorHelper.NOT_EXECUTEABLE);
 	}
 	
 	/**
@@ -473,7 +489,7 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 	 * @throws CoreException
 	 */
 	@SuppressWarnings("unchecked")
-	protected String assertIUuidGotCreated(Response response, String wantedTypeFqn, VirSatTransactionalEditingDomain ed, List<? extends IUuid> ownerChildren) throws CoreException {
+	protected IUuid assertIUuidGotCreated(Response response, String wantedTypeFqn, VirSatTransactionalEditingDomain ed, List<? extends IUuid> ownerChildren) throws CoreException {
 		Repository repository = ed.getResourceSet().getRepository();
 		
 		assertEquals(HttpStatus.OK_200, response.getStatus());
@@ -490,7 +506,7 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 		}
 		
 		assertThat("Structural element instance is correctly added to repository", (List<IUuid>) ownerChildren, hasItem(obj));
-		return uuid;
+		return obj;
 	}
 
 	protected static class CountingLogListener implements ILogListener {

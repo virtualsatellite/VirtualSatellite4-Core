@@ -16,6 +16,7 @@ import javax.ws.rs.core.Response;
 
 import org.junit.Test;
 
+import de.dlr.sc.virsat.model.dvlm.general.IUuid;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.resources.AModelAccessResourceTest;
@@ -55,9 +56,9 @@ public class StructuralElementInstanceResourceTest extends AModelAccessResourceT
 		Response response = getTestRequestBuilderWithQueryParam(ModelAccessResource.SEI + "/" + tSei.getUuid(), 
 				ModelAccessResource.QP_FULL_QUALIFIED_NAME, wantedTypeFqn).post(Entity.json(null));
 		
-		String entity = assertIUuidGotCreated(response, wantedTypeFqn, ed, tSei.getStructuralElementInstance().getChildren());
+		IUuid entity = assertIUuidGotCreated(response, wantedTypeFqn, ed, tSei.getStructuralElementInstance().getChildren());
 		
-		StructuralElementInstance sei = RepositoryUtility.findSei(entity, ed.getResourceSet().getRepository());
+		StructuralElementInstance sei = RepositoryUtility.findSei(entity.getUuid().toString(), ed.getResourceSet().getRepository());
 		assertEquals("Inherited parent discipline", tSei.getStructuralElementInstance().getAssignedDiscipline(), sei.getAssignedDiscipline());
 	}
 	
