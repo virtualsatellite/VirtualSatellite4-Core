@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="ASCII"?>
 <dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v8/c" xmlns:dvlm_cp="http://www.virsat.sc.dlr.de/dvlm/v8/cp" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppd" name="de.dlr.sc.virsat.model.extension.requirements" description="Extension for Requirement Specification" version="0.6" displayName="Requirements" beta="true">
   <imports importedNamespace="de.dlr.sc.virsat.model.ext.core.*"/>
+  <ecoreImports importedNsURI="http://www.virsat.sc.dlr.de/dvlm/v8/cp"/>
   <categories name="IRequirementTreeElement">
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
@@ -157,12 +158,15 @@
     </properties>
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
-  <categories name="ModelVerification" isAbstract="true" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.IVerification"/>
-  <categories name="ExistenceVerification" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.ModelVerification">
-    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="target">
-      <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
-      <referenceType xsi:type="dvlm_cp:Category" href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.concept#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  <categories name="ModelVerification" isAbstract="true" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.IVerification">
+    <properties xsi:type="dvlm_cppd:EReferenceProperty" name="elementToBeVerified" description="The exact element (Class / property) to be verified">
+      <referenceType href="platform:/resource/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
     </properties>
+  </categories>
+  <categories name="ExistenceVerification" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.ModelVerification"/>
+  <categories name="BoundedValueVerification" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.ModelVerification">
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="lowerBound"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="upperBound"/>
   </categories>
   <structuralElements name="RequirementsConfigurationCollection" description="Storage for configuration elements of requirements" isRootStructuralElement="true"/>
 </dvlm_c:Concept>

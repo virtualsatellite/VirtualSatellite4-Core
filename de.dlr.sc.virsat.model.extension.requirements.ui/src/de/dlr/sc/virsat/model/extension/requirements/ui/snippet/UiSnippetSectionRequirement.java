@@ -44,7 +44,7 @@ import de.dlr.sc.virsat.model.extension.requirements.command.InitializeRequireme
 import de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
-import de.dlr.sc.virsat.model.extension.requirements.ui.snippet.dialog.ExistenceVerificationTargetEditingDialog;
+import de.dlr.sc.virsat.model.extension.requirements.ui.snippet.dialog.RequirementTraceTargetEditingDialog;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.uiengine.ui.dialog.ReferenceSelectionDialog;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
@@ -91,7 +91,7 @@ public class UiSnippetSectionRequirement extends AUiSnippetSectionRequirement im
 				
 				EditingDomain editingDomain = VirSatEditingDomainRegistry.INSTANCE.getEd(referencedTypeInstance);
 				if (referencedTypeInstance != null) {
-					Dialog dialog = new ExistenceVerificationTargetEditingDialog(
+					Dialog dialog = new RequirementTraceTargetEditingDialog(
 							PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), toolkit, editingDomain,
 							referencedTypeInstance);
 					dialog.open();

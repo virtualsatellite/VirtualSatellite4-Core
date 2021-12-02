@@ -149,5 +149,9 @@
       <referenceType xsi:type="dvlm_cp:Category" href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.concept#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
     </properties>
   </categories>
+  <categories name="BoundedValueVerification" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.ModelVerification">
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="lowerBound"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="upperBound"/>
+  </categories>
   <structuralElements name="RequirementsConfigurationCollection" description="Storage for configuration elements of requirements" isRootStructuralElement="true"/>
 </dvlm_c:Concept>

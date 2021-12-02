@@ -14,7 +14,9 @@ Require-Bundle: de.dlr.sc.virsat.model.extension.budget.mass,
  de.dlr.sc.virsat.project,
  de.dlr.sc.virsat.project.ui,
  de.dlr.sc.virsat.uiengine.ui,
- de.dlr.sc.virsat.commons.ui
+ de.dlr.sc.virsat.commons.ui,
+ de.dlr.sc.virsat.model.extension.requirements,
+ de.dlr.sc.virsat.model.extension.requirements.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: DLR (German Aerospace Center)
