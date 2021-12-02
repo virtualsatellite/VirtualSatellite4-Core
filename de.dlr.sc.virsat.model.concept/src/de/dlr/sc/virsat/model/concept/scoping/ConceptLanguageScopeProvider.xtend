@@ -21,6 +21,9 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.AProperty
 import org.eclipse.xtext.scoping.IScope
 import de.dlr.sc.virsat.model.dvlm.categories.Category
 import org.eclipse.xtext.scoping.Scopes
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper
+import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition
+import de.dlr.sc.virsat.model.concept.resources.ConceptResourceLoader
 
 /**
  * Class that implements the scoping of the concept language. Base class divers from
@@ -30,13 +33,20 @@ class ConceptLanguageScopeProvider extends ImportedNamespaceAwareLocalScopeProvi
 
 	override getScope(EObject context, EReference reference) {
 		
-//		if (context instanceof AProperty  && reference.name.equals("verificationType")) {
-//			var scope = super.getScope(context, reference)
-//			var filteredScope = scope.allElements.
-//				map[t | t.EObjectOrProxy]
-//				.filter[t| t instanceof Category && (t as Category).isIsVerification]
-//			return Scopes.scopeFor(filteredScope, IScope.NULLSCOPE);
-//		}
+		if (context instanceof AProperty  && reference.name.equals("verificationType")) {
+			var scope = super.getScope(context, reference)
+			var elements = new ArrayList<EObject>
+			elements.addAll(scope.allElements.
+				map[t | t.EObjectOrProxy]
+				.filter[t| t instanceof Category && (t as Category).isIsVerification])
+				
+			var concept = ActiveConceptHelper.getConcept(context as ATypeDefinition);
+			for(import : concept.imports) {
+				var importedConceptName = import.importedNamespace.replace('.*', '')
+				elements.addAll(ConceptResourceLoader.instance.loadConceptByName(importedConceptName).categories.filter[c | c.isIsVerification])
+			}
+			return Scopes.scopeFor(elements, IScope.NULLSCOPE)
+		}
 		
 		super.getScope(context, reference)
 	}
