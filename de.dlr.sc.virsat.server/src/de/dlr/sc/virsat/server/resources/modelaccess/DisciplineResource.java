@@ -127,6 +127,9 @@ public class DisciplineResource {
 					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.NOT_EXECUTEABLE),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response createDiscipline() {
 		try {
@@ -160,6 +163,9 @@ public class DisciplineResource {
 			@ApiResponse(
 					code = HttpStatus.BAD_REQUEST_400,
 					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.NOT_EXECUTEABLE),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})

@@ -309,6 +309,9 @@ public class QudvResource {
 					message = ApiErrorHelper.INVALID_TYPE_ERROR),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.NOT_EXECUTEABLE),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response createUnit(@ApiParam(value = "Unit bean type to create an instance from", required = true) @QueryParam(ModelAccessResource.QP_NAME) String unitType) {
 		try {
@@ -348,6 +351,9 @@ public class QudvResource {
 			@ApiResponse(
 					code = HttpStatus.BAD_REQUEST_400,
 					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.NOT_EXECUTEABLE),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
@@ -453,6 +459,9 @@ public class QudvResource {
 					message = ApiErrorHelper.INVALID_TYPE_ERROR),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.NOT_EXECUTEABLE),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response createQuantityKind(@ApiParam(value = "Quantity kind bean type to create an instance from", required = true) @QueryParam(ModelAccessResource.QP_NAME) String quantityKindType) {
 		try {
@@ -492,7 +501,6 @@ public class QudvResource {
 			@ApiResponse(
 					code = HttpStatus.BAD_REQUEST_400,
 					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
-			// TODO: this should be everwhere were we call executeCommandIff in all classes
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.NOT_EXECUTEABLE),
@@ -600,6 +608,9 @@ public class QudvResource {
 					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.NOT_EXECUTEABLE),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response createPrefix() {
 		try {
@@ -633,6 +644,9 @@ public class QudvResource {
 			@ApiResponse(
 					code = HttpStatus.BAD_REQUEST_400,
 					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.NOT_EXECUTEABLE),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
@@ -681,6 +695,9 @@ public class QudvResource {
 					message = ApiErrorHelper.INVALID_TYPE_ERROR),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.NOT_EXECUTEABLE),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response createUnitFactor(@ApiParam(value = "Parent unit of the unit factor", required = true) @PathParam("uuid") String unitFactorParentUuid) {
 		try {
@@ -727,6 +744,9 @@ public class QudvResource {
 					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.NOT_EXECUTEABLE),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response deleteUnitFactor(@PathParam("uuid") @ApiParam(value = "Uuid of the unit factor", required = true) String unitFactorUuid) {
 		try {
@@ -767,6 +787,9 @@ public class QudvResource {
 			@ApiResponse(
 					code = HttpStatus.BAD_REQUEST_400, 
 					message = ApiErrorHelper.INVALID_TYPE_ERROR),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.NOT_EXECUTEABLE),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
@@ -813,6 +836,9 @@ public class QudvResource {
 			@ApiResponse(
 					code = HttpStatus.BAD_REQUEST_400,
 					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.NOT_EXECUTEABLE),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})

@@ -131,6 +131,9 @@ public class StructuralElementInstanceResource {
 					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.NOT_EXECUTEABLE),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response createSei(@PathParam("seiUuid") @ApiParam(value = "parent uuid", required = true) String parentUuid,
 			@QueryParam(value = ModelAccessResource.QP_FULL_QUALIFIED_NAME)
@@ -168,6 +171,9 @@ public class StructuralElementInstanceResource {
 			@ApiResponse(
 					code = HttpStatus.BAD_REQUEST_400,
 					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.NOT_EXECUTEABLE),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})

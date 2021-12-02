@@ -339,6 +339,9 @@ public class ModelAccessResource {
 						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 				@ApiResponse(
 						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+						message = ApiErrorHelper.NOT_EXECUTEABLE),
+				@ApiResponse(
+						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 						message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 		public Response createRootSei(@QueryParam(value = ModelAccessResource.QP_FULL_QUALIFIED_NAME) 
 			@ApiParam(value = "Full qualified name of the SEI type", required = true) String fullQualifiedName) {
