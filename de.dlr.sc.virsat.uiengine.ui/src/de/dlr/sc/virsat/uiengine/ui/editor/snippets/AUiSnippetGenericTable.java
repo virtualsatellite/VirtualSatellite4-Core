@@ -463,7 +463,7 @@ public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 			public void focusGained(FocusEvent e) {
 				if (getSelection().isEmpty()) {
 					Object viewerInput = columnViewer.getInput();
-					if (site != null) {
+					if (site != null && viewerInput != null) {
 						site.getSelectionProvider().setSelection(new StructuredSelection(viewerInput));
 					}
 				}

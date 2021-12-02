@@ -259,4 +259,14 @@ public class BeanPropertyEnumTest  extends ABeanPropertyTest {
 		beanProperty.setUnitBean(gBean);
 		assertEquals("Got correct unit", gBean.getUnit(), beanProperty.getUnitBean().getUnit());
 	}
+	
+	@Test
+	public void testGetAndSetOverride() {
+		assertEquals(false, beanProperty.getOverride());
+		
+		beanProperty.setOverride(true);
+		
+		assertEquals(true, beanProperty.getOverride());
+		assertEquals(true, eupi.isOverride());
+	}
 }

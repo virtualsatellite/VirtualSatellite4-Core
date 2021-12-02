@@ -105,4 +105,13 @@ public class BeanPropertyReference<BEAN_TYPE extends IBeanObject<? extends AType
 	public BeanPropertyType getPropertyType() {
 		return BeanPropertyType.REFERENCE;
 	}
+	
+	@XmlElement
+	public boolean getOverride() {
+		return ti.isOverride();
+	}
+	
+	public void setOverride(boolean override) {
+		ti.setOverride(override);
+	}
 }

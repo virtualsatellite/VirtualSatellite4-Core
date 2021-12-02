@@ -56,4 +56,10 @@ public abstract class RequirementObject extends ARequirementObject {
 	public RequirementObject(CategoryAssignment categoryAssignment) {
 		super(categoryAssignment);
 	}
+	
+	/**
+	 * Get the identifier value of this requirement
+	 * @return the identifier as string
+	 */
+	public abstract String getIdentifier();
 }
