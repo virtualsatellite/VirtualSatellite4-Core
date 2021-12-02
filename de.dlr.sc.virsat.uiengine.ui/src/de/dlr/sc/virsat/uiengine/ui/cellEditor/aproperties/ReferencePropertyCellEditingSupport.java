@@ -15,6 +15,7 @@ import java.util.function.Function;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.UnexecutableCommand;
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
@@ -94,20 +95,7 @@ public class ReferencePropertyCellEditingSupport extends APropertyCellEditingSup
 			
 			@Override
 			protected Object openDialogBox(Control cellEditorWindow) {
-				Object toSelect = getValue();
-				dialog = ReferenceSelectionDialog.createRefernceSelectionDialog(Display.getCurrent().getActiveShell(), referencePropertyType, adapterFactory);
-				dialog.setAllowMultiple(false);
-				dialog.setDoubleClickSelects(true);
-				setReferenceDialogInput(propertyInstance.eResource());
-				setFiltersForDialog();
-				dialog.setInitialSelection(toSelect);
-				if (dialog.open() == Dialog.OK) {
-					Object selection = dialog.getFirstResult();
-					if (selection instanceof ATypeInstance) {
-						return dialog.getFirstResult();
-					}
-				} 
-				return null;
+				return startCellEditor(propertyInstance, referencePropertyType, adapterFactory);
 			}
 			
 			@Override
@@ -124,6 +112,28 @@ public class ReferencePropertyCellEditingSupport extends APropertyCellEditingSup
 			}
 		};
 		return editor;
+	}
+	
+	/**
+	 * Start the cell editor; can be done from anywhere. 
+	 * @param propertyInstance the property for which the dialog is needed
+	 * @param referencePropertyType the type of the to be referenced element
+	 * @param adapterFactory the adapter factory
+	 * @return the selected element
+	 */
+	public Object startCellEditor(APropertyInstance propertyInstance, ATypeDefinition referencePropertyType, AdapterFactory adapterFactory) {
+		dialog = ReferenceSelectionDialog.createRefernceSelectionDialog(Display.getCurrent().getActiveShell(), referencePropertyType, adapterFactory);
+		dialog.setAllowMultiple(false);
+		dialog.setDoubleClickSelects(true);
+		setReferenceDialogInput(propertyInstance.eResource());
+		setFiltersForDialog();
+		if (dialog.open() == Dialog.OK) {
+			Object selection = dialog.getFirstResult();
+			if (selection instanceof ATypeInstance) {
+				return dialog.getFirstResult();
+			}
+		}
+		return null;
 	}
 	
 	protected void setFiltersForDialog() {

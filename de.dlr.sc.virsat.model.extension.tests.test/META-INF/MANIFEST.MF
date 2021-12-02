@@ -18,6 +18,7 @@ Require-Bundle: org.junit,
  de.dlr.sc.virsat.external.lib.spotbugs,
  de.dlr.sc.virsat.model.ext.core,
  de.dlr.sc.virsat.external.lib.matlabfile,
- de.dlr.sc.virsat.build
+ de.dlr.sc.virsat.build,
+ org.hamcrest.library
 Export-Package: de.dlr.sc.virsat.model.extension.tests.test
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.tests.test
