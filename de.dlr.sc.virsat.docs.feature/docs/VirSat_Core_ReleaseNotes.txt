@@ -1,6 +1,64 @@
 VirSat Core Release Notes
 -------------------------
 
+Release 4.14.0 (3rd December 2021)
+----------------------------------
+
+New Features:
+   Added generic verification interface for Requirements - #942 Feature
+   Added concepts end point for REST API - #959 Feature
+   Added param for GET requests to skip GIT synchronization - #979 Feature
+   Added create end points to REST API - #984 Feature
+   Added isCalculated field to REST API - #1005 Feature
+   Added end point for serving files referenced by resource property to REST API - #995 Feature
+   Added role management end point to REST API - #990 #991 Feature
+   Added sub requirements to requirements - #1021 Feature
+   Added unit management end point to REST API - #980 Feature
+ 
+
+Usability Updates:
+   Improved requirements import - #1027 Comfort/usability
+   Added custom requirements view - #1028 Comfort/Usability 
+
+Fixed Bugs:
+   Fixed documentation not being deployed to GitHub - #1025 Bug
+
+Release 4.13.0 (26th April 2021)
+----------------------------------
+
+New Features:
+   Added JSON transformations - #725 #747 Feature
+   Added REST API Server - #555 #791 #794 #834 #812 #531 Feature
+   Added resize feature to states in Sate Machine diagrams - #810 Feature
+   Added User Manual for Functional Electrical Architecture - #849 Feature
+   Added USer Manual for Requirements - #861 Feature
+
+Usability Updates:
+   Improved creation of state machine diagrams - #234 Comfort/usability
+
+Fixed Bugs:
+   Fixed app activation producing warnings after project setup - #733 Bug
+   Fixed name changes of State Machine transitions not being applied to model - #337 Bug
+   Fixed not being able to trigger State Machine excel exports - #336 Bug
+
+Release 4.13.0 (11th November 2020)
+----------------------------------
+
+New Features:
+   Added JSON transformations - #725 #747 Feature
+   Added REST API Server - #555 #791 #794 #834 #812 #531 Feature
+   Added resize feature to states in Sate Machine diagrams - #810 Feature
+   Added User Manual for Functional Electrical Architecture - #849 Feature
+   Added USer Manual for Requirements - #861 Feature
+
+Usability Updates:
+   Improved creation of state machine diagrams - #234 Comfort/usability
+
+Fixed Bugs:
+   Fixed app activation producing warnings after project setup - #733 Bug
+   Fixed name changes of State Machine transitions not being applied to model - #337 Bug
+   Fixed not being able to trigger State Machine excel exports - #336 Bug
+
 Release 4.12.2 (11th November 2020)
 ----------------------------------
 
