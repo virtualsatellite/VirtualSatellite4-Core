@@ -60,6 +60,8 @@ import de.dlr.sc.virsat.model.dvlm.json.ABeanUnitAdapter;
 import de.dlr.sc.virsat.model.dvlm.json.BeanPrefixAdapter;
 import de.dlr.sc.virsat.model.dvlm.json.BeanDisciplineAdapter;
 import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapterNoRoleManagement;
+import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
@@ -74,10 +76,12 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 	
 	private VirSatTransactionalEditingDomain ed;
 	private VirSatResourceSet resourceSet;
+	private IUserContext context;
 	
 	private static final Set<Class<?>> LIST_CLASSES = new HashSet<Class<?>>(
 			Arrays.asList(
 				IUuidAdapter.class,
+				IUuidAdapterNoRoleManagement.class,
 				ABeanObjectAdapter.class,
 				ABeanStructuralElementInstanceAdapter.class,
 				BeanDisciplineAdapter.class,
@@ -105,6 +109,10 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 	public void setServerRepository(ServerRepository repo) {
 		this.ed = repo.getEd();
 		this.resourceSet = repo.getResourceSet();
+	}
+
+	public void setContext(IUserContext userContext) {
+		this.context = userContext;
 	}
 
 	/**
@@ -167,7 +175,8 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 			Unmarshaller unmarshaller) throws JAXBException {
 		super.preReadFrom(type, genericType, annotations, mediaType, httpHeaders, unmarshaller);
 		unmarshaller.setEventHandler(eventHandler);
-		unmarshaller.setAdapter(new IUuidAdapter(resourceSet));
+		unmarshaller.setAdapter(new IUuidAdapter(resourceSet, ed));
+		unmarshaller.setAdapter(new IUuidAdapterNoRoleManagement(resourceSet));
 		unmarshaller.setAdapter(new ABeanObjectAdapter(resourceSet));
 		unmarshaller.setAdapter(new ABeanStructuralElementInstanceAdapter(resourceSet));
 		unmarshaller.setAdapter(new ABeanUnitAdapter(resourceSet));
@@ -186,7 +195,7 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 		ReadFromCommand readFromCommand = new ReadFromCommand(ed, arguments);
 
 		// Run as command to directly change resource in the editing domain
-		ed.getCommandStack().execute(readFromCommand);
+		ed.getVirSatCommandStack().executeNoUndo(readFromCommand, context, false);
 		
 		readFromCommand.throwExceptionsIfSet();
 		

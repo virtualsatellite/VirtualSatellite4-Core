@@ -55,6 +55,7 @@ import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementIns
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.general.IAssignedDiscipline;
 import de.dlr.sc.virsat.model.dvlm.general.IUuid;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
 import de.dlr.sc.virsat.model.dvlm.qudv.QudvFactory;
@@ -111,9 +112,11 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 	protected BeanPropertyReference<TestCategoryAllProperty> beanReferenceCa;
 	protected VirSatProjectCommons projectCommons;
 	protected Discipline discipline;
+	protected Discipline anotherDiscipline;
 	protected SimpleQuantityKind qkNoReference;
 
 	protected static final String TEST_STRING = "testString";
+	protected static final String DISCIPLINE_NAME = "testDiscipline";
 	
 	@BeforeClass
 	public static void setUpTargetAndUser() {
@@ -192,7 +195,12 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 		beanComposed.getValue().setTestBool(false);
 		
 		discipline = RolesFactory.eINSTANCE.createDiscipline();
+		discipline.setName(DISCIPLINE_NAME);
+		discipline.setUser(USER_WITH_REPO_NAME);
 		qkNoReference = QudvFactory.eINSTANCE.createSimpleQuantityKind();
+		
+		anotherDiscipline = RolesFactory.eINSTANCE.createDiscipline();
+		anotherDiscipline.setUser("another user");
 		
 		RecordingCommand recordingCommand = new RecordingCommand(ed) {
 			@Override
@@ -201,9 +209,16 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 				resourceSet.getRepository().getRootEntities().add(sei);
 				resourceSet.getAndAddStructuralElementInstanceResource(sei);
 				resourceSet.getAndAddStructuralElementInstanceResource(tSeiChild.getStructuralElementInstance());
+				
+				// role management
 				ed.getResourceSet().getRoleManagement().getDisciplines().add(discipline);
+				sei.setAssignedDiscipline(discipline);
+				resourceSet.getRepository().setAssignedDiscipline(discipline);
+				resourceSet.getRoleManagement().setAssignedDiscipline(discipline);
+				tSeiChild.getStructuralElementInstance().setAssignedDiscipline(discipline);
 				systemOfQuantities.getQuantityKind().add(qkNoReference);
-			}
+				unitManagement.setAssignedDiscipline(discipline);
+				}
 		};
 		ed.getCommandStack().execute(recordingCommand);
 		
@@ -452,8 +467,12 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 		assertBadRequestResponse(response, ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT);
 	}
 	
-	protected void assertSyncErrorResponse(Response response) {
-		assertErrorResponse(response, Status.INTERNAL_SERVER_ERROR, ApiErrorHelper.SYNC_ERROR);
+	protected void assertInternalErrorResponse(Response response, String expectedMessage) {
+		assertErrorResponse(response, Status.INTERNAL_SERVER_ERROR, ApiErrorHelper.INTERNAL_SERVER_ERROR + ": " + expectedMessage);
+	}
+	
+	protected void assertCommandNotExecuteableErrorResponse(Response response) {
+		assertInternalErrorResponse(response, ApiErrorHelper.NOT_EXECUTEABLE);
 	}
 	
 	protected void assertNotExecuteableErrorResponse(Response response) {
@@ -466,7 +485,7 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 	 * @param wantedTypeFqn type string of the element
 	 * @param ed
 	 * @param ownerChildren list of the current children of the owner
-	 * @return the created object
+	 * @return uuid
 	 * @throws CoreException
 	 */
 	@SuppressWarnings("unchecked")
@@ -505,5 +524,20 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 		public void setCount(int logCount) {
 			this.logCount = logCount;
 		}
+	}
+
+	/**
+	 * Change assigned discipline of element via command
+	 * @param element
+	 * @param discipline
+	 */
+	protected void setDiscipline(IAssignedDiscipline element, Discipline discipline) {
+		RecordingCommand recordingCommand = new RecordingCommand(ed) {
+			@Override
+			protected void doExecute() {
+				element.setAssignedDiscipline(discipline);
+			}
+		};
+		ed.getCommandStack().execute(recordingCommand);
 	}
 }

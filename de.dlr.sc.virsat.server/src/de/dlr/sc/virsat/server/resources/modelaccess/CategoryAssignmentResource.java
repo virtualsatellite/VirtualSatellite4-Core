@@ -56,7 +56,7 @@ public class CategoryAssignmentResource {
 	
 	/** **/
 	@GET
-	@Path("/{uuid}")
+	@Path("/{caUuid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(
 			produces = "application/json",
@@ -73,8 +73,8 @@ public class CategoryAssignmentResource {
 					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
-	public Response getCa(@PathParam("uuid") @ApiParam(value = "Uuid of the CA", required = true) String caUuid) {
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+	public Response getCa(@PathParam("caUuid") @ApiParam(value = "Uuid of the CA", required = true) String caUuid) {
 		try {
 			parentResource.synchronize();
 			
@@ -87,7 +87,7 @@ public class CategoryAssignmentResource {
 			IBeanCategoryAssignment beanCa = new BeanCategoryAssignmentFactory().getInstanceFor(ca);
 			return Response.status(Response.Status.OK).entity(beanCa).build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 
@@ -106,19 +106,19 @@ public class CategoryAssignmentResource {
 					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response putCa(@ApiParam(value = "CA to put", required = true) ABeanCategoryAssignment bean) {
 		try {
 			parentResource.synchronize();
 			return Response.status(Response.Status.OK).build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 	
 	/** **/
 	@POST
-	@Path("/{uuid}")
+	@Path("/{caUuid}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@ApiOperation(
 			consumes = "application/json",
@@ -135,8 +135,11 @@ public class CategoryAssignmentResource {
 					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
-	public Response createCa(@PathParam("uuid") @ApiParam(value = "parent uuid", required = true) String parentUuid,
+					message = ApiErrorHelper.NOT_EXECUTEABLE),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+	public Response createCa(@PathParam("caUuid") @ApiParam(value = "parent uuid", required = true) String parentUuid,
 			@QueryParam(value = ModelAccessResource.QP_FULL_QUALIFIED_NAME)
 			@ApiParam(value = "Full qualified name of the CA type", required = true) String fullQualifiedName) {
 		try {
@@ -153,18 +156,18 @@ public class CategoryAssignmentResource {
 			CategoryAssignment newCa = new CategoryInstantiator().generateInstance(category, null);
 			
 			Command createCommand = AddCommand.create(parentResource.getEd(), parentSei, CategoriesPackage.Literals.ICATEGORY_ASSIGNMENT_CONTAINER__CATEGORY_ASSIGNMENTS, newCa);
-			parentResource.getEd().getCommandStack().execute(createCommand);
+			ApiErrorHelper.executeCommandIffCanExecute(createCommand, parentResource.getEd(), parentResource.getUser());
 			
 			parentResource.synchronize();
 			return Response.ok(newCa.getUuid().toString()).build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 	
 	/** **/
 	@DELETE
-	@Path("/{uuid}")
+	@Path("/{caUuid}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(
 			produces = "application/json",
@@ -180,8 +183,11 @@ public class CategoryAssignmentResource {
 					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
-	public Response deleteCa(@PathParam("uuid") @ApiParam(value = "Uuid of the CA", required = true)  String caUuid) {
+					message = ApiErrorHelper.NOT_EXECUTEABLE),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+	public Response deleteCa(@PathParam("caUuid") @ApiParam(value = "Uuid of the CA", required = true)  String caUuid) {
 		try {
 			// Sync before delete
 			parentResource.synchronize();
@@ -193,13 +199,13 @@ public class CategoryAssignmentResource {
 			}
 			
 			Command deleteCommand = new BeanCategoryAssignmentFactory().getInstanceFor(ca).delete(parentResource.getEd());
-			parentResource.getEd().getCommandStack().execute(deleteCommand);
+			ApiErrorHelper.executeCommandIffCanExecute(deleteCommand, parentResource.getEd(), parentResource.getUser());
 			
 			// Sync after delete
 			parentResource.synchronize();
 			return Response.ok().build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 	

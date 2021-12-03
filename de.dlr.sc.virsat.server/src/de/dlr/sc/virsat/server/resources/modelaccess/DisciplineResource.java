@@ -68,7 +68,7 @@ public class DisciplineResource {
 					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response getDiscipline(@PathParam("disciplineUuid") @ApiParam(value = "Uuid of the discipline", required = true) String disciplineUuid) {
 		try {
 			parentResource.synchronize();
@@ -82,7 +82,7 @@ public class DisciplineResource {
 			BeanDiscipline beanDiscipline = new BeanDiscipline(discipline);
 			return Response.status(Response.Status.OK).entity(beanDiscipline).build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 
@@ -101,13 +101,13 @@ public class DisciplineResource {
 					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response putDiscipline(@ApiParam(value = "Discipline to put", required = true) BeanDiscipline bean) {
 		try {
 			parentResource.synchronize();
 			return Response.status(Response.Status.OK).build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 	
@@ -127,20 +127,23 @@ public class DisciplineResource {
 					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
+					message = ApiErrorHelper.NOT_EXECUTEABLE),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response createDiscipline() {
 		try {
 			parentResource.synchronize();
 			
 			Discipline newDiscipline = RolesFactory.eINSTANCE.createDiscipline();
 			
-			Command command = AddCommand.create(parentResource.getEd(), parentResource.getRepository().getRoleManagement(), RolesPackage.ROLE_MANAGEMENT__DISCIPLINES, newDiscipline);
-			parentResource.getEd().getCommandStack().execute(command);
+			Command addCommand = AddCommand.create(parentResource.getEd(), parentResource.getRepository().getRoleManagement(), RolesPackage.ROLE_MANAGEMENT__DISCIPLINES, newDiscipline);
+			ApiErrorHelper.executeCommandIffCanExecute(addCommand, parentResource.getEd(), parentResource.getUser());
 			
 			parentResource.synchronize();
 			return Response.ok(newDiscipline.getUuid().toString()).build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 	
@@ -162,7 +165,10 @@ public class DisciplineResource {
 					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
+					message = ApiErrorHelper.NOT_EXECUTEABLE),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response deleteDiscipline(@PathParam("disciplineUuid") @ApiParam(value = "Uuid of the Discipline", required = true) String disciplineUuid) {
 		try {
 			// Sync before delete
@@ -174,14 +180,14 @@ public class DisciplineResource {
 			}
 			
 			// For delete we just remove it from the rolemanagement
-			Command command = RemoveCommand.create(parentResource.getEd(), parentResource.getRepository().getRoleManagement(), RolesPackage.ROLE_MANAGEMENT__DISCIPLINES, discipline);
-			parentResource.getEd().getCommandStack().execute(command);
+			Command removeCommand = RemoveCommand.create(parentResource.getEd(), parentResource.getRepository().getRoleManagement(), RolesPackage.ROLE_MANAGEMENT__DISCIPLINES, discipline);
+			ApiErrorHelper.executeCommandIffCanExecute(removeCommand, parentResource.getEd(), parentResource.getUser());
 			
 			// Sync after delete
 			parentResource.synchronize();
 			return Response.ok().build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 }

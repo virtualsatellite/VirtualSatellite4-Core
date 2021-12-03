@@ -127,7 +127,7 @@ public class QudvResource {
 					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response getPrefixes() {
 		try {
 			parentResource.synchronize();
@@ -143,7 +143,7 @@ public class QudvResource {
 			
 			return Response.ok(entity).build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 	
@@ -164,7 +164,7 @@ public class QudvResource {
 					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	@SuppressWarnings("rawtypes")
 	public Response getQuantityKinds() {
 		try {
@@ -183,7 +183,7 @@ public class QudvResource {
 			
 			return Response.ok(entity).build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 	
@@ -204,7 +204,7 @@ public class QudvResource {
 					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	@SuppressWarnings("rawtypes")
 	public Response getUnits() {
 		try {
@@ -222,7 +222,7 @@ public class QudvResource {
 			
 			return Response.ok(entity).build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 
@@ -247,7 +247,7 @@ public class QudvResource {
 					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response getUnit(@PathParam("unitUuid") @ApiParam(value = "Uuid of the Unit", required = true) String unitUuid) {
 		try {
 			parentResource.synchronize();
@@ -261,7 +261,7 @@ public class QudvResource {
 			ABeanUnit beanUnit = (ABeanUnit) new BeanUnitFactory().getInstanceFor(unit);
 			return Response.status(Response.Status.OK).entity(beanUnit).build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 
@@ -280,13 +280,13 @@ public class QudvResource {
 					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response putUnit(@SuppressWarnings("rawtypes") @ApiParam(value = "Unit to put", required = true) ABeanUnit bean) {
 		try {
 			parentResource.synchronize();
 			return Response.status(Response.Status.OK).build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 	
@@ -309,7 +309,10 @@ public class QudvResource {
 					message = ApiErrorHelper.INVALID_TYPE_ERROR),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
+					message = ApiErrorHelper.NOT_EXECUTEABLE),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response createUnit(@ApiParam(value = "Unit bean type to create an instance from", required = true) @QueryParam(ModelAccessResource.QP_NAME) String unitType) {
 		try {
 			parentResource.synchronize();
@@ -323,12 +326,12 @@ public class QudvResource {
 			
 			Command addCommand = AddCommand.create(parentResource.getEd(), parentResource.getRepository().getUnitManagement().getSystemOfUnit(),
 					QudvPackage.SYSTEM_OF_UNITS__UNIT, createdObject);
-			parentResource.getEd().getCommandStack().execute(addCommand);
+			ApiErrorHelper.executeCommandIffCanExecute(addCommand, parentResource.getEd(), parentResource.getUser());
 			
 			parentResource.synchronize();
 			return Response.ok(createdObject.getUuid().toString()).build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 	
@@ -350,7 +353,10 @@ public class QudvResource {
 					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
+					message = ApiErrorHelper.NOT_EXECUTEABLE),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response deleteUnit(@PathParam("unitUuid") @ApiParam(value = "Uuid of the Unit", required = true) String unitUuid) {
 		try {
 			parentResource.synchronize();
@@ -361,12 +367,12 @@ public class QudvResource {
 			}
 			
 			Command removeCommand = RemoveCommand.create(parentResource.getEd(), parentResource.getRepository().getUnitManagement().getSystemOfUnit(), QudvPackage.SYSTEM_OF_UNITS__UNIT, unit);
-			parentResource.getEd().getCommandStack().execute(removeCommand);
+			ApiErrorHelper.executeCommandIffCanExecute(removeCommand, parentResource.getEd(), parentResource.getUser());
 			
 			parentResource.synchronize();
 			return Response.ok().build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 	
@@ -391,7 +397,7 @@ public class QudvResource {
 					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response getQuantityKind(@PathParam("quantityKindUuid") @ApiParam(value = "Uuid of the QuantityKind", required = true) String quantityKindUuid) {
 		try {
 			parentResource.synchronize();
@@ -405,7 +411,7 @@ public class QudvResource {
 			ABeanQuantityKind beanQuantityKind = (ABeanQuantityKind) new BeanQuantityKindFactory().getInstanceFor(quantityKind);
 			return Response.status(Response.Status.OK).entity(beanQuantityKind).build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 
@@ -424,13 +430,13 @@ public class QudvResource {
 					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response putQuantityKind(@SuppressWarnings("rawtypes") @ApiParam(value = "QuantityKind to put", required = true) ABeanQuantityKind bean) {
 		try {
 			parentResource.synchronize();
 			return Response.status(Response.Status.OK).build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 	
@@ -453,7 +459,10 @@ public class QudvResource {
 					message = ApiErrorHelper.INVALID_TYPE_ERROR),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
+					message = ApiErrorHelper.NOT_EXECUTEABLE),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response createQuantityKind(@ApiParam(value = "Quantity kind bean type to create an instance from", required = true) @QueryParam(ModelAccessResource.QP_NAME) String quantityKindType) {
 		try {
 			parentResource.synchronize();
@@ -467,12 +476,12 @@ public class QudvResource {
 			
 			Command addCommand = AddCommand.create(parentResource.getEd(), parentResource.getRepository().getUnitManagement().getSystemOfUnit().getSystemOfQuantities().get(0),
 					QudvPackage.SYSTEM_OF_QUANTITIES__QUANTITY_KIND, createdObject);
-			parentResource.getEd().getCommandStack().execute(addCommand);
+			ApiErrorHelper.executeCommandIffCanExecute(addCommand, parentResource.getEd(), parentResource.getUser());
 			
 			parentResource.synchronize();
 			return Response.ok(createdObject.getUuid().toString()).build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 	
@@ -497,7 +506,7 @@ public class QudvResource {
 					message = ApiErrorHelper.NOT_EXECUTEABLE),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response deleteQuantityKind(@PathParam("quantityKindUuid") @ApiParam(value = "Uuid of the QuantityKind", required = true) String quantityKindUuid) {
 		try {
 			parentResource.synchronize();
@@ -511,15 +520,12 @@ public class QudvResource {
 					QudvPackage.SYSTEM_OF_QUANTITIES__QUANTITY_KIND, qk);
 			
 			// Not executable if there exists an reference where this qk is used (e.g. in a unit)
-			if (!removeCommand.canExecute()) {
-				return ApiErrorHelper.createNotExecuteableErrorResponse();
-			}
-			parentResource.getEd().getCommandStack().execute(removeCommand);
+			ApiErrorHelper.executeCommandIffCanExecute(removeCommand, parentResource.getEd(), parentResource.getUser());
 			
 			parentResource.synchronize();
 			return Response.ok().build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 	
@@ -543,7 +549,7 @@ public class QudvResource {
 					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response getPrefix(@PathParam("prefixUuid") @ApiParam(value = "Uuid of the Prefix", required = true) String prefixUuid) {
 		try {
 			parentResource.synchronize();
@@ -557,7 +563,7 @@ public class QudvResource {
 			BeanPrefix beanPrefix = new BeanPrefix(prefix);
 			return Response.status(Response.Status.OK).entity(beanPrefix).build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 
@@ -576,13 +582,13 @@ public class QudvResource {
 					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500,
-					message = ApiErrorHelper.SYNC_ERROR)})
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response putPrefixKind(@ApiParam(value = "Prefix to put", required = true) BeanPrefix bean) {
 		try {
 			parentResource.synchronize();
 			return Response.status(Response.Status.OK).build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 	
@@ -602,7 +608,10 @@ public class QudvResource {
 					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
+					message = ApiErrorHelper.NOT_EXECUTEABLE),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response createPrefix() {
 		try {
 			parentResource.synchronize();
@@ -610,12 +619,12 @@ public class QudvResource {
 			Prefix prefix = QudvFactory.eINSTANCE.createPrefix();
 			Command addCommand = AddCommand.create(parentResource.getEd(), parentResource.getRepository().getUnitManagement().getSystemOfUnit(),
 					QudvPackage.SYSTEM_OF_UNITS__PREFIX, prefix);
-			parentResource.getEd().getCommandStack().execute(addCommand);
+			ApiErrorHelper.executeCommandIffCanExecute(addCommand, parentResource.getEd(), parentResource.getUser());
 			
 			parentResource.synchronize();
 			return Response.ok(prefix.getUuid().toString()).build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 	
@@ -637,7 +646,10 @@ public class QudvResource {
 					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
+					message = ApiErrorHelper.NOT_EXECUTEABLE),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response deletePrefix(@PathParam("prefixUuid") @ApiParam(value = "Uuid of the Prefix", required = true) String prefixUuid) {
 		try {
 			parentResource.synchronize();
@@ -649,12 +661,12 @@ public class QudvResource {
 			
 			Command removeCommand = RemoveCommand.create(parentResource.getEd(), parentResource.getRepository().getUnitManagement().getSystemOfUnit(),
 					QudvPackage.SYSTEM_OF_UNITS__PREFIX, prefix);
-			parentResource.getEd().getCommandStack().execute(removeCommand);
+			ApiErrorHelper.executeCommandIffCanExecute(removeCommand, parentResource.getEd(), parentResource.getUser());
 			
 			parentResource.synchronize();
 			return Response.ok().build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 	
@@ -683,7 +695,10 @@ public class QudvResource {
 					message = ApiErrorHelper.INVALID_TYPE_ERROR),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
+					message = ApiErrorHelper.NOT_EXECUTEABLE),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response createUnitFactor(@ApiParam(value = "Parent unit of the unit factor", required = true) @PathParam("uuid") String unitFactorParentUuid) {
 		try {
 			parentResource.synchronize();
@@ -702,12 +717,12 @@ public class QudvResource {
 			UnitFactor factor = QudvFactory.eINSTANCE.createUnitFactor();
 			Command addCommand = AddCommand.create(parentResource.getEd(), unit,
 					QudvPackage.DERIVED_UNIT__FACTOR, factor);
-			parentResource.getEd().getCommandStack().execute(addCommand);
+			ApiErrorHelper.executeCommandIffCanExecute(addCommand, parentResource.getEd(), parentResource.getUser());
 			
 			parentResource.synchronize();
 			return Response.ok(factor.getUuid().toString()).build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 	
@@ -729,7 +744,10 @@ public class QudvResource {
 					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
+					message = ApiErrorHelper.NOT_EXECUTEABLE),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response deleteUnitFactor(@PathParam("uuid") @ApiParam(value = "Uuid of the unit factor", required = true) String unitFactorUuid) {
 		try {
 			parentResource.synchronize();
@@ -740,12 +758,12 @@ public class QudvResource {
 			}
 			
 			Command removeCommand = RemoveCommand.create(parentResource.getEd(), factor.eContainer(), QudvPackage.DERIVED_UNIT__FACTOR, factor);
-			parentResource.getEd().getCommandStack().execute(removeCommand);
+			ApiErrorHelper.executeCommandIffCanExecute(removeCommand, parentResource.getEd(), parentResource.getUser());
 			
 			parentResource.synchronize();
 			return Response.ok().build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 	
@@ -771,7 +789,10 @@ public class QudvResource {
 					message = ApiErrorHelper.INVALID_TYPE_ERROR),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
+					message = ApiErrorHelper.NOT_EXECUTEABLE),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response createQuantityKindFactor(@ApiParam(value = "Parent quantity kind of the quantity kind factor", required = true) @PathParam("uuid") String quantityKindFactorParentUuid) {
 		try {
 			parentResource.synchronize();
@@ -790,12 +811,12 @@ public class QudvResource {
 			QuantityKindFactor factor = QudvFactory.eINSTANCE.createQuantityKindFactor();
 			Command addCommand = AddCommand.create(parentResource.getEd(), quantityKind,
 					QudvPackage.DERIVED_QUANTITY_KIND, factor);
-			parentResource.getEd().getCommandStack().execute(addCommand);
+			ApiErrorHelper.executeCommandIffCanExecute(addCommand, parentResource.getEd(), parentResource.getUser());
 			
 			parentResource.synchronize();
 			return Response.ok(factor.getUuid().toString()).build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 	
@@ -817,7 +838,10 @@ public class QudvResource {
 					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
+					message = ApiErrorHelper.NOT_EXECUTEABLE),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response deleteQuantityKindFactor(@PathParam("uuid") @ApiParam(value = "Uuid of the quantity kind factor", required = true) String quantityKindFactorUuid) {
 		try {
 			parentResource.synchronize();
@@ -828,12 +852,12 @@ public class QudvResource {
 			}
 			
 			Command removeCommand = RemoveCommand.create(parentResource.getEd(), factor.eContainer(), QudvPackage.DERIVED_QUANTITY_KIND, factor);
-			parentResource.getEd().getCommandStack().execute(removeCommand);
+			ApiErrorHelper.executeCommandIffCanExecute(removeCommand, parentResource.getEd(), parentResource.getUser());
 			
 			parentResource.synchronize();
 			return Response.ok().build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 

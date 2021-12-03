@@ -24,9 +24,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -42,13 +44,16 @@ import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import de.dlr.sc.virsat.model.dvlm.general.IAssignedDiscipline;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
+import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.util.StructuralInstantiator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.structure.command.CreateAddSeiWithFileStructureCommand;
 import de.dlr.sc.virsat.server.auth.ServerRoles;
+import de.dlr.sc.virsat.server.auth.ServerUserContext;
 import de.dlr.sc.virsat.server.dataaccess.ServerConcept;
 import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProvider;
 import de.dlr.sc.virsat.server.jetty.VirSatJettyServer;
@@ -103,6 +108,7 @@ public class ModelAccessResource {
 	public static final String DISCIPLINES = "disciplines";
 	public static final String DISCIPLINE = "discipline";
 	public static final String ROLEMANAGEMENT = "rolemanagement";
+	public static final String REPOSITORY = "modelRepository";
 	public static final String CONCEPTS = "concepts";
 	public static final String CA = "ca";
 	public static final String CA_AND_PROPERTIES = "caAndProperties";
@@ -147,12 +153,18 @@ public class ModelAccessResource {
 			@QueryParam(ModelAccessResource.QP_SYNC) @DefaultValue("true") boolean synchronize,
 			
 			@ApiParam(value = "Build when synchronizing on this request", required = false)
-			@QueryParam(ModelAccessResource.QP_BUILD) @DefaultValue("true") boolean build) {
+			@QueryParam(ModelAccessResource.QP_BUILD) @DefaultValue("true") boolean build,
+			@Context SecurityContext sc) {
 		
 		ServerRepository repo = RepoRegistry.getInstance().getRepository(repoName);
 		if (repo != null) {
 			provider.setServerRepository(repo);
-			return new RepoModelAccessResource(repo, synchronize, build);
+			
+			// Override current user with a custom user context
+			IUserContext userContext = new ServerUserContext(sc);
+			provider.setContext(userContext);
+			
+			return new RepoModelAccessResource(repo, synchronize, build, userContext);
 		}
 		
 		return null;
@@ -176,13 +188,22 @@ public class ModelAccessResource {
 		private Repository repository;
 		private VirSatTransactionalEditingDomain ed;
 		private ServerRepository serverRepository;
+		private IUserContext userContext;
 		private boolean synchronize;
 		private boolean build;
 
-		public RepoModelAccessResource(ServerRepository serverRepository, boolean synchronize, boolean build) {
+		/**
+		 * Constructor that holds all information of the request
+		 * @param serverRepository of this concrete resource
+		 * @param synchronize if synchronization is requested
+		 * @param build if building is requested
+		 * @param userContext the authenticated user
+		 */
+		public RepoModelAccessResource(ServerRepository serverRepository, boolean synchronize, boolean build, IUserContext userContext) {
 			this.serverRepository = serverRepository;
 			this.synchronize = synchronize;
 			this.build = build;
+			this.userContext = userContext;
 			repository = serverRepository.getResourceSet().getRepository();
 			ed = serverRepository.getEd();
 		}
@@ -206,6 +227,11 @@ public class ModelAccessResource {
 		@ApiOperation(hidden = true, value = "")
 		public VirSatTransactionalEditingDomain getEd() {
 			return ed;
+		}
+		
+		@ApiOperation(hidden = true, value = "")
+		public IUserContext getUser() {
+			return userContext;
 		}
 
 		// Subresources
@@ -248,12 +274,12 @@ public class ModelAccessResource {
 						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 				@ApiResponse(
 						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = ApiErrorHelper.SYNC_ERROR)})
+						message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 		public Response forceSynchronize() {
 			try {
 				serverRepository.syncRepository(build);
 			} catch (Exception e) {
-				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+				return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 			}
 			return Response.ok().build();
 		}
@@ -276,7 +302,7 @@ public class ModelAccessResource {
 						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 				@ApiResponse(
 						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = ApiErrorHelper.SYNC_ERROR)})
+						message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 		public Response getRootSeis() {
 			try {
 				synchronize();
@@ -293,7 +319,7 @@ public class ModelAccessResource {
 				
 				return Response.ok(genericEntityList).build();
 			} catch (Exception e) {
-				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+				return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 			}
 		}
 		
@@ -313,18 +339,21 @@ public class ModelAccessResource {
 						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 				@ApiResponse(
 						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = ApiErrorHelper.SYNC_ERROR)})
+						message = ApiErrorHelper.NOT_EXECUTEABLE),
+				@ApiResponse(
+						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+						message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 		public Response createRootSei(@QueryParam(value = ModelAccessResource.QP_FULL_QUALIFIED_NAME) 
 			@ApiParam(value = "Full qualified name of the SEI type", required = true) String fullQualifiedName) {
 			try {
 				serverRepository.syncRepository();
 				
-				String newSeiUuid = createSeiFromFqn(fullQualifiedName, repository, ed);
+				String newSeiUuid = createSeiFromFqn(fullQualifiedName, repository, ed, userContext);
 				
 				serverRepository.syncRepository();
 				return Response.ok(newSeiUuid).build();
 			} catch (Exception e) {
-				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+				return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 			}
 		}
 
@@ -345,7 +374,7 @@ public class ModelAccessResource {
 						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 				@ApiResponse(
 						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = ApiErrorHelper.SYNC_ERROR)})
+						message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 		public Response getConcepts(@DefaultValue("true") @QueryParam(QP_ONLY_ACTIVE_CONCEPTS) boolean onlyActiveConcepts) {
 			try {
 				synchronize();
@@ -379,7 +408,7 @@ public class ModelAccessResource {
 				
 				return Response.ok(entity).build();
 			} catch (Exception e) {
-				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+				return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 			}
 		}
 		
@@ -400,7 +429,7 @@ public class ModelAccessResource {
 						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 				@ApiResponse(
 						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = ApiErrorHelper.SYNC_ERROR)})
+						message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 		public Response getDisciplines() {
 			try {
 				synchronize();
@@ -416,7 +445,7 @@ public class ModelAccessResource {
 				
 				return Response.ok(entity).build();
 			} catch (Exception e) {
-				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+				return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 			}
 		}
 		
@@ -436,7 +465,7 @@ public class ModelAccessResource {
 						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 				@ApiResponse(
 						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = ApiErrorHelper.SYNC_ERROR)})
+						message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 		public Response getRolemanagementDiscipline() {
 			try {
 				synchronize();
@@ -448,7 +477,39 @@ public class ModelAccessResource {
 				
 				return Response.ok(new BeanDiscipline(discipline)).build();
 			} catch (Exception e) {
-				return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+				return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
+			}
+		}
+		
+		/** **/
+		@GET
+		@Path(REPOSITORY)
+		@Produces(MediaType.APPLICATION_JSON)
+		@ApiOperation(
+				produces = "application/json",
+				value = "Fetch discipline of the repository",
+				httpMethod = "GET",
+				notes = "This service fetches the discipline of the repository")
+		@ApiResponses(value = { 
+				@ApiResponse(
+						code = HttpStatus.OK_200,
+						response = BeanDiscipline.class,
+						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+				@ApiResponse(
+						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+						message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+		public Response getRepositpryDiscipline() {
+			try {
+				synchronize();
+				
+				Discipline discipline = repository.getAssignedDiscipline();
+				if (discipline == null) {
+					return Response.ok(null).build();
+				}
+				
+				return Response.ok(new BeanDiscipline(discipline)).build();
+			} catch (Exception e) {
+				return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 			}
 		}
 	
@@ -459,15 +520,21 @@ public class ModelAccessResource {
 	 * @param fullQualifiedName of the sei type (se)
 	 * @param owner of the sei (either another sei or the repository for root seis)
 	 * @param editingDomain
+	 * @param iUserContext 
 	 * @return uuid of the created sei
 	 */
-	public static String createSeiFromFqn(String fullQualifiedName, EObject owner, VirSatTransactionalEditingDomain editingDomain) {
+	public static String createSeiFromFqn(String fullQualifiedName, EObject owner, VirSatTransactionalEditingDomain editingDomain, IUserContext iUserContext) {
 		ActiveConceptHelper helper = new ActiveConceptHelper(editingDomain.getResourceSet().getRepository());
 		StructuralElement se = helper.getStructuralElement(fullQualifiedName);
 		StructuralElementInstance newSei = new StructuralInstantiator().generateInstance(se, null);
 		
+		if (owner instanceof IAssignedDiscipline) {
+			Discipline parentDiscipline = ((IAssignedDiscipline) owner).getAssignedDiscipline();
+			newSei.setAssignedDiscipline(parentDiscipline);
+		}
+		
 		Command createCommand = CreateAddSeiWithFileStructureCommand.create(editingDomain, owner, newSei);
-		editingDomain.getCommandStack().execute(createCommand);
+		ApiErrorHelper.executeCommandIffCanExecute(createCommand, editingDomain, iUserContext);
 		
 		return newSei.getUuid().toString();
 	}
