@@ -108,6 +108,18 @@
 		pathToImage="resources/icons/ExistenceVerification.gif">
 	</conceptImage>
 	<conceptImage
+		fullQualifiedID="de.dlr.sc.virsat.model.extension.requirements.IValueVerification"
+		pathToImage="resources/icons/IValueVerification.gif">
+	</conceptImage>
+	<conceptImage
+		fullQualifiedID="de.dlr.sc.virsat.model.extension.requirements.UpperLimitVerification"
+		pathToImage="resources/icons/UpperLimitVerification.gif">
+	</conceptImage>
+	<conceptImage
+		fullQualifiedID="de.dlr.sc.virsat.model.extension.requirements.LowerLimitVerification"
+		pathToImage="resources/icons/LowerLimitVerification.gif">
+	</conceptImage>
+	<conceptImage
 		fullQualifiedID="de.dlr.sc.virsat.model.extension.requirements.BoundedValueVerification"
 		pathToImage="resources/icons/BoundedValueVerification.gif">
 	</conceptImage>
@@ -196,6 +208,14 @@
 	<command
 		id="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddExistenceVerification"
 		name="Add ExistenceVerification">
+	</command>
+	<command
+		id="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddUpperLimitVerification"
+		name="Add UpperLimitVerification">
+	</command>
+	<command
+		id="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddLowerLimitVerification"
+		name="Add LowerLimitVerification">
 	</command>
 	<command
 		id="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddBoundedValueVerification"
@@ -308,6 +328,16 @@
 	      icon="resources/icons/ExistenceVerification.gif">
 	</image>
 	<image
+	      commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddUpperLimitVerification"
+	      disabledIcon="resources/icons/UpperLimitVerification_disabled.gif"
+	      icon="resources/icons/UpperLimitVerification.gif">
+	</image>
+	<image
+	      commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddLowerLimitVerification"
+	      disabledIcon="resources/icons/LowerLimitVerification_disabled.gif"
+	      icon="resources/icons/LowerLimitVerification.gif">
+	</image>
+	<image
 	      commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddBoundedValueVerification"
 	      disabledIcon="resources/icons/BoundedValueVerification_disabled.gif"
 	      icon="resources/icons/BoundedValueVerification.gif">
@@ -398,6 +428,14 @@
 	<handler
 		class="de.dlr.sc.virsat.model.extension.requirements.ui.handler.AddExistenceVerificationHandler"
 		commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddExistenceVerification">
+	</handler>
+	<handler
+		class="de.dlr.sc.virsat.model.extension.requirements.ui.handler.AddUpperLimitVerificationHandler"
+		commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddUpperLimitVerification">
+	</handler>
+	<handler
+		class="de.dlr.sc.virsat.model.extension.requirements.ui.handler.AddLowerLimitVerificationHandler"
+		commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddLowerLimitVerification">
 	</handler>
 	<handler
 		class="de.dlr.sc.virsat.model.extension.requirements.ui.handler.AddBoundedValueVerificationHandler"
@@ -893,6 +931,50 @@
 			</visibleWhen>
 		</command>
 		<command
+			commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddUpperLimitVerification"
+			style="push">
+			<visibleWhen
+				checkEnabled="true">
+				<with
+					variable="selection">
+					<iterate
+						ifEmpty="false"
+						operator="and">
+						<test 
+							property="de.dlr.sc.virsat.model.extension.requirements.ui.propertyTester.conceptEnabled"
+							value="true" 
+							forcePluginActivation="true">
+						</test>		
+						<instanceof
+							value="de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer">
+						</instanceof>
+					</iterate>
+				</with>
+			</visibleWhen>
+		</command>
+		<command
+			commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddLowerLimitVerification"
+			style="push">
+			<visibleWhen
+				checkEnabled="true">
+				<with
+					variable="selection">
+					<iterate
+						ifEmpty="false"
+						operator="and">
+						<test 
+							property="de.dlr.sc.virsat.model.extension.requirements.ui.propertyTester.conceptEnabled"
+							value="true" 
+							forcePluginActivation="true">
+						</test>		
+						<instanceof
+							value="de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer">
+						</instanceof>
+					</iterate>
+				</with>
+			</visibleWhen>
+		</command>
+		<command
 			commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddBoundedValueVerification"
 			style="push">
 			<visibleWhen
@@ -1090,6 +1172,16 @@
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationsExistenceVerification">
 		</uiSnippet>
 		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementVerificationsUpperLimitVerification"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationsUpperLimitVerification">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementVerificationsLowerLimitVerification"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationsLowerLimitVerification">
+		</uiSnippet>
+		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementVerificationsBoundedValueVerification"
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationsBoundedValueVerification">
@@ -1265,6 +1357,36 @@
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetSectionExistenceVerification">
 		</uiSnippet>
 		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetUpperLimitVerification"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableUpperLimitVerification">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.section.uiSnippetUpperLimitVerification"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetSectionUpperLimitVerification">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uISnippetTableRequirementVerificationsUpperLimitVerification"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationsUpperLimitVerification">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetLowerLimitVerification"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableLowerLimitVerification">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.section.uiSnippetLowerLimitVerification"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetSectionLowerLimitVerification">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uISnippetTableRequirementVerificationsLowerLimitVerification"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationsLowerLimitVerification">
+		</uiSnippet>
+		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetBoundedValueVerification"
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableBoundedValueVerification">
@@ -1273,6 +1395,11 @@
 		      id="de.dlr.sc.virsat.model.extension.requirements.section.uiSnippetBoundedValueVerification"
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetSectionBoundedValueVerification">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uISnippetTableRequirementVerificationsBoundedValueVerification"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationsBoundedValueVerification">
 		</uiSnippet>
 	</extension>
 	<!-- Plugin.XML Protected Region Start -->
