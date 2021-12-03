@@ -2,7 +2,7 @@
 <feature
       id="de.dlr.sc.virsat.server.feature"
       label="VirSat Core Headless Rest Jetty Server feature"
-      version="4.13.0.qualifier"
+      version="4.14.0.qualifier"
       provider-name="DLR (German Aerospace Center)"
       plugin="de.dlr.sc.virsat.branding.ui"
       license-feature="de.dlr.sc.virsat.license.feature">
@@ -31,7 +31,7 @@ by German Aerospace Center (DLR e.V.)
       <import feature="de.dlr.sc.virsat.branding.feature" version="0.0.0" match="greaterOrEqual"/>
       <import feature="de.dlr.sc.virsat.license.feature" version="0.0.0" match="greaterOrEqual"/>
       <import feature="org.eclipse.jgit" version="5.4.0.201906121030-r"/>
-      <import feature="de.dlr.sc.virsat.external.lib.feature" version="4.13.0.qualifier"/>
+      <import feature="de.dlr.sc.virsat.external.lib.feature" version="4.14.0.qualifier"/>
       <import plugin="org.eclipse.jetty.http"/>
       <import plugin="org.eclipse.jetty.io"/>
       <import plugin="org.eclipse.jetty.security"/>

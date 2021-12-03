@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core Model Extension Functional Eclectrical Interfaces UI
 Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.funcelectrical.ui;singleton:=true
-Bundle-Version: 4.13.0.qualifier
+Bundle-Version: 4.14.0.qualifier
 Require-Bundle: de.dlr.sc.virsat.model.extension.funcelectrical,
  org.eclipse.core.runtime,
  org.eclipse.emf.edit,
