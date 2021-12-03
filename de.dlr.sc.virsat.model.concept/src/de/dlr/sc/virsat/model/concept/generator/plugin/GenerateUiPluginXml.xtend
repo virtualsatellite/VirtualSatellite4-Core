@@ -305,7 +305,7 @@ class GenerateUiPluginXml {
 	def declareUiSnippetVerificationTables(Concept conceptToBeVerified, Category verificationCategory) '''
     <uiSnippet
           id="«conceptToBeVerified.name».table.uISnippetTableRequirementVerifications«verificationCategory.name.toFirstUpper»"
-          section="«conceptToBeVerified.name».ui.Section"
+          section="de.dlr.sc.virsat.model.extension.requirements.ui.Section.Verifications"
           snippet="«conceptToBeVerified.name».ui.snippet.UiSnippetTableRequirementVerifications«verificationCategory.name.toFirstUpper»">
     </uiSnippet>
 	'''
