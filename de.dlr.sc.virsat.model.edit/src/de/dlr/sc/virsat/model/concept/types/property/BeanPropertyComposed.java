@@ -21,7 +21,7 @@ import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
-import de.dlr.sc.virsat.model.dvlm.json.AnyTypeAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.ComposedBeanCategoryAssigmentAdapter;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiModelProperty.AccessMode;
 
@@ -53,7 +53,7 @@ public class BeanPropertyComposed<BEAN_TYPE extends IBeanCategoryAssignment> ext
 	}
 
 	@XmlElement(nillable = true)
-	@XmlJavaTypeAdapter(AnyTypeAdapter.class)
+	@XmlJavaTypeAdapter(ComposedBeanCategoryAssigmentAdapter.class)
 	@ApiModelProperty(
 		reference = "ABeanCategoryAssignment",
 		value = "Returns the bean of the composed Category Assignment\n"
@@ -95,5 +95,12 @@ public class BeanPropertyComposed<BEAN_TYPE extends IBeanCategoryAssignment> ext
 	@Override
 	public BeanPropertyType getPropertyType() {
 		return BeanPropertyType.COMPOSED;
+	}
+	
+	@Override
+	public boolean getIsCalculated() {
+		// As the isCalculated property for this bean depends on the composed property
+		// It can only be evaluated if a composed property is set
+		return isSet() && super.getIsCalculated();
 	}
 }

@@ -130,4 +130,13 @@ public class BeanPropertyResource extends ABeanProperty<ResourcePropertyInstance
 	public BeanPropertyType getPropertyType() {
 		return BeanPropertyType.RESOURCE;
 	}
+	
+	@XmlElement
+	public boolean getOverride() {
+		return ti.isOverride();
+	}
+	
+	public void setOverride(boolean override) {
+		ti.setOverride(override);
+	}
 }

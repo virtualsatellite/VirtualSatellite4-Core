@@ -1,7 +1,29 @@
 VirSat Core Release Notes
 -------------------------
 
-Release 4.12.2 (23rd April 2021)
+Release 4.14.0 (3rd December 2021)
+----------------------------------
+
+New Features:
+   Added generic verification interface for Requirements - #942 Feature
+   Added concepts end point for REST API - #959 Feature
+   Added param for GET requests to skip GIT synchronization - #979 Feature
+   Added create end points to REST API - #984 Feature
+   Added isCalculated field to REST API - #1005 Feature
+   Added end point for serving files referenced by resource property to REST API - #995 Feature
+   Added role management end point to REST API - #990 #991 Feature
+   Added sub requirements to requirements - #1021 Feature
+   Added unit management end point to REST API - #980 Feature
+ 
+
+Usability Updates:
+   Improved requirements import - #1027 Comfort/usability
+   Added custom requirements view - #1028 Comfort/Usability 
+
+Fixed Bugs:
+   Fixed documentation not being deployed to GitHub - #1025 Bug
+
+Release 4.13.0 (26th April 2021)
 ----------------------------------
 
 New Features:
@@ -21,7 +43,6 @@ Fixed Bugs:
    Fixed inconsistency of bean class hierarchy to better match DVLM - #802 Bug
    Fixed missing check for exportability on Excel exporters - #336 Bug
    Fixed executability flag not being set for linux version - #921 Bug
-   
 
 Release 4.12.2 (11th November 2020)
 ----------------------------------

@@ -30,6 +30,7 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.concept.types.category.BeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
+import de.dlr.sc.virsat.model.concept.types.roles.BeanDiscipline;
 import de.dlr.sc.virsat.model.concept.types.util.BeanCategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.concept.types.util.BeanStructuralElementInstanceHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
@@ -38,7 +39,9 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import de.dlr.sc.virsat.model.dvlm.inheritance.InheritancePackage;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanStructuralElementInstanceAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.BeanDisciplineAdapter;
 import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapter;
+import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralPackage;
@@ -55,20 +58,13 @@ import io.swagger.annotations.ApiModelProperty;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement
 // Ensure that the sei (by uuid) gets unmarshalled first
-@XmlType(propOrder = {"structuralElementInstance", "name", "parent", "jaxbCategoryAssignments", "jaxbChildren", "jaxbSuperSeis"})
+@XmlType(propOrder = {"structuralElementInstance", "name", "parent", "jaxbCategoryAssignments", "jaxbChildren", "jaxbSuperSeis", "assignedDiscipline"})
 @ApiModel(description = "Abstract model class for bean SEIs."
 		+ " Instead return a concrete bean SEI that is identified by a type field."
 		+ " Currently concrete SEIs have no additional fields.")
 public abstract class ABeanStructuralElementInstance implements IBeanStructuralElementInstance {
 
 	protected StructuralElementInstance sei;
-	
-	private static final int DOCUMENTATION_POSITION_ZERO = 0;
-	private static final int DOCUMENTATION_POSITION_ONE = 1;
-	private static final int DOCUMENTATION_POSITION_TWO = 2;
-	private static final int DOCUMENTATION_POSITION_THREE = 3;
-	private static final int DOCUMENTATION_POSITION_FOUR = 4;
-	private static final int DOCUMENTATION_POSITION_FIVE = 5;
 	
 	@Override
 	public boolean equals(Object obj) {
@@ -92,8 +88,7 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	}
 	
 	@XmlElement(nillable = true)
-	@ApiModelProperty(required = true,
-			position = DOCUMENTATION_POSITION_ZERO)
+	@ApiModelProperty(required = true)
 	@Override
 	public void setName(String seiName) {
 		sei.setName(seiName);
@@ -113,8 +108,7 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	@XmlJavaTypeAdapter(IUuidAdapter.class)
 	@ApiModelProperty(name = "uuid", required = true,
 		value = "Unique identifier for a bean",
-		example = "b168b0df-84b6-4b7f-bede-69298b215f40",
-		position = DOCUMENTATION_POSITION_ONE)
+		example = "b168b0df-84b6-4b7f-bede-69298b215f40")
 	@Override
 	public	void setStructuralElementInstance(StructuralElementInstance sei) {
 		this.sei = sei;
@@ -177,8 +171,7 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	@XmlElement(name = "categoryAssignments")
 	@ApiModelProperty(required = true,
 		name = "categoryAssignments",
-		value = "List of the CA beans",
-		position = DOCUMENTATION_POSITION_TWO)
+		value = "List of the CA beans")
 	public void setJaxbCategoryAssignments(List<BeanCategoryAssignment> newCaBeans) {
 		setCategoryAssignments(newCaBeans);
 	}
@@ -263,8 +256,7 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	
 	@XmlElement(name = "children")
 	@ApiModelProperty(name = "children", required = true,
-		value = "List of the child beans",
-		position = DOCUMENTATION_POSITION_THREE)
+		value = "List of the child beans")
 	public void setJaxbChildren(List<BeanStructuralElementInstanceReference> newBeanSeis) {
 		setReferenceList(sei.getChildren(), newBeanSeis);
 	}
@@ -337,8 +329,7 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 
 	@XmlElement(name = "superSeis")
 	@ApiModelProperty(name = "superSeis", required = true,
-		value = "List of the super SEI beans",
-		position = DOCUMENTATION_POSITION_FOUR)
+		value = "List of the super SEI beans")
 	public void setJaxbSuperSeis(List<BeanStructuralElementInstanceReference> newBeanSeis) {
 		setReferenceList(sei.getSuperSeis(), newBeanSeis);
 	}
@@ -361,11 +352,10 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	}
 
 	@Override
-	@XmlElement(name = "parent")
+	@XmlElement(name = "parent", nillable = true)
 	@ApiModelProperty(required = true,
 		value = "Unique identifier for the parent bean",
-		example = "b168b0df-84b6-4b7f-bede-69298b215f40",
-		position = DOCUMENTATION_POSITION_FIVE)
+		example = "b168b0df-84b6-4b7f-bede-69298b215f40")
 	@XmlJavaTypeAdapter(ABeanStructuralElementInstanceAdapter.class)
 	public BeanStructuralElementInstance getParent() {
 		StructuralElementInstance parentSei = VirSatEcoreUtil.getEContainerOfClass(sei, StructuralElementInstance.class);
@@ -378,7 +368,11 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	
 	@Override
 	public void setParent(BeanStructuralElementInstance newParent) {
-		sei.setParent(newParent.getStructuralElementInstance());
+		if (newParent == null) {
+			sei.setParent(null);
+		} else {
+			sei.setParent(newParent.getStructuralElementInstance());
+		}
 	}
 	
 	@Override
@@ -446,5 +440,26 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 			return se.isIsRootStructuralElement();
 		}
 		return false;
+	}
+	
+	@XmlElement(nillable = true)
+	@ApiModelProperty(value = "Uuid of the referenced Discipline that can edit this SEI")
+	@XmlJavaTypeAdapter(BeanDisciplineAdapter.class)
+	@Override
+	public BeanDiscipline getAssignedDiscipline() {
+		Discipline assignedDiscipline = sei.getAssignedDiscipline();
+		
+		if (assignedDiscipline == null) {
+			return null;
+		}
+		
+		return new BeanDiscipline(assignedDiscipline);
+	}
+	
+	@Override
+	public void setAssignedDiscipline(BeanDiscipline disciplineBean) {
+		if (disciplineBean != null) {
+			sei.setAssignedDiscipline(disciplineBean.getDiscipline());
+		}
 	}
 }

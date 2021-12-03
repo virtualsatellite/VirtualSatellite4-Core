@@ -9,11 +9,16 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.model;
 
+import javax.xml.bind.annotation.XmlType;
+
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.edit.domain.EditingDomain;
+
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 
 // *****************************************************************
 // * Class Declaration
@@ -27,6 +32,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
  * 
  * 
  */
+@XmlType(name = AModelVerification.FULL_QUALIFIED_CATEGORY_NAME)
 public abstract class ModelVerification extends AModelVerification {
 	
 	/**
@@ -52,4 +58,38 @@ public abstract class ModelVerification extends AModelVerification {
 	public ModelVerification(CategoryAssignment categoryAssignment) {
 		super(categoryAssignment);
 	}
+	
+	
+	protected Command setStatusCompliant(EditingDomain editingDomain) {
+		return setStatus(editingDomain, IVerification.STATUS_FullyCompliant_NAME);
+	}
+	
+	protected void setStatusCompliant() {
+		setStatus(IVerification.STATUS_FullyCompliant_NAME);
+	}
+	
+	protected Command setStatusNonCompliant(EditingDomain editingDomain) {
+		return setStatus(editingDomain, IVerification.STATUS_NonCompliant_NAME);
+	}
+	
+	protected void setStatusNonCompliant() {
+		setStatus(IVerification.STATUS_NonCompliant_NAME);
+	}
+	
+	protected Command setStatusPartlyCompliant(EditingDomain editingDomain) {
+		return setStatus(editingDomain, IVerification.STATUS_PartialCompliant_NAME);
+	}
+	
+	protected void setStatusPartlyCompliant() {
+		setStatus(IVerification.STATUS_PartialCompliant_NAME);
+	}
+	
+	protected Command setStatusOpen(EditingDomain editingDomain) {
+		return setStatus(editingDomain, IVerification.STATUS_Open_NAME);
+	}
+	
+	protected void setStatusOpen() {
+		setStatus(IVerification.STATUS_Open_NAME);
+	}
+	
 }

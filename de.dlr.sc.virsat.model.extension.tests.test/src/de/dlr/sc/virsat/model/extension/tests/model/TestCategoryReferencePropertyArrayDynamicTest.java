@@ -45,6 +45,7 @@ public class TestCategoryReferencePropertyArrayDynamicTest extends AConceptTestC
 
 	private TestCategoryReferenceArray tcIntrinsicArray;
 	private IBeanList<BeanPropertyString> arrayDynamic;
+	private IBeanList<TestCategoryAllProperty> referenceArrayDynamic;
 	private Concept concept;
 	private TestCategoryAllProperty referencedCategory;
 	
@@ -63,6 +64,7 @@ public class TestCategoryReferencePropertyArrayDynamicTest extends AConceptTestC
 		tcIntrinsicArray = new TestCategoryReferenceArray(concept);
 		arrayDynamic = tcIntrinsicArray.getTestPropertyReferenceArrayDynamic();
 		referencedCategory = new TestCategoryAllProperty(concept);
+		referenceArrayDynamic = new TestCategoryReferenceArray(concept).getTestCategoryReferenceArrayDynamic();
 		prepareEditingDomain();
 	}
 
@@ -158,6 +160,24 @@ public class TestCategoryReferencePropertyArrayDynamicTest extends AConceptTestC
 		
 		assertEquals("Property3 got placed correctly", property3, arrayDynamic.get(1));
 		assertEquals("Property2 got Shifted correctly", property2, arrayDynamic.get(2));
+	}
+	
+	@Test
+	public void testAddCategoryReference() {
+		assertTrue("List is empty", referenceArrayDynamic.isEmpty());
+		TestCategoryAllProperty testInstance1 = new TestCategoryAllProperty(concept);
+		TestCategoryAllProperty testInstance2 = new TestCategoryAllProperty(concept);
+		TestCategoryAllProperty testInstance3 = new TestCategoryAllProperty(concept);
+		
+		referenceArrayDynamic.add(testInstance1);
+		referenceArrayDynamic.add(testInstance2);
+		
+		assertEquals("List has two items", LIST_WITH_TWO_ITEMS, referenceArrayDynamic.size());
+		
+		referenceArrayDynamic.add(1, testInstance3);
+		
+		assertEquals("Property3 got placed correctly", testInstance3, referenceArrayDynamic.get(1));
+		assertEquals("Property2 got Shifted correctly", testInstance2, referenceArrayDynamic.get(2));
 	}
 	
 	@Test

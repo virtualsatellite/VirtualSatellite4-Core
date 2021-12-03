@@ -11,71 +11,52 @@ package de.dlr.sc.virsat.server.resources;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-
+import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
 
-import org.apache.commons.io.IOUtils;
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jetty.http.HttpStatus;
+import org.glassfish.jersey.internal.inject.AbstractBinder;
+import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.Test;
 
-import de.dlr.sc.virsat.server.Activator;
-import de.dlr.sc.virsat.server.servlet.RepoManagementServlet;
-import de.dlr.sc.virsat.server.servlet.VirSatModelAccessServlet;
-import de.dlr.sc.virsat.server.test.AJettyServerTest;
+import de.dlr.sc.virsat.server.test.AJerseyTest;
 
-public class DocumentationResourceTest extends AJettyServerTest {
+public class DocumentationResourceTest extends AJerseyTest {
 
-	private static final String MODEL_DIR = "model";
-	private static final String MANAGEMENT_DIR = "management";
-
-	/**
-	 * Gets the file at apiPath from the server and assert that the right content got returned
-	 */
-	private void testDocumentation(String apiPath, String directory, String filename) throws IOException {
-		String docFileContent = webTarget
-				.path(apiPath)
-				.path(filename)
-				.request()
-				.get(String.class);
-
-		String realmResourceName = "doc-gen" + File.separator + directory + File.separator + filename;
-		String expectedFileContent =  IOUtils.toString(FileLocator.openStream(Activator.getDefault().getBundle(), 
-				new Path(realmResourceName), false), StandardCharsets.UTF_8);
-		assertEquals("Right file content", expectedFileContent, docFileContent);
+	@Override
+	protected Application configure() {
+		ResourceConfig mockConfig = new ResourceConfig();
+		
+		final DocumentationResource docProvider = new DocumentationResource("resources");
+		final AbstractBinder docBinder = new AbstractBinder() {
+			@Override
+			public void configure() {
+				bind(docProvider).to(DocumentationResource.class);
+			}
+		};
+		
+		mockConfig.register(docBinder);
+		mockConfig.register(DocumentationResource.class);
+		
+		return mockConfig;
 	}
 	
 	@Test
-	public void testDocumentation() throws IOException {
-		testDocumentation(VirSatModelAccessServlet.MODEL_API, MODEL_DIR, DocumentationResource.SWAGGER_JSON);
-		testDocumentation(VirSatModelAccessServlet.MODEL_API, MODEL_DIR, DocumentationResource.SWAGGER_YAML);
-		
-		testDocumentation(RepoManagementServlet.MANAGEMENT_API, MANAGEMENT_DIR, DocumentationResource.SWAGGER_JSON);
-		testDocumentation(RepoManagementServlet.MANAGEMENT_API, MANAGEMENT_DIR, DocumentationResource.SWAGGER_YAML);
-	}
-	
-	/**
-	 * Gets the file at apiPath from the server and assert that the resource could be accessed
-	 */
-	private void testAuthentication(String apiPath, String filename) {		
-		Response response = webTarget
-			.path(apiPath)
-			.path(filename)
-			.request()
-			.get();
-		assertEquals("The resources are not secured and can be accessed even without an auth header", HttpStatus.OK_200, response.getStatus());
+	public void testDocumentation() {
+	    String docFileContent = target(DocumentationResource.SWAGGER_JSON).request().get(String.class);
+	    assertEquals("Right file content", "testContent", docFileContent);
+	    
+	    docFileContent = target(DocumentationResource.SWAGGER_YAML).request().get(String.class);
+	    assertEquals("File not in resources", DocumentationResource.FILE_NOT_FOUND, docFileContent);
 	}
 	
 	@Test
 	public void testAuthentication() {
-		testAuthentication(VirSatModelAccessServlet.MODEL_API, DocumentationResource.SWAGGER_JSON);
-		testAuthentication(VirSatModelAccessServlet.MODEL_API, DocumentationResource.SWAGGER_YAML);
+		Response response = target(DocumentationResource.SWAGGER_JSON).request().get();
+		assertEquals("The resources are not secured and can be accessed even without an auth header", HttpStatus.OK_200, response.getStatus());
 		
-		testAuthentication(RepoManagementServlet.MANAGEMENT_API, DocumentationResource.SWAGGER_JSON);
-		testAuthentication(RepoManagementServlet.MANAGEMENT_API, DocumentationResource.SWAGGER_YAML);
+		response = target(DocumentationResource.SWAGGER_YAML).request().get();
+		assertEquals("The resources are not secured and can be accessed even without an auth header", HttpStatus.OK_200, response.getStatus());
 	}
+	
 }

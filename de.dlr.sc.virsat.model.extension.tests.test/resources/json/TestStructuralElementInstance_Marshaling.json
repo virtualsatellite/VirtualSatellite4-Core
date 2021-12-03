@@ -1,5 +1,5 @@
 {
-   "type" : "testStructuralElement",
+   "type" : "de.dlr.sc.virsat.model.extension.tests.TestStructuralElement",
    "uuid" : "f2d3ef60-389f-4fec-87a6-bd928da08f2c",
    "name" : "name",
    "parent" : "f2d3ef60-389f-4fec-87a6-bd928da08f2a",
@@ -23,5 +23,6 @@
    }, {
       "uuid" : "e04ef537-36fb-4b16-b776-579c7fdacc8b",
       "name" : null
-   } ]
+   } ],
+   "assignedDiscipline" : "e4e175f5-88c8-474f-bb25-2cdf1d3061cb"
 }

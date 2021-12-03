@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="VirSat 4 - Core" uid="de.dlr.virsat.core.product" id="de.dlr.sc.virsat.branding.ui.VirSat_Core" application="org.eclipse.ui.ide.workbench" version="4.13.0.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="VirSat 4 - Core" uid="de.dlr.virsat.core.product" id="de.dlr.sc.virsat.branding.ui.VirSat_Core" application="org.eclipse.ui.ide.workbench" version="4.14.0.qualifier" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/de.dlr.sc.virsat.branding.ui/resources/images/Branding/Configuration.gif"/>
       <text>
          Virtual Satellite 4 - DVLM Core
 
-Version 4.13.0
+Version 4.14.0
 
 © Copyright by DLR (Deutsches Zentrum fuer Luft- und Raumfahrt e. V., German Aerospace Center) 2020. 
 
@@ -136,6 +136,10 @@ Germany
       <feature id="org.polarion.eclipse.team.svn.connector" installMode="root"/>
       <feature id="org.polarion.eclipse.team.svn.connector.svnkit18" installMode="root"/>
       <feature id="org.eclipse.xtext.ui" installMode="root"/>
+      <feature id="org.eclipse.sphinx.emf.serialization" installMode="root"/>
+      <feature id="org.eclipse.rmf.reqif10.feature" installMode="root"/>
+      <feature id="org.eclipse.rmf.reqif10.pror.feature" installMode="root"/>
+      <feature id="org.eclipse.rmf.reqif10.thirdparty.feature" installMode="root"/>
    </features>
 
    <configurations>
