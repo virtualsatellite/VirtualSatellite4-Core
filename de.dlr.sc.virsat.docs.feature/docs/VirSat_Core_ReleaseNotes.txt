@@ -41,24 +41,6 @@ Fixed Bugs:
    Fixed name changes of State Machine transitions not being applied to model - #337 Bug
    Fixed not being able to trigger State Machine excel exports - #336 Bug
 
-Release 4.13.0 (11th November 2020)
-----------------------------------
-
-New Features:
-   Added JSON transformations - #725 #747 Feature
-   Added REST API Server - #555 #791 #794 #834 #812 #531 Feature
-   Added resize feature to states in Sate Machine diagrams - #810 Feature
-   Added User Manual for Functional Electrical Architecture - #849 Feature
-   Added USer Manual for Requirements - #861 Feature
-
-Usability Updates:
-   Improved creation of state machine diagrams - #234 Comfort/usability
-
-Fixed Bugs:
-   Fixed app activation producing warnings after project setup - #733 Bug
-   Fixed name changes of State Machine transitions not being applied to model - #337 Bug
-   Fixed not being able to trigger State Machine excel exports - #336 Bug
-
 Release 4.12.2 (11th November 2020)
 ----------------------------------
 
