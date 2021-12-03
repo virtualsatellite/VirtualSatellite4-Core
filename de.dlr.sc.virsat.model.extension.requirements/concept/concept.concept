@@ -129,15 +129,32 @@ Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"
 	
 	Category ModelVerification extends IVerification {
 		IsAbstract;
-		EReference elementToBeVerified of Type ecore.EObject description "The exact element (Class / property) to be verified";
+		EReference elementToBeVerified of Type dvlm.categories.ATypeDefinition description "The exact element (Class / property) to be verified";
 	}
 	
 	Category ExistenceVerification extends ModelVerification {
 	}
 	
-	Category BoundedValueVerification extends ModelVerification {
+	Category IValueVerification extends ModelVerification {
+		IsAbstract;
+		IsVerification;
+	}
+	
+	Category UpperLimitVerification extends IValueVerification {
+		IsVerification;
+		FloatProperty upperBound;
+	}
+	
+	Category LowerLimitVerification extends IValueVerification {
+		IsVerification;
+		FloatProperty lowerBound;
+	}
+	
+	Category BoundedValueVerification extends IValueVerification {
+		IsVerification;
 		FloatProperty lowerBound;
 		FloatProperty upperBound;
 	}
+	
 }
 

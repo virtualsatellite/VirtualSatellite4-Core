@@ -42,9 +42,9 @@ import javax.xml.bind.annotation.XmlElement;
  */	
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-public abstract class ABoundedValueVerification extends IValueVerification implements IBeanCategoryAssignment {
+public abstract class AUpperLimitVerification extends IValueVerification implements IBeanCategoryAssignment {
 
-	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.requirements.BoundedValueVerification";
+	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.requirements.UpperLimitVerification";
 	
 	/**
  	* Call this method to get the full qualified name of the underlying category
@@ -55,7 +55,6 @@ public abstract class ABoundedValueVerification extends IValueVerification imple
 	}
 	
 	// property name constants
-	public static final String PROPERTY_LOWERBOUND = "lowerBound";
 	public static final String PROPERTY_UPPERBOUND = "upperBound";
 	
 	
@@ -64,56 +63,19 @@ public abstract class ABoundedValueVerification extends IValueVerification imple
 	// * Class Constructors
 	// *****************************************************************
 	
-	public ABoundedValueVerification() {
+	public AUpperLimitVerification() {
 	}
 	
-	public ABoundedValueVerification(Concept concept) {
-		Category categoryFromActiveCategories = ActiveConceptHelper.getCategory(concept, "BoundedValueVerification");
-		CategoryAssignment categoryAssignement = new CategoryInstantiator().generateInstance(categoryFromActiveCategories, "BoundedValueVerification");
+	public AUpperLimitVerification(Concept concept) {
+		Category categoryFromActiveCategories = ActiveConceptHelper.getCategory(concept, "UpperLimitVerification");
+		CategoryAssignment categoryAssignement = new CategoryInstantiator().generateInstance(categoryFromActiveCategories, "UpperLimitVerification");
 		setTypeInstance(categoryAssignement);
 	}
 	
-	public ABoundedValueVerification(CategoryAssignment categoryAssignement) {
+	public AUpperLimitVerification(CategoryAssignment categoryAssignement) {
 		setTypeInstance(categoryAssignement);
 	}
 	
-	
-	// *****************************************************************
-	// * Attribute: lowerBound
-	// *****************************************************************
-	private BeanPropertyFloat lowerBound = new BeanPropertyFloat();
-	
-	private void safeAccessLowerBound() {
-		if (lowerBound.getTypeInstance() == null) {
-			lowerBound.setTypeInstance((UnitValuePropertyInstance) helper.getPropertyInstance("lowerBound"));
-		}
-	}
-	
-	public Command setLowerBound(EditingDomain ed, double value) {
-		safeAccessLowerBound();
-		return this.lowerBound.setValue(ed, value);
-	}
-	
-	public void setLowerBound(double value) {
-		safeAccessLowerBound();
-		this.lowerBound.setValue(value);
-	}
-	
-	public double getLowerBound() {
-		safeAccessLowerBound();
-		return lowerBound.getValue();
-	}
-	
-	public boolean isSetLowerBound() {
-		safeAccessLowerBound();
-		return lowerBound.isSet();
-	}
-	
-	@XmlElement
-	public BeanPropertyFloat getLowerBoundBean() {
-		safeAccessLowerBound();
-		return lowerBound;
-	}
 	
 	// *****************************************************************
 	// * Attribute: upperBound

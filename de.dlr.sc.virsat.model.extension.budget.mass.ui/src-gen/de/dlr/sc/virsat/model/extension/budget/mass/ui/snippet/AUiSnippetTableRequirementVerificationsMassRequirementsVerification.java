@@ -7,8 +7,9 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.requirements.ui.snippet;
+package de.dlr.sc.virsat.model.extension.budget.mass.ui.snippet;
 
+import de.dlr.sc.virsat.model.extension.requirements.ui.snippet.AUISnippetTableRequirementsVerification;
 
 
 /**
@@ -19,12 +20,12 @@ package de.dlr.sc.virsat.model.extension.requirements.ui.snippet;
  * 
  * 
  */	
-public abstract class AUiSnippetTableRequirementVerificationsBoundedValueVerification extends AUISnippetTableRequirementsVerification {
-	public AUiSnippetTableRequirementVerificationsBoundedValueVerification() {
-		super("de.dlr.sc.virsat.model.extension.requirements",
-			"de.dlr.sc.virsat.model.extension.requirements",
-			"BoundedValueVerification",
-			"de.dlr.sc.virsat.model.extension.requirements.BoundedValueVerification",
+public abstract class AUiSnippetTableRequirementVerificationsMassRequirementsVerification extends AUISnippetTableRequirementsVerification {
+	public AUiSnippetTableRequirementVerificationsMassRequirementsVerification() {
+		super("de.dlr.sc.virsat.model.extension.budget.mass",
+			"de.dlr.sc.virsat.model.extension.budget.mass",
+			"MassRequirementsVerification",
+			"de.dlr.sc.virsat.model.extension.budget.mass.MassRequirementsVerification",
 			STYLE_ADD_BUTTON | STYLE_REMOVE_BUTTON | STYLE_EDITOR_BUTTON);
 	}
 

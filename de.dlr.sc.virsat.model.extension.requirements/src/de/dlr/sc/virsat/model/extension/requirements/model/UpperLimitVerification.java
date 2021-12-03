@@ -9,26 +9,25 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.model;
 
-import javax.xml.bind.annotation.XmlType;
-
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.common.command.CompoundCommand;
-import org.eclipse.emf.edit.domain.EditingDomain;
-
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
 import de.dlr.sc.virsat.model.extension.requirements.verification.build.steps.IAutomaticVerification;
+import org.eclipse.emf.edit.domain.EditingDomain;
+import javax.xml.bind.annotation.XmlType;
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.command.CompoundCommand;
+
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 // *****************************************************************
 // * Class Declaration
 // *****************************************************************
 
-@XmlType(name = ABoundedValueVerification.FULL_QUALIFIED_CATEGORY_NAME)
+@XmlType(name = AUpperLimitVerification.FULL_QUALIFIED_CATEGORY_NAME)
 /**
  * Auto Generated Class inheriting from Generator Gap Class
  * 
@@ -37,12 +36,12 @@ import de.dlr.sc.virsat.model.extension.requirements.verification.build.steps.IA
  * 
  * 
  */
-public  class BoundedValueVerification extends ABoundedValueVerification implements IAutomaticVerification {
+public  class UpperLimitVerification extends AUpperLimitVerification implements IAutomaticVerification {
 	
 	/**
 	 * Constructor of Concept Class
 	 */
-	public BoundedValueVerification() {
+	public UpperLimitVerification() {
 		super();
 	}
 
@@ -51,7 +50,7 @@ public  class BoundedValueVerification extends ABoundedValueVerification impleme
 	 * a CategoryAssignment in the background from the given concept
 	 * @param concept the concept where it will find the correct Category to instantiate from
 	 */
-	public BoundedValueVerification(Concept concept) {
+	public UpperLimitVerification(Concept concept) {
 		super(concept);
 	}	
 
@@ -59,7 +58,7 @@ public  class BoundedValueVerification extends ABoundedValueVerification impleme
 	 * Constructor of Concept Class that can be initialized manually by a given Category Assignment
 	 * @param categoryAssignment The category Assignment to be used for background initialization of the Category bean
 	 */
-	public BoundedValueVerification(CategoryAssignment categoryAssignment) {
+	public UpperLimitVerification(CategoryAssignment categoryAssignment) {
 		super(categoryAssignment);
 	}
 	
@@ -83,7 +82,7 @@ public  class BoundedValueVerification extends ABoundedValueVerification impleme
 	
 	@Override
 	protected boolean isCompliant(double value) {
-		return value >= getLowerLimit() && value <= getUpperLimit();
+		return  value <= getUpperLimit();
 	}
 	
 	protected double getUpperLimit() {
@@ -92,14 +91,6 @@ public  class BoundedValueVerification extends ABoundedValueVerification impleme
 			upperLimit = getUpperBound();
 		}
 		return upperLimit;
-	}
-	
-	protected double getLowerLimit() {
-		double lowerLimit = Double.MIN_VALUE;
-		if (isSetLowerBound()) {
-			lowerLimit = getLowerBound();
-		}
-		return lowerLimit;
 	}
 
 }

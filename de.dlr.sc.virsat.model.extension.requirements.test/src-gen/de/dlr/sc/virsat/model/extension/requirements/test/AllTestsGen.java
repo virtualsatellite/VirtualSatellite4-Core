@@ -44,9 +44,11 @@ import de.dlr.sc.virsat.model.extension.requirements.migrator.Migrator0v4Test;
 import de.dlr.sc.virsat.model.extension.requirements.model.DefaultVerificationTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttributeTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.AttributeValueTest;
+import de.dlr.sc.virsat.model.extension.requirements.model.UpperLimitVerificationTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.IRequirementTreeElementTest;
 import de.dlr.sc.virsat.model.extension.requirements.migrator.Migrator0v5Test;
 import de.dlr.sc.virsat.model.extension.requirements.model.ExistenceVerificationTest;
+import de.dlr.sc.virsat.model.extension.requirements.model.LowerLimitVerificationTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementLinkTypeTest;
 
 /**
@@ -75,6 +77,8 @@ import de.dlr.sc.virsat.model.extension.requirements.model.RequirementLinkTypeTe
 	DefaultVerificationTest.class,
 	VerificationTypeTest.class,
 	ExistenceVerificationTest.class,
+	UpperLimitVerificationTest.class,
+	LowerLimitVerificationTest.class,
 	BoundedValueVerificationTest.class,
 	RequirementsConfigurationCollectionTest.class,
 	Migrator0v1Test.class,

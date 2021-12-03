@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.ui.snippet;
 
+import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
+import de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetGenericPropertyInstances;
 
 
 /**
@@ -19,13 +21,8 @@ package de.dlr.sc.virsat.model.extension.requirements.ui.snippet;
  * 
  * 
  */	
-public abstract class AUiSnippetTableRequirementVerificationsBoundedValueVerification extends AUISnippetTableRequirementsVerification {
-	public AUiSnippetTableRequirementVerificationsBoundedValueVerification() {
-		super("de.dlr.sc.virsat.model.extension.requirements",
-			"de.dlr.sc.virsat.model.extension.requirements",
-			"BoundedValueVerification",
-			"de.dlr.sc.virsat.model.extension.requirements.BoundedValueVerification",
-			STYLE_ADD_BUTTON | STYLE_REMOVE_BUTTON | STYLE_EDITOR_BUTTON);
+public abstract class AUiSnippetSectionLowerLimitVerification extends AUiSnippetGenericPropertyInstances implements IUiSnippet {
+	public AUiSnippetSectionLowerLimitVerification() {
+		super("de.dlr.sc.virsat.model.extension.requirements", "LowerLimitVerification");
 	}
-
 }

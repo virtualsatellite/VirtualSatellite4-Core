@@ -19,12 +19,12 @@ package de.dlr.sc.virsat.model.extension.requirements.ui.snippet;
  * 
  * 
  */	
-public abstract class AUiSnippetTableRequirementVerificationsBoundedValueVerification extends AUISnippetTableRequirementsVerification {
-	public AUiSnippetTableRequirementVerificationsBoundedValueVerification() {
+public abstract class AUiSnippetTableRequirementVerificationsUpperLimitVerification extends AUISnippetTableRequirementsVerification {
+	public AUiSnippetTableRequirementVerificationsUpperLimitVerification() {
 		super("de.dlr.sc.virsat.model.extension.requirements",
 			"de.dlr.sc.virsat.model.extension.requirements",
-			"BoundedValueVerification",
-			"de.dlr.sc.virsat.model.extension.requirements.BoundedValueVerification",
+			"UpperLimitVerification",
+			"de.dlr.sc.virsat.model.extension.requirements.UpperLimitVerification",
 			STYLE_ADD_BUTTON | STYLE_REMOVE_BUTTON | STYLE_EDITOR_BUTTON);
 	}
 
