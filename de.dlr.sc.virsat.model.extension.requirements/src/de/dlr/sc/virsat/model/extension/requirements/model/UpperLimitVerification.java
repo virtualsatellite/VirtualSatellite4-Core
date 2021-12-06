@@ -82,10 +82,10 @@ public  class UpperLimitVerification extends AUpperLimitVerification implements 
 	
 	@Override
 	protected boolean isCompliant(double value) {
-		return  value <= getUpperLimit();
+		return  value <= getUpperLimitValue();
 	}
 	
-	protected double getUpperLimit() {
+	protected double getUpperLimitValue() {
 		double upperLimit = Double.MAX_VALUE;
 		if (isSetUpperBound()) {
 			upperLimit = getUpperBound();

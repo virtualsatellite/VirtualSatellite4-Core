@@ -82,10 +82,10 @@ public  class LowerLimitVerification extends ALowerLimitVerification implements 
 	
 	@Override
 	protected boolean isCompliant(double value) {
-		return  getLowerBound() <= value;
+		return  getLowerBoundValue() <= value;
 	}
 	
-	protected double getLowerLimit() {
+	protected double getLowerBoundValue() {
 		double lowerLimit = Double.MIN_VALUE;
 		if (isSetLowerBound()) {
 			lowerLimit = getLowerBound();
