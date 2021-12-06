@@ -13,10 +13,13 @@ package de.dlr.sc.virsat.model.extension.requirements.model;
 // * Import Statements
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
 import de.dlr.sc.virsat.model.extension.requirements.verification.build.steps.IAutomaticVerification;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import javax.xml.bind.annotation.XmlType;
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.command.CompoundCommand;
+
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import org.eclipse.core.runtime.IProgressMonitor;
 
@@ -62,8 +65,19 @@ public  class LowerLimitVerification extends ALowerLimitVerification implements 
 	@Override
 	public Command runCustomVerification(EditingDomain editingDomain, Requirement requirement,
 			IProgressMonitor monitor) {
-		// TODO implement custom verification		
-		return null;
+		CompoundCommand cc = new CompoundCommand();
+
+		if (requirement.getTrace().getTarget().isEmpty()) {
+			cc.append(setStatusOpen(editingDomain));
+		} else {
+			boolean isCompliantForAllTargets = true;
+			for (GenericCategory target : requirement.getTrace().getTarget()) {
+				isCompliantForAllTargets &= isCompliant(target);
+			}
+			updateStatus(editingDomain, cc, isCompliantForAllTargets);
+		}
+
+		return cc;
 	}
 	
 	@Override

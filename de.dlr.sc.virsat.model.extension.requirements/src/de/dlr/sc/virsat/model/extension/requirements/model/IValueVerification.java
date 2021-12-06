@@ -100,11 +100,11 @@ public abstract class IValueVerification extends AIValueVerification implements 
 	protected ValuePropertyInstance getPropertyInstanceToCheck(GenericCategory traceTarget) {
 		ValuePropertyInstance valuePropertyInstance = null;
 		ATypeDefinition typeToVerify = getElementToBeVerified();
-		if(traceTarget != null) {
+		if (traceTarget != null) {
 			CategoryAssignmentHelper helper = new CategoryAssignmentHelper(traceTarget.getTypeInstance());
 			APropertyInstance pInstance = helper.getPropertyInstance((AProperty) typeToVerify);
 			
-			if(pInstance instanceof ValuePropertyInstance) {
+			if (pInstance instanceof ValuePropertyInstance) {
 				valuePropertyInstance = (ValuePropertyInstance) pInstance;
 			}
 		}
@@ -129,5 +129,5 @@ public abstract class IValueVerification extends AIValueVerification implements 
 		return false;
 	}
 	
-	abstract protected boolean isCompliant(double value);
+	protected abstract boolean isCompliant(double value);
 }

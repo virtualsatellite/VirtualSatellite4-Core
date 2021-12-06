@@ -164,14 +164,14 @@
     </properties>
   </categories>
   <categories name="ExistenceVerification" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.ModelVerification"/>
-  <categories name="IValueVerification" isAbstract="true" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.ModelVerification" isVerification="true"/>
-  <categories name="UpperLimitVerification" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.IValueVerification" isVerification="true">
+  <categories name="IValueVerification" isAbstract="true" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.ModelVerification"/>
+  <categories name="UpperLimitVerification" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.IValueVerification">
     <properties xsi:type="dvlm_cppd:FloatProperty" name="upperBound"/>
   </categories>
-  <categories name="LowerLimitVerification" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.IValueVerification" isVerification="true">
+  <categories name="LowerLimitVerification" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.IValueVerification">
     <properties xsi:type="dvlm_cppd:FloatProperty" name="lowerBound"/>
   </categories>
-  <categories name="BoundedValueVerification" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.IValueVerification" isVerification="true">
+  <categories name="BoundedValueVerification" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.IValueVerification">
     <properties xsi:type="dvlm_cppd:FloatProperty" name="lowerBound"/>
     <properties xsi:type="dvlm_cppd:FloatProperty" name="upperBound"/>
   </categories>

@@ -137,21 +137,21 @@ Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"
 	
 	Category IValueVerification extends ModelVerification {
 		IsAbstract;
-		IsVerification;
+		//IsVerification; concept language changes need to be merged first
 	}
 	
 	Category UpperLimitVerification extends IValueVerification {
-		IsVerification;
+		//IsVerification;
 		FloatProperty upperBound;
 	}
 	
 	Category LowerLimitVerification extends IValueVerification {
-		IsVerification;
+		//IsVerification;
 		FloatProperty lowerBound;
 	}
 	
 	Category BoundedValueVerification extends IValueVerification {
-		IsVerification;
+		//IsVerification;
 		FloatProperty lowerBound;
 		FloatProperty upperBound;
 	}
