@@ -27,6 +27,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IArrayModifier
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IVerificationSpecification;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.VerificationTypeSpecification;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.general.IQualifiedName;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import org.eclipse.emf.common.util.EList;
@@ -320,7 +321,7 @@ public class GenerateUiPluginXml {
                   }
                 }
                 {
-                  if (((property.getVerification() != null) && (property.getVerification() instanceof VerificationTypeSpecification))) {
+                  if (((this.getVerificationType(property) != null) && (!this.isVerificationTypeInConcept(concept, property)))) {
                     _builder.append("\t");
                     _builder.append("\t");
                     IVerificationSpecification _verification = property.getVerification();
@@ -1007,6 +1008,23 @@ public class GenerateUiPluginXml {
       _xifexpression = concept.getName();
     }
     return _xifexpression;
+  }
+  
+  public ATypeDefinition getVerificationType(final AProperty property) {
+    Object _xblockexpression = null;
+    {
+      if (((property.getVerification() != null) && (property.getVerification() instanceof VerificationTypeSpecification))) {
+        IVerificationSpecification _verification = property.getVerification();
+        final VerificationTypeSpecification verification = ((VerificationTypeSpecification) _verification);
+        return verification.getVerificationType();
+      }
+      _xblockexpression = null;
+    }
+    return ((ATypeDefinition)_xblockexpression);
+  }
+  
+  public boolean isVerificationTypeInConcept(final Concept concept, final AProperty property) {
+    return ActiveConceptHelper.getConcept(this.getVerificationType(property)).equals(concept);
   }
   
   @Pure

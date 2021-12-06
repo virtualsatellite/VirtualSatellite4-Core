@@ -27,6 +27,7 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.generator.IFileSystemAccess
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.VerificationTypeSpecification
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper
 
 class GenerateUiPluginXml {
 	
@@ -129,7 +130,7 @@ class GenerateUiPluginXml {
 								«declareUiSnippetArrayTables(concept, property, category)»
 							«ENDIF»
 						«ENDIF»
-						«IF property.verification !== null && property.verification instanceof VerificationTypeSpecification»
+						«IF getVerificationType(property) !== null && !isVerificationTypeInConcept(concept, property)»
 						«declareUiSnippetVerificationTables(concept, (property.verification as VerificationTypeSpecification).verificationType as Category)»
 						«ENDIF»
 					«ENDFOR»
@@ -349,5 +350,17 @@ class GenerateUiPluginXml {
 			concept.name;
 		} 
 	} 
+	
+	def getVerificationType(AProperty property) {
+		if (property.verification !== null && property.verification instanceof VerificationTypeSpecification) {
+			val verification = property.verification as VerificationTypeSpecification
+			return verification.verificationType
+		}
+		null
+	}
+	
+	def isVerificationTypeInConcept(Concept concept, AProperty property) {
+		ActiveConceptHelper.getConcept(getVerificationType(property)).equals(concept)
+	}
 }
 
