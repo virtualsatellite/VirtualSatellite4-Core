@@ -55,7 +55,7 @@ class GenerateRequirementsVerificationUiSnippetTest {
         verification = concept.categories.get(1)
 	}
 	
-	@Test
+    @Test
     def void testCreateConcreteClassFileName() {
     	val fileName = generator.createConcreteClassFileName(concept, category)
     	val expectedFileName = "../../" + concept.name + ".ui/src/" + (concept.name + ".ui.snippet").replace(".","/") + "/" 
@@ -64,7 +64,7 @@ class GenerateRequirementsVerificationUiSnippetTest {
     	Assert.assertEquals("Concrete file name for the generated snippet is correct", expectedFileName, fileName)
     }
 
-	@Test
+    @Test
     def void testCreateAbstractClassFileName() {
     	val fileName = generator.createAbstractClassFileName(concept, category)
     	
@@ -77,6 +77,6 @@ class GenerateRequirementsVerificationUiSnippetTest {
     @Test
     def void testCreateVerification() {
     	val classContents = generator.createAbstractClass(concept, verification)
-		GeneratorJunitAssert.assertEqualContent(classContents, "/resources/expectedOutputFilesForGenerators/AUiSnippetTableVerification.java")
+    	GeneratorJunitAssert.assertEqualContent(classContents, "/resources/expectedOutputFilesForGenerators/AUiSnippetTableVerification.java")
     } 
 }
