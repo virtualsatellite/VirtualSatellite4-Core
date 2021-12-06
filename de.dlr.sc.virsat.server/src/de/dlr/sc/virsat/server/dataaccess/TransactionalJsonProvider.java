@@ -43,13 +43,25 @@ import de.dlr.sc.virsat.commons.exception.AtomicExceptionReference;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanQuantityKindDerived;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanQuantityKindSimple;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitAffineConversion;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitDerived;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitLinearConversion;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitPrefixed;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitSimple;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.ABeanQuantityKindAdapter;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanStructuralElementInstanceAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.ABeanUnitAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.BeanPrefixAdapter;
 import de.dlr.sc.virsat.model.dvlm.json.BeanDisciplineAdapter;
 import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapterNoRoleManagement;
+import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
@@ -64,13 +76,29 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 	
 	private VirSatTransactionalEditingDomain ed;
 	private VirSatResourceSet resourceSet;
+	private IUserContext context;
 	
 	private static final Set<Class<?>> LIST_CLASSES = new HashSet<Class<?>>(
 			Arrays.asList(
 				IUuidAdapter.class,
+				IUuidAdapterNoRoleManagement.class,
 				ABeanObjectAdapter.class,
 				ABeanStructuralElementInstanceAdapter.class,
-				BeanDisciplineAdapter.class
+				BeanDisciplineAdapter.class,
+				ABeanUnitAdapter.class,
+				ABeanQuantityKindAdapter.class,
+				BeanPrefixAdapter.class
+	));
+	
+	private static final Set<Class<?>> QUDV_CLASSES = new HashSet<Class<?>>(
+			Arrays.asList(
+				BeanQuantityKindSimple.class,
+				BeanQuantityKindDerived.class,
+				BeanUnitSimple.class,
+				BeanUnitPrefixed.class,
+				BeanUnitDerived.class,
+				BeanUnitAffineConversion.class,
+				BeanUnitLinearConversion.class
 	));
 	
 	public TransactionalJsonProvider() {
@@ -81,6 +109,10 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 	public void setServerRepository(ServerRepository repo) {
 		this.ed = repo.getEd();
 		this.resourceSet = repo.getResourceSet();
+	}
+
+	public void setContext(IUserContext userContext) {
+		this.context = userContext;
 	}
 
 	/**
@@ -143,9 +175,13 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 			Unmarshaller unmarshaller) throws JAXBException {
 		super.preReadFrom(type, genericType, annotations, mediaType, httpHeaders, unmarshaller);
 		unmarshaller.setEventHandler(eventHandler);
-		unmarshaller.setAdapter(new IUuidAdapter(resourceSet));
+		unmarshaller.setAdapter(new IUuidAdapter(resourceSet, ed));
+		unmarshaller.setAdapter(new IUuidAdapterNoRoleManagement(resourceSet));
 		unmarshaller.setAdapter(new ABeanObjectAdapter(resourceSet));
 		unmarshaller.setAdapter(new ABeanStructuralElementInstanceAdapter(resourceSet));
+		unmarshaller.setAdapter(new ABeanUnitAdapter(resourceSet));
+		unmarshaller.setAdapter(new BeanPrefixAdapter(resourceSet));
+		unmarshaller.setAdapter(new ABeanQuantityKindAdapter(resourceSet));
 		unmarshaller.setAdapter(new BeanDisciplineAdapter(resourceSet));
 	}
 	
@@ -159,7 +195,7 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 		ReadFromCommand readFromCommand = new ReadFromCommand(ed, arguments);
 
 		// Run as command to directly change resource in the editing domain
-		ed.getCommandStack().execute(readFromCommand);
+		ed.getVirSatCommandStack().executeNoUndo(readFromCommand, context, false);
 		
 		readFromCommand.throwExceptionsIfSet();
 		
@@ -286,7 +322,7 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 		// And we don't want to register the CA because their depending classes
 		// (e.g. the property beans) won't be resolved either and result in errors.
 		if (domainClasses.contains(List.class)) {
-			// Currently this is only the case for the RootSeis,
+			// Currently this is only the case for the RootSeis, Units, QuantityKinds and Prefixes
 			// so we only register those missing classes here.
 			domainClasses.addAll(LIST_CLASSES);
 		} else {
@@ -295,6 +331,9 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 			if (ed != null) {
 				domainClasses.addAll(getClassesToRegister());
 			}
+			// As they are not registered dynamically and jaxb has problems resolving the inheritance
+			// Register the concrete qudv classes here
+			domainClasses.addAll(QUDV_CLASSES);
 		}
 		
 		// But the contexts are being cashed on domainClasses

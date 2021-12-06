@@ -30,6 +30,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstanc
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ResourcePropertyInstance;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.resources.ApiErrorHelper;
+import de.dlr.sc.virsat.server.resources.ModelAccessResource;
 import de.dlr.sc.virsat.server.resources.ModelAccessResource.RepoModelAccessResource;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -39,7 +40,7 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
 import io.swagger.annotations.ResponseHeader;
 
-@Api(hidden = true, authorizations = {@Authorization(value = "basic")})
+@Api(hidden = true, authorizations = {@Authorization(value = "basic")}, tags = {ModelAccessResource.TAG_PROPERTY})
 public class PropertyResource {
 	
 	public static final String PROPERTY_DOES_NOT_CONTAIN_A_SERVEABLE_RESOURCE = "Property does not contain a serveable resource";
@@ -70,7 +71,7 @@ public class PropertyResource {
 					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response getProperty(@PathParam("propertyUuid") @ApiParam(value = "Uuid of the property", required = true) String propertyUuid) {
 		try {
 			parentResource.synchronize();
@@ -84,7 +85,7 @@ public class PropertyResource {
 			IBeanObject<? extends APropertyInstance> beanProperty = new BeanPropertyFactory().getInstanceFor(property);
 			return Response.status(Response.Status.OK).entity(beanProperty).build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 
@@ -115,7 +116,7 @@ public class PropertyResource {
 					message = PROPERTY_DOES_NOT_CONTAIN_A_SERVEABLE_RESOURCE),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response getResource(@PathParam("propertyUuid") @ApiParam(value = "Uuid of the property", required = true) String propertyUuid) {
 		try {
 			parentResource.synchronize();
@@ -141,7 +142,7 @@ public class PropertyResource {
 				return ApiErrorHelper.createBadRequestResponse(PROPERTY_DOES_NOT_CONTAIN_A_SERVEABLE_RESOURCE);
 			}
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 
@@ -160,13 +161,13 @@ public class PropertyResource {
 					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 			@ApiResponse(
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response putProperty(@SuppressWarnings("rawtypes") @ApiParam(value = "Property to put", required = true) ABeanProperty bean) {
 		try {
 			parentResource.synchronize();
 			return Response.status(Response.Status.OK).build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 

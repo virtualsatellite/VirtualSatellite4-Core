@@ -22,6 +22,14 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.general.IUuid;
+import de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind;
+import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
+import de.dlr.sc.virsat.model.dvlm.qudv.DerivedQuantityKind;
+import de.dlr.sc.virsat.model.dvlm.qudv.DerivedUnit;
+import de.dlr.sc.virsat.model.dvlm.qudv.Prefix;
+import de.dlr.sc.virsat.model.dvlm.qudv.QuantityKindFactor;
+import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfQuantities;
+import de.dlr.sc.virsat.model.dvlm.qudv.UnitFactor;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
@@ -174,6 +182,93 @@ public class RepositoryUtility {
 			for (StructuralElement se : concept.getStructuralElements()) {
 				if (se.getFullQualifiedName().equals(fullQualifiedName)) {
 					return se;
+				}
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Finds a unit instance by it's uuid
+	 * @param uuid the units uuid
+	 * @return the AUnit or null
+	 */
+	public static AUnit findUnit(String uuid, Repository repository) {
+		List<AUnit> units = repository.getUnitManagement().getSystemOfUnit().getUnit();
+		for (AUnit unit : units) {
+			if (unit.getUuid().toString().equals(uuid)) {
+				return unit;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Finds a quantityKind instance by it's uuid
+	 * @param uuid the quantityKinds uuid
+	 * @return the AQuantityKind or null
+	 */
+	public static AQuantityKind findQuantityKind(String uuid, Repository repository) {
+		List<SystemOfQuantities> systemsOfQuantities = repository.getUnitManagement().getSystemOfUnit().getSystemOfQuantities();
+		for (SystemOfQuantities systemOfQuantities : systemsOfQuantities) {
+			for (AQuantityKind quantityKind : systemOfQuantities.getQuantityKind()) {
+				if (quantityKind.getUuid().toString().equals(uuid)) {
+					return quantityKind;
+				}
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Finds a prefix instance by it's uuid
+	 * @param uuid the units uuid
+	 * @return the Prefix or null
+	 */
+	public static Prefix findPrefix(String uuid, Repository repository) {
+		List<Prefix> prefixes = repository.getUnitManagement().getSystemOfUnit().getPrefix();
+		for (Prefix prefix : prefixes) {
+			if (prefix.getUuid().toString().equals(uuid)) {
+				return prefix;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Finds a unit factor instance by it's uuid
+	 * @param uuid the factors uuid
+	 * @return the UnitFactor or null
+	 */
+	public static UnitFactor findUnitFactor(String uuid, Repository repository) {
+		List<AUnit> units = repository.getUnitManagement().getSystemOfUnit().getUnit();
+		for (AUnit unit : units) {
+			if (unit instanceof DerivedUnit) {
+				for (UnitFactor unitFactor : ((DerivedUnit) unit).getFactor()) {
+					if (unitFactor.getUuid().toString().equals(uuid)) {
+						return unitFactor;
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Finds a quantityKind factor instance by it's uuid
+	 * @param uuid the factors uuid
+	 * @return the QuantityKindFactor or null
+	 */
+	public static QuantityKindFactor findQuantityKindFactor(String uuid, Repository repository) {
+		List<SystemOfQuantities> systemsOfQuantities = repository.getUnitManagement().getSystemOfUnit().getSystemOfQuantities();
+		for (SystemOfQuantities systemOfQuantities : systemsOfQuantities) {
+			for (AQuantityKind quantityKind : systemOfQuantities.getQuantityKind()) {
+				if (quantityKind instanceof DerivedQuantityKind) {
+					for (QuantityKindFactor qkFactor : ((DerivedQuantityKind) quantityKind).getFactor()) {
+						if (qkFactor.getUuid().toString().equals(uuid)) {
+							return qkFactor;
+						}
+					}
 				}
 			}
 		}

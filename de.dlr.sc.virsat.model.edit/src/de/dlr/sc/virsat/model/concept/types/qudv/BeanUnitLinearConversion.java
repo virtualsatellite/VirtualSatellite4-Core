@@ -30,12 +30,12 @@ public class BeanUnitLinearConversion extends ABeanConversionBasedUnit<LinearCon
 	}
 	
 	@ApiModelProperty(required = true)
-	@XmlElement(nillable = true)
-	double getFactor() {
+	@XmlElement
+	public double getFactor() {
 		return unit.getFactor();
 	}
 	
-	void setFactor(double factor) {
+	public void setFactor(double factor) {
 		unit.setFactor(factor);
 	}
 	

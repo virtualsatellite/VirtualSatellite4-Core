@@ -54,21 +54,21 @@ public class BeanFactorQuantityKind implements IBeanUuid {
 			example = "b168b0df-84b6-4b7f-bede-69298b215f40")
 	@XmlElement(name = "uuid")
 	@XmlJavaTypeAdapter(IUuidAdapter.class)
-	QuantityKindFactor getFactor() {
+	public QuantityKindFactor getFactor() {
 		return factor;
 	}
 	
-	void setFactor(QuantityKindFactor factor) {
+	public void setFactor(QuantityKindFactor factor) {
 		this.factor = factor;
 	}
 	
 	@ApiModelProperty(required = true)
-	@XmlElement(nillable = true)
-	double getExponent() {
+	@XmlElement
+	public double getExponent() {
 		return factor.getExponent();
 	}
 	
-	void setExponent(double exponent) {
+	public void setExponent(double exponent) {
 		factor.setExponent(exponent);
 	}
 	
@@ -76,14 +76,16 @@ public class BeanFactorQuantityKind implements IBeanUuid {
 		return SetCommand.create(ed, factor, QudvPackage.Literals.QUANTITY_KIND_FACTOR__EXPONENT, exponent);
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@ApiModelProperty(required = true)
 	@XmlElement(nillable = true)
 	@XmlJavaTypeAdapter(ABeanQuantityKindAdapter.class)
-	IBeanQuantityKind<? extends AQuantityKind> getQuantityKindBean() {
-		return new BeanQuantityKindFactory().getInstanceFor(factor.getQuantityKind());
+	public ABeanQuantityKind getQuantityKindBean() {
+		return (ABeanQuantityKind) new BeanQuantityKindFactory().getInstanceFor(factor.getQuantityKind());
 	}
 	
-	void setQuantityKindBean(IBeanQuantityKind<? extends AQuantityKind> beanQuantityKind) {
+	@SuppressWarnings("rawtypes")
+	public void setQuantityKindBean(ABeanQuantityKind beanQuantityKind) {
 		factor.setQuantityKind(beanQuantityKind.getQuantityKind());
 	}
 	

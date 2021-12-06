@@ -78,5 +78,11 @@ public class DisciplineResourceTest extends AModelAccessResourceTest {
 		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.DISCIPLINE + "/unknown").get());
 		
 		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.DISCIPLINE + "/unknown").delete());
+		
+		// Assert check discipline
+		setDiscipline(ed.getResourceSet().getRoleManagement(), anotherDiscipline);
+		assertCommandNotExecuteableErrorResponse(getTestRequestBuilder(ModelAccessResource.DISCIPLINE + "/" + discipline.getUuid()).delete());
+		
+		assertCommandNotExecuteableErrorResponse(getTestRequestBuilder(ModelAccessResource.DISCIPLINE).post(Entity.json(null)));
 	}
 }

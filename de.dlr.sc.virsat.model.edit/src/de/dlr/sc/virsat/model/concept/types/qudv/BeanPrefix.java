@@ -93,12 +93,12 @@ public class BeanPrefix implements IBeanUuid, IBeanName {
 	}
 	
 	@ApiModelProperty(required = true)
-	@XmlElement(nillable = true)
-	double getFactor() {
+	@XmlElement
+	public double getFactor() {
 		return prefix.getFactor();
 	}
 	
-	void setFactor(double factor) {
+	public void setFactor(double factor) {
 		prefix.setFactor(factor);
 	}
 	

@@ -123,10 +123,7 @@ public class MassRequirementsVerification extends AMassRequirementsVerification 
 	 */
 	public boolean isCompliant(MassEquipment massEquipment, double lowerLimit, double upperLimit) {
 		double value = massEquipment.getMassWithMargin();
-		if (value >= lowerLimit && value <= upperLimit) {
-			return true;
-		}
-		return false;
+		return value >= lowerLimit && value <= upperLimit;
 	}
 
 	/**
