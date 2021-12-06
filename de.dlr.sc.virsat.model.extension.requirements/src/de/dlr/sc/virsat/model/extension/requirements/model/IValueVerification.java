@@ -9,25 +9,18 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.model;
 
-// *****************************************************************
-// * Import Statements
-// *****************************************************************
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
-import de.dlr.sc.virsat.model.extension.requirements.verification.build.steps.IAutomaticVerification;
-import org.eclipse.emf.edit.domain.EditingDomain;
 import javax.xml.bind.annotation.XmlType;
-import org.eclipse.emf.common.command.Command;
+
 import org.eclipse.emf.common.command.CompoundCommand;
+import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
-
-import org.eclipse.core.runtime.IProgressMonitor;
+import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
+import de.dlr.sc.virsat.model.extension.requirements.verification.build.steps.IAutomaticVerification;
 
 // *****************************************************************
 // * Class Declaration
@@ -49,29 +42,6 @@ public abstract class IValueVerification extends AIValueVerification implements 
 	 */
 	public IValueVerification() {
 		super();
-	}
-
-	/**
-	 * Constructor of Concept Class which will instantiate 
-	 * a CategoryAssignment in the background from the given concept
-	 * @param concept the concept where it will find the correct Category to instantiate from
-	 */
-	public IValueVerification(Concept concept) {
-		super(concept);
-	}	
-
-	/**
-	 * Constructor of Concept Class that can be initialized manually by a given Category Assignment
-	 * @param categoryAssignment The category Assignment to be used for background initialization of the Category bean
-	 */
-	public IValueVerification(CategoryAssignment categoryAssignment) {
-		super(categoryAssignment);
-	}
-	
-	@Override
-	public Command runCustomVerification(EditingDomain editingDomain, Requirement requirement,
-			IProgressMonitor monitor) {
-		throw new UnsupportedOperationException();	
 	}
 	
 	/**
