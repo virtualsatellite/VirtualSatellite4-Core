@@ -93,7 +93,7 @@ class GenerateRequirementsVerificationUiSnippet extends AGeneratorGapGenerator<C
 		val Set<Category> verificationSet = new HashSet<Category>
 		verificationSet.addAll(concept.categories.filter[c | c.isIsVerification]);
 
-		for(category : concept.categories){
+		for(category : concept.nonAbstractCategories){
 			for(property : category.properties) {
 				if(property.verification !== null && property.verification instanceof VerificationTypeSpecification) {
 					verificationSet.add(((property.verification) as VerificationTypeSpecification).verificationType as Category)
