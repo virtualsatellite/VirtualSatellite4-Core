@@ -81,12 +81,12 @@ class GenerateCategoryBeansTest {
 			}
 		'''.parse
 
-		val category = concept.categories.get(0)
+    	val category = concept.categories.get(0)
     	val concreteClassContents = createAddCommandGenerator.createConcreteClass(concept, category)
     	val abstractClassContents = createAddCommandGenerator.createAbstractClass(concept, category)
     	
-		GeneratorJunitAssert.assertEqualContent(concreteClassContents, "/resources/expectedOutputFilesForGenerators/CategoryBeanIntrinsicProperties.java")
-		GeneratorJunitAssert.assertEqualContent(abstractClassContents, "/resources/expectedOutputFilesForGenerators/ACategoryBeanIntrinsicProperties.java")
+    	GeneratorJunitAssert.assertEqualContent(concreteClassContents, "/resources/expectedOutputFilesForGenerators/CategoryBeanIntrinsicProperties.java")
+    	GeneratorJunitAssert.assertEqualContent(abstractClassContents, "/resources/expectedOutputFilesForGenerators/ACategoryBeanIntrinsicProperties.java")
     }
     
     @Test
