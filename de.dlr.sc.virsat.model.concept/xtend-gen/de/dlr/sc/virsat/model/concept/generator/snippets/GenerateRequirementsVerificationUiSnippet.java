@@ -201,8 +201,8 @@ public class GenerateRequirementsVerificationUiSnippet extends AGeneratorGapGene
       return Boolean.valueOf(c.isIsVerification());
     };
     Iterables.<Category>addAll(verificationSet, IterableExtensions.<Category>filter(concept.getCategories(), _function));
-    EList<Category> _nonAbstractCategories = concept.getNonAbstractCategories();
-    for (final Category category : _nonAbstractCategories) {
+    EList<Category> _categories = concept.getCategories();
+    for (final Category category : _categories) {
       EList<AProperty> _properties = category.getProperties();
       for (final AProperty property : _properties) {
         if (((property.getVerification() != null) && (property.getVerification() instanceof VerificationTypeSpecification))) {
