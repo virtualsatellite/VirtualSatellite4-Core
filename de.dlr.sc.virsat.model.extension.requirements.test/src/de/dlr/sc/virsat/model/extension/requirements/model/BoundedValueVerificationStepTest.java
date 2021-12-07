@@ -115,7 +115,7 @@ public class BoundedValueVerificationStepTest extends AConceptProjectTestCase {
 	}
 	
 	@Test
-	public void testRunCustomVerificationCompliant() {
+	public void testRunCustomVerificationCompliantOpenBefore() {
 		Requirement requirementObject = new Requirement(conceptRequirements);
 		
 		// The upper limit verification element is used as random element with a value property for testing 
@@ -137,6 +137,60 @@ public class BoundedValueVerificationStepTest extends AConceptProjectTestCase {
 		
 		// Check results
 		assertTrue("As value was in range, status should be compliant", testVerification.statusCompliant);
+		assertFalse(testVerification.statusOpen);
+		assertFalse(testVerification.statusNonCompliant);
+		assertFalse(testVerification.statusPartlyCompliant);
+	}
+	
+	@Test
+	public void testRunCustomVerificationCompliantNonCompliantBefore() {
+		Requirement requirementObject = new Requirement(conceptRequirements);
+		
+		// The upper limit verification element is used as random element with a value property for testing 
+		// (-> not actually used as verification here)
+		UpperLimitVerification someValueElement = new UpperLimitVerification(conceptRequirements);
+		someValueElement.setUpperBound(VALUE_COMPLIANT);
+		requirementObject.getTrace().getTarget().add(someValueElement);
+		
+		// Set up the verification element
+		TestBoundedValueRequirementsVerification testVerification = new TestBoundedValueRequirementsVerification();
+		testVerification.setUpperBound(UPPER_LIMIT);
+		testVerification.setLowerBound(LOWER_LIMIT);
+		testVerification.setStatus(IVerification.STATUS_NonCompliant_NAME);
+		ATypeDefinition propertyToBeVerified = someValueElement.getUpperBoundBean().getATypeInstance().getType();
+		testVerification.setElementToBeVerified(propertyToBeVerified);
+		
+		// Run the verification
+		testVerification.runCustomVerification(null, requirementObject, null);
+		
+		// Check results
+		assertTrue("As value was in range, status should be compliant", testVerification.statusCompliant);
+		assertFalse(testVerification.statusOpen);
+		assertFalse(testVerification.statusNonCompliant);
+		assertFalse(testVerification.statusPartlyCompliant);
+	}
+	
+	@Test
+	public void testRunCustomVerificationCompliantNoBoundSpec() {
+		Requirement requirementObject = new Requirement(conceptRequirements);
+		
+		// The upper limit verification element is used as random element with a value property for testing 
+		// (-> not actually used as verification here)
+		UpperLimitVerification someValueElement = new UpperLimitVerification(conceptRequirements);
+		someValueElement.setUpperBound(VALUE_COMPLIANT);
+		requirementObject.getTrace().getTarget().add(someValueElement);
+		
+		// Set up the verification element
+		TestBoundedValueRequirementsVerification testVerification = new TestBoundedValueRequirementsVerification();
+		testVerification.setStatus(IVerification.STATUS_Open_NAME);
+		ATypeDefinition propertyToBeVerified = someValueElement.getUpperBoundBean().getATypeInstance().getType();
+		testVerification.setElementToBeVerified(propertyToBeVerified);
+		
+		// Run the verification
+		testVerification.runCustomVerification(null, requirementObject, null);
+		
+		// Check results
+		assertTrue("As range was whole double values, status should be compliant", testVerification.statusCompliant);
 		assertFalse(testVerification.statusOpen);
 		assertFalse(testVerification.statusNonCompliant);
 		assertFalse(testVerification.statusPartlyCompliant);
@@ -194,6 +248,32 @@ public class BoundedValueVerificationStepTest extends AConceptProjectTestCase {
 		
 		// Check results
 		assertTrue("As value was not in range, status should non-compliant", testVerification.statusNonCompliant);
+		assertFalse(testVerification.statusOpen);
+		assertFalse(testVerification.statusCompliant);
+		assertFalse(testVerification.statusPartlyCompliant);
+	}
+	
+	
+	@Test
+	public void testRunCustomVerificationNoProperty() {
+		Requirement requirementObject = new Requirement(conceptRequirements);
+		
+		// The upper limit verification element is used as random element with a value property for testing 
+		// (-> not actually used as verification here)
+		UpperLimitVerification someValueElement = new UpperLimitVerification(conceptRequirements);
+		requirementObject.getTrace().getTarget().add(someValueElement);
+		
+		// Set up the verification element
+		TestBoundedValueRequirementsVerification testVerification = new TestBoundedValueRequirementsVerification();
+		testVerification.setUpperBound(UPPER_LIMIT);
+		testVerification.setLowerBound(LOWER_LIMIT);
+		testVerification.setStatus(IVerification.STATUS_Open_NAME);
+		
+		// Run the verification
+		testVerification.runCustomVerification(null, requirementObject, null);
+		
+		// Check results
+		assertTrue("As no property was selcted for verification, status should non-compliant", testVerification.statusNonCompliant);
 		assertFalse(testVerification.statusOpen);
 		assertFalse(testVerification.statusCompliant);
 		assertFalse(testVerification.statusPartlyCompliant);
