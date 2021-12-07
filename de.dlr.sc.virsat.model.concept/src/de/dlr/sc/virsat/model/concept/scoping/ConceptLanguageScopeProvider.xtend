@@ -38,12 +38,14 @@ class ConceptLanguageScopeProvider extends ImportedNamespaceAwareLocalScopeProvi
 			var elements = new ArrayList<EObject>
 			elements.addAll(scope.allElements.
 				map[t | t.EObjectOrProxy]
-				.filter[t| t instanceof Category && (t as Category).isIsVerification])
+				.filter[t| t instanceof Category && (t as Category).isIsVerification && !(t as Category).isIsAbstract])
 				
 			var concept = ActiveConceptHelper.getConcept(context as ATypeDefinition);
 			for(import : concept.imports) {
 				var importedConceptName = import.importedNamespace.replace('.*', '')
-				elements.addAll(ConceptResourceLoader.instance.loadConceptByName(importedConceptName).categories.filter[c | c.isIsVerification])
+				elements.addAll(ConceptResourceLoader.instance.loadConceptByName(importedConceptName).categories
+					.filter[c | c.isIsVerification && !c.isIsAbstract]
+				)
 			}
 			return Scopes.scopeFor(elements, IScope.NULLSCOPE)
 		}

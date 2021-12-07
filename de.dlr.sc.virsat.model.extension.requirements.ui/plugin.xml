@@ -1368,7 +1368,7 @@
 		</uiSnippet>
 		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.requirements.table.uISnippetTableRequirementVerificationsUpperLimitVerification"
-		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section.Verifications"
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationsUpperLimitVerification">
 		</uiSnippet>
 		<uiSnippet
@@ -1383,7 +1383,7 @@
 		</uiSnippet>
 		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.requirements.table.uISnippetTableRequirementVerificationsLowerLimitVerification"
-		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section.Verifications"
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationsLowerLimitVerification">
 		</uiSnippet>
 		<uiSnippet
@@ -1398,7 +1398,7 @@
 		</uiSnippet>
 		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.requirements.table.uISnippetTableRequirementVerificationsBoundedValueVerification"
-		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section.Verifications"
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationsBoundedValueVerification">
 		</uiSnippet>
 	</extension>

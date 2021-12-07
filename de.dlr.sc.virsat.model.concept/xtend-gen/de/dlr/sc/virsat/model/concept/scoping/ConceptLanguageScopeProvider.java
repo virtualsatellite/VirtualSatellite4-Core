@@ -50,7 +50,7 @@ public class ConceptLanguageScopeProvider extends ImportedNamespaceAwareLocalSco
           return t.getEObjectOrProxy();
         };
         final Function1<EObject, Boolean> _function_1 = (EObject t) -> {
-          return Boolean.valueOf(((t instanceof Category) && ((Category) t).isIsVerification()));
+          return Boolean.valueOf((((t instanceof Category) && ((Category) t).isIsVerification()) && (!((Category) t).isIsAbstract())));
         };
         Iterables.<EObject>addAll(elements, 
           IterableExtensions.<EObject>filter(IterableExtensions.<IEObjectDescription, EObject>map(scope.getAllElements(), _function), _function_1));
@@ -60,9 +60,10 @@ public class ConceptLanguageScopeProvider extends ImportedNamespaceAwareLocalSco
           {
             String importedConceptName = import_.getImportedNamespace().replace(".*", "");
             final Function1<Category, Boolean> _function_2 = (Category c) -> {
-              return Boolean.valueOf(c.isIsVerification());
+              return Boolean.valueOf((c.isIsVerification() && (!c.isIsAbstract())));
             };
-            Iterables.<EObject>addAll(elements, IterableExtensions.<Category>filter(ConceptResourceLoader.getInstance().loadConceptByName(importedConceptName).getCategories(), _function_2));
+            Iterables.<EObject>addAll(elements, 
+              IterableExtensions.<Category>filter(ConceptResourceLoader.getInstance().loadConceptByName(importedConceptName).getCategories(), _function_2));
           }
         }
         return Scopes.scopeFor(elements, IScope.NULLSCOPE);
