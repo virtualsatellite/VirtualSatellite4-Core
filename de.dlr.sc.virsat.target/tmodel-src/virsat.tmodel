@@ -7,7 +7,8 @@ TargetLibrary virsat {
 	RepositoryLocation EclipseOrbit url "https://download.eclipse.org/tools/orbit/downloads/drops/R20190602212107/repository/"{
 		Unit org.antlr.runtime version 3.2.0.v201101311130; 
 		Unit org.apache.commons.io version 2.6.0.v20190123-2029;
-		Unit org.apache.commons.io.source version 2.6.0.v20190123-2029; 
+		Unit org.apache.commons.io.source version 2.6.0.v20190123-2029;
+		Unit org.mockito version newest;
 	}
 	
 	// Purely named Eclipse. The name is important for target models having this one as 
