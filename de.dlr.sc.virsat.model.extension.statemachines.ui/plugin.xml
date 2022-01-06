@@ -16,12 +16,8 @@
 		pathToImage="resources/icons/de.dlr.sc.virsat.model.extension.statemachines.gif">
 	</conceptImage>
 	<conceptImage
-		fullQualifiedID="de.dlr.sc.virsat.model.extension.statemachines.State"
-		pathToImage="resources/icons/State.gif">
-	</conceptImage>
-	<conceptImage
-		fullQualifiedID="de.dlr.sc.virsat.model.extension.statemachines.Transition"
-		pathToImage="resources/icons/Transition.gif">
+		fullQualifiedID="de.dlr.sc.virsat.model.extension.statemachines.StateMachine"
+		pathToImage="resources/icons/StateMachine.gif">
 	</conceptImage>
 	<conceptImage
 		fullQualifiedID="de.dlr.sc.virsat.model.extension.statemachines.TransitionTriggerEvent"
@@ -32,6 +28,14 @@
 		pathToImage="resources/icons/AConstraint.gif">
 	</conceptImage>
 	<conceptImage
+		fullQualifiedID="de.dlr.sc.virsat.model.extension.statemachines.Transition"
+		pathToImage="resources/icons/Transition.gif">
+	</conceptImage>
+	<conceptImage
+		fullQualifiedID="de.dlr.sc.virsat.model.extension.statemachines.State"
+		pathToImage="resources/icons/State.gif">
+	</conceptImage>
+	<conceptImage
 		fullQualifiedID="de.dlr.sc.virsat.model.extension.statemachines.AllowsConstraint"
 		pathToImage="resources/icons/AllowsConstraint.gif">
 	</conceptImage>
@@ -39,23 +43,23 @@
 		fullQualifiedID="de.dlr.sc.virsat.model.extension.statemachines.ForbidsConstraint"
 		pathToImage="resources/icons/ForbidsConstraint.gif">
 	</conceptImage>
-	<conceptImage
-		fullQualifiedID="de.dlr.sc.virsat.model.extension.statemachines.StateMachine"
-		pathToImage="resources/icons/StateMachine.gif">
-	</conceptImage>
 	</extension>
 	<extension point="org.eclipse.ui.commands">
 	<command
-		id="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddState"
-		name="Add State">
+		id="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddStateMachine"
+		name="Add StateMachine">
+	</command>
+	<command
+		id="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddTransitionTriggerEvent"
+		name="Add TransitionTriggerEvent">
 	</command>
 	<command
 		id="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddTransition"
 		name="Add Transition">
 	</command>
 	<command
-		id="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddTransitionTriggerEvent"
-		name="Add TransitionTriggerEvent">
+		id="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddState"
+		name="Add State">
 	</command>
 	<command
 		id="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddAllowsConstraint"
@@ -65,16 +69,17 @@
 		id="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddForbidsConstraint"
 		name="Add ForbidsConstraint">
 	</command>
-	<command
-		id="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddStateMachine"
-		name="Add StateMachine">
-	</command>
 	</extension>
 	<extension point="org.eclipse.ui.commandImages">
 	<image
-	      commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddState"
-	      disabledIcon="resources/icons/State_disabled.gif"
-	      icon="resources/icons/State.gif">
+	      commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddStateMachine"
+	      disabledIcon="resources/icons/StateMachine_disabled.gif"
+	      icon="resources/icons/StateMachine.gif">
+	</image>
+	<image
+	      commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddTransitionTriggerEvent"
+	      disabledIcon="resources/icons/TransitionTriggerEvent_disabled.gif"
+	      icon="resources/icons/TransitionTriggerEvent.gif">
 	</image>
 	<image
 	      commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddTransition"
@@ -82,9 +87,9 @@
 	      icon="resources/icons/Transition.gif">
 	</image>
 	<image
-	      commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddTransitionTriggerEvent"
-	      disabledIcon="resources/icons/TransitionTriggerEvent_disabled.gif"
-	      icon="resources/icons/TransitionTriggerEvent.gif">
+	      commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddState"
+	      disabledIcon="resources/icons/State_disabled.gif"
+	      icon="resources/icons/State.gif">
 	</image>
 	<image
 	      commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddAllowsConstraint"
@@ -96,24 +101,23 @@
 	      disabledIcon="resources/icons/ForbidsConstraint_disabled.gif"
 	      icon="resources/icons/ForbidsConstraint.gif">
 	</image>
-	<image
-	      commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddStateMachine"
-	      disabledIcon="resources/icons/StateMachine_disabled.gif"
-	      icon="resources/icons/StateMachine.gif">
-	</image>
 	</extension>
 	<extension point="org.eclipse.ui.handlers">
 	<handler
-		class="de.dlr.sc.virsat.model.extension.statemachines.ui.handler.AddStateHandler"
-		commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddState">
+		class="de.dlr.sc.virsat.model.extension.statemachines.ui.handler.AddStateMachineHandler"
+		commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddStateMachine">
+	</handler>
+	<handler
+		class="de.dlr.sc.virsat.model.extension.statemachines.ui.handler.AddTransitionTriggerEventHandler"
+		commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddTransitionTriggerEvent">
 	</handler>
 	<handler
 		class="de.dlr.sc.virsat.model.extension.statemachines.ui.handler.AddTransitionHandler"
 		commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddTransition">
 	</handler>
 	<handler
-		class="de.dlr.sc.virsat.model.extension.statemachines.ui.handler.AddTransitionTriggerEventHandler"
-		commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddTransitionTriggerEvent">
+		class="de.dlr.sc.virsat.model.extension.statemachines.ui.handler.AddStateHandler"
+		commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddState">
 	</handler>
 	<handler
 		class="de.dlr.sc.virsat.model.extension.statemachines.ui.handler.AddAllowsConstraintHandler"
@@ -122,10 +126,6 @@
 	<handler
 		class="de.dlr.sc.virsat.model.extension.statemachines.ui.handler.AddForbidsConstraintHandler"
 		commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddForbidsConstraint">
-	</handler>
-	<handler
-		class="de.dlr.sc.virsat.model.extension.statemachines.ui.handler.AddStateMachineHandler"
-		commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddStateMachine">
 	</handler>
 	</extension>
 	<extension point="org.eclipse.ui.menus">
@@ -173,7 +173,29 @@
 		<menuContribution allPopups="false"
 			locationURI="popup:de.dlr.sc.virsat.model.extension.statemachines.menu?after=categories">
 		<command
-			commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddState"
+			commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddStateMachine"
+			style="push">
+			<visibleWhen
+				checkEnabled="true">
+				<with
+					variable="selection">
+					<iterate
+						ifEmpty="false"
+						operator="and">
+						<test 
+							property="de.dlr.sc.virsat.model.extension.statemachines.ui.propertyTester.conceptEnabled"
+							value="true" 
+							forcePluginActivation="true">
+						</test>		
+						<instanceof
+							value="de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer">
+						</instanceof>
+					</iterate>
+				</with>
+			</visibleWhen>
+		</command>
+		<command
+			commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddTransitionTriggerEvent"
 			style="push">
 			<visibleWhen
 				checkEnabled="true">
@@ -217,7 +239,7 @@
 			</visibleWhen>
 		</command>
 		<command
-			commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddTransitionTriggerEvent"
+			commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddState"
 			style="push">
 			<visibleWhen
 				checkEnabled="true">
@@ -282,28 +304,6 @@
 				</with>
 			</visibleWhen>
 		</command>
-		<command
-			commandId="de.dlr.sc.virsat.model.extension.statemachines.ui.command.AddStateMachine"
-			style="push">
-			<visibleWhen
-				checkEnabled="true">
-				<with
-					variable="selection">
-					<iterate
-						ifEmpty="false"
-						operator="and">
-						<test 
-							property="de.dlr.sc.virsat.model.extension.statemachines.ui.propertyTester.conceptEnabled"
-							value="true" 
-							forcePluginActivation="true">
-						</test>		
-						<instanceof
-							value="de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer">
-						</instanceof>
-					</iterate>
-				</with>
-			</visibleWhen>
-		</command>
 		</menuContribution>
 		<menuContribution allPopups="false"
 			locationURI="popup:de.dlr.sc.virsat.model.extension.statemachines.menu?after=structuralElements">
@@ -317,56 +317,6 @@
 	    </editorSection>
 	 </extension>	
 	<extension point="de.dlr.sc.virsat.uiengine.ui.EditorUiSnippets">
-		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.statemachines.table.uiSnippetState"
-		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetTableState">
-		</uiSnippet>
-		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.statemachines.section.uiSnippetState"
-		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetSectionState">
-		</uiSnippet>
-		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.statemachines.table.uiSnippetTransition"
-		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetTableTransition">
-		</uiSnippet>
-		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.statemachines.section.uiSnippetTransition"
-		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetSectionTransition">
-		</uiSnippet>
-		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.statemachines.table.uiSnippetTransitionTriggerEvent"
-		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetTableTransitionTriggerEvent">
-		</uiSnippet>
-		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.statemachines.section.uiSnippetTransitionTriggerEvent"
-		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetSectionTransitionTriggerEvent">
-		</uiSnippet>
-		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.statemachines.table.uiSnippetAllowsConstraint"
-		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetTableAllowsConstraint">
-		</uiSnippet>
-		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.statemachines.section.uiSnippetAllowsConstraint"
-		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetSectionAllowsConstraint">
-		</uiSnippet>
-		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.statemachines.table.uiSnippetForbidsConstraint"
-		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetTableForbidsConstraint">
-		</uiSnippet>
-		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.statemachines.section.uiSnippetForbidsConstraint"
-		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetSectionForbidsConstraint">
-		</uiSnippet>
 		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.statemachines.table.uiSnippetStateMachine"
 		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
@@ -401,6 +351,56 @@
 		      id="de.dlr.sc.virsat.model.extension.statemachines.table.uiSnippetStateMachineTriggerEventsTransitionTriggerEvent"
 		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
 		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetTableStateMachineTriggerEventsTransitionTriggerEvent">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.statemachines.table.uiSnippetTransitionTriggerEvent"
+		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetTableTransitionTriggerEvent">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.statemachines.section.uiSnippetTransitionTriggerEvent"
+		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetSectionTransitionTriggerEvent">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.statemachines.table.uiSnippetTransition"
+		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetTableTransition">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.statemachines.section.uiSnippetTransition"
+		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetSectionTransition">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.statemachines.table.uiSnippetState"
+		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetTableState">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.statemachines.section.uiSnippetState"
+		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetSectionState">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.statemachines.table.uiSnippetAllowsConstraint"
+		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetTableAllowsConstraint">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.statemachines.section.uiSnippetAllowsConstraint"
+		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetSectionAllowsConstraint">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.statemachines.table.uiSnippetForbidsConstraint"
+		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetTableForbidsConstraint">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.statemachines.section.uiSnippetForbidsConstraint"
+		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetSectionForbidsConstraint">
 		</uiSnippet>
 	</extension>
 	<!-- Plugin.XML Protected Region Start -->

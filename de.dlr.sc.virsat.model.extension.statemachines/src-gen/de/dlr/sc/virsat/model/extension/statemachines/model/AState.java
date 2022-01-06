@@ -24,7 +24,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.common.command.Command;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloat;
 import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
 import javax.xml.bind.annotation.XmlElement;
 
@@ -57,6 +59,7 @@ public abstract class AState extends GenericCategory implements IBeanCategoryAss
 	
 	// property name constants
 	public static final String PROPERTY_DETAIL = "detail";
+	public static final String PROPERTY_MAXTIME = "maxtime";
 	
 	
 	
@@ -108,6 +111,43 @@ public abstract class AState extends GenericCategory implements IBeanCategoryAss
 	public BeanPropertyString getDetailBean() {
 		safeAccessDetail();
 		return detail;
+	}
+	
+	// *****************************************************************
+	// * Attribute: maxtime
+	// *****************************************************************
+	private BeanPropertyFloat maxtime = new BeanPropertyFloat();
+	
+	private void safeAccessMaxtime() {
+		if (maxtime.getTypeInstance() == null) {
+			maxtime.setTypeInstance((UnitValuePropertyInstance) helper.getPropertyInstance("maxtime"));
+		}
+	}
+	
+	public Command setMaxtime(EditingDomain ed, double value) {
+		safeAccessMaxtime();
+		return this.maxtime.setValue(ed, value);
+	}
+	
+	public void setMaxtime(double value) {
+		safeAccessMaxtime();
+		this.maxtime.setValue(value);
+	}
+	
+	public double getMaxtime() {
+		safeAccessMaxtime();
+		return maxtime.getValue();
+	}
+	
+	public boolean isSetMaxtime() {
+		safeAccessMaxtime();
+		return maxtime.isSet();
+	}
+	
+	@XmlElement
+	public BeanPropertyFloat getMaxtimeBean() {
+		safeAccessMaxtime();
+		return maxtime;
 	}
 	
 	
