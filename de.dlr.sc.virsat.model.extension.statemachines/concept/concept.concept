@@ -12,7 +12,7 @@ Concept de.dlr.sc.virsat.model.extension.statemachines displayname "State Machin
 	
 	Category State description "State of the component at a given time"{
 		StringProperty detail description "Optional additional detail information about the state";
-		FloatProperty maxTime quantityKind "Time" unit "Second" default 0;
+		FloatProperty maxTime description "The maximum time spend in the state" default 0.0 quantityKind "Time" unit "Second";
 	}	
 	
 	Category Transition description "Transitions among states" { 
