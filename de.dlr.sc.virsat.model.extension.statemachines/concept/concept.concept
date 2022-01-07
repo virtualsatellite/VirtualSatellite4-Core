@@ -39,8 +39,8 @@ Concept de.dlr.sc.virsat.model.extension.statemachines displayname "State Machin
 		] default send;
 		
 		StringProperty detail description "Optional additional detail information about this trigger";
-		FloatProperty mintime quantityKind "Time" unit "Second" default 0;
-		FloatProperty maxtime quantityKind "Time" unit "Second" default 0;		
+		FloatProperty minTime description "The minimum time required to execute the trigger" default 0.0 quantityKind "Time" unit "Second";
+		FloatProperty maxTime description "The maximum time required to execute the trigger" default 0.0 quantityKind "Time" unit "Second";	
 	}
 	
 	Category AConstraint description "General constraint in statemachines "{
@@ -57,7 +57,7 @@ Concept de.dlr.sc.virsat.model.extension.statemachines displayname "State Machin
 	
 	Category State description "State of the component at a given time"{
 		StringProperty detail description "Optional additional detail information about the state";
-		FloatProperty maxtime quantityKind "Time" unit "Second" default 0;
+		FloatProperty maxTime description "The maximum time spend in the state" default 0.0 quantityKind "Time" unit "Second";
 	}	
 	
 	Category AllowsConstraint  extends AConstraint description "A state explicitly allows another state" {

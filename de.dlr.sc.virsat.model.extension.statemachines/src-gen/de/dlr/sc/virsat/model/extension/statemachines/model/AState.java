@@ -59,7 +59,7 @@ public abstract class AState extends GenericCategory implements IBeanCategoryAss
 	
 	// property name constants
 	public static final String PROPERTY_DETAIL = "detail";
-	public static final String PROPERTY_MAXTIME = "maxtime";
+	public static final String PROPERTY_MAXTIME = "maxTime";
 	
 	
 	
@@ -114,40 +114,40 @@ public abstract class AState extends GenericCategory implements IBeanCategoryAss
 	}
 	
 	// *****************************************************************
-	// * Attribute: maxtime
+	// * Attribute: maxTime
 	// *****************************************************************
-	private BeanPropertyFloat maxtime = new BeanPropertyFloat();
+	private BeanPropertyFloat maxTime = new BeanPropertyFloat();
 	
-	private void safeAccessMaxtime() {
-		if (maxtime.getTypeInstance() == null) {
-			maxtime.setTypeInstance((UnitValuePropertyInstance) helper.getPropertyInstance("maxtime"));
+	private void safeAccessMaxTime() {
+		if (maxTime.getTypeInstance() == null) {
+			maxTime.setTypeInstance((UnitValuePropertyInstance) helper.getPropertyInstance("maxTime"));
 		}
 	}
 	
-	public Command setMaxtime(EditingDomain ed, double value) {
-		safeAccessMaxtime();
-		return this.maxtime.setValue(ed, value);
+	public Command setMaxTime(EditingDomain ed, double value) {
+		safeAccessMaxTime();
+		return this.maxTime.setValue(ed, value);
 	}
 	
-	public void setMaxtime(double value) {
-		safeAccessMaxtime();
-		this.maxtime.setValue(value);
+	public void setMaxTime(double value) {
+		safeAccessMaxTime();
+		this.maxTime.setValue(value);
 	}
 	
-	public double getMaxtime() {
-		safeAccessMaxtime();
-		return maxtime.getValue();
+	public double getMaxTime() {
+		safeAccessMaxTime();
+		return maxTime.getValue();
 	}
 	
-	public boolean isSetMaxtime() {
-		safeAccessMaxtime();
-		return maxtime.isSet();
+	public boolean isSetMaxTime() {
+		safeAccessMaxTime();
+		return maxTime.isSet();
 	}
 	
 	@XmlElement
-	public BeanPropertyFloat getMaxtimeBean() {
-		safeAccessMaxtime();
-		return maxtime;
+	public BeanPropertyFloat getMaxTimeBean() {
+		safeAccessMaxTime();
+		return maxTime;
 	}
 	
 	

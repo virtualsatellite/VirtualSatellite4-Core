@@ -63,8 +63,8 @@ public abstract class ATransitionTriggerEvent extends GenericCategory implements
 	public static final String PROPERTY_TYPE = "type";
 	public static final String PROPERTY_SENDING = "sending";
 	public static final String PROPERTY_DETAIL = "detail";
-	public static final String PROPERTY_MINTIME = "mintime";
-	public static final String PROPERTY_MAXTIME = "maxtime";
+	public static final String PROPERTY_MINTIME = "minTime";
+	public static final String PROPERTY_MAXTIME = "maxTime";
 	
 	// Type enumeration value names
 	public static final String TYPE_auto_NAME = "auto";
@@ -207,77 +207,77 @@ public abstract class ATransitionTriggerEvent extends GenericCategory implements
 	}
 	
 	// *****************************************************************
-	// * Attribute: mintime
+	// * Attribute: minTime
 	// *****************************************************************
-	private BeanPropertyFloat mintime = new BeanPropertyFloat();
+	private BeanPropertyFloat minTime = new BeanPropertyFloat();
 	
-	private void safeAccessMintime() {
-		if (mintime.getTypeInstance() == null) {
-			mintime.setTypeInstance((UnitValuePropertyInstance) helper.getPropertyInstance("mintime"));
+	private void safeAccessMinTime() {
+		if (minTime.getTypeInstance() == null) {
+			minTime.setTypeInstance((UnitValuePropertyInstance) helper.getPropertyInstance("minTime"));
 		}
 	}
 	
-	public Command setMintime(EditingDomain ed, double value) {
-		safeAccessMintime();
-		return this.mintime.setValue(ed, value);
+	public Command setMinTime(EditingDomain ed, double value) {
+		safeAccessMinTime();
+		return this.minTime.setValue(ed, value);
 	}
 	
-	public void setMintime(double value) {
-		safeAccessMintime();
-		this.mintime.setValue(value);
+	public void setMinTime(double value) {
+		safeAccessMinTime();
+		this.minTime.setValue(value);
 	}
 	
-	public double getMintime() {
-		safeAccessMintime();
-		return mintime.getValue();
+	public double getMinTime() {
+		safeAccessMinTime();
+		return minTime.getValue();
 	}
 	
-	public boolean isSetMintime() {
-		safeAccessMintime();
-		return mintime.isSet();
+	public boolean isSetMinTime() {
+		safeAccessMinTime();
+		return minTime.isSet();
 	}
 	
 	@XmlElement
-	public BeanPropertyFloat getMintimeBean() {
-		safeAccessMintime();
-		return mintime;
+	public BeanPropertyFloat getMinTimeBean() {
+		safeAccessMinTime();
+		return minTime;
 	}
 	
 	// *****************************************************************
-	// * Attribute: maxtime
+	// * Attribute: maxTime
 	// *****************************************************************
-	private BeanPropertyFloat maxtime = new BeanPropertyFloat();
+	private BeanPropertyFloat maxTime = new BeanPropertyFloat();
 	
-	private void safeAccessMaxtime() {
-		if (maxtime.getTypeInstance() == null) {
-			maxtime.setTypeInstance((UnitValuePropertyInstance) helper.getPropertyInstance("maxtime"));
+	private void safeAccessMaxTime() {
+		if (maxTime.getTypeInstance() == null) {
+			maxTime.setTypeInstance((UnitValuePropertyInstance) helper.getPropertyInstance("maxTime"));
 		}
 	}
 	
-	public Command setMaxtime(EditingDomain ed, double value) {
-		safeAccessMaxtime();
-		return this.maxtime.setValue(ed, value);
+	public Command setMaxTime(EditingDomain ed, double value) {
+		safeAccessMaxTime();
+		return this.maxTime.setValue(ed, value);
 	}
 	
-	public void setMaxtime(double value) {
-		safeAccessMaxtime();
-		this.maxtime.setValue(value);
+	public void setMaxTime(double value) {
+		safeAccessMaxTime();
+		this.maxTime.setValue(value);
 	}
 	
-	public double getMaxtime() {
-		safeAccessMaxtime();
-		return maxtime.getValue();
+	public double getMaxTime() {
+		safeAccessMaxTime();
+		return maxTime.getValue();
 	}
 	
-	public boolean isSetMaxtime() {
-		safeAccessMaxtime();
-		return maxtime.isSet();
+	public boolean isSetMaxTime() {
+		safeAccessMaxTime();
+		return maxTime.isSet();
 	}
 	
 	@XmlElement
-	public BeanPropertyFloat getMaxtimeBean() {
-		safeAccessMaxtime();
-		return maxtime;
+	public BeanPropertyFloat getMaxTimeBean() {
+		safeAccessMaxTime();
+		return maxTime;
 	}
 	
 	

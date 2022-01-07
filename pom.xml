@@ -158,6 +158,11 @@
 				<module>de.dlr.sc.virsat.model.extension.requirements.test</module>
 				<module>de.dlr.sc.virsat.model.extension.requirements.ui</module>
 				
+				<!-- Extension for Sequencing -->
+				<module>de.dlr.sc.virsat.model.extension.sequencing</module>
+				<module>de.dlr.sc.virsat.model.extension.sequencing.test</module>
+				<module>de.dlr.sc.virsat.model.extension.sequencing.ui</module>
+				
 				<!-- The Test Extension for Verifying correctness of EMF.Edit implementations 
 					and Bean Model -->
 				<module>de.dlr.sc.virsat.model.extension.tests</module>
@@ -209,6 +214,7 @@
 				<module>de.dlr.sc.virsat.model.extension.statemachines.feature</module>
 				<module>de.dlr.sc.virsat.model.extension.requirements.feature</module>
 				<module>de.dlr.sc.virsat.model.extension.visualisation.feature</module>
+				<module>de.dlr.sc.virsat.model.extension.sequencing.feature</module>
 				<module>de.dlr.sc.virsat.model.extension.tests.feature</module>
 				<module>de.dlr.sc.virsat.javadoc.api.feature</module>
 				<module>de.dlr.sc.virsat.docs.feature</module>

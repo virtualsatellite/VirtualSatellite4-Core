@@ -36,8 +36,8 @@
       <values name="receive" value="1"/>
     </properties>
     <properties xsi:type="dvlm_cppd:StringProperty" name="detail" description="Optional additional detail information about this trigger"/>
-    <properties xsi:type="dvlm_cppd:FloatProperty" name="mintime" quantityKindName="Time" unitName="Second" defaultValue="0"/>
-    <properties xsi:type="dvlm_cppd:FloatProperty" name="maxtime" quantityKindName="Time" unitName="Second" defaultValue="0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="minTime" description="The minimum time required to execute the trigger" quantityKindName="Time" unitName="Second" defaultValue="0.0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="maxTime" description="The maximum time required to execute the trigger" quantityKindName="Time" unitName="Second" defaultValue="0.0"/>
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="AConstraint" description="General constraint in statemachines " isAbstract="true">
@@ -53,7 +53,7 @@
   </categories>
   <categories name="State" description="State of the component at a given time">
     <properties xsi:type="dvlm_cppd:StringProperty" name="detail" description="Optional additional detail information about the state"/>
-    <properties xsi:type="dvlm_cppd:FloatProperty" name="maxtime" quantityKindName="Time" unitName="Second" defaultValue="0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="maxTime" description="The maximum time spend in the state" quantityKindName="Time" unitName="Second" defaultValue="0.0"/>
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="AllowsConstraint" description="A state explicitly allows another state" extendsCategory="de.dlr.sc.virsat.model.extension.statemachines.AConstraint"/>
