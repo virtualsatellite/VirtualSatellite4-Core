@@ -21,8 +21,8 @@ SPDX-License-Identifier: EPL-2.0
     <version>4.13.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>de.dlr.sc.virsat.model.extension.budget.mass.feature</artifactId>
+  <artifactId>de.dlr.sc.virsat.model.extension.sequencing.feature</artifactId>
   <packaging>eclipse-feature</packaging>
    
-  <name>de.dlr.sc.virsat.model.extension.budget.mass.feature</name>
+  <name>de.dlr.sc.virsat.model.extension.sequencing.feature</name>
   </project> 
