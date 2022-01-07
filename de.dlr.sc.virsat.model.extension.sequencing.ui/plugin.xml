@@ -16,8 +16,8 @@
 		pathToImage="resources/icons/de.dlr.sc.virsat.model.extension.sequencing.gif">
 	</conceptImage>
 	<conceptImage
-		fullQualifiedID="de.dlr.sc.virsat.model.extension.sequencing.EventToInterfaceEndMapping"
-		pathToImage="resources/icons/EventToInterfaceEndMapping.gif">
+		fullQualifiedID="de.dlr.sc.virsat.model.extension.sequencing.EventToOutputMapping"
+		pathToImage="resources/icons/EventToOutputMapping.gif">
 	</conceptImage>
 	<conceptImage
 		fullQualifiedID="de.dlr.sc.virsat.model.extension.sequencing.SequenceEntry"
@@ -30,8 +30,8 @@
 	</extension>
 	<extension point="org.eclipse.ui.commands">
 	<command
-		id="de.dlr.sc.virsat.model.extension.sequencing.ui.command.AddEventToInterfaceEndMapping"
-		name="Add EventToInterfaceEndMapping">
+		id="de.dlr.sc.virsat.model.extension.sequencing.ui.command.AddEventToOutputMapping"
+		name="Add EventToOutputMapping">
 	</command>
 	<command
 		id="de.dlr.sc.virsat.model.extension.sequencing.ui.command.AddSequenceEntry"
@@ -44,9 +44,9 @@
 	</extension>
 	<extension point="org.eclipse.ui.commandImages">
 	<image
-	      commandId="de.dlr.sc.virsat.model.extension.sequencing.ui.command.AddEventToInterfaceEndMapping"
-	      disabledIcon="resources/icons/EventToInterfaceEndMapping_disabled.gif"
-	      icon="resources/icons/EventToInterfaceEndMapping.gif">
+	      commandId="de.dlr.sc.virsat.model.extension.sequencing.ui.command.AddEventToOutputMapping"
+	      disabledIcon="resources/icons/EventToOutputMapping_disabled.gif"
+	      icon="resources/icons/EventToOutputMapping.gif">
 	</image>
 	<image
 	      commandId="de.dlr.sc.virsat.model.extension.sequencing.ui.command.AddSequenceEntry"
@@ -61,8 +61,8 @@
 	</extension>
 	<extension point="org.eclipse.ui.handlers">
 	<handler
-		class="de.dlr.sc.virsat.model.extension.sequencing.ui.handler.AddEventToInterfaceEndMappingHandler"
-		commandId="de.dlr.sc.virsat.model.extension.sequencing.ui.command.AddEventToInterfaceEndMapping">
+		class="de.dlr.sc.virsat.model.extension.sequencing.ui.handler.AddEventToOutputMappingHandler"
+		commandId="de.dlr.sc.virsat.model.extension.sequencing.ui.command.AddEventToOutputMapping">
 	</handler>
 	<handler
 		class="de.dlr.sc.virsat.model.extension.sequencing.ui.handler.AddSequenceEntryHandler"
@@ -118,7 +118,7 @@
 		<menuContribution allPopups="false"
 			locationURI="popup:de.dlr.sc.virsat.model.extension.sequencing.menu?after=categories">
 		<command
-			commandId="de.dlr.sc.virsat.model.extension.sequencing.ui.command.AddEventToInterfaceEndMapping"
+			commandId="de.dlr.sc.virsat.model.extension.sequencing.ui.command.AddEventToOutputMapping"
 			style="push">
 			<visibleWhen
 				checkEnabled="true">
@@ -197,19 +197,24 @@
 	 </extension>	
 	<extension point="de.dlr.sc.virsat.uiengine.ui.EditorUiSnippets">
 		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.sequencing.table.uiSnippetEventToInterfaceEndMapping"
+		      id="de.dlr.sc.virsat.model.extension.sequencing.table.uiSnippetEventToOutputMapping"
 		      section="de.dlr.sc.virsat.model.extension.sequencing.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.sequencing.ui.snippet.UiSnippetTableEventToInterfaceEndMapping">
+		      snippet="de.dlr.sc.virsat.model.extension.sequencing.ui.snippet.UiSnippetTableEventToOutputMapping">
 		</uiSnippet>
 		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.sequencing.section.uiSnippetEventToInterfaceEndMapping"
+		      id="de.dlr.sc.virsat.model.extension.sequencing.section.uiSnippetEventToOutputMapping"
 		      section="de.dlr.sc.virsat.model.extension.sequencing.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.sequencing.ui.snippet.UiSnippetSectionEventToInterfaceEndMapping">
+		      snippet="de.dlr.sc.virsat.model.extension.sequencing.ui.snippet.UiSnippetSectionEventToOutputMapping">
 		</uiSnippet>
 		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.sequencing.table.uiSnippetEventToInterfaceEndMappingInterfaceEnds"
+		      id="de.dlr.sc.virsat.model.extension.sequencing.table.uiSnippetEventToOutputMappingInterfaceEnds"
 		      section="de.dlr.sc.virsat.model.extension.sequencing.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.sequencing.ui.snippet.UiSnippetTableEventToInterfaceEndMappingInterfaceEnds">
+		      snippet="de.dlr.sc.virsat.model.extension.sequencing.ui.snippet.UiSnippetTableEventToOutputMappingInterfaceEnds">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.sequencing.table.uiSnippetEventToOutputMappingOutputStates"
+		      section="de.dlr.sc.virsat.model.extension.sequencing.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.sequencing.ui.snippet.UiSnippetTableEventToOutputMappingOutputStates">
 		</uiSnippet>
 		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.sequencing.table.uiSnippetSequenceEntry"

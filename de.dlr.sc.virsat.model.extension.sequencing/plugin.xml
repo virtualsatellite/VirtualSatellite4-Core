@@ -18,8 +18,8 @@
 	</extension>
 	<extension point="de.dlr.sc.virsat.model.edit.ConceptTypeFactoryCaBeanRegistration">
 		<CategoryAssignmentBean
-			id="de.dlr.sc.virsat.model.extension.sequencing.EventToInterfaceEndMapping"
-			caBean="de.dlr.sc.virsat.model.extension.sequencing.model.EventToInterfaceEndMapping">
+			id="de.dlr.sc.virsat.model.extension.sequencing.EventToOutputMapping"
+			caBean="de.dlr.sc.virsat.model.extension.sequencing.model.EventToOutputMapping">
 		</CategoryAssignmentBean>
 		<CategoryAssignmentBean
 			id="de.dlr.sc.virsat.model.extension.sequencing.SequenceEntry"

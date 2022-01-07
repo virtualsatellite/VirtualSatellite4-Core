@@ -22,7 +22,7 @@ import junit.framework.JUnit4TestAdapter;
 import de.dlr.sc.virsat.model.extension.sequencing.migrator.Migrator1v1Test;
 import de.dlr.sc.virsat.model.extension.sequencing.model.SequenceEntryTest;
 import de.dlr.sc.virsat.model.extension.sequencing.migrator.Migrator1v0Test;
-import de.dlr.sc.virsat.model.extension.sequencing.model.EventToInterfaceEndMappingTest;
+import de.dlr.sc.virsat.model.extension.sequencing.model.EventToOutputMappingTest;
 import de.dlr.sc.virsat.model.extension.sequencing.validator.SequencingValidatorTest;
 import de.dlr.sc.virsat.model.extension.sequencing.model.SequenceTest;
 
@@ -32,7 +32,7 @@ import de.dlr.sc.virsat.model.extension.sequencing.model.SequenceTest;
 @RunWith(Suite.class)
 
 @SuiteClasses({
-	EventToInterfaceEndMappingTest.class,
+	EventToOutputMappingTest.class,
 	SequenceEntryTest.class,
 	SequenceTest.class,
 	Migrator1v0Test.class,

@@ -13,10 +13,11 @@ Concept de.dlr.sc.virsat.model.extension.sequencing displayname "Sequencing" des
 	Import de.dlr.sc.virsat.model.extension.statemachines.*; 
 	Import de.dlr.sc.virsat.model.extension.funcelectrical.*;
  
- 	Category EventToInterfaceEndMapping {
+ 	Category EventToOutputMapping {
  		Applicable For [ElementDefinition, ElementConfiguration, ElementOccurence];
  		Reference event of Type TransitionTriggerEvent;
  		Reference interfaceEnds[] of Type InterfaceEnd;
+ 		Reference outputStates[] of Type State;
  	}
  
  	Category SequenceEntry {
