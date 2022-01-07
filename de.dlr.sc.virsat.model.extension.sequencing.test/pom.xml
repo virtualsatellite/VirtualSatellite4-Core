@@ -17,7 +17,7 @@ SPDX-License-Identifier: EPL-2.0
 		<relativePath>../maven/pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>de.dlr.sc.virsat.model.extension.budget.mass.test</artifactId>
-	<name>de.dlr.sc.virsat.model.extension.budget.mass.test</name>
+	<artifactId>de.dlr.sc.virsat.model.extension.sequencing.test</artifactId>
+	<name>de.dlr.sc.virsat.model.extension.sequencing.test</name>
 	<packaging>eclipse-test-plugin</packaging>
 </project>
