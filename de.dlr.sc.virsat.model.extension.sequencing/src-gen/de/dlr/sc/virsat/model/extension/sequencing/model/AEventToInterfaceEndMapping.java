@@ -14,16 +14,20 @@ package de.dlr.sc.virsat.model.extension.sequencing.model;
 // *****************************************************************
 import javax.xml.bind.annotation.XmlAccessorType;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeReferencePropertyBeanList;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceEnd;
 import javax.xml.bind.annotation.XmlRootElement;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
+import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import javax.xml.bind.annotation.XmlAccessType;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
 import de.dlr.sc.virsat.model.extension.statemachines.model.TransitionTriggerEvent;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeReferencePropertyInstanceList;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.common.command.Command;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapter;
@@ -61,7 +65,7 @@ public abstract class AEventToInterfaceEndMapping extends GenericCategory implem
 	
 	// property name constants
 	public static final String PROPERTY_EVENT = "event";
-	public static final String PROPERTY_INTERFACEEND = "interfaceEnd";
+	public static final String PROPERTY_INTERFACEENDS = "interfaceEnds";
 	
 	
 	
@@ -116,36 +120,34 @@ public abstract class AEventToInterfaceEndMapping extends GenericCategory implem
 	}
 	
 	// *****************************************************************
-	// * Attribute: interfaceEnd
+	// * Array Attribute: interfaceEnds
 	// *****************************************************************
-	private BeanPropertyReference<InterfaceEnd> interfaceEnd = new BeanPropertyReference<>();
+		private IBeanList<InterfaceEnd> interfaceEnds = new TypeSafeReferencePropertyInstanceList<>(InterfaceEnd.class);
 	
-	private void safeAccessInterfaceEnd() {
-		ReferencePropertyInstance propertyInstance = (ReferencePropertyInstance) helper.getPropertyInstance("interfaceEnd");
-		interfaceEnd.setTypeInstance(propertyInstance);
-	}
+		private void safeAccessInterfaceEnds() {
+			if (interfaceEnds.getArrayInstance() == null) {
+				interfaceEnds.setArrayInstance((ArrayInstance) helper.getPropertyInstance("interfaceEnds"));
+			}
+		}
 	
-	@XmlElement(nillable = true)
-	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
-	public InterfaceEnd getInterfaceEnd() {
-		safeAccessInterfaceEnd();
-		return interfaceEnd.getValue();
-	}
-	
-	public Command setInterfaceEnd(EditingDomain ed, InterfaceEnd value) {
-		safeAccessInterfaceEnd();
-		return interfaceEnd.setValue(ed, value);
-	}
-	
-	public void setInterfaceEnd(InterfaceEnd value) {
-		safeAccessInterfaceEnd();
-		interfaceEnd.setValue(value);
-	}
-	
-	public BeanPropertyReference<InterfaceEnd> getInterfaceEndBean() {
-		safeAccessInterfaceEnd();
-		return interfaceEnd;
-	}
+		public IBeanList<InterfaceEnd> getInterfaceEnds() {
+			safeAccessInterfaceEnds();
+			return interfaceEnds;
+		}
+		
+		private IBeanList<BeanPropertyReference<InterfaceEnd>> interfaceEndsBean = new TypeSafeReferencePropertyBeanList<>();
+		
+		private void safeAccessInterfaceEndsBean() {
+			if (interfaceEndsBean.getArrayInstance() == null) {
+				interfaceEndsBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("interfaceEnds"));
+			}
+		}
+		
+		@XmlElement
+		public IBeanList<BeanPropertyReference<InterfaceEnd>> getInterfaceEndsBean() {
+			safeAccessInterfaceEndsBean();
+			return interfaceEndsBean;
+		}
 	
 	
 }

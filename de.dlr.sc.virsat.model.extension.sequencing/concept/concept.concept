@@ -16,11 +16,11 @@ Concept de.dlr.sc.virsat.model.extension.sequencing displayname "Sequencing" des
  	Category EventToInterfaceEndMapping {
  		Applicable For [ElementDefinition, ElementConfiguration, ElementOccurence];
  		Reference event of Type TransitionTriggerEvent;
- 		Reference interfaceEnd of Type InterfaceEnd;
+ 		Reference interfaceEnds[] of Type InterfaceEnd;
  	}
  
  	Category SequenceEntry {
- 		FloatProperty time quantityKind "Time" unit "Second" default 0;
+ 		FloatProperty time description "The time to trigger the Transition" default 0.0 quantityKind "Time" unit "Second";
  		Reference event of Type TransitionTriggerEvent;
  	}
  

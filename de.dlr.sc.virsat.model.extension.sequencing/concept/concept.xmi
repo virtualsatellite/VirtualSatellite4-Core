@@ -11,13 +11,14 @@
     <properties xsi:type="dvlm_cppd:ReferenceProperty" name="event">
       <referenceType xsi:type="dvlm_cp:Category" href="platform:/resource/de.dlr.sc.virsat.model.extension.statemachines/concept/concept.concept#de.dlr.sc.virsat.model.extension.statemachines.TransitionTriggerEvent"/>
     </properties>
-    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="interfaceEnd">
+    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="interfaceEnds">
+      <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
       <referenceType xsi:type="dvlm_cp:Category" href="platform:/resource/de.dlr.sc.virsat.model.extension.funcelectrical/concept/concept.concept#de.dlr.sc.virsat.model.extension.funcelectrical.InterfaceEnd"/>
     </properties>
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="SequenceEntry">
-    <properties xsi:type="dvlm_cppd:FloatProperty" name="time" quantityKindName="Time" unitName="Second" defaultValue="0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="time" description="The time to trigger the Transition" quantityKindName="Time" unitName="Second" defaultValue="0.0"/>
     <properties xsi:type="dvlm_cppd:ReferenceProperty" name="event">
       <referenceType xsi:type="dvlm_cp:Category" href="platform:/resource/de.dlr.sc.virsat.model.extension.statemachines/concept/concept.concept#de.dlr.sc.virsat.model.extension.statemachines.TransitionTriggerEvent"/>
     </properties>

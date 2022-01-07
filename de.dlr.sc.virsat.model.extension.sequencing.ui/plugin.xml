@@ -207,6 +207,11 @@
 		      snippet="de.dlr.sc.virsat.model.extension.sequencing.ui.snippet.UiSnippetSectionEventToInterfaceEndMapping">
 		</uiSnippet>
 		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.sequencing.table.uiSnippetEventToInterfaceEndMappingInterfaceEnds"
+		      section="de.dlr.sc.virsat.model.extension.sequencing.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.sequencing.ui.snippet.UiSnippetTableEventToInterfaceEndMappingInterfaceEnds">
+		</uiSnippet>
+		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.sequencing.table.uiSnippetSequenceEntry"
 		      section="de.dlr.sc.virsat.model.extension.sequencing.ui.Section"
 		      snippet="de.dlr.sc.virsat.model.extension.sequencing.ui.snippet.UiSnippetTableSequenceEntry">
