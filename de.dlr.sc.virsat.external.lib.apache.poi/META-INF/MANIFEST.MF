@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat External Lib - Apache POI
 Bundle-SymbolicName: de.dlr.sc.virsat.external.lib.apache.poi
-Bundle-Version: 4.13.0.qualifier
+Bundle-Version: 4.14.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: com.graphbuilder.curve,
  com.graphbuilder.geom,
