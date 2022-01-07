@@ -17,7 +17,7 @@ SPDX-License-Identifier: EPL-2.0
 		<relativePath>../maven/pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>de.dlr.sc.virsat.model.sequencing.ui</artifactId>
+	<artifactId>de.dlr.sc.virsat.model.extension.sequencing.ui</artifactId>
 	<name>de.dlr.sc.virsat.model.extension.sequencing.ui</name>
 	<packaging>eclipse-plugin</packaging>
 </project>
