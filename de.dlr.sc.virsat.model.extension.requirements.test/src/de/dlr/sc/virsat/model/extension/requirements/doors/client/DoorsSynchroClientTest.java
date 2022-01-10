@@ -14,12 +14,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 
 import org.eclipse.lyo.client.exception.ResourceNotFoundException;
 import org.eclipse.lyo.oslc.domains.rm.Requirement;
+import org.eclipse.lyo.oslc4j.core.model.ResourceShape;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 
 public class DoorsSynchroClientTest {
@@ -30,16 +33,21 @@ public class DoorsSynchroClientTest {
 	private static final String SERVICE_PROVIDER_NAME = "TestServiceProvider";
 	private static final String REQ_ID = "123";
 	
+	private TestHelper testHelper;
+	private TestOslcClient testOslcClient;
+	private MockDoorsSynchroClient mockDoorsSynchroClient;
+	
 	@Before
 	public void prepareMockups() {
-		TestHelper helper = new TestHelper();
-		helper.init();
+		testHelper = new TestHelper();
+		testOslcClient = new TestOslcClient();
+		mockDoorsSynchroClient = new MockDoorsSynchroClient();
+		testHelper.init();
 	}
 	
 	@Test
 	public void testLookUpServiceProvider() throws ResourceNotFoundException, IOException, URISyntaxException {
 		String expectedServiceProvider = SERVICE_PROVIDER_URL;
-		TestOslcClient testOslcClient = new TestOslcClient();
 		DoorsSynchroClient.setOslcClient(testOslcClient);
 		String serviceProvider = DoorsSynchroClient.lookUpServiceProviderUrl(TEST_PROJECT);
 		
@@ -49,7 +57,6 @@ public class DoorsSynchroClientTest {
 	@Test
 	public void testlookUpQueryCapabilty() throws ResourceNotFoundException, IOException, URISyntaxException {
 		String expectedQueryCapabilty = QUERY_CAPABILITY;
-		TestOslcClient testOslcClient = new TestOslcClient();
 		DoorsSynchroClient.setOslcClient(testOslcClient);
 		String queryCapabilty = DoorsSynchroClient.lookUpQueryCapability();
 				
@@ -58,9 +65,7 @@ public class DoorsSynchroClientTest {
 	
 	@Test
 	public void testGetRequirementById() throws ResourceNotFoundException, IOException, URISyntaxException {
-		TestOslcClient testOslcClient = new TestOslcClient();
-		MockDoorsSynchroClient synchroClient = new MockDoorsSynchroClient();
-		MockDoorsSynchroClient.setDoorsSynchroClient(synchroClient);
+		MockDoorsSynchroClient.setDoorsSynchroClient(mockDoorsSynchroClient);
 		MockDoorsSynchroClient.setOslcClient(testOslcClient);
 		Requirement req = MockDoorsSynchroClient.getRequirementById(REQ_ID);
 		
@@ -69,9 +74,7 @@ public class DoorsSynchroClientTest {
 	
 	@Test
 	public void testGetServiceProvider() throws ResourceNotFoundException, IOException, URISyntaxException {
-		TestOslcClient testOslcClient = new TestOslcClient();
-		MockDoorsSynchroClient synchroClient = new MockDoorsSynchroClient();
-		MockDoorsSynchroClient.setDoorsSynchroClient(synchroClient);
+		MockDoorsSynchroClient.setDoorsSynchroClient(mockDoorsSynchroClient);
 		MockDoorsSynchroClient.setOslcClient(testOslcClient);
 		String expectedServiceProviderName = SERVICE_PROVIDER_NAME;
 		String serviceProviderName = MockDoorsSynchroClient.getServiceProvider().getTitle();
@@ -81,6 +84,12 @@ public class DoorsSynchroClientTest {
 	
 	@Test
 	public void testGetResourceShape() {
+		MockDoorsSynchroClient.setDoorsSynchroClient(mockDoorsSynchroClient);
+		DoorsSynchroClient.setOslcClient(testOslcClient);
+		Requirement req = Mockito.mock(Requirement.class);
+		ResourceShape resourceShape = DoorsSynchroClient.getResourceShape(req);
+		
+		assertNotNull(resourceShape);
 		
 	}
 	

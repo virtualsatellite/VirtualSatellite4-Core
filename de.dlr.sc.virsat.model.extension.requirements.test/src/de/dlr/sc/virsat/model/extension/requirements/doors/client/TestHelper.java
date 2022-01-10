@@ -14,6 +14,7 @@ import javax.ws.rs.core.Response;
 
 import org.eclipse.lyo.client.query.OslcQueryResult;
 import org.eclipse.lyo.oslc.domains.rm.Requirement;
+import org.eclipse.lyo.oslc4j.core.model.ResourceShape;
 import org.eclipse.lyo.oslc4j.core.model.ServiceProvider;
 import org.mockito.Mockito;
 
@@ -22,13 +23,15 @@ public class TestHelper {
 	private static ServiceProvider mockedServiceProvider = null;
 	private static Requirement mockedRequirement = null;
 	private static OslcQueryResult mockedOslcQueryResult = null;
+	private ResourceShape mockedResourceShape = null;
 	
 	
 	public void init() {
 		mockedServiceProvider = mockServiceProvider();
 		mockedRequirement = mockRequirement();
+		mockedResourceShape = mockResourceShape();
 	}
-	
+
 	public ServiceProvider mockServiceProvider() {
 		mockedServiceProvider = Mockito.mock(ServiceProvider.class);
 		Mockito.when(mockedServiceProvider.getTitle()).thenReturn("TestServiceProvider");
@@ -40,6 +43,13 @@ public class TestHelper {
 		Mockito.when(mockedRequirement.getTitle()).thenReturn("TestRequirement");
 		return mockedRequirement;
 	}
+	
+	private ResourceShape mockResourceShape() {
+		mockedResourceShape = Mockito.mock(ResourceShape.class);
+		
+		return null;
+	}
+	
 	public OslcQueryResult mockQueryResult() {
 		mockedOslcQueryResult = Mockito.mock(OslcQueryResult.class);
 		return mockedOslcQueryResult;
@@ -54,6 +64,7 @@ public class TestHelper {
 		Response mockedResponse = Mockito.mock(Response.class);
 		Mockito.when(mockedResponse.readEntity(ServiceProvider.class)).thenReturn(mockedServiceProvider);
 		Mockito.when(mockedResponse.readEntity(Requirement.class)).thenReturn(mockedRequirement);
+		Mockito.when(mockedResponse.readEntity(ResourceShape.class)).thenReturn(mockedResourceShape );
 		return mockedResponse;
 	}
 }
