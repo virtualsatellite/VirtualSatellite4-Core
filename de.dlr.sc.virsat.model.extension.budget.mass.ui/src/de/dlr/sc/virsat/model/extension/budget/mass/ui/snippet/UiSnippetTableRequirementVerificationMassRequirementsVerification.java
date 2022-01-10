@@ -9,32 +9,19 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.budget.mass.ui.snippet;
 
-import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.edit.domain.EditingDomain;
+import de.dlr.sc.virsat.model.extension.requirements.ui.snippet.AUISnippetTableRequirementsVerification;
 
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import de.dlr.sc.virsat.model.extension.requirements.ui.command.CreateAddArrayElementVerificationCommand;
-import de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetArrayInstanceCategoryTable;
-import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
-
-public class UiSnippetTableRequirementVerificationMassRequirementsVerification extends AUiSnippetArrayInstanceCategoryTable implements IUiSnippet {
+public class UiSnippetTableRequirementVerificationMassRequirementsVerification extends AUISnippetTableRequirementsVerification {
 
 	/**
 	 * Constructor
 	 */
 	public UiSnippetTableRequirementVerificationMassRequirementsVerification() {
 		super("de.dlr.sc.virsat.model.extension.budget.mass",
+			"de.dlr.sc.virsat.model.extension.budget.mass",
 			"MassRequirementsVerification",
-			"verification",
-			"Requirement",
 			"de.dlr.sc.virsat.model.extension.budget.mass.MassRequirementsVerification",
 			STYLE_ADD_BUTTON | STYLE_REMOVE_BUTTON | STYLE_EDITOR_BUTTON);
-	}
-	
-	@Override
-	protected Command createAddCommand(EditingDomain editingDomain, Concept activeConcept) {
-		return new CreateAddArrayElementVerificationCommand().create(editingDomain, getArrayInstance(model),  ActiveConceptHelper.getCategory(activeConcept, "MassRequirementsVerification"));
 	}
 	
 }

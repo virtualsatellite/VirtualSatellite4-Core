@@ -58,7 +58,7 @@ Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"
 		Reference reqType of Type RequirementType;
 		Type elements [] of Category AttributeValue;
 		EnumProperty status values [Open = 0, FullyCompliant = 1, PartialCompliant = 2, NonCompliant = 3, NotApplicable = 4];
-		Type verification[] of Category IVerification;
+		Type verifications[] of Category IVerification;
 		Type trace of Category RequirementTrace;
 		StringProperty descriptionText;
 		Type children [] of Category RequirementObject;
@@ -129,15 +129,32 @@ Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"
 	
 	Category ModelVerification extends IVerification {
 		IsAbstract;
-		EReference elementToBeVerified of Type ecore.EObject description "The exact element (Class / property) to be verified";
+		EReference elementToBeVerified of Type dvlm.categories.ATypeDefinition description "The exact element (Class / property) to be verified";
 	}
 	
 	Category ExistenceVerification extends ModelVerification {
 	}
 	
-	Category BoundedValueVerification extends ModelVerification {
+	Category IValueVerification extends ModelVerification {
+		IsAbstract;
+		//IsVerification; concept language changes need to be merged first
+	}
+	
+	Category UpperLimitVerification extends IValueVerification {
+		//IsVerification;
+		FloatProperty upperBound;
+	}
+	
+	Category LowerLimitVerification extends IValueVerification {
+		//IsVerification;
+		FloatProperty lowerBound;
+	}
+	
+	Category BoundedValueVerification extends IValueVerification {
+		//IsVerification;
 		FloatProperty lowerBound;
 		FloatProperty upperBound;
 	}
+	
 }
 

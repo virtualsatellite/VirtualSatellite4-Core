@@ -12,10 +12,10 @@ package de.dlr.sc.virsat.model.extension.requirements.ui.snippet;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import de.dlr.sc.virsat.model.extension.requirements.ui.command.CreateAddArrayElementVerificationCommand;
 import org.eclipse.emf.common.command.Command;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetArrayInstanceCategoryTable;
+import de.dlr.sc.virsat.model.extension.requirements.ui.command.CreateAddArrayElementVerificationsCommand;
 
 
 /**
@@ -26,19 +26,19 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetArrayInstanceCateg
  * 
  * 
  */	
-public abstract class AUiSnippetTableRequirementVerificationBoundedValueVerification extends AUiSnippetArrayInstanceCategoryTable implements IUiSnippet {
+public abstract class AUiSnippetTableRequirementVerificationsExistenceVerification extends AUiSnippetArrayInstanceCategoryTable implements IUiSnippet {
 
-	public AUiSnippetTableRequirementVerificationBoundedValueVerification() {
+	public AUiSnippetTableRequirementVerificationsExistenceVerification() {
 		super("de.dlr.sc.virsat.model.extension.requirements",
-			"BoundedValueVerification",
-			"verification",
+			"ExistenceVerification",
+			"verifications",
 			"Requirement",
-			"de.dlr.sc.virsat.model.extension.requirements.BoundedValueVerification",
+			"de.dlr.sc.virsat.model.extension.requirements.ExistenceVerification",
 			STYLE_ADD_BUTTON | STYLE_REMOVE_BUTTON | STYLE_EDITOR_BUTTON);
 	}
 	
 	@Override
 	protected Command createAddCommand(EditingDomain editingDomain, Concept activeConcept) {
-		return new CreateAddArrayElementVerificationCommand().create(editingDomain, getArrayInstance(model),  ActiveConceptHelper.getCategory(activeConcept, "BoundedValueVerification"));
+		return new CreateAddArrayElementVerificationsCommand().create(editingDomain, getArrayInstance(model),  ActiveConceptHelper.getCategory(activeConcept, "ExistenceVerification"));
 	}
 }

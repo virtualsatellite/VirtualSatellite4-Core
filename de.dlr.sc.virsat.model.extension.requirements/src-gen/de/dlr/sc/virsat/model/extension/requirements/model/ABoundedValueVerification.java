@@ -42,7 +42,7 @@ import javax.xml.bind.annotation.XmlElement;
  */	
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-public abstract class ABoundedValueVerification extends ModelVerification implements IBeanCategoryAssignment {
+public abstract class ABoundedValueVerification extends IValueVerification implements IBeanCategoryAssignment {
 
 	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.requirements.BoundedValueVerification";
 	

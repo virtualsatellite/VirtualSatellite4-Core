@@ -33,7 +33,7 @@ class ExternalGenModelHelper {
 			if (genPackage.basePackage !== null) {
 				typeClass = genPackage.basePackage + "."
 			}
-			typeClass += genPackage.NSName
+			typeClass += genPackage.packageName
 			typeClass += "." + property.referenceType.name
 		}
 		return typeClass

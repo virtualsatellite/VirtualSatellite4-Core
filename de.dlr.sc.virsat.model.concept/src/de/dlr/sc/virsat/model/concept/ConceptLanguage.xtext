@@ -85,6 +85,7 @@ Category returns Categories::Category:
 	('description' description=EString)? )
 	'{'
 		((isAbstract?='IsAbstract'';')? &
+		(isVerification?='IsVerification'';')? &
 		('Applicable' 'For' (('[' applicableFor+=[Structural::StructuralElement|QualifiedName] ( "," applicableFor+=[Structural::StructuralElement|QualifiedName])* ']') | isApplicableForAll?='All') ';' )? &
 		('Cardinality' cardinality=INT ';')? )
 		
@@ -133,12 +134,21 @@ StaticArrayModifier returns PropertyDefinitions::StaticArrayModifier:
 	'[' arraySize=INT ']'
 ;
 
+VerificationSpecification returns PropertyDefinitions::IVerificationSpecification:
+	VerificationTypeSpecification
+;
+
+VerificationTypeSpecification returns PropertyDefinitions::VerificationTypeSpecification:
+	verificationType=[Categories::ATypeDefinition|QualifiedName]
+;
+
 ComposedProperty returns PropertyDefinitions::ComposedProperty:
 	{PropertyDefinitions::ComposedProperty}
 	'Type' name=ID (arrayModifier=ArrayModifier)?
 	'of' 'Category' type=[Categories::Category|QualifiedName]
 	(('description' description=EString)? &
 	('quantityKind' quantityKindName = EString)? &
+	('verification' verification=VerificationTypeSpecification)? &
 	('unit' unitName = EString)? )
 	';'
 	;
@@ -149,6 +159,7 @@ IntProperty returns PropertyDefinitions::IntProperty:
 	(('description' description=EString)? &
 	('default' defaultValue=IntLiteralString)? &
 	('quantityKind' quantityKindName = EString)? &
+	('verification' verification=VerificationTypeSpecification)? &
 	('unit' unitName = EString)? )
 	';'
 	;
@@ -159,6 +170,7 @@ FloatProperty returns PropertyDefinitions::FloatProperty:
 	(('description' description=EString)? &
 	('default' defaultValue=FloatLiteralString)? &
 	('quantityKind' quantityKindName = EString)? &
+	('verification' verification=VerificationTypeSpecification)? &
 	('unit' unitName = EString)? )
 	';'
 	;
@@ -167,6 +179,7 @@ StringProperty returns PropertyDefinitions::StringProperty:
 	{PropertyDefinitions::StringProperty}
 	'StringProperty' name=ID (arrayModifier=ArrayModifier)?
 	(('description' description=EString)? &
+	('verification' verification=VerificationTypeSpecification)? &
 	('default' defaultValue=EString)?)
 	';'
 	;
@@ -174,6 +187,7 @@ StringProperty returns PropertyDefinitions::StringProperty:
 BooleanProperty returns PropertyDefinitions::BooleanProperty:
 	'BooleanProperty' name=ID (arrayModifier=ArrayModifier)?
 	(('description' description=EString)? &
+	('verification' verification=VerificationTypeSpecification)? &
 	('default' defaultValue=BooleanLiteralString)? )
 	';'
 	;
@@ -184,6 +198,7 @@ EnumProperty returns PropertyDefinitions::EnumProperty:
 	('quantityKind' quantityKindName = EString)? &
 	('unit' unitName = EString)? &
 	('values' '[' values+=EnumValueDefinition (',' values+=EnumValueDefinition)* ']') &
+	('verification' verification=VerificationTypeSpecification)? &
 	('default' defaultValue=[PropertyDefinitions::EnumValueDefinition|ID])? )
 	';'
 	;
@@ -195,20 +210,23 @@ EnumValueDefinition returns PropertyDefinitions::EnumValueDefinition:
 ReferenceProperty returns PropertyDefinitions::ReferenceProperty:
 	'Reference' name=ID (arrayModifier=ArrayModifier)?
 	'of' 'Type' referenceType=[Categories::ATypeDefinition|QualifiedName]
-	('description' description=EString)?
+	(('description' description=EString)? &
+	('verification' verification=VerificationTypeSpecification)? )
 	';'
 	;
 	
 EReferenceProperty returns PropertyDefinitions::EReferenceProperty:
 	'EReference' name=ID (arrayModifier=ArrayModifier)?
 	'of' 'Type' referenceType=[ecore::EClass|QualifiedName]
-	('description' description=EString)?
+	(('description' description=EString)? &
+	('verification' verification=VerificationTypeSpecification)? )
 	';'
 	;
 
 ResourceProperty returns PropertyDefinitions::ResourceProperty:
 	'Resource' name=ID (arrayModifier=ArrayModifier)?
-	('description' description=EString)?
+	(('description' description=EString)? &
+	('verification' verification=VerificationTypeSpecification)? )
 	';'
 	;
 

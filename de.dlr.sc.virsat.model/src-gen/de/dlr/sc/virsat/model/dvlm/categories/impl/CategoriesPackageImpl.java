@@ -302,6 +302,15 @@ public class CategoriesPackageImpl extends EPackageImpl implements CategoriesPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getCategory_IsVerification() {
+		return (EAttribute)categoryEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EOperation getCategory__GetAllProperties() {
 		return categoryEClass.getEOperations().get(0);
 	}
@@ -407,6 +416,7 @@ public class CategoriesPackageImpl extends EPackageImpl implements CategoriesPac
 		createEReference(categoryEClass, CATEGORY__PROPERTIES);
 		createEAttribute(categoryEClass, CATEGORY__IS_ABSTRACT);
 		createEReference(categoryEClass, CATEGORY__EXTENDS_CATEGORY);
+		createEAttribute(categoryEClass, CATEGORY__IS_VERIFICATION);
 		createEOperation(categoryEClass, CATEGORY___GET_ALL_PROPERTIES);
 		createEOperation(categoryEClass, CATEGORY___IS_EXTENSION_OF__ATYPEDEFINITION);
 		createEOperation(categoryEClass, CATEGORY___GET_ALL_EQUATION_DEFINITIONS);
@@ -450,6 +460,7 @@ public class CategoriesPackageImpl extends EPackageImpl implements CategoriesPac
 		InheritancePackage theInheritancePackage = (InheritancePackage)EPackage.Registry.INSTANCE.getEPackage(InheritancePackage.eNS_URI);
 		StructuralPackage theStructuralPackage = (StructuralPackage)EPackage.Registry.INSTANCE.getEPackage(StructuralPackage.eNS_URI);
 		CalculationPackage theCalculationPackage = (CalculationPackage)EPackage.Registry.INSTANCE.getEPackage(CalculationPackage.eNS_URI);
+		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 
 		// Add subpackages
 		getESubpackages().add(thePropertydefinitionsPackage);
@@ -489,6 +500,7 @@ public class CategoriesPackageImpl extends EPackageImpl implements CategoriesPac
 		initEReference(getCategory_Properties(), thePropertydefinitionsPackage.getAProperty(), null, "properties", null, 0, -1, Category.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getCategory_IsAbstract(), ecorePackage.getEBoolean(), "isAbstract", "FALSE", 0, 1, Category.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getCategory_ExtendsCategory(), this.getCategory(), null, "extendsCategory", null, 0, 1, Category.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCategory_IsVerification(), theEcorePackage.getEBoolean(), "isVerification", null, 0, 1, Category.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getCategory__GetAllProperties(), thePropertydefinitionsPackage.getAProperty(), "getAllProperties", 0, -1, IS_UNIQUE, IS_ORDERED);
 

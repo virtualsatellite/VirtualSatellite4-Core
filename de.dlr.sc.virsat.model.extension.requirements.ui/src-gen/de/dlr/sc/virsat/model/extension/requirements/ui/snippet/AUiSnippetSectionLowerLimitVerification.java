@@ -9,24 +9,20 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.ui.snippet;
 
-import org.eclipse.emf.ecore.EObject;
-
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
+import de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetGenericPropertyInstances;
 
 
 /**
- * Auto Generated Class inheriting from Generator Gap Class
+ * Auto Generated Abstract Generator Gap Class
  * 
- * This class is generated once, do your changes here
+ * Don't Manually modify this class
  * 
  * 
  * 
- */
-public class UiSnippetTableRequirementVerificationBoundedValueVerification extends AUiSnippetTableRequirementVerificationBoundedValueVerification implements IUiSnippet {
-	
-	@Override
-	public boolean isActive(EObject model) {
-		return false;
+ */	
+public abstract class AUiSnippetSectionLowerLimitVerification extends AUiSnippetGenericPropertyInstances implements IUiSnippet {
+	public AUiSnippetSectionLowerLimitVerification() {
+		super("de.dlr.sc.virsat.model.extension.requirements", "LowerLimitVerification");
 	}
-	
 }
