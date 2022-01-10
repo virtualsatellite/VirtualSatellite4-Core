@@ -4,7 +4,7 @@
   <imports importedNamespace="de.dlr.sc.virsat.model.ext.core.*"/>
   <categories name="State" description="State of the component at a given time">
     <properties xsi:type="dvlm_cppd:StringProperty" name="detail" description="Optional additional detail information about the state"/>
-    <properties xsi:type="dvlm_cppd:FloatProperty" name="maxTime" description="The maximum time spend in the state" quantityKindName="Time" unitName="Second" defaultValue="0.0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="maxTime" description="The maximum time spent in the state" quantityKindName="Time" unitName="Second" defaultValue="0.0"/>
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="Transition" description="Transitions among states">
