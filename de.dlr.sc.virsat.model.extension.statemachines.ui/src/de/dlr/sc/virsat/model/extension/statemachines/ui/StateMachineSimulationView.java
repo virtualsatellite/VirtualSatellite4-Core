@@ -66,6 +66,7 @@ public class StateMachineSimulationView extends ViewPart {
 	private static final String CURRENT_STATE_COLUMN = "Current State";
 	private static final String NEXT_STATE_COLUMN = "Next State";
 	private static final String BUTTON_RELOAD_STATEMACHINES = "Reaload StateMachines";
+	private Table outputtable;
 	
 	private static final String EXPORT_REQUEST = "Do you want to export the simulation history ?";
 	
@@ -206,6 +207,7 @@ public class StateMachineSimulationView extends ViewPart {
 	    });
 	    
 	    loadAllStateMachines();
+	    createOutputWindow("Simulation");
 		
 	}
 
@@ -246,10 +248,10 @@ public class StateMachineSimulationView extends ViewPart {
 	 * @param runtime 
 	 * @param deadlocktraces 
 	 */
-	private void createOutputWindow(String type, GlobalState currentState) {
+	private void createOutputWindow(String type) {
 
 		viewer = new TableViewer(swtAwtComposite, SWT.BORDER | SWT.FULL_SELECTION);
-		final Table outputtable = viewer.getTable();
+		outputtable = viewer.getTable();
 		GridData gd = new GridData(SWT.BORDER, SWT.BORDER, true, true, 1, 1);
 	    gd.heightHint = DEFAULT_HEIGHT;
 	    gd.widthHint = DEFAULT_WIDTH;
@@ -265,9 +267,7 @@ public class StateMachineSimulationView extends ViewPart {
 		TableViewerColumn nextStateColumn = new TableViewerColumn(viewer, SWT.NONE);
 		nextStateColumn.getColumn().setText(NEXT_STATE_COLUMN);
 		nextStateColumn.getColumn().pack();
-		nextStateColumn.getColumn().setWidth(WIDTH);
-		
-		createNewSimulationTrace(outputtable, currentState);
+		nextStateColumn.getColumn().setWidth(WIDTH);	
 
 	}
 	
@@ -323,6 +323,8 @@ public class StateMachineSimulationView extends ViewPart {
 			}
 			
 		}
+		swtAwtComposite.update();
+		swtAwtComposite.redraw();
 		
 	}
 
@@ -338,14 +340,8 @@ public class StateMachineSimulationView extends ViewPart {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				if (viewer != null) {
-					
-					viewer.getTable().dispose();
-					viewer = null;
-					
-					if (!simulationhistory.isEmpty()) {
+				if (simulationhistory != null && !simulationhistory.isEmpty()) {
 						openSimulationHistoryExportShell();
-					}
 				}
 				
 				
@@ -362,7 +358,8 @@ public class StateMachineSimulationView extends ViewPart {
 				
 				GlobalState gs = simulator.initialSimulationComputation(sm);
 				simulationhistory = new PriorityQueue<String>();
-				createOutputWindow("Simulation", gs);
+				createNewSimulationTrace(outputtable, gs);
+				
 			}
 
 			
@@ -404,8 +401,8 @@ public class StateMachineSimulationView extends ViewPart {
 				SimulationTraceExporter exporter = new SimulationTraceExporter();
 				exporter.export(simulationhistory);
 				simulationhistory.clear();
+				outputtable.removeAll();
 				break;
-
 			case SWT.NO:
 				simulationhistory.clear();
 				break;
