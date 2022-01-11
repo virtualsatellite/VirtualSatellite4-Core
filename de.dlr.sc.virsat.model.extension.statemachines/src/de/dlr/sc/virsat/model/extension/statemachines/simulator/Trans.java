@@ -48,9 +48,8 @@ public class Trans {
 				&& this.destinationState.equals(otherTran.destinationState);
 	}
 
-	String prinTran() {
+	public String prinTran() {
 		String str = this.stateMachine + ": " + this.startState + " ---> " + this.destinationState;
-		System.out.println(str);
 		return str;
 
 	}

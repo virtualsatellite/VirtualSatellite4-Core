@@ -22,7 +22,7 @@ public class GlobalState {
 
 	HashMap<String, Boolean> updated = new HashMap<String, Boolean>();
 
-	Set<Trans> globalEnabledTrans = new HashSet<Trans>();
+	private Set<Trans> globalEnabledTrans = new HashSet<Trans>();
 
 	GlobalState() {
 	};
@@ -53,10 +53,19 @@ public class GlobalState {
 
 	}
 
-	void printState() {
-
+	public String printState() {
+		StringBuilder builder = new StringBuilder();
 		for (Entry<String, String> sm : smStates.entrySet()) {
-			System.out.println(sm.getKey() + "--" + sm.getValue());
+			builder.append(sm.getKey() + "--" + sm.getValue() + "\n");
 		}
+		return builder.toString();
+	}
+
+	public Set<Trans> getGlobalEnabledTrans() {
+		return globalEnabledTrans;
+	}
+
+	public void setGlobalEnabledTrans(Set<Trans> globalEnabledTrans) {
+		this.globalEnabledTrans = globalEnabledTrans;
 	}
 }

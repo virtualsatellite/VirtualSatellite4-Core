@@ -9,11 +9,9 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.statemachines.simulator;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -87,28 +85,6 @@ public class StateMachineSimulator {
 		}
 	}
 
-	
-	/**
-	 * compute local enabled transitions at a given state gS
-	 * @param gS
-	 * @return
-	 */
-	private Set<Trans> getLocalEnabled(GlobalState gS) {
-		Set<Trans> tSet = new HashSet<Trans>();
-
-		for (Map.Entry<String, String> smState : gS.smStates.entrySet()) {
-			String sm = smState.getKey();
-			String state = smState.getValue();
-			if (localEnabledTransitions.get(sm).containsKey(state)) {
-				for (String str : localEnabledTransitions.get(sm).get(state)) {
-					Trans t = new Trans(sm, state, str);
-					tSet.add(t);
-				}
-			}
-		}
-
-		return tSet;
-	}
 /**
  * Calculates 
  * @param gState
@@ -146,13 +122,13 @@ public class StateMachineSimulator {
 
 						if (ok) {
 							Trans t = new Trans(smState.getKey(), smState.getValue(), str);
-							gState.globalEnabledTrans.add(t);
+							gState.getGlobalEnabledTrans().add(t);
 
 						}
 
 					} else {
 						Trans t = new Trans(smState.getKey(), smState.getValue(), str);
-						gState.globalEnabledTrans.add(t);
+						gState.getGlobalEnabledTrans().add(t);
 					}
 				}
 			}
@@ -247,7 +223,6 @@ public class StateMachineSimulator {
 	void printS() {
 
 		for (GlobalState itrState : globalStateStack) {
-			// System.out.print(itrState.smStates + " ");
 			itrState.exeTran.prinTran();
 		}
 	}
@@ -285,72 +260,28 @@ public class StateMachineSimulator {
 /**
  * Exploartion algorithm
  * @param design
+ * @return 
  * @return
  */
-	public void initialSimulationComputation(List<StateMachine> design) {
+	public GlobalState initialSimulationComputation(List<StateMachine> design) {
 		this.compLocalEnabledTrans(design);
 		this.compConstraints(design);
 		GlobalState iniState = this.getGlobalInitialState(design);
 		globalStateStack.push(iniState);
-		this.exhautiveExploration(design);
+		GlobalState s = globalStateStack.peek();
+		this.getGlobalEnabledTrans(s);	
+		return s;
 	}
 
 	int exTraces = 0;
 /**
  * Exhaustive exploration
  * @param design
+ * @return 
  */
-	public void exhautiveExploration(List<StateMachine> design) {
-		GlobalState s = globalStateStack.peek();
-
-		this.getGlobalEnabledTrans(s);
-
-		if (s.globalEnabledTrans.isEmpty()) {
-			exTraces++;
-			this.printS();
-		} else {
-			for (Trans t : s.globalEnabledTrans) {
-				s.backtrackingSet.add(t);
-			}
-
-			Set<Trans> done = new HashSet<Trans>();
-			while (!s.backtrackingSet.isEmpty()) {
-
-				Trans t = s.backtrackingSet.iterator().next();
-				// String localNextState = s.enabledTransitions.get(sm).iterator().next();
-				s.setExecutedTran(t);
-
-				GlobalState nextState = executeTran(s, s.exeTran);
-
-				// state equality checking
-				boolean eqChk = false;
-				Iterator<GlobalState> itr = globalStateStack.iterator();
-
-				while (itr.hasNext()) {
-					if (this.eqCheck(nextState, itr.next())) {
-						eqChk = true;
-						// System.out.println("State equality detected ");
-						exTraces++;
-						this.printS();
-						// System.out.println("State " + nextState.smStates + " has been visited");
-						break;
-					}
-				}
-
-				if (!eqChk) {
-
-					globalStateStack.push(nextState);
-					exhautiveExploration(design);
-
-				}
-				done.add(t);
-				s.backtrackingSet.removeAll(done);
-
-			}
-
-		}
-
-		globalStateStack.pop();
+	public GlobalState nextTransition(GlobalState s, Trans t) {
+		s.setExecutedTran(t);
+		return executeTran(s, s.exeTran);
 
 	}
 
