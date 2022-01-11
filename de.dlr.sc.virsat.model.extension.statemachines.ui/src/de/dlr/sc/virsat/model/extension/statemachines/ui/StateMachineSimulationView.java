@@ -19,11 +19,13 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -35,6 +37,7 @@ import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
 import de.dlr.sc.virsat.model.extension.statemachines.simulator.GlobalState;
+import de.dlr.sc.virsat.model.extension.statemachines.simulator.SimulationTraceExporter;
 import de.dlr.sc.virsat.model.extension.statemachines.simulator.StateMachineSimulator;
 import de.dlr.sc.virsat.model.extension.statemachines.simulator.Trans;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
@@ -63,12 +66,17 @@ public class StateMachineSimulationView extends ViewPart {
 	private static final String CURRENT_STATE_COLUMN = "Current State";
 	private static final String NEXT_STATE_COLUMN = "Next State";
 	private static final String BUTTON_RELOAD_STATEMACHINES = "Reaload StateMachines";
+	
+	private static final String EXPORT_REQUEST = "Do you want to export the simulation history ?";
+	
+	
 	private static final int COL = 3;
-	private static final int WIDTH = 3;
+	private static final int WIDTH = 300;
 	private Button buttonExplicit;
 	private Button buttonLoadStateMachines;
 	Repository repository;
 	private StateMachineSimulator simulator;
+	private TableViewer viewer;
 	
 	HashMap<String, Integer> uniqueTriggerEvent;
 	
@@ -80,6 +88,8 @@ public class StateMachineSimulationView extends ViewPart {
 	private IProject currentlySelectedProject = null;
 	
 	private static StateMachineSimulationView simulationViewer = null;
+	
+	private PriorityQueue<String> simulationhistory;
 	
 	
 	/**
@@ -238,7 +248,7 @@ public class StateMachineSimulationView extends ViewPart {
 	 */
 	private void createOutputWindow(String type, GlobalState currentState) {
 
-		TableViewer viewer = new TableViewer(swtAwtComposite, SWT.BORDER | SWT.FULL_SELECTION);
+		viewer = new TableViewer(swtAwtComposite, SWT.BORDER | SWT.FULL_SELECTION);
 		final Table outputtable = viewer.getTable();
 		GridData gd = new GridData(SWT.BORDER, SWT.BORDER, true, true, 1, 1);
 	    gd.heightHint = DEFAULT_HEIGHT;
@@ -275,13 +285,16 @@ public class StateMachineSimulationView extends ViewPart {
 			
 			noTrans = "No Transition is executable";
 			stateitem.setText(new String[]{currentState.printState(),  noTrans});
+			simulationhistory.add(currentState.printState() + "\\t" + noTrans);
 		} else {
 			stateitem.setText(new String[]{currentState.printState()});
+			
 			for (Trans trans : currentState.getGlobalEnabledTrans()) {
 				final TableEditor transitionsEditors = new TableEditor(table);
 				TableItem nextitem = new TableItem(outputtable, SWT.NONE);
 				Button transitionButtons = new Button(outputtable, SWT.PUSH);
 				transitionButtons.setText(trans.prinTran());
+				transitionButtons.computeSize(SWT.DEFAULT, SWT.DEFAULT);
 				
 				
 				transitionButtons.addSelectionListener(new SelectionListener() {
@@ -294,6 +307,7 @@ public class StateMachineSimulationView extends ViewPart {
 								control.dispose();
 							}
 						}
+						simulationhistory.add(currentState.printState() + " " + trans.prinTran());
 						createNewSimulationTrace(outputtable, simulator.nextTransition(currentState, trans));	
 					}
 
@@ -323,6 +337,18 @@ public class StateMachineSimulationView extends ViewPart {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+
+				if (viewer != null) {
+					
+					viewer.getTable().dispose();
+					viewer = null;
+					
+					if (!simulationhistory.isEmpty()) {
+						openSimulationHistoryExportShell();
+					}
+				}
+				
+				
 				List<StateMachine> sm = new ArrayList<StateMachine>();
 				for (TableItem item : table.getItems()) {
 					if (item.getChecked()) {
@@ -335,8 +361,11 @@ public class StateMachineSimulationView extends ViewPart {
 				simulator = new StateMachineSimulator();
 				
 				GlobalState gs = simulator.initialSimulationComputation(sm);
+				simulationhistory = new PriorityQueue<String>();
 				createOutputWindow("Simulation", gs);
 			}
+
+			
 
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -358,6 +387,35 @@ public class StateMachineSimulationView extends ViewPart {
 			}
 		});
 		
+	}
+	
+	/**
+	 * Shell for exporting the simulation trace
+	 */
+	private void openSimulationHistoryExportShell() {
+
+		MessageBox messageBox = new MessageBox(swtAwtComposite.getShell(), SWT.YES | SWT.NO | SWT.CANCEL);
+		
+		messageBox.setMessage(EXPORT_REQUEST);
+		
+		int buttonID = messageBox.open();
+		switch (buttonID) {
+			case SWT.YES:
+				SimulationTraceExporter exporter = new SimulationTraceExporter();
+				exporter.export(simulationhistory);
+				simulationhistory.clear();
+				break;
+
+			case SWT.NO:
+				simulationhistory.clear();
+				break;
+			case SWT.CANCEL:
+				break;
+			default:
+				break;
+
+		}
+
 	}
 
 	
