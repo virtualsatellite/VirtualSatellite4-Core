@@ -15,19 +15,22 @@ public class Trans {
 	String destinationState;
 	boolean isBacktracking = false;
 	boolean explored = false;
+	private String transitionTrigger;
 
-	Trans(String sm, String sState, String dState) {
+	Trans(String sm, String sState, String dState, String transitionTrigger) {
 		this.stateMachine = sm;
 		this.startState = sState;
 		this.destinationState = dState;
+		this.transitionTrigger = transitionTrigger;
 		explored = false;
 	}
 
-	Trans() {
-		this.stateMachine = "";
-		this.startState = "";
-		this.destinationState = "";
+
+
+	public Trans() {
 	}
+
+
 
 	@Override
 	public int hashCode() {
@@ -49,7 +52,7 @@ public class Trans {
 	}
 
 	public String prinTran() {
-		String str = this.stateMachine + ": " + this.startState + " ---> " + this.destinationState;
+		String str = this.stateMachine + ": " + this.transitionTrigger + " " + this.startState + " -> " + this.destinationState;
 		return str;
 
 	}

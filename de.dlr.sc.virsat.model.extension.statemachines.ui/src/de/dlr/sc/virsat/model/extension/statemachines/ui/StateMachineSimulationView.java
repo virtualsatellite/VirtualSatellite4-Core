@@ -72,7 +72,7 @@ public class StateMachineSimulationView extends ViewPart {
 	
 	
 	private static final int COL = 3;
-	private static final int WIDTH = 300;
+	private static final int WIDTH = 500;
 	private Button buttonExplicit;
 	private Button buttonLoadStateMachines;
 	Repository repository;
@@ -271,6 +271,8 @@ public class StateMachineSimulationView extends ViewPart {
 
 	}
 	
+	private TableEditor transitionsEditors;
+	
 	/**
 	 * 
 	 * @param outputtable Table for the simulation result
@@ -290,7 +292,7 @@ public class StateMachineSimulationView extends ViewPart {
 			stateitem.setText(new String[]{currentState.printState()});
 			
 			for (Trans trans : currentState.getGlobalEnabledTrans()) {
-				final TableEditor transitionsEditors = new TableEditor(table);
+				transitionsEditors = new TableEditor(table);
 				TableItem nextitem = new TableItem(outputtable, SWT.NONE);
 				Button transitionButtons = new Button(outputtable, SWT.PUSH);
 				transitionButtons.setText(trans.prinTran());
@@ -323,8 +325,6 @@ public class StateMachineSimulationView extends ViewPart {
 			}
 			
 		}
-		swtAwtComposite.update();
-		swtAwtComposite.redraw();
 		
 	}
 
@@ -358,6 +358,7 @@ public class StateMachineSimulationView extends ViewPart {
 				
 				GlobalState gs = simulator.initialSimulationComputation(sm);
 				simulationhistory = new PriorityQueue<String>();
+				simulationhistory.add("Initial State: " + gs.printState());
 				createNewSimulationTrace(outputtable, gs);
 				
 			}
@@ -402,9 +403,12 @@ public class StateMachineSimulationView extends ViewPart {
 				exporter.export(simulationhistory);
 				simulationhistory.clear();
 				outputtable.removeAll();
+				transitionsEditors.dispose();
 				break;
 			case SWT.NO:
 				simulationhistory.clear();
+				outputtable.removeAll();
+				transitionsEditors.dispose();
 				break;
 			case SWT.CANCEL:
 				break;

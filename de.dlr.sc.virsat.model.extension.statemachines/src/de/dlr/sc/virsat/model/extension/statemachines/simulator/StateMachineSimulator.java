@@ -9,7 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.statemachines.simulator;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -33,31 +32,33 @@ public class StateMachineSimulator {
 	 * @param d: name of gardStates
 	 */
 
-	private void updateMap(HashMap<String, HashMap<String, Set<String>>> map, String a, String b, String c) {
+	private void updateMap(HashMap<String, HashMap<String, HashMap<String, String>>> map, String a, String b, String c, String d) {
 		if (!map.containsKey(a)) {
-			HashMap<String, Set<String>> m = new HashMap<String, Set<String>>();
+			HashMap<String, HashMap<String, String>> m = new HashMap<String, HashMap<String, String>>();
 
-			Set<String> strSet = new HashSet<>(Arrays.asList(c));
+			// Add here a hAshmap with strings 
+			HashMap<String, String> strSet = new HashMap<String, String>();
+			strSet.put(c, d);
 			m.put(b, strSet);
 			map.put(a, m);
 		} else {
 			if (!map.get(a).containsKey(b)) {
-				HashMap<String, Set<String>> m1 = new HashMap<String, Set<String>>();
+				HashMap<String, HashMap<String, String>> m1 = new HashMap<String, HashMap<String, String>>();
 
 				m1 = map.get(a);
 
-				Set<String> infStates = new HashSet<String>();
-				infStates.add(c);
+				HashMap<String, String> infStates = new HashMap<String, String>();
+				infStates.put(c, d);
 
 				m1.put(b, infStates);
 
 				map.put(a, m1);
 			} else {
-				HashMap<String, Set<String>> m1 = new HashMap<String, Set<String>>();
+				HashMap<String, HashMap<String, String>> m1 = new HashMap<String, HashMap<String, String>>();
 				m1 = map.get(a);
-				Set<String> infStates = new HashSet<String>();
+				HashMap<String, String> infStates = new HashMap<String, String>();
 				infStates = m1.get(b);
-				infStates.add(c);
+				infStates.put(c, d);
 				m1.put(b, infStates);
 				map.put(a, m1);
 
@@ -65,8 +66,8 @@ public class StateMachineSimulator {
 		}
 	}
 
-	private HashMap<String, HashMap<String, Set<String>>> localEnabledTransitions = new HashMap<String, HashMap<String, Set<String>>>();
-	private HashMap<String, HashMap<String, Set<String>>> stateConstraints = new HashMap<String, HashMap<String, Set<String>>>();
+	private HashMap<String, HashMap<String, HashMap<String, String>>> localEnabledTransitions = new HashMap<String, HashMap<String, HashMap<String, String>>>();
+	private HashMap<String, HashMap<String, HashMap<String, String>>> stateConstraints = new HashMap<String, HashMap<String, HashMap<String, String>>>();
 /**
  * // this function must be called before running POR, it is used to compute
 	// enabled transitions for every local state
@@ -79,7 +80,7 @@ public class StateMachineSimulator {
 
 			for (Transition transition : trans) {
 				updateMap(localEnabledTransitions, sm.getName(), transition.getStateFrom().getName(),
-						transition.getStateTo().getName());
+						transition.getStateTo().getName(), transition.getTrigger().getName());
 			}
 
 		}
@@ -92,7 +93,7 @@ public class StateMachineSimulator {
 	private void getGlobalEnabledTrans(GlobalState gState) {
 		for (Map.Entry<String, String> smState : gState.smStates.entrySet()) {
 
-			Set<String> localEnabledStates = new HashSet<String>();
+			HashMap<String, String> localEnabledStates = new HashMap<String, String>();
 
 			if (localEnabledTransitions.containsKey(smState.getKey())
 					&& localEnabledTransitions.get(smState.getKey()).containsKey(smState.getValue())) {
@@ -103,14 +104,15 @@ public class StateMachineSimulator {
 			Set<String> strGlobalState = gState.statesToString();
 
 			if (!localEnabledStates.isEmpty()) {
-				for (String str : localEnabledStates) {
+				
+				for (String str : localEnabledStates.keySet()) {
 
 					Set<String> conflictStates;
 
 					if (this.stateConstraints.containsKey(smState.getKey())
 							&& this.stateConstraints.get(smState.getKey()).containsKey(str)) {
 
-						conflictStates = this.stateConstraints.get(smState.getKey()).get(str);
+						conflictStates = this.stateConstraints.get(smState.getKey()).get(str).keySet();
 
 						Boolean ok = true;
 						for (String str1 : strGlobalState) {
@@ -121,13 +123,13 @@ public class StateMachineSimulator {
 						}
 
 						if (ok) {
-							Trans t = new Trans(smState.getKey(), smState.getValue(), str);
+							Trans t = new Trans(smState.getKey(), smState.getValue(), str, localEnabledStates.get(str));
 							gState.getGlobalEnabledTrans().add(t);
 
 						}
 
 					} else {
-						Trans t = new Trans(smState.getKey(), smState.getValue(), str);
+						Trans t = new Trans(smState.getKey(), smState.getValue(), str, localEnabledStates.get(str));
 						gState.getGlobalEnabledTrans().add(t);
 					}
 				}
@@ -145,10 +147,10 @@ public class StateMachineSimulator {
 			for (AConstraint cs : cons) {
 				this.updateMap(stateConstraints, sm.getName(), cs.getStateConstraining().getName(),
 						cs.getStateInfluenced().getParentCaBeanOfClass(StateMachine.class).getName() + "."
-								+ cs.getStateInfluenced().getName());
+								+ cs.getStateInfluenced().getName(), "");
 				this.updateMap(stateConstraints,
 						cs.getStateInfluenced().getParentCaBeanOfClass(StateMachine.class).getName(),
-						cs.getStateInfluenced().getName(), sm.getName() + "." + cs.getStateConstraining().getName());
+						cs.getStateInfluenced().getName(), sm.getName() + "." + cs.getStateConstraining().getName(), "");
 			}
 		}
 
@@ -193,7 +195,7 @@ public class StateMachineSimulator {
 
 		return this.stateConstraints.containsKey(t1.stateMachine)
 				&& this.stateConstraints.get(t1.stateMachine).containsKey(t1.destinationState)
-				&& this.stateConstraints.get(t1.stateMachine).get(t1.destinationState)
+				&& this.stateConstraints.get(t1.stateMachine).get(t1.destinationState).keySet()
 						.contains(t2.stateMachine + "." + t2.destinationState);
 	}
 
@@ -210,9 +212,9 @@ public class StateMachineSimulator {
 		Set<Trans> nextTrans = new HashSet<Trans>();
 		for (String sm : stateMachines) {
 			String localState = s.smStates.get(sm);
-			Set<String> nextStates = this.stateConstraints.get(sm).get(localState);
+			Set<String> nextStates = this.stateConstraints.get(sm).get(localState).keySet();
 			for (String str : nextStates) {
-				Trans t = new Trans(sm, localState, str);
+				Trans t = new Trans(sm, localState, str, " ");
 				nextTrans.add(t);
 			}
 		}
@@ -281,7 +283,9 @@ public class StateMachineSimulator {
  */
 	public GlobalState nextTransition(GlobalState s, Trans t) {
 		s.setExecutedTran(t);
-		return executeTran(s, s.exeTran);
+		GlobalState gs = executeTran(s, s.exeTran);
+		this.getGlobalEnabledTrans(gs);
+		return gs;
 
 	}
 
