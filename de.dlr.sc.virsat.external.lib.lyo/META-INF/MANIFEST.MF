@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat External Lib - Lyo
 Bundle-SymbolicName: de.dlr.sc.virsat.external.lib.lyo
-Bundle-Version: 4.12.2.qualifier
+Bundle-Version: 4.13.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: de.dlr.sc.virsat.external.lib,
@@ -392,10 +392,8 @@ Export-Package: de.dlr.sc.virsat.external.lib.lyo,
  org.apache.thrift.transport,
  org.apache.wink.client,
  org.apache.wink.client.handlers,
- org.apache.wink.client.httpclient,
  org.apache.wink.client.internal,
  org.apache.wink.client.internal.handlers,
- org.apache.wink.client.internal.handlers.httpclient,
  org.apache.wink.common,
  org.apache.wink.common.annotations,
  org.apache.wink.common.categories,
