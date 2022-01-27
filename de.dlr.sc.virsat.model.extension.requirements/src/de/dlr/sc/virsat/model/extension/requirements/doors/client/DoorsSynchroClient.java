@@ -19,6 +19,7 @@ import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+
 import javax.ws.rs.core.Response;
 
 import org.eclipse.lyo.client.OSLCConstants;
@@ -47,8 +48,9 @@ public class DoorsSynchroClient {
 
 	private static ArrayList<RequirementCollection> reqSpecificationsList = new ArrayList<RequirementCollection>();
 	private static HashMap<RequirementCollection, ArrayList<Requirement>> mapOfRequirements = new HashMap<RequirementCollection, ArrayList<Requirement>>();
-	private static OslcClient client;
+	private static OslcClient client = new OslcClient();
 	private static String serviceProviderUrl;
+	private static DoorsSynchroClient doorsSynchroClient = new DoorsSynchroClient();
 
 	/**
 	 * Init the doors synchro client by getting an Oslc Client and look up provided
@@ -70,8 +72,18 @@ public class DoorsSynchroClient {
 		doorsUtils = new DoorsUtils(server, user, password);
 		client = doorsUtils.getClient();
 		serviceProviderUrl = lookUpServiceProviderUrl(project);
+		doorsSynchroClient = new DoorsSynchroClient();
 	}
 
+	public static void setOslcClient(OslcClient oslcClient) {
+		client = oslcClient;
+		
+	}
+	
+	public static void setDoorsSynchroClient (DoorsSynchroClient synchroClient) {
+		doorsSynchroClient = synchroClient;
+	}
+	
 	/**
 	 * Look up service provider url to access doors projects in further requests
 	 * 

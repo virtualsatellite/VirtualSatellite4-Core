@@ -22,7 +22,7 @@ public class TestOslcClient extends OslcClient implements IOslcClient {
 
 	private static final  String SERVICE_PROVIDER_URL = "https://test.doors-server.de/rm/services.xml";
 	private static final String QUERY_CAPABILITY_URL = "https://test.doors-server.de/rm/query-capability";
-	
+
 	@Override
 	public Response getResource(String url, String mediaType) {
 		TestHelper testHelper = new TestHelper();
@@ -41,5 +41,4 @@ public class TestOslcClient extends OslcClient implements IOslcClient {
 			throws IOException, URISyntaxException, ResourceNotFoundException {
 		return QUERY_CAPABILITY_URL;
 	}
-
 }

@@ -10,6 +10,8 @@
 
 package de.dlr.sc.virsat.model.extension.requirements.doors.client;
 
+import java.net.URI;
+
 import javax.ws.rs.core.Response;
 
 import org.eclipse.lyo.client.query.OslcQueryResult;
@@ -23,8 +25,7 @@ public class TestHelper {
 	private static ServiceProvider mockedServiceProvider = null;
 	private static Requirement mockedRequirement = null;
 	private static OslcQueryResult mockedOslcQueryResult = null;
-	private ResourceShape mockedResourceShape = null;
-	
+	private static ResourceShape mockedResourceShape = null;
 	
 	public void init() {
 		mockedServiceProvider = mockServiceProvider();
@@ -44,10 +45,9 @@ public class TestHelper {
 		return mockedRequirement;
 	}
 	
-	private ResourceShape mockResourceShape() {
+	public ResourceShape mockResourceShape() {
 		mockedResourceShape = Mockito.mock(ResourceShape.class);
-		
-		return null;
+		return mockedResourceShape;
 	}
 	
 	public OslcQueryResult mockQueryResult() {
@@ -66,5 +66,10 @@ public class TestHelper {
 		Mockito.when(mockedResponse.readEntity(Requirement.class)).thenReturn(mockedRequirement);
 		Mockito.when(mockedResponse.readEntity(ResourceShape.class)).thenReturn(mockedResourceShape );
 		return mockedResponse;
+	}
+
+	public URI mockURI() {
+		URI uri = Mockito.mock(URI.class);
+		return uri;
 	}
 }

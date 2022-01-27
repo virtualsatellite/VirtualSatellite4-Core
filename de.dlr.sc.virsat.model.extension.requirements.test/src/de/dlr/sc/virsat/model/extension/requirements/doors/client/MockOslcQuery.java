@@ -16,8 +16,8 @@ import org.eclipse.lyo.client.query.OslcQueryResult;
 
 public class MockOslcQuery extends OslcQuery {
 
-	public MockOslcQuery(OslcClient oslcClient, String capabilityUrl, OslcQueryParameters oslcQueryParams) {
-		super(oslcClient, capabilityUrl, oslcQueryParams);
+	public MockOslcQuery(OslcClient client, String capabilityUrl, OslcQueryParameters oslcQueryParams) {
+		super(client, capabilityUrl, oslcQueryParams);
 	}
 	
 	@Override

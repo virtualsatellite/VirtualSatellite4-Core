@@ -14,7 +14,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 
 import org.eclipse.lyo.client.exception.ResourceNotFoundException;
@@ -22,7 +21,6 @@ import org.eclipse.lyo.oslc.domains.rm.Requirement;
 import org.eclipse.lyo.oslc4j.core.model.ResourceShape;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 
 public class DoorsSynchroClientTest {
@@ -86,11 +84,10 @@ public class DoorsSynchroClientTest {
 	public void testGetResourceShape() {
 		MockDoorsSynchroClient.setDoorsSynchroClient(mockDoorsSynchroClient);
 		DoorsSynchroClient.setOslcClient(testOslcClient);
-		Requirement req = Mockito.mock(Requirement.class);
-		ResourceShape resourceShape = DoorsSynchroClient.getResourceShape(req);
+		Requirement req = testHelper.mockRequirement();
+		ResourceShape resourceShape = MockDoorsSynchroClient.getResourceShape(req);
 		
 		assertNotNull(resourceShape);
-		
 	}
 	
 }
