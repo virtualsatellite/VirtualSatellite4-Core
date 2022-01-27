@@ -50,7 +50,7 @@ public class DoorsSynchroClient {
 	private static HashMap<RequirementCollection, ArrayList<Requirement>> mapOfRequirements = new HashMap<RequirementCollection, ArrayList<Requirement>>();
 	private static OslcClient client = new OslcClient();
 	private static String serviceProviderUrl;
-	private static DoorsSynchroClient doorsSynchroClient = new DoorsSynchroClient();
+	public static DoorsSynchroClient doorsSynchroClient = new DoorsSynchroClient();
 
 	/**
 	 * Init the doors synchro client by getting an Oslc Client and look up provided
