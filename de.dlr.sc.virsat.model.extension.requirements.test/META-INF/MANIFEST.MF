@@ -20,7 +20,8 @@ Require-Bundle: org.junit,
  org.eclipse.rmf.reqif10.edit,
  org.eclipse.rmf.reqif10.xhtml.edit,
  org.eclipse.rmf.reqif10.serialization,
- org.eclipse.sphinx.emf.serialization
+ org.eclipse.sphinx.emf.serialization,
+ de.dlr.sc.virsat.external.lib.mockito
 Export-Package: de.dlr.sc.virsat.model.extension.requirements.test
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.requirements.test
 Import-Package: de.dlr.sc.virsat.build.test

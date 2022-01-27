@@ -45,11 +45,11 @@
 				<module>de.dlr.sc.virsat.external.lib.json-simple</module>
 				<module>de.dlr.sc.virsat.external.lib.lyo</module>
 				<module>de.dlr.sc.virsat.external.lib.matlabfile</module>
+				<module>de.dlr.sc.virsat.external.lib.mockito</module>
 				<module>de.dlr.sc.virsat.external.lib.jersey</module>
 				<module>de.dlr.sc.virsat.external.lib.jersey.apache</module>
 				<module>de.dlr.sc.virsat.external.lib.swagger</module>
 				<module>de.dlr.sc.virsat.external.lib.protobuf</module>
-				<module>de.dlr.sc.virsat.external.lib.rdf4j</module>
 				<module>de.dlr.sc.virsat.external.lib.vtk.linux.x86_64</module>
 				<module>de.dlr.sc.virsat.external.lib.vtk.win32.x86_64</module>
 				<module>de.dlr.sc.virsat.external.lib.zmq.linux.x86_64</module>
