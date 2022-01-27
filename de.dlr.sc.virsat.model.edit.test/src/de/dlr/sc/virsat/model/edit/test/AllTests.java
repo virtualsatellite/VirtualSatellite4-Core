@@ -42,6 +42,7 @@ import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitFactoryTest;
 import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitLinearConversionTest;
 import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitPrefixedTest;
 import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitSimpleTest;
+import de.dlr.sc.virsat.model.concept.types.roles.BeanDisciplineTest;
 import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstanceTest;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.provider.DVLMEnumValueDefinitionItemProviderTest;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.provider.DVLMPropertydefinitionsItemProviderAdapterFactoryTest;
@@ -63,10 +64,15 @@ import de.dlr.sc.virsat.model.dvlm.command.SetValuePropertyInstanceCommandTest;
 import de.dlr.sc.virsat.model.dvlm.command.UndoableAddCommandTest;
 import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElementTest;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapterTest;
+import de.dlr.sc.virsat.model.dvlm.json.ABeanQuantityKindAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanStructuralElementInstanceAdapterTest;
-import de.dlr.sc.virsat.model.dvlm.json.ComposedBeanCategoryAssigmentAdapterTest;
+import de.dlr.sc.virsat.model.dvlm.json.ABeanUnitAdapterTest;
+import de.dlr.sc.virsat.model.dvlm.json.BeanDisciplineAdapterTest;
+import de.dlr.sc.virsat.model.dvlm.json.BeanPrefixAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.BeanPropertyTypeAdapterTest;
+import de.dlr.sc.virsat.model.dvlm.json.ComposedBeanCategoryAssigmentAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.DoubleAdapterTest;
+import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapterNoRoleManagementTest;
 import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapterTest;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtilityTest;
 import de.dlr.sc.virsat.model.dvlm.json.UriAdapterTest;
@@ -157,6 +163,10 @@ import junit.framework.JUnit4TestAdapter;
 				UriAdapterTest.class,
 				ABeanStructuralElementInstanceAdapterTest.class,
 				BeanPropertyTypeAdapterTest.class,
+				BeanDisciplineTest.class,
+				BeanDisciplineAdapterTest.class,
+				IUuidAdapterNoRoleManagementTest.class,
+				BeanDisciplineAdapterTest.class,
 				BeanUnitAffineConversionTest.class,
 				BeanUnitDerivedTest.class,
 				BeanUnitLinearConversionTest.class,
@@ -168,7 +178,10 @@ import junit.framework.JUnit4TestAdapter;
 				BeanQuantityKindSimpleTest.class,
 				BeanQuantityKindDerivedTest.class,
 				BeanQuantityKindFactoryTest.class,
-				BeanUnitFactoryTest.class
+				BeanUnitFactoryTest.class,
+				ABeanUnitAdapterTest.class,
+				ABeanQuantityKindAdapterTest.class,
+				BeanPrefixAdapterTest.class
 				})
 
 /**

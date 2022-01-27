@@ -30,6 +30,7 @@ import de.dlr.sc.virsat.model.extension.statemachines.model.TransitionTriggerEve
 import de.dlr.sc.virsat.model.extension.statemachines.migrator.Migrator1v0Test;
 import de.dlr.sc.virsat.model.extension.statemachines.migrator.Migrator1v1Test;
 import de.dlr.sc.virsat.model.extension.statemachines.migrator.Migrator1v3Test;
+import de.dlr.sc.virsat.model.extension.statemachines.migrator.Migrator1v4Test;
 
 /**
  * 
@@ -47,6 +48,7 @@ import de.dlr.sc.virsat.model.extension.statemachines.migrator.Migrator1v3Test;
 	Migrator1v1Test.class,
 	Migrator1v2Test.class,
 	Migrator1v3Test.class,
+	Migrator1v4Test.class,
 	StatemachinesValidatorTest.class,
 				})
 

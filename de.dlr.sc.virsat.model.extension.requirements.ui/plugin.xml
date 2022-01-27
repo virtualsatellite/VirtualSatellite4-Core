@@ -16,8 +16,16 @@
 		pathToImage="resources/icons/de.dlr.sc.virsat.model.extension.requirements.gif">
 	</conceptImage>
 	<conceptImage
+		fullQualifiedID="de.dlr.sc.virsat.model.extension.requirements.IRequirementTreeElement"
+		pathToImage="resources/icons/IRequirementTreeElement.gif">
+	</conceptImage>
+	<conceptImage
 		fullQualifiedID="de.dlr.sc.virsat.model.extension.requirements.RequirementsSpecification"
 		pathToImage="resources/icons/RequirementsSpecification.gif">
+	</conceptImage>
+	<conceptImage
+		fullQualifiedID="de.dlr.sc.virsat.model.extension.requirements.RequirementsView"
+		pathToImage="resources/icons/RequirementsView.gif">
 	</conceptImage>
 	<conceptImage
 		fullQualifiedID="de.dlr.sc.virsat.model.extension.requirements.RequirementsConfiguration"
@@ -104,14 +112,38 @@
 		pathToImage="resources/icons/ExistenceVerification.gif">
 	</conceptImage>
 	<conceptImage
+		fullQualifiedID="de.dlr.sc.virsat.model.extension.requirements.IValueVerification"
+		pathToImage="resources/icons/IValueVerification.gif">
+	</conceptImage>
+	<conceptImage
+		fullQualifiedID="de.dlr.sc.virsat.model.extension.requirements.UpperLimitVerification"
+		pathToImage="resources/icons/UpperLimitVerification.gif">
+	</conceptImage>
+	<conceptImage
+		fullQualifiedID="de.dlr.sc.virsat.model.extension.requirements.LowerLimitVerification"
+		pathToImage="resources/icons/LowerLimitVerification.gif">
+	</conceptImage>
+	<conceptImage
+		fullQualifiedID="de.dlr.sc.virsat.model.extension.requirements.BoundedValueVerification"
+		pathToImage="resources/icons/BoundedValueVerification.gif">
+	</conceptImage>
+	<conceptImage
 		fullQualifiedID="de.dlr.sc.virsat.model.extension.requirements.RequirementsConfigurationCollection"
 		pathToImage="resources/icons/RequirementsConfigurationCollection.gif">
 	</conceptImage>
 	</extension>
 	<extension point="org.eclipse.ui.commands">
 	<command
+		id="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddIRequirementTreeElement"
+		name="Add IRequirementTreeElement">
+	</command>
+	<command
 		id="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddRequirementsSpecification"
 		name="Add RequirementsSpecification">
+	</command>
+	<command
+		id="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddRequirementsView"
+		name="Add RequirementsView">
 	</command>
 	<command
 		id="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddRequirementsConfiguration"
@@ -186,15 +218,37 @@
 		name="Add ExistenceVerification">
 	</command>
 	<command
+		id="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddUpperLimitVerification"
+		name="Add UpperLimitVerification">
+	</command>
+	<command
+		id="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddLowerLimitVerification"
+		name="Add LowerLimitVerification">
+	</command>
+	<command
+		id="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddBoundedValueVerification"
+		name="Add BoundedValueVerification">
+	</command>
+	<command
 		id="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddRequirementsConfigurationCollection"
 		name="Add RequirementsConfigurationCollection">
 	</command>
 	</extension>
 	<extension point="org.eclipse.ui.commandImages">
 	<image
+	      commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddIRequirementTreeElement"
+	      disabledIcon="resources/icons/IRequirementTreeElement_disabled.gif"
+	      icon="resources/icons/IRequirementTreeElement.gif">
+	</image>
+	<image
 	      commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddRequirementsSpecification"
 	      disabledIcon="resources/icons/RequirementsSpecification_disabled.gif"
 	      icon="resources/icons/RequirementsSpecification.gif">
+	</image>
+	<image
+	      commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddRequirementsView"
+	      disabledIcon="resources/icons/RequirementsView_disabled.gif"
+	      icon="resources/icons/RequirementsView.gif">
 	</image>
 	<image
 	      commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddRequirementsConfiguration"
@@ -287,6 +341,21 @@
 	      icon="resources/icons/ExistenceVerification.gif">
 	</image>
 	<image
+	      commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddUpperLimitVerification"
+	      disabledIcon="resources/icons/UpperLimitVerification_disabled.gif"
+	      icon="resources/icons/UpperLimitVerification.gif">
+	</image>
+	<image
+	      commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddLowerLimitVerification"
+	      disabledIcon="resources/icons/LowerLimitVerification_disabled.gif"
+	      icon="resources/icons/LowerLimitVerification.gif">
+	</image>
+	<image
+	      commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddBoundedValueVerification"
+	      disabledIcon="resources/icons/BoundedValueVerification_disabled.gif"
+	      icon="resources/icons/BoundedValueVerification.gif">
+	</image>
+	<image
 	      commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddRequirementsConfigurationCollection"
 	      disabledIcon="resources/icons/RequirementsConfigurationCollection_disabled.gif"
 	      icon="resources/icons/RequirementsConfigurationCollection.gif">
@@ -294,8 +363,16 @@
 	</extension>
 	<extension point="org.eclipse.ui.handlers">
 	<handler
+		class="de.dlr.sc.virsat.model.extension.requirements.ui.handler.AddIRequirementTreeElementHandler"
+		commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddIRequirementTreeElement">
+	</handler>
+	<handler
 		class="de.dlr.sc.virsat.model.extension.requirements.ui.handler.AddRequirementsSpecificationHandler"
 		commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddRequirementsSpecification">
+	</handler>
+	<handler
+		class="de.dlr.sc.virsat.model.extension.requirements.ui.handler.AddRequirementsViewHandler"
+		commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddRequirementsView">
 	</handler>
 	<handler
 		class="de.dlr.sc.virsat.model.extension.requirements.ui.handler.AddRequirementsConfigurationHandler"
@@ -370,6 +447,18 @@
 		commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddExistenceVerification">
 	</handler>
 	<handler
+		class="de.dlr.sc.virsat.model.extension.requirements.ui.handler.AddUpperLimitVerificationHandler"
+		commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddUpperLimitVerification">
+	</handler>
+	<handler
+		class="de.dlr.sc.virsat.model.extension.requirements.ui.handler.AddLowerLimitVerificationHandler"
+		commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddLowerLimitVerification">
+	</handler>
+	<handler
+		class="de.dlr.sc.virsat.model.extension.requirements.ui.handler.AddBoundedValueVerificationHandler"
+		commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddBoundedValueVerification">
+	</handler>
+	<handler
 		class="de.dlr.sc.virsat.model.extension.requirements.ui.handler.AddStructuralElementInstanceRequirementsConfigurationCollectionHandler"
 		commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddRequirementsConfigurationCollection">
 	</handler>
@@ -419,7 +508,51 @@
 		<menuContribution allPopups="false"
 			locationURI="popup:de.dlr.sc.virsat.model.extension.requirements.menu?after=categories">
 		<command
+			commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddIRequirementTreeElement"
+			style="push">
+			<visibleWhen
+				checkEnabled="true">
+				<with
+					variable="selection">
+					<iterate
+						ifEmpty="false"
+						operator="and">
+						<test 
+							property="de.dlr.sc.virsat.model.extension.requirements.ui.propertyTester.conceptEnabled"
+							value="true" 
+							forcePluginActivation="true">
+						</test>		
+						<instanceof
+							value="de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer">
+						</instanceof>
+					</iterate>
+				</with>
+			</visibleWhen>
+		</command>
+		<command
 			commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddRequirementsSpecification"
+			style="push">
+			<visibleWhen
+				checkEnabled="true">
+				<with
+					variable="selection">
+					<iterate
+						ifEmpty="false"
+						operator="and">
+						<test 
+							property="de.dlr.sc.virsat.model.extension.requirements.ui.propertyTester.conceptEnabled"
+							value="true" 
+							forcePluginActivation="true">
+						</test>		
+						<instanceof
+							value="de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer">
+						</instanceof>
+					</iterate>
+				</with>
+			</visibleWhen>
+		</command>
+		<command
+			commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddRequirementsView"
 			style="push">
 			<visibleWhen
 				checkEnabled="true">
@@ -836,6 +969,72 @@
 				</with>
 			</visibleWhen>
 		</command>
+		<command
+			commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddUpperLimitVerification"
+			style="push">
+			<visibleWhen
+				checkEnabled="true">
+				<with
+					variable="selection">
+					<iterate
+						ifEmpty="false"
+						operator="and">
+						<test 
+							property="de.dlr.sc.virsat.model.extension.requirements.ui.propertyTester.conceptEnabled"
+							value="true" 
+							forcePluginActivation="true">
+						</test>		
+						<instanceof
+							value="de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer">
+						</instanceof>
+					</iterate>
+				</with>
+			</visibleWhen>
+		</command>
+		<command
+			commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddLowerLimitVerification"
+			style="push">
+			<visibleWhen
+				checkEnabled="true">
+				<with
+					variable="selection">
+					<iterate
+						ifEmpty="false"
+						operator="and">
+						<test 
+							property="de.dlr.sc.virsat.model.extension.requirements.ui.propertyTester.conceptEnabled"
+							value="true" 
+							forcePluginActivation="true">
+						</test>		
+						<instanceof
+							value="de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer">
+						</instanceof>
+					</iterate>
+				</with>
+			</visibleWhen>
+		</command>
+		<command
+			commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddBoundedValueVerification"
+			style="push">
+			<visibleWhen
+				checkEnabled="true">
+				<with
+					variable="selection">
+					<iterate
+						ifEmpty="false"
+						operator="and">
+						<test 
+							property="de.dlr.sc.virsat.model.extension.requirements.ui.propertyTester.conceptEnabled"
+							value="true" 
+							forcePluginActivation="true">
+						</test>		
+						<instanceof
+							value="de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer">
+						</instanceof>
+					</iterate>
+				</with>
+			</visibleWhen>
+		</command>
 		</menuContribution>
 		<menuContribution allPopups="false"
 			locationURI="popup:de.dlr.sc.virsat.model.extension.requirements.menu?after=structuralElements">
@@ -882,6 +1081,16 @@
 	 </extension>	
 	<extension point="de.dlr.sc.virsat.uiengine.ui.EditorUiSnippets">
 		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetIRequirementTreeElement"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableIRequirementTreeElement">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.section.uiSnippetIRequirementTreeElement"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetSectionIRequirementTreeElement">
+		</uiSnippet>
+		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementsSpecification"
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementsSpecification">
@@ -905,6 +1114,21 @@
 		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementsSpecificationLinksRequirementLink"
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementsSpecificationLinksRequirementLink">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementsView"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementsView">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.section.uiSnippetRequirementsView"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetSectionRequirementsView">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementsViewReqTypesToView"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementsViewReqTypesToView">
 		</uiSnippet>
 		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementsConfiguration"
@@ -977,14 +1201,39 @@
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementElementsAttributeValue">
 		</uiSnippet>
 		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementVerificationDefaultVerification"
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementVerificationsDefaultVerification"
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationDefaultVerification">
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationsDefaultVerification">
 		</uiSnippet>
 		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementVerificationExistenceVerification"
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementVerificationsExistenceVerification"
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationExistenceVerification">
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationsExistenceVerification">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementVerificationsUpperLimitVerification"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationsUpperLimitVerification">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementVerificationsLowerLimitVerification"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationsLowerLimitVerification">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementVerificationsBoundedValueVerification"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationsBoundedValueVerification">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementChildrenRequirementGroup"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementChildrenRequirementGroup">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementChildrenRequirement"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementChildrenRequirement">
 		</uiSnippet>
 		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementLink"
@@ -1072,6 +1321,11 @@
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetSectionImportConfiguration">
 		</uiSnippet>
 		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetImportConfigurationSelectedTypeKeys"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableImportConfigurationSelectedTypeKeys">
+		</uiSnippet>
+		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetImportConfigurationMappedSpecificationsSpecificationMapping"
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableImportConfigurationMappedSpecificationsSpecificationMapping">
@@ -1152,29 +1406,92 @@
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetSectionExistenceVerification">
 		</uiSnippet>
 		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetExistenceVerificationTarget"
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetUpperLimitVerification"
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableExistenceVerificationTarget">
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableUpperLimitVerification">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.section.uiSnippetUpperLimitVerification"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetSectionUpperLimitVerification">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uISnippetTableRequirementVerificationsUpperLimitVerification"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section.Verifications"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationsUpperLimitVerification">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetLowerLimitVerification"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableLowerLimitVerification">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.section.uiSnippetLowerLimitVerification"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetSectionLowerLimitVerification">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uISnippetTableRequirementVerificationsLowerLimitVerification"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section.Verifications"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationsLowerLimitVerification">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetBoundedValueVerification"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableBoundedValueVerification">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.section.uiSnippetBoundedValueVerification"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetSectionBoundedValueVerification">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uISnippetTableRequirementVerificationsBoundedValueVerification"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section.Verifications"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationsBoundedValueVerification">
 		</uiSnippet>
 	</extension>
 	<!-- Plugin.XML Protected Region Start -->
 <extension
 	       point="de.dlr.sc.virsat.uiengine.ui.EditorSection">
 	    <editorSection
+	          id="de.dlr.sc.virsat.model.extension.requirements.ui.Section.Important"
+	          topRanking="500">
+	    </editorSection>
+	    <editorSection
 	          id="de.dlr.sc.virsat.model.extension.requirements.ui.Section.Verifications"
 	          topRanking="2000">
 	    </editorSection>
+	    <editorSection
+	          id="de.dlr.sc.virsat.model.extension.requirements.ui.Section.ReqChildren"
+	          topRanking="2100">
+	    </editorSection>
 	 </extension>
 	 <extension point="de.dlr.sc.virsat.uiengine.ui.EditorUiSnippets">
-	 <uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementVerificationDefaultVerification"
+	 	<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementsConfigurationTypeDefinitionsRequirementType"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section.Important"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementsConfigurationTypeDefinitionsRequirementType">
+		</uiSnippet>
+	 	<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementVerificationsDefaultVerification"
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section.Verifications"
-		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationDefaultVerification">
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationsDefaultVerification">
 		</uiSnippet>
 		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementVerificationExistenceVerification"
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementVerificationsExistenceVerification"
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section.Verifications"
-		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationExistenceVerification">
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationsExistenceVerification">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetRequirementChildrenRequirement"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section.ReqChildren"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementChildrenRequirement">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetTableRequirementsViewRequirementsRequirement"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementsViewRequirementsRequirement">
 		</uiSnippet>
 		</extension>
 <extension
@@ -1253,14 +1570,14 @@
 	     category="de.dlr.virsat.global.category.import.virsat"
 	     class="de.dlr.sc.virsat.model.extension.requirements.ui.wizard.CsvImportWizard"
 	     id="de.dlr.sc.virsat.model.extension.requirements.ui.wizard.csvImport"
-	     icon="resources/icons/RequirementsSpecification.gif"
+	     icon="resources/icons/CSVImport.gif"
 	     name="Requirements CSV Import Wizard">
 	   </wizard>
 	   <wizard
 	     category="de.dlr.virsat.global.category.import.virsat"
 	     class="de.dlr.sc.virsat.model.extension.requirements.ui.wizard.ReqIfImportWizard"
 	     id="de.dlr.sc.virsat.model.extension.requirements.ui.wizard.reqIFImport"
-	     icon="resources/icons/RequirementsSpecification.gif"
+	     icon="resources/icons/ReqIFImport.gif"
 	     name="Requirements ReqIF Import Wizard">
 	   </wizard>
 	  <category

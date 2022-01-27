@@ -9,7 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.migrator;
 
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.concept.migrator.IMigrator;
 
 
@@ -27,9 +26,4 @@ import de.dlr.sc.virsat.model.concept.migrator.IMigrator;
  */
 public class Migrator0v6 extends AMigrator0v6 implements IMigrator {
 
-	@Override
-	public void migrate(Concept concept, IMigrator previousMigrator) {
-		//TODO: Implement custom concept migration for version 0.6
-		super.migrate(concept, previousMigrator);
-	}
 }

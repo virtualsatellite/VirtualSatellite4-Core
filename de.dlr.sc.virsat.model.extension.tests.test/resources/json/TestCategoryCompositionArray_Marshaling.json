@@ -4,6 +4,7 @@
    "name" : "TestCategoryCompositionArray",
    "testCompositionArrayDynamicBean" : [ {
       "uuid" : "25ed5be7-de0d-4672-95be-8ccce3a7e2e2",
+      "isCalculated" : false,
       "propertyType" : "composed",
       "value" : {
          "type" : "de.dlr.sc.virsat.model.extension.tests.TestCategoryAllProperty",
@@ -11,41 +12,54 @@
          "name" : "TestCategoryAllProperty",
          "testBoolBean" : {
             "uuid" : "b9bfb08f-2778-4fe9-a774-3d8b0ad638d4",
+            "isCalculated" : false,
             "propertyType" : "boolean",
+            "override" : false,
             "value" : false
          },
          "testEnumBean" : {
             "uuid" : "ed62d73c-dbba-409c-b73c-f0d3d9f49394",
+            "isCalculated" : false,
             "propertyType" : "enum",
+            "override" : false,
             "unit" : "",
             "value" : null
          },
          "testFloatBean" : {
             "uuid" : "2870876e-4d6c-4128-801d-54fa109f3824",
+            "isCalculated" : false,
             "propertyType" : "float",
-            "unit" : "",
+            "override" : false,
+            "unitBean" : null,
             "value" : null
          },
          "testIntBean" : {
             "uuid" : "0f37aff6-ccc0-436f-a592-bd466f74bd84",
+            "isCalculated" : false,
             "propertyType" : "int",
-            "unit" : "",
+            "override" : false,
+            "unitBean" : null,
             "value" : null
          },
          "testResourceBean" : {
             "uuid" : "fa822159-51a5-4bf2-99cf-e565b67e0eb4",
+            "isCalculated" : false,
             "propertyType" : "resource",
+            "override" : false,
             "value" : null
          },
          "testStringBean" : {
             "uuid" : "26edbae8-9f05-4ef5-8673-91e1af668aa4",
+            "isCalculated" : false,
             "propertyType" : "string",
+            "override" : false,
             "value" : null
          }
       }
    } ],
    "testCompositionArrayStaticBean" : [ {
       "uuid" : "45e18c9d-ef85-4ab8-ba2a-c5916697a0b0",
+      "isCalculated" : false,
       "propertyType" : "composed",
       "value" : {
          "type" : "de.dlr.sc.virsat.model.extension.tests.TestCategoryAllProperty",
@@ -53,40 +67,53 @@
          "name" : "testCompositionArrayStatic",
          "testBoolBean" : {
             "uuid" : "b9bfb08f-2778-4fe9-a774-3d8b0ad638d0",
+            "isCalculated" : false,
             "propertyType" : "boolean",
+            "override" : false,
             "value" : false
          },
          "testEnumBean" : {
             "uuid" : "ed62d73c-dbba-409c-b73c-f0d3d9f49390",
+            "isCalculated" : false,
             "propertyType" : "enum",
+            "override" : false,
             "unit" : "",
             "value" : null
          },
          "testFloatBean" : {
             "uuid" : "2870876e-4d6c-4128-801d-54fa109f3820",
+            "isCalculated" : false,
             "propertyType" : "float",
-            "unit" : "",
+            "override" : false,
+            "unitBean" : null,
             "value" : null
          },
          "testIntBean" : {
             "uuid" : "0f37aff6-ccc0-436f-a592-bd466f74bd80",
+            "isCalculated" : false,
             "propertyType" : "int",
-            "unit" : "",
+            "override" : false,
+            "unitBean" : null,
             "value" : null
          },
          "testResourceBean" : {
             "uuid" : "fa822159-51a5-4bf2-99cf-e565b67e0eb0",
+            "isCalculated" : false,
             "propertyType" : "resource",
+            "override" : false,
             "value" : null
          },
          "testStringBean" : {
             "uuid" : "26edbae8-9f05-4ef5-8673-91e1af668aa0",
+            "isCalculated" : false,
             "propertyType" : "string",
+            "override" : false,
             "value" : "testString"
          }
       }
    }, {
       "uuid" : "45e18c9d-ef85-4ab8-ba2a-c5916697a0b1",
+      "isCalculated" : false,
       "propertyType" : "composed",
       "value" : {
          "type" : "de.dlr.sc.virsat.model.extension.tests.TestCategoryAllProperty",
@@ -94,40 +121,53 @@
          "name" : "testCompositionArrayStatic",
          "testBoolBean" : {
             "uuid" : "b9bfb08f-2778-4fe9-a774-3d8b0ad638d1",
+            "isCalculated" : false,
             "propertyType" : "boolean",
+            "override" : false,
             "value" : false
          },
          "testEnumBean" : {
             "uuid" : "ed62d73c-dbba-409c-b73c-f0d3d9f49391",
+            "isCalculated" : false,
             "propertyType" : "enum",
+            "override" : false,
             "unit" : "",
             "value" : null
          },
          "testFloatBean" : {
             "uuid" : "2870876e-4d6c-4128-801d-54fa109f3821",
+            "isCalculated" : false,
             "propertyType" : "float",
-            "unit" : "",
+            "override" : false,
+            "unitBean" : null,
             "value" : null
          },
          "testIntBean" : {
             "uuid" : "0f37aff6-ccc0-436f-a592-bd466f74bd81",
+            "isCalculated" : false,
             "propertyType" : "int",
-            "unit" : "",
+            "override" : false,
+            "unitBean" : null,
             "value" : null
          },
          "testResourceBean" : {
             "uuid" : "fa822159-51a5-4bf2-99cf-e565b67e0eb1",
+            "isCalculated" : false,
             "propertyType" : "resource",
+            "override" : false,
             "value" : null
          },
          "testStringBean" : {
             "uuid" : "26edbae8-9f05-4ef5-8673-91e1af668aa1",
+            "isCalculated" : false,
             "propertyType" : "string",
+            "override" : false,
             "value" : null
          }
       }
    }, {
       "uuid" : "45e18c9d-ef85-4ab8-ba2a-c5916697a0b2",
+      "isCalculated" : false,
       "propertyType" : "composed",
       "value" : {
          "type" : "de.dlr.sc.virsat.model.extension.tests.TestCategoryAllProperty",
@@ -135,40 +175,53 @@
          "name" : "testCompositionArrayStatic",
          "testBoolBean" : {
             "uuid" : "b9bfb08f-2778-4fe9-a774-3d8b0ad638d2",
+            "isCalculated" : false,
             "propertyType" : "boolean",
+            "override" : false,
             "value" : false
          },
          "testEnumBean" : {
             "uuid" : "ed62d73c-dbba-409c-b73c-f0d3d9f49392",
+            "isCalculated" : false,
             "propertyType" : "enum",
+            "override" : false,
             "unit" : "",
             "value" : null
          },
          "testFloatBean" : {
             "uuid" : "2870876e-4d6c-4128-801d-54fa109f3822",
+            "isCalculated" : false,
             "propertyType" : "float",
-            "unit" : "",
+            "override" : false,
+            "unitBean" : null,
             "value" : null
          },
          "testIntBean" : {
             "uuid" : "0f37aff6-ccc0-436f-a592-bd466f74bd82",
+            "isCalculated" : false,
             "propertyType" : "int",
-            "unit" : "",
+            "override" : false,
+            "unitBean" : null,
             "value" : null
          },
          "testResourceBean" : {
             "uuid" : "fa822159-51a5-4bf2-99cf-e565b67e0eb2",
+            "isCalculated" : false,
             "propertyType" : "resource",
+            "override" : false,
             "value" : null
          },
          "testStringBean" : {
             "uuid" : "26edbae8-9f05-4ef5-8673-91e1af668aa2",
+            "isCalculated" : false,
             "propertyType" : "string",
+            "override" : false,
             "value" : null
          }
       }
    }, {
       "uuid" : "45e18c9d-ef85-4ab8-ba2a-c5916697a0b3",
+      "isCalculated" : false,
       "propertyType" : "composed",
       "value" : {
          "type" : "de.dlr.sc.virsat.model.extension.tests.TestCategoryAllProperty",
@@ -176,35 +229,47 @@
          "name" : "testCompositionArrayStatic",
          "testBoolBean" : {
             "uuid" : "b9bfb08f-2778-4fe9-a774-3d8b0ad638d3",
+            "isCalculated" : false,
             "propertyType" : "boolean",
+            "override" : false,
             "value" : false
          },
          "testEnumBean" : {
             "uuid" : "ed62d73c-dbba-409c-b73c-f0d3d9f49393",
+            "isCalculated" : false,
             "propertyType" : "enum",
+            "override" : false,
             "unit" : "",
             "value" : null
          },
          "testFloatBean" : {
             "uuid" : "2870876e-4d6c-4128-801d-54fa109f3823",
+            "isCalculated" : false,
             "propertyType" : "float",
-            "unit" : "",
+            "override" : false,
+            "unitBean" : null,
             "value" : null
          },
          "testIntBean" : {
             "uuid" : "0f37aff6-ccc0-436f-a592-bd466f74bd83",
+            "isCalculated" : false,
             "propertyType" : "int",
-            "unit" : "",
+            "override" : false,
+            "unitBean" : null,
             "value" : null
          },
          "testResourceBean" : {
             "uuid" : "fa822159-51a5-4bf2-99cf-e565b67e0eb3",
+            "isCalculated" : false,
             "propertyType" : "resource",
+            "override" : false,
             "value" : null
          },
          "testStringBean" : {
             "uuid" : "26edbae8-9f05-4ef5-8673-91e1af668aa3",
+            "isCalculated" : false,
             "propertyType" : "string",
+            "override" : false,
             "value" : null
          }
       }

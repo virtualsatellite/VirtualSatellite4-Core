@@ -15,8 +15,21 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.dvlm.qudv.AConversionBasedUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
+import io.swagger.annotations.ApiModel;
 
-public class ABeanConversionBasedUnit<U_TYPE extends AConversionBasedUnit> extends ABeanUnit<U_TYPE> implements IBeanConversionBasedUnit {
+/**
+ * General bean for a conversion based unit of the type U_TYPE
+ * 
+ * @param <U_TYPE> type of the wrapped conversion based unit
+ */
+@ApiModel(
+	description = "Abstract model class for conversion based bean units.",
+	subTypes = {
+		BeanUnitAffineConversion.class,
+		BeanUnitLinearConversion.class,
+		BeanUnitPrefixed.class
+})
+public abstract class ABeanConversionBasedUnit<U_TYPE extends AConversionBasedUnit> extends ABeanUnit<U_TYPE> implements IBeanConversionBasedUnit {
 
 	public ABeanConversionBasedUnit() {
 		super();

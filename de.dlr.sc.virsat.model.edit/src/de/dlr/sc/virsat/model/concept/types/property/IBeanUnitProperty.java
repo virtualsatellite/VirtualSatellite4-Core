@@ -12,7 +12,7 @@ package de.dlr.sc.virsat.model.concept.types.property;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
-import de.dlr.sc.virsat.model.concept.types.qudv.IBeanUnit;
+import de.dlr.sc.virsat.model.concept.types.qudv.ABeanUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
 
 /**
@@ -46,15 +46,15 @@ public interface IBeanUnitProperty {
 
 	/**
 	 * Returns a bean wrapping the unit
-	 * @return IBeanUnit
+	 * @return ABeanUnit
 	 */
-	IBeanUnit<? extends AUnit> getUnitBean();
+	ABeanUnit<? extends AUnit> getUnitBean();
 
 	/**
 	 * Set the unit wrapped in an unitBean
 	 * @param unitBean
 	 */
-	void setUnitBean(IBeanUnit<? extends AUnit> unitBean);
+	void setUnitBean(ABeanUnit<? extends AUnit> unitBean);
 	
 	/**
 	 * Set the unit wrapped in an unitBean
@@ -62,5 +62,5 @@ public interface IBeanUnitProperty {
 	 * @param unitBean
 	 * @return the command that changes the unit
 	 */
-	Command setUnitBean(EditingDomain ed, IBeanUnit<? extends AUnit> unitBean);
+	Command setUnitBean(EditingDomain ed, ABeanUnit<? extends AUnit> unitBean);
 }

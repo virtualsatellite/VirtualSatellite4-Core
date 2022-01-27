@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="ASCII"?>
+<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v8/c" xmlns:dvlm_calc="http://www.virsat.sc.dlr.de/dvlm/v8/calc" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppd" name="de.dlr.sc.virsat.model.extension.budget.mass" description="Mass Budget Concept" version="1.3" displayName="Mass Budget">
+  <imports importedNamespace="de.dlr.sc.virsat.model.extension.requirements.*"/>
+  <imports importedNamespace="de.dlr.sc.virsat.model.ext.core.*"/>
+  <categories name="AMassParameters" description="Definition of the equipment mass" isAbstract="true">
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="mass" description="The Equipment mass" quantityKindName="Mass" unitName="Kilogram" defaultValue="0.0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="massWithMargin" description="The equipment mass plus the safety margin" quantityKindName="Mass" unitName="Kilogram" defaultValue="0.0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="massMargin" description="The actual amount of margin mass" quantityKindName="Mass" unitName="Kilogram" defaultValue="0.0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="margin" description="The margin to be added as safety factor" quantityKindName="Dimensionless" unitName="Percent" defaultValue="20.0"/>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
+  <categories name="MassEquipment" description="Definition of the equipment mass" isApplicableForAll="true" cardinality="1" extendsCategory="de.dlr.sc.virsat.model.extension.budget.mass.AMassParameters">
+    <equationDefinitions>
+      <expression xsi:type="dvlm_calc:MultiplicationAndDivision" operator="*">
+        <left xsi:type="dvlm_calc:ReferencedDefinitionInput" reference="de.dlr.sc.virsat.model.extension.budget.mass.AMassParameters.mass"/>
+        <right xsi:type="dvlm_calc:Parenthesis">
+          <right xsi:type="dvlm_calc:AdditionAndSubtraction">
+            <left xsi:type="dvlm_calc:NumberLiteral" value="1"/>
+            <right xsi:type="dvlm_calc:ReferencedDefinitionInput" reference="de.dlr.sc.virsat.model.extension.budget.mass.AMassParameters.margin"/>
+          </right>
+        </right>
+      </expression>
+      <result xsi:type="dvlm_calc:TypeDefinitionResult" reference="de.dlr.sc.virsat.model.extension.budget.mass.AMassParameters.massWithMargin"/>
+    </equationDefinitions>
+    <equationDefinitions>
+      <expression xsi:type="dvlm_calc:AdditionAndSubtraction" operator="-">
+        <left xsi:type="dvlm_calc:ReferencedDefinitionInput" reference="de.dlr.sc.virsat.model.extension.budget.mass.AMassParameters.massWithMargin"/>
+        <right xsi:type="dvlm_calc:ReferencedDefinitionInput" reference="de.dlr.sc.virsat.model.extension.budget.mass.AMassParameters.mass"/>
+      </expression>
+      <result xsi:type="dvlm_calc:TypeDefinitionResult" reference="de.dlr.sc.virsat.model.extension.budget.mass.AMassParameters.massMargin"/>
+    </equationDefinitions>
+  </categories>
+  <categories name="MassSummary" description="Summary of all nested equipment masses" isApplicableForAll="true" cardinality="1" extendsCategory="de.dlr.sc.virsat.model.extension.budget.mass.AMassParameters">
+    <equationDefinitions>
+      <expression xsi:type="dvlm_calc:SetFunction" operator="summary" typeDefinition="de.dlr.sc.virsat.model.extension.budget.mass.AMassParameters.mass"/>
+      <result xsi:type="dvlm_calc:TypeDefinitionResult" reference="de.dlr.sc.virsat.model.extension.budget.mass.AMassParameters.mass"/>
+    </equationDefinitions>
+    <equationDefinitions>
+      <expression xsi:type="dvlm_calc:SetFunction" operator="summary" typeDefinition="de.dlr.sc.virsat.model.extension.budget.mass.AMassParameters.massWithMargin"/>
+      <result xsi:type="dvlm_calc:TypeDefinitionResult" reference="de.dlr.sc.virsat.model.extension.budget.mass.AMassParameters.massWithMargin"/>
+    </equationDefinitions>
+    <equationDefinitions>
+      <expression xsi:type="dvlm_calc:AdditionAndSubtraction" operator="-">
+        <left xsi:type="dvlm_calc:ReferencedDefinitionInput" reference="de.dlr.sc.virsat.model.extension.budget.mass.AMassParameters.massWithMargin"/>
+        <right xsi:type="dvlm_calc:ReferencedDefinitionInput" reference="de.dlr.sc.virsat.model.extension.budget.mass.AMassParameters.mass"/>
+      </expression>
+      <result xsi:type="dvlm_calc:TypeDefinitionResult" reference="de.dlr.sc.virsat.model.extension.budget.mass.AMassParameters.massMargin"/>
+    </equationDefinitions>
+    <equationDefinitions>
+      <expression xsi:type="dvlm_calc:MultiplicationAndDivision" operator="/">
+        <left xsi:type="dvlm_calc:ReferencedDefinitionInput" reference="de.dlr.sc.virsat.model.extension.budget.mass.AMassParameters.massMargin"/>
+        <right xsi:type="dvlm_calc:ReferencedDefinitionInput" reference="de.dlr.sc.virsat.model.extension.budget.mass.AMassParameters.mass"/>
+      </expression>
+      <result xsi:type="dvlm_calc:TypeDefinitionResult" reference="de.dlr.sc.virsat.model.extension.budget.mass.AMassParameters.margin"/>
+    </equationDefinitions>
+  </categories>
+  <categories name="MassRequirementsVerification">
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.extension.requirements/concept/concept.concept#de.dlr.sc.virsat.model.extension.requirements.BoundedValueVerification"/>
+  </categories>
+</dvlm_c:Concept>

@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.performance;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -17,19 +18,14 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,36 +33,41 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
-import de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader;
 import de.dlr.sc.virsat.apps.api.external.ModelAPI;
-import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
-import de.dlr.sc.virsat.model.dvlm.Repository;
+import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
+import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.roles.RoleManagement;
-import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
-import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBase;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
-import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
-import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
-import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
-import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 
 /**
- * This class creates study with several element instances and check the system performance
- * 
- * @author desh_me
- *
+ * This class creates a study with many elements and tests system performance on different operations
  */
 @RunWith(Parameterized.class)
-public class PerformanceTest {
+public class PerformanceTest extends AConceptProjectTestCase {
     
     public static final int MIN_STUDY_SIZE = 200;
     public static final int MAX_STUDY_SIZE = 10000;
     public static final int STUDY_SIZE_INCREASE_STEP = 200;
-    
+
+	protected ModelAPI modelAPI;
+	protected Concept testConcept;
+
+    /**
+	 * (Study size -> (Measure -> Elapsed Time))
+     */
+    protected static Map<Integer, Map<String, Long>> performanceMeasures;
+
+	/**
+	 * For injecting parameters of a parameterized test
+	 */
+	@Parameter
+	//CHECKSTYLE:OFF
+	public int testNumberOfElements;
+	//CHECKSTYLE:ON
+
     /**
      * Collection of study sizes for parameterized test. These values will be injected into field testNumberOfElements
      * @return collection of arrays of size one containing study sizes
@@ -80,123 +81,87 @@ public class PerformanceTest {
         return studySizes;
     }
 
-	private static final String TEST_PROJECT_NAME = "PerformanceTestProject";
-
-	public static final String ID_CONCEPT_TEST = "de.dlr.sc.virsat.model.extension.tests";
-
-	private static List<String> performanceMeasuresNoInheritance;
-	private static List<String> performanceMeasuresInheritance;
-	
-	private ModelAPI modelAPI;
-	private Concept testConcept;
-	private IProject testProject; 
+	@Override
+	public void setUp() throws CoreException {
+		super.setUp();
+		addEditingDomainAndRepository();
+		activateCoreConcept();
 		
-	@Before
-	public void setUp() throws CoreException, IOException {
+		// Test concept depends on maturity concept
+		executeAsCommand(() -> loadConceptAndInstallToRepository(de.dlr.sc.virsat.model.extension.maturity.Activator.getPluginId()));
+		testConcept = executeAsCommand(() -> loadConceptAndInstallToRepository(de.dlr.sc.virsat.model.extension.tests.Activator.getPluginId()));
 		
-		UserRegistry.getInstance().setSuperUser(true);
-		
-		IWorkspaceRoot wsRoot = ResourcesPlugin.getWorkspace().getRoot();
-
-		testProject = wsRoot.getProject(TEST_PROJECT_NAME);
-		if (testProject.exists()) {
-			testProject.delete(IResource.ALWAYS_DELETE_PROJECT_CONTENT, null);
-		}
-		testProject.create(null);
-		testProject.open(null);
-		
-		VirSatProjectCommons projectCommons = new VirSatProjectCommons(testProject);
-		projectCommons.createProjectStructure(null);
-		
-		String conceptXmiPluginPath = ID_CONCEPT_TEST + "/concept/concept.xmi";
-	    testConcept = ConceptXmiLoader.loadConceptFromPlugin(conceptXmiPluginPath);
-
-	    
-	    Repository repo = DVLMFactory.eINSTANCE.createRepository();
-	    repo.getActiveConcepts().add(testConcept);
-
-	    RoleManagement roleManage = RolesFactory.eINSTANCE.createRoleManagement();
-	    repo.setRoleManagement(roleManage);
-	    VirSatResourceSet resSet = VirSatResourceSet.createUnmanagedResourceSet(testProject);
-		resSet.getResources().clear();
-		
-	    Resource repoResource = resSet.getRepositoryResource();
-	    repoResource.getContents().clear();
-	    
-	    repoResource.getContents().add(repo);
-	    
-    	repoResource.save(Collections.EMPTY_MAP);
-    	
-    	Resource rmResource = resSet.getRoleManagementResource();
-    	rmResource.getContents().clear();
-    	rmResource.getContents().add(roleManage);
-    	rmResource.save(Collections.EMPTY_MAP);
-		
-		modelAPI = new ModelAPI() {
-				@Override
-				protected void initialize() {
-					resourceSet = resSet;
-				}
-				
-				@Override
-				public Repository getRepository() {
-					return repo;
-				}
+		modelAPI = new ModelAPI() {			
 			@Override
 			public String getCurrentProjectAbsolutePath() {
-				return Paths.get(wsRoot.getLocation().toString(), testProject.getFullPath().toString()).toString();
+				return testProject.getLocation().toString();
 			}
-
 		};
 	}
 
-	/**
-	 * method to create new structural element
-	 * @param name name of the structural element
-	 * @return structural element
-	 * @throws IOException 
-	 */
-	public TestStructuralElement createSE(String name) throws IOException {
-		TestStructuralElement se = new TestStructuralElement(testConcept);
-		se.setName(name);
-		modelAPI.createSeiStorage(se);
-		return se;
+	@Override
+	public void initializeTimeOutRule() {
+		// No timeout
 	}
 
-	@Parameter
-	//CHECKSTYLE:OFF
-	// For injecting parameters of a parameterized test
-	public int testNumberOfElements;
-	//CHECKSTYLE:ON
-	
 	/**
-	 * Before the tests are executed prepare an array for timing of all tests
+	 * Prepare storage for timing results of all tests
 	 */
 	@BeforeClass
 	public static void init() {
-		performanceMeasuresNoInheritance = new ArrayList<>();
-		performanceMeasuresNoInheritance.add("Number of elements\tCreate time\tInheritance\tSave time\tLoad time");
-
-		performanceMeasuresInheritance = new ArrayList<>();
-		performanceMeasuresInheritance.add("Number of elements\tCreate time\tInitial inheritance propagation\tSecond inheritance\tSave time\tLoad time");
+		performanceMeasures = new LinkedHashMap<>();
 	}
-
+	
 	/**
 	 * After the tests are executed write the test timings into a file
 	 * @throws IOException 
 	 */
 	@AfterClass
 	public static void end() throws IOException {
-		Files.write(Paths.get("performanceTestReport.tsv"), performanceMeasuresNoInheritance);
-		Files.write(Paths.get("performanceTestReportInheritance.tsv"), performanceMeasuresInheritance);
+		Files.write(Paths.get("performanceTestReport.csv"), getPerformanceReportCsv());
 	}
-	
+
+	/**
+	 * Formats collected timing values as a CSV table
+	 * @return lines of a CSV file
+	 */
+	protected static List<String> getPerformanceReportCsv() {
+		List<String> result = new ArrayList<>();
+		List<String> measures = new ArrayList<>(performanceMeasures.get(MIN_STUDY_SIZE).keySet());
+		String header = "Number of elements," + String.join(",", measures);
+		result.add(header);
+		
+		for (Map.Entry<Integer, Map<String, Long>> e : performanceMeasures.entrySet()) {
+			StringBuilder sb = new StringBuilder();
+			sb.append(e.getKey());
+			for (String measure : measures) {
+				sb.append("," + e.getValue().get(measure));
+			}
+			result.add(sb.toString());
+		}
+		return result;
+	}
+
+
 	@Test
 	public final void testSaveAndLoad() throws CoreException, IOException {
 		long start = System.currentTimeMillis();
-		
-		generateRandomTreeWithReferences(testNumberOfElements);
-		
+
+		// Add a category with random values to all SEIs
+		new StudyGenerator() {
+			
+			@Override
+			public IBeanStructuralElementInstance createSei(String name) {
+				IBeanStructuralElementInstance sei = super.createSei(name);
+
+				TestCategoryBase cat = new TestCategoryBase(testConcept);
+				cat.setTestBaseProperty(ThreadLocalRandom.current().nextInt());
+				cat.setTestReference(getRandomPreviousSei().getFirst(TestCategoryBase.class));
+
+				sei.add(cat);
+				return sei;
+			}
+		}.generate();
 		
 		long timestampCreated = System.currentTimeMillis();
 		modelAPI.performInheritance();
@@ -206,20 +171,40 @@ public class PerformanceTest {
 		
 		long timestampAllSaved = System.currentTimeMillis();
 		
-		testLoadProject();
+		reloadResources();
+		assertProjectHasElements();
 		long timestampAllLoaded = System.currentTimeMillis();
-		long timeToCreate = timestampCreated - start;
-		long timeToDoInheritance = timestampInheritance - timestampCreated;
-		long timeToSave = timestampAllSaved - timestampInheritance;
-		long timeToLoad = timestampAllLoaded - timestampAllSaved;
-		performanceMeasuresNoInheritance.add(testNumberOfElements + "\t" + timeToCreate + "\t" + timeToDoInheritance + "\t" + timeToSave + "\t" + timeToLoad);
+
+		logTime("Create", timestampCreated - start);
+		logTime("Empty Inheritance Propagation", timestampInheritance - timestampCreated);
+		logTime("Save", timestampAllSaved - timestampInheritance);
+		logTime("Reload", timestampAllLoaded - timestampAllSaved);
 	}
 
 	@Test
 	public final void testInheritance() throws CoreException, IOException {
-		long start = System.currentTimeMillis();
-		
-		generateRandomTreeWithInheritance(testNumberOfElements);
+
+		// Add random inheritance to the generated SEIs, and a CA only to the root SEI
+		new StudyGenerator() {
+			
+			public IBeanStructuralElementInstance createRootSei(String name) {
+				IBeanStructuralElementInstance sei = super.createSei(name);
+
+				TestCategoryBase cat = new TestCategoryBase(testConcept);
+				cat.setTestBaseProperty(ThreadLocalRandom.current().nextInt());
+				cat.setTestReference((TestCategoryBase) getRandomPreviousSei());
+				sei.add(cat);
+
+				return sei;
+			};
+			
+			public IBeanStructuralElementInstance createSei(String name) {
+				IBeanStructuralElementInstance sei = super.createSei(name);
+				IBeanStructuralElementInstance superSei = getRandomPreviousSei();
+				sei.addSuperSei(superSei);
+				return sei;
+			}
+		}.generate();
 		
 		long timestampCreated = System.currentTimeMillis();
 		modelAPI.performInheritance();
@@ -231,21 +216,50 @@ public class PerformanceTest {
 		modelAPI.performInheritance();
 		long timestampAfterSecondInheritance = System.currentTimeMillis();
 		assertNotAllSeisHaveSameInheritedValue();
-		long timestampBeforeSave = System.currentTimeMillis();
+
 		modelAPI.saveAll();
 		
 		long timestampAllSaved = System.currentTimeMillis();
 		
-		testLoadProject();
+		reloadResources();
+		assertProjectHasElements();
 		long timestampAllLoaded = System.currentTimeMillis();
-		long timeToCreate = timestampCreated - start;
-		long timeToDoInitialInheritance = timestampInitialInheritance - timestampCreated;
-		long timeToDoSecondInheritance = timestampAfterSecondInheritance - timestampBeforeSecondInheritance;
-		long timeToSave = timestampAllSaved - timestampBeforeSave;
-		long timeToLoad = timestampAllLoaded - timestampAllSaved;
-		performanceMeasuresInheritance.add(testNumberOfElements + "\t" + timeToCreate + "\t" + timeToDoInitialInheritance + "\t" + timeToDoSecondInheritance + "\t" + timeToSave + "\t" + timeToLoad);
+
+		logTime("Initial Inheritance Propagation", timestampInitialInheritance - timestampCreated);
+		logTime("Inheritance Propagation After Change", timestampAfterSecondInheritance - timestampBeforeSecondInheritance);
+		logTime("Reload With Inheritance", timestampAllLoaded - timestampAllSaved);
 	}
 	
+		
+	/**
+	 * Logs a performance measurement result
+	 */
+	private void logTime(String measure, long value) {
+		if (!performanceMeasures.containsKey(testNumberOfElements)) {
+			performanceMeasures.put(testNumberOfElements, new LinkedHashMap<>());
+		}
+		assertFalse("No duplicate measures", performanceMeasures.get(testNumberOfElements).containsKey(measure));
+		performanceMeasures.get(testNumberOfElements).put(measure, value);
+	}
+	
+
+	/**
+	 * Make sure that all SEIs have inherited the same value from root super SEI
+	 */
+	private void assertAllSeisHaveSameInheritedValue() {
+		TestStructuralElement rootSei = modelAPI.getRootSeis(TestStructuralElement.class).get(0);
+		TestCategoryBase rootCat = rootSei.getAll(TestCategoryBase.class).get(0);
+		long rootValue = rootCat.getTestBaseProperty();
+		EList<StructuralElementInstance> allInherited = rootSei.getStructuralElementInstance().getDeepChildren();
+		assertEquals(testNumberOfElements - 1, allInherited.size());
+		for (StructuralElementInstance sei : allInherited) {
+			assertEquals(1, sei.getCategoryAssignments().size());
+			CategoryAssignment ca = sei.getCategoryAssignments().get(0);
+			TestCategoryBase caBean = new TestCategoryBase(ca);
+			assertEquals(rootValue, caBean.getTestBaseProperty());
+		}
+	}
+
 	/**
 	 * Make sure that after changing random inheritance parameters some values are different
 	 * from root super SEI value
@@ -269,34 +283,11 @@ public class PerformanceTest {
 		assertTrue(differentValue);
 	}
 
-	/**
-	 * Make sure that all SEIs have inherited the same value from root super SEI
-	 */
-	private void assertAllSeisHaveSameInheritedValue() {
-		TestStructuralElement rootSei = modelAPI.getRootSeis(TestStructuralElement.class).get(0);
-		TestCategoryBase rootCat = rootSei.getAll(TestCategoryBase.class).get(0);
-		long rootValue = rootCat.getTestBaseProperty();
-		EList<StructuralElementInstance> allInherited = rootSei.getStructuralElementInstance().getDeepChildren();
-		assertEquals(testNumberOfElements - 1, allInherited.size());
-		for (StructuralElementInstance sei : allInherited) {
-			assertEquals(1, sei.getCategoryAssignments().size());
-			CategoryAssignment ca = sei.getCategoryAssignments().get(0);
-			TestCategoryBase caBean = new TestCategoryBase(ca);
-			assertEquals(rootValue, caBean.getTestBaseProperty());
-		}
-	}
-
-	/**
-	 * 
-	 */
 	private void changeRandomInheritanceParameters() {
 		changeValueInInheritanceRoot();
 		randomlyChangeOverrideFlagAndInheritedValueInInheritedSeis();
 	}
 
-	/**
-	 * 
-	 */
 	private void changeValueInInheritanceRoot() {
 		TestStructuralElement rootSei = modelAPI.getRootSeis(TestStructuralElement.class).get(0);
 		TestCategoryBase rootCat = rootSei.getAll(TestCategoryBase.class).get(0);
@@ -319,86 +310,71 @@ public class PerformanceTest {
 			caBean.getTestBasePropertyBean().getTypeInstance().setOverride(true);
 		}
 	}
-	
-	/**
-	 * Reloads the test project
-	 * @throws CoreException 
-	 */
-	public final void testLoadProject() throws CoreException {
-		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
-		IProject testProject = null;
-		for (IProject p : projects) {
-			if (p.getName().equals(TEST_PROJECT_NAME)) {
-				testProject = p;
-			}
-		}
-		testProject.open(null);
 
-		VirSatResourceSet resSet = VirSatResourceSet.getResourceSet(testProject);
-		VirSatTransactionalEditingDomain rsEd = VirSatEditingDomainRegistry.INSTANCE.getEd(testProject);
-		rsEd.reloadAll();
-		Repository repo = resSet.getRepository();
+	public final void reloadResources() {
+		editingDomain.reloadAll();
+		repository = rs.getRepository();
+	}
+	
+	public void assertProjectHasElements() {
 		int elementCount = 0;
-		for (StructuralElementInstance root : repo.getRootEntities()) {
+		for (StructuralElementInstance root : repository.getRootEntities()) {
 			elementCount += 1 + root.getDeepChildren().size();
 		}
-		
 		assertEquals(testNumberOfElements, elementCount);
 	}
-	
-	
-	/**
-	 * method to create random tree with structural element
-	 * @param n size of the tree
-	 * @throws IOException 
-	 */
-	private void generateRandomTreeWithReferences(int n) throws IOException {
-		TestStructuralElement root = createSE("root");
-		TestCategoryBase cat = new TestCategoryBase(testConcept);
-		cat.setTestBaseProperty(ThreadLocalRandom.current().nextInt());
-		root.add(cat);
-		modelAPI.addRootSei(root);
-		List<TestStructuralElement> allElements = new ArrayList<>();
-		allElements.add(root);
-		for (int i = 0; i < n - 1; i++) {
-			TestStructuralElement newElement = createSE("element_" + (i + 1));
-			TestStructuralElement parent = allElements.get(ThreadLocalRandom.current().nextInt(allElements.size()));
-			parent.add(newElement);
 
-			TestStructuralElement referenceTo = allElements.get(ThreadLocalRandom.current().nextInt(allElements.size()));
-			TestCategoryBase referencedCa = referenceTo.getAll(TestCategoryBase.class).get(0);
-			cat = new TestCategoryBase(testConcept);
-			cat.setTestBaseProperty(ThreadLocalRandom.current().nextInt());
-			cat.setTestReference(referencedCa);
-			newElement.add(cat);
-			
-			allElements.add(newElement);
-		}
-	}
 
 	/**
-	 * method to create random tree with inheritance
-	 * @param n size of the tree
-	 * @throws IOException 
+	 * Generator of a study for the test cases
 	 */
-	private void generateRandomTreeWithInheritance(int n) throws IOException {
-		TestStructuralElement root = createSE("root");
-		TestCategoryBase cat = new TestCategoryBase(testConcept);
-		cat.setTestBaseProperty(ThreadLocalRandom.current().nextInt());
-		root.add(cat);
-		modelAPI.addRootSei(root);
-		List<TestStructuralElement> allElements = new ArrayList<>();
-		allElements.add(root);
-		for (int i = 0; i < n - 1; i++) {
-			TestStructuralElement newElement = createSE("element_" + (i + 1));
-			TestStructuralElement parent = allElements.get(ThreadLocalRandom.current().nextInt(allElements.size()));
-			parent.add(newElement);
+	class StudyGenerator {
+		protected List<IBeanStructuralElementInstance> addedElements;
 
-			TestStructuralElement inheritsFrom = allElements.get(ThreadLocalRandom.current().nextInt(allElements.size()));
-			newElement.addSuperSei(inheritsFrom);
+
+		public IBeanStructuralElementInstance createRootSei(String name) {
+			TestStructuralElement sei = new TestStructuralElement(testConcept);
+			sei.setName(name);
+			return sei;
+		}
+
+		public IBeanStructuralElementInstance createSei(String name) {
+			TestStructuralElement se = new TestStructuralElement(testConcept);
+			se.setName(name);
+			return se;
+		}
+		
+		/**
+		 * Generates study data and adds it to the test project using modelAPI
+		 */
+		public void generate() throws IOException {
+			addedElements = new ArrayList<>();
+
+			IBeanStructuralElementInstance root = createRootSei("root");
+			modelAPI.createSeiStorage(root);
+			modelAPI.addRootSei(root);
+			addedElements.add(root);
+
+			for (int i = 0; i < testNumberOfElements - 1; i++) {
+				IBeanStructuralElementInstance newElement = createSei("element_" + (i + 1));
+				modelAPI.createSeiStorage(newElement);
+
+				IBeanStructuralElementInstance parent = getRandomPreviousSei();
+				parent.add(newElement);
+
+				addedElements.add(newElement);
+			}
 			
-			allElements.add(newElement);
+		}
+		
+		/**
+		 * @return one of previously generated SEIs or null if nothing has been generated yet
+		 */
+		public IBeanStructuralElementInstance getRandomPreviousSei() {
+			if (addedElements.isEmpty()) {
+				return null;
+			}
+			return addedElements.get(ThreadLocalRandom.current().nextInt(addedElements.size()));
 		}
 	}
-
 }

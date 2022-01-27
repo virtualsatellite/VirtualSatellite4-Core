@@ -13,21 +13,14 @@ package de.dlr.sc.virsat.model.extension.requirements.model;
 // * Import Statements
 // *****************************************************************
 import javax.xml.bind.annotation.XmlAccessorType;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
-import de.dlr.sc.virsat.model.concept.list.TypeSafeReferencePropertyBeanList;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import javax.xml.bind.annotation.XmlRootElement;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
-import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import javax.xml.bind.annotation.XmlAccessType;
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
-import de.dlr.sc.virsat.model.concept.list.TypeSafeReferencePropertyInstanceList;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import javax.xml.bind.annotation.XmlElement;
-import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
 
 
 // *****************************************************************
@@ -57,7 +50,6 @@ public abstract class AExistenceVerification extends ModelVerification implement
 	}
 	
 	// property name constants
-	public static final String PROPERTY_TARGET = "target";
 	
 	
 	
@@ -78,36 +70,6 @@ public abstract class AExistenceVerification extends ModelVerification implement
 		setTypeInstance(categoryAssignement);
 	}
 	
-	
-	// *****************************************************************
-	// * Array Attribute: target
-	// *****************************************************************
-		private IBeanList<GenericCategory> target = new TypeSafeReferencePropertyInstanceList<>(GenericCategory.class);
-	
-		private void safeAccessTarget() {
-			if (target.getArrayInstance() == null) {
-				target.setArrayInstance((ArrayInstance) helper.getPropertyInstance("target"));
-			}
-		}
-	
-		public IBeanList<GenericCategory> getTarget() {
-			safeAccessTarget();
-			return target;
-		}
-		
-		private IBeanList<BeanPropertyReference<GenericCategory>> targetBean = new TypeSafeReferencePropertyBeanList<>();
-		
-		private void safeAccessTargetBean() {
-			if (targetBean.getArrayInstance() == null) {
-				targetBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("target"));
-			}
-		}
-		
-		@XmlElement
-		public IBeanList<BeanPropertyReference<GenericCategory>> getTargetBean() {
-			safeAccessTargetBean();
-			return targetBean;
-		}
 	
 	
 }

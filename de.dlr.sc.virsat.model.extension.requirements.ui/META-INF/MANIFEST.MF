@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Model Extension Requirements Concept UI
 Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.requirements.ui;singleton:=true
-Bundle-Version: 4.13.0.qualifier
+Bundle-Version: 4.14.0.qualifier
 Require-Bundle: de.dlr.sc.virsat.model.extension.requirements,
  org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -26,4 +26,5 @@ Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.requirements.ui
 Bundle-Vendor: DLR (German Aerospace Center)
 Bundle-Activator: de.dlr.sc.virsat.model.extension.requirements.ui.Activator
-Import-Package: org.eclipse.equinox.security.storage
+Export-Package: de.dlr.sc.virsat.model.extension.requirements.ui.command,
+ de.dlr.sc.virsat.model.extension.requirements.ui.snippet

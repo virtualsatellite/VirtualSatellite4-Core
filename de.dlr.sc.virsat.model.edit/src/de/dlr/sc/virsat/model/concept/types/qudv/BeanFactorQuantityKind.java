@@ -9,17 +9,32 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.qudv;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.concept.types.IBeanUuid;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanQuantityKindFactory;
+import de.dlr.sc.virsat.model.dvlm.json.ABeanQuantityKindAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapter;
 import de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind;
 import de.dlr.sc.virsat.model.dvlm.qudv.QuantityKindFactor;
 import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+@XmlAccessorType(XmlAccessType.NONE)
+//Ensure that the factor (by uuid) gets unmarshalled first
+@XmlType(propOrder = {"factor", "exponent", "quantityKindBean"})
+@ApiModel(description = "Model class for bean quantity kind factor.")
 public class BeanFactorQuantityKind implements IBeanUuid {
+	
 	private QuantityKindFactor factor;
 	
 	public BeanFactorQuantityKind() { }
@@ -28,36 +43,49 @@ public class BeanFactorQuantityKind implements IBeanUuid {
 		this.factor = factor;
 	}
 	
+	@ApiModelProperty(hidden = true)
 	@Override
 	public String getUuid() {
 		return factor.getUuid().toString();
 	}
 	
-	QuantityKindFactor getFactor() {
+	@ApiModelProperty(name = "uuid", required = true,
+			value = "Unique identifier for a bean",
+			example = "b168b0df-84b6-4b7f-bede-69298b215f40")
+	@XmlElement(name = "uuid")
+	@XmlJavaTypeAdapter(IUuidAdapter.class)
+	public QuantityKindFactor getFactor() {
 		return factor;
 	}
 	
-	void setFactor(QuantityKindFactor factor) {
+	public void setFactor(QuantityKindFactor factor) {
 		this.factor = factor;
 	}
 	
-	Double getExponent() {
+	@ApiModelProperty(required = true)
+	@XmlElement
+	public double getExponent() {
 		return factor.getExponent();
 	}
 	
-	void setExponent(Double exponent) {
+	public void setExponent(double exponent) {
 		factor.setExponent(exponent);
 	}
 	
-	public Command setExponent(EditingDomain ed, Double exponent) {
+	public Command setExponent(EditingDomain ed, double exponent) {
 		return SetCommand.create(ed, factor, QudvPackage.Literals.QUANTITY_KIND_FACTOR__EXPONENT, exponent);
 	}
 	
-	IBeanQuantityKind<? extends AQuantityKind> getQuantityKindBean() {
-		return new BeanQuantityKindFactory().getInstanceFor(factor.getQuantityKind());
+	@SuppressWarnings("rawtypes")
+	@ApiModelProperty(required = true)
+	@XmlElement(nillable = true)
+	@XmlJavaTypeAdapter(ABeanQuantityKindAdapter.class)
+	public ABeanQuantityKind getQuantityKindBean() {
+		return (ABeanQuantityKind) new BeanQuantityKindFactory().getInstanceFor(factor.getQuantityKind());
 	}
 	
-	void setQuantityKindBean(IBeanQuantityKind<? extends AQuantityKind> beanQuantityKind) {
+	@SuppressWarnings("rawtypes")
+	public void setQuantityKindBean(ABeanQuantityKind beanQuantityKind) {
 		factor.setQuantityKind(beanQuantityKind.getQuantityKind());
 	}
 	

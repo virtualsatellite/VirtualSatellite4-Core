@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="ASCII"?>
 <dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v8/c" xmlns:dvlm_cp="http://www.virsat.sc.dlr.de/dvlm/v8/cp" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppd" name="de.dlr.sc.virsat.model.extension.requirements" description="Extension for Requirement Specification" version="0.6" displayName="Requirements" beta="true">
   <imports importedNamespace="de.dlr.sc.virsat.model.ext.core.*"/>
-  <categories name="RequirementsSpecification" isApplicableForAll="true">
+  <ecoreImports importedNsURI="http://www.virsat.sc.dlr.de/dvlm/v8/cp"/>
+  <categories name="IRequirementTreeElement">
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
+  <categories name="RequirementsSpecification" isApplicableForAll="true" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.IRequirementTreeElement">
     <properties xsi:type="dvlm_cppd:ResourceProperty" name="exportFile"/>
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="requirements" type="de.dlr.sc.virsat.model.extension.requirements.RequirementObject">
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
     </properties>
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="links" type="de.dlr.sc.virsat.model.extension.requirements.RequirementLink">
+      <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
+    </properties>
+  </categories>
+  <categories name="RequirementsView" isApplicableForAll="true">
+    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="treeElementToView" description="Specifies from where requirements are shown, if non pointing to the element itself" referenceType="de.dlr.sc.virsat.model.extension.requirements.IRequirementTreeElement"/>
+    <properties xsi:type="dvlm_cppd:BooleanProperty" name="showDeepChildren"/>
+    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="reqTypesToView" referenceType="de.dlr.sc.virsat.model.extension.requirements.RequirementType">
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
     </properties>
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
@@ -27,9 +38,7 @@
     </properties>
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
-  <categories name="RequirementObject" description="Interface for specification objects" isAbstract="true">
-    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
-  </categories>
+  <categories name="RequirementObject" description="Interface for specification objects" isAbstract="true" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.IRequirementTreeElement"/>
   <categories name="RequirementGroup" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.RequirementObject">
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="children" type="de.dlr.sc.virsat.model.extension.requirements.RequirementObject">
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
@@ -47,11 +56,14 @@
       <values name="NonCompliant" value="3"/>
       <values name="NotApplicable" value="4"/>
     </properties>
-    <properties xsi:type="dvlm_cppd:ComposedProperty" name="verification" type="de.dlr.sc.virsat.model.extension.requirements.IVerification">
+    <properties xsi:type="dvlm_cppd:ComposedProperty" name="verifications" type="de.dlr.sc.virsat.model.extension.requirements.IVerification">
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
     </properties>
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="trace" type="de.dlr.sc.virsat.model.extension.requirements.RequirementTrace"/>
     <properties xsi:type="dvlm_cppd:StringProperty" name="descriptionText"/>
+    <properties xsi:type="dvlm_cppd:ComposedProperty" name="children" type="de.dlr.sc.virsat.model.extension.requirements.RequirementObject">
+      <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
+    </properties>
   </categories>
   <categories name="RequirementLink">
     <properties xsi:type="dvlm_cppd:ReferenceProperty" name="type" referenceType="de.dlr.sc.virsat.model.extension.requirements.RequirementLinkType"/>
@@ -85,7 +97,7 @@
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="RequirementAttribute" description="Attribute definition for requirements">
-    <properties xsi:type="dvlm_cppd:EnumProperty" name="type" defaultValue="//@categories.11/@properties.0/@values.5">
+    <properties xsi:type="dvlm_cppd:EnumProperty" name="type" defaultValue="//@categories.13/@properties.0/@values.5">
       <values name="Boolean" value="0"/>
       <values name="Date" value="1"/>
       <values name="Enumeration" value="2"/>
@@ -98,10 +110,14 @@
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="ImportConfiguration" description="Mapping specification of imported requirements" applicableFor="de.dlr.sc.virsat.model.extension.requirements.RequirementsConfigurationCollection">
+    <properties xsi:type="dvlm_cppd:StringProperty" name="selectedTypeKeys" description="List of requirement types to be imported, using ReqIF identifiers">
+      <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
+    </properties>
     <properties xsi:type="dvlm_cppd:ReferenceProperty" name="typeDefinitionsContainer" referenceType="de.dlr.sc.virsat.model.extension.requirements.RequirementsConfiguration"/>
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="mappedSpecifications" type="de.dlr.sc.virsat.model.extension.requirements.SpecificationMapping">
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
     </properties>
+    <properties xsi:type="dvlm_cppd:BooleanProperty" name="groupSupport" description="If true using RequirementGroups for requirement objects with children"/>
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="SynchronizationConfiguration" applicableFor="de.dlr.sc.virsat.model.extension.requirements.RequirementsConfigurationCollection">
@@ -148,12 +164,22 @@
     </properties>
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
-  <categories name="ModelVerification" isAbstract="true" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.IVerification"/>
-  <categories name="ExistenceVerification" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.ModelVerification">
-    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="target">
-      <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
-      <referenceType xsi:type="dvlm_cp:Category" href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.concept#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  <categories name="ModelVerification" isAbstract="true" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.IVerification">
+    <properties xsi:type="dvlm_cppd:EReferenceProperty" name="elementToBeVerified" description="The exact element (Class / property) to be verified">
+      <referenceType href="platform:/resource/de.dlr.sc.virsat.model/model/dvlm.ecore#//categories/ATypeDefinition"/>
     </properties>
+  </categories>
+  <categories name="ExistenceVerification" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.ModelVerification"/>
+  <categories name="IValueVerification" isAbstract="true" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.ModelVerification"/>
+  <categories name="UpperLimitVerification" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.IValueVerification">
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="upperBound"/>
+  </categories>
+  <categories name="LowerLimitVerification" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.IValueVerification">
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="lowerBound"/>
+  </categories>
+  <categories name="BoundedValueVerification" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.IValueVerification">
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="lowerBound"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="upperBound"/>
   </categories>
   <structuralElements name="RequirementsConfigurationCollection" description="Storage for configuration elements of requirements" isRootStructuralElement="true"/>
 </dvlm_c:Concept>

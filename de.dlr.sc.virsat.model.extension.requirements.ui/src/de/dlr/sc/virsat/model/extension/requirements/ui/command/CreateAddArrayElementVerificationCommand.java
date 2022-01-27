@@ -13,6 +13,7 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
+import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
@@ -20,11 +21,13 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumPropertyHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.extension.requirements.model.IVerification;
+import de.dlr.sc.virsat.model.extension.requirements.model.ModelVerification;
 
 /**
  * Auto Generated Class inheriting from Generator Gap Class
@@ -45,6 +48,23 @@ public class CreateAddArrayElementVerificationCommand extends ACreateAddArrayEle
 	}
 	
 	/**
+	 * Create a model based verification method, that targets a specific property
+	 * @param editingDomain
+	 * @param arrayInstance
+	 * @param type
+	 * @param propertyTypeDef
+	 * @return
+	 */
+	public Command create(EditingDomain editingDomain, ArrayInstance arrayInstance, Category type, ATypeDefinition propertyTypeDef) {
+		ATypeInstance ati = new CategoryInstantiator().generateInstance(arrayInstance, type);
+		CategoryAssignment verificationInstance = (CategoryAssignment) ((ComposedPropertyInstance) ati).getTypeInstance();
+		configureIVerification(verificationInstance, type);
+		configureModelBaseVerificationMethod(verificationInstance, propertyTypeDef);
+		return AddCommand.create(editingDomain, arrayInstance, PropertyinstancesPackage.Literals.ARRAY_INSTANCE__ARRAY_INSTANCES, ati);
+	}
+	
+	
+	/**
 	 * Configure the verification instance with its type
 	 * @param verificationInstance the instance
 	 * @param type the type
@@ -58,6 +78,17 @@ public class CreateAddArrayElementVerificationCommand extends ACreateAddArrayEle
 		verificationInstance.setName(type.getName());
 		EnumUnitPropertyInstance piStatus = (EnumUnitPropertyInstance) caHelper.getPropertyInstance(IVerification.PROPERTY_STATUS);
 		piStatus.setValue(enumHelper.getEvdForName((EnumProperty) piStatus.getType(), IVerification.STATUS_Open_NAME));
+	}
+	
+	/**
+	 * Configure the exact property to be verified
+	 * @param verificationInstance the verification element
+	 * @param propertyTypeDef the property
+	 */
+	protected void configureModelBaseVerificationMethod(CategoryAssignment verificationInstance, ATypeDefinition propertyTypeDef) {
+		CategoryAssignmentHelper caHelper = new CategoryAssignmentHelper(verificationInstance);
+		EReferencePropertyInstance piProperty = (EReferencePropertyInstance) caHelper.getPropertyInstance(ModelVerification.PROPERTY_ELEMENTTOBEVERIFIED);
+		piProperty.setReference(propertyTypeDef);
 	}
 	
 }

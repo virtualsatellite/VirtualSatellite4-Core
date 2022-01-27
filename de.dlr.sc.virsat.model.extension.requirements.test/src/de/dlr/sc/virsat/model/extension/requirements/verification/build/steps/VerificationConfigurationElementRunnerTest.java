@@ -12,13 +12,22 @@ package de.dlr.sc.virsat.model.extension.requirements.verification.build.steps;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.Test;
+
+import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
 
 /**
  *
  */
-public class VerificationConfigurationElementRunnerTest {
+public class VerificationConfigurationElementRunnerTest extends AConceptProjectTestCase {
+	
+	@Override
+	public void setUp() throws CoreException {
+		super.setUp();
+		addEditingDomainAndRepository();
+	}
 	
 	@Test
 	public void testDoVerificationStep() {
@@ -27,7 +36,8 @@ public class VerificationConfigurationElementRunnerTest {
 		assertFalse(DummyCustomVerification.didRun());
 		
 		VerificationConfigurationElementRunner runner = new VerificationConfigurationElementRunner();
-		runner.doVerificationStep(new ModelVerificationImpl(), null, new NullProgressMonitor());
+		runner.setEditingDomain(editingDomain);
+		runner.doVerificationStep(new DummyCustomVerification(), null, new NullProgressMonitor());
 		
 		assertTrue(DummyCustomVerification.didRun());
 	}

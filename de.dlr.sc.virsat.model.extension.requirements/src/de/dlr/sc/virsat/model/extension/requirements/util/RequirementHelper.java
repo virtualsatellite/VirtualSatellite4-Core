@@ -39,17 +39,19 @@ public class RequirementHelper {
 	/**
 	 * Find a requirement of a specific name in a list of requirements, optionally as deep search
 	 * @param reqList the requirement list
-	 * @param name the name of the requirement to be searched (containing the requirement prefix ReqXXX)
+	 * @param identifier the identifier of the requirement to be searched (containing the requirement prefix ReqXXX)
 	 * @param deepSearch weather the search should be extended to deeper levels (groups)
 	 * @return the requirement to be searched
 	 */
-	public Requirement findRequirement(IBeanList<RequirementObject> reqList, String name, boolean deepSearch) {
+	public Requirement findRequirement(IBeanList<RequirementObject> reqList, String identifier, boolean deepSearch) {
 		for (RequirementObject reqObject : reqList) {
-			if (reqObject.getName().equals(name)) {
+			if (reqObject.getIdentifier().equals(identifier)) {
+				return (Requirement) reqObject;
+			} else if (reqObject.getName().equals(identifier)) {
 				return (Requirement) reqObject;
 			}
 			if (deepSearch && reqObject instanceof RequirementGroup) {
-				Requirement req = findRequirement(((RequirementGroup) reqObject).getChildren(), name, deepSearch);
+				Requirement req = findRequirement(((RequirementGroup) reqObject).getChildren(), identifier, deepSearch);
 				if (req != null) {
 					return req;
 				}

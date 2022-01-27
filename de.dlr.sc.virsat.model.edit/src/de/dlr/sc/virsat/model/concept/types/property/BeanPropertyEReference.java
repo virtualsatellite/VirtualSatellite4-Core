@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.property;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.command.SetCommand;
@@ -62,5 +64,14 @@ public class BeanPropertyEReference<Type extends EObject> extends ABeanProperty<
 	@Override
 	public BeanPropertyType getPropertyType() {
 		return BeanPropertyType.EREFERENCE;
+	}
+	
+	@XmlElement
+	public boolean getOverride() {
+		return ti.isOverride();
+	}
+	
+	public void setOverride(boolean override) {
+		ti.setOverride(override);
 	}
 }

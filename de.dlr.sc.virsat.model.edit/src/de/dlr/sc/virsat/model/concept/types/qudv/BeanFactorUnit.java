@@ -9,16 +9,30 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.qudv;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.concept.types.IBeanUuid;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanUnitFactory;
+import de.dlr.sc.virsat.model.dvlm.json.ABeanUnitAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapter;
 import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
 import de.dlr.sc.virsat.model.dvlm.qudv.UnitFactor;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+@XmlAccessorType(XmlAccessType.NONE)
+//Ensure that the factor (by uuid) gets unmarshalled first
+@XmlType(propOrder = {"factor", "exponent", "unitBean"})
+@ApiModel(description = "Model class for bean unit factor.")
 public class BeanFactorUnit implements IBeanUuid {
 
 	private UnitFactor factor;
@@ -29,36 +43,49 @@ public class BeanFactorUnit implements IBeanUuid {
 		this.factor = factor;
 	}
 	
+	@ApiModelProperty(hidden = true)
 	@Override
 	public String getUuid() {
 		return factor.getUuid().toString();
 	}
 	
-	UnitFactor getFactor() {
+	@ApiModelProperty(name = "uuid", required = true,
+			value = "Unique identifier for a bean",
+			example = "b168b0df-84b6-4b7f-bede-69298b215f40")
+	@XmlElement(name = "uuid")
+	@XmlJavaTypeAdapter(IUuidAdapter.class)
+	public UnitFactor getFactor() {
 		return factor;
 	}
 	
-	void setFactor(UnitFactor factor) {
+	public void setFactor(UnitFactor factor) {
 		this.factor = factor;
 	}
 	
-	Double getExponent() {
+	@ApiModelProperty(required = true)
+	@XmlElement
+	public double getExponent() {
 		return factor.getExponent();
 	}
 	
-	void setExponent(Double exponent) {
+	public void setExponent(double exponent) {
 		factor.setExponent(exponent);
 	}
 	
-	public Command setExponent(EditingDomain ed, Double exponent) {
+	public Command setExponent(EditingDomain ed, double exponent) {
 		return SetCommand.create(ed, factor, QudvPackage.Literals.UNIT_FACTOR__EXPONENT, exponent);
 	}
-	
-	IBeanUnit<? extends AUnit> getUnitBean() {
-		return new BeanUnitFactory().getInstanceFor(factor.getUnit());
+
+	@SuppressWarnings("rawtypes")
+	@ApiModelProperty(required = true)
+	@XmlElement(nillable = true)
+	@XmlJavaTypeAdapter(ABeanUnitAdapter.class)
+	public ABeanUnit getUnitBean() {
+		return (ABeanUnit) new BeanUnitFactory().getInstanceFor(factor.getUnit());
 	}
 	
-	void setUnitBean(IBeanUnit<? extends AUnit> beanUnit) {
+	@SuppressWarnings("rawtypes")
+	public void setUnitBean(ABeanUnit beanUnit) {
 		factor.setUnit(beanUnit.getUnit());
 	}
 	

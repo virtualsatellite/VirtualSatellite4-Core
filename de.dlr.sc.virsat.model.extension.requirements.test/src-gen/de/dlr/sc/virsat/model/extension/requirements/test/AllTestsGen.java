@@ -26,9 +26,11 @@ import de.dlr.sc.virsat.model.extension.requirements.model.VerificationTypeTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.EnumerationLiteralTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.SpecificationMappingTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollectionTest;
+import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsViewTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementTypeTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementLinkTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.SynchronizationConfigurationTest;
+import de.dlr.sc.virsat.model.extension.requirements.model.BoundedValueVerificationTest;
 import de.dlr.sc.virsat.model.extension.requirements.migrator.Migrator0v2Test;
 import de.dlr.sc.virsat.model.extension.requirements.model.VerificationConfigurationTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementTest;
@@ -43,8 +45,11 @@ import de.dlr.sc.virsat.model.extension.requirements.migrator.Migrator0v4Test;
 import de.dlr.sc.virsat.model.extension.requirements.model.DefaultVerificationTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttributeTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.AttributeValueTest;
+import de.dlr.sc.virsat.model.extension.requirements.model.UpperLimitVerificationTest;
+import de.dlr.sc.virsat.model.extension.requirements.model.IRequirementTreeElementTest;
 import de.dlr.sc.virsat.model.extension.requirements.migrator.Migrator0v5Test;
 import de.dlr.sc.virsat.model.extension.requirements.model.ExistenceVerificationTest;
+import de.dlr.sc.virsat.model.extension.requirements.model.LowerLimitVerificationTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementLinkTypeTest;
 
 /**
@@ -53,7 +58,9 @@ import de.dlr.sc.virsat.model.extension.requirements.model.RequirementLinkTypeTe
 @RunWith(Suite.class)
 
 @SuiteClasses({
+	IRequirementTreeElementTest.class,
 	RequirementsSpecificationTest.class,
+	RequirementsViewTest.class,
 	RequirementsConfigurationTest.class,
 	VerificationConfigurationTest.class,
 	RequirementGroupTest.class,
@@ -72,6 +79,9 @@ import de.dlr.sc.virsat.model.extension.requirements.model.RequirementLinkTypeTe
 	DefaultVerificationTest.class,
 	VerificationTypeTest.class,
 	ExistenceVerificationTest.class,
+	UpperLimitVerificationTest.class,
+	LowerLimitVerificationTest.class,
+	BoundedValueVerificationTest.class,
 	RequirementsConfigurationCollectionTest.class,
 	Migrator0v1Test.class,
 	Migrator0v2Test.class,

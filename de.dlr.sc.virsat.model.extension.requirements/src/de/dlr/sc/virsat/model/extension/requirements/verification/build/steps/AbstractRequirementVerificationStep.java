@@ -28,7 +28,7 @@ public abstract class AbstractRequirementVerificationStep implements IVerificati
 	
 	
 	protected EditingDomain editingDomain;
-	
+
 	@Override
 	public void execute(RequirementsSpecification specification, EditingDomain editingDomain, IProgressMonitor monitor) {
 		this.editingDomain = editingDomain;
@@ -62,12 +62,16 @@ public abstract class AbstractRequirementVerificationStep implements IVerificati
 			
 			preVerificationStep(requirement, monitor);
 			
-			for (IVerification verification : requirement.getVerification()) {
+			for (IVerification verification : requirement.getVerifications()) {
 				doVerificationStep(verification, requirement, monitor);
 			}
 			
 			postVerificationStep(requirement, monitor);
 		}
+	}
+	
+	public void setEditingDomain(EditingDomain editingDomain) {
+		this.editingDomain = editingDomain;
 	}
 	
 	/**

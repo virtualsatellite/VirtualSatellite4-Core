@@ -13,6 +13,8 @@ package de.dlr.sc.virsat.model.concept.types.qudv;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.RemoveCommand;
@@ -21,6 +23,7 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import de.dlr.sc.virsat.model.dvlm.qudv.DerivedUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
 import de.dlr.sc.virsat.model.dvlm.qudv.UnitFactor;
+import io.swagger.annotations.ApiModelProperty;
 
 public class BeanUnitDerived extends ABeanUnit<DerivedUnit> {
 
@@ -36,7 +39,9 @@ public class BeanUnitDerived extends ABeanUnit<DerivedUnit> {
 	 * Get all factors
 	 * @return List of factors
 	 */
-	List<BeanFactorUnit> getFactorBeans() {
+	@ApiModelProperty(required = true)
+	@XmlElement
+	public List<BeanFactorUnit> getFactorBeans() {
 		List<BeanFactorUnit> factors = new ArrayList<BeanFactorUnit>();
 		
 		for (UnitFactor factor : unit.getFactor()) {
@@ -50,7 +55,7 @@ public class BeanUnitDerived extends ABeanUnit<DerivedUnit> {
 	 * Set all factors
 	 * @param newBeanFactors List of new factors
 	 */
-	void setFactors(List<BeanFactorUnit> newBeanFactors) {
+	public void setFactorBeans(List<BeanFactorUnit> newBeanFactors) {
 		List<UnitFactor> currentFactors = unit.getFactor();
 
 		List<UnitFactor> newFactors = new ArrayList<UnitFactor>();
@@ -62,19 +67,19 @@ public class BeanUnitDerived extends ABeanUnit<DerivedUnit> {
 		currentFactors.addAll(newFactors);
 	}
 	
-	void addFactor(BeanFactorUnit beanFactor) {
+	public void addFactor(BeanFactorUnit beanFactor) {
 		unit.getFactor().add(beanFactor.getFactor());
 	}
 	
-	void removeFactor(BeanFactorUnit beanFactor) {
+	public void removeFactor(BeanFactorUnit beanFactor) {
 		unit.getFactor().remove(beanFactor.getFactor());
 	}
 	
-	Command addFactor(EditingDomain ed, BeanFactorUnit beanFactor) {
+	public Command addFactor(EditingDomain ed, BeanFactorUnit beanFactor) {
 		return AddCommand.create(ed, unit, QudvPackage.Literals.DERIVED_UNIT__FACTOR, beanFactor.getFactor());
 	}
 	
-	Command removeFactor(EditingDomain ed, BeanFactorUnit beanFactor) {
+	public Command removeFactor(EditingDomain ed, BeanFactorUnit beanFactor) {
 		return RemoveCommand.create(ed, unit, QudvPackage.Literals.DERIVED_UNIT__FACTOR, beanFactor.getFactor());
 	}
 }

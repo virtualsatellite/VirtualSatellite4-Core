@@ -96,4 +96,11 @@ public class BeanPropertyComposed<BEAN_TYPE extends IBeanCategoryAssignment> ext
 	public BeanPropertyType getPropertyType() {
 		return BeanPropertyType.COMPOSED;
 	}
+	
+	@Override
+	public boolean getIsCalculated() {
+		// As the isCalculated property for this bean depends on the composed property
+		// It can only be evaluated if a composed property is set
+		return isSet() && super.getIsCalculated();
+	}
 }

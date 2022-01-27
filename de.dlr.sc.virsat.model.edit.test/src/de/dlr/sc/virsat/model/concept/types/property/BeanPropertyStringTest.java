@@ -78,4 +78,14 @@ public class BeanPropertyStringTest extends ABeanPropertyTest {
 		BeanPropertyString beanProperty2 = new BeanPropertyString(vpi);
 		assertEquals("Beans are identical", beanProperty2, beanProperty);
 	}
+	
+	@Test
+	public void testGetAndSetOverride() {
+		assertEquals(false, beanProperty.getOverride());
+		
+		beanProperty.setOverride(true);
+		
+		assertEquals(true, beanProperty.getOverride());
+		assertEquals(true, vpi.isOverride());
+	}
 }

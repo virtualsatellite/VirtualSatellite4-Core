@@ -13,13 +13,14 @@ package de.dlr.sc.virsat.model.concept.types.property;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
 import org.eclipse.emf.common.command.Command;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.concept.types.factory.BeanUnitFactory;
-import de.dlr.sc.virsat.model.concept.types.qudv.IBeanUnit;
+import de.dlr.sc.virsat.model.concept.types.qudv.ABeanUnit;
 import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
@@ -159,7 +160,7 @@ public class BeanPropertyFloatTest extends ABeanPropertyTest {
 		cmdOk2.execute();
 		assertEquals("Value correctly set", INPUT_VALUE_AS_KM, uvpi.getValue());
 	}
-
+	
 	private Repository repo;
 	private Concept concept;
 	private UnitManagement unitManagement;
@@ -292,12 +293,12 @@ public class BeanPropertyFloatTest extends ABeanPropertyTest {
 		setUpRepo();
 		
 		AUnit kmUnit = QudvUnitHelper.getInstance().getUnitByName(sou, "Kilometer");
-		IBeanUnit<? extends AUnit> kmBean = new BeanUnitFactory().getInstanceFor(kmUnit);
+		ABeanUnit<? extends AUnit> kmBean = (ABeanUnit<? extends AUnit>) new BeanUnitFactory().getInstanceFor(kmUnit);
 		beanProperty.setUnitBean(ed, kmBean).execute();
 		assertEquals("Unit has been set correctly", kmUnit, uvpi.getUnit());
 		
 		AUnit gUnit = QudvUnitHelper.getInstance().getUnitByName(sou, "Gram");
-		IBeanUnit<? extends AUnit> gBean = new BeanUnitFactory().getInstanceFor(gUnit);
+		ABeanUnit<? extends AUnit> gBean = (ABeanUnit<? extends AUnit>) new BeanUnitFactory().getInstanceFor(gUnit);
 		beanProperty.setUnitBean(ed, gBean).execute();
 		assertEquals("Unit has been changed correctly", gUnit, uvpi.getUnit());
 
@@ -310,12 +311,12 @@ public class BeanPropertyFloatTest extends ABeanPropertyTest {
 		setUpRepo();
 		
 		AUnit kmUnit = QudvUnitHelper.getInstance().getUnitByName(sou, "Kilometer");
-		IBeanUnit<? extends AUnit> kmBean = new BeanUnitFactory().getInstanceFor(kmUnit);
+		ABeanUnit<? extends AUnit> kmBean = (ABeanUnit<? extends AUnit>) new BeanUnitFactory().getInstanceFor(kmUnit);
 		beanProperty.setUnitBean(kmBean);
 		assertEquals("Unit has been set correctly", kmUnit, uvpi.getUnit());
 		
 		AUnit gUnit = QudvUnitHelper.getInstance().getUnitByName(sou, "Gram");
-		IBeanUnit<? extends AUnit> gBean = new BeanUnitFactory().getInstanceFor(gUnit);
+		ABeanUnit<? extends AUnit> gBean = (ABeanUnit<? extends AUnit>) new BeanUnitFactory().getInstanceFor(gUnit);
 		beanProperty.setUnitBean(gBean);
 		assertEquals("Unit has been changed correctly", gUnit, uvpi.getUnit());
 
@@ -328,13 +329,68 @@ public class BeanPropertyFloatTest extends ABeanPropertyTest {
 		setUpRepo();
 		
 		AUnit kmUnit = QudvUnitHelper.getInstance().getUnitByName(sou, "Kilometer");
-		IBeanUnit<? extends AUnit> kmBean = new BeanUnitFactory().getInstanceFor(kmUnit);
+		ABeanUnit<? extends AUnit> kmBean = (ABeanUnit<? extends AUnit>) new BeanUnitFactory().getInstanceFor(kmUnit);
 		beanProperty.setUnitBean(kmBean);
 		assertEquals("Got correct unit", kmBean.getUnit(), beanProperty.getUnitBean().getUnit());
 		
 		AUnit gUnit = QudvUnitHelper.getInstance().getUnitByName(sou, "Gram");
-		IBeanUnit<? extends AUnit> gBean = new BeanUnitFactory().getInstanceFor(gUnit);
+		ABeanUnit<? extends AUnit> gBean = (ABeanUnit<? extends AUnit>) new BeanUnitFactory().getInstanceFor(gUnit);
 		beanProperty.setUnitBean(gBean);
 		assertEquals("Got correct unit", gBean.getUnit(), beanProperty.getUnitBean().getUnit());
+	}
+	
+	@Test
+	public void testGetValueInDefaultUnit() {
+		setUpRepo();
+		
+		final String TEST_STRING = "2.1";
+		final double TEST_FLOAT_SECOND_TO_DEFAULT = 2100;		
+		final double TEST_FLOAT_MINUTE_TO_DEFAULT = 126000;
+		final double EPSILON = 0.001;
+		
+		AUnit unitS = QudvUnitHelper.getInstance().getUnitByName(sou, "Second");
+		AUnit unitM = QudvUnitHelper.getInstance().getUnitByName(sou, "Minute");
+		
+		propertyOne.setUnitName("Millisecond");
+		
+		uvpi.setType(propertyOne);
+		uvpi.setValue(TEST_STRING);
+		uvpi.setUnit(unitS);
+		
+		assertEquals("Got correct value", TEST_FLOAT_SECOND_TO_DEFAULT, beanProperty.getValueInDefaultUnit(), EPSILON);
+		
+		uvpi.setUnit(unitM);
+		
+		assertEquals("Got correct value", TEST_FLOAT_MINUTE_TO_DEFAULT, beanProperty.getValueInDefaultUnit(), EPSILON);
+	}
+	
+	@Test
+	public void testGetValueInUnit() {
+		setUpRepo();
+		
+		final String TEST_STRING = "2.1";
+		final double TEST_FLOAT_SECOND_TO_MILLISECOND = 2100;
+		final double TEST_FLOAT_SECOND_TO_MINUTE = 0.035;
+		final double EPSILON = 0.001;
+		
+		AUnit unitS = QudvUnitHelper.getInstance().getUnitByName(sou, "Second");
+		
+		uvpi.setType(propertyOne);
+		uvpi.setValue(TEST_STRING);
+		uvpi.setUnit(unitS);
+		
+		assertEquals("Got correct value", TEST_FLOAT_SECOND_TO_MILLISECOND, beanProperty.getValueInUnit("Millisecond"), EPSILON);
+		
+		assertEquals("Got correct value", TEST_FLOAT_SECOND_TO_MINUTE, beanProperty.getValueInUnit("Minute"), EPSILON);
+	}
+	
+	@Test
+	public void testGetAndSetOverride() {
+		assertEquals(false, beanProperty.getOverride());
+		
+		beanProperty.setOverride(true);
+		
+		assertEquals(true, beanProperty.getOverride());
+		assertEquals(true, uvpi.isOverride());
 	}
 }
