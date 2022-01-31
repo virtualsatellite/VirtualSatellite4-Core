@@ -1416,11 +1416,6 @@
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetSectionUpperLimitVerification">
 		</uiSnippet>
 		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.requirements.table.uISnippetTableRequirementVerificationsUpperLimitVerification"
-		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section.Verifications"
-		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationsUpperLimitVerification">
-		</uiSnippet>
-		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetLowerLimitVerification"
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableLowerLimitVerification">
@@ -1431,11 +1426,6 @@
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetSectionLowerLimitVerification">
 		</uiSnippet>
 		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.requirements.table.uISnippetTableRequirementVerificationsLowerLimitVerification"
-		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section.Verifications"
-		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationsLowerLimitVerification">
-		</uiSnippet>
-		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetBoundedValueVerification"
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableBoundedValueVerification">
@@ -1444,11 +1434,6 @@
 		      id="de.dlr.sc.virsat.model.extension.requirements.section.uiSnippetBoundedValueVerification"
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetSectionBoundedValueVerification">
-		</uiSnippet>
-		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.requirements.table.uISnippetTableRequirementVerificationsBoundedValueVerification"
-		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section.Verifications"
-		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableRequirementVerificationsBoundedValueVerification">
 		</uiSnippet>
 	</extension>
 	<!-- Plugin.XML Protected Region Start -->
