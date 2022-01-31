@@ -5,9 +5,7 @@
 	<classpathentry kind="src" path="src/"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/oauth.jar" sourcepath="externalLib/maven/oauth-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/wink-client.jar" sourcepath="externalLib/maven/wink-client-apache-httpclient.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/httpclient.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/wink-common.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/wink-client-apache-httpclient.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/slf4j-api.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/oslc4j-jena-provider.jar" sourcepath="externalLib/maven/oslc4j-jena-provider-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/oslc4j-json4j-provider.jar"/>
@@ -21,9 +19,6 @@
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/oslc-client.jar" sourcepath="externalLib/maven/oslc-client-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/commons-cli-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/commons-cli.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/httpclient-cache-sources.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/httpclient-cache.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/httpclient-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/httpcore-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/httpcore.jar" sourcepath="externalLib/maven/httpcore-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/jakarta.ws.rs-api.jar"/>
@@ -85,5 +80,9 @@
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/classgraph.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/oslc-domains.jar" sourcepath="externalLib/maven/oslc-domains-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/oslc4j-core.jar" sourcepath="externalLib/maven/oslc4j-core-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/log4j.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/slf4j-simple.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/commons-logging.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/httpclient.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
