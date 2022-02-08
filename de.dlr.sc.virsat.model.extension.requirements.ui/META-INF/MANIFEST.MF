@@ -28,3 +28,4 @@ Bundle-Vendor: DLR (German Aerospace Center)
 Bundle-Activator: de.dlr.sc.virsat.model.extension.requirements.ui.Activator
 Export-Package: de.dlr.sc.virsat.model.extension.requirements.ui.command,
  de.dlr.sc.virsat.model.extension.requirements.ui.snippet
+Import-Package: org.eclipse.equinox.security.storage

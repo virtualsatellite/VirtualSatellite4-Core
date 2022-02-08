@@ -41,7 +41,7 @@ import de.dlr.sc.virsat.model.extension.requirements.Activator;
 
 public class DoorsSynchroClient {
 
-	private static final String CATALOG_URL = "https://gk-sl0002.intra.dlr.de:9443/rm/oslc_rm/catalog";
+	private static final String CATALOG_URL = "https://jts.gk.intra.dlr.de/rm/oslc_rm/catalog";
 	private static final int SUCCESSFULL_HTTP_STATUS = 200;
 
 	private DoorsUtils doorsUtils;
@@ -77,13 +77,13 @@ public class DoorsSynchroClient {
 
 	public static void setOslcClient(OslcClient oslcClient) {
 		client = oslcClient;
-		
+
 	}
-	
-	public static void setDoorsSynchroClient (DoorsSynchroClient synchroClient) {
+
+	public static void setDoorsSynchroClient(DoorsSynchroClient synchroClient) {
 		doorsSynchroClient = synchroClient;
 	}
-	
+
 	/**
 	 * Look up service provider url to access doors projects in further requests
 	 * 
@@ -251,7 +251,7 @@ public class DoorsSynchroClient {
 	 * @throws IOException
 	 * @throws URISyntaxException
 	 */
-	public static void queryRequirements(String projectName)
+	public static HashMap<RequirementCollection, ArrayList<Requirement>> queryRequirements(String projectName)
 			throws ResourceNotFoundException, IOException, URISyntaxException {
 		for (RequirementCollection reqCollection : reqSpecificationsList) {
 			Response response = client.getResource(reqCollection.getAbout().toURL().toString(),
@@ -276,18 +276,10 @@ public class DoorsSynchroClient {
 				Activator.getDefault().getLog().error(np.getMessage());
 			}
 		}
+		return mapOfRequirements;
 	}
 
-	/**
-	 * Query all requirements of a given Requirement Collection
-	 * 
-	 * @param reqCollection the given Requirement Collection
-	 * @return list of requirements of given RequirementCollection
-	 * @throws ResourceNotFoundException
-	 * @throws IOException
-	 * @throws URISyntaxException
-	 */
-	public static ArrayList<Requirement> queryRequirementsOfCollection(RequirementCollection reqCollection)
+	public static ArrayList<Requirement> getReqsFromCollection(RequirementCollection reqCollection)
 			throws ResourceNotFoundException, IOException, URISyntaxException {
 		Response response = client.getResource(reqCollection.getAbout().toURL().toString(),
 				OslcMediaType.APPLICATION_RDF_XML);
@@ -311,4 +303,38 @@ public class DoorsSynchroClient {
 		}
 		return listOfRequirements;
 	}
+
+	/**
+	 * Query all requirements of a given Requirement Collection
+	 * 
+	 * @param reqCollection the given Requirement Collection
+	 * @return list of requirements of given RequirementCollection
+	 * @throws ResourceNotFoundException
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 */
+//	public static ArrayList<Requirement> queryRequirementsOfCollection(RequirementCollection recCollection)
+//			throws ResourceNotFoundException, IOException, URISyntaxException {
+//		Response response = client.getResource(reqCollection.getAbout().toURL().toString(),
+//				OslcMediaType.APPLICATION_RDF_XML);
+//		RequirementCollection requirementCollection = response.readEntity(RequirementCollection.class);
+//		ArrayList<Requirement> listOfRequirements = new ArrayList<Requirement>();
+//		try {
+//			if (requirementCollection != null) {
+//				if (requirementCollection.getUses() != null) {
+//					// every link (getUses()) is a requirement contained by the
+//					// requirementCollection
+//					for (Link uses : requirementCollection.getUses()) {
+//						Response reqRequest = client.getResource(uses.getValue().toString(),
+//								OslcMediaType.APPLICATION_RDF_XML);
+//						Requirement requirement = reqRequest.readEntity(Requirement.class);
+//						listOfRequirements.add(requirement);
+//					}
+//				}
+//			}
+//		} catch (NullPointerException np) {
+//			Activator.getDefault().getLog().error(np.getMessage());
+//		}
+//		return listOfRequirements;
+//	}
 }
