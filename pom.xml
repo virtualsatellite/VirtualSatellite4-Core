@@ -114,6 +114,10 @@
 				<module>de.dlr.sc.virsat.concept.unittest.util</module>
 				<module>de.dlr.sc.virsat.test</module>
 				
+				<module>de.dlr.sc.virsat.model.extension.thermal</module>
+				<module>de.dlr.sc.virsat.model.extension.thermal.test</module>
+				<module>de.dlr.sc.virsat.model.extension.thermal.ui</module>
+				
 				
 				<module>de.dlr.sc.virsat.model.extension.maturity</module>
 				<module>de.dlr.sc.virsat.model.extension.maturity.test</module>

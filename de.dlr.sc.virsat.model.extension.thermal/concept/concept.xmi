@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="ASCII"?>
+<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v8/c" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppd" name="de.dlr.sc.virsat.model.extension.thermal" description="Concept for modeling thermal properties" displayName="Thermal" beta="true">
+  <imports importedNamespace="de.dlr.sc.virsat.model.ext.core.*"/>
+  <categories name="TemperatureBoundary" description="Modeling a temperature boundary condition" applicableFor="de.dlr.sc.virsat.model.extension.thermal.BoundaryConditions">
+    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="component" referenceType="de.dlr.sc.virsat.model.extension.thermal.ThermalElementParameters"/>
+    <properties xsi:type="dvlm_cppd:EnumProperty" name="boundaryType" description="BC applicable for Face or for complete volume">
+      <values name="Face" value="0"/>
+      <values name="Volume" value="1"/>
+    </properties>
+    <properties xsi:type="dvlm_cppd:IntProperty" name="freeCADFaceNumberBC" description="The number of the corresponding face in the FreeCAD model" quantityKindName="Dimensionless"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="boundaryTemperature" description="Fixed temperature of the element"/>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
+  <categories name="HeatFlowToFace" description="Modeling an external heat flow to a face" applicableFor="de.dlr.sc.virsat.model.extension.thermal.BoundaryConditions">
+    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="component" referenceType="de.dlr.sc.virsat.model.extension.thermal.ThermalElementParameters"/>
+    <properties xsi:type="dvlm_cppd:IntProperty" name="freeCADFaceNumberHF" description="The number of the corresponding face in the FreeCAD model" quantityKindName="Dimensionless"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="heatFlow" description="Total magnitude of heat flow applied to the element" quantityKindName="Heat Flow Rate per Unit Area" unitName="Watt per Meter squared"/>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
+  <categories name="AnalysisType" description="Static or Transient" applicableFor="de.dlr.sc.virsat.model.extension.thermal.ThermalAnalysis" cardinality="1">
+    <properties xsi:type="dvlm_cppd:EnumProperty" name="analysisType" description="Type of the analysis to be executed" unitName="No Unit">
+      <values name="Static" value="0"/>
+      <values name="Transient" value="1"/>
+    </properties>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="timeStep" description="Desired timestep for dynamic simulation" quantityKindName="Time" unitName="Second"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="totalTime" description="Desired total time for dynamic simulation" quantityKindName="Time" unitName="Second"/>
+    <properties xsi:type="dvlm_cppd:EnumProperty" name="includeOrbitRadiation" description="Specify if solar radiation etc variation shall be included or not" unitName="No Unit">
+      <values name="Include" value="0"/>
+      <values name="NotInclude" value="1"/>
+    </properties>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
+  <categories name="Reports" description="Analysis reports can be referenced here" applicableFor="de.dlr.sc.virsat.model.extension.thermal.ThermalAnalysis">
+    <properties xsi:type="dvlm_cppd:StringProperty" name="reportName" description="Name of the report"/>
+    <properties xsi:type="dvlm_cppd:StringProperty" name="comment" description="Comment on the report"/>
+    <properties xsi:type="dvlm_cppd:ResourceProperty" name="report" description="Upload file here"/>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
+  <categories name="ThermalElementParameters" description="Thermal conductivity of the element" applicableFor="de.dlr.sc.virsat.model.extension.thermal.ThermalData" cardinality="1">
+    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="predefinedMaterial" referenceType="de.dlr.sc.virsat.model.extension.thermal.Material"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="initialTemperature" quantityKindName="Temperature" unitName="Kelvin"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="powerBalance" quantityKindName="Power" unitName="Watt"/>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
+  <categories name="FaceRadiation" description="Emissivity of specific face" applicableFor="de.dlr.sc.virsat.model.extension.thermal.SingleFaceRadiationList">
+    <properties xsi:type="dvlm_cppd:IntProperty" name="freeCADFaceNumber" description="Number of face, must match with face number in FreeCAD"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="faceEmissivity" quantityKindName="Dimensionless" unitName="No Unit"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="faceAbsorptivity" quantityKindName="Dimensionless" unitName="No Unit"/>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
+  <categories name="ThermalPort" description="Modeling of thermal connectors" applicableFor="de.dlr.sc.virsat.model.extension.thermal.ThermalPortList">
+    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="portComponent" referenceType="de.dlr.sc.virsat.model.extension.thermal.ThermalElementParameters"/>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
+  <categories name="ThermalInterface" description="Modeling of thermal interfaces" applicableFor="de.dlr.sc.virsat.model.extension.thermal.ThermalInterfaceList">
+    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="Contacts" referenceType="de.dlr.sc.virsat.model.extension.thermal.ThermalPort">
+      <arrayModifier xsi:type="dvlm_cppd:StaticArrayModifier" arraySize="2"/>
+    </properties>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="thermalContactConductivity" unitName="Watt per Meter and Kelvin"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="contactMaxMeshElementSize0" unitName="No Unit" defaultValue="0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="contactMaxMeshElementSize1" unitName="No Unit" defaultValue="0"/>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
+  <categories name="Material" description="Model of a material" applicableFor="de.dlr.sc.virsat.model.extension.thermal.MaterialCollection">
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="thermalConductivity" quantityKindName="Thermal Conductivity" unitName=""/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="absorptionCoefficient" quantityKindName="Dimensionless" unitName="No Unit"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="elementEmissivity" quantityKindName="Dimensionless" unitName="No Unit"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="heatCapacity" quantityKindName="Specific Heat Capacity" unitName=""/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="density" quantityKindName="Density" unitName="Kilogram Per Cubic Meter"/>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
+  <categories name="ComponentMeshSize" description="The maximum specific size of the mesh is specified here." applicableFor="de.dlr.sc.virsat.model.extension.thermal.MeshSizes">
+    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="meshComponent" referenceType="de.dlr.sc.virsat.model.extension.thermal.ThermalElementParameters"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="maximumCharacteristicMeshLength" quantityKindName="Length" defaultValue="0"/>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
+  <categories name="ComponentResult" description="Here the results of the analyses are displayed." applicableFor="de.dlr.sc.virsat.model.extension.thermal.AnalysisResult">
+    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="component" referenceType="de.dlr.sc.virsat.model.extension.thermal.ThermalElementParameters"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="maxTemperature" quantityKindName="Temperature" unitName="Kelvin"/>
+    <properties xsi:type="dvlm_cppd:IntProperty" name="timeStepMaxTemperature" quantityKindName="Dimensionless" unitName="No Unit"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="minTemperature" quantityKindName="Temperature" unitName="Kelvin"/>
+    <properties xsi:type="dvlm_cppd:IntProperty" name="timeStepMinTemperature" quantityKindName="Dimensionless" unitName="No Unit"/>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
+  <structuralElements name="ThermalAnalysis" description="Here all general information for the analysis is stored" isApplicableForAll="true" cardinality="1"/>
+  <structuralElements name="ThermalData" description="Modeling thermal element data" isApplicableForAll="true"/>
+  <structuralElements name="SingleFaceRadiationList" description="Modeling of separate emissivities for different faces" applicableFor="de.dlr.sc.virsat.model.extension.thermal.ThermalData"/>
+  <structuralElements name="ThermalContacts" description="Here all thermal contacts are stored" applicableFor="de.dlr.sc.virsat.model.extension.thermal.ThermalAnalysis" cardinality="1"/>
+  <structuralElements name="ThermalPortList" description="Here all thermal ports are stored" applicableFor="de.dlr.sc.virsat.model.extension.thermal.ThermalContacts" cardinality="1"/>
+  <structuralElements name="ThermalInterfaceList" description="Here all thermal interfaces between ports are stored" applicableFor="de.dlr.sc.virsat.model.extension.thermal.ThermalContacts" cardinality="1"/>
+  <structuralElements name="BoundaryConditions" description="Modeling the temperature boundary conditions on the system" applicableFor="de.dlr.sc.virsat.model.extension.thermal.ThermalAnalysis" cardinality="1"/>
+  <structuralElements name="MaterialCollection" description="Materials can be created here or imported from .csv ." applicableFor="de.dlr.sc.virsat.model.extension.thermal.ThermalAnalysis" cardinality="1"/>
+  <structuralElements name="MeshSizes" description="Maximum mesh element sizes for components can be defined here." applicableFor="de.dlr.sc.virsat.model.extension.thermal.ThermalAnalysis" cardinality="1"/>
+  <structuralElements name="ThermalAnalysisResults" description="Maximum mesh element sizes for components can be defined here." applicableFor="de.dlr.sc.virsat.model.extension.thermal.ThermalAnalysis" cardinality="1"/>
+  <structuralElements name="AnalysisResult" description="Maximum mesh element sizes for components can be defined here." applicableFor="de.dlr.sc.virsat.model.extension.thermal.ThermalAnalysisResults"/>
+</dvlm_c:Concept>
