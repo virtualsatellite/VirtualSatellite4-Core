@@ -14,7 +14,7 @@
       "isCalculated" : false,
       "propertyType" : "enum",
       "override" : false,
-      "unit" : "",
+      "unitBean" : null,
       "value" : "HIGH"
    },
    "testFloatBean" : {
