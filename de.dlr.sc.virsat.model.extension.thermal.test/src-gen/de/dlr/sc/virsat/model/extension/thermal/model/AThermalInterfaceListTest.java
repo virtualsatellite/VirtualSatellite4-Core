@@ -12,9 +12,11 @@ package de.dlr.sc.virsat.model.extension.thermal.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
+
+
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import java.lang.Exception;
 
 
@@ -39,7 +41,7 @@ import org.junit.Test;
  * 
  */	
 public abstract class AThermalInterfaceListTest {
-
+	
 	protected Concept concept;
 	
 	@Before
@@ -51,8 +53,8 @@ public abstract class AThermalInterfaceListTest {
 	@After
 	public void tearDown() throws Exception {
 	}
+
 	
-		
 	// *****************************************************************
 	// * Constructor Test Cases
 	// *****************************************************************
@@ -61,22 +63,21 @@ public abstract class AThermalInterfaceListTest {
 	public void testThermalInterfaceList() {
 		ThermalInterfaceList testThermalInterfaceList = new ThermalInterfaceList();
 	
-		assertNull("There is no internal DVLM object", testThermalInterfaceList.getStructuralElementInstance());
+		assertNull("There is no internal DVLM object", testThermalInterfaceList.getTypeInstance());
 	}
 	
 	@Test
 	public void testThermalInterfaceListConcept() {
 		ThermalInterfaceList testThermalInterfaceList = new ThermalInterfaceList(concept);
 		
-		assertNotNull("There is an internal DVLM object", testThermalInterfaceList.getStructuralElementInstance());
+		assertNotNull("There is an internal DVLM object", testThermalInterfaceList.getATypeInstance());
 	}
 	
 	@Test
-	public void testThermalInterfaceListStructuralElementInstance() {
-		StructuralElementInstance testSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		ThermalInterfaceList testThermalInterfaceList = new ThermalInterfaceList(testSei);
+	public void testThermalInterfaceListCategoryAssignment() {
+		CategoryAssignment testCa = CategoriesFactory.eINSTANCE.createCategoryAssignment();
+		ThermalInterfaceList testThermalInterfaceList = new ThermalInterfaceList(testCa);
 		
-		assertEquals("DVLM object has been set as specified", testSei, testThermalInterfaceList.getStructuralElementInstance());
+		assertEquals("DVLM object has been set as specified", testCa, testThermalInterfaceList.getTypeInstance());
 	}
-	
 }

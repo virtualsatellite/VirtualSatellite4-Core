@@ -18,6 +18,50 @@
 	</extension>
 	<extension point="de.dlr.sc.virsat.model.edit.ConceptTypeFactoryCaBeanRegistration">
 		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.thermal.ComponentMeshSize"
+			caBean="de.dlr.sc.virsat.model.extension.thermal.model.ComponentMeshSize">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.thermal.MeshSizes"
+			caBean="de.dlr.sc.virsat.model.extension.thermal.model.MeshSizes">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.thermal.ThermalAnalysis"
+			caBean="de.dlr.sc.virsat.model.extension.thermal.model.ThermalAnalysis">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.thermal.ThermalData"
+			caBean="de.dlr.sc.virsat.model.extension.thermal.model.ThermalData">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.thermal.SingleFaceRadiationList"
+			caBean="de.dlr.sc.virsat.model.extension.thermal.model.SingleFaceRadiationList">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.thermal.ThermalContacts"
+			caBean="de.dlr.sc.virsat.model.extension.thermal.model.ThermalContacts">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.thermal.ThermalPortList"
+			caBean="de.dlr.sc.virsat.model.extension.thermal.model.ThermalPortList">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.thermal.ThermalInterfaceList"
+			caBean="de.dlr.sc.virsat.model.extension.thermal.model.ThermalInterfaceList">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.thermal.BoundaryConditions"
+			caBean="de.dlr.sc.virsat.model.extension.thermal.model.BoundaryConditions">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.thermal.ThermalAnalysisResults"
+			caBean="de.dlr.sc.virsat.model.extension.thermal.model.ThermalAnalysisResults">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.thermal.AnalysisResult"
+			caBean="de.dlr.sc.virsat.model.extension.thermal.model.AnalysisResult">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
 			id="de.dlr.sc.virsat.model.extension.thermal.TemperatureBoundary"
 			caBean="de.dlr.sc.virsat.model.extension.thermal.model.TemperatureBoundary">
 		</CategoryAssignmentBean>
@@ -54,58 +98,14 @@
 			caBean="de.dlr.sc.virsat.model.extension.thermal.model.Material">
 		</CategoryAssignmentBean>
 		<CategoryAssignmentBean
-			id="de.dlr.sc.virsat.model.extension.thermal.ComponentMeshSize"
-			caBean="de.dlr.sc.virsat.model.extension.thermal.model.ComponentMeshSize">
-		</CategoryAssignmentBean>
-		<CategoryAssignmentBean
 			id="de.dlr.sc.virsat.model.extension.thermal.ComponentResult"
 			caBean="de.dlr.sc.virsat.model.extension.thermal.model.ComponentResult">
 		</CategoryAssignmentBean>
 	</extension>
 	<extension point="de.dlr.sc.virsat.model.edit.ConceptTypeFactorySeiBeanRegistration">
 		<StructuralElementInstanceBean
-			id="de.dlr.sc.virsat.model.extension.thermal.ThermalAnalysis"
-			seiBean="de.dlr.sc.virsat.model.extension.thermal.model.ThermalAnalysis">
-		</StructuralElementInstanceBean>
-		<StructuralElementInstanceBean
-			id="de.dlr.sc.virsat.model.extension.thermal.ThermalData"
-			seiBean="de.dlr.sc.virsat.model.extension.thermal.model.ThermalData">
-		</StructuralElementInstanceBean>
-		<StructuralElementInstanceBean
-			id="de.dlr.sc.virsat.model.extension.thermal.SingleFaceRadiationList"
-			seiBean="de.dlr.sc.virsat.model.extension.thermal.model.SingleFaceRadiationList">
-		</StructuralElementInstanceBean>
-		<StructuralElementInstanceBean
-			id="de.dlr.sc.virsat.model.extension.thermal.ThermalContacts"
-			seiBean="de.dlr.sc.virsat.model.extension.thermal.model.ThermalContacts">
-		</StructuralElementInstanceBean>
-		<StructuralElementInstanceBean
-			id="de.dlr.sc.virsat.model.extension.thermal.ThermalPortList"
-			seiBean="de.dlr.sc.virsat.model.extension.thermal.model.ThermalPortList">
-		</StructuralElementInstanceBean>
-		<StructuralElementInstanceBean
-			id="de.dlr.sc.virsat.model.extension.thermal.ThermalInterfaceList"
-			seiBean="de.dlr.sc.virsat.model.extension.thermal.model.ThermalInterfaceList">
-		</StructuralElementInstanceBean>
-		<StructuralElementInstanceBean
-			id="de.dlr.sc.virsat.model.extension.thermal.BoundaryConditions"
-			seiBean="de.dlr.sc.virsat.model.extension.thermal.model.BoundaryConditions">
-		</StructuralElementInstanceBean>
-		<StructuralElementInstanceBean
 			id="de.dlr.sc.virsat.model.extension.thermal.MaterialCollection"
 			seiBean="de.dlr.sc.virsat.model.extension.thermal.model.MaterialCollection">
-		</StructuralElementInstanceBean>
-		<StructuralElementInstanceBean
-			id="de.dlr.sc.virsat.model.extension.thermal.MeshSizes"
-			seiBean="de.dlr.sc.virsat.model.extension.thermal.model.MeshSizes">
-		</StructuralElementInstanceBean>
-		<StructuralElementInstanceBean
-			id="de.dlr.sc.virsat.model.extension.thermal.ThermalAnalysisResults"
-			seiBean="de.dlr.sc.virsat.model.extension.thermal.model.ThermalAnalysisResults">
-		</StructuralElementInstanceBean>
-		<StructuralElementInstanceBean
-			id="de.dlr.sc.virsat.model.extension.thermal.AnalysisResult"
-			seiBean="de.dlr.sc.virsat.model.extension.thermal.model.AnalysisResult">
 		</StructuralElementInstanceBean>
 	</extension>
 	<!-- Plugin.XML Protected Region Start -->

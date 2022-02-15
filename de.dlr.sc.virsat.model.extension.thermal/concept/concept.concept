@@ -9,66 +9,74 @@
  *******************************************************************************/
 Concept de.dlr.sc.virsat.model.extension.thermal displayname "Thermal" description "Concept for modeling thermal properties" version 1.0 beta {
 	
-	StructuralElement ThermalAnalysis description "Here all general information for the analysis is stored"{
+	StructuralElement MaterialCollection description "Materials can be created here or imported from .csv" {
+		IsRootStructuralElement;
+		
+	}
+	
+	Category ComponentMeshSize description "The maximum specific size of the mesh is specified here."{
+		Reference meshComponent of Type ThermalElementParameters;
+		FloatProperty maximumCharacteristicMeshLength quantityKind "Length" default 0;
+	}
+	
+	Category MeshSizes description "Maximum mesh element sizes for components can be defined here."{
+		Type componentMeshSize[] of Category ComponentMeshSize;
+	}
+	
+	Category ThermalAnalysis description "Here all general information for the analysis is stored"{
 		Applicable For All;
 		Cardinality 1;
+		Type boundaryConditions of Category BoundaryConditions;
+		Type meshsizes of Category MeshSizes;
+		Type thermalanalysisResults of Category ThermalAnalysisResults;
+		Type analysisType of Category AnalysisType;
+		Type reports[] of Category Reports;	
 	}
 	  
 	
-	 StructuralElement ThermalData description "Modeling thermal element data"{
+	 Category ThermalData description "Modeling thermal element data"{
 		Applicable For All; //[ElementDefinition, ElementConfiguration, ElementOccurence, ElementRealization]
+		Type radiationaList of Category SingleFaceRadiationList;
+		Type thermalcontacts of Category ThermalContacts;
+		Type thermalelementparameters of Category ThermalElementParameters;
 	}
 	
 	
-	StructuralElement SingleFaceRadiationList description "Modeling of separate emissivities for different faces"{
-		Applicable For [ThermalData];
+	Category SingleFaceRadiationList description "Modeling of separate emissivities for different faces"{
+		Type faceradiation[] of Category FaceRadiation;
 	}
 	 
 	 
-	StructuralElement ThermalContacts description "Here all thermal contacts are stored"{
-		Applicable For [ThermalAnalysis];
-		Cardinality 1;
+	Category ThermalContacts description "Here all thermal contacts are stored"{
+		Type thermalportlist of Category ThermalPortList;
+		Type thermalinterfacelist of Category ThermalInterfaceList;
 	}
  
  
- 	StructuralElement ThermalPortList description "Here all thermal ports are stored"{
-		Applicable For [ThermalContacts];
-		Cardinality 1;
+ 	Category ThermalPortList description "Here all thermal ports are stored"{
+ 		Type termalports[] of Category ThermalPort;
 	}
 	
 	
-	 StructuralElement ThermalInterfaceList description "Here all thermal interfaces between ports are stored"{
-		Applicable For [ThermalContacts];
-		Cardinality 1;
+	 Category ThermalInterfaceList description "Here all thermal interfaces between ports are stored"{
+		Type thermalInterfaces[] of Category ThermalInterface;
 	}
 	
 
-	StructuralElement BoundaryConditions description "Modeling the temperature boundary conditions on the system"{
-		Applicable For [ThermalAnalysis];
-		Cardinality 1;		
-	}
-	
-	StructuralElement MaterialCollection description "Materials can be created here or imported from .csv ."{
-		Applicable For [ThermalAnalysis];
-		Cardinality 1;		
+	Category BoundaryConditions description "Modeling the temperature boundary conditions on the system"{
+		Type boundaries[] of Category TemperatureBoundary;
+		Type heatflowface[] of Category HeatFlowToFace;			
 	}	
 	
-	StructuralElement MeshSizes description "Maximum mesh element sizes for components can be defined here."{
-		Applicable For [ThermalAnalysis];
-		Cardinality 1;		
-	}	
-	
-	StructuralElement ThermalAnalysisResults description "Maximum mesh element sizes for components can be defined here."{
-		Applicable For [ThermalAnalysis];
-		Cardinality 1;		
+	Category ThermalAnalysisResults description "Maximum mesh element sizes for components can be defined here."{
+		Type analysisresults[] of Category AnalysisResult;			
 	}		
 
-	StructuralElement AnalysisResult description "Maximum mesh element sizes for components can be defined here."{
-		Applicable For [ThermalAnalysisResults];		
+	Category AnalysisResult description "Maximum mesh element sizes for components can be defined here."{
+		Type componentresult[] of Category ComponentResult;		
 	}	
 		
 	Category TemperatureBoundary description "Modeling a temperature boundary condition"{
-		Applicable For [BoundaryConditions];
 		Reference component of Type ThermalElementParameters;
 		EnumProperty boundaryType values [Face=0,Volume=1] description "BC applicable for Face or for complete volume";
 		IntProperty freeCADFaceNumberBC quantityKind "Dimensionless" description "The number of the corresponding face in the FreeCAD model";
@@ -77,7 +85,6 @@ Concept de.dlr.sc.virsat.model.extension.thermal displayname "Thermal" descripti
 	
 	
 	Category HeatFlowToFace description "Modeling an external heat flow to a face"{
-		Applicable For [BoundaryConditions];
 		Reference component of Type ThermalElementParameters;
 		IntProperty freeCADFaceNumberHF quantityKind "Dimensionless" description "The number of the corresponding face in the FreeCAD model";
 		FloatProperty heatFlow quantityKind "Heat Flow Rate per Unit Area" unit "Watt per Meter squared" description "Total magnitude of heat flow applied to the element";
@@ -85,8 +92,6 @@ Concept de.dlr.sc.virsat.model.extension.thermal displayname "Thermal" descripti
 	 
 
 	Category AnalysisType description "Static or Transient"{
-		Applicable For [ThermalAnalysis];
-		Cardinality 1;
 		EnumProperty analysisType values [Static=0,Transient=1] unit"No Unit" description "Type of the analysis to be executed";
 		FloatProperty timeStep quantityKind "Time" unit "Second" description "Desired timestep for dynamic simulation";
 		FloatProperty totalTime quantityKind "Time" unit "Second" description "Desired total time for dynamic simulation";
@@ -95,7 +100,6 @@ Concept de.dlr.sc.virsat.model.extension.thermal displayname "Thermal" descripti
 	
 	
 	Category Reports description "Analysis reports can be referenced here"{
-		Applicable For [ThermalAnalysis];
 		StringProperty reportName description "Name of the report";
 		StringProperty comment description "Comment on the report";
 		Resource report description "Upload file here";
@@ -103,8 +107,6 @@ Concept de.dlr.sc.virsat.model.extension.thermal displayname "Thermal" descripti
 
 
 	Category ThermalElementParameters description "Thermal conductivity of the element"{
-		Applicable For [ThermalData]; 
-		Cardinality 1;
 		Reference predefinedMaterial of Type Material;
 		FloatProperty initialTemperature quantityKind "Temperature" unit "Kelvin";
 		FloatProperty powerBalance quantityKind "Power" unit "Watt";
@@ -112,7 +114,6 @@ Concept de.dlr.sc.virsat.model.extension.thermal displayname "Thermal" descripti
 	
 	
 	Category FaceRadiation description "Emissivity of specific face"{
-		Applicable For [SingleFaceRadiationList];
 		IntProperty freeCADFaceNumber description "Number of face, must match with face number in FreeCAD";
 		FloatProperty faceEmissivity quantityKind "Dimensionless" unit "No Unit";
 		FloatProperty faceAbsorptivity quantityKind "Dimensionless" unit "No Unit";
@@ -120,18 +121,16 @@ Concept de.dlr.sc.virsat.model.extension.thermal displayname "Thermal" descripti
 
 
 	Category ThermalPort description "Modeling of thermal connectors" {
-		Applicable For [ThermalPortList];
 		Reference portComponent of Type ThermalElementParameters;
 	}
 
 
 	Category ThermalInterface description "Modeling of thermal interfaces"{
-		Applicable For [ThermalInterfaceList];
 		Reference Contacts [2] of Type ThermalPort;
 		FloatProperty thermalContactConductivity unit "Watt per Meter and Kelvin";
 		FloatProperty contactMaxMeshElementSize0 unit "No Unit" default 0;
 		FloatProperty contactMaxMeshElementSize1 unit "No Unit" default 0;
-	}
+	}	
 
 	Category Material description "Model of a material"{
 		Applicable For [MaterialCollection];
@@ -142,14 +141,9 @@ Concept de.dlr.sc.virsat.model.extension.thermal displayname "Thermal" descripti
 		FloatProperty density quantityKind "Density" unit "Kilogram Per Cubic Meter";
 	}
 	
-	Category ComponentMeshSize description "The maximum specific size of the mesh is specified here."{
-		Applicable For [MeshSizes];
-		Reference meshComponent of Type ThermalElementParameters;
-		FloatProperty maximumCharacteristicMeshLength quantityKind "Length" default 0;
-	}
+	
 	
 	Category ComponentResult description "Here the results of the analyses are displayed."{
-		Applicable For [AnalysisResult];
 		Reference component of Type ThermalElementParameters;
 		FloatProperty maxTemperature quantityKind "Temperature" unit "Kelvin";
 		IntProperty timeStepMaxTemperature quantityKind "Dimensionless" unit "No Unit";

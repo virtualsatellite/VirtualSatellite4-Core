@@ -12,13 +12,22 @@ package de.dlr.sc.virsat.model.extension.thermal.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
+import javax.xml.bind.annotation.XmlAccessorType;
+import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
-import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
+import javax.xml.bind.annotation.XmlRootElement;
+import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
+import de.dlr.sc.virsat.model.concept.list.IBeanList;
+import de.dlr.sc.virsat.model.dvlm.categories.Category;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
+import javax.xml.bind.annotation.XmlAccessType;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyBeanList;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyInstanceList;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
+import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
+import javax.xml.bind.annotation.XmlElement;
 
 
 // *****************************************************************
@@ -33,45 +42,71 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
  * Maximum mesh element sizes for components can be defined here.
  * 
  */	
-public abstract class AAnalysisResult extends ABeanStructuralElementInstance implements IBeanStructuralElementInstance {
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
+public abstract class AAnalysisResult extends GenericCategory implements IBeanCategoryAssignment {
 
-	public static final String FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME = "de.dlr.sc.virsat.model.extension.thermal.AnalysisResult";
+	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.thermal.AnalysisResult";
 	
 	/**
- 	* Call this method to get the full qualified name of the underlying Structural Element
- 	* @return The FQN of the StructuralElement as String
+ 	* Call this method to get the full qualified name of the underlying category
+ 	* @return The FQN of the category as String
  	*/
-	public String getFullQualifiedSturcturalElementName() {
-		return FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME;
+	public String getFullQualifiedCategoryName() {
+		return FULL_QUALIFIED_CATEGORY_NAME;
 	}
+	
+	// property name constants
+	public static final String PROPERTY_COMPONENTRESULT = "componentresult";
+	
+	
 	
 	// *****************************************************************
 	// * Class Constructors
 	// *****************************************************************
 	
-	/**
-	 * Constructor of Concept Class
-	 */
 	public AAnalysisResult() {
 	}
 	
-	/**
-	 * Constructor of Concept Class
-	 * @param concept The concept from where to initialize
-	 */
 	public AAnalysisResult(Concept concept) {
-		StructuralElement seFromActiveConcept = ActiveConceptHelper.getStructuralElement(concept, "AnalysisResult");
-		StructuralElementInstance sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		sei.setType(seFromActiveConcept);
-		setStructuralElementInstance(sei);
+		Category categoryFromActiveCategories = ActiveConceptHelper.getCategory(concept, "AnalysisResult");
+		CategoryAssignment categoryAssignement = new CategoryInstantiator().generateInstance(categoryFromActiveCategories, "AnalysisResult");
+		setTypeInstance(categoryAssignement);
 	}
 	
-	/**
-	 * Constructor of Concept Class that can be initialized manually by a given StructuralElementInstance
-	 * @param sei The StructuralElementInstance to be used for background initialization of the StructuralElementInstance bean
-	 */
-	public AAnalysisResult(StructuralElementInstance sei) {
-		setStructuralElementInstance(sei);
+	public AAnalysisResult(CategoryAssignment categoryAssignement) {
+		setTypeInstance(categoryAssignement);
+	}
+	
+	
+	// *****************************************************************
+	// * Array Attribute: componentresult
+	// *****************************************************************
+	private IBeanList<ComponentResult> componentresult = new TypeSafeComposedPropertyInstanceList<>(ComponentResult.class);
+	
+	private void safeAccessComponentresult() {
+		if (componentresult.getArrayInstance() == null) {
+			componentresult.setArrayInstance((ArrayInstance) helper.getPropertyInstance("componentresult"));
+		}
+	}
+	
+	public IBeanList<ComponentResult> getComponentresult() {
+		safeAccessComponentresult();
+		return componentresult;
+	}
+	
+	private IBeanList<BeanPropertyComposed<ComponentResult>> componentresultBean = new TypeSafeComposedPropertyBeanList<>();
+	
+	private void safeAccessComponentresultBean() {
+		if (componentresultBean.getArrayInstance() == null) {
+			componentresultBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("componentresult"));
+		}
+	}
+	
+	@XmlElement
+	public IBeanList<BeanPropertyComposed<ComponentResult>> getComponentresultBean() {
+		safeAccessComponentresultBean();
+		return componentresultBean;
 	}
 	
 	

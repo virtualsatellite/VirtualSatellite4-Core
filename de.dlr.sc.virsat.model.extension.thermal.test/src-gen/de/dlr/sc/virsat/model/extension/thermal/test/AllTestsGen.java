@@ -23,10 +23,10 @@ import de.dlr.sc.virsat.model.extension.thermal.migrator.Migrator1v0Test;
 import de.dlr.sc.virsat.model.extension.thermal.model.ReportsTest;
 import de.dlr.sc.virsat.model.extension.thermal.model.ComponentResultTest;
 import de.dlr.sc.virsat.model.extension.thermal.validator.ThermalValidatorTest;
-import de.dlr.sc.virsat.model.extension.thermal.model.MaterialTest;
 import de.dlr.sc.virsat.model.extension.thermal.model.ThermalAnalysisTest;
-import de.dlr.sc.virsat.model.extension.thermal.model.AnalysisTypeTest;
+import de.dlr.sc.virsat.model.extension.thermal.model.MaterialTest;
 import de.dlr.sc.virsat.model.extension.thermal.model.ComponentMeshSizeTest;
+import de.dlr.sc.virsat.model.extension.thermal.model.AnalysisTypeTest;
 import de.dlr.sc.virsat.model.extension.thermal.model.HeatFlowToFaceTest;
 import de.dlr.sc.virsat.model.extension.thermal.model.ThermalInterfaceTest;
 import de.dlr.sc.virsat.model.extension.thermal.model.ThermalElementParametersTest;
@@ -36,12 +36,12 @@ import de.dlr.sc.virsat.model.extension.thermal.model.ThermalPortListTest;
 import de.dlr.sc.virsat.model.extension.thermal.model.ThermalInterfaceListTest;
 import de.dlr.sc.virsat.model.extension.thermal.model.SingleFaceRadiationListTest;
 import de.dlr.sc.virsat.model.extension.thermal.model.ThermalAnalysisResultsTest;
-import de.dlr.sc.virsat.model.extension.thermal.model.TemperatureBoundaryTest;
 import de.dlr.sc.virsat.model.extension.thermal.model.AnalysisResultTest;
-import de.dlr.sc.virsat.model.extension.thermal.model.ThermalPortTest;
-import de.dlr.sc.virsat.model.extension.thermal.model.BoundaryConditionsTest;
-import de.dlr.sc.virsat.model.extension.thermal.model.MaterialCollectionTest;
+import de.dlr.sc.virsat.model.extension.thermal.model.TemperatureBoundaryTest;
 import de.dlr.sc.virsat.model.extension.thermal.model.MeshSizesTest;
+import de.dlr.sc.virsat.model.extension.thermal.model.BoundaryConditionsTest;
+import de.dlr.sc.virsat.model.extension.thermal.model.ThermalPortTest;
+import de.dlr.sc.virsat.model.extension.thermal.model.MaterialCollectionTest;
 import de.dlr.sc.virsat.model.extension.thermal.model.ThermalDataTest;
 
 /**
@@ -50,6 +50,17 @@ import de.dlr.sc.virsat.model.extension.thermal.model.ThermalDataTest;
 @RunWith(Suite.class)
 
 @SuiteClasses({
+	ComponentMeshSizeTest.class,
+	MeshSizesTest.class,
+	ThermalAnalysisTest.class,
+	ThermalDataTest.class,
+	SingleFaceRadiationListTest.class,
+	ThermalContactsTest.class,
+	ThermalPortListTest.class,
+	ThermalInterfaceListTest.class,
+	BoundaryConditionsTest.class,
+	ThermalAnalysisResultsTest.class,
+	AnalysisResultTest.class,
 	TemperatureBoundaryTest.class,
 	HeatFlowToFaceTest.class,
 	AnalysisTypeTest.class,
@@ -59,19 +70,8 @@ import de.dlr.sc.virsat.model.extension.thermal.model.ThermalDataTest;
 	ThermalPortTest.class,
 	ThermalInterfaceTest.class,
 	MaterialTest.class,
-	ComponentMeshSizeTest.class,
 	ComponentResultTest.class,
-	ThermalAnalysisTest.class,
-	ThermalDataTest.class,
-	SingleFaceRadiationListTest.class,
-	ThermalContactsTest.class,
-	ThermalPortListTest.class,
-	ThermalInterfaceListTest.class,
-	BoundaryConditionsTest.class,
 	MaterialCollectionTest.class,
-	MeshSizesTest.class,
-	ThermalAnalysisResultsTest.class,
-	AnalysisResultTest.class,
 	Migrator1v0Test.class,
 	ThermalValidatorTest.class,
 				})

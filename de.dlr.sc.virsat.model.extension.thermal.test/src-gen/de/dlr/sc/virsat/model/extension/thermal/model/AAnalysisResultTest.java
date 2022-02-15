@@ -12,9 +12,11 @@ package de.dlr.sc.virsat.model.extension.thermal.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
+
+
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import java.lang.Exception;
 
 
@@ -39,7 +41,7 @@ import org.junit.Test;
  * 
  */	
 public abstract class AAnalysisResultTest {
-
+	
 	protected Concept concept;
 	
 	@Before
@@ -51,8 +53,8 @@ public abstract class AAnalysisResultTest {
 	@After
 	public void tearDown() throws Exception {
 	}
+
 	
-		
 	// *****************************************************************
 	// * Constructor Test Cases
 	// *****************************************************************
@@ -61,22 +63,21 @@ public abstract class AAnalysisResultTest {
 	public void testAnalysisResult() {
 		AnalysisResult testAnalysisResult = new AnalysisResult();
 	
-		assertNull("There is no internal DVLM object", testAnalysisResult.getStructuralElementInstance());
+		assertNull("There is no internal DVLM object", testAnalysisResult.getTypeInstance());
 	}
 	
 	@Test
 	public void testAnalysisResultConcept() {
 		AnalysisResult testAnalysisResult = new AnalysisResult(concept);
 		
-		assertNotNull("There is an internal DVLM object", testAnalysisResult.getStructuralElementInstance());
+		assertNotNull("There is an internal DVLM object", testAnalysisResult.getATypeInstance());
 	}
 	
 	@Test
-	public void testAnalysisResultStructuralElementInstance() {
-		StructuralElementInstance testSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		AnalysisResult testAnalysisResult = new AnalysisResult(testSei);
+	public void testAnalysisResultCategoryAssignment() {
+		CategoryAssignment testCa = CategoriesFactory.eINSTANCE.createCategoryAssignment();
+		AnalysisResult testAnalysisResult = new AnalysisResult(testCa);
 		
-		assertEquals("DVLM object has been set as specified", testSei, testAnalysisResult.getStructuralElementInstance());
+		assertEquals("DVLM object has been set as specified", testCa, testAnalysisResult.getTypeInstance());
 	}
-	
 }

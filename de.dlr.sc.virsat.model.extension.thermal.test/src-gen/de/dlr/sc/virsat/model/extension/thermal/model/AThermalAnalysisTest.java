@@ -12,9 +12,11 @@ package de.dlr.sc.virsat.model.extension.thermal.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
+
+
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import java.lang.Exception;
 
 
@@ -39,7 +41,7 @@ import org.junit.Test;
  * 
  */	
 public abstract class AThermalAnalysisTest {
-
+	
 	protected Concept concept;
 	
 	@Before
@@ -51,8 +53,8 @@ public abstract class AThermalAnalysisTest {
 	@After
 	public void tearDown() throws Exception {
 	}
+
 	
-		
 	// *****************************************************************
 	// * Constructor Test Cases
 	// *****************************************************************
@@ -61,22 +63,21 @@ public abstract class AThermalAnalysisTest {
 	public void testThermalAnalysis() {
 		ThermalAnalysis testThermalAnalysis = new ThermalAnalysis();
 	
-		assertNull("There is no internal DVLM object", testThermalAnalysis.getStructuralElementInstance());
+		assertNull("There is no internal DVLM object", testThermalAnalysis.getTypeInstance());
 	}
 	
 	@Test
 	public void testThermalAnalysisConcept() {
 		ThermalAnalysis testThermalAnalysis = new ThermalAnalysis(concept);
 		
-		assertNotNull("There is an internal DVLM object", testThermalAnalysis.getStructuralElementInstance());
+		assertNotNull("There is an internal DVLM object", testThermalAnalysis.getATypeInstance());
 	}
 	
 	@Test
-	public void testThermalAnalysisStructuralElementInstance() {
-		StructuralElementInstance testSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		ThermalAnalysis testThermalAnalysis = new ThermalAnalysis(testSei);
+	public void testThermalAnalysisCategoryAssignment() {
+		CategoryAssignment testCa = CategoriesFactory.eINSTANCE.createCategoryAssignment();
+		ThermalAnalysis testThermalAnalysis = new ThermalAnalysis(testCa);
 		
-		assertEquals("DVLM object has been set as specified", testSei, testThermalAnalysis.getStructuralElementInstance());
+		assertEquals("DVLM object has been set as specified", testCa, testThermalAnalysis.getTypeInstance());
 	}
-	
 }

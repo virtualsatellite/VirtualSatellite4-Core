@@ -12,9 +12,11 @@ package de.dlr.sc.virsat.model.extension.thermal.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
+
+
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import java.lang.Exception;
 
 
@@ -39,7 +41,7 @@ import org.junit.Test;
  * 
  */	
 public abstract class ABoundaryConditionsTest {
-
+	
 	protected Concept concept;
 	
 	@Before
@@ -51,8 +53,8 @@ public abstract class ABoundaryConditionsTest {
 	@After
 	public void tearDown() throws Exception {
 	}
+
 	
-		
 	// *****************************************************************
 	// * Constructor Test Cases
 	// *****************************************************************
@@ -61,22 +63,21 @@ public abstract class ABoundaryConditionsTest {
 	public void testBoundaryConditions() {
 		BoundaryConditions testBoundaryConditions = new BoundaryConditions();
 	
-		assertNull("There is no internal DVLM object", testBoundaryConditions.getStructuralElementInstance());
+		assertNull("There is no internal DVLM object", testBoundaryConditions.getTypeInstance());
 	}
 	
 	@Test
 	public void testBoundaryConditionsConcept() {
 		BoundaryConditions testBoundaryConditions = new BoundaryConditions(concept);
 		
-		assertNotNull("There is an internal DVLM object", testBoundaryConditions.getStructuralElementInstance());
+		assertNotNull("There is an internal DVLM object", testBoundaryConditions.getATypeInstance());
 	}
 	
 	@Test
-	public void testBoundaryConditionsStructuralElementInstance() {
-		StructuralElementInstance testSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		BoundaryConditions testBoundaryConditions = new BoundaryConditions(testSei);
+	public void testBoundaryConditionsCategoryAssignment() {
+		CategoryAssignment testCa = CategoriesFactory.eINSTANCE.createCategoryAssignment();
+		BoundaryConditions testBoundaryConditions = new BoundaryConditions(testCa);
 		
-		assertEquals("DVLM object has been set as specified", testSei, testBoundaryConditions.getStructuralElementInstance());
+		assertEquals("DVLM object has been set as specified", testCa, testBoundaryConditions.getTypeInstance());
 	}
-	
 }

@@ -35,7 +35,7 @@ import org.junit.Test;
  * 
  * Don't Manually modify this class
  * 
- * Materials can be created here or imported from .csv .
+ * Materials can be created here or imported from .csv
  * 
  */	
 public abstract class AMaterialCollectionTest {

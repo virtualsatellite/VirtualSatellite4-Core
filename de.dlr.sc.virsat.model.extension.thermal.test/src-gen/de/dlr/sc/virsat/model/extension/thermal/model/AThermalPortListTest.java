@@ -12,9 +12,11 @@ package de.dlr.sc.virsat.model.extension.thermal.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
+
+
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import java.lang.Exception;
 
 
@@ -39,7 +41,7 @@ import org.junit.Test;
  * 
  */	
 public abstract class AThermalPortListTest {
-
+	
 	protected Concept concept;
 	
 	@Before
@@ -51,8 +53,8 @@ public abstract class AThermalPortListTest {
 	@After
 	public void tearDown() throws Exception {
 	}
+
 	
-		
 	// *****************************************************************
 	// * Constructor Test Cases
 	// *****************************************************************
@@ -61,22 +63,21 @@ public abstract class AThermalPortListTest {
 	public void testThermalPortList() {
 		ThermalPortList testThermalPortList = new ThermalPortList();
 	
-		assertNull("There is no internal DVLM object", testThermalPortList.getStructuralElementInstance());
+		assertNull("There is no internal DVLM object", testThermalPortList.getTypeInstance());
 	}
 	
 	@Test
 	public void testThermalPortListConcept() {
 		ThermalPortList testThermalPortList = new ThermalPortList(concept);
 		
-		assertNotNull("There is an internal DVLM object", testThermalPortList.getStructuralElementInstance());
+		assertNotNull("There is an internal DVLM object", testThermalPortList.getATypeInstance());
 	}
 	
 	@Test
-	public void testThermalPortListStructuralElementInstance() {
-		StructuralElementInstance testSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		ThermalPortList testThermalPortList = new ThermalPortList(testSei);
+	public void testThermalPortListCategoryAssignment() {
+		CategoryAssignment testCa = CategoriesFactory.eINSTANCE.createCategoryAssignment();
+		ThermalPortList testThermalPortList = new ThermalPortList(testCa);
 		
-		assertEquals("DVLM object has been set as specified", testSei, testThermalPortList.getStructuralElementInstance());
+		assertEquals("DVLM object has been set as specified", testCa, testThermalPortList.getTypeInstance());
 	}
-	
 }

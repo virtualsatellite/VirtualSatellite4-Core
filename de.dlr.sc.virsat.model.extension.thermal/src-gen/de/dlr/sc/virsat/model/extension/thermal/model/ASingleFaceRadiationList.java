@@ -12,13 +12,22 @@ package de.dlr.sc.virsat.model.extension.thermal.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
+import javax.xml.bind.annotation.XmlAccessorType;
+import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
-import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
+import javax.xml.bind.annotation.XmlRootElement;
+import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
+import de.dlr.sc.virsat.model.concept.list.IBeanList;
+import de.dlr.sc.virsat.model.dvlm.categories.Category;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
+import javax.xml.bind.annotation.XmlAccessType;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyBeanList;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyInstanceList;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
+import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
+import javax.xml.bind.annotation.XmlElement;
 
 
 // *****************************************************************
@@ -33,45 +42,71 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
  * Modeling of separate emissivities for different faces
  * 
  */	
-public abstract class ASingleFaceRadiationList extends ABeanStructuralElementInstance implements IBeanStructuralElementInstance {
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
+public abstract class ASingleFaceRadiationList extends GenericCategory implements IBeanCategoryAssignment {
 
-	public static final String FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME = "de.dlr.sc.virsat.model.extension.thermal.SingleFaceRadiationList";
+	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.thermal.SingleFaceRadiationList";
 	
 	/**
- 	* Call this method to get the full qualified name of the underlying Structural Element
- 	* @return The FQN of the StructuralElement as String
+ 	* Call this method to get the full qualified name of the underlying category
+ 	* @return The FQN of the category as String
  	*/
-	public String getFullQualifiedSturcturalElementName() {
-		return FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME;
+	public String getFullQualifiedCategoryName() {
+		return FULL_QUALIFIED_CATEGORY_NAME;
 	}
+	
+	// property name constants
+	public static final String PROPERTY_FACERADIATION = "faceradiation";
+	
+	
 	
 	// *****************************************************************
 	// * Class Constructors
 	// *****************************************************************
 	
-	/**
-	 * Constructor of Concept Class
-	 */
 	public ASingleFaceRadiationList() {
 	}
 	
-	/**
-	 * Constructor of Concept Class
-	 * @param concept The concept from where to initialize
-	 */
 	public ASingleFaceRadiationList(Concept concept) {
-		StructuralElement seFromActiveConcept = ActiveConceptHelper.getStructuralElement(concept, "SingleFaceRadiationList");
-		StructuralElementInstance sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		sei.setType(seFromActiveConcept);
-		setStructuralElementInstance(sei);
+		Category categoryFromActiveCategories = ActiveConceptHelper.getCategory(concept, "SingleFaceRadiationList");
+		CategoryAssignment categoryAssignement = new CategoryInstantiator().generateInstance(categoryFromActiveCategories, "SingleFaceRadiationList");
+		setTypeInstance(categoryAssignement);
 	}
 	
-	/**
-	 * Constructor of Concept Class that can be initialized manually by a given StructuralElementInstance
-	 * @param sei The StructuralElementInstance to be used for background initialization of the StructuralElementInstance bean
-	 */
-	public ASingleFaceRadiationList(StructuralElementInstance sei) {
-		setStructuralElementInstance(sei);
+	public ASingleFaceRadiationList(CategoryAssignment categoryAssignement) {
+		setTypeInstance(categoryAssignement);
+	}
+	
+	
+	// *****************************************************************
+	// * Array Attribute: faceradiation
+	// *****************************************************************
+	private IBeanList<FaceRadiation> faceradiation = new TypeSafeComposedPropertyInstanceList<>(FaceRadiation.class);
+	
+	private void safeAccessFaceradiation() {
+		if (faceradiation.getArrayInstance() == null) {
+			faceradiation.setArrayInstance((ArrayInstance) helper.getPropertyInstance("faceradiation"));
+		}
+	}
+	
+	public IBeanList<FaceRadiation> getFaceradiation() {
+		safeAccessFaceradiation();
+		return faceradiation;
+	}
+	
+	private IBeanList<BeanPropertyComposed<FaceRadiation>> faceradiationBean = new TypeSafeComposedPropertyBeanList<>();
+	
+	private void safeAccessFaceradiationBean() {
+		if (faceradiationBean.getArrayInstance() == null) {
+			faceradiationBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("faceradiation"));
+		}
+	}
+	
+	@XmlElement
+	public IBeanList<BeanPropertyComposed<FaceRadiation>> getFaceradiationBean() {
+		safeAccessFaceradiationBean();
+		return faceradiationBean;
 	}
 	
 	

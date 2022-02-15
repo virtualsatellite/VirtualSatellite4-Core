@@ -30,7 +30,7 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
  * 
  * Don't Manually modify this class
  * 
- * Materials can be created here or imported from .csv .
+ * Materials can be created here or imported from .csv
  * 
  */	
 public abstract class AMaterialCollection extends ABeanStructuralElementInstance implements IBeanStructuralElementInstance {

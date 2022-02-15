@@ -12,13 +12,22 @@ package de.dlr.sc.virsat.model.extension.thermal.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
+import javax.xml.bind.annotation.XmlAccessorType;
+import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
-import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
+import javax.xml.bind.annotation.XmlRootElement;
+import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
+import de.dlr.sc.virsat.model.concept.list.IBeanList;
+import de.dlr.sc.virsat.model.dvlm.categories.Category;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
+import javax.xml.bind.annotation.XmlAccessType;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyBeanList;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyInstanceList;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
+import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
+import javax.xml.bind.annotation.XmlElement;
 
 
 // *****************************************************************
@@ -33,45 +42,71 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
  * Here all thermal ports are stored
  * 
  */	
-public abstract class AThermalPortList extends ABeanStructuralElementInstance implements IBeanStructuralElementInstance {
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
+public abstract class AThermalPortList extends GenericCategory implements IBeanCategoryAssignment {
 
-	public static final String FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME = "de.dlr.sc.virsat.model.extension.thermal.ThermalPortList";
+	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.thermal.ThermalPortList";
 	
 	/**
- 	* Call this method to get the full qualified name of the underlying Structural Element
- 	* @return The FQN of the StructuralElement as String
+ 	* Call this method to get the full qualified name of the underlying category
+ 	* @return The FQN of the category as String
  	*/
-	public String getFullQualifiedSturcturalElementName() {
-		return FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME;
+	public String getFullQualifiedCategoryName() {
+		return FULL_QUALIFIED_CATEGORY_NAME;
 	}
+	
+	// property name constants
+	public static final String PROPERTY_TERMALPORTS = "termalports";
+	
+	
 	
 	// *****************************************************************
 	// * Class Constructors
 	// *****************************************************************
 	
-	/**
-	 * Constructor of Concept Class
-	 */
 	public AThermalPortList() {
 	}
 	
-	/**
-	 * Constructor of Concept Class
-	 * @param concept The concept from where to initialize
-	 */
 	public AThermalPortList(Concept concept) {
-		StructuralElement seFromActiveConcept = ActiveConceptHelper.getStructuralElement(concept, "ThermalPortList");
-		StructuralElementInstance sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		sei.setType(seFromActiveConcept);
-		setStructuralElementInstance(sei);
+		Category categoryFromActiveCategories = ActiveConceptHelper.getCategory(concept, "ThermalPortList");
+		CategoryAssignment categoryAssignement = new CategoryInstantiator().generateInstance(categoryFromActiveCategories, "ThermalPortList");
+		setTypeInstance(categoryAssignement);
 	}
 	
-	/**
-	 * Constructor of Concept Class that can be initialized manually by a given StructuralElementInstance
-	 * @param sei The StructuralElementInstance to be used for background initialization of the StructuralElementInstance bean
-	 */
-	public AThermalPortList(StructuralElementInstance sei) {
-		setStructuralElementInstance(sei);
+	public AThermalPortList(CategoryAssignment categoryAssignement) {
+		setTypeInstance(categoryAssignement);
+	}
+	
+	
+	// *****************************************************************
+	// * Array Attribute: termalports
+	// *****************************************************************
+	private IBeanList<ThermalPort> termalports = new TypeSafeComposedPropertyInstanceList<>(ThermalPort.class);
+	
+	private void safeAccessTermalports() {
+		if (termalports.getArrayInstance() == null) {
+			termalports.setArrayInstance((ArrayInstance) helper.getPropertyInstance("termalports"));
+		}
+	}
+	
+	public IBeanList<ThermalPort> getTermalports() {
+		safeAccessTermalports();
+		return termalports;
+	}
+	
+	private IBeanList<BeanPropertyComposed<ThermalPort>> termalportsBean = new TypeSafeComposedPropertyBeanList<>();
+	
+	private void safeAccessTermalportsBean() {
+		if (termalportsBean.getArrayInstance() == null) {
+			termalportsBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("termalports"));
+		}
+	}
+	
+	@XmlElement
+	public IBeanList<BeanPropertyComposed<ThermalPort>> getTermalportsBean() {
+		safeAccessTermalportsBean();
+		return termalportsBean;
 	}
 	
 	

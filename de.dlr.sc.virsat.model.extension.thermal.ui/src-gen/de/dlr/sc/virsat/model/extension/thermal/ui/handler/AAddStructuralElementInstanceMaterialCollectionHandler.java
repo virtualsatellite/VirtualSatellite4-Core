@@ -18,7 +18,7 @@ import de.dlr.sc.virsat.project.ui.transactional.handler.ATransactionalAddStruct
  * 
  * Don't Manually modify this class
  * 
- * Materials can be created here or imported from .csv .
+ * Materials can be created here or imported from .csv
  * 
  */	
 public abstract class  AAddStructuralElementInstanceMaterialCollectionHandler extends ATransactionalAddStructuralElementHandler implements IHandler {

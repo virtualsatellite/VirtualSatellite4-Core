@@ -12,9 +12,11 @@ package de.dlr.sc.virsat.model.extension.thermal.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
+
+
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import java.lang.Exception;
 
 
@@ -39,7 +41,7 @@ import org.junit.Test;
  * 
  */	
 public abstract class AThermalContactsTest {
-
+	
 	protected Concept concept;
 	
 	@Before
@@ -51,8 +53,8 @@ public abstract class AThermalContactsTest {
 	@After
 	public void tearDown() throws Exception {
 	}
+
 	
-		
 	// *****************************************************************
 	// * Constructor Test Cases
 	// *****************************************************************
@@ -61,22 +63,21 @@ public abstract class AThermalContactsTest {
 	public void testThermalContacts() {
 		ThermalContacts testThermalContacts = new ThermalContacts();
 	
-		assertNull("There is no internal DVLM object", testThermalContacts.getStructuralElementInstance());
+		assertNull("There is no internal DVLM object", testThermalContacts.getTypeInstance());
 	}
 	
 	@Test
 	public void testThermalContactsConcept() {
 		ThermalContacts testThermalContacts = new ThermalContacts(concept);
 		
-		assertNotNull("There is an internal DVLM object", testThermalContacts.getStructuralElementInstance());
+		assertNotNull("There is an internal DVLM object", testThermalContacts.getATypeInstance());
 	}
 	
 	@Test
-	public void testThermalContactsStructuralElementInstance() {
-		StructuralElementInstance testSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		ThermalContacts testThermalContacts = new ThermalContacts(testSei);
+	public void testThermalContactsCategoryAssignment() {
+		CategoryAssignment testCa = CategoriesFactory.eINSTANCE.createCategoryAssignment();
+		ThermalContacts testThermalContacts = new ThermalContacts(testCa);
 		
-		assertEquals("DVLM object has been set as specified", testSei, testThermalContacts.getStructuralElementInstance());
+		assertEquals("DVLM object has been set as specified", testCa, testThermalContacts.getTypeInstance());
 	}
-	
 }

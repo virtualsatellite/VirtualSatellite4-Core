@@ -12,8 +12,8 @@ package de.dlr.sc.virsat.model.extension.thermal.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 
 // *****************************************************************
 // * Class Declaration
@@ -27,7 +27,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
  * Modeling thermal element data
  * 
  */
-public class ThermalData extends AThermalData {
+public  class ThermalData extends AThermalData {
 	
 	/**
 	 * Constructor of Concept Class
@@ -37,18 +37,19 @@ public class ThermalData extends AThermalData {
 	}
 
 	/**
- 	 * Constructor of Concept Class
- 	 * @param concept The concept from where to initialize
- 	 */
+	 * Constructor of Concept Class which will instantiate 
+	 * a CategoryAssignment in the background from the given concept
+	 * @param concept the concept where it will find the correct Category to instantiate from
+	 */
 	public ThermalData(Concept concept) {
 		super(concept);
 	}	
 
 	/**
- 	 * Constructor of Concept Class that can be initialized manually by a given StructuralElementInstance
-	 * @param sei The StructuralElementInstance to be used for background initialization of the StructuralElementInstance bean
+	 * Constructor of Concept Class that can be initialized manually by a given Category Assignment
+	 * @param categoryAssignment The category Assignment to be used for background initialization of the Category bean
 	 */
-	public ThermalData(StructuralElementInstance sei) {
-		super(sei);
+	public ThermalData(CategoryAssignment categoryAssignment) {
+		super(categoryAssignment);
 	}
 }

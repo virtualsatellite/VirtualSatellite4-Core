@@ -12,13 +12,19 @@ package de.dlr.sc.virsat.model.extension.thermal.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
+import javax.xml.bind.annotation.XmlAccessorType;
+import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
-import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
+import javax.xml.bind.annotation.XmlRootElement;
+import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
+import de.dlr.sc.virsat.model.dvlm.categories.Category;
+import javax.xml.bind.annotation.XmlAccessType;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
+import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
+import javax.xml.bind.annotation.XmlElement;
 
 
 // *****************************************************************
@@ -33,45 +39,88 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
  * Here all thermal contacts are stored
  * 
  */	
-public abstract class AThermalContacts extends ABeanStructuralElementInstance implements IBeanStructuralElementInstance {
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
+public abstract class AThermalContacts extends GenericCategory implements IBeanCategoryAssignment {
 
-	public static final String FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME = "de.dlr.sc.virsat.model.extension.thermal.ThermalContacts";
+	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.thermal.ThermalContacts";
 	
 	/**
- 	* Call this method to get the full qualified name of the underlying Structural Element
- 	* @return The FQN of the StructuralElement as String
+ 	* Call this method to get the full qualified name of the underlying category
+ 	* @return The FQN of the category as String
  	*/
-	public String getFullQualifiedSturcturalElementName() {
-		return FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME;
+	public String getFullQualifiedCategoryName() {
+		return FULL_QUALIFIED_CATEGORY_NAME;
 	}
+	
+	// property name constants
+	public static final String PROPERTY_THERMALPORTLIST = "thermalportlist";
+	public static final String PROPERTY_THERMALINTERFACELIST = "thermalinterfacelist";
+	
+	
 	
 	// *****************************************************************
 	// * Class Constructors
 	// *****************************************************************
 	
-	/**
-	 * Constructor of Concept Class
-	 */
 	public AThermalContacts() {
 	}
 	
-	/**
-	 * Constructor of Concept Class
-	 * @param concept The concept from where to initialize
-	 */
 	public AThermalContacts(Concept concept) {
-		StructuralElement seFromActiveConcept = ActiveConceptHelper.getStructuralElement(concept, "ThermalContacts");
-		StructuralElementInstance sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		sei.setType(seFromActiveConcept);
-		setStructuralElementInstance(sei);
+		Category categoryFromActiveCategories = ActiveConceptHelper.getCategory(concept, "ThermalContacts");
+		CategoryAssignment categoryAssignement = new CategoryInstantiator().generateInstance(categoryFromActiveCategories, "ThermalContacts");
+		setTypeInstance(categoryAssignement);
 	}
 	
-	/**
-	 * Constructor of Concept Class that can be initialized manually by a given StructuralElementInstance
-	 * @param sei The StructuralElementInstance to be used for background initialization of the StructuralElementInstance bean
-	 */
-	public AThermalContacts(StructuralElementInstance sei) {
-		setStructuralElementInstance(sei);
+	public AThermalContacts(CategoryAssignment categoryAssignement) {
+		setTypeInstance(categoryAssignement);
+	}
+	
+	
+	// *****************************************************************
+	// * Attribute: thermalportlist
+	// *****************************************************************
+	private BeanPropertyComposed<ThermalPortList> thermalportlist = new BeanPropertyComposed<>();
+	
+	private void safeAccessThermalportlist() {
+		if (thermalportlist.getTypeInstance() == null) {
+			ComposedPropertyInstance propertyInstance = (ComposedPropertyInstance) helper.getPropertyInstance("thermalportlist");
+			thermalportlist.setTypeInstance(propertyInstance);
+		}
+	}
+	
+	@XmlElement(nillable = true)
+	public ThermalPortList getThermalportlist() {
+		safeAccessThermalportlist();
+		return thermalportlist.getValue();
+	}
+	
+	public BeanPropertyComposed<ThermalPortList> getThermalportlistBean() {
+		safeAccessThermalportlist();
+		return thermalportlist;
+	}
+	
+	// *****************************************************************
+	// * Attribute: thermalinterfacelist
+	// *****************************************************************
+	private BeanPropertyComposed<ThermalInterfaceList> thermalinterfacelist = new BeanPropertyComposed<>();
+	
+	private void safeAccessThermalinterfacelist() {
+		if (thermalinterfacelist.getTypeInstance() == null) {
+			ComposedPropertyInstance propertyInstance = (ComposedPropertyInstance) helper.getPropertyInstance("thermalinterfacelist");
+			thermalinterfacelist.setTypeInstance(propertyInstance);
+		}
+	}
+	
+	@XmlElement(nillable = true)
+	public ThermalInterfaceList getThermalinterfacelist() {
+		safeAccessThermalinterfacelist();
+		return thermalinterfacelist.getValue();
+	}
+	
+	public BeanPropertyComposed<ThermalInterfaceList> getThermalinterfacelistBean() {
+		safeAccessThermalinterfacelist();
+		return thermalinterfacelist;
 	}
 	
 	

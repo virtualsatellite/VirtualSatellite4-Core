@@ -12,9 +12,11 @@ package de.dlr.sc.virsat.model.extension.thermal.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
+
+
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import java.lang.Exception;
 
 
@@ -39,7 +41,7 @@ import org.junit.Test;
  * 
  */	
 public abstract class ASingleFaceRadiationListTest {
-
+	
 	protected Concept concept;
 	
 	@Before
@@ -51,8 +53,8 @@ public abstract class ASingleFaceRadiationListTest {
 	@After
 	public void tearDown() throws Exception {
 	}
+
 	
-		
 	// *****************************************************************
 	// * Constructor Test Cases
 	// *****************************************************************
@@ -61,22 +63,21 @@ public abstract class ASingleFaceRadiationListTest {
 	public void testSingleFaceRadiationList() {
 		SingleFaceRadiationList testSingleFaceRadiationList = new SingleFaceRadiationList();
 	
-		assertNull("There is no internal DVLM object", testSingleFaceRadiationList.getStructuralElementInstance());
+		assertNull("There is no internal DVLM object", testSingleFaceRadiationList.getTypeInstance());
 	}
 	
 	@Test
 	public void testSingleFaceRadiationListConcept() {
 		SingleFaceRadiationList testSingleFaceRadiationList = new SingleFaceRadiationList(concept);
 		
-		assertNotNull("There is an internal DVLM object", testSingleFaceRadiationList.getStructuralElementInstance());
+		assertNotNull("There is an internal DVLM object", testSingleFaceRadiationList.getATypeInstance());
 	}
 	
 	@Test
-	public void testSingleFaceRadiationListStructuralElementInstance() {
-		StructuralElementInstance testSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		SingleFaceRadiationList testSingleFaceRadiationList = new SingleFaceRadiationList(testSei);
+	public void testSingleFaceRadiationListCategoryAssignment() {
+		CategoryAssignment testCa = CategoriesFactory.eINSTANCE.createCategoryAssignment();
+		SingleFaceRadiationList testSingleFaceRadiationList = new SingleFaceRadiationList(testCa);
 		
-		assertEquals("DVLM object has been set as specified", testSei, testSingleFaceRadiationList.getStructuralElementInstance());
+		assertEquals("DVLM object has been set as specified", testCa, testSingleFaceRadiationList.getTypeInstance());
 	}
-	
 }

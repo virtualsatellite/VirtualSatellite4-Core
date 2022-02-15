@@ -12,9 +12,11 @@ package de.dlr.sc.virsat.model.extension.thermal.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
+
+
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoriesFactory;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import java.lang.Exception;
 
 
@@ -39,7 +41,7 @@ import org.junit.Test;
  * 
  */	
 public abstract class AMeshSizesTest {
-
+	
 	protected Concept concept;
 	
 	@Before
@@ -51,8 +53,8 @@ public abstract class AMeshSizesTest {
 	@After
 	public void tearDown() throws Exception {
 	}
+
 	
-		
 	// *****************************************************************
 	// * Constructor Test Cases
 	// *****************************************************************
@@ -61,22 +63,21 @@ public abstract class AMeshSizesTest {
 	public void testMeshSizes() {
 		MeshSizes testMeshSizes = new MeshSizes();
 	
-		assertNull("There is no internal DVLM object", testMeshSizes.getStructuralElementInstance());
+		assertNull("There is no internal DVLM object", testMeshSizes.getTypeInstance());
 	}
 	
 	@Test
 	public void testMeshSizesConcept() {
 		MeshSizes testMeshSizes = new MeshSizes(concept);
 		
-		assertNotNull("There is an internal DVLM object", testMeshSizes.getStructuralElementInstance());
+		assertNotNull("There is an internal DVLM object", testMeshSizes.getATypeInstance());
 	}
 	
 	@Test
-	public void testMeshSizesStructuralElementInstance() {
-		StructuralElementInstance testSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
-		MeshSizes testMeshSizes = new MeshSizes(testSei);
+	public void testMeshSizesCategoryAssignment() {
+		CategoryAssignment testCa = CategoriesFactory.eINSTANCE.createCategoryAssignment();
+		MeshSizes testMeshSizes = new MeshSizes(testCa);
 		
-		assertEquals("DVLM object has been set as specified", testSei, testMeshSizes.getStructuralElementInstance());
+		assertEquals("DVLM object has been set as specified", testCa, testMeshSizes.getTypeInstance());
 	}
-	
 }
