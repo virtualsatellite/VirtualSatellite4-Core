@@ -30,6 +30,7 @@ import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
 import de.dlr.sc.virsat.model.extension.thermal.model.AnalysisType;
+import de.dlr.sc.virsat.model.extension.thermal.model.FaceRadiation;
 import de.dlr.sc.virsat.model.extension.thermal.model.Material;
 import de.dlr.sc.virsat.model.extension.thermal.model.ThermalAnalysis;
 import de.dlr.sc.virsat.model.extension.thermal.model.ThermalData;
@@ -42,6 +43,7 @@ public class CadExporterThermalTest extends AConceptProjectTestCase {
 	private Concept conceptVis;
 	private Concept conceptThermal;
 	private ElementConfiguration ecThermal;
+	private ElementConfiguration ecComponent;
 	private ThermalData thermalData;
 	private ThermalAnalysis thermalAnalysis;
 	
@@ -56,7 +58,7 @@ public class CadExporterThermalTest extends AConceptProjectTestCase {
 		ConfigurationTree ct = new ConfigurationTree(conceptPS);
 		ct.setName("ConfigurationTree");
 
-		ElementConfiguration ecComponent = new ElementConfiguration(conceptPS);
+		ecComponent = new ElementConfiguration(conceptPS);
 		ecComponent.setName("Component");
 		ecComponent.getStructuralElementInstance().setUuid(new VirSatUuid("c7430cd8-5bd2-49b6-bf7d-529cc8627b70"));
 		ct.add(ecComponent);
@@ -142,5 +144,31 @@ public class CadExporterThermalTest extends AConceptProjectTestCase {
 		assertTrue("Materials input file is created", expectedMainFile.exists());
 		assertEquals("Materials input file is correct", Files.readAllLines(Paths.get(filePath)),
 				TestActivator.getResourceContentAsString("/resources/Materials.inp"));
+	}
+	
+	@Test
+	public void testWriteCadRadiationInput() throws IOException, CoreException {	
+		Material material = new Material(conceptThermal);
+		material.setElementEmissivity(1);
+		thermalData.getThermalelementparameters().setPredefinedMaterial(material);
+		
+		FaceRadiation faceRadiation = new FaceRadiation(conceptThermal);
+		faceRadiation.setFreeCADFaceNumber(1);
+		faceRadiation.setFaceEmissivity(1);
+		thermalData.getSinglefaceradiationaList().add(faceRadiation);
+		
+		Path outputPath = VirSatFileUtils.createAutoDeleteTempDirectory("cadTest");
+		String expectedFileName = ecComponent.getName() + "_" + ecComponent.getUuid().replace("-", "_") + ".rad";
+		String filePath = outputPath.toString() + File.separator + expectedFileName;
+		File expectedMainFile = new File(filePath);
+
+		assertFalse("Radiation input file is not there initially", expectedMainFile.exists());
+
+		CadExporterThermal cadExporter = new CadExporterThermal(thermalAnalysis);
+		cadExporter.writeCadRaduationInput(outputPath.toString());
+
+		assertTrue("Radiation input file is created", expectedMainFile.exists());
+		assertEquals("Radiation input file is correct", Files.readAllLines(Paths.get(filePath)),
+				TestActivator.getResourceContentAsString("/resources/" + expectedFileName));
 	}
 }

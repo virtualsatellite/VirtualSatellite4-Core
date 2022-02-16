@@ -21,6 +21,7 @@ import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInst
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.thermal.model.AnalysisType;
+import de.dlr.sc.virsat.model.extension.thermal.model.FaceRadiation;
 import de.dlr.sc.virsat.model.extension.thermal.model.ThermalAnalysis;
 import de.dlr.sc.virsat.model.extension.thermal.model.ThermalData;
 import de.dlr.sc.virsat.model.extension.thermal.model.ThermalElementParameters;
@@ -66,6 +67,12 @@ public class CadExporterThermal {
 		} else {
 			return "";
 		}
+	}
+	
+	public void writeCadInput(String path) throws IOException {
+		writeCadMainInput(path);
+		writeCadMaterialsInput(path);
+		writeCadRaduationInput(path);
 	}
 	
 	/**
@@ -175,7 +182,6 @@ public class CadExporterThermal {
 	
 	/**
 	 * Creates the material input file for the CAD program
-	 * @param thermalAnalysis the thermal analysis
 	 * @param path the path where to create the main file
 	 * @throws IOException 
 	 */
@@ -213,4 +219,36 @@ public class CadExporterThermal {
 		}
 	}
 
+	/**
+	 * Creates the radiation input file for the CAD program
+	 * @param path the path where to create the main file
+	 * @throws IOException 
+	 */
+	public void writeCadRaduationInput(String path) throws IOException {
+		for (IBeanStructuralElementInstance ec : ecs) {
+			String name = ec.getName();
+			String uuid = ec.getUuid().replace("-", "_");
+			
+			ThermalData td = ec.getFirst(ThermalData.class);
+			Visualisation visShape = ec.getFirst(Visualisation.class);
+			if ((td != null) && (visShape != null)) {	
+				File mainFile = new File(path + File.separatorChar + name + "_" + uuid + ".rad");
+				mainFile.createNewFile();
+				
+				try (Writer output = new FileWriter(mainFile)) {
+					double emissivity = td.getThermalelementparameters().getPredefinedMaterial().getElementEmissivity();
+					output.write("0, " + emissivity + "\n");
+					
+					List<FaceRadiation> radiationList = td.getSinglefaceradiationaList();
+					for (FaceRadiation faceRadiation : radiationList) {
+						long freeCADFaceNumber = faceRadiation.getFreeCADFaceNumber();
+						double faceEmissivity = faceRadiation.getFaceEmissivity();
+						output.write(freeCADFaceNumber + ", " + faceEmissivity + "\n");
+					}
+				}
+			} else if (td != null && visShape == null) {
+				throw new RuntimeException("No visualisation element found for " + name + "!");
+			}
+		}
+	}
 }
