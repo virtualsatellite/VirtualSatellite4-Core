@@ -98,6 +98,26 @@ public class CadExporterThermalTest extends AConceptProjectTestCase {
 
 		assertTrue("Main input file is created", expectedMainFile.exists());
 		assertEquals("Main input file is correct", Files.readAllLines(Paths.get(filePath)),
-				TestActivator.getResourceContentAsString("/resources/main.inp"));
+				TestActivator.getResourceContentAsString("/resources/static_main.inp"));
+	}
+	
+	@Test
+	public void testWriteCadMainInputTransient() throws IOException, CoreException {
+		thermalAnalysis.getAnalysisType().setAnalysisType(AnalysisType.ANALYSISTYPE_Transient_NAME);
+		thermalAnalysis.getAnalysisType().setTotalTime(1);
+		thermalAnalysis.getAnalysisType().setTimeStep(1);
+		
+		Path outputPath = VirSatFileUtils.createAutoDeleteTempDirectory("cadTest");
+		String filePath = outputPath.toString() + File.separator + "main.inp";
+		File expectedMainFile = new File(filePath);
+
+		assertFalse("Main input file is not there initially", expectedMainFile.exists());
+
+		CadExporterThermal cadExporter = new CadExporterThermal();
+		cadExporter.writeCadMainInput(thermalAnalysis, outputPath.toString());
+
+		assertTrue("Main input file is created", expectedMainFile.exists());
+		assertEquals("Main input file is correct", Files.readAllLines(Paths.get(filePath)),
+				TestActivator.getResourceContentAsString("/resources/transient_main.inp"));
 	}
 }
