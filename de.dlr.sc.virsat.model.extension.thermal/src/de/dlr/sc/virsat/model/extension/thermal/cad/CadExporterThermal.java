@@ -33,6 +33,22 @@ import de.dlr.sc.virsat.model.extension.visualisation.model.Visualisation;
  */
 public class CadExporterThermal {
 	
+	private ThermalAnalysis thermalAnalysis;
+	private List<IBeanStructuralElementInstance> ecs;
+
+	/**
+	 * Initializes the exporter for a thermal anaylsis
+	 * @param thermalAnalysis the thermal analysis
+	 */
+	public CadExporterThermal(ThermalAnalysis thermalAnalysis) {
+		this.thermalAnalysis = thermalAnalysis;
+		
+		// Get the root element and all elements in the tree
+		StructuralElementInstance rootSei = (StructuralElementInstance) EcoreUtil.getRootContainer(thermalAnalysis.getTypeInstance());
+		IBeanStructuralElementInstance rootBean = new BeanStructuralElementInstance(rootSei);
+		ecs = rootBean.getDeepChildren(IBeanStructuralElementInstance.class);
+	}
+	
 	/**
 	 * Converts the virsat analysis type to the analysis type for the CAD program
 	 * 
@@ -54,16 +70,10 @@ public class CadExporterThermal {
 	
 	/**
 	 * Creates the main input file for the CAD program
-	 * @param thermalAnalysis the thermal analysis
 	 * @param path the path where to create the main file
 	 * @throws IOException 
 	 */
-	public void writeCadMainInput(ThermalAnalysis thermalAnalysis, String path) throws IOException {
-		// Get the root element and all elements in the tree
-		StructuralElementInstance rootSei = (StructuralElementInstance) EcoreUtil.getRootContainer(thermalAnalysis.getTypeInstance());
-		IBeanStructuralElementInstance rootBean = new BeanStructuralElementInstance(rootSei);
-		List<IBeanStructuralElementInstance> ecs = rootBean.getDeepChildren(IBeanStructuralElementInstance.class);
-		
+	public void writeCadMainInput(String path) throws IOException {		
 		AnalysisType analysisType = thermalAnalysis.getAnalysisType();
 		String analysisTypeCad = getAnalysisTypeCad(analysisType);
 
@@ -169,12 +179,7 @@ public class CadExporterThermal {
 	 * @param path the path where to create the main file
 	 * @throws IOException 
 	 */
-	public void writeCadMaterialsInput(ThermalAnalysis thermalAnalysis, String path) throws IOException {
-		// Get the root element and all elements in the tree
-		StructuralElementInstance rootSei = (StructuralElementInstance) EcoreUtil.getRootContainer(thermalAnalysis.getTypeInstance());
-		IBeanStructuralElementInstance rootBean = new BeanStructuralElementInstance(rootSei);
-		List<IBeanStructuralElementInstance> ecs = rootBean.getDeepChildren(IBeanStructuralElementInstance.class);
-		
+	public void writeCadMaterialsInput(String path) throws IOException {
 		File materialFile = new File(path + File.separatorChar + "Materials.inp");
 		materialFile.createNewFile();
 		

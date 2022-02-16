@@ -80,8 +80,8 @@ public class CadExporterThermalTest extends AConceptProjectTestCase {
 		Path outputPath = VirSatFileUtils.createAutoDeleteTempDirectory("cadTest");
 		String filePath = outputPath.toString() + File.separator + "main.inp";
 		
-		CadExporterThermal cadExporter = new CadExporterThermal();
-		cadExporter.writeCadMainInput(thermalAnalysis, filePath);
+		CadExporterThermal cadExporter = new CadExporterThermal(thermalAnalysis);
+		cadExporter.writeCadMainInput(filePath);
 	}
 	
 	@Test
@@ -94,8 +94,8 @@ public class CadExporterThermalTest extends AConceptProjectTestCase {
 
 		assertFalse("Main input file is not there initially", expectedMainFile.exists());
 
-		CadExporterThermal cadExporter = new CadExporterThermal();
-		cadExporter.writeCadMainInput(thermalAnalysis, outputPath.toString());
+		CadExporterThermal cadExporter = new CadExporterThermal(thermalAnalysis);
+		cadExporter.writeCadMainInput(outputPath.toString());
 
 		assertTrue("Main input file is created", expectedMainFile.exists());
 		assertEquals("Main input file is correct", Files.readAllLines(Paths.get(filePath)),
@@ -114,8 +114,8 @@ public class CadExporterThermalTest extends AConceptProjectTestCase {
 
 		assertFalse("Main input file is not there initially", expectedMainFile.exists());
 
-		CadExporterThermal cadExporter = new CadExporterThermal();
-		cadExporter.writeCadMainInput(thermalAnalysis, outputPath.toString());
+		CadExporterThermal cadExporter = new CadExporterThermal(thermalAnalysis);
+		cadExporter.writeCadMainInput(outputPath.toString());
 
 		assertTrue("Main input file is created", expectedMainFile.exists());
 		assertEquals("Main input file is correct", Files.readAllLines(Paths.get(filePath)),
@@ -136,8 +136,8 @@ public class CadExporterThermalTest extends AConceptProjectTestCase {
 
 		assertFalse("Materials input file is not there initially", expectedMainFile.exists());
 
-		CadExporterThermal cadExporter = new CadExporterThermal();
-		cadExporter.writeCadMaterialsInput(thermalAnalysis, outputPath.toString());
+		CadExporterThermal cadExporter = new CadExporterThermal(thermalAnalysis);
+		cadExporter.writeCadMaterialsInput(outputPath.toString());
 
 		assertTrue("Materials input file is created", expectedMainFile.exists());
 		assertEquals("Materials input file is correct", Files.readAllLines(Paths.get(filePath)),
