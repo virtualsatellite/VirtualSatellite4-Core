@@ -12,6 +12,7 @@ Export-Package: de.dlr.sc.virsat.model.extension.thermal.migrator,
 Require-Bundle: org.junit,
  de.dlr.sc.virsat.model,
  de.dlr.sc.virsat.project,
- de.dlr.sc.virsat.concept.unittest.util
+ de.dlr.sc.virsat.concept.unittest.util,
+ de.dlr.sc.virsat.commons
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.thermal.test
