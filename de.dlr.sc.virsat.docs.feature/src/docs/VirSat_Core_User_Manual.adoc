@@ -1752,6 +1752,64 @@ This is shown in the following image on the down right part with a button named 
 |image:chapterStateMachines/ExtractingExcelTables.png[ExtractingExcelTables]
 |===
 
+==== Thermal Concept
+
+The thermal concept allows the user to add thermal properties to the system model. Ultimately, these properties can be used as the basis for a workflow to perform thermal analyses with the FEM tool CalculiX. This is done by exporting the 3D Visualisation and the thermal properties, processing them utilizing FreeCAD as preprocessing tool. CalculiX then reads the input files, creates, and solves, the equation system. Finally, the thermal concept also allows to import some aspects of the result to the system model.
+
+To model all thermal aspects required for the complete workflow follow these steps:
+
+Note: In the following table the word "part" refers to the lowest level instances of each branch of the configuration tree desired to model. This can be subsystem, assembly or component, depending on how detailed the model is supposed to be.
+
+Hier Bild von Thermal Concept
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Create a project and make sure the "thermal" and "Visualization" concept are activated.
+|
+
+|{counter:step}.
+|Now the actual modeling can start. Add a configuration tree and fill it with subsystems/components/..., depending on how deep the level of detail is supposed to be. (Keep in mind, the overall workflow is rather complex and it might help to practice it with a simple model first.)
+|
+
+|{counter:step}.
+|Add a "MaterialCollection" element in the root directory(TBC). There are two options to fill the Material Collection: Firstly, by creating the material elements manually with a right-click on the Material Collection and filling it with the thermal conductivity, the absorption coefficient (in the visible), the emissivity (in the infrared), the heat capacity, and the density. Secondly, by using the import function. This import function reads a .csv file that is structured as shown in figure X and imports the materials.
+|
+
+|{counter:step}.
+|Important remark: The exporter works in that way, that it iterates through every single element and checks if a visualization and the thermal properties are defined by the user. Make sure that all elements, and only these elements, intended for the thermal analysis fulfill these two criteria. Also, do not define a visualization/thermal properties on both, subsystem level and component level of the same subsystem, either choose to model the subsystem as an entirety, or the components of the subsystem. This avoids inconsistencies in the thermal analysis due to duplication and overlapping of parts.
+|
+
+|{counter:step}.
+|With this being said, add a visualization for each of the desired elements, define the dimensions, and align its position and rotation as desired.
+|
+
+|{counter:step}.
+|Accordingly, add a "Thermal Data", and then a "ThermalElementParameters" (TEP might be an own category later) element for each of the components. This element is extremely important for setting up the rest of the model and for the simulation itself, so make sure all desired parts have such an element. Fill this element with the required information comprising the initialTemperature (only relevant for dynamic simulations), the power balance of the part (meaning the dissipated heat), and finally reference the desired material for the part.
+|
+
+|{counter:step}.
+|If not already present anyways, create a "ThermalControl" (or similar name) subsystem in the configuration tree. Even if not used for physical components. In this subsystem create a "ThermalAnalysis" element. This will host a lot of general, analysis related information. Make sure there is only one of these elements in the tree.
+|
+
+|{counter:step}.
+|In the "ThermalAnalysis" element, create a "ThermalContacts" element. This is where it gets slightly complex. Each contact between two physical elements (check in the visualization) must be considered to obtain a valid simulation result, as thermal contacts usually conduct heat quite effective. In the "ThermalContacts" element, create one "ThermalInterfaceList" and one "ThermalPortList" element. 
+|
+
+|{counter:step}.
+|For each contact that exists between two components, two dedicated "ThermalPorts" must be created (it is very important that each thermal port is assigned to exactly one thermal contact, ---TBC---). Both thermal ports are assigned to the respective contact partner component by the reference property. This links to the "ThermalElementParameter" of a desired element. To keep track of all thermal ports it makes sense to name them "TP:<NameOfThePart>".
+|
+
+|{counter:step}.
+|When the thermal ports are created and assigned to components, the thermal interfaces are modeled. For this, create one "ThermalInterface" element for each contact. In this element, two references and two values are set. The references are linked to the involved thermal ports (remark: the first thermal port is treated as the "master" contact in the following. This is relevant if the two components are overlapping, either on purpose or accidentally. In that case the FreeCAD processing script will cut the overlapping volume from the "slave" component, whereas the "master" component will not be touched.)
+|
+
 === 3D Visualisation
 
 In Virtual Satellite it is possible to add geometric information to the model and visualise it.
