@@ -62,6 +62,7 @@ public abstract class AThermalAnalysis extends GenericCategory implements IBeanC
 	public static final String PROPERTY_MESHSIZES = "meshsizes";
 	public static final String PROPERTY_THERMALANALYSISRESULTS = "thermalanalysisResults";
 	public static final String PROPERTY_ANALYSISTYPE = "analysisType";
+	public static final String PROPERTY_THERMALCONTACTS = "thermalcontacts";
 	public static final String PROPERTY_REPORTS = "reports";
 	
 	
@@ -188,6 +189,29 @@ public abstract class AThermalAnalysis extends GenericCategory implements IBeanC
 	public BeanPropertyComposed<AnalysisType> getAnalysisTypeBean() {
 		safeAccessAnalysisType();
 		return analysisType;
+	}
+	
+	// *****************************************************************
+	// * Attribute: thermalcontacts
+	// *****************************************************************
+	private BeanPropertyComposed<ThermalContacts> thermalcontacts = new BeanPropertyComposed<>();
+	
+	private void safeAccessThermalcontacts() {
+		if (thermalcontacts.getTypeInstance() == null) {
+			ComposedPropertyInstance propertyInstance = (ComposedPropertyInstance) helper.getPropertyInstance("thermalcontacts");
+			thermalcontacts.setTypeInstance(propertyInstance);
+		}
+	}
+	
+	@XmlElement(nillable = true)
+	public ThermalContacts getThermalcontacts() {
+		safeAccessThermalcontacts();
+		return thermalcontacts.getValue();
+	}
+	
+	public BeanPropertyComposed<ThermalContacts> getThermalcontactsBean() {
+		safeAccessThermalcontacts();
+		return thermalcontacts;
 	}
 	
 	// *****************************************************************

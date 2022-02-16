@@ -59,7 +59,6 @@ public abstract class AThermalData extends GenericCategory implements IBeanCateg
 	
 	// property name constants
 	public static final String PROPERTY_SINGLEFACERADIATIONALIST = "singlefaceradiationaList";
-	public static final String PROPERTY_THERMALCONTACTS = "thermalcontacts";
 	public static final String PROPERTY_THERMALELEMENTPARAMETERS = "thermalelementparameters";
 	
 	
@@ -110,29 +109,6 @@ public abstract class AThermalData extends GenericCategory implements IBeanCateg
 	public IBeanList<BeanPropertyComposed<FaceRadiation>> getSinglefaceradiationaListBean() {
 		safeAccessSinglefaceradiationaListBean();
 		return singlefaceradiationaListBean;
-	}
-	
-	// *****************************************************************
-	// * Attribute: thermalcontacts
-	// *****************************************************************
-	private BeanPropertyComposed<ThermalContacts> thermalcontacts = new BeanPropertyComposed<>();
-	
-	private void safeAccessThermalcontacts() {
-		if (thermalcontacts.getTypeInstance() == null) {
-			ComposedPropertyInstance propertyInstance = (ComposedPropertyInstance) helper.getPropertyInstance("thermalcontacts");
-			thermalcontacts.setTypeInstance(propertyInstance);
-		}
-	}
-	
-	@XmlElement(nillable = true)
-	public ThermalContacts getThermalcontacts() {
-		safeAccessThermalcontacts();
-		return thermalcontacts.getValue();
-	}
-	
-	public BeanPropertyComposed<ThermalContacts> getThermalcontactsBean() {
-		safeAccessThermalcontacts();
-		return thermalcontacts;
 	}
 	
 	// *****************************************************************

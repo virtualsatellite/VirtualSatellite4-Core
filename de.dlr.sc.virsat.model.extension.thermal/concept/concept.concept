@@ -26,6 +26,7 @@ Concept de.dlr.sc.virsat.model.extension.thermal displayname "Thermal" descripti
 		Type meshsizes [] of Category ComponentMeshSize;
 		Type thermalanalysisResults[] of Category AnalysisResult;
 		Type analysisType of Category AnalysisType;
+		Type thermalcontacts of Category ThermalContacts;
 		Type reports[] of Category Reports;	
 	}
 	  
@@ -34,7 +35,6 @@ Concept de.dlr.sc.virsat.model.extension.thermal displayname "Thermal" descripti
 		Applicable For All; //[ElementDefinition, ElementConfiguration, ElementOccurence, ElementRealization]
 		Cardinality 1;
 		Type singlefaceradiationaList[] of Category FaceRadiation;
-		Type thermalcontacts of Category ThermalContacts;
 		Type thermalelementparameters of Category ThermalElementParameters;
 	}
 	

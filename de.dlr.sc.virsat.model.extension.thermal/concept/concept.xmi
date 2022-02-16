@@ -15,6 +15,7 @@
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
     </properties>
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="analysisType" type="de.dlr.sc.virsat.model.extension.thermal.AnalysisType"/>
+    <properties xsi:type="dvlm_cppd:ComposedProperty" name="thermalcontacts" type="de.dlr.sc.virsat.model.extension.thermal.ThermalContacts"/>
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="reports" type="de.dlr.sc.virsat.model.extension.thermal.Reports">
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
     </properties>
@@ -24,7 +25,6 @@
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="singlefaceradiationaList" type="de.dlr.sc.virsat.model.extension.thermal.FaceRadiation">
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
     </properties>
-    <properties xsi:type="dvlm_cppd:ComposedProperty" name="thermalcontacts" type="de.dlr.sc.virsat.model.extension.thermal.ThermalContacts"/>
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="thermalelementparameters" type="de.dlr.sc.virsat.model.extension.thermal.ThermalElementParameters"/>
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
