@@ -31,7 +31,9 @@ import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
 import de.dlr.sc.virsat.model.extension.thermal.model.AnalysisType;
 import de.dlr.sc.virsat.model.extension.thermal.model.FaceRadiation;
+import de.dlr.sc.virsat.model.extension.thermal.model.HeatFlowToFace;
 import de.dlr.sc.virsat.model.extension.thermal.model.Material;
+import de.dlr.sc.virsat.model.extension.thermal.model.TemperatureBoundary;
 import de.dlr.sc.virsat.model.extension.thermal.model.ThermalAnalysis;
 import de.dlr.sc.virsat.model.extension.thermal.model.ThermalData;
 import de.dlr.sc.virsat.model.extension.thermal.test.TestActivator;
@@ -96,14 +98,14 @@ public class CadExporterThermalTest extends AConceptProjectTestCase {
 		thermalAnalysis.getAnalysisType().setAnalysisType(AnalysisType.ANALYSISTYPE_Static_NAME);
 		
 		String filePath = outputPath.toString() + File.separator + "main.inp";
-		File expectedMainFile = new File(filePath);
+		File expectedFile = new File(filePath);
 
-		assertFalse("Main input file is not there initially", expectedMainFile.exists());
+		assertFalse("Main input file is not there initially", expectedFile.exists());
 
 		CadExporterThermal cadExporter = new CadExporterThermal(thermalAnalysis);
 		cadExporter.writeCadMainInput(outputPath.toString());
 
-		assertTrue("Main input file is created", expectedMainFile.exists());
+		assertTrue("Main input file is created", expectedFile.exists());
 		assertEquals("Main input file is correct", Files.readAllLines(Paths.get(filePath)),
 				TestActivator.getResourceContentAsString("/resources/static_main.inp"));
 	}
@@ -115,14 +117,14 @@ public class CadExporterThermalTest extends AConceptProjectTestCase {
 		thermalAnalysis.getAnalysisType().setTimeStep(1);
 		
 		String filePath = outputPath.toString() + File.separator + "main.inp";
-		File expectedMainFile = new File(filePath);
+		File expectedFile = new File(filePath);
 
-		assertFalse("Main input file is not there initially", expectedMainFile.exists());
+		assertFalse("Main input file is not there initially", expectedFile.exists());
 
 		CadExporterThermal cadExporter = new CadExporterThermal(thermalAnalysis);
 		cadExporter.writeCadMainInput(outputPath.toString());
 
-		assertTrue("Main input file is created", expectedMainFile.exists());
+		assertTrue("Main input file is created", expectedFile.exists());
 		assertEquals("Main input file is correct", Files.readAllLines(Paths.get(filePath)),
 				TestActivator.getResourceContentAsString("/resources/transient_main.inp"));
 	}
@@ -136,14 +138,14 @@ public class CadExporterThermalTest extends AConceptProjectTestCase {
 		thermalData.getThermalelementparameters().setPredefinedMaterial(material);
 		
 		String filePath = outputPath.toString() + File.separator + "Materials.inp";
-		File expectedMainFile = new File(filePath);
+		File expectedFile = new File(filePath);
 
-		assertFalse("Materials input file is not there initially", expectedMainFile.exists());
+		assertFalse("Materials input file is not there initially", expectedFile.exists());
 
 		CadExporterThermal cadExporter = new CadExporterThermal(thermalAnalysis);
 		cadExporter.writeCadMaterialsInput(outputPath.toString());
 
-		assertTrue("Materials input file is created", expectedMainFile.exists());
+		assertTrue("Materials input file is created", expectedFile.exists());
 		assertEquals("Materials input file is correct", Files.readAllLines(Paths.get(filePath)),
 				TestActivator.getResourceContentAsString("/resources/Materials.inp"));
 	}
@@ -161,14 +163,14 @@ public class CadExporterThermalTest extends AConceptProjectTestCase {
 		
 		String expectedFileName = ecComponent.getName() + "_" + ecComponent.getUuid().replace("-", "_") + ".rad";
 		String filePath = outputPath.toString() + File.separator + expectedFileName;
-		File expectedMainFile = new File(filePath);
+		File expectedFile = new File(filePath);
 
-		assertFalse("Radiation input file is not there initially", expectedMainFile.exists());
+		assertFalse("Radiation input file is not there initially", expectedFile.exists());
 
 		CadExporterThermal cadExporter = new CadExporterThermal(thermalAnalysis);
 		cadExporter.writeCadRaduationInput(outputPath.toString());
 
-		assertTrue("Radiation input file is created", expectedMainFile.exists());
+		assertTrue("Radiation input file is created", expectedFile.exists());
 		assertEquals("Radiation input file is correct", Files.readAllLines(Paths.get(filePath)),
 				TestActivator.getResourceContentAsString("/resources/" + expectedFileName));
 	}
@@ -179,15 +181,59 @@ public class CadExporterThermalTest extends AConceptProjectTestCase {
 		
 		String expectedFileName = ecComponent.getName() + "_" + ecComponent.getUuid().replace("-", "_") + ".bfl";
 		String filePath = outputPath.toString() + File.separator + expectedFileName;
-		File expectedMainFile = new File(filePath);
+		File expectedFile = new File(filePath);
 
-		assertFalse("Heat Flux input file is not there initially", expectedMainFile.exists());
+		assertFalse("Heat Flux input file is not there initially", expectedFile.exists());
 
 		CadExporterThermal cadExporter = new CadExporterThermal(thermalAnalysis);
 		cadExporter.writeCadVolumeHeatFluxInput(outputPath.toString());
 
-		assertTrue("Heat Flux input file is created", expectedMainFile.exists());
+		assertTrue("Heat Flux input file is created", expectedFile.exists());
 		assertEquals("Heat Flux input file is correct", Files.readAllLines(Paths.get(filePath)),
 				TestActivator.getResourceContentAsString("/resources/" + expectedFileName));
+	}
+	
+	@Test
+	public void testWritBoundaryConditionsInput() throws IOException, CoreException {
+		TemperatureBoundary faceBoundary = new TemperatureBoundary(conceptThermal);
+		faceBoundary.setBoundaryTemperature(1);
+		faceBoundary.setFreeCADFaceNumberBC(1);
+		faceBoundary.setBoundaryType(TemperatureBoundary.BOUNDARYTYPE_Face_NAME);
+		faceBoundary.setComponent(thermalData.getThermalelementparameters());
+		thermalAnalysis.getBoundaryConditions().getBoundaries().add(faceBoundary);
+		
+		TemperatureBoundary volumeBoundary = new TemperatureBoundary(conceptThermal);
+		volumeBoundary.setBoundaryTemperature(1);
+		volumeBoundary.setBoundaryType(TemperatureBoundary.BOUNDARYTYPE_Volume_NAME);
+		volumeBoundary.setComponent(thermalData.getThermalelementparameters());
+		thermalAnalysis.getBoundaryConditions().getBoundaries().add(volumeBoundary);
+		
+		HeatFlowToFace heatFlow = new HeatFlowToFace(conceptThermal);
+		heatFlow.setFreeCADFaceNumberHF(1);
+		heatFlow.setHeatFlow(1);
+		heatFlow.setComponent(thermalData.getThermalelementparameters());
+		thermalAnalysis.getBoundaryConditions().getHeatflowface().add(heatFlow);
+		
+		String expectedBoundaryConditionsFileName = ecComponent.getName() + "_" + ecComponent.getUuid().replace("-", "_") + ".bcf";
+		String boundaryConditionsFilePath = outputPath.toString() + File.separator + expectedBoundaryConditionsFileName;
+		File expectedBoundaryConditionsFile = new File(boundaryConditionsFilePath);
+		
+		String expectedHeatFlowFileName = ecComponent.getName() + "_" + ecComponent.getUuid().replace("-", "_") + ".ehf";
+		String heatFlowFilePath = outputPath.toString() + File.separator + expectedHeatFlowFileName;
+		File expectedHeatFlowFile = new File(heatFlowFilePath);
+		
+		assertFalse("Boundary conditions input file is not there initially", expectedBoundaryConditionsFile.exists());
+		assertFalse("Heat flow input file is not there initially", expectedHeatFlowFile.exists());
+
+		CadExporterThermal cadExporter = new CadExporterThermal(thermalAnalysis);
+		cadExporter.writeCadBoundaryConditionsInput(outputPath.toString());
+
+		assertTrue("Boundary condition input file is created", expectedBoundaryConditionsFile.exists());
+		assertTrue("Heat flow input file is created", expectedHeatFlowFile.exists());
+		
+		assertEquals("Boundary condition input file is correct", Files.readAllLines(Paths.get(boundaryConditionsFilePath)),
+				TestActivator.getResourceContentAsString("/resources/" + expectedBoundaryConditionsFileName));
+		assertEquals("Heat flow input file is correct", Files.readAllLines(Paths.get(heatFlowFilePath)),
+				TestActivator.getResourceContentAsString("/resources/" + expectedHeatFlowFileName));
 	}
 }
