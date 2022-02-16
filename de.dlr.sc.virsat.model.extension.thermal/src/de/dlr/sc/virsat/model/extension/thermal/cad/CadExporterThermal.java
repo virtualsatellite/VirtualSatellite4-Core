@@ -251,4 +251,33 @@ public class CadExporterThermal {
 			}
 		}
 	}
+	
+	/**
+	 * Creates the radiation input file for the CAD program
+	 * @param path the path where to create the main file
+	 * @throws IOException 
+	 */
+	public void writeCadVolumeHeatFluxInput(String path) throws IOException {
+		for (IBeanStructuralElementInstance ec : ecs) {
+			String name = ec.getName();
+			String uuid = ec.getUuid().replace("-", "_");
+			
+			ThermalData td = ec.getFirst(ThermalData.class);
+			Visualisation visShape = ec.getFirst(Visualisation.class);
+			if ((td != null) && (visShape != null)) {	
+				//Attention! The main file must be created without including a cflux file when this conditions is true!
+				File loadFile = new File(path + File.separatorChar + name + "_" + uuid + ".bfl");
+				loadFile.createNewFile();
+				try (Writer output = new FileWriter(loadFile)) {
+					ThermalElementParameters tep = td.getThermalelementparameters();
+					// CHECKSTYLE:OFF
+					String powerBalance = Double.toString(tep.getPowerBalance() * 1000000);
+					// CHECKSTYLE:ON
+					output.write(powerBalance);
+				}
+			} else if (td != null && visShape == null) {
+				throw new RuntimeException("No visualisation element found for " + name + "!");
+			}		
+		}
+	}
 }

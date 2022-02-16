@@ -171,4 +171,23 @@ public class CadExporterThermalTest extends AConceptProjectTestCase {
 		assertEquals("Radiation input file is correct", Files.readAllLines(Paths.get(filePath)),
 				TestActivator.getResourceContentAsString("/resources/" + expectedFileName));
 	}
+	
+	@Test
+	public void testWriteCadHeatFluxInput() throws IOException, CoreException {	
+		thermalData.getThermalelementparameters().setPowerBalance(1);
+		
+		Path outputPath = VirSatFileUtils.createAutoDeleteTempDirectory("cadTest");
+		String expectedFileName = ecComponent.getName() + "_" + ecComponent.getUuid().replace("-", "_") + ".bfl";
+		String filePath = outputPath.toString() + File.separator + expectedFileName;
+		File expectedMainFile = new File(filePath);
+
+		assertFalse("Heat Flux input file is not there initially", expectedMainFile.exists());
+
+		CadExporterThermal cadExporter = new CadExporterThermal(thermalAnalysis);
+		cadExporter.writeCadVolumeHeatFluxInput(outputPath.toString());
+
+		assertTrue("Heat Flux input file is created", expectedMainFile.exists());
+		assertEquals("Heat Flux input file is correct", Files.readAllLines(Paths.get(filePath)),
+				TestActivator.getResourceContentAsString("/resources/" + expectedFileName));
+	}
 }
