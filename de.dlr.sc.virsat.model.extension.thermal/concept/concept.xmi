@@ -22,7 +22,7 @@
     </properties>
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
-  <categories name="ThermalData" description="Modeling thermal element data" isApplicableForAll="true">
+  <categories name="ThermalData" description="Modeling thermal element data" isApplicableForAll="true" cardinality="1">
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="radiationaList" type="de.dlr.sc.virsat.model.extension.thermal.SingleFaceRadiationList"/>
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="thermalcontacts" type="de.dlr.sc.virsat.model.extension.thermal.ThermalContacts"/>
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="thermalelementparameters" type="de.dlr.sc.virsat.model.extension.thermal.ThermalElementParameters"/>

@@ -36,6 +36,7 @@ Concept de.dlr.sc.virsat.model.extension.thermal displayname "Thermal" descripti
 	
 	 Category ThermalData description "Modeling thermal element data"{
 		Applicable For All; //[ElementDefinition, ElementConfiguration, ElementOccurence, ElementRealization]
+		Cardinality 1;
 		Type radiationaList of Category SingleFaceRadiationList;
 		Type thermalcontacts of Category ThermalContacts;
 		Type thermalelementparameters of Category ThermalElementParameters;
