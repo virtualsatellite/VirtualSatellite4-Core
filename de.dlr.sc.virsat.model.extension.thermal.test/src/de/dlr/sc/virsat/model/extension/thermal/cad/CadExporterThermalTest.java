@@ -38,7 +38,7 @@ import de.dlr.sc.virsat.model.extension.thermal.test.TestActivator;
 import de.dlr.sc.virsat.model.extension.visualisation.model.Visualisation;
 
 public class CadExporterThermalTest extends AConceptProjectTestCase {
-
+	
 	private Concept conceptPS;
 	private Concept conceptVis;
 	private Concept conceptThermal;
@@ -46,6 +46,7 @@ public class CadExporterThermalTest extends AConceptProjectTestCase {
 	private ElementConfiguration ecComponent;
 	private ThermalData thermalData;
 	private ThermalAnalysis thermalAnalysis;
+	private Path outputPath;
 	
 	@Before
 	public void setUp() throws CoreException {
@@ -77,9 +78,13 @@ public class CadExporterThermalTest extends AConceptProjectTestCase {
 		ecThermal.add(thermalAnalysis);
 	}
 	
+	@Before
+	public void setupTmpFolder() throws IOException {
+		outputPath = VirSatFileUtils.createAutoDeleteTempDirectory("cadThermalTest");
+	}
+	
 	@Test(expected = RuntimeException.class)
 	public void testWriteCadMainInputNoAnalysisType() throws IOException {
-		Path outputPath = VirSatFileUtils.createAutoDeleteTempDirectory("cadTest");
 		String filePath = outputPath.toString() + File.separator + "main.inp";
 		
 		CadExporterThermal cadExporter = new CadExporterThermal(thermalAnalysis);
@@ -90,7 +95,6 @@ public class CadExporterThermalTest extends AConceptProjectTestCase {
 	public void testWriteCadMainInputStatic() throws IOException, CoreException {
 		thermalAnalysis.getAnalysisType().setAnalysisType(AnalysisType.ANALYSISTYPE_Static_NAME);
 		
-		Path outputPath = VirSatFileUtils.createAutoDeleteTempDirectory("cadTest");
 		String filePath = outputPath.toString() + File.separator + "main.inp";
 		File expectedMainFile = new File(filePath);
 
@@ -110,7 +114,6 @@ public class CadExporterThermalTest extends AConceptProjectTestCase {
 		thermalAnalysis.getAnalysisType().setTotalTime(1);
 		thermalAnalysis.getAnalysisType().setTimeStep(1);
 		
-		Path outputPath = VirSatFileUtils.createAutoDeleteTempDirectory("cadTest");
 		String filePath = outputPath.toString() + File.separator + "main.inp";
 		File expectedMainFile = new File(filePath);
 
@@ -132,7 +135,6 @@ public class CadExporterThermalTest extends AConceptProjectTestCase {
 		material.setDensity(1);
 		thermalData.getThermalelementparameters().setPredefinedMaterial(material);
 		
-		Path outputPath = VirSatFileUtils.createAutoDeleteTempDirectory("cadTest");
 		String filePath = outputPath.toString() + File.separator + "Materials.inp";
 		File expectedMainFile = new File(filePath);
 
@@ -157,7 +159,6 @@ public class CadExporterThermalTest extends AConceptProjectTestCase {
 		faceRadiation.setFaceEmissivity(1);
 		thermalData.getSinglefaceradiationaList().add(faceRadiation);
 		
-		Path outputPath = VirSatFileUtils.createAutoDeleteTempDirectory("cadTest");
 		String expectedFileName = ecComponent.getName() + "_" + ecComponent.getUuid().replace("-", "_") + ".rad";
 		String filePath = outputPath.toString() + File.separator + expectedFileName;
 		File expectedMainFile = new File(filePath);
@@ -176,7 +177,6 @@ public class CadExporterThermalTest extends AConceptProjectTestCase {
 	public void testWriteCadHeatFluxInput() throws IOException, CoreException {	
 		thermalData.getThermalelementparameters().setPowerBalance(1);
 		
-		Path outputPath = VirSatFileUtils.createAutoDeleteTempDirectory("cadTest");
 		String expectedFileName = ecComponent.getName() + "_" + ecComponent.getUuid().replace("-", "_") + ".bfl";
 		String filePath = outputPath.toString() + File.separator + expectedFileName;
 		File expectedMainFile = new File(filePath);
