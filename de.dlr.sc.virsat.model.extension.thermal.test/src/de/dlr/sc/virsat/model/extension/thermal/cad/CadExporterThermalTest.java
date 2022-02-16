@@ -30,6 +30,7 @@ import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
 import de.dlr.sc.virsat.model.extension.thermal.model.AnalysisType;
+import de.dlr.sc.virsat.model.extension.thermal.model.Material;
 import de.dlr.sc.virsat.model.extension.thermal.model.ThermalAnalysis;
 import de.dlr.sc.virsat.model.extension.thermal.model.ThermalData;
 import de.dlr.sc.virsat.model.extension.thermal.test.TestActivator;
@@ -119,5 +120,27 @@ public class CadExporterThermalTest extends AConceptProjectTestCase {
 		assertTrue("Main input file is created", expectedMainFile.exists());
 		assertEquals("Main input file is correct", Files.readAllLines(Paths.get(filePath)),
 				TestActivator.getResourceContentAsString("/resources/transient_main.inp"));
+	}
+
+	@Test
+	public void testWriteCadMaterialsInput() throws IOException, CoreException {
+		Material material = new Material(conceptThermal);
+		material.setThermalConductivity(1);
+		material.setHeatCapacity(1);
+		material.setDensity(1);
+		thermalData.getThermalelementparameters().setPredefinedMaterial(material);
+		
+		Path outputPath = VirSatFileUtils.createAutoDeleteTempDirectory("cadTest");
+		String filePath = outputPath.toString() + File.separator + "Materials.inp";
+		File expectedMainFile = new File(filePath);
+
+		assertFalse("Materials input file is not there initially", expectedMainFile.exists());
+
+		CadExporterThermal cadExporter = new CadExporterThermal();
+		cadExporter.writeCadMaterialsInput(thermalAnalysis, outputPath.toString());
+
+		assertTrue("Materials input file is created", expectedMainFile.exists());
+		assertEquals("Materials input file is correct", Files.readAllLines(Paths.get(filePath)),
+				TestActivator.getResourceContentAsString("/resources/Materials.inp"));
 	}
 }
