@@ -9,18 +9,16 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.thermal.ui.snippet;
 
+import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
 
-// *****************************************************************
-// * Class Declaration
-// *****************************************************************
 
 /**
  * Auto Generated Class inheriting from Generator Gap Class
  * 
  * This class is generated once, do your changes here
  * 
- * Maximum mesh element sizes for components can be defined here.
+ * 
  * 
  */
-public class UiSnippetTableMeshSizes extends AUiSnippetTableMeshSizes {
+public class UiSnippetTableThermalAnalysisMeshsizesComponentMeshSize extends AUiSnippetTableThermalAnalysisMeshsizesComponentMeshSize implements IUiSnippet {
 }

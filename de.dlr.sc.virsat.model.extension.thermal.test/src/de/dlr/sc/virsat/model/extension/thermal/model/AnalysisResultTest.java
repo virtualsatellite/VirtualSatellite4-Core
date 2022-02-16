@@ -13,6 +13,8 @@ package de.dlr.sc.virsat.model.extension.thermal.model;
 // * Import Statements
 // *****************************************************************
 
+
+
 // *****************************************************************
 // * Class Declaration
 // *****************************************************************
@@ -26,5 +28,5 @@ package de.dlr.sc.virsat.model.extension.thermal.model;
  * 
  */
 public class AnalysisResultTest extends AAnalysisResultTest {
-	
+
 }

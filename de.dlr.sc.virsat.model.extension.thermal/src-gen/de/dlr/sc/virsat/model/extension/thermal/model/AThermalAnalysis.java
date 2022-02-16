@@ -108,49 +108,63 @@ public abstract class AThermalAnalysis extends GenericCategory implements IBeanC
 	}
 	
 	// *****************************************************************
-	// * Attribute: meshsizes
+	// * Array Attribute: meshsizes
 	// *****************************************************************
-	private BeanPropertyComposed<MeshSizes> meshsizes = new BeanPropertyComposed<>();
+	private IBeanList<ComponentMeshSize> meshsizes = new TypeSafeComposedPropertyInstanceList<>(ComponentMeshSize.class);
 	
 	private void safeAccessMeshsizes() {
-		if (meshsizes.getTypeInstance() == null) {
-			ComposedPropertyInstance propertyInstance = (ComposedPropertyInstance) helper.getPropertyInstance("meshsizes");
-			meshsizes.setTypeInstance(propertyInstance);
+		if (meshsizes.getArrayInstance() == null) {
+			meshsizes.setArrayInstance((ArrayInstance) helper.getPropertyInstance("meshsizes"));
 		}
 	}
 	
-	@XmlElement(nillable = true)
-	public MeshSizes getMeshsizes() {
-		safeAccessMeshsizes();
-		return meshsizes.getValue();
-	}
-	
-	public BeanPropertyComposed<MeshSizes> getMeshsizesBean() {
+	public IBeanList<ComponentMeshSize> getMeshsizes() {
 		safeAccessMeshsizes();
 		return meshsizes;
 	}
 	
-	// *****************************************************************
-	// * Attribute: thermalanalysisResults
-	// *****************************************************************
-	private BeanPropertyComposed<ThermalAnalysisResults> thermalanalysisResults = new BeanPropertyComposed<>();
+	private IBeanList<BeanPropertyComposed<ComponentMeshSize>> meshsizesBean = new TypeSafeComposedPropertyBeanList<>();
 	
-	private void safeAccessThermalanalysisResults() {
-		if (thermalanalysisResults.getTypeInstance() == null) {
-			ComposedPropertyInstance propertyInstance = (ComposedPropertyInstance) helper.getPropertyInstance("thermalanalysisResults");
-			thermalanalysisResults.setTypeInstance(propertyInstance);
+	private void safeAccessMeshsizesBean() {
+		if (meshsizesBean.getArrayInstance() == null) {
+			meshsizesBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("meshsizes"));
 		}
 	}
 	
-	@XmlElement(nillable = true)
-	public ThermalAnalysisResults getThermalanalysisResults() {
-		safeAccessThermalanalysisResults();
-		return thermalanalysisResults.getValue();
+	@XmlElement
+	public IBeanList<BeanPropertyComposed<ComponentMeshSize>> getMeshsizesBean() {
+		safeAccessMeshsizesBean();
+		return meshsizesBean;
 	}
 	
-	public BeanPropertyComposed<ThermalAnalysisResults> getThermalanalysisResultsBean() {
+	// *****************************************************************
+	// * Array Attribute: thermalanalysisResults
+	// *****************************************************************
+	private IBeanList<AnalysisResult> thermalanalysisResults = new TypeSafeComposedPropertyInstanceList<>(AnalysisResult.class);
+	
+	private void safeAccessThermalanalysisResults() {
+		if (thermalanalysisResults.getArrayInstance() == null) {
+			thermalanalysisResults.setArrayInstance((ArrayInstance) helper.getPropertyInstance("thermalanalysisResults"));
+		}
+	}
+	
+	public IBeanList<AnalysisResult> getThermalanalysisResults() {
 		safeAccessThermalanalysisResults();
 		return thermalanalysisResults;
+	}
+	
+	private IBeanList<BeanPropertyComposed<AnalysisResult>> thermalanalysisResultsBean = new TypeSafeComposedPropertyBeanList<>();
+	
+	private void safeAccessThermalanalysisResultsBean() {
+		if (thermalanalysisResultsBean.getArrayInstance() == null) {
+			thermalanalysisResultsBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("thermalanalysisResults"));
+		}
+	}
+	
+	@XmlElement
+	public IBeanList<BeanPropertyComposed<AnalysisResult>> getThermalanalysisResultsBean() {
+		safeAccessThermalanalysisResultsBean();
+		return thermalanalysisResultsBean;
 	}
 	
 	// *****************************************************************

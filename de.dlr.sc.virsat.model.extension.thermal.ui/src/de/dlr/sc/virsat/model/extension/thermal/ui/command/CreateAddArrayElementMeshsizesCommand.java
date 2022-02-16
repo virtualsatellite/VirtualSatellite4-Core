@@ -7,24 +7,16 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.thermal.model;
+package de.dlr.sc.virsat.model.extension.thermal.ui.command;
 
-// *****************************************************************
-// * Import Statements
-// *****************************************************************
-
-// *****************************************************************
-// * Class Declaration
-// *****************************************************************
 
 /**
  * Auto Generated Class inheriting from Generator Gap Class
  * 
  * This class is generated once, do your changes here
  * 
- * Modeling the loads on the system
+ * 
  * 
  */
-public class LoadsTest extends ALoadsTest {
-	
+public class CreateAddArrayElementMeshsizesCommand extends ACreateAddArrayElementMeshsizesCommand {
 }

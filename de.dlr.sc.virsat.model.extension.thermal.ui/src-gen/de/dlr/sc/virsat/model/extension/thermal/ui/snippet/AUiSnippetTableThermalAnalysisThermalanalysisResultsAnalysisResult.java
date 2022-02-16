@@ -10,32 +10,35 @@
 package de.dlr.sc.virsat.model.extension.thermal.ui.snippet;
 
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.extension.thermal.ui.command.CreateAddArrayElementThermalanalysisResultsCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import de.dlr.sc.virsat.model.extension.thermal.ui.command.CreateAddThermalInterfaceListCommand;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import org.eclipse.emf.common.command.Command;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
-import de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetGenericCategoryAssignmentTable;
+import de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetArrayInstanceCategoryTable;
 
-;
 
 /**
  * Auto Generated Abstract Generator Gap Class
  * 
  * Don't Manually modify this class
  * 
- * Here all thermal interfaces between ports are stored
+ * Here all general information for the analysis is stored
  * 
  */	
-public abstract class AUiSnippetTableThermalInterfaceList extends AUiSnippetGenericCategoryAssignmentTable implements IUiSnippet {
-	public AUiSnippetTableThermalInterfaceList() {
+public abstract class AUiSnippetTableThermalAnalysisThermalanalysisResultsAnalysisResult extends AUiSnippetArrayInstanceCategoryTable implements IUiSnippet {
+
+	public AUiSnippetTableThermalAnalysisThermalanalysisResultsAnalysisResult() {
 		super("de.dlr.sc.virsat.model.extension.thermal",
-			"ThermalInterfaceList",
-			"de.dlr.sc.virsat.model.extension.thermal.ThermalInterfaceList",
+			"AnalysisResult",
+			"thermalanalysisResults",
+			"ThermalAnalysis",
+			"de.dlr.sc.virsat.model.extension.thermal.AnalysisResult",
 			STYLE_ADD_BUTTON | STYLE_REMOVE_BUTTON | STYLE_EDITOR_BUTTON);
 	}
-
+	
 	@Override
 	protected Command createAddCommand(EditingDomain editingDomain, Concept activeConcept) {
-		return new CreateAddThermalInterfaceListCommand().create(editingDomain, model, activeConcept);
+		return new CreateAddArrayElementThermalanalysisResultsCommand().create(editingDomain, getArrayInstance(model),  ActiveConceptHelper.getCategory(activeConcept, "AnalysisResult"));
 	}
 }

@@ -6,47 +6,33 @@
     <properties xsi:type="dvlm_cppd:FloatProperty" name="maximumCharacteristicMeshLength" quantityKindName="Length" defaultValue="0"/>
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
-  <categories name="MeshSizes" description="Maximum mesh element sizes for components can be defined here.">
-    <properties xsi:type="dvlm_cppd:ComposedProperty" name="componentMeshSize" type="de.dlr.sc.virsat.model.extension.thermal.ComponentMeshSize">
-      <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
-    </properties>
-    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
-  </categories>
   <categories name="ThermalAnalysis" description="Here all general information for the analysis is stored" isApplicableForAll="true" cardinality="1">
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="boundaryConditions" type="de.dlr.sc.virsat.model.extension.thermal.BoundaryConditions"/>
-    <properties xsi:type="dvlm_cppd:ComposedProperty" name="meshsizes" type="de.dlr.sc.virsat.model.extension.thermal.MeshSizes"/>
-    <properties xsi:type="dvlm_cppd:ComposedProperty" name="thermalanalysisResults" type="de.dlr.sc.virsat.model.extension.thermal.ThermalAnalysisResults"/>
+    <properties xsi:type="dvlm_cppd:ComposedProperty" name="meshsizes" type="de.dlr.sc.virsat.model.extension.thermal.ComponentMeshSize">
+      <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
+    </properties>
+    <properties xsi:type="dvlm_cppd:ComposedProperty" name="thermalanalysisResults" type="de.dlr.sc.virsat.model.extension.thermal.AnalysisResult">
+      <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
+    </properties>
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="analysisType" type="de.dlr.sc.virsat.model.extension.thermal.AnalysisType"/>
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="reports" type="de.dlr.sc.virsat.model.extension.thermal.Reports">
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
     </properties>
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
-  <categories name="ThermalData" description="Modeling thermal element data" isApplicableForAll="true">
-    <properties xsi:type="dvlm_cppd:ComposedProperty" name="radiationaList" type="de.dlr.sc.virsat.model.extension.thermal.SingleFaceRadiationList"/>
+  <categories name="ThermalData" description="Modeling thermal element data" isApplicableForAll="true" cardinality="1">
+    <properties xsi:type="dvlm_cppd:ComposedProperty" name="singlefaceradiationaList" type="de.dlr.sc.virsat.model.extension.thermal.FaceRadiation">
+      <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
+    </properties>
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="thermalcontacts" type="de.dlr.sc.virsat.model.extension.thermal.ThermalContacts"/>
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="thermalelementparameters" type="de.dlr.sc.virsat.model.extension.thermal.ThermalElementParameters"/>
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
-  <categories name="SingleFaceRadiationList" description="Modeling of separate emissivities for different faces">
-    <properties xsi:type="dvlm_cppd:ComposedProperty" name="faceradiation" type="de.dlr.sc.virsat.model.extension.thermal.FaceRadiation">
-      <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
-    </properties>
-    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
-  </categories>
   <categories name="ThermalContacts" description="Here all thermal contacts are stored">
-    <properties xsi:type="dvlm_cppd:ComposedProperty" name="thermalportlist" type="de.dlr.sc.virsat.model.extension.thermal.ThermalPortList"/>
-    <properties xsi:type="dvlm_cppd:ComposedProperty" name="thermalinterfacelist" type="de.dlr.sc.virsat.model.extension.thermal.ThermalInterfaceList"/>
-    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
-  </categories>
-  <categories name="ThermalPortList" description="Here all thermal ports are stored">
-    <properties xsi:type="dvlm_cppd:ComposedProperty" name="termalports" type="de.dlr.sc.virsat.model.extension.thermal.ThermalPort">
+    <properties xsi:type="dvlm_cppd:ComposedProperty" name="thermalportlist" type="de.dlr.sc.virsat.model.extension.thermal.ThermalPort">
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
     </properties>
-    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
-  </categories>
-  <categories name="ThermalInterfaceList" description="Here all thermal interfaces between ports are stored">
-    <properties xsi:type="dvlm_cppd:ComposedProperty" name="thermalInterfaces" type="de.dlr.sc.virsat.model.extension.thermal.ThermalInterface">
+    <properties xsi:type="dvlm_cppd:ComposedProperty" name="thermalinterfacelist" type="de.dlr.sc.virsat.model.extension.thermal.ThermalInterface">
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
     </properties>
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
@@ -56,12 +42,6 @@
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
     </properties>
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="heatflowface" type="de.dlr.sc.virsat.model.extension.thermal.HeatFlowToFace">
-      <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
-    </properties>
-    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
-  </categories>
-  <categories name="ThermalAnalysisResults" description="Maximum mesh element sizes for components can be defined here.">
-    <properties xsi:type="dvlm_cppd:ComposedProperty" name="analysisresults" type="de.dlr.sc.virsat.model.extension.thermal.AnalysisResult">
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
     </properties>
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>

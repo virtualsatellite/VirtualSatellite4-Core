@@ -7,20 +7,16 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.thermal.ui.snippet;
+package de.dlr.sc.virsat.model.extension.thermal.ui.command;
 
-
-// *****************************************************************
-// * Class Declaration
-// *****************************************************************
 
 /**
  * Auto Generated Class inheriting from Generator Gap Class
  * 
  * This class is generated once, do your changes here
  * 
- * Here all thermal ports are stored
+ * 
  * 
  */
-public class UiSnippetTableThermalPortList extends AUiSnippetTableThermalPortList {
+public class CreateAddArrayElementThermalportlistCommand extends ACreateAddArrayElementThermalportlistCommand {
 }

@@ -15,8 +15,8 @@ package de.dlr.sc.virsat.model.extension.thermal.ui.command;
  * 
  * This class is generated once, do your changes here
  * 
- * Here all thermal interfaces between ports are stored
+ * 
  * 
  */
-public class CreateAddThermalInterfaceListCommand extends ACreateAddThermalInterfaceListCommand {
+public class CreateAddArrayElementThermalinterfacelistCommand extends ACreateAddArrayElementThermalinterfacelistCommand {
 }

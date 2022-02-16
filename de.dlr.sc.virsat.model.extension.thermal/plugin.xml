@@ -22,10 +22,6 @@
 			caBean="de.dlr.sc.virsat.model.extension.thermal.model.ComponentMeshSize">
 		</CategoryAssignmentBean>
 		<CategoryAssignmentBean
-			id="de.dlr.sc.virsat.model.extension.thermal.MeshSizes"
-			caBean="de.dlr.sc.virsat.model.extension.thermal.model.MeshSizes">
-		</CategoryAssignmentBean>
-		<CategoryAssignmentBean
 			id="de.dlr.sc.virsat.model.extension.thermal.ThermalAnalysis"
 			caBean="de.dlr.sc.virsat.model.extension.thermal.model.ThermalAnalysis">
 		</CategoryAssignmentBean>
@@ -34,28 +30,12 @@
 			caBean="de.dlr.sc.virsat.model.extension.thermal.model.ThermalData">
 		</CategoryAssignmentBean>
 		<CategoryAssignmentBean
-			id="de.dlr.sc.virsat.model.extension.thermal.SingleFaceRadiationList"
-			caBean="de.dlr.sc.virsat.model.extension.thermal.model.SingleFaceRadiationList">
-		</CategoryAssignmentBean>
-		<CategoryAssignmentBean
 			id="de.dlr.sc.virsat.model.extension.thermal.ThermalContacts"
 			caBean="de.dlr.sc.virsat.model.extension.thermal.model.ThermalContacts">
 		</CategoryAssignmentBean>
 		<CategoryAssignmentBean
-			id="de.dlr.sc.virsat.model.extension.thermal.ThermalPortList"
-			caBean="de.dlr.sc.virsat.model.extension.thermal.model.ThermalPortList">
-		</CategoryAssignmentBean>
-		<CategoryAssignmentBean
-			id="de.dlr.sc.virsat.model.extension.thermal.ThermalInterfaceList"
-			caBean="de.dlr.sc.virsat.model.extension.thermal.model.ThermalInterfaceList">
-		</CategoryAssignmentBean>
-		<CategoryAssignmentBean
 			id="de.dlr.sc.virsat.model.extension.thermal.BoundaryConditions"
 			caBean="de.dlr.sc.virsat.model.extension.thermal.model.BoundaryConditions">
-		</CategoryAssignmentBean>
-		<CategoryAssignmentBean
-			id="de.dlr.sc.virsat.model.extension.thermal.ThermalAnalysisResults"
-			caBean="de.dlr.sc.virsat.model.extension.thermal.model.ThermalAnalysisResults">
 		</CategoryAssignmentBean>
 		<CategoryAssignmentBean
 			id="de.dlr.sc.virsat.model.extension.thermal.AnalysisResult"

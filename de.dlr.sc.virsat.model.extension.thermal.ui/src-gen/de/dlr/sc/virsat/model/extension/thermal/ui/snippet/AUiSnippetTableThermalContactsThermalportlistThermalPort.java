@@ -11,31 +11,34 @@ package de.dlr.sc.virsat.model.extension.thermal.ui.snippet;
 
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import org.eclipse.emf.common.command.Command;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
-import de.dlr.sc.virsat.model.extension.thermal.ui.command.CreateAddThermalPortListCommand;
-import de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetGenericCategoryAssignmentTable;
+import de.dlr.sc.virsat.model.extension.thermal.ui.command.CreateAddArrayElementThermalportlistCommand;
+import de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetArrayInstanceCategoryTable;
 
-;
 
 /**
  * Auto Generated Abstract Generator Gap Class
  * 
  * Don't Manually modify this class
  * 
- * Here all thermal ports are stored
+ * Here all thermal contacts are stored
  * 
  */	
-public abstract class AUiSnippetTableThermalPortList extends AUiSnippetGenericCategoryAssignmentTable implements IUiSnippet {
-	public AUiSnippetTableThermalPortList() {
+public abstract class AUiSnippetTableThermalContactsThermalportlistThermalPort extends AUiSnippetArrayInstanceCategoryTable implements IUiSnippet {
+
+	public AUiSnippetTableThermalContactsThermalportlistThermalPort() {
 		super("de.dlr.sc.virsat.model.extension.thermal",
-			"ThermalPortList",
-			"de.dlr.sc.virsat.model.extension.thermal.ThermalPortList",
+			"ThermalPort",
+			"thermalportlist",
+			"ThermalContacts",
+			"de.dlr.sc.virsat.model.extension.thermal.ThermalPort",
 			STYLE_ADD_BUTTON | STYLE_REMOVE_BUTTON | STYLE_EDITOR_BUTTON);
 	}
-
+	
 	@Override
 	protected Command createAddCommand(EditingDomain editingDomain, Concept activeConcept) {
-		return new CreateAddThermalPortListCommand().create(editingDomain, model, activeConcept);
+		return new CreateAddArrayElementThermalportlistCommand().create(editingDomain, getArrayInstance(model),  ActiveConceptHelper.getCategory(activeConcept, "ThermalPort"));
 	}
 }

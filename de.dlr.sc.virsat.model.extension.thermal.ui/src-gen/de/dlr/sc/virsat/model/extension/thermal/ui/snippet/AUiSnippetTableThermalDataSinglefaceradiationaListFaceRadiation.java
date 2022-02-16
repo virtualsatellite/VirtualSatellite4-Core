@@ -10,32 +10,35 @@
 package de.dlr.sc.virsat.model.extension.thermal.ui.snippet;
 
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.extension.thermal.ui.command.CreateAddSingleFaceRadiationListCommand;
+import de.dlr.sc.virsat.model.extension.thermal.ui.command.CreateAddArrayElementSinglefaceradiationaListCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import org.eclipse.emf.common.command.Command;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
-import de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetGenericCategoryAssignmentTable;
+import de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetArrayInstanceCategoryTable;
 
-;
 
 /**
  * Auto Generated Abstract Generator Gap Class
  * 
  * Don't Manually modify this class
  * 
- * Modeling of separate emissivities for different faces
+ * Modeling thermal element data
  * 
  */	
-public abstract class AUiSnippetTableSingleFaceRadiationList extends AUiSnippetGenericCategoryAssignmentTable implements IUiSnippet {
-	public AUiSnippetTableSingleFaceRadiationList() {
+public abstract class AUiSnippetTableThermalDataSinglefaceradiationaListFaceRadiation extends AUiSnippetArrayInstanceCategoryTable implements IUiSnippet {
+
+	public AUiSnippetTableThermalDataSinglefaceradiationaListFaceRadiation() {
 		super("de.dlr.sc.virsat.model.extension.thermal",
-			"SingleFaceRadiationList",
-			"de.dlr.sc.virsat.model.extension.thermal.SingleFaceRadiationList",
+			"FaceRadiation",
+			"singlefaceradiationaList",
+			"ThermalData",
+			"de.dlr.sc.virsat.model.extension.thermal.FaceRadiation",
 			STYLE_ADD_BUTTON | STYLE_REMOVE_BUTTON | STYLE_EDITOR_BUTTON);
 	}
-
+	
 	@Override
 	protected Command createAddCommand(EditingDomain editingDomain, Concept activeConcept) {
-		return new CreateAddSingleFaceRadiationListCommand().create(editingDomain, model, activeConcept);
+		return new CreateAddArrayElementSinglefaceradiationaListCommand().create(editingDomain, getArrayInstance(model),  ActiveConceptHelper.getCategory(activeConcept, "FaceRadiation"));
 	}
 }
