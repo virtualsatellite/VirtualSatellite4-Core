@@ -963,6 +963,16 @@
 		      snippet="de.dlr.sc.virsat.model.extension.thermal.ui.snippet.UiSnippetSectionComponentResult">
 		</uiSnippet>
 	</extension>
+ <extension
+       point="org.eclipse.ui.exportWizards">
+    <wizard
+          category="de.dlr.virsat.global.category.export.virsat"
+          class="de.dlr.sc.virsat.model.extension.thermal.ui.wizards.CadThermalExportWizard"
+          icon="resources/icons/de.dlr.sc.virsat.model.extension.thermal.gif"
+          id="de.dlr.sc.virsat.model.extension.thermal.ui.wizards.cadThermalExport"
+          name="CAD Thermal Export Wizard">
+    </wizard>
+ </extension>
 	<!-- Plugin.XML Protected Region Start -->
 	<!-- Plugin.XML Protected Region End -->
 </plugin>
