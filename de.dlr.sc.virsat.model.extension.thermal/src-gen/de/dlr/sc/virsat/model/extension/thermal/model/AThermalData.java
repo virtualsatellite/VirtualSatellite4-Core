@@ -17,12 +17,16 @@ import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import javax.xml.bind.annotation.XmlRootElement;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
+import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import javax.xml.bind.annotation.XmlAccessType;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyInstanceList;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
 import javax.xml.bind.annotation.XmlElement;
 
@@ -54,7 +58,7 @@ public abstract class AThermalData extends GenericCategory implements IBeanCateg
 	}
 	
 	// property name constants
-	public static final String PROPERTY_RADIATIONALIST = "radiationaList";
+	public static final String PROPERTY_SINGLEFACERADIATIONALIST = "singlefaceradiationaList";
 	public static final String PROPERTY_THERMALCONTACTS = "thermalcontacts";
 	public static final String PROPERTY_THERMALELEMENTPARAMETERS = "thermalelementparameters";
 	
@@ -79,26 +83,33 @@ public abstract class AThermalData extends GenericCategory implements IBeanCateg
 	
 	
 	// *****************************************************************
-	// * Attribute: radiationaList
+	// * Array Attribute: singlefaceradiationaList
 	// *****************************************************************
-	private BeanPropertyComposed<SingleFaceRadiationList> radiationaList = new BeanPropertyComposed<>();
+	private IBeanList<FaceRadiation> singlefaceradiationaList = new TypeSafeComposedPropertyInstanceList<>(FaceRadiation.class);
 	
-	private void safeAccessRadiationaList() {
-		if (radiationaList.getTypeInstance() == null) {
-			ComposedPropertyInstance propertyInstance = (ComposedPropertyInstance) helper.getPropertyInstance("radiationaList");
-			radiationaList.setTypeInstance(propertyInstance);
+	private void safeAccessSinglefaceradiationaList() {
+		if (singlefaceradiationaList.getArrayInstance() == null) {
+			singlefaceradiationaList.setArrayInstance((ArrayInstance) helper.getPropertyInstance("singlefaceradiationaList"));
 		}
 	}
 	
-	@XmlElement(nillable = true)
-	public SingleFaceRadiationList getRadiationaList() {
-		safeAccessRadiationaList();
-		return radiationaList.getValue();
+	public IBeanList<FaceRadiation> getSinglefaceradiationaList() {
+		safeAccessSinglefaceradiationaList();
+		return singlefaceradiationaList;
 	}
 	
-	public BeanPropertyComposed<SingleFaceRadiationList> getRadiationaListBean() {
-		safeAccessRadiationaList();
-		return radiationaList;
+	private IBeanList<BeanPropertyComposed<FaceRadiation>> singlefaceradiationaListBean = new TypeSafeComposedPropertyBeanList<>();
+	
+	private void safeAccessSinglefaceradiationaListBean() {
+		if (singlefaceradiationaListBean.getArrayInstance() == null) {
+			singlefaceradiationaListBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("singlefaceradiationaList"));
+		}
+	}
+	
+	@XmlElement
+	public IBeanList<BeanPropertyComposed<FaceRadiation>> getSinglefaceradiationaListBean() {
+		safeAccessSinglefaceradiationaListBean();
+		return singlefaceradiationaListBean;
 	}
 	
 	// *****************************************************************

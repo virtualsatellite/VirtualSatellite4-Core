@@ -20,10 +20,6 @@
 		pathToImage="resources/icons/ComponentMeshSize.gif">
 	</conceptImage>
 	<conceptImage
-		fullQualifiedID="de.dlr.sc.virsat.model.extension.thermal.MeshSizes"
-		pathToImage="resources/icons/MeshSizes.gif">
-	</conceptImage>
-	<conceptImage
 		fullQualifiedID="de.dlr.sc.virsat.model.extension.thermal.ThermalAnalysis"
 		pathToImage="resources/icons/ThermalAnalysis.gif">
 	</conceptImage>
@@ -32,28 +28,12 @@
 		pathToImage="resources/icons/ThermalData.gif">
 	</conceptImage>
 	<conceptImage
-		fullQualifiedID="de.dlr.sc.virsat.model.extension.thermal.SingleFaceRadiationList"
-		pathToImage="resources/icons/SingleFaceRadiationList.gif">
-	</conceptImage>
-	<conceptImage
 		fullQualifiedID="de.dlr.sc.virsat.model.extension.thermal.ThermalContacts"
 		pathToImage="resources/icons/ThermalContacts.gif">
 	</conceptImage>
 	<conceptImage
-		fullQualifiedID="de.dlr.sc.virsat.model.extension.thermal.ThermalPortList"
-		pathToImage="resources/icons/ThermalPortList.gif">
-	</conceptImage>
-	<conceptImage
-		fullQualifiedID="de.dlr.sc.virsat.model.extension.thermal.ThermalInterfaceList"
-		pathToImage="resources/icons/ThermalInterfaceList.gif">
-	</conceptImage>
-	<conceptImage
 		fullQualifiedID="de.dlr.sc.virsat.model.extension.thermal.BoundaryConditions"
 		pathToImage="resources/icons/BoundaryConditions.gif">
-	</conceptImage>
-	<conceptImage
-		fullQualifiedID="de.dlr.sc.virsat.model.extension.thermal.ThermalAnalysisResults"
-		pathToImage="resources/icons/ThermalAnalysisResults.gif">
 	</conceptImage>
 	<conceptImage
 		fullQualifiedID="de.dlr.sc.virsat.model.extension.thermal.AnalysisResult"
@@ -110,10 +90,6 @@
 		name="Add ComponentMeshSize">
 	</command>
 	<command
-		id="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddMeshSizes"
-		name="Add MeshSizes">
-	</command>
-	<command
 		id="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddThermalAnalysis"
 		name="Add ThermalAnalysis">
 	</command>
@@ -122,28 +98,12 @@
 		name="Add ThermalData">
 	</command>
 	<command
-		id="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddSingleFaceRadiationList"
-		name="Add SingleFaceRadiationList">
-	</command>
-	<command
 		id="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddThermalContacts"
 		name="Add ThermalContacts">
 	</command>
 	<command
-		id="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddThermalPortList"
-		name="Add ThermalPortList">
-	</command>
-	<command
-		id="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddThermalInterfaceList"
-		name="Add ThermalInterfaceList">
-	</command>
-	<command
 		id="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddBoundaryConditions"
 		name="Add BoundaryConditions">
-	</command>
-	<command
-		id="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddThermalAnalysisResults"
-		name="Add ThermalAnalysisResults">
 	</command>
 	<command
 		id="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddAnalysisResult"
@@ -201,11 +161,6 @@
 	      icon="resources/icons/ComponentMeshSize.gif">
 	</image>
 	<image
-	      commandId="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddMeshSizes"
-	      disabledIcon="resources/icons/MeshSizes_disabled.gif"
-	      icon="resources/icons/MeshSizes.gif">
-	</image>
-	<image
 	      commandId="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddThermalAnalysis"
 	      disabledIcon="resources/icons/ThermalAnalysis_disabled.gif"
 	      icon="resources/icons/ThermalAnalysis.gif">
@@ -216,34 +171,14 @@
 	      icon="resources/icons/ThermalData.gif">
 	</image>
 	<image
-	      commandId="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddSingleFaceRadiationList"
-	      disabledIcon="resources/icons/SingleFaceRadiationList_disabled.gif"
-	      icon="resources/icons/SingleFaceRadiationList.gif">
-	</image>
-	<image
 	      commandId="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddThermalContacts"
 	      disabledIcon="resources/icons/ThermalContacts_disabled.gif"
 	      icon="resources/icons/ThermalContacts.gif">
 	</image>
 	<image
-	      commandId="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddThermalPortList"
-	      disabledIcon="resources/icons/ThermalPortList_disabled.gif"
-	      icon="resources/icons/ThermalPortList.gif">
-	</image>
-	<image
-	      commandId="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddThermalInterfaceList"
-	      disabledIcon="resources/icons/ThermalInterfaceList_disabled.gif"
-	      icon="resources/icons/ThermalInterfaceList.gif">
-	</image>
-	<image
 	      commandId="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddBoundaryConditions"
 	      disabledIcon="resources/icons/BoundaryConditions_disabled.gif"
 	      icon="resources/icons/BoundaryConditions.gif">
-	</image>
-	<image
-	      commandId="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddThermalAnalysisResults"
-	      disabledIcon="resources/icons/ThermalAnalysisResults_disabled.gif"
-	      icon="resources/icons/ThermalAnalysisResults.gif">
 	</image>
 	<image
 	      commandId="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddAnalysisResult"
@@ -312,10 +247,6 @@
 		commandId="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddComponentMeshSize">
 	</handler>
 	<handler
-		class="de.dlr.sc.virsat.model.extension.thermal.ui.handler.AddMeshSizesHandler"
-		commandId="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddMeshSizes">
-	</handler>
-	<handler
 		class="de.dlr.sc.virsat.model.extension.thermal.ui.handler.AddThermalAnalysisHandler"
 		commandId="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddThermalAnalysis">
 	</handler>
@@ -324,28 +255,12 @@
 		commandId="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddThermalData">
 	</handler>
 	<handler
-		class="de.dlr.sc.virsat.model.extension.thermal.ui.handler.AddSingleFaceRadiationListHandler"
-		commandId="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddSingleFaceRadiationList">
-	</handler>
-	<handler
 		class="de.dlr.sc.virsat.model.extension.thermal.ui.handler.AddThermalContactsHandler"
 		commandId="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddThermalContacts">
 	</handler>
 	<handler
-		class="de.dlr.sc.virsat.model.extension.thermal.ui.handler.AddThermalPortListHandler"
-		commandId="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddThermalPortList">
-	</handler>
-	<handler
-		class="de.dlr.sc.virsat.model.extension.thermal.ui.handler.AddThermalInterfaceListHandler"
-		commandId="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddThermalInterfaceList">
-	</handler>
-	<handler
 		class="de.dlr.sc.virsat.model.extension.thermal.ui.handler.AddBoundaryConditionsHandler"
 		commandId="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddBoundaryConditions">
-	</handler>
-	<handler
-		class="de.dlr.sc.virsat.model.extension.thermal.ui.handler.AddThermalAnalysisResultsHandler"
-		commandId="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddThermalAnalysisResults">
 	</handler>
 	<handler
 		class="de.dlr.sc.virsat.model.extension.thermal.ui.handler.AddAnalysisResultHandler"
@@ -463,28 +378,6 @@
 			</visibleWhen>
 		</command>
 		<command
-			commandId="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddMeshSizes"
-			style="push">
-			<visibleWhen
-				checkEnabled="true">
-				<with
-					variable="selection">
-					<iterate
-						ifEmpty="false"
-						operator="and">
-						<test 
-							property="de.dlr.sc.virsat.model.extension.thermal.ui.propertyTester.conceptEnabled"
-							value="true" 
-							forcePluginActivation="true">
-						</test>		
-						<instanceof
-							value="de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer">
-						</instanceof>
-					</iterate>
-				</with>
-			</visibleWhen>
-		</command>
-		<command
 			commandId="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddThermalAnalysis"
 			style="push">
 			<visibleWhen
@@ -529,28 +422,6 @@
 			</visibleWhen>
 		</command>
 		<command
-			commandId="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddSingleFaceRadiationList"
-			style="push">
-			<visibleWhen
-				checkEnabled="true">
-				<with
-					variable="selection">
-					<iterate
-						ifEmpty="false"
-						operator="and">
-						<test 
-							property="de.dlr.sc.virsat.model.extension.thermal.ui.propertyTester.conceptEnabled"
-							value="true" 
-							forcePluginActivation="true">
-						</test>		
-						<instanceof
-							value="de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer">
-						</instanceof>
-					</iterate>
-				</with>
-			</visibleWhen>
-		</command>
-		<command
 			commandId="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddThermalContacts"
 			style="push">
 			<visibleWhen
@@ -573,73 +444,7 @@
 			</visibleWhen>
 		</command>
 		<command
-			commandId="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddThermalPortList"
-			style="push">
-			<visibleWhen
-				checkEnabled="true">
-				<with
-					variable="selection">
-					<iterate
-						ifEmpty="false"
-						operator="and">
-						<test 
-							property="de.dlr.sc.virsat.model.extension.thermal.ui.propertyTester.conceptEnabled"
-							value="true" 
-							forcePluginActivation="true">
-						</test>		
-						<instanceof
-							value="de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer">
-						</instanceof>
-					</iterate>
-				</with>
-			</visibleWhen>
-		</command>
-		<command
-			commandId="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddThermalInterfaceList"
-			style="push">
-			<visibleWhen
-				checkEnabled="true">
-				<with
-					variable="selection">
-					<iterate
-						ifEmpty="false"
-						operator="and">
-						<test 
-							property="de.dlr.sc.virsat.model.extension.thermal.ui.propertyTester.conceptEnabled"
-							value="true" 
-							forcePluginActivation="true">
-						</test>		
-						<instanceof
-							value="de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer">
-						</instanceof>
-					</iterate>
-				</with>
-			</visibleWhen>
-		</command>
-		<command
 			commandId="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddBoundaryConditions"
-			style="push">
-			<visibleWhen
-				checkEnabled="true">
-				<with
-					variable="selection">
-					<iterate
-						ifEmpty="false"
-						operator="and">
-						<test 
-							property="de.dlr.sc.virsat.model.extension.thermal.ui.propertyTester.conceptEnabled"
-							value="true" 
-							forcePluginActivation="true">
-						</test>		
-						<instanceof
-							value="de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer">
-						</instanceof>
-					</iterate>
-				</with>
-			</visibleWhen>
-		</command>
-		<command
-			commandId="de.dlr.sc.virsat.model.extension.thermal.ui.command.AddThermalAnalysisResults"
 			style="push">
 			<visibleWhen
 				checkEnabled="true">
@@ -958,21 +763,6 @@
 		      snippet="de.dlr.sc.virsat.model.extension.thermal.ui.snippet.UiSnippetSectionComponentMeshSize">
 		</uiSnippet>
 		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.thermal.table.uiSnippetMeshSizes"
-		      section="de.dlr.sc.virsat.model.extension.thermal.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.thermal.ui.snippet.UiSnippetTableMeshSizes">
-		</uiSnippet>
-		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.thermal.section.uiSnippetMeshSizes"
-		      section="de.dlr.sc.virsat.model.extension.thermal.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.thermal.ui.snippet.UiSnippetSectionMeshSizes">
-		</uiSnippet>
-		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.thermal.table.uiSnippetMeshSizesComponentMeshSizeComponentMeshSize"
-		      section="de.dlr.sc.virsat.model.extension.thermal.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.thermal.ui.snippet.UiSnippetTableMeshSizesComponentMeshSizeComponentMeshSize">
-		</uiSnippet>
-		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.thermal.table.uiSnippetThermalAnalysis"
 		      section="de.dlr.sc.virsat.model.extension.thermal.ui.Section"
 		      snippet="de.dlr.sc.virsat.model.extension.thermal.ui.snippet.UiSnippetTableThermalAnalysis">
@@ -981,6 +771,16 @@
 		      id="de.dlr.sc.virsat.model.extension.thermal.section.uiSnippetThermalAnalysis"
 		      section="de.dlr.sc.virsat.model.extension.thermal.ui.Section"
 		      snippet="de.dlr.sc.virsat.model.extension.thermal.ui.snippet.UiSnippetSectionThermalAnalysis">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.thermal.table.uiSnippetThermalAnalysisMeshsizesComponentMeshSize"
+		      section="de.dlr.sc.virsat.model.extension.thermal.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.thermal.ui.snippet.UiSnippetTableThermalAnalysisMeshsizesComponentMeshSize">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.thermal.table.uiSnippetThermalAnalysisThermalanalysisResultsAnalysisResult"
+		      section="de.dlr.sc.virsat.model.extension.thermal.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.thermal.ui.snippet.UiSnippetTableThermalAnalysisThermalanalysisResultsAnalysisResult">
 		</uiSnippet>
 		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.thermal.table.uiSnippetThermalAnalysisReportsReports"
@@ -998,19 +798,9 @@
 		      snippet="de.dlr.sc.virsat.model.extension.thermal.ui.snippet.UiSnippetSectionThermalData">
 		</uiSnippet>
 		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.thermal.table.uiSnippetSingleFaceRadiationList"
+		      id="de.dlr.sc.virsat.model.extension.thermal.table.uiSnippetThermalDataSinglefaceradiationaListFaceRadiation"
 		      section="de.dlr.sc.virsat.model.extension.thermal.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.thermal.ui.snippet.UiSnippetTableSingleFaceRadiationList">
-		</uiSnippet>
-		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.thermal.section.uiSnippetSingleFaceRadiationList"
-		      section="de.dlr.sc.virsat.model.extension.thermal.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.thermal.ui.snippet.UiSnippetSectionSingleFaceRadiationList">
-		</uiSnippet>
-		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.thermal.table.uiSnippetSingleFaceRadiationListFaceradiationFaceRadiation"
-		      section="de.dlr.sc.virsat.model.extension.thermal.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.thermal.ui.snippet.UiSnippetTableSingleFaceRadiationListFaceradiationFaceRadiation">
+		      snippet="de.dlr.sc.virsat.model.extension.thermal.ui.snippet.UiSnippetTableThermalDataSinglefaceradiationaListFaceRadiation">
 		</uiSnippet>
 		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.thermal.table.uiSnippetThermalContacts"
@@ -1023,34 +813,14 @@
 		      snippet="de.dlr.sc.virsat.model.extension.thermal.ui.snippet.UiSnippetSectionThermalContacts">
 		</uiSnippet>
 		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.thermal.table.uiSnippetThermalPortList"
+		      id="de.dlr.sc.virsat.model.extension.thermal.table.uiSnippetThermalContactsThermalportlistThermalPort"
 		      section="de.dlr.sc.virsat.model.extension.thermal.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.thermal.ui.snippet.UiSnippetTableThermalPortList">
+		      snippet="de.dlr.sc.virsat.model.extension.thermal.ui.snippet.UiSnippetTableThermalContactsThermalportlistThermalPort">
 		</uiSnippet>
 		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.thermal.section.uiSnippetThermalPortList"
+		      id="de.dlr.sc.virsat.model.extension.thermal.table.uiSnippetThermalContactsThermalinterfacelistThermalInterface"
 		      section="de.dlr.sc.virsat.model.extension.thermal.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.thermal.ui.snippet.UiSnippetSectionThermalPortList">
-		</uiSnippet>
-		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.thermal.table.uiSnippetThermalPortListTermalportsThermalPort"
-		      section="de.dlr.sc.virsat.model.extension.thermal.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.thermal.ui.snippet.UiSnippetTableThermalPortListTermalportsThermalPort">
-		</uiSnippet>
-		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.thermal.table.uiSnippetThermalInterfaceList"
-		      section="de.dlr.sc.virsat.model.extension.thermal.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.thermal.ui.snippet.UiSnippetTableThermalInterfaceList">
-		</uiSnippet>
-		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.thermal.section.uiSnippetThermalInterfaceList"
-		      section="de.dlr.sc.virsat.model.extension.thermal.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.thermal.ui.snippet.UiSnippetSectionThermalInterfaceList">
-		</uiSnippet>
-		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.thermal.table.uiSnippetThermalInterfaceListThermalInterfacesThermalInterface"
-		      section="de.dlr.sc.virsat.model.extension.thermal.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.thermal.ui.snippet.UiSnippetTableThermalInterfaceListThermalInterfacesThermalInterface">
+		      snippet="de.dlr.sc.virsat.model.extension.thermal.ui.snippet.UiSnippetTableThermalContactsThermalinterfacelistThermalInterface">
 		</uiSnippet>
 		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.thermal.table.uiSnippetBoundaryConditions"
@@ -1071,21 +841,6 @@
 		      id="de.dlr.sc.virsat.model.extension.thermal.table.uiSnippetBoundaryConditionsHeatflowfaceHeatFlowToFace"
 		      section="de.dlr.sc.virsat.model.extension.thermal.ui.Section"
 		      snippet="de.dlr.sc.virsat.model.extension.thermal.ui.snippet.UiSnippetTableBoundaryConditionsHeatflowfaceHeatFlowToFace">
-		</uiSnippet>
-		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.thermal.table.uiSnippetThermalAnalysisResults"
-		      section="de.dlr.sc.virsat.model.extension.thermal.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.thermal.ui.snippet.UiSnippetTableThermalAnalysisResults">
-		</uiSnippet>
-		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.thermal.section.uiSnippetThermalAnalysisResults"
-		      section="de.dlr.sc.virsat.model.extension.thermal.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.thermal.ui.snippet.UiSnippetSectionThermalAnalysisResults">
-		</uiSnippet>
-		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.thermal.table.uiSnippetThermalAnalysisResultsAnalysisresultsAnalysisResult"
-		      section="de.dlr.sc.virsat.model.extension.thermal.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.thermal.ui.snippet.UiSnippetTableThermalAnalysisResultsAnalysisresultsAnalysisResult">
 		</uiSnippet>
 		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.thermal.table.uiSnippetAnalysisResult"

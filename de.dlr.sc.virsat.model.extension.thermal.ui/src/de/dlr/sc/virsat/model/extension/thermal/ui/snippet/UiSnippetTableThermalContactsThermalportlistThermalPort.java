@@ -7,24 +7,18 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.thermal.model;
+package de.dlr.sc.virsat.model.extension.thermal.ui.snippet;
 
-// *****************************************************************
-// * Import Statements
-// *****************************************************************
+import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
 
-// *****************************************************************
-// * Class Declaration
-// *****************************************************************
 
 /**
  * Auto Generated Class inheriting from Generator Gap Class
  * 
  * This class is generated once, do your changes here
  * 
- * Modeling of separate emissivities for different faces
+ * 
  * 
  */
-public class SingleFaceRadiationListTest extends ASingleFaceRadiationListTest {
-	
+public class UiSnippetTableThermalContactsThermalportlistThermalPort extends AUiSnippetTableThermalContactsThermalportlistThermalPort implements IUiSnippet {
 }

@@ -19,16 +19,12 @@ Concept de.dlr.sc.virsat.model.extension.thermal displayname "Thermal" descripti
 		FloatProperty maximumCharacteristicMeshLength quantityKind "Length" default 0;
 	}
 	
-	Category MeshSizes description "Maximum mesh element sizes for components can be defined here."{
-		Type componentMeshSize[] of Category ComponentMeshSize;
-	}
-	
 	Category ThermalAnalysis description "Here all general information for the analysis is stored"{
 		Applicable For All;
 		Cardinality 1;
 		Type boundaryConditions of Category BoundaryConditions;
-		Type meshsizes of Category MeshSizes;
-		Type thermalanalysisResults of Category ThermalAnalysisResults;
+		Type meshsizes [] of Category ComponentMeshSize;
+		Type thermalanalysisResults[] of Category AnalysisResult;
 		Type analysisType of Category AnalysisType;
 		Type reports[] of Category Reports;	
 	}
@@ -37,40 +33,21 @@ Concept de.dlr.sc.virsat.model.extension.thermal displayname "Thermal" descripti
 	 Category ThermalData description "Modeling thermal element data"{
 		Applicable For All; //[ElementDefinition, ElementConfiguration, ElementOccurence, ElementRealization]
 		Cardinality 1;
-		Type radiationaList of Category SingleFaceRadiationList;
+		Type singlefaceradiationaList[] of Category FaceRadiation;
 		Type thermalcontacts of Category ThermalContacts;
 		Type thermalelementparameters of Category ThermalElementParameters;
 	}
 	
-	
-	Category SingleFaceRadiationList description "Modeling of separate emissivities for different faces"{
-		Type faceradiation[] of Category FaceRadiation;
-	}
-	 
 	 
 	Category ThermalContacts description "Here all thermal contacts are stored"{
-		Type thermalportlist of Category ThermalPortList;
-		Type thermalinterfacelist of Category ThermalInterfaceList;
-	}
- 
- 
- 	Category ThermalPortList description "Here all thermal ports are stored"{
- 		Type termalports[] of Category ThermalPort;
-	}
-	
-	
-	 Category ThermalInterfaceList description "Here all thermal interfaces between ports are stored"{
-		Type thermalInterfaces[] of Category ThermalInterface;
+		Type thermalportlist[] of Category ThermalPort;
+		Type thermalinterfacelist[] of Category ThermalInterface;
 	}
 	
 
 	Category BoundaryConditions description "Modeling the temperature boundary conditions on the system"{
 		Type boundaries[] of Category TemperatureBoundary;
 		Type heatflowface[] of Category HeatFlowToFace;			
-	}	
-	
-	Category ThermalAnalysisResults description "Maximum mesh element sizes for components can be defined here."{
-		Type analysisresults[] of Category AnalysisResult;			
 	}		
 
 	Category AnalysisResult description "Maximum mesh element sizes for components can be defined here."{

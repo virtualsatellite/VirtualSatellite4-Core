@@ -7,20 +7,16 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.thermal.ui.snippet;
+package de.dlr.sc.virsat.model.extension.thermal.ui.command;
 
-
-// *****************************************************************
-// * Class Declaration
-// *****************************************************************
 
 /**
  * Auto Generated Class inheriting from Generator Gap Class
  * 
  * This class is generated once, do your changes here
  * 
- * Maximum mesh element sizes for components can be defined here.
+ * 
  * 
  */
-public class UiSnippetTableMeshSizes extends AUiSnippetTableMeshSizes {
+public class CreateAddArrayElementThermalinterfacelistCommand extends ACreateAddArrayElementThermalinterfacelistCommand {
 }

@@ -17,11 +17,14 @@ import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import javax.xml.bind.annotation.XmlRootElement;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
+import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import javax.xml.bind.annotation.XmlAccessType;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyInstanceList;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
 import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
 import javax.xml.bind.annotation.XmlElement;
@@ -78,49 +81,63 @@ public abstract class AThermalContacts extends GenericCategory implements IBeanC
 	
 	
 	// *****************************************************************
-	// * Attribute: thermalportlist
+	// * Array Attribute: thermalportlist
 	// *****************************************************************
-	private BeanPropertyComposed<ThermalPortList> thermalportlist = new BeanPropertyComposed<>();
+	private IBeanList<ThermalPort> thermalportlist = new TypeSafeComposedPropertyInstanceList<>(ThermalPort.class);
 	
 	private void safeAccessThermalportlist() {
-		if (thermalportlist.getTypeInstance() == null) {
-			ComposedPropertyInstance propertyInstance = (ComposedPropertyInstance) helper.getPropertyInstance("thermalportlist");
-			thermalportlist.setTypeInstance(propertyInstance);
+		if (thermalportlist.getArrayInstance() == null) {
+			thermalportlist.setArrayInstance((ArrayInstance) helper.getPropertyInstance("thermalportlist"));
 		}
 	}
 	
-	@XmlElement(nillable = true)
-	public ThermalPortList getThermalportlist() {
-		safeAccessThermalportlist();
-		return thermalportlist.getValue();
-	}
-	
-	public BeanPropertyComposed<ThermalPortList> getThermalportlistBean() {
+	public IBeanList<ThermalPort> getThermalportlist() {
 		safeAccessThermalportlist();
 		return thermalportlist;
 	}
 	
-	// *****************************************************************
-	// * Attribute: thermalinterfacelist
-	// *****************************************************************
-	private BeanPropertyComposed<ThermalInterfaceList> thermalinterfacelist = new BeanPropertyComposed<>();
+	private IBeanList<BeanPropertyComposed<ThermalPort>> thermalportlistBean = new TypeSafeComposedPropertyBeanList<>();
 	
-	private void safeAccessThermalinterfacelist() {
-		if (thermalinterfacelist.getTypeInstance() == null) {
-			ComposedPropertyInstance propertyInstance = (ComposedPropertyInstance) helper.getPropertyInstance("thermalinterfacelist");
-			thermalinterfacelist.setTypeInstance(propertyInstance);
+	private void safeAccessThermalportlistBean() {
+		if (thermalportlistBean.getArrayInstance() == null) {
+			thermalportlistBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("thermalportlist"));
 		}
 	}
 	
-	@XmlElement(nillable = true)
-	public ThermalInterfaceList getThermalinterfacelist() {
-		safeAccessThermalinterfacelist();
-		return thermalinterfacelist.getValue();
+	@XmlElement
+	public IBeanList<BeanPropertyComposed<ThermalPort>> getThermalportlistBean() {
+		safeAccessThermalportlistBean();
+		return thermalportlistBean;
 	}
 	
-	public BeanPropertyComposed<ThermalInterfaceList> getThermalinterfacelistBean() {
+	// *****************************************************************
+	// * Array Attribute: thermalinterfacelist
+	// *****************************************************************
+	private IBeanList<ThermalInterface> thermalinterfacelist = new TypeSafeComposedPropertyInstanceList<>(ThermalInterface.class);
+	
+	private void safeAccessThermalinterfacelist() {
+		if (thermalinterfacelist.getArrayInstance() == null) {
+			thermalinterfacelist.setArrayInstance((ArrayInstance) helper.getPropertyInstance("thermalinterfacelist"));
+		}
+	}
+	
+	public IBeanList<ThermalInterface> getThermalinterfacelist() {
 		safeAccessThermalinterfacelist();
 		return thermalinterfacelist;
+	}
+	
+	private IBeanList<BeanPropertyComposed<ThermalInterface>> thermalinterfacelistBean = new TypeSafeComposedPropertyBeanList<>();
+	
+	private void safeAccessThermalinterfacelistBean() {
+		if (thermalinterfacelistBean.getArrayInstance() == null) {
+			thermalinterfacelistBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("thermalinterfacelist"));
+		}
+	}
+	
+	@XmlElement
+	public IBeanList<BeanPropertyComposed<ThermalInterface>> getThermalinterfacelistBean() {
+		safeAccessThermalinterfacelistBean();
+		return thermalinterfacelistBean;
 	}
 	
 	

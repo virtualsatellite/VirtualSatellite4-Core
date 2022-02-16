@@ -9,33 +9,36 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.thermal.ui.snippet;
 
+import de.dlr.sc.virsat.model.extension.thermal.ui.command.CreateAddArrayElementThermalinterfacelistCommand;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.extension.thermal.ui.command.CreateAddMeshSizesCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import org.eclipse.emf.common.command.Command;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
-import de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetGenericCategoryAssignmentTable;
+import de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetArrayInstanceCategoryTable;
 
-;
 
 /**
  * Auto Generated Abstract Generator Gap Class
  * 
  * Don't Manually modify this class
  * 
- * Maximum mesh element sizes for components can be defined here.
+ * Here all thermal contacts are stored
  * 
  */	
-public abstract class AUiSnippetTableMeshSizes extends AUiSnippetGenericCategoryAssignmentTable implements IUiSnippet {
-	public AUiSnippetTableMeshSizes() {
+public abstract class AUiSnippetTableThermalContactsThermalinterfacelistThermalInterface extends AUiSnippetArrayInstanceCategoryTable implements IUiSnippet {
+
+	public AUiSnippetTableThermalContactsThermalinterfacelistThermalInterface() {
 		super("de.dlr.sc.virsat.model.extension.thermal",
-			"MeshSizes",
-			"de.dlr.sc.virsat.model.extension.thermal.MeshSizes",
+			"ThermalInterface",
+			"thermalinterfacelist",
+			"ThermalContacts",
+			"de.dlr.sc.virsat.model.extension.thermal.ThermalInterface",
 			STYLE_ADD_BUTTON | STYLE_REMOVE_BUTTON | STYLE_EDITOR_BUTTON);
 	}
-
+	
 	@Override
 	protected Command createAddCommand(EditingDomain editingDomain, Concept activeConcept) {
-		return new CreateAddMeshSizesCommand().create(editingDomain, model, activeConcept);
+		return new CreateAddArrayElementThermalinterfacelistCommand().create(editingDomain, getArrayInstance(model),  ActiveConceptHelper.getCategory(activeConcept, "ThermalInterface"));
 	}
 }

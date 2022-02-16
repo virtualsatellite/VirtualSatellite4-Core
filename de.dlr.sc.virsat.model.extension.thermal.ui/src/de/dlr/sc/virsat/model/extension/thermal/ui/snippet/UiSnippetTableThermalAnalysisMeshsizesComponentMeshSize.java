@@ -7,24 +7,18 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.thermal.model;
+package de.dlr.sc.virsat.model.extension.thermal.ui.snippet;
 
-// *****************************************************************
-// * Import Statements
-// *****************************************************************
+import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
 
-// *****************************************************************
-// * Class Declaration
-// *****************************************************************
 
 /**
  * Auto Generated Class inheriting from Generator Gap Class
  * 
  * This class is generated once, do your changes here
  * 
- * Here all thermal interfaces between ports are stored
+ * 
  * 
  */
-public class ThermalInterfaceListTest extends AThermalInterfaceListTest {
-	
+public class UiSnippetTableThermalAnalysisMeshsizesComponentMeshSize extends AUiSnippetTableThermalAnalysisMeshsizesComponentMeshSize implements IUiSnippet {
 }

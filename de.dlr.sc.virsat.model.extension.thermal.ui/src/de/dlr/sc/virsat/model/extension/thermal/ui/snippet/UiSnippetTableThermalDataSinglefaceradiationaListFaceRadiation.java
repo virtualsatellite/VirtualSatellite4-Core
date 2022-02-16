@@ -7,7 +7,9 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.thermal.ui.command;
+package de.dlr.sc.virsat.model.extension.thermal.ui.snippet;
+
+import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
 
 
 /**
@@ -15,8 +17,8 @@ package de.dlr.sc.virsat.model.extension.thermal.ui.command;
  * 
  * This class is generated once, do your changes here
  * 
- * Here all thermal interfaces between ports are stored
+ * 
  * 
  */
-public class CreateAddThermalInterfaceListCommand extends ACreateAddThermalInterfaceListCommand {
+public class UiSnippetTableThermalDataSinglefaceradiationaListFaceRadiation extends AUiSnippetTableThermalDataSinglefaceradiationaListFaceRadiation implements IUiSnippet {
 }
