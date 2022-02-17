@@ -26,8 +26,11 @@ import de.dlr.sc.virsat.model.extension.thermal.model.FaceRadiation;
 import de.dlr.sc.virsat.model.extension.thermal.model.HeatFlowToFace;
 import de.dlr.sc.virsat.model.extension.thermal.model.TemperatureBoundary;
 import de.dlr.sc.virsat.model.extension.thermal.model.ThermalAnalysis;
+import de.dlr.sc.virsat.model.extension.thermal.model.ThermalContacts;
 import de.dlr.sc.virsat.model.extension.thermal.model.ThermalData;
 import de.dlr.sc.virsat.model.extension.thermal.model.ThermalElementParameters;
+import de.dlr.sc.virsat.model.extension.thermal.model.ThermalInterface;
+import de.dlr.sc.virsat.model.extension.thermal.model.ThermalPort;
 import de.dlr.sc.virsat.model.extension.visualisation.model.Visualisation;
 
 /**
@@ -95,6 +98,7 @@ public class CadExporterThermal {
 		writeCadRaduationInput(path);
 		writeCadVolumeHeatFluxInput(path);
 		writeCadBoundaryConditionsInput(path);
+		writeCadContacsInput(path);
 	}
 
 	/**
@@ -350,5 +354,58 @@ public class CadExporterThermal {
 				bcOutput.close();
 			}
 		}
+	}
+	
+	/**
+	 * Creates the contact input files for the CAD program
+	 * 
+	 * @param path the path where to create the files
+	 * @throws IOException
+	 */
+	public void writeCadContacsInput(String path) throws IOException {
+		ThermalContacts tcs = thermalAnalysis.getThermalcontacts();
+		
+		File addContactFile = new File(path + File.separatorChar + "add_contact.inp");
+		addContactFile.createNewFile();
+		Writer output = new FileWriter(addContactFile);
+		
+		File contactValidationMaster = new File(path + File.separatorChar + "validateContactsMaster.txt");
+		contactValidationMaster.createNewFile();
+		Writer outputMaster = new FileWriter(contactValidationMaster);
+		
+		File contactValidationSlave = new File(path + File.separatorChar + "validateContactsSlave.txt");
+		contactValidationSlave.createNewFile();
+		Writer outputSlave = new FileWriter(contactValidationSlave);
+	
+		List<ThermalInterface> tis = tcs.getThermalinterfacelist();
+	
+		for (int i = 0; i < tis.size(); ++i) {
+			ThermalInterface ti = tis.get(i);
+			List<ThermalPort> tp = ti.getContacts();
+			
+			double tcc = ti.getThermalContactConductivity();
+			output.write("\n*SURFACE INTERACTION, NAME=SI" + i + "\n");
+			output.write("*SURFACE BEHAVIOR, PRESSURE-OVERCLOSURE=LINEAR\n");
+			output.write("1e10\n");
+			output.write("\n*GAP CONDUCTANCE\n");
+			output.write(tcc + ",,300\n");
+			
+			IBeanStructuralElementInstance component1 = tp.get(0).getPortComponent().getParent();
+			IBeanStructuralElementInstance component2 = tp.get(1).getPortComponent().getParent();
+			
+			String component1UUID = component1.getUuid().replace('-', '_');
+			String component2UUID = component2.getUuid().replace('-', '_');
+			
+			double maxMeshElementSize0 = ti.getContactMaxMeshElementSize0Bean().getValueToBaseUnit();
+			double maxMeshElementSize1 = ti.getContactMaxMeshElementSize1Bean().getValueToBaseUnit();
+			
+			outputMaster.write(component1.getName() + "_" + component1UUID + "," + maxMeshElementSize0 + "\n");
+			outputSlave.write(component2.getName() + "_" + component2UUID + "," + maxMeshElementSize1 + "\n");
+		}
+		
+		output.close();
+		outputMaster.close();
+		outputSlave.close();
+
 	}
 }
