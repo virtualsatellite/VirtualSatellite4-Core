@@ -97,7 +97,6 @@ Concept de.dlr.sc.virsat.model.extension.thermal displayname "Thermal" descripti
 		FloatProperty faceAbsorptivity quantityKind "Dimensionless" unit "No Unit";
 	}
 
-
 	Category ThermalPort description "Modeling of thermal connectors" {
 		Reference portComponent of Type ThermalElementParameters;
 	}
@@ -105,17 +104,17 @@ Concept de.dlr.sc.virsat.model.extension.thermal displayname "Thermal" descripti
 
 	Category ThermalInterface description "Modeling of thermal interfaces"{
 		Reference Contacts [2] of Type ThermalPort;
-		FloatProperty thermalContactConductivity unit "Watt per Meter and Kelvin";
+		FloatProperty thermalContactConductivity quantityKind "Thermal Conductivity" unit "Watt Per Metre Squared Per Kelvin";
 		FloatProperty contactMaxMeshElementSize0 unit "No Unit" default 0;
 		FloatProperty contactMaxMeshElementSize1 unit "No Unit" default 0;
 	}	
 
 	Category Material description "Model of a material"{
 		Applicable For [MaterialCollection];
-		FloatProperty thermalConductivity quantityKind "Thermal Conductivity" unit "";
+		FloatProperty thermalConductivity quantityKind "Thermal Conductivity" unit "Meter Kilogram Per Second Cubed Per Kelvin";
 		FloatProperty absorptionCoefficient quantityKind "Dimensionless" unit "No Unit";
 		FloatProperty elementEmissivity quantityKind "Dimensionless" unit "No Unit";
-		FloatProperty heatCapacity quantityKind "Specific Heat Capacity" unit "";
+		FloatProperty heatCapacity quantityKind "Specific Heat Capacity" unit "Meter Squared Per Second Squared Per Kelvin";
 		FloatProperty density quantityKind "Density" unit "Kilogram Per Cubic Meter";
 	}
 	
