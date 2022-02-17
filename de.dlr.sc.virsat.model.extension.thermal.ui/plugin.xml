@@ -963,7 +963,8 @@
 		      snippet="de.dlr.sc.virsat.model.extension.thermal.ui.snippet.UiSnippetSectionComponentResult">
 		</uiSnippet>
 	</extension>
- <extension
+	<!-- Plugin.XML Protected Region Start -->
+	 <extension
        point="org.eclipse.ui.exportWizards">
     <wizard
           category="de.dlr.virsat.global.category.export.virsat"
@@ -972,7 +973,6 @@
           id="de.dlr.sc.virsat.model.extension.thermal.ui.wizards.cadThermalExport"
           name="CAD Thermal Export Wizard">
     </wizard>
- </extension>
-	<!-- Plugin.XML Protected Region Start -->
+ 	</extension>
 	<!-- Plugin.XML Protected Region End -->
 </plugin>
