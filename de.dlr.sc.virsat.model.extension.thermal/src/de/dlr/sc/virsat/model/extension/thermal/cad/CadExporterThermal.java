@@ -22,6 +22,7 @@ import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementIns
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.thermal.model.AnalysisType;
 import de.dlr.sc.virsat.model.extension.thermal.model.BoundaryConditions;
+import de.dlr.sc.virsat.model.extension.thermal.model.ComponentMeshSize;
 import de.dlr.sc.virsat.model.extension.thermal.model.FaceRadiation;
 import de.dlr.sc.virsat.model.extension.thermal.model.HeatFlowToFace;
 import de.dlr.sc.virsat.model.extension.thermal.model.TemperatureBoundary;
@@ -79,6 +80,7 @@ public class CadExporterThermal {
 
 	/**
 	 * Writes all Cad input files for a thermal analysis
+	 * 
 	 * @param path a path to a folder into which all export files will be written
 	 * @throws IOException
 	 */
@@ -223,7 +225,7 @@ public class CadExporterThermal {
 
 			if ((td != null) && (visShape != null)) {
 				String name = ec.getName();
-				
+
 				ThermalElementParameters tep = td.getThermalelementparameters();
 				// CHECKSTYLE:OFF
 				double thermalConductivity = tep.getPredefinedMaterial().getThermalConductivityBean()
@@ -259,7 +261,7 @@ public class CadExporterThermal {
 			if ((td != null) && (visShape != null)) {
 				String name = ec.getName();
 				String uuid = ec.getUuid().replace("-", "_");
-				
+
 				File mainFile = new File(path + File.separatorChar + name + "_" + uuid + ".rad");
 				mainFile.createNewFile();
 
@@ -291,7 +293,7 @@ public class CadExporterThermal {
 			if ((td != null) && (visShape != null)) {
 				String name = ec.getName();
 				String uuid = ec.getUuid().replace("-", "_");
-				
+
 				// Attention! The main file must be created without including a cflux file when
 				// this conditions is true!
 				File loadFile = new File(path + File.separatorChar + name + "_" + uuid + ".bfl");
@@ -355,7 +357,7 @@ public class CadExporterThermal {
 			}
 		}
 	}
-	
+
 	/**
 	 * Creates the contact input files for the CAD program
 	 * 
@@ -364,48 +366,85 @@ public class CadExporterThermal {
 	 */
 	public void writeCadContacsInput(String path) throws IOException {
 		ThermalContacts tcs = thermalAnalysis.getThermalcontacts();
-		
+
 		File addContactFile = new File(path + File.separatorChar + "add_contact.inp");
 		addContactFile.createNewFile();
 		Writer output = new FileWriter(addContactFile);
-		
+
 		File contactValidationMaster = new File(path + File.separatorChar + "validateContactsMaster.txt");
 		contactValidationMaster.createNewFile();
 		Writer outputMaster = new FileWriter(contactValidationMaster);
-		
+
 		File contactValidationSlave = new File(path + File.separatorChar + "validateContactsSlave.txt");
 		contactValidationSlave.createNewFile();
 		Writer outputSlave = new FileWriter(contactValidationSlave);
-	
+
 		List<ThermalInterface> tis = tcs.getThermalinterfacelist();
-	
+
 		for (int i = 0; i < tis.size(); ++i) {
 			ThermalInterface ti = tis.get(i);
 			List<ThermalPort> tp = ti.getContacts();
-			
+
 			double tcc = ti.getThermalContactConductivity();
 			output.write("\n*SURFACE INTERACTION, NAME=SI" + i + "\n");
 			output.write("*SURFACE BEHAVIOR, PRESSURE-OVERCLOSURE=LINEAR\n");
 			output.write("1e10\n");
 			output.write("\n*GAP CONDUCTANCE\n");
 			output.write(tcc + ",,300\n");
-			
+
 			IBeanStructuralElementInstance component1 = tp.get(0).getPortComponent().getParent();
 			IBeanStructuralElementInstance component2 = tp.get(1).getPortComponent().getParent();
-			
+
 			String component1UUID = component1.getUuid().replace('-', '_');
 			String component2UUID = component2.getUuid().replace('-', '_');
-			
+
 			double maxMeshElementSize0 = ti.getContactMaxMeshElementSize0Bean().getValueToBaseUnit();
 			double maxMeshElementSize1 = ti.getContactMaxMeshElementSize1Bean().getValueToBaseUnit();
-			
+
 			outputMaster.write(component1.getName() + "_" + component1UUID + "," + maxMeshElementSize0 + "\n");
 			outputSlave.write(component2.getName() + "_" + component2UUID + "," + maxMeshElementSize1 + "\n");
 		}
-		
+
 		output.close();
 		outputMaster.close();
 		outputSlave.close();
+	}
 
+	/**
+	 * Creates the main input file for the CAD program
+	 * 
+	 * @param path the path where to create the mesh size files
+	 * @throws IOException
+	 */
+	public void writeCadMeshSizesInput(String path) throws IOException {
+		File meshSizeFile = new File(path + File.separatorChar + "meshSizes.txt");
+		meshSizeFile.createNewFile();
+		Writer meshSizeOutput = new FileWriter(meshSizeFile);
+		List<ComponentMeshSize> cmss = thermalAnalysis.getMeshsizes();
+		
+		for (IBeanStructuralElementInstance ec : ecs) {
+			ThermalData td = ec.getFirst(ThermalData.class);
+			Visualisation visShape = ec.getFirst(Visualisation.class);
+			Boolean meshSizeFound = false;
+
+			if ((td != null) && (visShape != null)) {
+				String name = ec.getName();
+				String uuid = ec.getUuid().replace("-", "_");
+				for (ComponentMeshSize cms : cmss) {
+					if (cms.getMeshComponent().getParent().getName().equals(ec.getName())) {
+						// CHECKSTYLE:OFF
+						double maximumCharacteristicMeshLength = cms.getMaximumCharacteristicMeshLengthBean().getValueToBaseUnit() * 1000;
+						// CHECKSTYLE:ON
+						meshSizeOutput.write(name + "_" + uuid + "," + maximumCharacteristicMeshLength + "\n");
+						meshSizeFound = true;
+					}
+				}
+
+				if (!meshSizeFound) {
+					meshSizeOutput.write(name + "_" + uuid + ",0\n");
+				}
+			}
+		}
+		meshSizeOutput.close();
 	}
 }

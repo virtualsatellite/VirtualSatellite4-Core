@@ -293,4 +293,22 @@ public class CadExporterThermalTest extends AConceptProjectTestCase {
 		assertEquals("Validate Contacts Slave  input file is correct", Files.readAllLines(Paths.get(validateContactsSlaveFilePath)),
 				TestActivator.getResourceContentAsString("/resources/" + expectedValidateContactsSlaveFileName));
 	}
+	
+	@Test
+	public void testWriteCadMeshSizesInput() throws IOException, CoreException {	
+		thermalData.getThermalelementparameters().setPowerBalance(1);
+		
+		String expectedFileName = "meshSizes.txt";
+		String filePath = outputPath.toString() + File.separator + expectedFileName;
+		File expectedFile = new File(filePath);
+
+		assertFalse("Mesh Sizes input file is not there initially", expectedFile.exists());
+
+		CadExporterThermal cadExporter = new CadExporterThermal(thermalAnalysis);
+		cadExporter.writeCadMeshSizesInput(outputPath.toString());
+
+		assertTrue("Mesh Sizes input file is created", expectedFile.exists());
+		assertEquals("Mesh Sizes input file is correct", Files.readAllLines(Paths.get(filePath)),
+				TestActivator.getResourceContentAsString("/resources/" + expectedFileName));
+	}
 }
