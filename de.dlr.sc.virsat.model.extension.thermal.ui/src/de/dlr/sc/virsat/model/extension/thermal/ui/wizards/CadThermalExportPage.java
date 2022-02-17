@@ -3,7 +3,9 @@ package de.dlr.sc.virsat.model.extension.thermal.ui.wizards;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DirectoryDialog;
 
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.extension.ps.model.AssemblyTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
@@ -40,11 +42,30 @@ public class CadThermalExportPage extends AImportExportPage {
 	protected void createTreeViewer() {
 		TreeViewer treeViewer = createTreeUI();
 		VirSatFilteredWrappedTreeContentProvider filteredCp = (VirSatFilteredWrappedTreeContentProvider) treeViewer.getContentProvider();
+		filteredCp.addClassFilter(CategoryAssignment.class);
 		filteredCp.addStructuralElementIdFilter(ConfigurationTree.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME);
 		filteredCp.addStructuralElementIdFilter(ElementConfiguration.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME);
 		filteredCp.addStructuralElementIdFilter(AssemblyTree.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME);
 		filteredCp.addStructuralElementIdFilter(ElementOccurence.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME);
 		filteredCp.addCategoryIdFilter(ThermalAnalysis.FULL_QUALIFIED_CATEGORY_NAME);
+	}
+	
+	@Override
+	protected String openDialog() {
+		DirectoryDialog dialog = new DirectoryDialog(getContainer().getShell(), dialogStyle);
+		dialog.setText("Select Folder");
+		return dialog.open();
+	}
+	
+
+	@Override
+	public boolean isSelectionValid() {
+		Object selection = getSelection();
+		if (selection instanceof CategoryAssignment) {
+			String categoryFqn = ((CategoryAssignment) selection).getType().getFullQualifiedName();
+			return categoryFqn.equals(ThermalAnalysis.FULL_QUALIFIED_CATEGORY_NAME);
+		}
+		return false;
 	}
 
 }
