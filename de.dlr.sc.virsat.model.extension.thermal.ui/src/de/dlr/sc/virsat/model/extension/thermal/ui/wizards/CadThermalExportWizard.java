@@ -21,6 +21,9 @@ import de.dlr.sc.virsat.model.extension.thermal.Activator;
 import de.dlr.sc.virsat.model.extension.thermal.cad.CadExporterThermal;
 import de.dlr.sc.virsat.model.extension.thermal.model.ThermalAnalysis;
 
+/**
+ * Export wizard for thermal CAD data
+ */
 public class CadThermalExportWizard extends Wizard implements INewWizard {
 	
 	public static final String ID = "de.dlr.sc.virsat.model.extension.thermal.ui.wizards.cadThermalExport";
@@ -29,7 +32,7 @@ public class CadThermalExportWizard extends Wizard implements INewWizard {
 	private IContainer model;
 	
 	/**
-	 * Default constructor
+	 * Create the wizard object
 	 */
 	public CadThermalExportWizard() {
 		super();

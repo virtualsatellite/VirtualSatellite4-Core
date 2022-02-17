@@ -14,6 +14,10 @@ import de.dlr.sc.virsat.model.extension.thermal.model.ThermalAnalysis;
 import de.dlr.sc.virsat.project.ui.contentProvider.VirSatFilteredWrappedTreeContentProvider;
 import de.dlr.sc.virsat.uiengine.ui.wizard.AImportExportPage;
 
+/**
+ * Wizard page to select thermal analysis to export and a file destination where to
+ *
+ */
 public class CadThermalExportPage extends AImportExportPage {
 
 	/**
