@@ -964,7 +964,7 @@
 		</uiSnippet>
 	</extension>
 	<!-- Plugin.XML Protected Region Start -->
-<extension
+	<extension
        point="org.eclipse.ui.exportWizards">
     <wizard
           category="de.dlr.virsat.global.category.export.virsat"
@@ -974,5 +974,15 @@
           name="CAD Thermal Export Wizard">
     </wizard>
  	</extension>
+	<extension
+	  point="org.eclipse.ui.importWizards">
+	   <wizard
+	     category="de.dlr.virsat.global.category.import.virsat"
+	     class="de.dlr.sc.virsat.model.extension.thermal.ui.wizards.CadThermalImportResultsWizard"
+	     id="de.dlr.sc.virsat.model.extension.thermal.ui.wizards.cadThermalImportResults"
+	     icon="resources/icons/de.dlr.sc.virsat.model.extension.thermal.gif"
+	     name="CAD Thermal Results Import Wizard">
+	   </wizard>
+	</extension>
 	<!-- Plugin.XML Protected Region End -->
 </plugin>
