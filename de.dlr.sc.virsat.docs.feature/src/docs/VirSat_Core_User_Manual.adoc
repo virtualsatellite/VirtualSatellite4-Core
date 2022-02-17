@@ -1998,12 +1998,12 @@ To have a visual impression of the results, the graphical postprocessor of Calcu
 
 |{counter:step2}.
 |With the main.frd file in the directory, execute the simulation results importer (TBD)
-It creates (if not already present) a “ThermalAnalysisResults” element in the “ThermalAnalysis” element. 
-In it, a new “AnalysisResult” is created for each analysis. The importer will obtain the maximum and minimum temperature value of the whole simulation, for every component. 
+It creates (if not already present) a _ThermalAnalysisResults_ element in the _ThermalAnalysis_ element. 
+In it, a new _AnalysisResult_ is created for each analysis. The importer will obtain the maximum and minimum temperature value of the whole simulation, for every component. 
 
 NOTE: For dynamic analyses the time step where this temperature was achieved is stored.
 
-NOTE: Make sure that the properties in the “AnalysisType” were not changed during the workflow, else the importer will misinterpret the output file
+NOTE: Make sure that the properties in the _AnalysisType_ were not changed during the workflow, else the importer will misinterpret the output file
 
 NOTE: The result import function is relatively primitive as of now and is constrained to simple min/max temperature values. To further evolve this workflow, more sophisticated results could be drawn from the result file. 
 
