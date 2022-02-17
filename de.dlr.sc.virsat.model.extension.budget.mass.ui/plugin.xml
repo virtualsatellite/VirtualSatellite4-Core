@@ -230,6 +230,11 @@
 		      section="de.dlr.sc.virsat.model.extension.budget.mass.ui.Section"
 		      snippet="de.dlr.sc.virsat.model.extension.budget.mass.ui.snippet.UiSnippetSectionMassRequirementsVerification">
 		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.budget.mass.table.uISnippetTableRequirementVerificationsMassRequirementsVerification"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section.Verifications"
+		      snippet="de.dlr.sc.virsat.model.extension.budget.mass.ui.snippet.UiSnippetTableRequirementVerificationsMassRequirementsVerification">
+		</uiSnippet>
 	</extension>
 	<!-- Plugin.XML Protected Region Start -->
 <extension point="de.dlr.sc.virsat.uiengine.ui.EditorUiSnippets">
