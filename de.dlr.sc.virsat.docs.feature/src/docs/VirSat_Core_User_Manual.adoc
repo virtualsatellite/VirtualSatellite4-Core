@@ -1756,7 +1756,7 @@ This is shown in the following image on the down right part with a button named 
 
 The thermal concept allows the user to add thermal properties to the system model. Ultimately, these properties can be used as the basis for a workflow to perform thermal analyses with the FEM tool CalculiX. 
 This is done by exporting the 3D Visualisation and the thermal properties, processing them utilizing FreeCAD as preprocessing tool. 
-CalculiX then reads the input files, creates, and solves, the equation system. 
+CalculiX then reads the generated files, creates, and solves, the equation system. 
 Finally, the thermal concept also allows to import some aspects of the result to the system model.
 
 To model all thermal aspects required for the complete workflow follow these steps:
@@ -1793,7 +1793,7 @@ Secondly, by using the import function. This import function reads a .csv file t
 |
 |
 TIP: The exporter works in that way, that it iterates through every single element and checks if a visualization and the thermal properties are defined by the user. 
-Make sure that all elements, and only these elements, intended for the thermal analysis fulfill these two criteria. Also, do not define a visualization/thermal properties on both, subsystem level and component level of the same subsystem, either choose to model the subsystem as an entirety, or the components of the subsystem. 
+Make sure that all elements, and only these elements, intended for the thermal analysis fulfill these two criteria. Also, do not define a visualization/thermal properties on both, subsystem level and component level of the same subsystem, either choose to model the subsystem as an entirety, or the parts of the subsystem. 
 This avoids inconsistencies in the thermal analysis due to duplication and overlapping of parts.
 |
 
@@ -1802,12 +1802,12 @@ This avoids inconsistencies in the thermal analysis due to duplication and overl
 |
 
 |{counter:step2}.
-|Accordingly, add a _ThermalData_ element, and then, a _ThermalElementParameters_ (TEP might be an own category later) element for each of the components. This element is very important for setting up the rest of the model and for the simulation itself, so make sure all desired parts have such an element. 
+|Accordingly, add a _ThermalData_ element, and then, a _ThermalElementParameters_ (TEP might be an own category later) element for each of the parts. This element is very important for setting up the rest of the model and for the simulation itself, so make sure all desired parts have such an element. 
 Fill this element with the required information comprising the _initialTemperature_ (only relevant for dynamic simulations), the _powerBalance_ of the part (meaning the dissipated heat), and finally reference the desired _material_ for the part.
 |
 
 |{counter:step2}.
-|If not already present anyways, create a `ThermalControl` (or similar name) subsystem in the configuration tree. Even if it is not necessary for modeling physical components. 
+|If not already present anyways, create a `ThermalControl` (or similar name) subsystem in the configuration tree. Even if it is not necessary for modeling physical parts. 
 In this subsystem create a _ThermalAnalysis_ element. This will host a lot of general, analysis related information. 
 
 NOTE: Make sure there is only one of the _ThermalAnalysis_ elements in the tree.
@@ -1816,31 +1816,41 @@ NOTE: Make sure there is only one of the _ThermalAnalysis_ elements in the tree.
 
 |{counter:step2}.
 |In the _ThermalAnalysis_ element, create an _AnalysisType_ element. This is used to specify some top level information for the analysis.
-First, the _AnalysisType_ is specified. Here the user can choose between _static_ and _transient_. 
+First, the _AnalysisType_ is specified. Here the user can choose between `static` and `transient`. 
 A *static* simulation will result in a steady-state thermal equlibrium result, while the *transient* simulation refers to a dynamic simulation over a specified time period.
-The _timeStep_ defines the *time step size* for a transient analysis (for static analysis this can be ignored).
-The _totalTime_ defines the *total simulation time* and therefore the total number of time steps (for static analysis this can be ignored)
-The _includeOrbitRadiation_ option allows to take into account the *thermal influence* of the spacecraft's *orbit* (for static analysis this can be ignored). For more information refer to the dedicated explanation.|
 
-|{counter:step2}.
-|In the _ThermalAnalysis_ element, create a _ThermalContacts_ element. This is where it gets slightly complex. 
-Each *contact* between two physical elements (check in the visualization) must be considered to obtain a valid simulation result, as thermal contacts usually conduct heat quite effective. In the _ThermalContacts_ element, create one _ThermalInterfaceList_ and one _ThermalPortList_ element. 
+The _timeStep_ defines the *time step size* for a transient analysis (for static analysis this can be ignored).
+
+The _totalTime_ defines the *total simulation time* and therefore the total number of time steps (for static analysis this can be ignored)
+
+The _includeOrbitRadiation_ option allows to take into account the *thermal influence* of the spacecraft's *orbit* (for static analysis this can be ignored). For more information refer to the dedicated explanation below this table.
 |
 
 |{counter:step2}.
-|For each *contact* that exists between two components, two dedicated _ThermalPort_ elements must be created (it is very important that each *thermal port* is assigned to exactly one thermal *contact*, ---TBC---). Both *thermal ports* are assigned to the respective contact partner component by the _reference_ property. 
-This links to the _ThermalElementParameter_ of a desired element. 
+|In the _ThermalAnalysis_ element, create a _ThermalContacts_ element. This is where it gets slightly complex. 
+Each *contact* between two physical elements (check the visualization to identify all contacts) must be considered to obtain a valid simulation result, as thermal contacts usually conduct heat quite effective. In the _ThermalContacts_ element, create one _ThermalInterfaceList_ and one _ThermalPortList_ element. 
+|
+
+|{counter:step2}.
+|For each part that has a _visualisation_ and _ThermalElementParameters_, one _ThermalPort_ element must be created. A *thermal ports* is assigned to its respective part by the _reference_ property. 
+This links to the _ThermalElementParameter_ of the desired part. 
 
 TIP: To keep track of all *thermal ports* it is important to choose a consistent nomenclature such as `TP:<NameOfThePart>`.
 |
 
 |{counter:step2}.
-|When the thermal ports are created and assigned to components, the thermal interfaces are modeled. For this, create one _ThermalInterface_ element for each contact. 
+|When the thermal ports are created and assigned to the parts, the thermal interfaces are modeled. For this, create one _ThermalInterface_ element for each contact. 
 In this element, two references and two values are set. The references are linked to the involved thermal ports,
-the thermal contact conductivity, and two mesh sizes. If the mesh sizes are specified (optional) the meshing will be executed considering the specified contact mesh size locally on the contact face. Thus, a finer mesh can be used for these critical areas of heat flow, which increases the validity of the simulation. The value with the suffix "0" again refers to the "master", while the "1" refers to the slave component.
+the thermal contact conductivity, and two mesh sizes. If the mesh sizes are specified (optional) the meshing will be executed considering the specified contact mesh size locally on the contact face. 
+Thus, a finer mesh can be used for these critical areas of heat flow, which increases the validity of the simulation. The value with the suffix "0" again refers to the "master", while the "1" refers to the "slave" component.
+
 TIP: To keep track of all *thermal interfaces* it is important to choose a consistent nomenclature such as `TI:<Part1>_<Part2>`
-NOTE: The first thermal port is treated as the "master" contact in the following. This is relevant if the two components are overlapping, either on purpose or accidentally. 
-In that case the FreeCAD processing script will cut the overlapping volume from the "slave" component, whereas the "master" component will not be touched.
+
+NOTE: The first thermal port is treated as the "master" contact in the following. This is relevant if the two parts are overlapping, either on purpose or accidentally. 
+In that case the FreeCAD processing script will cut the overlapping volume from the "slave" part, whereas the "master" part will not be touched.
+
+NOTE: Letting two components overlap on purpose could be used when there is an edge/point contact. CalculiX does not accept such contacts as they have zero contact area. Letting the contacts overlap just slightly will result in a small contact area, allowing the contact to transfer heat.
+The magnitude of overlap has to be determined manually by evaluating the size of the resulting contact area and tweaking the contact conductivity.
 |
 
 |{counter:step2}.
@@ -1850,27 +1860,29 @@ VirSat treats geometries as a whole and does not distinguish between individual 
 For this, a fraction of the subsequent workflow is performed at this stage already 
 
 
-The *geometry* must be *exported* (make sure all relevant components are modeled at this stage) using the `CAD Export Wizard`.
+The *geometry* must be *exported* (make sure all relevant parts are modeled at this stage) using the `CAD Export Wizard`.
 In addition, the *contacts* need to be *exported* as well (make sure all contacts for the analysis are defined). This is done with the TBD function.
 |
 
 |{counter:step2}.
 |Open FreeCAD with the `VirSat Workbench` installed. Switch the view to the `VirSat Workbench` and press the import json button to import the geometry, then press the "TBD" button. 
 This will execute the *geometrical preprocessing* of the imported geometrical model. After the preprocessing was executed successfully, *new faces* (and accordingly, *new face numbers*) were created.
-These new face numbers are important as they and are the ones, that are used each time a *face number* is requested in the thermal concept in *VirSat* ("freeCADFaceNumber" is the related term).
+These new face numbers are important as they are the ones, that are used each time a *face number* is requested in the thermal concept in *VirSat* (all properties with a name similar to "freeCADFaceNumber").
 
-NOTE: The face number information is exclusively for the user to apply face specific properties (boundary conditions to faces and face specific radiative properties). If these are not relevant for the actual use case, the related steps can be skipped.
+NOTE: The face number can be obtained by hovering with the mouse over the respective face in FreeCAD. Keep in mind that the newly created dedicated contact faces are covered by the contacting part and can only be seen if the respective part is hidden. 
+The face number information is exclusively for the user to apply face specific properties (boundary conditions to faces and face specific radiative properties). 
+If these are not relevant for the actual use case, the related steps 11 and 12 can be skipped.
 
-NOTE: Each time the geometry or the contacts in VirSat are modified, steps X to X must be executed again, as the modifications might change the resulting face numbers.
+NOTE: Each time the geometry or the contacts in VirSat are modified, steps 11 & 12 must be executed again, as the modifications might change the resulting face numbers.
 |
 
 |{counter:step2}.
-|Now the rest of the *properties* can be defined in the VirSat model. In the _ThermalAnalysis_ element from step X, create a _BoundaryConditions_ element. This element hosts all possible boundary conditions, except the component specific dissipated heat, which was defined before in the component's thermal properties.
+|Now the rest of the *properties* can be defined in the VirSat model. In the _ThermalAnalysis_ element from step 6, create a _BoundaryConditions_ element. This element hosts all possible boundary conditions, except the part specific dissipated heat, which was defined before in the part's thermal properties.
 The possible *boundary conditions* to be applied are all *optional* and only defined, if necessary. These are: *Heat flux to a face* (due to complications with duplicate assigning of thermal loads, as of now only possible when the orbital thermal radiation option is deactivated), *fixed temperature on a face*, and *fixed temperature on a part*.
 
-*Heat flux to face*: Create a _HeatFluxToFace_ in the _BoundaryConditions_ element. Set the reference to the related component's TEP element (TBC), specify the _freeCADFaceNumber_ as described before, and then specify the _heatFlux_ (W/m^2).
+*Heat flux to face*: Create a _HeatFluxToFace_ in the _BoundaryConditions_ element. Set the reference to the related part's TEP element (TBC), specify the _freeCADFaceNumber_ as described before, and then specify the _heatFlux_ (W/m^2).
 
-*Fixed temperature on face*: Create a _TemperatureBoundary_ element in the _BoundaryConditions_ element. Set the reference to the related component's TEP element (TBC), set boundaryType to `Face`, specify the freeCADFaceNumber as described before, and then specify the _boundaryTemperature_.
+*Fixed temperature on face*: Create a _TemperatureBoundary_ element in the _BoundaryConditions_ element. Set the reference to the related part's TEP element (TBC), set boundaryType to `Face`, specify the freeCADFaceNumber as described before, and then specify the _boundaryTemperature_.
 
 *Fixed temperature on component*: Same as Fixed temperature on face, only choose `Volume` instead of `Face` and ignore the _freeCADFaceNumber_ field.
 |
@@ -1889,9 +1901,9 @@ The resulting mesh might happen to be not to the user's satisfaction. In this ca
 |
 
 |{counter:step2}.
-|If desired, it is possible to to set dedicated *radiation properties* for *individual faces*. This can be done for each component by adding a _SingleFaceRadiationList_ to its _ThermalData_ element. 
-For each face of the component that shall have different radiative properties a _FaceRadiation_ is defined by specifying the *freeCADFaceNumber* as described before, the *emissivity* of the face (in the IR) and the *absorptivity* of the face (in the visible).
-The component's default radiative properties defined by the component's material will then be *overridden* for the specified faces.
+|If desired, it is possible to to set dedicated *radiation properties* for *individual faces*. This can be done for each part by adding a _SingleFaceRadiationList_ to its _ThermalData_ element. 
+For each face of the part that shall have different radiative properties a _FaceRadiation_ is defined by specifying the *freeCADFaceNumber* as described before, the *emissivity* of the face (in the IR) and the *absorptivity* of the face (in the visible).
+The component's default radiative properties defined by the part's material will then be *overridden* for the specified faces.
 |
 
 |===
@@ -1912,7 +1924,9 @@ This data must be provided in three files. The structure of these files is as fo
 
 |`Sun_Vector.csv`
 |"Time (UTCG)","x (km)","y (km)","z (km)"
+
 <Time1>,<vectorX>,<vectorY>,<vectorZ>
+
 <Time2>,<vectorX>,<vectorY>,<vectorZ>
 
 .
@@ -1925,7 +1939,9 @@ This data must be provided in three files. The structure of these files is as fo
 
 |`Solar_Intensity.csv`
 |"Time (UTCG)","Intensity"
+
 <Time1>,<SunIntensity(in percent)>
+
 <Time2>,<SunIntensity(in percent)>
 
 .
@@ -1938,7 +1954,9 @@ This data must be provided in three files. The structure of these files is as fo
 
 |`Earth_Vector.csv`
 |"Time (UTCG)","x (km)","y (km)","z (km)",Reflection Angle
+
 <Time1>,<vectorX>,<vectorY>,<vectorZ>,<reflection angle>
+
 <Time2>,<vectorX>,<vectorY>,<vectorZ>,<reflection angle>
 
 .
@@ -1954,6 +1972,7 @@ This data must be provided in three files. The structure of these files is as fo
 
 NOTE: In the table <vectorX> refers to the x component of the vector to Sun/Earth, 
 reflection angle refers to the reflection angle over a light ray originating from sun, reflected on Earth, hitting the Spacecraft.
+
 NOTE: The resulting albedo load value is only an approximation.
 
 To complete the workflow, the following steps are executed after completing the thermal model in VirSat:
