@@ -128,7 +128,7 @@ public class CadImporterThermal {
 			// Two lines per component
 			// Per node 2 lines, one for heat flux and one for temperature
 			int timeStepStartLine = startingLine + OFFSET + totalNumberOfNodes + 2 * totalNumberOfElements
-					+ i * (totalNumberOfNodes + totalNumberOfElements) + DATA_PER_TIMESTEP * i;
+					+ 2 * i * totalNumberOfNodes + DATA_PER_TIMESTEP * i;
 
 			j = 0;
 			int k = 0;

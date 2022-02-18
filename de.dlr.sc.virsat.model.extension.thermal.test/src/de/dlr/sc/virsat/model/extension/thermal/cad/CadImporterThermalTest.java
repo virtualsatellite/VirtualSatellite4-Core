@@ -116,7 +116,7 @@ public class CadImporterThermalTest extends AConceptProjectTestCase {
 		assertEquals("Number of component analysis results is correct", 1, analysisResult.getComponentresult().size());
 		ComponentResult componentResult = analysisResult.getComponentresult().get(0);
 		assertEquals("Minimum temperature is correct", 0.0, componentResult.getMinTemperature(), EPSILON);
-		final double EXPECTED_MAX_TEMPERATURE = 258.301;
+		final double EXPECTED_MAX_TEMPERATURE = 266.111;
 		assertEquals("Maximum temperature is correct", EXPECTED_MAX_TEMPERATURE, componentResult.getMaxTemperature(), EPSILON);
 	}
 
