@@ -19,7 +19,7 @@ import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 
 /**
  * Sample test case for thermalent template
- * @author fisc_ph
+ * 
  *
  */
 public class ValidatorTest {
