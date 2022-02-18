@@ -140,6 +140,7 @@ Germany
       <feature id="org.eclipse.rmf.reqif10.feature" installMode="root"/>
       <feature id="org.eclipse.rmf.reqif10.pror.feature" installMode="root"/>
       <feature id="org.eclipse.rmf.reqif10.thirdparty.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.model.extension.thermal.feature" installMode="root"/>
    </features>
 
    <configurations>
