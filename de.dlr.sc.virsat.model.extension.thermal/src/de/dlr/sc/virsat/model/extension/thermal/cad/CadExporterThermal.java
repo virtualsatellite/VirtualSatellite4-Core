@@ -171,14 +171,13 @@ public class CadExporterThermal {
 
 			// Write face and body Heat Flux
 			for (IBeanStructuralElementInstance ec : ecs) {
-				List<ThermalData> td = ec.getAll(ThermalData.class);
+				ThermalData td = ec.getFirst(ThermalData.class);
 				Visualisation visShape = ec.getFirst(Visualisation.class);
-				if ((td.size() > 0) && (visShape != null)) {
+				if ((td != null) && (visShape != null)) {
 					String uuid = ec.getUuid().replace("-", "_");
 					String name = ec.getName();
 
 					output.write("\n*DFLUX\n");
-					output.write("**INCLUDE, INPUT=" + name + "_" + uuid + ".dfl\n");
 					output.write("*INCLUDE, INPUT=" + name + "_" + uuid + ".bfl\n");
 					output.write("*INCLUDE, INPUT=" + name + "_" + uuid + ".hf\n");
 					output.write("*INCLUDE, INPUT=" + name + "_" + uuid + ".bc\n\n");
