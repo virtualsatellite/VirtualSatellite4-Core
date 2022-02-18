@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/commons-collections4.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/commons-codec.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/curvesapi.jar"/>
@@ -9,8 +11,6 @@
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/poi.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/stax-api.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/xmlbeans.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src/"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
