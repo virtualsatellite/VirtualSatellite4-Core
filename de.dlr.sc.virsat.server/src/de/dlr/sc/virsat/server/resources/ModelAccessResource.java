@@ -269,12 +269,12 @@ public class ModelAccessResource {
 				httpMethod = "GET",
 				notes = "This service forces a synchronization with the backend.")
 		@ApiResponses(value = { 
-				@ApiResponse(
-						code = HttpStatus.OK_200,
-						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-				@ApiResponse(
-						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+			@ApiResponse(
+					code = HttpStatus.OK_200,
+					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 		public Response forceSynchronize() {
 			try {
 				serverRepository.syncRepository(build);
@@ -295,14 +295,14 @@ public class ModelAccessResource {
 				notes = "This service fetches the root StructuralElementInstances. "
 						+ "It can be used as an entry point into the data model.")
 		@ApiResponses(value = { 
-				@ApiResponse(
-						code = HttpStatus.OK_200,
-						response = ABeanStructuralElementInstance.class,
-						responseContainer = "List",
-						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-				@ApiResponse(
-						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+			@ApiResponse(
+					code = HttpStatus.OK_200,
+					response = ABeanStructuralElementInstance.class,
+					responseContainer = "List",
+					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 		public Response getRootSeis() {
 			try {
 				synchronize();
@@ -333,16 +333,16 @@ public class ModelAccessResource {
 				httpMethod = "POST",
 				notes = "This service creates a new root StructuralElementInstance and returns its uuid")
 		@ApiResponses(value = { 
-				@ApiResponse(
-						code = HttpStatus.OK_200,
-						response = String.class,
-						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-				@ApiResponse(
-						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = ApiErrorHelper.NOT_EXECUTEABLE),
-				@ApiResponse(
-						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+			@ApiResponse(
+					code = HttpStatus.OK_200,
+					response = String.class,
+					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.NOT_EXECUTEABLE),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 		public Response createRootSei(@QueryParam(value = ModelAccessResource.QP_FULL_QUALIFIED_NAME) 
 			@ApiParam(value = "Full qualified name of the SEI type", required = true) String fullQualifiedName) {
 			try {
@@ -367,14 +367,14 @@ public class ModelAccessResource {
 				httpMethod = "GET",
 				notes = "This service fetches the active Concepts")
 		@ApiResponses(value = { 
-				@ApiResponse(
-						code = HttpStatus.OK_200,
-						response = ServerConcept.class,
-						responseContainer = "List",
-						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-				@ApiResponse(
-						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+			@ApiResponse(
+					code = HttpStatus.OK_200,
+					response = ServerConcept.class,
+					responseContainer = "List",
+					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 		public Response getConcepts(@DefaultValue("true") @QueryParam(QP_ONLY_ACTIVE_CONCEPTS) boolean onlyActiveConcepts) {
 			try {
 				synchronize();
@@ -422,14 +422,14 @@ public class ModelAccessResource {
 				httpMethod = "GET",
 				notes = "This service fetches the existing Disciplines")
 		@ApiResponses(value = { 
-				@ApiResponse(
-						code = HttpStatus.OK_200,
-						response = BeanDiscipline.class,
-						responseContainer = "List",
-						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-				@ApiResponse(
-						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+			@ApiResponse(
+					code = HttpStatus.OK_200,
+					response = BeanDiscipline.class,
+					responseContainer = "List",
+					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 		public Response getDisciplines() {
 			try {
 				synchronize();
@@ -459,13 +459,13 @@ public class ModelAccessResource {
 				httpMethod = "GET",
 				notes = "This service fetches the discipline of the rolemanagement")
 		@ApiResponses(value = { 
-				@ApiResponse(
-						code = HttpStatus.OK_200,
-						response = BeanDiscipline.class,
-						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-				@ApiResponse(
-						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+			@ApiResponse(
+					code = HttpStatus.OK_200,
+					response = BeanDiscipline.class,
+					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 		public Response getRolemanagementDiscipline() {
 			try {
 				synchronize();
@@ -491,13 +491,13 @@ public class ModelAccessResource {
 				httpMethod = "GET",
 				notes = "This service fetches the discipline of the repository")
 		@ApiResponses(value = { 
-				@ApiResponse(
-						code = HttpStatus.OK_200,
-						response = BeanDiscipline.class,
-						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-				@ApiResponse(
-						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+			@ApiResponse(
+					code = HttpStatus.OK_200,
+					response = BeanDiscipline.class,
+					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 		public Response getRepositpryDiscipline() {
 			try {
 				synchronize();

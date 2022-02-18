@@ -43,8 +43,8 @@ import io.swagger.annotations.Info;
 import io.swagger.annotations.SwaggerDefinition;
 
 @Api(authorizations = {
-		@Authorization(value = "basic")
-})
+	@Authorization(value = "basic")
+	})
 @SwaggerDefinition(
 	info = @Info(
 		version = RepoManagementServlet.MANAGEMENT_API_VERSION,
@@ -97,13 +97,13 @@ public class ProjectManagementResource {
 			httpMethod = "GET",
 			notes = "This service fetches the configuration for the given project name")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					response = RepositoryConfiguration.class,
-					message = SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.NOT_FOUND_404,
-					message = "Project not found")})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				response = RepositoryConfiguration.class,
+				message = SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.NOT_FOUND_404,
+				message = "Project not found")})
 	public Response getProject(@PathParam("projectName") @ApiParam(value = PROJECT_NAME, required = true) String projectName) {
 		ServerRepository serverRepository = controller.getRepository(projectName);
 		if (serverRepository != null) {
@@ -123,12 +123,12 @@ public class ProjectManagementResource {
 			httpMethod = "DELETE",
 			notes = "This service deletes the configuration for the given project name")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					message = SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.BAD_REQUEST_400,
-					message = "Project could not be deleted")})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				message = SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.BAD_REQUEST_400,
+				message = "Project could not be deleted")})
 	public Response deleteProject(@PathParam("projectName") @ApiParam(value = PROJECT_NAME, required = true) String repoName) {
 		try {
 			controller.deleteRepository(repoName);
@@ -149,13 +149,13 @@ public class ProjectManagementResource {
 			notes = "This service creates or updates a project configuration on the project specified by the URL."
 					+ " URL project overrides project name in the passed configuration if they are different.")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					message = SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.BAD_REQUEST_400,
-					message = "An error occured, returns error message",
-					response = String.class)})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				message = SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.BAD_REQUEST_400,
+				message = "An error occured, returns error message",
+				response = String.class)})
 	public Response createOrUpdateProject(@PathParam("projectName") @ApiParam(value = PROJECT_NAME, required = true) String projectName,
 			@ApiParam(value = "New Configuration", required = true) RepositoryConfiguration configuration) {
 		configuration.setProjectName(projectName);

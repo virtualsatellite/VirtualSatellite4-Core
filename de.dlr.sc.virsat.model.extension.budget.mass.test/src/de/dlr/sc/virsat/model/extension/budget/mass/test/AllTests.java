@@ -27,9 +27,10 @@ import junit.framework.JUnit4TestAdapter;
  */
 @RunWith(Suite.class)
 
-@SuiteClasses({		 MassConceptHelperTest.class,
-					 MassRequirementsVerificationImplTest.class
-				})
+@SuiteClasses({
+	MassConceptHelperTest.class,
+	MassRequirementsVerificationImplTest.class
+	})
 
 /**
  * 

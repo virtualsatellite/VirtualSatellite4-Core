@@ -120,14 +120,14 @@ public class QudvResource {
 			httpMethod = "GET",
 			notes = "This service fetches the Prefixes")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					response = BeanPrefix.class,
-					responseContainer = "List",
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				response = BeanPrefix.class,
+				responseContainer = "List",
+				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response getPrefixes() {
 		try {
 			parentResource.synchronize();
@@ -157,14 +157,14 @@ public class QudvResource {
 			httpMethod = "GET",
 			notes = "This service fetches the QuantityKinds")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					response = ABeanQuantityKind.class,
-					responseContainer = "List",
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				response = ABeanQuantityKind.class,
+				responseContainer = "List",
+				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	@SuppressWarnings("rawtypes")
 	public Response getQuantityKinds() {
 		try {
@@ -197,14 +197,14 @@ public class QudvResource {
 			httpMethod = "GET",
 			notes = "This service fetches the Units")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					response = ABeanUnit.class,
-					responseContainer = "List",
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				response = ABeanUnit.class,
+				responseContainer = "List",
+				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	@SuppressWarnings("rawtypes")
 	public Response getUnits() {
 		try {
@@ -238,16 +238,16 @@ public class QudvResource {
 			httpMethod = "GET",
 			notes = "This service fetches a Unit")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					response = ABeanUnit.class,
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.BAD_REQUEST_400, 
-					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				response = ABeanUnit.class,
+				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.BAD_REQUEST_400, 
+				message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response getUnit(@PathParam("unitUuid") @ApiParam(value = "Uuid of the Unit", required = true) String unitUuid) {
 		try {
 			parentResource.synchronize();
@@ -275,12 +275,12 @@ public class QudvResource {
 			httpMethod = "PUT",
 			notes = "This service updates an existing Unit")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response putUnit(@SuppressWarnings("rawtypes") @ApiParam(value = "Unit to put", required = true) ABeanUnit bean) {
 		try {
 			parentResource.synchronize();
@@ -300,19 +300,19 @@ public class QudvResource {
 			httpMethod = "POST",
 			notes = "This service creates a new Unit and returns it")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					response = String.class,
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.BAD_REQUEST_400, 
-					message = ApiErrorHelper.INVALID_TYPE_ERROR),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.NOT_EXECUTEABLE),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				response = String.class,
+				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.BAD_REQUEST_400, 
+				message = ApiErrorHelper.INVALID_TYPE_ERROR),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.NOT_EXECUTEABLE),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response createUnit(@ApiParam(value = "Unit bean type to create an instance from", required = true) @QueryParam(ModelAccessResource.QP_NAME) String unitType) {
 		try {
 			parentResource.synchronize();
@@ -345,18 +345,18 @@ public class QudvResource {
 			httpMethod = "DELETE",
 			notes = "This service deletes a Unit.")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.BAD_REQUEST_400,
-					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.NOT_EXECUTEABLE),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.BAD_REQUEST_400,
+				message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.NOT_EXECUTEABLE),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response deleteUnit(@PathParam("unitUuid") @ApiParam(value = "Uuid of the Unit", required = true) String unitUuid) {
 		try {
 			parentResource.synchronize();
@@ -388,16 +388,16 @@ public class QudvResource {
 			httpMethod = "GET",
 			notes = "This service fetches a QuantityKind")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					response = ABeanQuantityKind.class,
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.BAD_REQUEST_400, 
-					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				response = ABeanQuantityKind.class,
+				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.BAD_REQUEST_400, 
+				message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response getQuantityKind(@PathParam("quantityKindUuid") @ApiParam(value = "Uuid of the QuantityKind", required = true) String quantityKindUuid) {
 		try {
 			parentResource.synchronize();
@@ -425,12 +425,12 @@ public class QudvResource {
 			httpMethod = "PUT",
 			notes = "This service updates an existing QuantityKind")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response putQuantityKind(@SuppressWarnings("rawtypes") @ApiParam(value = "QuantityKind to put", required = true) ABeanQuantityKind bean) {
 		try {
 			parentResource.synchronize();
@@ -450,19 +450,19 @@ public class QudvResource {
 			httpMethod = "POST",
 			notes = "This service creates a new QuantityKind and returns it")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					response = String.class,
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.BAD_REQUEST_400, 
-					message = ApiErrorHelper.INVALID_TYPE_ERROR),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.NOT_EXECUTEABLE),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				response = String.class,
+				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.BAD_REQUEST_400, 
+				message = ApiErrorHelper.INVALID_TYPE_ERROR),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.NOT_EXECUTEABLE),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response createQuantityKind(@ApiParam(value = "Quantity kind bean type to create an instance from", required = true) @QueryParam(ModelAccessResource.QP_NAME) String quantityKindType) {
 		try {
 			parentResource.synchronize();
@@ -495,18 +495,18 @@ public class QudvResource {
 			httpMethod = "DELETE",
 			notes = "This service deletes a QuantityKind.")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.BAD_REQUEST_400,
-					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.NOT_EXECUTEABLE),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.BAD_REQUEST_400,
+				message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.NOT_EXECUTEABLE),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response deleteQuantityKind(@PathParam("quantityKindUuid") @ApiParam(value = "Uuid of the QuantityKind", required = true) String quantityKindUuid) {
 		try {
 			parentResource.synchronize();
@@ -540,16 +540,16 @@ public class QudvResource {
 			httpMethod = "GET",
 			notes = "This service fetches a Prefix")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					response = BeanPrefix.class,
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.BAD_REQUEST_400, 
-					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				response = BeanPrefix.class,
+				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.BAD_REQUEST_400, 
+				message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response getPrefix(@PathParam("prefixUuid") @ApiParam(value = "Uuid of the Prefix", required = true) String prefixUuid) {
 		try {
 			parentResource.synchronize();
@@ -577,12 +577,12 @@ public class QudvResource {
 			httpMethod = "PUT",
 			notes = "This service updates an existing Prefix")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500,
-					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500,
+				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response putPrefixKind(@ApiParam(value = "Prefix to put", required = true) BeanPrefix bean) {
 		try {
 			parentResource.synchronize();
@@ -602,16 +602,16 @@ public class QudvResource {
 			httpMethod = "POST",
 			notes = "This service creates a new Prefix and returns it")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					response = String.class,
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.NOT_EXECUTEABLE),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				response = String.class,
+				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.NOT_EXECUTEABLE),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response createPrefix() {
 		try {
 			parentResource.synchronize();
@@ -638,18 +638,18 @@ public class QudvResource {
 			httpMethod = "DELETE",
 			notes = "This service deletes a Prefix.")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.BAD_REQUEST_400,
-					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.NOT_EXECUTEABLE),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.BAD_REQUEST_400,
+				message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.NOT_EXECUTEABLE),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response deletePrefix(@PathParam("prefixUuid") @ApiParam(value = "Uuid of the Prefix", required = true) String prefixUuid) {
 		try {
 			parentResource.synchronize();
@@ -683,22 +683,22 @@ public class QudvResource {
 			httpMethod = "POST",
 			notes = "This service creates a new UnitFactor and returns it")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					response = String.class,
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.BAD_REQUEST_400, 
-					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
-			@ApiResponse(
-					code = HttpStatus.BAD_REQUEST_400, 
-					message = ApiErrorHelper.INVALID_TYPE_ERROR),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.NOT_EXECUTEABLE),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				response = String.class,
+				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.BAD_REQUEST_400, 
+				message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
+		@ApiResponse(
+				code = HttpStatus.BAD_REQUEST_400, 
+				message = ApiErrorHelper.INVALID_TYPE_ERROR),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.NOT_EXECUTEABLE),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response createUnitFactor(@ApiParam(value = "Parent unit of the unit factor", required = true) @PathParam("uuid") String unitFactorParentUuid) {
 		try {
 			parentResource.synchronize();
@@ -736,18 +736,18 @@ public class QudvResource {
 			httpMethod = "DELETE",
 			notes = "This service deletes a UnitFactor.")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.BAD_REQUEST_400,
-					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.NOT_EXECUTEABLE),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.BAD_REQUEST_400,
+				message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.NOT_EXECUTEABLE),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response deleteUnitFactor(@PathParam("uuid") @ApiParam(value = "Uuid of the unit factor", required = true) String unitFactorUuid) {
 		try {
 			parentResource.synchronize();
@@ -777,22 +777,22 @@ public class QudvResource {
 			httpMethod = "POST",
 			notes = "This service creates a new QuantityKindFactor and returns it")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					response = String.class,
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.BAD_REQUEST_400, 
-					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
-			@ApiResponse(
-					code = HttpStatus.BAD_REQUEST_400, 
-					message = ApiErrorHelper.INVALID_TYPE_ERROR),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.NOT_EXECUTEABLE),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				response = String.class,
+				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.BAD_REQUEST_400, 
+				message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
+		@ApiResponse(
+				code = HttpStatus.BAD_REQUEST_400, 
+				message = ApiErrorHelper.INVALID_TYPE_ERROR),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.NOT_EXECUTEABLE),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response createQuantityKindFactor(@ApiParam(value = "Parent quantity kind of the quantity kind factor", required = true) @PathParam("uuid") String quantityKindFactorParentUuid) {
 		try {
 			parentResource.synchronize();
@@ -830,18 +830,18 @@ public class QudvResource {
 			httpMethod = "DELETE",
 			notes = "This service deletes a QuantityKindFactor.")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.BAD_REQUEST_400,
-					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.NOT_EXECUTEABLE),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.BAD_REQUEST_400,
+				message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.NOT_EXECUTEABLE),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response deleteQuantityKindFactor(@PathParam("uuid") @ApiParam(value = "Uuid of the quantity kind factor", required = true) String quantityKindFactorUuid) {
 		try {
 			parentResource.synchronize();
