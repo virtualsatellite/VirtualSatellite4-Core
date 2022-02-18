@@ -18,7 +18,7 @@ Require-Bundle: de.dlr.sc.virsat.model.extension.visualisation,
  org.eclipse.core.databinding.property,
  org.eclipse.emf.databinding.edit,
  de.dlr.sc.virsat.external.lib.protobuf
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Export-Package: de.dlr.sc.virsat.model.extension.visualisation.ui.calculations
 Bundle-Vendor: DLR (German Aerospace Center)

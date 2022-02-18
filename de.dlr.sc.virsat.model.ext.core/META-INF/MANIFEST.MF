@@ -12,7 +12,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.emf.ecore.xmi;visibility:=reexport,
  de.dlr.sc.virsat.model;visibility:=reexport,
  de.dlr.sc.virsat.model.edit
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Export-Package: de.dlr.sc.virsat.model.ext.core,

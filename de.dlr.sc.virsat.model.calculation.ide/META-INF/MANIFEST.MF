@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core Model Calculation IDE
 Bundle-SymbolicName: de.dlr.sc.virsat.model.calculation.ide;singleton:=true
 Bundle-Version: 4.14.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: de.dlr.sc.virsat.model.calculation,
  org.eclipse.xtext.ide,
  org.eclipse.xtext.xbase.ide,

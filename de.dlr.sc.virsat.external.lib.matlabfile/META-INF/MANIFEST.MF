@@ -8,7 +8,7 @@ Require-Bundle: de.dlr.sc.virsat.external.lib
 Bundle-Vendor: DLR (German Aerospace Center)
 Bundle-ClassPath: .,
  externalLib/maven/mfl-core.jar
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8 
+Bundle-RequiredExecutionEnvironment: JavaSE-11 
 Automatic-Module-Name: de.dlr.sc.virsat.external.lib.matlabfile
 Export-Package: de.dlr.sc.virsat.external.lib.matlabfile,
  us.hebi.matlab.mat.format,

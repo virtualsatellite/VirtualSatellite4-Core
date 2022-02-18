@@ -9,7 +9,7 @@ Bundle-Activator: de.dlr.sc.virsat.model.ext.core.core.provider.ConceptEditPlugi
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Eclipse-ExtensibleAPI: true
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: de.dlr.sc.virsat.model.ext.core.core.provider
 Require-Bundle: org.eclipse.core.runtime,
  de.dlr.sc.virsat.model.ext.core;visibility:=reexport,

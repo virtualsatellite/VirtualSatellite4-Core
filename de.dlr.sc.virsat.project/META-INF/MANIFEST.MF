@@ -18,7 +18,7 @@ Require-Bundle: de.dlr.sc.virsat.model,
  org.eclipse.emf.workspace;visibility:=reexport,
  org.eclipse.emf.compare,
  com.google.guava
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Export-Package: de.dlr.sc.virsat.project,

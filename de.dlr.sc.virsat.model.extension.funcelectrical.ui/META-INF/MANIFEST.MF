@@ -19,7 +19,7 @@ Require-Bundle: de.dlr.sc.virsat.model.extension.funcelectrical,
  de.dlr.sc.virsat.build.ui,
  com.google.guava,
  de.dlr.sc.virsat.apps.ui
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: DLR (German Aerospace Center)
 Bundle-Activator: de.dlr.sc.virsat.model.extension.funcelectrical.ui.Activator

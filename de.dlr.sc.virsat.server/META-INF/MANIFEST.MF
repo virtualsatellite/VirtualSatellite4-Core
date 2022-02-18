@@ -27,7 +27,7 @@ Require-Bundle: org.eclipse.core.runtime,
  de.dlr.sc.virsat.external.lib.swagger,
  de.dlr.sc.virsat.model.edit,
  de.dlr.sc.virsat.external.lib.jersey
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Export-Package: de.dlr.sc.virsat.server,

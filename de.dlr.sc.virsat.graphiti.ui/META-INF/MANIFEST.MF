@@ -15,7 +15,7 @@ Require-Bundle: de.dlr.sc.virsat.graphiti,
  org.eclipse.graphiti.mm,
  org.eclipse.graphiti.pattern,
  org.eclipse.emf.workspace
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: DLR (German Aerospace Center)
 Export-Package: de.dlr.sc.virsat.graphiti.ui.diagram.editor,

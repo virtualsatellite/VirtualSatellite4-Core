@@ -7,7 +7,7 @@ Bundle-ClassPath: .
 Bundle-Activator: de.dlr.sc.virsat.uieingine.ui.DVLMEditorPlugin$Implementation
 Bundle-Vendor: DLR (German Aerospace Center)
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: de.dlr.sc.virsat.commons,
  de.dlr.sc.virsat.model.edit,
  de.dlr.sc.virsat.model.ui,

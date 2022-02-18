@@ -8,7 +8,7 @@ Require-Bundle: de.dlr.sc.virsat.external.lib,
  org.eclipse.swt,
  org.eclipse.ui
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Vendor: DLR (German Aerospace Center)
 Bundle-ClassPath: .,
  externalLib/maven/jcommon.jar,

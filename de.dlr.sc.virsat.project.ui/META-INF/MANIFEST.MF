@@ -19,7 +19,7 @@ Require-Bundle: de.dlr.sc.virsat.project,
  org.eclipse.ui.navigator.resources,
  org.eclipse.emf.transaction.ui;visibility:=reexport,
  de.dlr.sc.virsat.commons
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Export-Package: de.dlr.sc.virsat.project.ui,

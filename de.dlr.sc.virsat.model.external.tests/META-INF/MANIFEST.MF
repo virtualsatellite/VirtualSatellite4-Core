@@ -5,7 +5,7 @@ Bundle-SymbolicName: de.dlr.sc.virsat.model.external.tests;singleton:=true
 Bundle-Version: 4.14.0.qualifier
 Bundle-ClassPath: .
 Automatic-Module-Name: de.dlr.sc.virsat.model.external.tests
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: de.dlr.sc.virsat.model.external.tests,
  de.dlr.sc.virsat.model.external.tests.impl,
  de.dlr.sc.virsat.model.external.tests.util

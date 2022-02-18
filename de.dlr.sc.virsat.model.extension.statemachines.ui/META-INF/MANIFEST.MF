@@ -17,7 +17,7 @@ Require-Bundle: de.dlr.sc.virsat.model.extension.statemachines,
  de.dlr.sc.virsat.graphiti,
  org.eclipse.nebula.widgets.tablecombo,
  de.dlr.sc.virsat.model.extension.ps
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: de.dlr.sc.virsat.model.extension.statemachines.ui.Activator
 Bundle-Vendor: DLR (German Aerospace Center)

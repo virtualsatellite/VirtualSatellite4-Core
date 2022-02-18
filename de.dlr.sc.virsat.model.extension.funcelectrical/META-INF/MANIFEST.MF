@@ -19,7 +19,7 @@ Require-Bundle: org.eclipse.ui,
  de.dlr.sc.virsat.external.lib.apache.poi,
  de.dlr.sc.virsat.excel,
  de.dlr.sc.virsat.model.ext.core;visibility:=reexport
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Bundle-Activator: de.dlr.sc.virsat.model.extension.funcelectrical.Activator

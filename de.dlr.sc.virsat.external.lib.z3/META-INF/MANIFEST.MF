@@ -5,7 +5,7 @@ Bundle-SymbolicName: de.dlr.sc.virsat.external.lib.z3;singleton:=true
 Bundle-Version: 4.14.0.qualifier
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: de.dlr.sc.virsat.external.lib
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Bundle-NativeCode: externalLib/win32/x64/z3-4.5.0-x64/bin/msvcp110.dll;

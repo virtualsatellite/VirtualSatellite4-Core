@@ -12,7 +12,7 @@ Require-Bundle: org.eclipse.ui,
  de.dlr.sc.virsat.build,
  de.dlr.sc.virsat.external.lib.protobuf,
  de.dlr.sc.virsat.model.ext.core;visibility:=reexport
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Eclipse-ExtensibleApi: true
 Export-Package: de.dlr.sc.virsat.model.extension.visualisation,
  de.dlr.sc.virsat.model.extension.visualisation.comparison,
