@@ -107,16 +107,16 @@
     <properties xsi:type="dvlm_cppd:ReferenceProperty" name="Contacts" referenceType="de.dlr.sc.virsat.model.extension.thermal.ThermalPort">
       <arrayModifier xsi:type="dvlm_cppd:StaticArrayModifier" arraySize="2"/>
     </properties>
-    <properties xsi:type="dvlm_cppd:FloatProperty" name="thermalContactConductivity" unitName="Watt per Meter and Kelvin"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="thermalContactConductivity" quantityKindName="Thermal Conductivity" unitName="Watt Per Metre Squared Per Kelvin"/>
     <properties xsi:type="dvlm_cppd:FloatProperty" name="contactMaxMeshElementSize0" unitName="No Unit" defaultValue="0"/>
     <properties xsi:type="dvlm_cppd:FloatProperty" name="contactMaxMeshElementSize1" unitName="No Unit" defaultValue="0"/>
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="Material" description="Model of a material" applicableFor="de.dlr.sc.virsat.model.extension.thermal.MaterialCollection">
-    <properties xsi:type="dvlm_cppd:FloatProperty" name="thermalConductivity" quantityKindName="Thermal Conductivity" unitName=""/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="thermalConductivity" quantityKindName="Thermal Conductivity" unitName="Meter Kilogram Per Second Cubed Per Kelvin"/>
     <properties xsi:type="dvlm_cppd:FloatProperty" name="absorptionCoefficient" quantityKindName="Dimensionless" unitName="No Unit"/>
     <properties xsi:type="dvlm_cppd:FloatProperty" name="elementEmissivity" quantityKindName="Dimensionless" unitName="No Unit"/>
-    <properties xsi:type="dvlm_cppd:FloatProperty" name="heatCapacity" quantityKindName="Specific Heat Capacity" unitName=""/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="heatCapacity" quantityKindName="Specific Heat Capacity" unitName="Meter Squared Per Second Squared Per Kelvin"/>
     <properties xsi:type="dvlm_cppd:FloatProperty" name="density" quantityKindName="Density" unitName="Kilogram Per Cubic Meter"/>
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
