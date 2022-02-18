@@ -57,33 +57,33 @@ public class RequirementTraceEditingSupport extends APropertyCellEditingSupport 
 			final CategoryAssignment referencedTypeInstance = req.getTrace().getTypeInstance();
 			editor = new DialogCellEditor((Composite) viewer.getControl()) {
 				
-				@Override
-				protected Object openDialogBox(Control cellEditorWindow) {
-					EditingDomain editingDomain = VirSatEditingDomainRegistry.INSTANCE.getEd(referencedTypeInstance);
-					if (referencedTypeInstance != null) {
-						Dialog dialog = new RequirementsTraceEditingDialog(
-								PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), toolkit, editingDomain,
-								referencedTypeInstance);
-						if (dialog.open() == Dialog.OK) {
-							return referencedTypeInstance;
-						} 
+					@Override
+					protected Object openDialogBox(Control cellEditorWindow) {
+						EditingDomain editingDomain = VirSatEditingDomainRegistry.INSTANCE.getEd(referencedTypeInstance);
+						if (referencedTypeInstance != null) {
+							Dialog dialog = new RequirementsTraceEditingDialog(
+									PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), toolkit, editingDomain,
+									referencedTypeInstance);
+							if (dialog.open() == Dialog.OK) {
+								return referencedTypeInstance;
+							} 
+						}
+						return null;
 					}
-					return null;
-				}
-				
-				@Override
-				protected Button createButton(final Composite parent) {
-					// This override is needed to the following eclipse bug
-					// https://bugs.eclipse.org/bugs/show_bug.cgi?id=193081
-					Button button = super.createButton(parent);
-
-					// This listener hands back traversal control to the cell rather the button. 
-					// This is important if TableEditor functionality is used. if the button handles the traverse 
-					// signal, it will try to select the next button but not the next cell.
-					button.addListener(SWT.Traverse, (event) -> parent.notifyListeners(SWT.Traverse, event));
-					return button;
-				}
-			};
+					
+					@Override
+					protected Button createButton(final Composite parent) {
+						// This override is needed to the following eclipse bug
+						// https://bugs.eclipse.org/bugs/show_bug.cgi?id=193081
+						Button button = super.createButton(parent);
+	
+						// This listener hands back traversal control to the cell rather the button. 
+						// This is important if TableEditor functionality is used. if the button handles the traverse 
+						// signal, it will try to select the next button but not the next cell.
+						button.addListener(SWT.Traverse, (event) -> parent.notifyListeners(SWT.Traverse, event));
+						return button;
+					}
+				};
 		}
 		
 		return editor;

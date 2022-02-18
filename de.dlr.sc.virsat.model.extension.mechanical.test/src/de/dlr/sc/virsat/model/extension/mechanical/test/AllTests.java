@@ -38,7 +38,7 @@ import junit.framework.JUnit4TestAdapter;
 	CadImporterTest.class,
 	CadHelperTest.class,
 	CopyResourceCommandTest.class
-				})
+	})
 
 /**
  * 

@@ -25,13 +25,14 @@ import junit.framework.JUnit4TestAdapter;
  */
 @RunWith(Suite.class)
 
-@SuiteClasses({	ContentManifestMfTest.class,
-				ContentBuildPropertiesTest.class,
-				ContentExampleAppTest.class,
-				VirsatAppsInititalizerTest.class,
-				ManifestRequiredBundlesConceptUpdaterTest.class,
-				ModelAPITest.class
-				})
+@SuiteClasses({
+	ContentManifestMfTest.class,
+	ContentBuildPropertiesTest.class,
+	ContentExampleAppTest.class,
+	VirsatAppsInititalizerTest.class,
+	ManifestRequiredBundlesConceptUpdaterTest.class,
+	ModelAPITest.class
+	})
 
 /**
  * 

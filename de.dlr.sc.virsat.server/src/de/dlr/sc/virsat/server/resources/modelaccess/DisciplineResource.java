@@ -59,16 +59,16 @@ public class DisciplineResource {
 			httpMethod = "GET",
 			notes = "This service fetches a Discipline")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					response = BeanDiscipline.class,
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.BAD_REQUEST_400, 
-					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				response = BeanDiscipline.class,
+				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.BAD_REQUEST_400, 
+				message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response getDiscipline(@PathParam("disciplineUuid") @ApiParam(value = "Uuid of the discipline", required = true) String disciplineUuid) {
 		try {
 			parentResource.synchronize();
@@ -96,12 +96,12 @@ public class DisciplineResource {
 			httpMethod = "PUT",
 			notes = "This service updates an existing Discipline")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response putDiscipline(@ApiParam(value = "Discipline to put", required = true) BeanDiscipline bean) {
 		try {
 			parentResource.synchronize();
@@ -121,16 +121,16 @@ public class DisciplineResource {
 			httpMethod = "POST",
 			notes = "This service creates a new Discipline and returns the uuid")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					response = String.class,
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.NOT_EXECUTEABLE),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				response = String.class,
+				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.NOT_EXECUTEABLE),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response createDiscipline() {
 		try {
 			parentResource.synchronize();
@@ -157,18 +157,18 @@ public class DisciplineResource {
 			httpMethod = "DELETE",
 			notes = "This service deletes a Discipline")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.BAD_REQUEST_400,
-					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.NOT_EXECUTEABLE),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.BAD_REQUEST_400,
+				message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.NOT_EXECUTEABLE),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response deleteDiscipline(@PathParam("disciplineUuid") @ApiParam(value = "Uuid of the Discipline", required = true) String disciplineUuid) {
 		try {
 			// Sync before delete

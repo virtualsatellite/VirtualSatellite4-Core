@@ -48,7 +48,7 @@ import junit.framework.JUnit4TestAdapter;
 	UpperLimitVerificationStepTest.class,
 	LowerLimitVerificationStepTest.class,
 	ReqIfUtilsTest.class
-				})
+	})
 
 /**
  * 

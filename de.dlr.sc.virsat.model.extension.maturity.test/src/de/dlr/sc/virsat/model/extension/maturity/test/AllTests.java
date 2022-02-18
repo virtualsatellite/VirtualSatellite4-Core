@@ -28,7 +28,7 @@ import junit.framework.JUnit4TestAdapter;
 
 @SuiteClasses({	
 	MaturityConceptHelperTest.class
-				})
+	})
 
 /**
  * 
