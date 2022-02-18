@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.list;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -88,7 +89,7 @@ public class TypeSafeReferencePropertyInstanceList<BEAN_TYPE extends IBeanObject
 		ai.getArrayInstances().forEach((cpi) -> {
 			try {
 				BEAN_TYPE bean;
-				bean = beanClazz.newInstance();
+				bean = beanClazz.getDeclaredConstructor().newInstance();
 				bean.setATypeInstance(((ReferencePropertyInstance) cpi).getReference());
 				beanList.add(bean);
 			} catch (Exception e) {
@@ -201,9 +202,9 @@ public class TypeSafeReferencePropertyInstanceList<BEAN_TYPE extends IBeanObject
 			}
 		} else {
 			try {
-				bean = beanClazz.newInstance();
+				bean = beanClazz.getDeclaredConstructor().newInstance();
 				bean.setATypeInstance(ca);
-			} catch (InstantiationException | IllegalAccessException e) {
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 				Activator.getDefault().getLog().error("Could not instantiate bean class", e);
 			}
 		}

@@ -100,7 +100,7 @@ public class TypeSafeComposedPropertyInstanceList<BEAN_TYPE extends IBeanCategor
 		ai.getArrayInstances().forEach((cpi) -> {
 			try {
 				BEAN_TYPE bean;
-				bean = beanClazz.newInstance();
+				bean = beanClazz.getDeclaredConstructor().newInstance();
 				bean.setTypeInstance(((ComposedPropertyInstance) cpi).getTypeInstance());
 				beanList.add(bean);
 			} catch (Exception e) {

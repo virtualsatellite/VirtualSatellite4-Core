@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.list;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -97,7 +98,7 @@ public class TypeSafeArrayInstanceList<BEAN_TYPE extends IBeanProperty<? extends
 		ai.getArrayInstances().forEach((pi) -> {
 			try {
 				BEAN_TYPE bean;
-				bean = (BEAN_TYPE) beanClazz.newInstance();
+				bean = (BEAN_TYPE) beanClazz.getDeclaredConstructor().newInstance();
 				bean.setATypeInstance(pi);
 				beanList.add(bean);
 			} catch (Exception e) {
@@ -184,8 +185,8 @@ public class TypeSafeArrayInstanceList<BEAN_TYPE extends IBeanProperty<? extends
 	public BEAN_TYPE get(int index) {
 		BEAN_TYPE bean = null;
 		try {
-			bean = (BEAN_TYPE) beanClazz.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
+			bean = (BEAN_TYPE) beanClazz.getDeclaredConstructor().newInstance();
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			throw new RuntimeException(e);
 		}
 		bean.setATypeInstance(ai.getArrayInstances().get(index));
