@@ -30,7 +30,8 @@ Require-Bundle: org.eclipse.core.runtime,
  de.dlr.sc.virsat.model.extension.requirements,
  de.dlr.sc.virsat.excel,
  de.dlr.sc.virsat.model.ext.core,
- de.dlr.sc.virsat.model.ext.core.edit
+ de.dlr.sc.virsat.model.ext.core.edit,
+ de.dlr.sc.virsat.model.extension.thermal
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
