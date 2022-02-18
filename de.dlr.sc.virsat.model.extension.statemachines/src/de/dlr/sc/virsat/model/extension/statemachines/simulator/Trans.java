@@ -25,12 +25,8 @@ public class Trans {
 		explored = false;
 	}
 
-
-
 	public Trans() {
 	}
-
-
 
 	@Override
 	public int hashCode() {
