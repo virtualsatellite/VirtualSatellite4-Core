@@ -140,12 +140,8 @@ public class StateMachineSimulationView extends ViewPart {
 		parent.setLayout(new GridLayout(COL, true));
 		expliciteButtonComposite = new Composite(parent, SWT.NONE);
 		expliciteButtonComposite.setLayout(new GridLayout(2, false));
-		expliciteButtonComposite.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, false));
-			
-
+		expliciteButtonComposite.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, true, false));		
 		this.swtAwtComposite = parent;
-	
-
 		createNorthButtonPanel(expliciteButtonComposite);
 		createSimulatorPanel(parent);
 	}
@@ -344,6 +340,21 @@ public class StateMachineSimulationView extends ViewPart {
 						openSimulationHistoryExportShell();
 				}
 				
+				if (outputtable != null) {
+					outputtable.removeAll();
+					outputtable.update();
+					outputtable.clearAll();
+					for (Control control : outputtable.getChildren()) {
+						if (control instanceof Button) {
+							control.dispose();
+						}
+					}
+				}
+				
+				if (transitionsEditors != null) {
+					transitionsEditors.dispose();
+				}
+				
 				
 				List<StateMachine> sm = new ArrayList<StateMachine>();
 				for (TableItem item : table.getItems()) {
@@ -354,9 +365,9 @@ public class StateMachineSimulationView extends ViewPart {
 
 					}
 				}
-				simulator = new StateMachineSimulator();
-				
+				simulator = new StateMachineSimulator();	
 				GlobalState gs = simulator.initialSimulationComputation(sm);
+				
 				simulationhistory = new PriorityQueue<String>();
 				simulationhistory.add("Initial State: " + gs.printState());
 				createNewSimulationTrace(outputtable, gs);
@@ -403,11 +414,21 @@ public class StateMachineSimulationView extends ViewPart {
 				exporter.export(simulationhistory);
 				simulationhistory.clear();
 				outputtable.removeAll();
+				for (Control control : outputtable.getChildren()) {
+					if (control instanceof Button) {
+						control.dispose();
+					}
+				}
 				transitionsEditors.dispose();
 				break;
 			case SWT.NO:
 				simulationhistory.clear();
 				outputtable.removeAll();
+				for (Control control : outputtable.getChildren()) {
+					if (control instanceof Button) {
+						control.dispose();
+					}
+				}
 				transitionsEditors.dispose();
 				break;
 			case SWT.CANCEL:

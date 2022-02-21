@@ -22,6 +22,23 @@ import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
 import de.dlr.sc.virsat.model.extension.statemachines.model.Transition;
 
 public class StateMachineSimulator {
+	
+	
+	private HashMap<String, HashMap<String, HashMap<String, String>>> localEnabledTransitions;
+	private HashMap<String, HashMap<String, HashMap<String, String>>> stateConstraints;
+	private Set<String> stateMachines;
+	private Stack<GlobalState> globalStateStack;
+	
+	/**
+	 * State Machine Simulator
+	 */
+	public StateMachineSimulator() {
+		localEnabledTransitions = new HashMap<String, HashMap<String, HashMap<String, String>>>();
+		stateConstraints = new HashMap<String, HashMap<String, HashMap<String, String>>>();
+		stateMachines = new HashSet<String>();
+		globalStateStack = new Stack<GlobalState>();
+	
+	}
 
 	/**
 	 * used to compute information for transition
@@ -65,9 +82,7 @@ public class StateMachineSimulator {
 			}
 		}
 	}
-
-	private HashMap<String, HashMap<String, HashMap<String, String>>> localEnabledTransitions = new HashMap<String, HashMap<String, HashMap<String, String>>>();
-	private HashMap<String, HashMap<String, HashMap<String, String>>> stateConstraints = new HashMap<String, HashMap<String, HashMap<String, String>>>();
+	
 /**
  * // this function must be called before running POR, it is used to compute
 	// enabled transitions for every local state
@@ -199,8 +214,7 @@ public class StateMachineSimulator {
 						.contains(t2.stateMachine + "." + t2.destinationState);
 	}
 
-	Set<String> stateMachines = new HashSet<String>();
-	Stack<GlobalState> globalStateStack = new Stack<GlobalState>();
+	
 
 	 
 	/**
@@ -258,7 +272,6 @@ public class StateMachineSimulator {
 		return false;
 	}
 
-	int reducedTrace = 0;
 /**
  * Exploartion algorithm
  * @param design
@@ -275,7 +288,6 @@ public class StateMachineSimulator {
 		return s;
 	}
 
-	int exTraces = 0;
 /**
  * Exhaustive exploration
  * @param design
