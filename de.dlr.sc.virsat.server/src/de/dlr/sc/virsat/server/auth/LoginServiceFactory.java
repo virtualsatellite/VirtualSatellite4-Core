@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.auth;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jetty.security.HashLoginService;
 import org.eclipse.jetty.security.LoginService;
@@ -31,8 +33,8 @@ public class LoginServiceFactory {
 		String serviceClassName = ServerConfiguration.getLoginServiceClass();
 		
 		try {
-			service = (LoginService) Class.forName(serviceClassName).newInstance();
-		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+			service = (LoginService) Class.forName(serviceClassName).getDeclaredConstructor().newInstance();
+		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), Status.ERROR, "Couldn't create instance for " + ServerConfiguration.getLoginServiceClass(), e));
 		}
 		

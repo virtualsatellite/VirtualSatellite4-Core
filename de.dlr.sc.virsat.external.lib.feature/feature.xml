@@ -162,4 +162,11 @@ by German Aerospace Center (DLR e.V.)
          install-size="0"
          version="0.0.0"/>
 
+   <plugin
+         id="de.dlr.sc.virsat.external.lib.jaxb"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>

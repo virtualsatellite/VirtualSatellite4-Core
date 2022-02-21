@@ -45,6 +45,7 @@
 				<module>de.dlr.sc.virsat.external.lib.json-simple</module>
 				<module>de.dlr.sc.virsat.external.lib.matlabfile</module>
 				<module>de.dlr.sc.virsat.external.lib.jersey</module>
+				<module>de.dlr.sc.virsat.external.lib.jaxb</module>
 				<module>de.dlr.sc.virsat.external.lib.swagger</module>
 				<module>de.dlr.sc.virsat.external.lib.protobuf</module>
 				<module>de.dlr.sc.virsat.external.lib.vtk.linux.x86_64</module>

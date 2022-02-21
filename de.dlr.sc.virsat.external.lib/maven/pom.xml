@@ -39,6 +39,7 @@
 									<excludeTransitive>false</excludeTransitive>
 									<outputDirectory>${project.basedir}/externalLib/maven</outputDirectory>
 									<stripVersion>true</stripVersion>
+									<!-- classifier>sources</classifier-->
 								</configuration>
 							</execution>
 						</executions>

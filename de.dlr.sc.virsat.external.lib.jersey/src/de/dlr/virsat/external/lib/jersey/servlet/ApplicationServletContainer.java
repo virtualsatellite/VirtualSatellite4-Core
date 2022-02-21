@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.virsat.external.lib.jersey.servlet;
 
+import de.dlr.virsat.external.lib.jaxb.JAXBClassLoaderContext;
 import java.io.IOException;
 
 import javax.servlet.Servlet;
@@ -25,7 +26,7 @@ import javax.servlet.ServletResponse;
  * @author fisc_ph
  *
  */
-public abstract class ApplicationServletContainer implements Servlet {
+public abstract class ApplicationServletContainer extends JAXBClassLoaderContext implements Servlet {
 
 	protected Servlet servlet;
 	

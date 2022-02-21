@@ -1,0 +1,5 @@
+
+Lists of 3 third-party dependencies.
+     (CDDL+GPL License) Old JAXB Core (com.sun.xml.bind:jaxb-core:2.3.0 - http://jaxb.java.net/jaxb-bundles/jaxb-core)
+     (CDDL+GPL License) Old JAXB Runtime (com.sun.xml.bind:jaxb-impl:2.3.0 - http://jaxb.java.net/jaxb-bundles/jaxb-impl)
+     (CDDL 1.1) (GPL2 w/ CPE) jaxb-api (javax.xml.bind:jaxb-api:2.3.0 - https://github.com/javaee/jaxb-spec/jaxb-api)

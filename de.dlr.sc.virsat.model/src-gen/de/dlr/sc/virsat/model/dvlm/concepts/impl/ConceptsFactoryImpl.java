@@ -20,35 +20,35 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model <b>Factory</b>.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!--
+ * end-user-doc -->
+ * 
  * @generated
  */
 public class ConceptsFactoryImpl extends EFactoryImpl implements ConceptsFactory {
 	/**
-	 * Creates the default factory implementation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Creates the default factory implementation. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public static ConceptsFactory init() {
 		try {
-			ConceptsFactory theConceptsFactory = (ConceptsFactory)EPackage.Registry.INSTANCE.getEFactory(ConceptsPackage.eNS_URI);
+			ConceptsFactory theConceptsFactory = (ConceptsFactory) EPackage.Registry.INSTANCE
+					.getEFactory(ConceptsPackage.eNS_URI);
 			if (theConceptsFactory != null) {
 				return theConceptsFactory;
 			}
-		}
-		catch (Exception exception) {
+		} catch (Exception exception) {
 			EcorePlugin.INSTANCE.log(exception);
 		}
 		return new ConceptsFactoryImpl();
 	}
 
 	/**
-	 * Creates an instance of the factory.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Creates an instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 * 
 	 * @generated
 	 */
 	public ConceptsFactoryImpl() {
@@ -56,25 +56,29 @@ public class ConceptsFactoryImpl extends EFactoryImpl implements ConceptsFactory
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
-			case ConceptsPackage.CONCEPT: return createConcept();
-			case ConceptsPackage.CONCEPT_IMPORT: return createConceptImport();
-			case ConceptsPackage.ECORE_IMPORT: return createEcoreImport();
-			case ConceptsPackage.IE_IMPORTS: return createIEImports();
-			default:
-				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
+		case ConceptsPackage.CONCEPT:
+			return createConcept();
+		case ConceptsPackage.CONCEPT_IMPORT:
+			return createConceptImport();
+		case ConceptsPackage.ECORE_IMPORT:
+			return createEcoreImport();
+		case ConceptsPackage.IE_IMPORTS:
+			return createIEImports();
+		default:
+			throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Concept createConcept() {
@@ -83,8 +87,8 @@ public class ConceptsFactoryImpl extends EFactoryImpl implements ConceptsFactory
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ConceptImport createConceptImport() {
@@ -93,8 +97,8 @@ public class ConceptsFactoryImpl extends EFactoryImpl implements ConceptsFactory
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EcoreImport createEcoreImport() {
@@ -103,8 +107,8 @@ public class ConceptsFactoryImpl extends EFactoryImpl implements ConceptsFactory
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public IEImports createIEImports() {
@@ -113,17 +117,17 @@ public class ConceptsFactoryImpl extends EFactoryImpl implements ConceptsFactory
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ConceptsPackage getConceptsPackage() {
-		return (ConceptsPackage)getEPackage();
+		return (ConceptsPackage) getEPackage();
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @deprecated
 	 * @generated
 	 */
@@ -132,4 +136,4 @@ public class ConceptsFactoryImpl extends EFactoryImpl implements ConceptsFactory
 		return ConceptsPackage.eINSTANCE;
 	}
 
-} //ConceptsFactoryImpl
+} // ConceptsFactoryImpl
