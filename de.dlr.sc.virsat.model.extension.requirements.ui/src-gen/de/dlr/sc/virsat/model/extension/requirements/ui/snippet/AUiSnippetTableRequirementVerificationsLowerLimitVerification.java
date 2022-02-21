@@ -9,13 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.ui.snippet;
 
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import org.eclipse.emf.edit.domain.EditingDomain;
-import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import org.eclipse.emf.common.command.Command;
-import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
-import de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetArrayInstanceCategoryTable;
-import de.dlr.sc.virsat.model.extension.requirements.ui.command.CreateAddArrayElementVerificationsCommand;
 
 
 /**
@@ -26,19 +19,13 @@ import de.dlr.sc.virsat.model.extension.requirements.ui.command.CreateAddArrayEl
  * 
  * 
  */	
-public abstract class AUiSnippetTableRequirementVerificationsLowerLimitVerification extends AUiSnippetArrayInstanceCategoryTable implements IUiSnippet {
-
+public abstract class AUiSnippetTableRequirementVerificationsLowerLimitVerification extends AUISnippetTableRequirementsVerification {
 	public AUiSnippetTableRequirementVerificationsLowerLimitVerification() {
 		super("de.dlr.sc.virsat.model.extension.requirements",
+			"de.dlr.sc.virsat.model.extension.requirements",
 			"LowerLimitVerification",
-			"verifications",
-			"Requirement",
 			"de.dlr.sc.virsat.model.extension.requirements.LowerLimitVerification",
 			STYLE_ADD_BUTTON | STYLE_REMOVE_BUTTON | STYLE_EDITOR_BUTTON);
 	}
-	
-	@Override
-	protected Command createAddCommand(EditingDomain editingDomain, Concept activeConcept) {
-		return new CreateAddArrayElementVerificationsCommand().create(editingDomain, getArrayInstance(model),  ActiveConceptHelper.getCategory(activeConcept, "LowerLimitVerification"));
-	}
+
 }
