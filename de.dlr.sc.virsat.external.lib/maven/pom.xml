@@ -39,6 +39,9 @@
 									<excludeTransitive>false</excludeTransitive>
 									<outputDirectory>${project.basedir}/externalLib/maven</outputDirectory>
 									<stripVersion>true</stripVersion>
+									<!-- 
+									<classifier>sources</classifier> 
+									!!! Uncomment this line to load all source plugins to the jars in the external lib plugins-->
 								</configuration>
 							</execution>
 						</executions>
