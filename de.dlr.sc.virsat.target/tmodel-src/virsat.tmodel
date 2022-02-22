@@ -8,12 +8,8 @@ TargetLibrary virsat {
 		Unit org.antlr.runtime version 3.2.0.v201101311130; 
 		Unit org.apache.commons.io version 0.0.0;
 		Unit org.apache.commons.io.source version 0.0.0; 
-		Unit org.glassfish.hk2.osgi-resource-locator version 1.0.3.v20200509-0149;
 		Unit jakarta.xml.bind version 0.0.0;
-		Unit com.sun.xml.bind version 0.0.0;
 		Unit javax.activation version 0.0.0;
-		Unit javax.xml version 0.0.0;
-		
 	}
 	
 	// Purely named Eclipse. The name is important for target models having this one as 
