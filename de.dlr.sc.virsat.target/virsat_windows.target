@@ -8,9 +8,14 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 		<unit id="org.antlr.runtime" version="3.2.0.v201101311130"/>
-		<unit id="org.apache.commons.io" version="2.6.0.v20190123-2029"/>
-		<unit id="org.apache.commons.io.source" version="2.6.0.v20190123-2029"/>
-		<repository location="https://download.eclipse.org/tools/orbit/downloads/drops/R20190602212107/repository/"/>
+		<unit id="org.apache.commons.io" version="0.0.0"/>
+		<unit id="org.apache.commons.io.source" version="0.0.0"/>
+		<unit id="org.glassfish.hk2.osgi-resource-locator" version="1.0.3.v20200509-0149"/>
+		<unit id="jakarta.xml.bind" version="0.0.0"/>
+		<unit id="com.sun.xml.bind" version="0.0.0"/>
+		<unit id="javax.activation" version="0.0.0"/>
+		<unit id="javax.xml" version="0.0.0"/>
+		<repository location="https://download.eclipse.org/tools/orbit/downloads/drops/R20211213173813/repository/"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 		<unit id="org.eclipse.emf.compare.ide.ui.feature.group" version="3.3.11.202005260905"/>

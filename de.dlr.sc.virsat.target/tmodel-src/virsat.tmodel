@@ -4,10 +4,16 @@ TargetLibrary virsat {
 		Unit org.eclipse.nebula.widgets.tablecombo.feature.feature.group version 1.2.0.201907151344;
 	}
 	
-	RepositoryLocation EclipseOrbit url "https://download.eclipse.org/tools/orbit/downloads/drops/R20190602212107/repository/"{
+	RepositoryLocation EclipseOrbit url "https://download.eclipse.org/tools/orbit/downloads/drops/R20211213173813/repository/"{
 		Unit org.antlr.runtime version 3.2.0.v201101311130; 
-		Unit org.apache.commons.io version 2.6.0.v20190123-2029;
-		Unit org.apache.commons.io.source version 2.6.0.v20190123-2029; 
+		Unit org.apache.commons.io version 0.0.0;
+		Unit org.apache.commons.io.source version 0.0.0; 
+		Unit org.glassfish.hk2.osgi-resource-locator version 1.0.3.v20200509-0149;
+		Unit jakarta.xml.bind version 0.0.0;
+		Unit com.sun.xml.bind version 0.0.0;
+		Unit javax.activation version 0.0.0;
+		Unit javax.xml version 0.0.0;
+		
 	}
 	
 	// Purely named Eclipse. The name is important for target models having this one as 
@@ -34,6 +40,7 @@ TargetLibrary virsat {
 		Unit org.eclipse.xtext.sdk.feature.group version 2.22.0.v20200602-1533;
 		Unit org.eclipse.gef.feature.group version 3.11.0.201606061308;  
 		Unit org.eclipse.egit.feature.group version 5.8.0.202006091008-r; 
+		
 	}
 	
 	RepositoryLocation Subversion url "https://download.eclipse.org/technology/subversive/4.0/update-site/" {
