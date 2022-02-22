@@ -61,7 +61,7 @@ public class JAXBUtility {
 	 * current plattform to resolve a class.
 	 *
 	 */
-	class UniversalClassLoader extends ClassLoader {
+	static class UniversalClassLoader extends ClassLoader {
 		
 		@Override
 		public Class<?> loadClass(String name) throws ClassNotFoundException {
