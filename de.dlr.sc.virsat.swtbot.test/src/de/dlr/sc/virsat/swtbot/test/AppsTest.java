@@ -12,10 +12,12 @@ package de.dlr.sc.virsat.swtbot.test;
 import static org.junit.Assert.assertTrue;
 
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class AppsTest extends ASwtBotTestCase {
 
+	@Ignore
 	@Test
 	public void runAppTest() throws InterruptedException {
 		bot.saveAllEditors();
