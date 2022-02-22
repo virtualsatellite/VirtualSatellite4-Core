@@ -18,8 +18,9 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
-Bundle-Activator: de.dlr.sc.virsat.model.extension.thermal.Plugin
+Bundle-Activator: de.dlr.sc.virsat.model.extension.thermal.Activator
 Export-Package: de.dlr.sc.virsat.model.extension.thermal,
+ de.dlr.sc.virsat.model.extension.thermal.cad,
  de.dlr.sc.virsat.model.extension.thermal.migrator,
  de.dlr.sc.virsat.model.extension.thermal.model,
  de.dlr.sc.virsat.model.extension.thermal.validator
