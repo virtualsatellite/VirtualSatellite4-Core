@@ -65,7 +65,6 @@ Require-Bundle: org.eclipse.osgi,
  de.dlr.sc.virsat.external.lib.matlabfile,
  de.dlr.sc.virsat.external.lib.swagger,
  de.dlr.sc.virsat.external.lib.jersey,
- javax.xml,
  javax.annotation,
  jakarta.xml.bind
 Bundle-ActivationPolicy: lazy

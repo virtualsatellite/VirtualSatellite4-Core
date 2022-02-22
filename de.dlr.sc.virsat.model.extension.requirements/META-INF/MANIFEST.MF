@@ -15,7 +15,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.rmf.reqif10,
  org.eclipse.rmf.reqif10.xhtml,
  org.eclipse.rmf.reqif10.common,
- javax.xml,
  javax.annotation,
  jakarta.xml.bind
 Bundle-RequiredExecutionEnvironment: JavaSE-11

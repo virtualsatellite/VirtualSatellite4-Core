@@ -12,7 +12,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.emf.ecore.xmi;visibility:=reexport,
  de.dlr.sc.virsat.model;visibility:=reexport,
  de.dlr.sc.virsat.model.edit,
- javax.xml,
  javax.annotation,
  jakarta.xml.bind
 Bundle-RequiredExecutionEnvironment: JavaSE-11

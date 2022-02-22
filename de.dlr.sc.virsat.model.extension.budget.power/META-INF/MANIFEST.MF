@@ -11,7 +11,6 @@ Require-Bundle: org.eclipse.ui,
  de.dlr.sc.virsat.model.edit,
  de.dlr.sc.virsat.project,
  de.dlr.sc.virsat.model.ext.core;visibility:=reexport,
- javax.xml,
  javax.annotation,
  jakarta.xml.bind
 Bundle-RequiredExecutionEnvironment: JavaSE-11
