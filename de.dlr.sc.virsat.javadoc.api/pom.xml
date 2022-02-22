@@ -50,10 +50,13 @@
 										<includes>
 											<include>de.dlr.sc.*</include>
 										</includes>
+										<excludes>
+											<exclude>de.dlr.sc.visproto</exclude>
+										</excludes>
 										<additionalArguments>
 											<additionalArgument>
 												-link
-												https://docs.oracle.com/javase/8/docs/api
+												https://docs.oracle.com/en/java/javase/11/docs/api/
 											</additionalArgument>
 											<additionalArgument>
 												-linkoffline
