@@ -388,6 +388,9 @@ Export-Package: .,
  org.jvnet.hk2.internal
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: de.dlr.sc.virsat.external.lib,
- javax.servlet;visibility:=reexport
+ javax.servlet;visibility:=reexport,
+ javax.xml,
+ jakarta.xml.bind,
+ jakarta.activation
 Bundle-Activator: de.dlr.virsat.external.lib.jersey.Activator
 Automatic-Module-Name: de.dlr.sc.virsat.external.lib.jersey
