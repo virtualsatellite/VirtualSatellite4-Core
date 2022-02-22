@@ -102,7 +102,7 @@ jobs:
       # Development and Feature branches
       # --------------------------------------------
       - name: Build and Test - Spotbugs
-        uses: virtualsatellite/ci-actions/ci-maven-build-action@v3
+        uses: virtualsatellite/ci-actions/ci-maven-build-action@v5-beta
         with:
           build_job: spotbugs
           build_profile: ${{ steps.build_decision.outputs.build_type }}
@@ -155,7 +155,7 @@ jobs:
       # Development and Feature branches
       # --------------------------------------------
       - name: Build and Test - Surefire
-        uses: virtualsatellite/ci-actions/ci-maven-build-action@v3
+        uses: virtualsatellite/ci-actions/ci-maven-build-action@v5-beta
         with:
           build_job: sureheadless
           build_profile: ${{ steps.build_decision.outputs.build_type }}
@@ -229,7 +229,7 @@ jobs:
       # Development and Feature branches
       # --------------------------------------------
       - name: Build and Test - Checkstyle
-        uses: virtualsatellite/ci-actions/ci-maven-build-action@v3
+        uses: virtualsatellite/ci-actions/ci-maven-build-action@v5-beta
         with:
           build_job: checkstyle
           build_profile: ${{ steps.build_decision.outputs.build_type }}
@@ -280,7 +280,7 @@ jobs:
       # Development and Feature branches
       # --------------------------------------------
       - name: Build - Assemble
-        uses: virtualsatellite/ci-actions/ci-maven-build-action@v3
+        uses: virtualsatellite/ci-actions/ci-maven-build-action@v5-beta
         with:
           build_job: assemble
           build_profile: ${{ steps.build_decision.outputs.build_type }}
