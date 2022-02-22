@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import de.dlr.sc.virsat.apps.api.external.ModelAPITest;
+import de.dlr.sc.virsat.apps.api.external.ModelAPITestWithTestConcept;
 import de.dlr.sc.virsat.build.validator.core.DvlmLatestConceptValidatorTest;
 import de.dlr.sc.virsat.build.validator.core.RepoValidatorsInstantiatorTest;
 import de.dlr.sc.virsat.model.concept.list.ArrayInstanceListIteratorTest;
@@ -28,10 +28,8 @@ import de.dlr.sc.virsat.model.concept.types.util.BeanStructuralElementInstanceHe
 import de.dlr.sc.virsat.model.dvlm.mat.MatExporterTest;
 import de.dlr.sc.virsat.model.dvlm.mat.MatImporterTest;
 import de.dlr.sc.virsat.model.dvlm.structural.command.DeleteStructuralElementInstanceCommandAcceptanceTest;
-import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllPropertyTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryCompositionArrayDynamicTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryCompositionArrayStaticTest;
-import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryCompositionTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryIntrinsicArrayDynamicTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryIntrinsicArrayStaticTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferenceCategoryArrayDynamicTest;
@@ -50,13 +48,13 @@ import junit.framework.JUnit4TestAdapter;
  */
 @RunWith(Suite.class)
 
+
+
 @SuiteClasses({	DmfResourceTest.class,
 				DvlmLatestConceptValidatorTest.class, 
 				VirSatClipboardCommandAcceptanceTest.class,
 				VirSatTransactionalEditingDomainNonDVLMTest.class,
 				DeleteStructuralElementInstanceCommandAcceptanceTest.class,	
-				TestCategoryAllPropertyTest.class,
-				TestCategoryCompositionTest.class,
 				ArrayInstanceListIteratorTest.class,
 				TestCategoryIntrinsicArrayDynamicTest.class,
 				TestCategoryIntrinsicArrayStaticTest.class,
@@ -73,7 +71,7 @@ import junit.framework.JUnit4TestAdapter;
 				BeanStructuralElementInstanceFactoryTest.class,
 				BeanStructuralTreeTraverserTest.class,
 				HierarchyLevelCheckerTest.class,
-				ModelAPITest.class,
+				ModelAPITestWithTestConcept.class,
 				RepoValidatorsInstantiatorTest.class,
 				MatImporterTest.class,
 				MatExporterTest.class,
