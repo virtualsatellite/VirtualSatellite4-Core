@@ -19,7 +19,12 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.helpers.DefaultValidationEventHandler;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.persistence.jaxb.JAXBContextFactory;
 import org.eclipse.persistence.jaxb.JAXBContextProperties;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
+
+
 
 /**
  * Provides functionality to create a JAXBContext
@@ -51,14 +56,58 @@ public class JAXBUtility {
 		createContext(registerClasses);
 	}
 	
+	/**
+	 * Universal Classloader which searches overall plugins in the
+	 * current plattform to resolve a class.
+	 *
+	 */
+	class UniversalClassLoader extends ClassLoader {
+		
+		@Override
+		public Class<?> loadClass(String name) throws ClassNotFoundException {
+			
+			Class<?> foundClass = null;
+			Bundle thisBundle = FrameworkUtil.getBundle(JAXBContextFactory.class);
+			
+			foundClass = thisBundle.loadClass(name);
+			if (foundClass != null) {
+				return foundClass;
+			}
+
+			for (Bundle bundle : thisBundle.getBundleContext().getBundles()) {
+				foundClass = bundle.loadClass(name);
+				if (foundClass != null) {
+					break;
+				}
+			}
+			
+			return super.loadClass(name);
+		}
+	}
+	
 	private void init() {
 		System.setProperty(SYSTEM_PROP_CONTEXT_FACTORY, CLASSPATH_JAXB_CONTEXT_FACTORY);
 		properties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
 		properties.put(JAXBContextProperties.JSON_INCLUDE_ROOT, false);
 	}
 	
+	/**
+	 * Method to create a jaxb context for a given set of classes
+	 * @param registerClasses the registered classes for which to get the context.
+	 * @return a jaxb context
+	 * @throws JAXBException
+	 */
 	public JAXBContext createContext(@SuppressWarnings("rawtypes") Class[] registerClasses) throws JAXBException {
-		jaxbCtx = JAXBContext.newInstance(registerClasses, properties);
+		ClassLoader orig = Thread.currentThread().getContextClassLoader();
+		
+		// Try setting the universal class loader
+		try {
+			Thread.currentThread().setContextClassLoader(new UniversalClassLoader());
+			jaxbCtx = JAXBContext.newInstance(registerClasses, properties);
+		} finally {
+			Thread.currentThread().setContextClassLoader(orig);
+		}
+
 		return jaxbCtx;
 	}
 	
