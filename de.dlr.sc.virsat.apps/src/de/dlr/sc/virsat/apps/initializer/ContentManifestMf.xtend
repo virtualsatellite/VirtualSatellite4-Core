@@ -17,7 +17,7 @@ class ContentManifestMf {
 	Bundle-Name: «projectName»
 	Bundle-SymbolicName: «projectName»
 	Bundle-Version: 1.0.0.qualifier
-	Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+	Bundle-RequiredExecutionEnvironment: JavaSE-11
 	Require-Bundle: de.dlr.sc.virsat.apps
 	Automatic-Module-Name: «projectName»
 	'''

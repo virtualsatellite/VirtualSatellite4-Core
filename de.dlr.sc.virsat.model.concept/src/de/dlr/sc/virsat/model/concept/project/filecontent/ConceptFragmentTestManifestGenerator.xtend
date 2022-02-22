@@ -34,7 +34,7 @@ class ConceptFragmentTestManifestGenerator implements IFileContentGenerator {
 	Fragment-Host: «getProjectNameForTestPlugin(builderInfo)»;bundle-version="0.0.1"
 	Bundle-ClassPath: .
 	Bundle-Vendor: DLR (German Aerospace Center)
-	Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+	Bundle-RequiredExecutionEnvironment: JavaSE-11
 	Bundle-ActivationPolicy: lazy
 	Require-Bundle: org.junit,
 	 org.eclipse.emf.edit,

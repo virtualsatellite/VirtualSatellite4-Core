@@ -77,7 +77,7 @@ public class ConceptPluginUiManifestGenerator implements IFileContentGenerator {
     _builder.append(" ");
     _builder.append("de.dlr.sc.virsat.uiengine.ui");
     _builder.newLine();
-    _builder.append("Bundle-RequiredExecutionEnvironment: JavaSE-1.8");
+    _builder.append("Bundle-RequiredExecutionEnvironment: JavaSE-11");
     _builder.newLine();
     _builder.append("Bundle-ActivationPolicy: lazy");
     _builder.newLine();

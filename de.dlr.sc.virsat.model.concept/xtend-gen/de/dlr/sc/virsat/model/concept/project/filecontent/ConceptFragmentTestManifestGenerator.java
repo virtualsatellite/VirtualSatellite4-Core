@@ -51,7 +51,7 @@ public class ConceptFragmentTestManifestGenerator implements IFileContentGenerat
     _builder.newLine();
     _builder.append("Bundle-Vendor: DLR (German Aerospace Center)");
     _builder.newLine();
-    _builder.append("Bundle-RequiredExecutionEnvironment: JavaSE-1.8");
+    _builder.append("Bundle-RequiredExecutionEnvironment: JavaSE-11");
     _builder.newLine();
     _builder.append("Bundle-ActivationPolicy: lazy");
     _builder.newLine();
