@@ -57,7 +57,10 @@ import org.junit.runners.Suite;
 	de.dlr.sc.virsat.model.extension.statemachines.test.AllTestsGen.class,
 	de.dlr.sc.virsat.model.extension.funcelectrical.test.AllTests.class,
 	de.dlr.sc.virsat.model.extension.funcelectrical.test.AllTestsGen.class,
+  de.dlr.sc.virsat.model.extension.thermal.test.AllTests.class,
+	de.dlr.sc.virsat.model.extension.thermal.test.AllTestsGen.class,
 	})
+
 
 /**
  * Test Class
