@@ -40,6 +40,11 @@ SPDX-License-Identifier: EPL-2.0
 					<useUIThread>false</useUIThread>
 					<product>de.dlr.sc.virsat.branding.ui.VirSat_Core</product>
 					<application>org.eclipse.ui.ide.workbench</application>
+					<excludes>
+						<exclude>
+							**/ProjectUiAllTests
+						</exclude>
+					</excludes>
 					
 					<!--  Setup the osgi data and workspace directory. Otherwise the workspace will be placed
 					in the plugins target directory, thus creating a repository within a repository (git from
