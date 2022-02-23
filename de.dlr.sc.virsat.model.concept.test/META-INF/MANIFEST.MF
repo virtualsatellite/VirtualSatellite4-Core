@@ -9,7 +9,6 @@ Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.ui.workbench;resolution:=optional,
- org.objectweb.asm;bundle-version="[8.0.0,8.1.0)";resolution:=optional,
  de.dlr.sc.virsat.model,
  org.junit,
  org.eclipse.core.resources,
