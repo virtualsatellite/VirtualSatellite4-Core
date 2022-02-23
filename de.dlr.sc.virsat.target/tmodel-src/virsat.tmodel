@@ -60,8 +60,8 @@ TargetLibrary virsat {
 	
 	RepositoryLocation RMF url "http://download.eclipse.org/rmf/updates/releases" {
 		Unit org.eclipse.rmf.reqif10.feature.feature.group version 0.13.0.201509161042;
-		Unit org.eclipse.rmf.reqif10.pror.feature.feature.group version 0.12.0.201503190302;
+		Unit org.eclipse.rmf.reqif10.pror.feature.feature.group version 0.13.0.201509161042;
 		Unit org.eclipse.rmf.reqif10.thirdparty.feature.feature.group version 0.13.0.201509161042;
-		Unit org.eclipse.rmf.reqif10.sdk.feature.feature.group version 0.12.0.201503190302;
+		Unit org.eclipse.rmf.reqif10.sdk.feature.feature.group version 0.13.0.201509161042;
 	}
 }
