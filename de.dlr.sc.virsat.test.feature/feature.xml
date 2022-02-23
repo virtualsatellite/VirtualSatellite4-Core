@@ -46,6 +46,7 @@ by German Aerospace Center (DLR e.V.)
       <import plugin="de.dlr.sc.virsat.model.extension.statemachines"/>
       <import plugin="de.dlr.sc.virsat.model.extension.funcelectrical"/>
       <import plugin="de.dlr.sc.virsat.model.extension.requirements"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.thermal"/>
       <import plugin="de.dlr.sc.virsat.excel"/>
       <import plugin="de.dlr.sc.virsat.external.lib.spotbugs"/>
       <import plugin="de.dlr.sc.virsat.model.extension.tests"/>
@@ -303,6 +304,14 @@ by German Aerospace Center (DLR e.V.)
          unpack="false"/>
 
    <plugin
+         id="de.dlr.sc.virsat.model.extension.thermal.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
          id="de.dlr.sc.virsat.server.test"
          download-size="0"
          install-size="0"
@@ -334,14 +343,6 @@ by German Aerospace Center (DLR e.V.)
 
    <plugin
          id="de.dlr.sc.virsat.model.ext.core.edit.test"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"
-         unpack="false"/>
-
-   <plugin
-         id="de.dlr.sc.virsat.model.extension.thermal.test"
          download-size="0"
          install-size="0"
          version="0.0.0"
