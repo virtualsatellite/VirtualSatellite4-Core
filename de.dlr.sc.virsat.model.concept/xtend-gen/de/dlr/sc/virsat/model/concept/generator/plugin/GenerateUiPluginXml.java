@@ -12,8 +12,6 @@ package de.dlr.sc.virsat.model.concept.generator.plugin;
 import de.dlr.sc.virsat.model.concept.generator.ConceptOutputConfigurationProvider;
 import de.dlr.sc.virsat.model.concept.generator.handler.GenerateCategoryAddHandler;
 import de.dlr.sc.virsat.model.concept.generator.handler.GenerateStructuralElementInstanceAddHandler;
-import de.dlr.sc.virsat.model.concept.generator.plugin.GenerateConceptImages;
-import de.dlr.sc.virsat.model.concept.generator.plugin.PluginXmlReader;
 import de.dlr.sc.virsat.model.concept.generator.snippets.GenerateCategoryUiSnippetArrayTable;
 import de.dlr.sc.virsat.model.concept.generator.snippets.GenerateCategoryUiSnippetPropertySection;
 import de.dlr.sc.virsat.model.concept.generator.snippets.GenerateCategoryUiSnippetTable;
@@ -39,8 +37,8 @@ import org.eclipse.xtext.xbase.lib.StringExtensions;
 
 @SuppressWarnings("all")
 public class GenerateUiPluginXml {
-  /* @Accessors
-   */private PluginXmlReader pluginXmlReader;
+  @Accessors
+  private PluginXmlReader pluginXmlReader;
   
   public void serializeModel(final Concept concept, final PluginXmlReader pluginXmlReader, final IFileSystemAccess fsa) {
     this.pluginXmlReader = pluginXmlReader;
@@ -1028,5 +1026,11 @@ public class GenerateUiPluginXml {
   }
   
   @Pure
-  public void getPluginXmlReader();
+  public PluginXmlReader getPluginXmlReader() {
+    return this.pluginXmlReader;
+  }
+  
+  public void setPluginXmlReader(final PluginXmlReader pluginXmlReader) {
+    this.pluginXmlReader = pluginXmlReader;
+  }
 }

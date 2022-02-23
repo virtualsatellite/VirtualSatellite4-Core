@@ -13,7 +13,6 @@ import de.dlr.sc.virsat.model.concept.generator.AGeneratorGapGenerator;
 import de.dlr.sc.virsat.model.concept.generator.ConceptOutputConfigurationProvider;
 import de.dlr.sc.virsat.model.concept.generator.ImportManager;
 import de.dlr.sc.virsat.model.concept.generator.migrator.GenerateMigrator;
-import de.dlr.sc.virsat.model.concept.generator.tests.AllMigratorsReader;
 import de.dlr.sc.virsat.model.concept.generator.util.ConceptGeneratorUtil;
 import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
 import de.dlr.sc.virsat.model.dvlm.Repository;
