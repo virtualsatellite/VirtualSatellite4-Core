@@ -27,8 +27,8 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 @SuppressWarnings("all")
 public class GeneratePluginXml {
-  @Accessors
-  private PluginXmlReader pluginXmlReader;
+  /* @Accessors
+   */private PluginXmlReader pluginXmlReader;
   
   public void serializeModel(final Concept concept, final PluginXmlReader pluginXmlReader, final IFileSystemAccess fsa) {
     this.pluginXmlReader = pluginXmlReader;
@@ -403,11 +403,5 @@ public class GeneratePluginXml {
   }
   
   @Pure
-  public PluginXmlReader getPluginXmlReader() {
-    return this.pluginXmlReader;
-  }
-  
-  public void setPluginXmlReader(final PluginXmlReader pluginXmlReader) {
-    this.pluginXmlReader = pluginXmlReader;
-  }
+  public void getPluginXmlReader();
 }

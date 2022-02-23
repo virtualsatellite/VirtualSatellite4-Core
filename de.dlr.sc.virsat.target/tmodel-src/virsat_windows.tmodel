@@ -6,4 +6,4 @@ Target virsat_windows {
 	Architecture x86_64
 	Locale de_DE
 	TargetJRE JavaSE-11 
-} 
+}

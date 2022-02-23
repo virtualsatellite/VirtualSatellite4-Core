@@ -11,8 +11,8 @@ package de.dlr.sc.virsat.team.ui.handler.git;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.egit.core.internal.credentials.EGitCredentialsProvider;
 import org.eclipse.egit.core.project.RepositoryMapping;
-import org.eclipse.egit.ui.internal.credentials.EGitCredentialsProvider;
 import org.eclipse.egit.ui.internal.pull.PullResultDialog;
 import org.eclipse.jgit.api.PullResult;
 import org.eclipse.jgit.lib.Repository;

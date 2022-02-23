@@ -2,9 +2,10 @@
 		<?pde version="3.8"?><target name="virsat_windows" sequenceNumber="1">
 		<locations>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-		<unit id="org.eclipse.nebula.widgets.gallery.feature.feature.group" version="1.0.0.201907151344"/>
-		<unit id="org.eclipse.nebula.widgets.tablecombo.feature.feature.group" version="1.2.0.201907151344"/>
-		<repository location="https://download.eclipse.org/nebula/releases/2.2.0/"/>
+		<unit id="org.eclipse.nebula.widgets.gallery.feature.feature.group" version="1.0.0.202202012159"/>
+		<unit id="org.eclipse.nebula.widgets.tablecombo.feature.feature.group" version="1.2.0.202202012159"/>
+		<unit id="org.eclipse.nebula.widgets.tablecombo.css.feature.feature.group" version="1.2.0.202202012159"/>
+		<repository location="https://download.eclipse.org/nebula/releases/2.6.0/"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 		<unit id="org.antlr.runtime" version="3.2.0.v201101311130"/>
@@ -12,30 +13,31 @@
 		<unit id="org.apache.commons.io.source" version="0.0.0"/>
 		<unit id="jakarta.xml.bind" version="0.0.0"/>
 		<unit id="javax.activation" version="0.0.0"/>
+		<unit id="javax.servlet" version="0.0.0"/>
 		<repository location="https://download.eclipse.org/tools/orbit/downloads/drops/R20211213173813/repository/"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-		<unit id="org.eclipse.emf.compare.ide.ui.feature.group" version="3.3.11.202005260905"/>
+		<unit id="org.eclipse.emf.compare.ide.ui.feature.group" version="3.3.17.202111290942"/>
 		<unit id="org.eclipse.emf.edapt.runtime.feature.feature.group" version="1.4.1.202002140949"/>
-		<unit id="org.eclipse.emf.sdk.feature.group" version="2.22.0.v20200519-1135"/>
+		<unit id="org.eclipse.emf.sdk.feature.group" version="2.28.0.v20211110-0654"/>
 		<unit id="org.eclipse.emf.transaction.sdk.feature.group" version="1.12.0.201805140824"/>
-		<unit id="org.eclipse.equinox.executable.feature.group" version="3.8.800.v20200514-1529"/>
-		<unit id="org.eclipse.graphiti.sdk.feature.feature.group" version="0.17.0.202005151449"/>
-		<unit id="org.eclipse.graphiti.export.feature.feature.group" version="0.17.0.202005151449"/>
-		<unit id="org.eclipse.jdt.source.feature.group" version="3.18.400.v20200604-0540"/>
-		<unit id="org.eclipse.ocl.all.sdk.feature.group" version="5.12.0.v20200608-1555"/>
-		<unit id="org.eclipse.pde.source.feature.group" version="3.14.400.v20200604-0540"/>
-		<unit id="org.eclipse.platform.sdk" version="4.16.0.I20200604-0540"/>
-		<unit id="org.eclipse.swtbot.eclipse.feature.group" version="3.0.0.202006031738"/>
-		<unit id="org.eclipse.swtbot.eclipse.gef.feature.group" version="3.0.0.202006031738"/>
-		<unit id="org.eclipse.swtbot.feature.group" version="3.0.0.202006031738"/>
-		<unit id="org.eclipse.swtbot.forms.feature.group" version="3.0.0.202006031738"/>
-		<unit id="org.eclipse.swtbot.generator.feature.feature.group" version="3.0.0.202006031738"/>
-		<unit id="org.eclipse.swtbot.ide.feature.group" version="3.0.0.202006031738"/>
-		<unit id="org.eclipse.xtext.sdk.feature.group" version="2.22.0.v20200602-1533"/>
+		<unit id="org.eclipse.equinox.executable.feature.group" version="3.8.1400.v20211117-0650"/>
+		<unit id="org.eclipse.graphiti.sdk.feature.feature.group" version="0.18.0.202106091000"/>
+		<unit id="org.eclipse.graphiti.export.feature.feature.group" version="0.18.0.202106091000"/>
+		<unit id="org.eclipse.jdt.source.feature.group" version="3.18.1000.v20211124-1800"/>
+		<unit id="org.eclipse.ocl.all.sdk.feature.group" version="5.17.0.v20211130-1448"/>
+		<unit id="org.eclipse.pde.source.feature.group" version="3.14.1000.v20211124-1800"/>
+		<unit id="org.eclipse.platform.sdk" version="4.22.0.I20211124-1800"/>
+		<unit id="org.eclipse.swtbot.eclipse.feature.group" version="3.1.0.202106041005"/>
+		<unit id="org.eclipse.swtbot.eclipse.gef.feature.group" version="3.1.0.202106041005"/>
+		<unit id="org.eclipse.swtbot.feature.group" version="3.1.0.202106041005"/>
+		<unit id="org.eclipse.swtbot.forms.feature.group" version="3.1.0.202106041005"/>
+		<unit id="org.eclipse.swtbot.generator.feature.feature.group" version="3.1.0.202106041005"/>
+		<unit id="org.eclipse.swtbot.ide.feature.group" version="3.1.0.202106041005"/>
+		<unit id="org.eclipse.xtext.sdk.feature.group" version="2.25.0.v20210301-1429"/>
 		<unit id="org.eclipse.gef.feature.group" version="3.11.0.201606061308"/>
-		<unit id="org.eclipse.egit.feature.group" version="5.8.0.202006091008-r"/>
-		<repository location="http://download.eclipse.org/releases/2020-06"/>
+		<unit id="org.eclipse.egit.feature.group" version="6.0.0.202111291000-r"/>
+		<repository location="http://download.eclipse.org/releases/2021-12"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 		<unit id="org.eclipse.team.svn.feature.group" version="4.0.5.I20170425-1700"/>
@@ -56,9 +58,9 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 		<unit id="org.eclipse.rmf.reqif10.feature.feature.group" version="0.13.0.201509161042"/>
-		<unit id="org.eclipse.rmf.reqif10.pror.feature.feature.group" version="0.13.0.201509161042"/>
+		<unit id="org.eclipse.rmf.reqif10.pror.feature.feature.group" version="0.12.0.201503190302"/>
 		<unit id="org.eclipse.rmf.reqif10.thirdparty.feature.feature.group" version="0.13.0.201509161042"/>
-		<unit id="org.eclipse.rmf.reqif10.sdk.feature.feature.group" version="0.13.0.201509161042"/>
+		<unit id="org.eclipse.rmf.reqif10.sdk.feature.feature.group" version="0.12.0.201503190302"/>
 		<repository location="http://download.eclipse.org/rmf/updates/releases"/>
 		</location>
 		</locations>

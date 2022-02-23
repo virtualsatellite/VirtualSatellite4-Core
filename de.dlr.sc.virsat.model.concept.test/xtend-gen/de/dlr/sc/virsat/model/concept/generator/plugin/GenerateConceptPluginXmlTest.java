@@ -11,12 +11,8 @@ package de.dlr.sc.virsat.model.concept.generator.plugin;
 
 import de.dlr.sc.virsat.model.concept.ConceptLanguageTestInjectorProvider;
 import de.dlr.sc.virsat.model.concept.generator.plugin.GeneratePluginXml;
-import de.dlr.sc.virsat.model.concept.generator.plugin.PluginXmlReader;
 import de.dlr.sc.virsat.model.concept.test.util.GeneratorJunitAssert;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage;
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.PropertydefinitionsPackage;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage;
 import javax.inject.Inject;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.testing.InjectWith;
@@ -54,20 +50,8 @@ public class GenerateConceptPluginXmlTest {
   
   @Before
   public void setUp() {
-    ConceptsPackage.eINSTANCE.eClass();
-    CategoriesPackage.eINSTANCE.eClass();
-    PropertydefinitionsPackage.eINSTANCE.eClass();
-    this.pluginGenerator.setPluginXmlReader(new PluginXmlReader() {
-      @Override
-      public PluginXmlReader init(final String pluginId) {
-        return this;
-      }
-      
-      @Override
-      public String extractProtectedRegion(final int regionID) {
-        return GenerateConceptPluginXmlTest.this.TEST_EXTRACT_PROTECTED_REGION;
-      }
-    });
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe field pluginXmlReader is not visible");
   }
   
   @Test
