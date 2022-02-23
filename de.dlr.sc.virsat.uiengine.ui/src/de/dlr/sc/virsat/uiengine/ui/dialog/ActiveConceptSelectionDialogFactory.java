@@ -46,6 +46,7 @@ public class ActiveConceptSelectionDialogFactory {
 		ActiveConceptsLabelProvider labelProvider = new ActiveConceptsLabelProvider();
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		
+		@SuppressWarnings("deprecation")
 		ListSelectionDialog activeConceptSelectionDialog = new ListSelectionDialog(parent, registry, contentProvider, labelProvider, message) {
 			@Override
 			protected Control createDialogArea(Composite parent) {
