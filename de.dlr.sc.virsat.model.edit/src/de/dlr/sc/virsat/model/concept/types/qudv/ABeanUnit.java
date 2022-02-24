@@ -43,7 +43,7 @@ import io.swagger.annotations.ApiModelProperty;
 		ABeanConversionBasedUnit.class,
 		BeanUnitSimple.class,
 		BeanUnitDerived.class
-})
+	})
 public abstract class ABeanUnit<U_TYPE extends AUnit> implements IBeanUnit<U_TYPE> {
 
 	protected U_TYPE unit;
