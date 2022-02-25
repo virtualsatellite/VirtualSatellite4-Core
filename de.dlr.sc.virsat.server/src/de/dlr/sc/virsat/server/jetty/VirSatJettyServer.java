@@ -119,7 +119,13 @@ public class VirSatJettyServer {
 		httpsConf.setSecurePort(VIRSAT_JETTY_PORT_HTTPS);
 		// Customizer that extracts the attribute from an SSLContext and sets them on the request
 		// So that servlets can see the encryption details
-		httpsConf.addCustomizer(new SecureRequestCustomizer());
+		boolean sniRequired = ServerConfiguration.getHttpsSniRequired();
+		boolean sniHostCheck = ServerConfiguration.getHttpsSniHostCheck();
+		
+		SecureRequestCustomizer srCustomizer = new SecureRequestCustomizer();
+		srCustomizer.setSniRequired(sniRequired);
+		srCustomizer.setSniHostCheck(sniHostCheck);
+		httpsConf.addCustomizer(srCustomizer);
 
 		// HTTPS connector using the HTTP protocol over an SSL connection
 		ServerConnector httpsConnector = new ServerConnector(server,

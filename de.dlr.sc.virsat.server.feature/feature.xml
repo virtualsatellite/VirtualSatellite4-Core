@@ -38,7 +38,7 @@ by German Aerospace Center (DLR e.V.)
       <import plugin="org.eclipse.jetty.server"/>
       <import plugin="org.eclipse.jetty.servlet"/>
       <import plugin="org.eclipse.jetty.util"/>
-      <import plugin="javax.servlet"/>
+      <import plugin="jakarta.servlet-api"/>
       <import plugin="org.slf4j.api"/>
       <import plugin="org.apache.commons.io"/>
       <import plugin="org.bouncycastle.bcpg"/>
