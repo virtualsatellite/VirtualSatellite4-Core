@@ -30,7 +30,8 @@ Require-Bundle: org.eclipse.core.runtime,
  de.dlr.sc.virsat.model.extension.requirements,
  de.dlr.sc.virsat.excel,
  de.dlr.sc.virsat.model.ext.core,
- de.dlr.sc.virsat.model.ext.core.edit
+ de.dlr.sc.virsat.model.ext.core.edit,
+ de.dlr.sc.virsat.model.extension.thermal
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
@@ -55,6 +56,7 @@ Import-Package: de.dlr.sc.virsat.apps.test,
  de.dlr.sc.virsat.model.extension.tests.edit.test,
  de.dlr.sc.virsat.model.extension.tests.test,
  de.dlr.sc.virsat.model.extension.visualisation.test,
+ de.dlr.sc.virsat.model.extension.thermal.test,
  de.dlr.sc.virsat.model.test,
  de.dlr.sc.virsat.project.test,
  de.dlr.sc.virsat.server.test,

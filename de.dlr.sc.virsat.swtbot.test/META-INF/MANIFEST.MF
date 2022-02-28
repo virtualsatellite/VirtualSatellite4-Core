@@ -63,7 +63,9 @@ Require-Bundle: org.eclipse.swt,
  de.dlr.sc.virsat.external.lib.spotbugs,
  org.eclipse.gef,
  org.eclipse.jgit,
- org.eclipse.team.svn.core
+ org.eclipse.team.svn.core,
+ de.dlr.sc.virsat.model.extension.thermal,
+ de.dlr.sc.virsat.model.extension.thermal.ui
 Import-Package: org.eclipse.draw2d.geometry,
  org.zeromq,
  vtk,
