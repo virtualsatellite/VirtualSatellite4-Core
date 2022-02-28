@@ -15,7 +15,7 @@ Require-Bundle: de.dlr.sc.virsat.model.extension.thermal,
  de.dlr.sc.virsat.uiengine.ui,
  org.eclipse.core.expressions,
  de.dlr.sc.virsat.model.extension.ps
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: DLR (German Aerospace Center)
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.thermal.ui
