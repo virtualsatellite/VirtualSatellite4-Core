@@ -46,6 +46,7 @@
 <setEntry value="de.dlr.sc.virsat.model.extension.mechanical.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.ps.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.requirements.feature:default"/>
+<setEntry value="de.dlr.sc.virsat.model.extension.thermal.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.visualisation.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.project.feature:default"/>

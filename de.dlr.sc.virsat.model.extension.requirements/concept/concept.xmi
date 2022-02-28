@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v8/c" xmlns:dvlm_cp="http://www.virsat.sc.dlr.de/dvlm/v8/cp" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppd" name="de.dlr.sc.virsat.model.extension.requirements" description="Extension for Requirement Specification" version="0.6" displayName="Requirements" beta="true">
+<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v8/c" xmlns:dvlm_cp="http://www.virsat.sc.dlr.de/dvlm/v8/cp" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppd" name="de.dlr.sc.virsat.model.extension.requirements" description="Extension for Requirement Specification" version="0.7" displayName="Requirements" beta="true">
   <imports importedNamespace="de.dlr.sc.virsat.model.ext.core.*"/>
   <ecoreImports importedNsURI="http://www.virsat.sc.dlr.de/dvlm/v8/cp"/>
   <categories name="IRequirementTreeElement">
@@ -164,14 +164,14 @@
     </properties>
   </categories>
   <categories name="ExistenceVerification" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.ModelVerification"/>
-  <categories name="IValueVerification" isAbstract="true" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.ModelVerification"/>
-  <categories name="UpperLimitVerification" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.IValueVerification">
+  <categories name="IValueVerification" isAbstract="true" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.ModelVerification" isVerification="true"/>
+  <categories name="UpperLimitVerification" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.IValueVerification" isVerification="true">
     <properties xsi:type="dvlm_cppd:FloatProperty" name="upperBound"/>
   </categories>
-  <categories name="LowerLimitVerification" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.IValueVerification">
+  <categories name="LowerLimitVerification" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.IValueVerification" isVerification="true">
     <properties xsi:type="dvlm_cppd:FloatProperty" name="lowerBound"/>
   </categories>
-  <categories name="BoundedValueVerification" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.IValueVerification">
+  <categories name="BoundedValueVerification" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.IValueVerification" isVerification="true">
     <properties xsi:type="dvlm_cppd:FloatProperty" name="lowerBound"/>
     <properties xsi:type="dvlm_cppd:FloatProperty" name="upperBound"/>
   </categories>
