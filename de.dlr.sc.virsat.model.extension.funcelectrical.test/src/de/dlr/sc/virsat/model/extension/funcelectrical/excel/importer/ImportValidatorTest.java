@@ -26,12 +26,12 @@ import de.dlr.sc.virsat.excel.fault.FaultType;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.model.extension.funcelectrical.Activator;
 import de.dlr.sc.virsat.model.extension.funcelectrical.excel.AExcelFuncIO;
-import de.dlr.sc.virsat.model.extension.funcelectrical.test.ExcelTestCase;
+import de.dlr.sc.virsat.model.extension.funcelectrical.test.AExcelTestCase;
 
 /**
  * Test Case for Importing from Excel
  */
-public class ImportValidatorTest extends ExcelTestCase {
+public class ImportValidatorTest extends AExcelTestCase {
 
 	@Before
 	public void setUp() throws CoreException {

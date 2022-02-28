@@ -33,7 +33,7 @@ import de.dlr.sc.virsat.model.extension.ps.model.ProductTreeDomain;
 /**
  * Abstract class for import tests
  */
-public class ExcelTestCase extends AConceptTestCase {
+public abstract class AExcelTestCase extends AConceptTestCase {
 	protected static final String CONCEPT_ID_EGSCC = de.dlr.sc.virsat.model.extension.ps.Activator.getPluginId();
 	protected static final String CONCEPT_ID_FUNCELECTRICAL = Activator.getPluginId();
 	protected static final int NUMBER_OF_INTERFACES = 3;
