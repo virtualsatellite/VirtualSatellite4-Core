@@ -63,8 +63,8 @@ public abstract class ATransitionTriggerEvent extends GenericCategory implements
 	public static final String PROPERTY_TYPE = "type";
 	public static final String PROPERTY_SENDING = "sending";
 	public static final String PROPERTY_DETAIL = "detail";
-	public static final String PROPERTY_MINTIME = "minTime";
-	public static final String PROPERTY_MAXTIME = "maxTime";
+	public static final String PROPERTY_MINDELAY = "minDelay";
+	public static final String PROPERTY_MAXDELAY = "maxDelay";
 	
 	// Type enumeration value names
 	public static final String TYPE_auto_NAME = "auto";
@@ -207,77 +207,77 @@ public abstract class ATransitionTriggerEvent extends GenericCategory implements
 	}
 	
 	// *****************************************************************
-	// * Attribute: minTime
+	// * Attribute: minDelay
 	// *****************************************************************
-	private BeanPropertyFloat minTime = new BeanPropertyFloat();
+	private BeanPropertyFloat minDelay = new BeanPropertyFloat();
 	
-	private void safeAccessMinTime() {
-		if (minTime.getTypeInstance() == null) {
-			minTime.setTypeInstance((UnitValuePropertyInstance) helper.getPropertyInstance("minTime"));
+	private void safeAccessMinDelay() {
+		if (minDelay.getTypeInstance() == null) {
+			minDelay.setTypeInstance((UnitValuePropertyInstance) helper.getPropertyInstance("minDelay"));
 		}
 	}
 	
-	public Command setMinTime(EditingDomain ed, double value) {
-		safeAccessMinTime();
-		return this.minTime.setValue(ed, value);
+	public Command setMinDelay(EditingDomain ed, double value) {
+		safeAccessMinDelay();
+		return this.minDelay.setValue(ed, value);
 	}
 	
-	public void setMinTime(double value) {
-		safeAccessMinTime();
-		this.minTime.setValue(value);
+	public void setMinDelay(double value) {
+		safeAccessMinDelay();
+		this.minDelay.setValue(value);
 	}
 	
-	public double getMinTime() {
-		safeAccessMinTime();
-		return minTime.getValue();
+	public double getMinDelay() {
+		safeAccessMinDelay();
+		return minDelay.getValue();
 	}
 	
-	public boolean isSetMinTime() {
-		safeAccessMinTime();
-		return minTime.isSet();
+	public boolean isSetMinDelay() {
+		safeAccessMinDelay();
+		return minDelay.isSet();
 	}
 	
 	@XmlElement
-	public BeanPropertyFloat getMinTimeBean() {
-		safeAccessMinTime();
-		return minTime;
+	public BeanPropertyFloat getMinDelayBean() {
+		safeAccessMinDelay();
+		return minDelay;
 	}
 	
 	// *****************************************************************
-	// * Attribute: maxTime
+	// * Attribute: maxDelay
 	// *****************************************************************
-	private BeanPropertyFloat maxTime = new BeanPropertyFloat();
+	private BeanPropertyFloat maxDelay = new BeanPropertyFloat();
 	
-	private void safeAccessMaxTime() {
-		if (maxTime.getTypeInstance() == null) {
-			maxTime.setTypeInstance((UnitValuePropertyInstance) helper.getPropertyInstance("maxTime"));
+	private void safeAccessMaxDelay() {
+		if (maxDelay.getTypeInstance() == null) {
+			maxDelay.setTypeInstance((UnitValuePropertyInstance) helper.getPropertyInstance("maxDelay"));
 		}
 	}
 	
-	public Command setMaxTime(EditingDomain ed, double value) {
-		safeAccessMaxTime();
-		return this.maxTime.setValue(ed, value);
+	public Command setMaxDelay(EditingDomain ed, double value) {
+		safeAccessMaxDelay();
+		return this.maxDelay.setValue(ed, value);
 	}
 	
-	public void setMaxTime(double value) {
-		safeAccessMaxTime();
-		this.maxTime.setValue(value);
+	public void setMaxDelay(double value) {
+		safeAccessMaxDelay();
+		this.maxDelay.setValue(value);
 	}
 	
-	public double getMaxTime() {
-		safeAccessMaxTime();
-		return maxTime.getValue();
+	public double getMaxDelay() {
+		safeAccessMaxDelay();
+		return maxDelay.getValue();
 	}
 	
-	public boolean isSetMaxTime() {
-		safeAccessMaxTime();
-		return maxTime.isSet();
+	public boolean isSetMaxDelay() {
+		safeAccessMaxDelay();
+		return maxDelay.isSet();
 	}
 	
 	@XmlElement
-	public BeanPropertyFloat getMaxTimeBean() {
-		safeAccessMaxTime();
-		return maxTime;
+	public BeanPropertyFloat getMaxDelayBean() {
+		safeAccessMaxDelay();
+		return maxDelay;
 	}
 	
 	
