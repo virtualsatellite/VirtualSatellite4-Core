@@ -12,9 +12,11 @@ package de.dlr.sc.virsat.model.dvlm.concepts.util;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -269,20 +271,44 @@ public class ActiveConceptHelper {
 	 * @return the full qualified path being delimited with "."
 	 */
 	public static String getFullQualifiedId(EObject type) {
-		List<EObject> objectPath = getFullQualifiedPath(type);
-	
-		String fullQualifiedPath = "";
-		boolean delimit = false;
-		
-		for (EObject pathObject : objectPath) {
-			String pathElement = extractFullQualifiedNameName(pathObject);
-			
-			fullQualifiedPath = ((delimit) ? pathElement + FQID_DELIMITER : pathElement) + fullQualifiedPath;
-			delimit = true;
+		String fullQualifiedPath = mapClassToIDs.get(type);
+
+		if (fullQualifiedPath == null) {
+			fullQualifiedPath = "";
+			List<EObject> objectPath = getFullQualifiedPath(type);
+
+			boolean delimit = false;
+
+			for (EObject pathObject : objectPath) {
+				String pathElement = extractFullQualifiedNameName(pathObject);
+
+				fullQualifiedPath = ((delimit) ? pathElement + FQID_DELIMITER : pathElement) + fullQualifiedPath;
+				delimit = true;
+			}
+			mapClassToIDs.put(type, fullQualifiedPath);
 		}
 		return fullQualifiedPath;
-	}
+	}	
 	
+	static Map<Object, String> mapClassToIDs = new HashMap<>();
+
+	static String getCachedQualifiedClassName(EClass eClass) {
+		String fqn = mapClassToIDs.get(eClass);
+		if (fqn == null) {
+			fqn = VirSatEcoreUtil.getFullQualifiedClassName(eClass);
+			mapClassToIDs.put(eClass, fqn);
+		}
+		return fqn;
+	}
+
+	static String getCachedQualifiedAttributeName(EAttribute eAttribute) {
+		String fqn = mapClassToIDs.get(eAttribute);
+		if (fqn == null) {
+			fqn = VirSatEcoreUtil.getFullQualifiedAttributeName(eAttribute);
+			mapClassToIDs.put(eAttribute, fqn);
+		}
+		return fqn;
+	}
 	
 	/**
 	 * This method hands back all full qualified ids of a type including its own and the
@@ -339,9 +365,9 @@ public class ActiveConceptHelper {
 	 * @return the value of the name attribute found
 	 */
 	private static String extractFullQualifiedNameName(EObject fqnEobject) {
-		final String fqnFqnName = VirSatEcoreUtil.getFullQualifiedAttributeName(GeneralPackage.Literals.IQUALIFIED_NAME__NAME);
+		final String fqnFqnName = getCachedQualifiedAttributeName(GeneralPackage.Literals.IQUALIFIED_NAME__NAME);
 		for (EAttribute eAttribute : fqnEobject.eClass().getEAllAttributes()) {
-			String fqnEAttributeName = VirSatEcoreUtil.getFullQualifiedAttributeName(eAttribute);
+			String fqnEAttributeName = getCachedQualifiedAttributeName(eAttribute);
 			if (fqnFqnName.equals(fqnEAttributeName)) {
 				return (String) fqnEobject.eGet(eAttribute);
 			}
@@ -447,8 +473,8 @@ public class ActiveConceptHelper {
 		}
 		
 		EClass eObjectClass = eObject.eClass();
-		final String fqnTypeClazz = VirSatEcoreUtil.getFullQualifiedClassName(eTypeClazz);
-		final String fqnObjectClazz = VirSatEcoreUtil.getFullQualifiedClassName(eObjectClass);
+		final String fqnTypeClazz = getCachedQualifiedClassName(eTypeClazz);
+		final String fqnObjectClazz = getCachedQualifiedClassName(eObjectClass);
 
 		// If the object is of the same type as the one where it should be assigned to, than the result is true;
 		if (fqnTypeClazz.equals(fqnObjectClazz)) {
@@ -459,7 +485,7 @@ public class ActiveConceptHelper {
 		if ((fqnTypeClazz != null) && (!fqnTypeClazz.isEmpty())) {
 
 			for (EClass eObjectSuperType : eObjectClass.getEAllSuperTypes()) {
-				String fqnObjectSuperType = VirSatEcoreUtil.getFullQualifiedClassName(eObjectSuperType); 
+				String fqnObjectSuperType = getCachedQualifiedClassName(eObjectSuperType); 
 				if (fqnTypeClazz.equals(fqnObjectSuperType)) {
 					return true;
 				}
