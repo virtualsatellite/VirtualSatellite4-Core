@@ -44,6 +44,12 @@ public class DvlmXMIResourceImpl extends XMIResourceImpl implements Resource {
 
 	@Override
 	protected EObject getEObjectByID(String id) {
+		EObject returnObject = getIDToEObjectMap().get(id);
+		if (returnObject != null) {
+			// There exists a cached object for this id
+			return returnObject;
+		}
+		
 		final EAttribute eAttributeFqn = GeneralPackage.Literals.IQUALIFIED_NAME__FULL_QUALIFIED_NAME;
 		final String fqnEAttributeFqn = VirSatEcoreUtil.getFullQualifiedAttributeName(eAttributeFqn);
 		
@@ -64,6 +70,7 @@ public class DvlmXMIResourceImpl extends XMIResourceImpl implements Resource {
 				    if (isFqnEattributeFqn) {
 				    	String eObjectId = ActiveConceptHelper.getFullQualifiedId(eObject);
 				    	if (id.equals(eObjectId)) {
+				    		setID(eObject, id);
 				    		return eObject;
 				    	}
 				    }
@@ -72,7 +79,9 @@ public class DvlmXMIResourceImpl extends XMIResourceImpl implements Resource {
 		}
 		
 		// All other calls are forwarded to the standard XMIResource functionality
-		return super.getEObjectByID(id);
+		returnObject = super.getEObjectByID(id);
+		setID(returnObject, id);
+		return returnObject;
 	}
 	
 	@Override
