@@ -21,7 +21,7 @@ import java.util.UUID;
 public class VirSatUuid {
 	
 	public static final String UUID_NA = "VIRSAT-UUID-NO-UUID-YET-SET";
-	private String uuid;
+	private final String uuid;
 	
 	/**
 	 * COnstructor generating a random UUID
