@@ -53,7 +53,15 @@ public class DvlmXMIResourceImpl extends XMIResourceImpl implements Resource {
 		EObject returnObject = super.getEObjectByID(id);
 		if (returnObject != null) {
 			// There exists a cached object for this id
-			return returnObject;
+			// If the object is also contained in this resource,
+			// then we can simply hand it back.
+			if (returnObject.eResource() == this) {
+				return returnObject;
+			} else {
+				// Otherwise, remove it from the cache and return null
+				getIntrinsicIDToEObjectMap().remove(id);
+				return null;
+			}
 		}
 
 		// It is possible, e.g. when migrating, that DynamicEObjects reference to another
