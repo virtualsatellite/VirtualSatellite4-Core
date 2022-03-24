@@ -57,24 +57,24 @@ public class DvlmXMIResourceImpl extends XMIResourceImpl implements Resource {
 			EObject eObject = i.next();
 			// Only handle dynamic EObjects. Static EMF is handled as usual.
 			if (eObject instanceof DynamicEObjectImpl) {
-			    EClass eClass = eObject.eClass();
-			    EAttribute eIDAttribute = eClass.getEIDAttribute();
-		
-			    // if there is no ID attribute nothing more needs to be done
-			    if (eIDAttribute != null) {
-				    String fqnEAttributeCurrent = VirSatEcoreUtil.getFullQualifiedAttributeName(eIDAttribute);
-				    boolean isFqnEattributeFqn = fqnEAttributeCurrent.equals(fqnEAttributeFqn);
-		
-				    // In case the object is of type IQualifedName then we have to act as if we 
-				    // try to get the FQN using the static EMF model
-				    if (isFqnEattributeFqn) {
-				    	String eObjectId = ActiveConceptHelper.getFullQualifiedId(eObject);
-				    	if (id.equals(eObjectId)) {
-				    		setID(eObject, id);
-				    		return eObject;
-				    	}
-				    }
-			    }
+				EClass eClass = eObject.eClass();
+				EAttribute eIDAttribute = eClass.getEIDAttribute();
+
+				// if there is no ID attribute nothing more needs to be done
+				if (eIDAttribute != null) {
+					String fqnEAttributeCurrent = VirSatEcoreUtil.getFullQualifiedAttributeName(eIDAttribute);
+					boolean isFqnEattributeFqn = fqnEAttributeCurrent.equals(fqnEAttributeFqn);
+
+					// In case the object is of type IQualifedName then we have to act as if we
+					// try to get the FQN using the static EMF model
+					if (isFqnEattributeFqn) {
+						String eObjectId = ActiveConceptHelper.getFullQualifiedId(eObject);
+						if (id.equals(eObjectId)) {
+							setID(eObject, id);
+							return eObject;
+						}
+					}
+				}
 			}
 		}
 		
@@ -87,10 +87,10 @@ public class DvlmXMIResourceImpl extends XMIResourceImpl implements Resource {
 	@Override
 	public String getURIFragment(EObject eObject) {
 		if (eObject instanceof DynamicEObjectImpl) {
-		    if (ActiveConceptHelper.isSafeAssignableFrom(GeneralPackage.Literals.IQUALIFIED_NAME, eObject)) {
-		    	String eObjectFqnId = ActiveConceptHelper.getFullQualifiedId(eObject);
-		    	return eObjectFqnId;
-		    }
+			if (ActiveConceptHelper.isSafeAssignableFrom(GeneralPackage.Literals.IQUALIFIED_NAME, eObject)) {
+				String eObjectFqnId = ActiveConceptHelper.getFullQualifiedId(eObject);
+				return eObjectFqnId;
+			}
 		}
 	
 		return super.getURIFragment(eObject);
