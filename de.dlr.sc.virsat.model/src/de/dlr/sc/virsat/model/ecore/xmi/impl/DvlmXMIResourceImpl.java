@@ -47,7 +47,7 @@ public class DvlmXMIResourceImpl extends XMIResourceImpl implements Resource {
 
 	@Override
 	protected EObject getEObjectByID(String id) {
-		EObject returnObject = getIntrinsicIDToEObjectMap().get(id);
+		EObject returnObject = super.getEObjectByID(id);
 		if (returnObject != null) {
 			// There exists a cached object for this id
 			return returnObject;
@@ -56,6 +56,10 @@ public class DvlmXMIResourceImpl extends XMIResourceImpl implements Resource {
 		final EAttribute eAttributeFqn = GeneralPackage.Literals.IQUALIFIED_NAME__FULL_QUALIFIED_NAME;
 		final String fqnEAttributeFqn = VirSatEcoreUtil.getFullQualifiedAttributeName(eAttributeFqn);
 		
+		
+		// It is possible, e.g. when migrating, that DynamicEObjects reference to another
+		// instance of the Ecore Model. Therefore even if an EObject and and DynamicEobject are
+		// of the same EClass, they will not be handled as such. Therefore we compare 
 		for (TreeIterator<EObject> i = getAllProperContents(getContents()); i.hasNext();) {			
 			EObject eObject = i.next();
 			// Only handle dynamic EObjects. Static EMF is handled as usual.
@@ -64,6 +68,8 @@ public class DvlmXMIResourceImpl extends XMIResourceImpl implements Resource {
 				EAttribute eIDAttribute = eClass.getEIDAttribute();
 
 				// if there is no ID attribute nothing more needs to be done
+				// If the ID attribute is the same as from the interface IQualifiedName
+				// We can use it to retrieve the actual ID of the Object.
 				if (eIDAttribute != null) {
 					String fqnEAttributeCurrent = VirSatEcoreUtil.getFullQualifiedAttributeName(eIDAttribute);
 					boolean isFqnEattributeFqn = fqnEAttributeCurrent.equals(fqnEAttributeFqn);
@@ -81,9 +87,6 @@ public class DvlmXMIResourceImpl extends XMIResourceImpl implements Resource {
 			}
 		}
 		
-		// All other calls are forwarded to the standard XMIResource functionality
-		returnObject = super.getEObjectByID(id);
-		getIntrinsicIDToEObjectMap().put(id, returnObject);
 		return returnObject;
 	}
 	
