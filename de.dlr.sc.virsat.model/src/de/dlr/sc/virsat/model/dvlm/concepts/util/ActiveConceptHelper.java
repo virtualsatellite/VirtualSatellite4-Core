@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -704,12 +703,10 @@ public class ActiveConceptHelper {
 
 	/**
 	 * This method is called from the DvlmXMIResource when unloading the resource.
-	 * It removes all eObjects from this cache, which were contained in the resource. 
-	 * @param allProperContents
+	 * It removes an EObject from the Cache.
+	 * @param objectToUnload the Object to be taken of the cache
 	 */
-	public static void removeContentFromCache(TreeIterator<EObject> allProperContents) {
-		while (allProperContents.hasNext()) {
-			mapEObjectToIDs.remove(allProperContents.next());
-		}
+	public static void removeEObjectFromCache(EObject objectToUnload) {
+		mapEObjectToIDs.remove(objectToUnload);
 	}
 }

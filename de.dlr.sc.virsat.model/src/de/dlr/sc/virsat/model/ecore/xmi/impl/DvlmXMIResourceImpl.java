@@ -92,7 +92,10 @@ public class DvlmXMIResourceImpl extends XMIResourceImpl implements Resource {
 		// Remove all proper content from the ID Cache in the ActiveConceptHelper
 		// We call proper contents, so that we do not remove the child SEIs which
 		// are cross-resource containments.
-		ActiveConceptHelper.removeContentFromCache(getAllProperContents(contents));
+		TreeIterator<EObject> iterator = getAllProperContents(contents);
+		while (iterator.hasNext()) {
+			ActiveConceptHelper.removeEObjectFromCache(iterator.next());
+		}
 		super.doUnload();
 	}
 }
