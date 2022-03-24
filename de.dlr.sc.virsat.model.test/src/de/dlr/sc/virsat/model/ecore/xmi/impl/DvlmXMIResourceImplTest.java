@@ -159,7 +159,7 @@ public class DvlmXMIResourceImplTest {
 		// then it should no longer be found. Verifying this property
 		// to ensure that caching doesn't uncontained objects.
 		resource.getContents().remove(dynRepository);
-		dynCategoryById = resource.getEObjectByID("de.dlr.sc.virsat.test.concept.TC");
+		dynNothingById = resource.getEObjectByID("de.dlr.sc.virsat.test.concept.TC");
 		assertNull("No Object found", dynNothingById);
 	}
 
