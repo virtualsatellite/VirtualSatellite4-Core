@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -274,7 +275,7 @@ public class ActiveConceptHelper {
 	 * @return the full qualified path being delimited with "."
 	 */
 	public static String getFullQualifiedId(EObject type) {
-		String fullQualifiedPath = mapClassToIDs.get(type);
+		String fullQualifiedPath = mapEObjectToIDs.get(type);
 
 		if (fullQualifiedPath == null) {
 			fullQualifiedPath = "";
@@ -288,12 +289,12 @@ public class ActiveConceptHelper {
 				fullQualifiedPath = ((delimit) ? pathElement + FQID_DELIMITER : pathElement) + fullQualifiedPath;
 				delimit = true;
 			}
-			mapClassToIDs.put(type, fullQualifiedPath);
+			mapEObjectToIDs.put(type, fullQualifiedPath);
 		}
 		return fullQualifiedPath;
 	}	
 	
-	static Map<EObject, String> mapClassToIDs = new HashMap<>();
+	static Map<EObject, String> mapEObjectToIDs = new HashMap<>();
 	
 	/**
 	 * This method hands back the full qualified name for an EClass.
@@ -303,11 +304,11 @@ public class ActiveConceptHelper {
 	 * @param eClass the EClass for which to get the FQN
 	 * @return The FQN as string.
 	 */
-	static String getCachedQualifiedClassName(EClass eClass) {
-		String fqn = mapClassToIDs.get(eClass);
+	private static String getCachedQualifiedClassName(EClass eClass) {
+		String fqn = mapEObjectToIDs.get(eClass);
 		if (fqn == null) {
 			fqn = VirSatEcoreUtil.getFullQualifiedClassName(eClass);
-			mapClassToIDs.put(eClass, fqn);
+			mapEObjectToIDs.put(eClass, fqn);
 		}
 		return fqn;
 	}
@@ -320,11 +321,11 @@ public class ActiveConceptHelper {
 	 * @param eClass the EAttribute for which to get the FQN
 	 * @return The FQN as string.
 	 */
-	static String getCachedQualifiedAttributeName(EAttribute eAttribute) {
-		String fqn = mapClassToIDs.get(eAttribute);
+	private static String getCachedQualifiedAttributeName(EAttribute eAttribute) {
+		String fqn = mapEObjectToIDs.get(eAttribute);
 		if (fqn == null) {
 			fqn = VirSatEcoreUtil.getFullQualifiedAttributeName(eAttribute);
-			mapClassToIDs.put(eAttribute, fqn);
+			mapEObjectToIDs.put(eAttribute, fqn);
 		}
 		return fqn;
 	}
@@ -335,7 +336,6 @@ public class ActiveConceptHelper {
 	 * @param typeDefinition the type
 	 * @return all full qualified ids including the passed type and all extended types
 	 */
-	
 	public static Set<String> getAllFullQualifiedIds(ATypeDefinition typeDefinition) {
 		Set<String> fqIds = new HashSet<>();
 		
@@ -698,7 +698,18 @@ public class ActiveConceptHelper {
 	 * @return the current number of keys in the cache.
 	 */
 	public static int maintainIdCache() {
-		mapClassToIDs.entrySet().removeIf(entry -> entry.getKey().eResource() == null);
-		return mapClassToIDs.size();
+		mapEObjectToIDs.entrySet().removeIf(entry -> entry.getKey().eResource() == null);
+		return mapEObjectToIDs.size();
+	}
+
+	/**
+	 * This method is called from the DvlmXMIResource when unloading the resource.
+	 * It removes all eObjects from this cache, which were contained in the resource. 
+	 * @param allProperContents
+	 */
+	public static void removeContentFromCache(TreeIterator<EObject> allProperContents) {
+		while (allProperContents.hasNext()) {
+			mapEObjectToIDs.remove(allProperContents.next());
+		}
 	}
 }

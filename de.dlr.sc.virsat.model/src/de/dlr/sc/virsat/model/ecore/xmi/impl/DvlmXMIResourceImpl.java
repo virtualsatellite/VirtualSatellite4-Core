@@ -86,4 +86,13 @@ public class DvlmXMIResourceImpl extends XMIResourceImpl implements Resource {
 	
 		return super.getURIFragment(eObject);
 	}
+	
+	@Override
+	protected void doUnload() {
+		// Remove all proper content from the ID Cache in the ActiveConceptHelper
+		// We call proper contents, so that we do not remove the child SEIs which
+		// are cross-resource containments.
+		ActiveConceptHelper.removeContentFromCache(getAllProperContents(contents));
+		super.doUnload();
+	}
 }
