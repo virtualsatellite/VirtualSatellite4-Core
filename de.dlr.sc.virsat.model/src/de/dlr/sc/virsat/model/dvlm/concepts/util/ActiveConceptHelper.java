@@ -267,6 +267,9 @@ public class ActiveConceptHelper {
 	
 	/**
 	 * This method hands back the full qualified path of a type and the Concept as well
+	 * The FQN is taken from a cache if it exists, otherwise, it will
+	 * be calculated and placed into the cache. The cache is maintained
+	 * externally by the VirSatResourceset. 
 	 * @param type the category or property to start searching from
 	 * @return the full qualified path being delimited with "."
 	 */
@@ -290,8 +293,16 @@ public class ActiveConceptHelper {
 		return fullQualifiedPath;
 	}	
 	
-	static Map<Object, String> mapClassToIDs = new HashMap<>();
-
+	static Map<EObject, String> mapClassToIDs = new HashMap<>();
+	
+	/**
+	 * This method hands back the full qualified name for an EClass.
+	 * The FQN is taken from a cache if it exists, otherwise, it will
+	 * be calculated and placed into the cache. The cache is maintained
+	 * externally by the VirSatResourceset. 
+	 * @param eClass the EClass for which to get the FQN
+	 * @return The FQN as string.
+	 */
 	static String getCachedQualifiedClassName(EClass eClass) {
 		String fqn = mapClassToIDs.get(eClass);
 		if (fqn == null) {
@@ -301,6 +312,14 @@ public class ActiveConceptHelper {
 		return fqn;
 	}
 
+	/**
+	 * This method hands back the full qualified name for an EAttribute.
+	 * The FQN is taken from a cache if it exists, otherwise, it will
+	 * be calculated and placed into the cache. The cache is maintained
+	 * externally by the VirSatResourceset. 
+	 * @param eClass the EAttribute for which to get the FQN
+	 * @return The FQN as string.
+	 */
 	static String getCachedQualifiedAttributeName(EAttribute eAttribute) {
 		String fqn = mapClassToIDs.get(eAttribute);
 		if (fqn == null) {
@@ -671,5 +690,15 @@ public class ActiveConceptHelper {
 			importedConceptIds.add(cleanedConceptImport);
 		});
 		return importedConceptIds;
+	}
+
+	/**
+	 * This method maintains the cache of IDs by deleting keys to uncontained eObjects.
+	 * The method is called externally by the VirSatResourceSet after resources are unloaded.
+	 * @return the current number of keys in the cache.
+	 */
+	public static int maintainIdCache() {
+		mapClassToIDs.entrySet().removeIf(entry -> entry.getKey().eResource() == null);
+		return mapClassToIDs.size();
 	}
 }
