@@ -14,6 +14,7 @@ import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -21,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -190,6 +193,60 @@ public class ActiveConceptHelperTest {
 	public void testGetCategoryIdByTypeDefinition() {
 		String categoryId = ActiveConceptHelper.getFullQualifiedId(testCategoryOne);
 		assertEquals("found the correct full qualified category id", TEST_CONCEPT_ID + "." +  TEST_CATEGORY_ID_ONE, categoryId);
+
+		// Now change the name and make sure that we still get the old one, since it was cached.
+		testCategoryOne.setName("catOneChanged");
+		String categoryIdCached = ActiveConceptHelper.getFullQualifiedId(testCategoryOne);
+		assertEquals("found the incorrect full qualified category id, since it is still in the cache", TEST_CONCEPT_ID + "." +  TEST_CATEGORY_ID_ONE, categoryIdCached);
+	}
+
+	@Test
+	public void testMaintainIdCache() {
+		Resource resource = new ResourceImpl();
+		resource.getContents().add(testCategoryTwo);
+		
+		String categoryIdOne = ActiveConceptHelper.getFullQualifiedId(testCategoryOne);
+		assertEquals("found the correct full qualified category id", TEST_CONCEPT_ID + "." +  TEST_CATEGORY_ID_ONE, categoryIdOne);
+
+		String categoryIdTwo = ActiveConceptHelper.getFullQualifiedId(testCategoryTwo);
+		assertEquals("found the correct full qualified category id", TEST_CONCEPT_ID + "." +  TEST_CATEGORY_ID_TWO, categoryIdTwo);
+
+		// Change both Categories and call the cache maintenance. CatTwo should still be the old
+		// id since it was not cleared from the cache, since it was still contained, while cat one wasn't.
+		testCategoryOne.setName("catOneChanged");
+		testCategoryTwo.setName("catTwoChanged");
+
+		// Check resource containments
+		assertNull("Category One is not contained anywhere", testCategoryOne.eResource());
+		assertNotNull("Category Two is contained somewhere", testCategoryTwo.eResource());
+		
+		ActiveConceptHelper.maintainIdCache();
+		
+		String categoryIdOneCached = ActiveConceptHelper.getFullQualifiedId(testCategoryOne);
+		assertEquals("found the correct full qualified category id, since it was removed from the cache", TEST_CONCEPT_ID + "." +  TEST_CATEGORY_ID_ONE + "Changed", categoryIdOneCached);
+
+		String categoryIdTwoCached = ActiveConceptHelper.getFullQualifiedId(testCategoryTwo);
+		assertEquals("found the incorrect full qualified category id, since it is still in the cache", TEST_CONCEPT_ID + "." +  TEST_CATEGORY_ID_TWO, categoryIdTwoCached);
+	}
+	
+	@Test
+	public void testRemoveEObjectFromCache() {
+		String categoryIdOne = ActiveConceptHelper.getFullQualifiedId(testCategoryOne);
+		assertEquals("found the correct full qualified category id", TEST_CONCEPT_ID + "." +  TEST_CATEGORY_ID_ONE, categoryIdOne);
+
+		String categoryIdTwo = ActiveConceptHelper.getFullQualifiedId(testCategoryTwo);
+		assertEquals("found the correct full qualified category id", TEST_CONCEPT_ID + "." +  TEST_CATEGORY_ID_TWO, categoryIdTwo);
+
+		testCategoryOne.setName("catOneChanged");
+		testCategoryTwo.setName("catTwoChanged");
+
+		ActiveConceptHelper.removeEObjectFromCache(testCategoryOne);
+		
+		String categoryIdOneCached = ActiveConceptHelper.getFullQualifiedId(testCategoryOne);
+		assertEquals("found the correct full qualified category id, since it was removed from the cache", TEST_CONCEPT_ID + "." +  TEST_CATEGORY_ID_ONE + "Changed", categoryIdOneCached);
+
+		String categoryIdTwoCached = ActiveConceptHelper.getFullQualifiedId(testCategoryTwo);
+		assertEquals("found the incorrect full qualified category id, since it is still in the cache", TEST_CONCEPT_ID + "." +  TEST_CATEGORY_ID_TWO, categoryIdTwoCached);
 	}
 	
 	@Test
