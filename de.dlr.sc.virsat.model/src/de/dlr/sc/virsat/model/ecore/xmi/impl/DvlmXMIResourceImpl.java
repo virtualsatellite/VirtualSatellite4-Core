@@ -45,6 +45,9 @@ public class DvlmXMIResourceImpl extends XMIResourceImpl implements Resource {
 		setIntrinsicIDToEObjectMap(new HashMap<String, EObject>());
 	}
 
+	private static final EAttribute E_ATTRIBUTE_FQN = GeneralPackage.Literals.IQUALIFIED_NAME__FULL_QUALIFIED_NAME;
+	private static final String FQN_E_ATTRIBUTE_FQN = VirSatEcoreUtil.getFullQualifiedAttributeName(E_ATTRIBUTE_FQN);
+	
 	@Override
 	protected EObject getEObjectByID(String id) {
 		EObject returnObject = super.getEObjectByID(id);
@@ -52,11 +55,7 @@ public class DvlmXMIResourceImpl extends XMIResourceImpl implements Resource {
 			// There exists a cached object for this id
 			return returnObject;
 		}
-		
-		final EAttribute eAttributeFqn = GeneralPackage.Literals.IQUALIFIED_NAME__FULL_QUALIFIED_NAME;
-		final String fqnEAttributeFqn = VirSatEcoreUtil.getFullQualifiedAttributeName(eAttributeFqn);
-		
-		
+
 		// It is possible, e.g. when migrating, that DynamicEObjects reference to another
 		// instance of the Ecore Model. Therefore even if an EObject and and DynamicEobject are
 		// of the same EClass, they will not be handled as such. Therefore we compare 
@@ -72,7 +71,7 @@ public class DvlmXMIResourceImpl extends XMIResourceImpl implements Resource {
 				// We can use it to retrieve the actual ID of the Object.
 				if (eIDAttribute != null) {
 					String fqnEAttributeCurrent = VirSatEcoreUtil.getFullQualifiedAttributeName(eIDAttribute);
-					boolean isFqnEattributeFqn = fqnEAttributeCurrent.equals(fqnEAttributeFqn);
+					boolean isFqnEattributeFqn = fqnEAttributeCurrent.equals(FQN_E_ATTRIBUTE_FQN);
 
 					// In case the object is of type IQualifedName then we have to act as if we
 					// try to get the FQN using the static EMF model
