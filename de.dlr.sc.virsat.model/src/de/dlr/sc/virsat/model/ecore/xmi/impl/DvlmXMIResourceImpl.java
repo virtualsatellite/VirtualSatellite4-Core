@@ -55,7 +55,9 @@ public class DvlmXMIResourceImpl extends XMIResourceImpl implements Resource {
 			// There exists a cached object for this id
 			// If the object is also contained in this resource,
 			// then we can simply hand it back.
-			if (returnObject.eResource() == this) {
+			Resource containedResource = returnObject.eResource();
+			boolean isLoading = this.isLoading();
+			if (isLoading || containedResource == this) {
 				return returnObject;
 			} else {
 				// Otherwise, remove it from the cache and return null
