@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.ecore.xmi.impl;
 
+import java.util.HashMap;
+
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
@@ -40,11 +42,12 @@ public class DvlmXMIResourceImpl extends XMIResourceImpl implements Resource {
 	 */
 	public DvlmXMIResourceImpl(URI uri) {
 		super(uri);
+		setIntrinsicIDToEObjectMap(new HashMap<String, EObject>());
 	}
 
 	@Override
 	protected EObject getEObjectByID(String id) {
-		EObject returnObject = getIDToEObjectMap().get(id);
+		EObject returnObject = getIntrinsicIDToEObjectMap().get(id);
 		if (returnObject != null) {
 			// There exists a cached object for this id
 			return returnObject;
@@ -70,7 +73,7 @@ public class DvlmXMIResourceImpl extends XMIResourceImpl implements Resource {
 					if (isFqnEattributeFqn) {
 						String eObjectId = ActiveConceptHelper.getFullQualifiedId(eObject);
 						if (id.equals(eObjectId)) {
-							setID(eObject, id);
+							getIntrinsicIDToEObjectMap().put(id, eObject);
 							return eObject;
 						}
 					}
@@ -80,7 +83,7 @@ public class DvlmXMIResourceImpl extends XMIResourceImpl implements Resource {
 		
 		// All other calls are forwarded to the standard XMIResource functionality
 		returnObject = super.getEObjectByID(id);
-		setID(returnObject, id);
+		getIntrinsicIDToEObjectMap().put(id, returnObject);
 		return returnObject;
 	}
 	
@@ -94,5 +97,11 @@ public class DvlmXMIResourceImpl extends XMIResourceImpl implements Resource {
 		}
 	
 		return super.getURIFragment(eObject);
+	}
+	
+	@Override
+	protected void doUnload() {
+		getIntrinsicIDToEObjectMap().clear();
+		super.doUnload();
 	}
 }
