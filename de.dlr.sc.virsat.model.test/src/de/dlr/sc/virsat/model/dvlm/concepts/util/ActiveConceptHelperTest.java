@@ -201,6 +201,18 @@ public class ActiveConceptHelperTest {
 	}
 
 	@Test
+	public void testGetCategoryIdByTypeDefinitionWithNoId() {
+		Category categoryNoId = CategoriesFactory.eINSTANCE.createCategory();
+		String categoryId = ActiveConceptHelper.getFullQualifiedId(categoryNoId);
+		assertNull("The Category has the default value literal for id stating noid, this has to return a null pointer.", categoryId);
+
+		// Now change the name and make sure that we get a correct string.
+		categoryNoId.setName(TEST_CATEGORY_ID_ONE);
+		String categoryIdCached = ActiveConceptHelper.getFullQualifiedId(categoryNoId);
+		assertEquals("Found the correct name of the type", TEST_CATEGORY_ID_ONE, categoryIdCached);
+	}
+
+	@Test
 	public void testMaintainIdCache() {
 		Resource resource = new ResourceImpl();
 		resource.getContents().add(testCategoryTwo);
