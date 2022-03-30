@@ -265,6 +265,8 @@ public class ActiveConceptHelper {
 		return getCategory(concept, categoryFqn);
 	}
 	
+	private static final String DVLM_CONCEPT_NO_ID = "de.dlr.sc.model.dvlm.noid";
+	
 	/**
 	 * This method hands back the full qualified path of a type and the Concept as well
 	 * The FQN is taken from a cache if it exists, otherwise, it will
@@ -288,6 +290,18 @@ public class ActiveConceptHelper {
 				fullQualifiedPath = ((delimit) ? pathElement + FQID_DELIMITER : pathElement) + fullQualifiedPath;
 				delimit = true;
 			}
+			
+			// In case the calculated ID tells us noid it is not allowed to be cached.
+			// It also has to return a null. The reason behind this is, that Loading a
+			// DvlmXMI Resource using the intrinsic cache changes the behavior of loading
+			// and tries to read the ID before the objects are completely read. This call
+			// usually checks if the ID is null and would not cache it intrinsically. Since
+			// Virtual Satellite uses the noid string as default value for the ID it may
+			// corrupt the cache.
+			if (DVLM_CONCEPT_NO_ID.equals(fullQualifiedPath)) {
+				return null;
+			}
+			
 			mapEObjectToIDs.put(type, fullQualifiedPath);
 		}
 		return fullQualifiedPath;
