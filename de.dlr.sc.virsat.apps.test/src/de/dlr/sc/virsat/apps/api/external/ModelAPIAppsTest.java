@@ -35,7 +35,7 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.model.dvlm.structural.util.StructuralInstantiator;
 
-public class ModelAPITest {
+public class ModelAPIAppsTest {
 
 	private ModelAPI modelAPI;
 	private Repository repository;
