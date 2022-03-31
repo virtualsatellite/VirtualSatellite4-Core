@@ -298,7 +298,7 @@ public class ActiveConceptHelper {
 			// usually checks if the ID is null and would not cache it intrinsically. Since
 			// Virtual Satellite uses the noid string as default value for the ID it may
 			// corrupt the cache.
-			if (DVLM_CONCEPT_NO_ID.equals(fullQualifiedPath)) {
+			if (fullQualifiedPath.contains(DVLM_CONCEPT_NO_ID)) {
 				return null;
 			}
 			

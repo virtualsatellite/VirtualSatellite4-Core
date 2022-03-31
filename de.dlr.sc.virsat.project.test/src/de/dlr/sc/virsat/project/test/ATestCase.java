@@ -96,6 +96,7 @@ public class ATestCase {
 		
 		// Concept Stuff
 		concept = ConceptsFactory.eINSTANCE.createConcept();
+		concept.setName("de.dlr.sc.virsat.project.test.concept");
 		repo.getActiveConcepts().add(concept);
 		
 		se = StructuralFactory.eINSTANCE.createStructuralElement();
