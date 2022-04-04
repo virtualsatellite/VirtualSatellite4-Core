@@ -53,7 +53,7 @@ public class DoorsSynchroClient {
 	public static DoorsSynchroClient doorsSynchroClient = new DoorsSynchroClient();
 
 	/**
-	 * Init the doors synchro client by getting an Oslc Client and look up provided
+	 * Inits the doors synchro client by getting an Oslc Client and look up provided
 	 * services
 	 * 
 	 * @param server   server url
@@ -85,7 +85,7 @@ public class DoorsSynchroClient {
 	}
 
 	/**
-	 * Look up service provider url to access doors projects in further requests
+	 * Looks up service provider url to access doors projects in further requests
 	 * 
 	 * @param project project name
 	 * @return serviceProviderUrl
@@ -100,7 +100,7 @@ public class DoorsSynchroClient {
 	}
 
 	/**
-	 * Look up query capability url for further requests
+	 * Looks up query capability url for further requests
 	 * 
 	 * @return queryCapability
 	 * @throws ResourceNotFoundException
@@ -114,7 +114,7 @@ public class DoorsSynchroClient {
 	}
 
 	/**
-	 * Query requirement by id
+	 * Queries requirement by id
 	 * 
 	 * @param id id of a requirement
 	 * @return requirement
@@ -137,7 +137,7 @@ public class DoorsSynchroClient {
 	}
 
 	/**
-	 * Query all services (projects)
+	 * Queries all services (projects)
 	 * 
 	 * @return serviceProvider or null if not existing
 	 * @throws ResourceNotFoundException
@@ -156,7 +156,7 @@ public class DoorsSynchroClient {
 	}
 
 	/**
-	 * Query to get all possible resource shapes
+	 * Queries to get all possible resource shapes
 	 * 
 	 * @return resourceShapes or null if not existing
 	 * @throws ResourceNotFoundException
@@ -197,7 +197,7 @@ public class DoorsSynchroClient {
 	}
 
 	/**
-	 * Get resource shape from given requirement
+	 * Gets resource shape from given requirement
 	 * 
 	 * @param req given requirement
 	 * @return resourceShape or null
@@ -213,7 +213,7 @@ public class DoorsSynchroClient {
 	}
 
 	/**
-	 * Query all requirement collections (specifications) of a given project
+	 * Queries all requirement collections (specifications) of a given project
 	 * 
 	 * @param projectName Doors project
 	 * @return reqSpecifications
@@ -244,7 +244,7 @@ public class DoorsSynchroClient {
 	}
 
 	/**
-	 * Query all requirements of a given project
+	 * Queries all requirements of a given project
 	 * 
 	 * @param projectName
 	 * @throws ResourceNotFoundException
@@ -304,37 +304,9 @@ public class DoorsSynchroClient {
 		return listOfRequirements;
 	}
 
-	/**
-	 * Query all requirements of a given Requirement Collection
-	 * 
-	 * @param reqCollection the given Requirement Collection
-	 * @return list of requirements of given RequirementCollection
-	 * @throws ResourceNotFoundException
-	 * @throws IOException
-	 * @throws URISyntaxException
-	 */
-//	public static ArrayList<Requirement> queryRequirementsOfCollection(RequirementCollection recCollection)
-//			throws ResourceNotFoundException, IOException, URISyntaxException {
-//		Response response = client.getResource(reqCollection.getAbout().toURL().toString(),
-//				OslcMediaType.APPLICATION_RDF_XML);
-//		RequirementCollection requirementCollection = response.readEntity(RequirementCollection.class);
-//		ArrayList<Requirement> listOfRequirements = new ArrayList<Requirement>();
-//		try {
-//			if (requirementCollection != null) {
-//				if (requirementCollection.getUses() != null) {
-//					// every link (getUses()) is a requirement contained by the
-//					// requirementCollection
-//					for (Link uses : requirementCollection.getUses()) {
-//						Response reqRequest = client.getResource(uses.getValue().toString(),
-//								OslcMediaType.APPLICATION_RDF_XML);
-//						Requirement requirement = reqRequest.readEntity(Requirement.class);
-//						listOfRequirements.add(requirement);
-//					}
-//				}
-//			}
-//		} catch (NullPointerException np) {
-//			Activator.getDefault().getLog().error(np.getMessage());
-//		}
-//		return listOfRequirements;
-//	}
+
+	public static Response queryResource(String url, String mediaType) {
+		Response response = client.getResource(url, mediaType);
+		return response; 
+	}
 }
