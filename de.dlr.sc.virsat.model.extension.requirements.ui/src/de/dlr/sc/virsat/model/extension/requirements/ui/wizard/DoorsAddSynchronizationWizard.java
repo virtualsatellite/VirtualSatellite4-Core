@@ -92,22 +92,16 @@ public class DoorsAddSynchronizationWizard extends Wizard implements IWorkbenchW
 						.getEd(reqConfiguration);
 				ImportConfiguration importConfiguration = new ImportConfiguration(
 						(CategoryAssignment) reqConfiguration);
-				IBeanList<SpecificationMapping> specs = importConfiguration.getMappedSpecifications();
-				try {
-					synchronize(editingDomain, specs, monitor);
-				} catch (ResourceNotFoundException | IOException | URISyntaxException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				synchronizer.init(importConfiguration, editingDomain);
+				synchronize(editingDomain, monitor);
 				return Status.OK_STATUS;
 			}
 
-			private void synchronize(EditingDomain editingDomain, IBeanList<SpecificationMapping> specs,
-					IProgressMonitor monitor) throws ResourceNotFoundException, IOException, URISyntaxException {
+			private void synchronize(EditingDomain editingDomain, IProgressMonitor monitor) {
 				SubMonitor importSubMonitor = SubMonitor.convert(monitor, NUMBER_PROGRESS_TICKS_IMPORT);
 
 				// Do the actual imports
-				editingDomain.getCommandStack().execute(synchronizer.updateRequirements(editingDomain, specs));
+				editingDomain.getCommandStack().execute(synchronizer.synchronizeRequirements(editingDomain));
 				importSubMonitor.worked(1);
 
 //				//Import the requirement links
