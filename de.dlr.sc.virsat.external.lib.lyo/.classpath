@@ -13,7 +13,7 @@
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/javax.annotation-api.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/javax.servlet-api.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-rdfconnection.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-core.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-core.jar" sourcepath="externalLib/maven/jena-core-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-base.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/jena-iri.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/oslc-client.jar" sourcepath="externalLib/maven/oslc-client-sources.jar"/>
