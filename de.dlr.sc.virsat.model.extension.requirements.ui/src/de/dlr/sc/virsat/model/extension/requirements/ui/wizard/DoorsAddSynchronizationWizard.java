@@ -9,9 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.ui.wizard;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -25,15 +22,12 @@ import org.eclipse.jface.dialogs.DialogSettings;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.lyo.client.exception.ResourceNotFoundException;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWizard;
 
-import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.extension.requirements.doors.client.DoorsSynchronizer;
 import de.dlr.sc.virsat.model.extension.requirements.model.ImportConfiguration;
-import de.dlr.sc.virsat.model.extension.requirements.model.SpecificationMapping;
 import de.dlr.sc.virsat.model.extension.requirements.ui.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
