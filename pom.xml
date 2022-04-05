@@ -45,6 +45,7 @@
 				<module>de.dlr.sc.virsat.external.lib.json-simple</module>
 				<module>de.dlr.sc.virsat.external.lib.lyo</module>
 				<module>de.dlr.sc.virsat.external.lib.matlabfile</module>
+				<module>de.dlr.sc.virsat.external.lib.mockito</module>
 				<module>de.dlr.sc.virsat.external.lib.jersey</module>
 				<module>de.dlr.sc.virsat.external.lib.jersey.apache</module>
 				<module>de.dlr.sc.virsat.external.lib.swagger</module>
