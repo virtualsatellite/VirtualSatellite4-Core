@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Generic dot IO UI
+Bundle-SymbolicName: de.dlr.sc.virsat.dot.ui;singleton:=true
+Bundle-Version: 4.12.0.qualifier
+Bundle-Activator: de.dlr.sc.virsat.dot.ui.Activator
+Bundle-Vendor: DLR (German Aerospace Center)
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ de.dlr.sc.virsat.uiengine.ui,
+ de.dlr.sc.virsat.model.extension.ps,
+ de.dlr.sc.virsat.dot,
+ de.dlr.sc.virsat.project,
+ de.dlr.sc.virsat.external.lib.apache.poi,
+ de.dlr.sc.virsat.project.ui;bundle-version="0.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Eclipse-ExtensibleAPI: true
+Export-Package: de.dlr.sc.virsat.dot.ui,
+ de.dlr.sc.virsat.dot.ui.wizards
+Automatic-Module-Name: de.dlr.sc.virsat.dot.ui
+Import-Package: de.dlr.sc.virsat.dot.exporter

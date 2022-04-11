@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+<extension
+      point="de.dlr.sc.virsat.dot.export">
+   <Exporter
+         class="de.dlr.sc.virsat.dot.statemachine.export.DotConverter">
+   </Exporter>
+ </extension>
+	<!-- Plugin.XML Protected Region End -->
+	<!-- Plugin.XML Protected Region Start -->
+	<!-- Plugin.XML Protected Region End -->
+</plugin>
