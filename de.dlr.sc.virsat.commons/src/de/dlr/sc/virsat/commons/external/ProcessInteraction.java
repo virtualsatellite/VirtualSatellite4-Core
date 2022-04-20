@@ -14,7 +14,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,7 +60,7 @@ public class ProcessInteraction {
 	 * @throws InterruptedException 
 	 */
 	public List<String> startCommandRunner(String command1, String command2, String command3, String command4, String command5, String command6, String command7, String command8, String command9) throws IOException, InterruptedException {
-		//TODO: Fix that that strings have not to be entered seperate
+		// Fix that that strings have not to be entered seperate
 		List<String> output = new ArrayList<String>();
 		ProcessBuilder pb = new ProcessBuilder(command1, command2, command3, command4, command5, command6, command7, command8, command9);
 		pb.redirectErrorStream(true);
@@ -82,10 +81,7 @@ public class ProcessInteraction {
 	 * @param file with the result of the command runner
 	 */
 	public void openCommandResult(String filename) {
-		java.net.URL u = getClass().getProtectionDomain().getCodeSource().getLocation();
-		File f;
 		try {
-			f = new File(u.toURI());
 			String path = new File(".").getCanonicalPath();
 			
 			File file = new File(path + filename);
@@ -103,7 +99,7 @@ public class ProcessInteraction {
 					}
 				}
 			}
-		} catch (URISyntaxException | IOException e1) {
+		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
 	}

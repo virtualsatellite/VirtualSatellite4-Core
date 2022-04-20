@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.URISyntaxException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -32,15 +31,16 @@ import org.eclipse.ui.statushandlers.StatusManager;
 import de.dlr.sc.virsat.commons.external.ProcessInteraction;
 import de.dlr.sc.virsat.dot.exporter.DotExportHelper;
 import de.dlr.sc.virsat.excel.exporter.IExport;
-import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.extension.statemachines.model.AConstraint;
 import de.dlr.sc.virsat.model.extension.statemachines.model.ForbidsConstraint;
+import de.dlr.sc.virsat.model.extension.statemachines.model.State;
 import de.dlr.sc.virsat.model.extension.statemachines.Activator;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
 import de.dlr.sc.virsat.model.extension.statemachines.model.Transition;
-
+import de.dlr.sc.virsat.model.extension.funcelectrical.model.Interface;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceEnd;
+import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
 
 public class DotConverter implements IExport {
 	/**
@@ -53,24 +53,22 @@ public class DotConverter implements IExport {
 
 	private static final String DEFAULT_TEMPLATE_PATH = "//resources//DotStateMachineExportTemplate.dot";
 	private BufferedWriter bw;
-	protected LocalDateTime localDateTime;
 	protected DotExportHelper helper;
 	private CategoryAssignment exportCa;
 	private File file;
 	private LinkedHashSet<StateMachine> sm;
-	private HashMap<String, String> modules;
 	List<AConstraint> constraints;
+	HashMap<String, String> interfaceEndPortMap;
+	HashSet<String> uniquenodes;
+	HashSet<String> constrainthelper;
 
 	/**
 	 * Represent state machine as asynchronous system in SMV
 	 */
 	public DotConverter() {
-		this(LocalDateTime.now());
 		constraints = new ArrayList<AConstraint>();
-	}
-
-	public DotConverter(LocalDateTime now) {
-		constraints = new ArrayList<AConstraint>();
+		sm = new LinkedHashSet<StateMachine>();
+		helper = new DotExportHelper();
 	}
 
 	/**
@@ -78,13 +76,11 @@ public class DotConverter implements IExport {
 	 */
 	@Override
 	public void export(EObject eObject, String path, boolean useDefaultTemplate, String templatePath) {
-		sm = new LinkedHashSet<StateMachine>();
-		helper = new DotExportHelper();
+		
 		if (eObject instanceof CategoryAssignment) {
 			CategoryAssignment ca = (CategoryAssignment) eObject;
 
 			// find the export template
-
 			InputStream iStream = null;
 			try {
 				if (useDefaultTemplate) {
@@ -95,7 +91,7 @@ public class DotConverter implements IExport {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		
+
 			String newPath = path + "/" + ca.getFullQualifiedInstanceName() + ".dot";
 			// and write the results
 			file = new File(newPath);
@@ -103,7 +99,7 @@ public class DotConverter implements IExport {
 			try (FileOutputStream out = new FileOutputStream(file)) {
 				bw = new BufferedWriter(new OutputStreamWriter(out));
 				exportData(ca);
-				
+
 			} catch (IOException e) {
 				Status status = new Status(Status.ERROR, Activator.getPluginId(),
 						"Failed to perform an export operation!" + System.lineSeparator() + e.getMessage(), e);
@@ -138,15 +134,14 @@ public class DotConverter implements IExport {
 	 * @param stateMaschine
 	 */
 	public void exportStateMachines(StateMachine stateMaschine) {
-		sm.add(stateMaschine);
-		List<AConstraint> smConstraints = stateMaschine.getConstraints();
-		constraints.addAll(smConstraints);
-		// create the state sheet
-		for (AConstraint constrain : smConstraints) {
 
+		sm.add(stateMaschine);
+		// create the state sheet
+		for (AConstraint constrain : stateMaschine.getConstraints()) {
+			constraints.add(constrain);
 			StateMachine smi = constrain.getStateInfluenced().getParentCaBeanOfClass((StateMachine.class));
 			StateMachine smcons = constrain.getStateConstraining().getParentCaBeanOfClass(StateMachine.class);
-
+		
 			if (smcons != null) {
 				sm.add(smcons);
 			}
@@ -157,6 +152,10 @@ public class DotConverter implements IExport {
 		}
 
 		try {
+			if (sm.size() > 1)  {
+				uniquenodes = new HashSet<String>();
+				constrainthelper = new HashSet<String>();
+			}
 			exportStateMachineList(sm);
 		} catch (IOException | InterruptedException e) {
 			e.printStackTrace();
@@ -172,72 +171,41 @@ public class DotConverter implements IExport {
 	 * @throws IOException
 	 * @throws InterruptedException 
 	 */
-	public String exportStateMachineList(LinkedHashSet<StateMachine> sm2) throws FileNotFoundException, IOException, InterruptedException {
-		
+	public String exportStateMachineList(LinkedHashSet<StateMachine> sm2)
+			throws FileNotFoundException, IOException, InterruptedException {
 
-		HashSet<String> addedConstraints = new HashSet<String>();
-		for (StateMachine stateMachine : sm2) {
-			IBeanList<AConstraint> smConstraints = stateMachine.getConstraints();
-			for (AConstraint constrain : smConstraints) {
-
-				StateMachine influenced = constrain.getStateInfluenced().getParentCaBeanOfClass((StateMachine.class));
-
-				String input = null;
-				input = modules.get(influenced.getName());
-				String existing = null;
-				if (input != null) {
-					existing = input.split("\\)")[0];
-				}
-				String extraContent = null;
-				extraContent = stateMachine.getName();
-				String init = null;
-				init = new StringBuilder().append("(").append(extraContent).toString();
-				String next = null;
-				next = new StringBuilder().append(", ").append(extraContent).toString();
-				if (addedConstraints.add(influenced.getName() + extraContent)) {
-					modules.put(influenced.getName(), existing == null ? init : existing + next);
-
-				}
-				String inputstatemachine = null;
-				inputstatemachine = modules.get(stateMachine.getName());
-				String existingstatemachine = null;
-				if (inputstatemachine != null) {
-					existingstatemachine = inputstatemachine.split("\\)")[0];
-				}
-				String initstatemachine = null;
-				initstatemachine = new StringBuilder().append("(").append(influenced.getName()).toString();
-				String nextstatemachine = null;
-				nextstatemachine = new StringBuilder().append(", ").append(influenced.getName()).toString();
-
-				if (addedConstraints.add(stateMachine.getName() + influenced.getName())) {
-					modules.put(stateMachine.getName(),
-							existingstatemachine == null ? initstatemachine : existingstatemachine + nextstatemachine);
-				}
-
-			}
-		}
+		interfaceEndPortMap = new HashMap<String, String>();
+		List<Interface> interfaces = new ArrayList<Interface>();
+		bw.write("digraph G {\r\n" + "	compound=true splines=true\r\n");
 		int counter = 0;
 		for (StateMachine currentstateMachine : sm2) {
 
-			String name = currentstateMachine.getName();
-			bw.write("digraph G {\r\n" + "	compound=true splines=true\r\n" + "subgraph cluster_" + counter + "{\r\n"
-					+ "node [color=red style=filled]\r\n" + "		color=lightblue style=filled");
-			bw.newLine();
+			bw.write("subgraph cluster_" + counter + "{\r\n"
+					+ "node [color=red style=filled]\r\n" + "		color=lightblue style=filled \r\n");
+			counter++;
+			
 			createTransition(currentstateMachine);
 			bw.newLine();
-			bw.write("label=" + name + "\r\n");
+			bw.write("label=" + currentstateMachine.getName() + "\r\n");
+
+			ElementConfiguration parent = (ElementConfiguration) currentstateMachine.getParent();
+			List<InterfaceEnd> interfaceends = new ArrayList<InterfaceEnd>();
+			interfaceends.addAll(parent.getAll(InterfaceEnd.class));
+			interfaces.addAll(parent.getAll(Interface.class));
 			
-			
-			List<InterfaceEnd> interfaceEnd = null;
-			createInterfaces(interfaceEnd);
+			if (!interfaceends.isEmpty()) {
+				createInterfaces(interfaceends, currentstateMachine.getName(), counter);
+			}
 			bw.newLine();
 			bw.write("}\r\n");
-			bw.write("}\r\n");
+			
 		}
 
 		createConstraints();
-		
-
+		if (!interfaces.isEmpty()) {
+			createInterfaceConnections(interfaces);
+		}
+		bw.write("}\r\n");
 		bw.flush();
 		bw.close();
 
@@ -246,7 +214,9 @@ public class DotConverter implements IExport {
 		try {
 			java.net.URL u = getClass().getProtectionDomain().getCodeSource().getLocation();
 			File f = new File(u.toURI());
-			pi.startCommandRunner("cmd", "/c", "start", "/wait", f.getAbsolutePath() + "\\resources\\Graphviz\\bin\\dot.exe", "-Tpng", file.getAbsolutePath(), "-o", "graph.png");
+			pi.startCommandRunner("cmd", "/c", "start", "/wait",
+					f.getAbsolutePath() + "\\resources\\Graphviz\\bin\\dot.exe", "-Tpng", file.getAbsolutePath(), "-o",
+					"graph.png");
 			pi.openCommandResult("\\graph.png");
 		} catch (IOException | URISyntaxException e) {
 			e.printStackTrace();
@@ -254,16 +224,54 @@ public class DotConverter implements IExport {
 		return runtime;
 
 	}
-	
-/**
- * Writes constraints to the dot file
- */
+
+	/**
+	 * draws the connections between two s
+	 * 
+	 * @param interfaces
+	 */
+	private void createInterfaceConnections(List<Interface> interfaces) {
+
+		for (Interface i : interfaces) {
+			String from = i.getInterfaceEndFrom().getName();
+			String to = i.getInterfaceEndTo().getName();
+			try {
+				bw.write(interfaceEndPortMap.get(from) + " -> " + interfaceEndPortMap.get(to) + " [dir=both side =l arrowtail=box arrowhead=box]\r\n");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
+
+	}
+
+	/**
+	 * Writes constraints to the dot file
+	 */
 	private void createConstraints() {
 		try {
 			for (AConstraint constraint : constraints) {
+				
+				String constraining = constraint.getStateConstraining().getName();
+				String influencing = constraint.getStateInfluenced().getName();
+				String inf = constraint.getStateInfluenced().getParentCaBeanOfClass(StateMachine.class).getName() + influencing;
+				String cons = constraint.getStateConstraining().getParentCaBeanOfClass(StateMachine.class).getName() + constraining;
+			
 
-				bw.write(constraint.getStateConstraining().getName() + " -> "
-						+ constraint.getStateInfluenced().getName());
+				
+
+				if (constrainthelper.contains(cons)) {
+					bw.write(cons);
+				} else {
+					bw.write(constraining);
+				}
+
+				bw.write(" -> ");
+				if (constrainthelper.contains(inf)) {
+					bw.write(inf);
+				} else {
+					bw.write(influencing);
+				}
 
 				if (constraint instanceof ForbidsConstraint) {
 					bw.write("[color = red]");
@@ -278,8 +286,25 @@ public class DotConverter implements IExport {
 
 	}
 
-	public void createInterfaces(List<InterfaceEnd> interfaceEnd) {
-		
+	/**
+	 * Includes the interfaceEnds in each subgraph of the statemachines
+	 * 
+	 * @param interfaceends List of all Interface Ends
+	 * @param portName      Name of the port in the dot file
+	 * @throws IOException bufferedwriter fails
+	 */
+	public void createInterfaces(List<InterfaceEnd> interfaceends, String portName, int counter) throws IOException {
+		bw.write("InterfaceEnd" + counter + "[label =<\r\n");
+		bw.write("<TABLE BORDER=\"1\" CELLSPACING=\"0\" color=\"black\">\r\n");
+		bw.write("<TR>\r\n");
+		int count = 1;
+		for (InterfaceEnd interfaceend : interfaceends) {
+			String interfaceName = interfaceend.getName();
+			bw.write("<TD PORT=\"" + portName + count + "\">" + interfaceend.getName() + "</TD>\r\n");
+			interfaceEndPortMap.put(interfaceName, "InterfaceEnd" + counter + ":" + portName + count);
+			count++;
+		}
+		bw.write("</TR>\r\n </TABLE>> color = white shape =component]");
 	}
 
 	@Override
@@ -300,20 +325,35 @@ public class DotConverter implements IExport {
 	 * @param statemachine
 	 */
 	private void createTransition(StateMachine stateMaschine) {
-
 		try {
-			IBeanList<Transition> transitions = stateMaschine.getTransitions();
-			
-			for (Transition transition : transitions) {
-				String to = transition.getStateTo().getName();
+			for (Transition transition : stateMaschine.getTransitions()) {
+				
 				String from = transition.getStateFrom().getName();
-				bw.write(to + " -> " + from + "\r\n");
-			
+				String to = transition.getStateTo().getName();
+				
+				bw.write(from);
+				if (uniquenodes.contains(from)) {
+					bw.write(stateMaschine.getName());
+					constrainthelper.add(from + stateMaschine.getName());
+				}
+				
+				bw.write(" -> "); 
+				bw.write(to);
+				if (uniquenodes.contains(to)) {
+					bw.write(stateMaschine.getName());
+					constrainthelper.add(to + stateMaschine.getName());
+				}
+				
+				bw.write("\r\n");
 			}
+			
+			for (State state : stateMaschine.getStates()) {
+				uniquenodes.add(state.getName());
+			}
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-
 
 }
