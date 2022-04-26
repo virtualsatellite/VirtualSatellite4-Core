@@ -1,0 +1,8 @@
+{
+   "type" : "beanUnitPrefixed",
+   "uuid" : "e2203b42-e703-4429-9bf9-dbd4882c341c",
+   "name" : "Kilometer",
+   "quantityKindBean" : "882b2e01-712d-4557-bc25-3158cd4ff316",
+   "symbol" : "km",
+   "prefixBean" : "ca6c002a-b269-41b1-9afe-b805a30f8c29"
+}

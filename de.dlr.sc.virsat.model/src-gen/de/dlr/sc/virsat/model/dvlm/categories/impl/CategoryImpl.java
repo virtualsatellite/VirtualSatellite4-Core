@@ -61,6 +61,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.categories.impl.CategoryImpl#getProperties <em>Properties</em>}</li>
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.categories.impl.CategoryImpl#isIsAbstract <em>Is Abstract</em>}</li>
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.categories.impl.CategoryImpl#getExtendsCategory <em>Extends Category</em>}</li>
+ *   <li>{@link de.dlr.sc.virsat.model.dvlm.categories.impl.CategoryImpl#isIsVerification <em>Is Verification</em>}</li>
  * </ul>
  *
  * @generated
@@ -165,6 +166,26 @@ public class CategoryImpl extends ATypeDefinitionImpl implements Category {
 	 * @ordered
 	 */
 	protected Category extendsCategory;
+
+	/**
+	 * The default value of the '{@link #isIsVerification() <em>Is Verification</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsVerification()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean IS_VERIFICATION_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isIsVerification() <em>Is Verification</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsVerification()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean isVerification = IS_VERIFICATION_EDEFAULT;
 
 	/**
 	 * *********************************
@@ -365,6 +386,29 @@ public class CategoryImpl extends ATypeDefinitionImpl implements Category {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isIsVerification() {
+		return isVerification;
+	}
+
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setIsVerification(boolean newIsVerification) {
+		boolean oldIsVerification = isVerification;
+		isVerification = newIsVerification;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CategoriesPackage.CATEGORY__IS_VERIFICATION, oldIsVerification, isVerification));
+	}
+
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EList<AProperty> getAllProperties() {
 		EList<AProperty> allProperties = new org.eclipse.emf.common.util.BasicEList<>();
 		allProperties.addAll(getProperties());
@@ -452,6 +496,8 @@ public class CategoryImpl extends ATypeDefinitionImpl implements Category {
 			case CategoriesPackage.CATEGORY__EXTENDS_CATEGORY:
 				if (resolve) return getExtendsCategory();
 				return basicGetExtendsCategory();
+			case CategoriesPackage.CATEGORY__IS_VERIFICATION:
+				return isIsVerification();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -489,6 +535,9 @@ public class CategoryImpl extends ATypeDefinitionImpl implements Category {
 			case CategoriesPackage.CATEGORY__EXTENDS_CATEGORY:
 				setExtendsCategory((Category)newValue);
 				return;
+			case CategoriesPackage.CATEGORY__IS_VERIFICATION:
+				setIsVerification((Boolean)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -522,6 +571,9 @@ public class CategoryImpl extends ATypeDefinitionImpl implements Category {
 			case CategoriesPackage.CATEGORY__EXTENDS_CATEGORY:
 				setExtendsCategory((Category)null);
 				return;
+			case CategoriesPackage.CATEGORY__IS_VERIFICATION:
+				setIsVerification(IS_VERIFICATION_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -548,6 +600,8 @@ public class CategoryImpl extends ATypeDefinitionImpl implements Category {
 				return isAbstract != IS_ABSTRACT_EDEFAULT;
 			case CategoriesPackage.CATEGORY__EXTENDS_CATEGORY:
 				return extendsCategory != null;
+			case CategoriesPackage.CATEGORY__IS_VERIFICATION:
+				return isVerification != IS_VERIFICATION_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -646,6 +700,8 @@ public class CategoryImpl extends ATypeDefinitionImpl implements Category {
 		result.append(cardinality);
 		result.append(", isAbstract: ");
 		result.append(isAbstract);
+		result.append(", isVerification: ");
+		result.append(isVerification);
 		result.append(')');
 		return result.toString();
 	}

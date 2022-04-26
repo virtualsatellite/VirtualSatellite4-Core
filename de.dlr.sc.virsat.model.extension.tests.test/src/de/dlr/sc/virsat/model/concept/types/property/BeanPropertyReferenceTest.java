@@ -148,5 +148,16 @@ public class BeanPropertyReferenceTest extends AConceptTestCase {
 		
 		assertFalse("No value is set", beanTestRefCategory.isSet());
 	}
+	
+
+	@Test
+	public void testGetAndSetOverride() {
+		assertEquals(false, beanTestRefProperty.getOverride());
+		
+		beanTestRefProperty.setOverride(true);
+		
+		assertEquals(true, beanTestRefProperty.getOverride());
+		assertEquals(true, rpiToProperty.isOverride());
+	}
 
 }

@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/commons-codec.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/commons-collections4.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/commons-compress.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/commons-io.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/commons-math3.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/curvesapi.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/poi-ooxml-schemas.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/poi-ooxml.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/poi-scratchpad.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/log4j-api.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/poi.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/stax-api.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/poi-ooxml.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/poi-ooxml-lite.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/poi-scratchpad.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/SparseBitSet.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/xml-apis.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/xmlbeans.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>

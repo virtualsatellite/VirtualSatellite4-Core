@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Generic Excel IO
 Bundle-SymbolicName: de.dlr.sc.virsat.excel;singleton:=true
-Bundle-Version: 4.12.1.qualifier
+Bundle-Version: 4.14.0.qualifier
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: org.eclipse.emf.ecore,
  org.eclipse.emf.ecore.xmi,

@@ -1254,7 +1254,7 @@ To import requirements from CSV files follow the next steps:
 |image:chapterModeling/subsectionRequirements/ImportMenuRequirements.png[Import Menu Virtual Satellite]
 
 |{counter:step}.
-|Select `CSV Requirements Import` form the `Virtual Satellite` category.
+|Select `Requirements CSV Import Wizard` form the `Virtual Satellite` category.
 |image:chapterModeling/subsectionRequirements/ImportWizard.png[Select the correct import wizard]
 
 |{counter:step}.
@@ -1305,6 +1305,104 @@ This does not create a new requirement type and can help to have consistent requ
 |{counter:step}.
 |On the next page, map the columns of the CSV-File to the attributes of the existing requirement type.
 |image:chapterModeling/subsectionRequirements/CsvImportTypeMappingPage.png[Map requirement attributes to CSV columns]
+
+|===
+
+====== Import ReqIF-files from DOORs
+
+First, export requirements from Doors:
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Configure the ReqIF export in DOORs. For that you need to manage the project properties.
+|image:chapterModeling/subsectionRequirements/reqif/ConfigureReqIF.png[Configure ReqIF Export]
+
+|{counter:step}.
+|Create a new ReqIF definition that contains the configuration for your ReqIF file to export.
+|image:chapterModeling/subsectionRequirements/reqif/CreateReqIFDefinition.png[Create ReqIF Definition]
+
+|{counter:step}.
+|Add specifications to the ReqIF file which shall be exported.
+|image:chapterModeling/subsectionRequirements/reqif/AddSpecToDoorsReqIF.png[Add Specifications]
+
+|{counter:step}.
+|Do the export.
+
+NOTE: You can also do this step again later using the same definition. Thus, doing a re-export.
+
+|image:chapterModeling/subsectionRequirements/reqif/DoTheExport.png[Do Export]
+
+|===
+
+Import the Requirements in Virtual Satellite:
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Select `Import` from the file menu in Virtual Satellite.
+|image:chapterModeling/subsectionRequirements/ImportMenuRequirements.png[Import Menu Virtual Satellite]
+
+|{counter:step}.
+|Select `Requirements ReqIF Import Wizard` form the `Virtual Satellite` category.
+|image:chapterModeling/subsectionRequirements/reqif/ReqIfImportType.png[ReqIF Import]
+
+|{counter:step}.
+|Select a ReqIF file and a container for the new import configuration. The import configuration is named according to the ReqIF file name. (Select a RequirementsConfigurationCollection in the tree)
+|image:chapterModeling/subsectionRequirements/reqif/SelectFileAndConfigContainer.png[Select ReqIF file]
+
+|{counter:step}.
+|Select the requirement specifications from the ReqIF file which shall be imported. For each of them select a Virtual Satellite container tree element in which a new specification shall be created. Optionally you can specify an existing requirements configuration in which imported requirement types and link types are imported into. Otherwise a new requirements configuration is created for that purpose.
+
+NOTE: Make sure to select a container element for all selected specifications. Otherwise they are not imported
+
+|image:chapterModeling/subsectionRequirements/reqif/SelectImportSpec.png[Select Specifications]
+
+|===
+
+After a first ReqIF import, the mapping of external specification to the ones within the model can be customized. It is also possible to customize in which RequirementsConfiguration the to be imported types are added:
+
+.Edit the mapping of external to internal specifications
+[#SpecificationMapping]
+image::chapterModeling/subsectionRequirements/reqif/EditMappingLater.png[Edit Mapping]
+
+To do a re-import simply select the existing import configuration:
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Select `Import` from the file menu in Virtual Satellite.
+|image:chapterModeling/subsectionRequirements/ImportMenuRequirements.png[Import Menu Virtual Satellite]
+
+|{counter:step}.
+|Select `Requirements ReqIF Import Wizard` form the `Virtual Satellite` category.
+|image:chapterModeling/subsectionRequirements/reqif/ReqIfImportType.png[ReqIF Import]
+
+|{counter:step}.
+|Select the ReqIF file to be imported and the existing import configuration.
+
+NOTE: Make sure that ReqIF file and import configuration are matching. Otherwise nothing will be imported.
+
+|image:chapterModeling/subsectionRequirements/reqif/ReImport.png[Re-import]
+
 
 |===
 
@@ -1652,6 +1750,284 @@ TIP: To use the _State Machine_ of other system components, e.g. the Camera, Rea
 |For each section in _State Machine_ concept found in the Editor an excel table with the section instances can be created. 
 This is shown in the following image on the down right part with a button named [Export to Excel].
 |image:chapterStateMachines/ExtractingExcelTables.png[ExtractingExcelTables]
+|===
+
+==== Thermal Concept
+
+The thermal concept allows the user to add thermal properties to the system model. Ultimately, these properties can be used as the basis for a workflow to perform thermal analyses with the FEM tool CalculiX. 
+This is done by exporting the 3D Visualisation and the thermal properties, processing them utilizing FreeCAD as preprocessing tool. 
+CalculiX then reads the generated files, creates, and solves, the equation system. 
+Finally, the thermal concept also allows to import some aspects of the result to the system model.
+
+To model all thermal aspects required for the complete workflow follow these steps:
+
+NOTE: In the following table the word "part" refers to the lowest level instances of each branch of the configuration tree desired to model. This can be subsystem, assembly or component, depending on how detailed the model is supposed to be.
+
+Hier Bild von Thermal Concept
+
+:step2: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step2}.
+|Create a project and make sure the _thermal_ and _Visualization_ concept are activated.
+|
+
+|{counter:step2}.
+|Now the actual modeling can start. Add a *configuration tree* and fill it with subsystems/components/..., depending on how deep the level of detail is supposed to be. 
+
+TIP: The overall workflow is rather complex and it might help (and save time) to practice it with a simple model first.
+|
+
+|{counter:step2}.
+|Add a _MaterialCollection_ element in the root directory(TBC). There are two options to fill the Material Collection: 
+Firstly, by creating the *material* elements manually with a right-click on the _MaterialCollection_ and filling it with the *thermal conductivity*, the *absorption coefficient* (in the visible), the *emissivity* (in the infrared), the *heat capacity*, and the *density*. 
+
+Secondly, by using the import function. This import function reads a .csv file that is structured as shown in figure X and imports the *materials* and their *properties*.
+|
+
+|
+|
+TIP: The exporter works in that way, that it iterates through every single element and checks if a visualization and the thermal properties are defined by the user. 
+Make sure that all elements, and only these elements, intended for the thermal analysis fulfill these two criteria. Also, do not define a visualization/thermal properties on both, subsystem level and component level of the same subsystem, either choose to model the subsystem as an entirety, or the parts of the subsystem. 
+This avoids inconsistencies in the thermal analysis due to duplication and overlapping of parts.
+|
+
+|{counter:step2}.
+|With this being said, add a _visualization_ for each of the desired elements, define the *dimensions*, and align its *position* and *rotation* as desired.
+|
+
+|{counter:step2}.
+|Accordingly, add a _ThermalData_ element, and then, a _ThermalElementParameters_ (TEP might be an own category later) element for each of the parts. This element is very important for setting up the rest of the model and for the simulation itself, so make sure all desired parts have such an element. 
+Fill this element with the required information comprising the _initialTemperature_ (only relevant for dynamic simulations), the _powerBalance_ of the part (meaning the dissipated heat), and finally reference the desired _material_ for the part.
+|
+
+|{counter:step2}.
+|If not already present anyways, create a `ThermalControl` (or similar name) subsystem in the configuration tree. Even if it is not necessary for modeling physical parts. 
+In this subsystem create a _ThermalAnalysis_ element. This will host a lot of general, analysis related information. 
+
+NOTE: Make sure there is only one of the _ThermalAnalysis_ elements in the tree.
+
+|
+
+|{counter:step2}.
+|In the _ThermalAnalysis_ element, create an _AnalysisType_ element. This is used to specify some top level information for the analysis.
+First, the _AnalysisType_ is specified. Here the user can choose between `static` and `transient`. 
+A *static* simulation will result in a steady-state thermal equlibrium result, while the *transient* simulation refers to a dynamic simulation over a specified time period.
+
+The _timeStep_ defines the *time step size* for a transient analysis (for static analysis this can be ignored).
+
+The _totalTime_ defines the *total simulation time* and therefore the total number of time steps (for static analysis this can be ignored)
+
+The _includeOrbitRadiation_ option allows to take into account the *thermal influence* of the spacecraft's *orbit* (for static analysis this can be ignored). For more information refer to the dedicated explanation below this table.
+|
+
+|{counter:step2}.
+|In the _ThermalAnalysis_ element, create a _ThermalContacts_ element. This is where it gets slightly complex. 
+Each *contact* between two physical elements (check the visualization to identify all contacts) must be considered to obtain a valid simulation result, as thermal contacts usually conduct heat quite effective. In the _ThermalContacts_ element, create one _ThermalInterfaceList_ and one _ThermalPortList_ element. 
+|
+
+|{counter:step2}.
+|For each part that has a _visualisation_ and _ThermalElementParameters_, one _ThermalPort_ element must be created. A *thermal ports* is assigned to its respective part by the _reference_ property. 
+This links to the _ThermalElementParameter_ of the desired part. 
+
+TIP: To keep track of all *thermal ports* it is important to choose a consistent nomenclature such as `TP:<NameOfThePart>`.
+|
+
+|{counter:step2}.
+|When the thermal ports are created and assigned to the parts, the thermal interfaces are modeled. For this, create one _ThermalInterface_ element for each contact. 
+In this element, two references and two values are set. The references are linked to the involved thermal ports,
+the thermal contact conductivity, and two mesh sizes. If the mesh sizes are specified (optional) the meshing will be executed considering the specified contact mesh size locally on the contact face. 
+Thus, a finer mesh can be used for these critical areas of heat flow, which increases the validity of the simulation. The value with the suffix "0" again refers to the "master", while the "1" refers to the "slave" component.
+
+TIP: To keep track of all *thermal interfaces* it is important to choose a consistent nomenclature such as `TI:<Part1>_<Part2>`
+
+NOTE: The first thermal port is treated as the "master" contact in the following. This is relevant if the two parts are overlapping, either on purpose or accidentally. 
+In that case the FreeCAD processing script will cut the overlapping volume from the "slave" part, whereas the "master" part will not be touched.
+
+NOTE: Letting two components overlap on purpose could be used when there is an edge/point contact. CalculiX does not accept such contacts as they have zero contact area. Letting the contacts overlap just slightly will result in a small contact area, allowing the contact to transfer heat.
+The magnitude of overlap has to be determined manually by evaluating the size of the resulting contact area and tweaking the contact conductivity.
+|
+
+|{counter:step2}.
+|
+NOTE: Having specified the contacts is an important step in the workflow. It is also the foundation for assigning *face-specific properties*. 
+VirSat treats geometries as a whole and does not distinguish between individual *faces*. To assign properties to faces, a different approach has to be used. 
+For this, a fraction of the subsequent workflow is performed at this stage already 
+
+
+The *geometry* must be *exported* (make sure all relevant parts are modeled at this stage) using the `CAD Export Wizard`.
+In addition, the *contacts* need to be *exported* as well (make sure all contacts for the analysis are defined). This is done with the TBD function.
+|
+
+|{counter:step2}.
+|Open FreeCAD with the `VirSat Workbench` installed. Switch the view to the `VirSat Workbench` and press the import json button to import the geometry, then press the "TBD" button. 
+This will execute the *geometrical preprocessing* of the imported geometrical model. After the preprocessing was executed successfully, *new faces* (and accordingly, *new face numbers*) were created.
+These new face numbers are important as they are the ones, that are used each time a *face number* is requested in the thermal concept in *VirSat* (all properties with a name similar to "freeCADFaceNumber").
+
+NOTE: The face number can be obtained by hovering with the mouse over the respective face in FreeCAD. Keep in mind that the newly created dedicated contact faces are covered by the contacting part and can only be seen if the respective part is hidden. 
+The face number information is exclusively for the user to apply face specific properties (boundary conditions to faces and face specific radiative properties). 
+If these are not relevant for the actual use case, the related steps 11 and 12 can be skipped.
+
+NOTE: Each time the geometry or the contacts in VirSat are modified, steps 11 & 12 must be executed again, as the modifications might change the resulting face numbers.
+|
+
+|{counter:step2}.
+|Now the rest of the *properties* can be defined in the VirSat model. In the _ThermalAnalysis_ element from step 6, create a _BoundaryConditions_ element. This element hosts all possible boundary conditions, except the part specific dissipated heat, which was defined before in the part's thermal properties.
+The possible *boundary conditions* to be applied are all *optional* and only defined, if necessary. These are: *Heat flux to a face* (due to complications with duplicate assigning of thermal loads, as of now only possible when the orbital thermal radiation option is deactivated), *fixed temperature on a face*, and *fixed temperature on a part*.
+
+*Heat flux to face*: Create a _HeatFluxToFace_ in the _BoundaryConditions_ element. Set the reference to the related part's TEP element (TBC), specify the _freeCADFaceNumber_ as described before, and then specify the _heatFlux_ (W/m^2).
+
+*Fixed temperature on face*: Create a _TemperatureBoundary_ element in the _BoundaryConditions_ element. Set the reference to the related part's TEP element (TBC), set boundaryType to `Face`, specify the freeCADFaceNumber as described before, and then specify the _boundaryTemperature_.
+
+*Fixed temperature on component*: Same as Fixed temperature on face, only choose `Volume` instead of `Face` and ignore the _freeCADFaceNumber_ field.
+|
+
+|{counter:step2}.
+|As already indicated before, the workflow allows to set *characteristic mesh sizes* for components, and even locally for contact faces.
+The user can set the characteristic mesh sizes for each component individually by creating a _MeshSizes_ element in the _ThermalAnalysis_ element. 
+In the _MeshSizes_ element the individual component's mesh sizes are created as _ComponentMeshSizes_. As done before, the _reference_ to the component is set and then the value for the _maximumCharacteristicMeshLength_ is set.
+
+NOTE: The characteristic mesh length is the maximum length of the mesh element edges in mm.
+
+NOTE: If set to "0", the characteristic mesh length will be set to an appropriate value automatically.
+
+TIP: As the script used for meshing the model in FreeCAD uses the automatic meshing option to create tetrahedral meshes. 
+The resulting mesh might happen to be not to the user's satisfaction. In this case, it is also possible to include a custom tetrahedral mesh (see XXX).
+|
+
+|{counter:step2}.
+|If desired, it is possible to to set dedicated *radiation properties* for *individual faces*. This can be done for each part by adding a _SingleFaceRadiationList_ to its _ThermalData_ element. 
+For each face of the part that shall have different radiative properties a _FaceRadiation_ is defined by specifying the *freeCADFaceNumber* as described before, the *emissivity* of the face (in the IR) and the *absorptivity* of the face (in the visible).
+The component's default radiative properties defined by the part's material will then be *overridden* for the specified faces.
+|
+
+|===
+
+The thermal model is now complete. The next part of the workflow is the *export* of the model, *processing* it, and executing the thermal *simulation*. However, first the *includeOrbitRadiation* option is discussed.
+
+This feature allows to include externally obtained orbital data in the workflow to model the thermal environment in an Earth orbit. 
+A mission analysis tool like STK (Satellite Toolkit) can be used to export the required information into a readable .csv file.
+There are three main heat sources in Earth orbit: Direct solar irradiation, indirect solar irradiation (Albedo), and Earth infrared radiation.
+To calculate all three it is necessary to have the following data *at each time step*: Spacecraft-Sun vector, Sun visibility, Spacecraft-Earth vector, and Sun-Earth vector.
+This data must be provided in three files. The structure of these files is as follows
+
+[%header,cols=">8,62a"] 
+|===
+|File
+|Structure
+
+
+|`Sun_Vector.csv`
+|"Time (UTCG)","x (km)","y (km)","z (km)"
+
+<Time1>,<vectorX>,<vectorY>,<vectorZ>
+
+<Time2>,<vectorX>,<vectorY>,<vectorZ>
+
+.
+
+.
+
+.
+
+<TimeN>,<vectorX>,<vectorY>,<vectorZ>
+
+|`Solar_Intensity.csv`
+|"Time (UTCG)","Intensity"
+
+<Time1>,<SunIntensity(in percent)>
+
+<Time2>,<SunIntensity(in percent)>
+
+.
+
+.
+
+.
+
+<TimeN>,<SunIntensity(in percent)>
+
+|`Earth_Vector.csv`
+|"Time (UTCG)","x (km)","y (km)","z (km)",Reflection Angle
+
+<Time1>,<vectorX>,<vectorY>,<vectorZ>,<reflection angle>
+
+<Time2>,<vectorX>,<vectorY>,<vectorZ>,<reflection angle>
+
+.
+
+.
+
+.
+
+<TimeN>,<SC-Earth_vectorX>,<SC-Earth_vectorY>,<SC-Earth_vectorZ>,<cosine of reflection angle of sun rays on Earth>
+
+
+|===
+
+NOTE: In the table <vectorX> refers to the x component of the vector to Sun/Earth, 
+reflection angle refers to the reflection angle over a light ray originating from sun, reflected on Earth, hitting the Spacecraft.
+
+NOTE: The resulting albedo load value is only an approximation.
+
+To complete the workflow, the following steps are executed after completing the thermal model in VirSat:
+
+:step2: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step2}.
+|The whole model is exported from Virtual Satellite using the TBD exporter.
+|
+
+|{counter:step2}.
+|Start FreeCAD and navigate to the `VirSat Workbench`. Then, use the import json button to import the geometry.
+|
+
+|{counter:step2}.
+|Use the TBD button to execute the script that takes over preprocessing and preparation of the thermal analysis model.
+|
+
+|{counter:step2}.
+|Wait for the script to finish execution.
+NOTE: If the orbital radiation influences are activated, execution might take time, depending on the number of nodes/elements. 
+The reason being one boolean operation that has to be executed to determine the obstruction of a face. 
+For this reason the execution time of the script quickly rises to hours for significantly more than 5000 generated mesh elements.
+Automatic mesh size is recommended to obtain a first impression of the number of elements created.
+|
+
+|{counter:step2}.
+|When the script was executed successfully, start CalculiX (e.g. CalculiX Launcher 3.4 for Windows) and choose the main.inp file as main file.
+Then, execute the simulation.
+|
+
+|{counter:step2}.
+|After successful execution, a main.frd file with the results was generated by CalculiX.
+To have a visual impression of the results, the graphical postprocessor of CalculiX is recommended.
+| 
+
+|{counter:step2}.
+|With the main.frd file in the directory, execute the simulation results importer (TBD)
+It creates (if not already present) a _ThermalAnalysisResults_ element in the _ThermalAnalysis_ element. 
+In it, a new _AnalysisResult_ is created for each analysis. The importer will obtain the maximum and minimum temperature value of the whole simulation, for every component. 
+
+NOTE: For dynamic analyses the time step where this temperature was achieved is stored.
+
+NOTE: Make sure that the properties in the _AnalysisType_ were not changed during the workflow, else the importer will misinterpret the output file
+
+NOTE: The result import function is relatively primitive as of now and is constrained to simple min/max temperature values. To further evolve this workflow, more sophisticated results could be drawn from the result file. 
+
+|
+
 |===
 
 === 3D Visualisation

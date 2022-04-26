@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import de.dlr.sc.virsat.apps.api.external.ModelAPITest;
+import de.dlr.sc.virsat.apps.api.external.ModelAPIExtensionTest;
 import de.dlr.sc.virsat.build.validator.core.DvlmLatestConceptValidatorTest;
 import de.dlr.sc.virsat.build.validator.core.RepoValidatorsInstantiatorTest;
 import de.dlr.sc.virsat.model.concept.list.ArrayInstanceListIteratorTest;
@@ -38,8 +38,8 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferenceCategor
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferenceCategoryArrayStaticTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferencePropertyArrayDynamicTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferencePropertyArrayStaticTest;
-import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferenceTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElementInstanceTest;
+import de.dlr.sc.virsat.model.extension.tests.model.json.BeanQudvTest;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomainNonDVLMTest;
 import de.dlr.sc.virsat.project.editingDomain.commands.VirSatClipboardCommandAcceptanceTest;
 import de.dlr.sc.virsat.project.resources.dmf.DmfResourceTest;
@@ -58,7 +58,6 @@ import junit.framework.JUnit4TestAdapter;
 				TestCategoryAllPropertyTest.class,
 				TestCategoryCompositionTest.class,
 				ArrayInstanceListIteratorTest.class,
-				TestCategoryReferenceTest.class,
 				TestCategoryIntrinsicArrayDynamicTest.class,
 				TestCategoryIntrinsicArrayStaticTest.class,
 				TestCategoryCompositionArrayDynamicTest.class,
@@ -74,7 +73,7 @@ import junit.framework.JUnit4TestAdapter;
 				BeanStructuralElementInstanceFactoryTest.class,
 				BeanStructuralTreeTraverserTest.class,
 				HierarchyLevelCheckerTest.class,
-				ModelAPITest.class,
+				ModelAPIExtensionTest.class,
 				RepoValidatorsInstantiatorTest.class,
 				MatImporterTest.class,
 				MatExporterTest.class,
@@ -87,8 +86,9 @@ import junit.framework.JUnit4TestAdapter;
 				de.dlr.sc.virsat.model.extension.tests.model.json.TestCategoryReferenceTest.class,
 				de.dlr.sc.virsat.model.extension.tests.model.json.TestCategoryCompositionArrayTest.class,
 				de.dlr.sc.virsat.model.extension.tests.model.json.TestCategoryReferenceArrayTest.class,
-				de.dlr.sc.virsat.model.extension.tests.model.json.TestStructuralElementInstanceTest.class
-				})
+				de.dlr.sc.virsat.model.extension.tests.model.json.TestStructuralElementInstanceTest.class,
+				BeanQudvTest.class
+})
 
 /**
  * 

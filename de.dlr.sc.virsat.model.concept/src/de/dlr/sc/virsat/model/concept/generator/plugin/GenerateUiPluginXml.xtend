@@ -26,6 +26,8 @@ import de.dlr.sc.virsat.model.dvlm.general.IQualifiedName
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.generator.IFileSystemAccess
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.VerificationTypeSpecification
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper
 
 class GenerateUiPluginXml {
 	
@@ -112,6 +114,9 @@ class GenerateUiPluginXml {
 				«FOR category : concept.nonAbstractCategories»
 					«declareUiSnippetTables(concept, category)»
 					«declareUiSnippetSections(concept, category)»
+					«IF category.isIsVerification»
+					«declareUiSnippetVerificationTables(concept, category)»
+					«ENDIF»
 					«FOR property : category.allProperties»
 						«IF (property.arrayModifier !== null)»
 							«IF (property.arrayModifier instanceof DynamicArrayModifier && property instanceof ComposedProperty)»
@@ -124,6 +129,9 @@ class GenerateUiPluginXml {
 							«ELSE»
 								«declareUiSnippetArrayTables(concept, property, category)»
 							«ENDIF»
+						«ENDIF»
+						«IF getVerificationType(property) !== null && !isVerificationTypeInConcept(concept, property)»
+						«declareUiSnippetVerificationTables(concept, (property.verification as VerificationTypeSpecification).verificationType as Category)»
 						«ENDIF»
 					«ENDFOR»
 				«ENDFOR»
@@ -295,6 +303,14 @@ class GenerateUiPluginXml {
     </uiSnippet>
 	'''
 	
+	def declareUiSnippetVerificationTables(Concept conceptToBeVerified, Category verificationCategory) '''
+    <uiSnippet
+          id="«conceptToBeVerified.name».table.uISnippetTableRequirementVerifications«verificationCategory.name.toFirstUpper»"
+          section="de.dlr.sc.virsat.model.extension.requirements.ui.Section.Verifications"
+          snippet="«conceptToBeVerified.name».ui.snippet.UiSnippetTableRequirementVerifications«verificationCategory.name.toFirstUpper»">
+    </uiSnippet>
+	'''
+	
 	def declareUiSnippetArrayTables(Concept concept, AProperty property, Category category) '''
     <uiSnippet
           id="«concept.name».table.uiSnippet«ConceptGeneratorUtil.getPropertyId(property, category)»"
@@ -334,5 +350,17 @@ class GenerateUiPluginXml {
 			concept.name;
 		} 
 	} 
+	
+	def getVerificationType(AProperty property) {
+		if (property.verification !== null && property.verification instanceof VerificationTypeSpecification) {
+			val verification = property.verification as VerificationTypeSpecification
+			return verification.verificationType
+		}
+		null
+	}
+	
+	def isVerificationTypeInConcept(Concept concept, AProperty property) {
+		ActiveConceptHelper.getConcept(getVerificationType(property)).equals(concept)
+	}
 }
 

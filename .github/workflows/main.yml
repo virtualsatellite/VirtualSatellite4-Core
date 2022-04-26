@@ -6,10 +6,12 @@ name: Build
 on:
   # --------------------------------------------
   # Controls when the automatic build job will be run.
-  # By default uses the default branch. Runs at 03:00 UTC.
+  # By default uses the default branch. Runs at 20:37 UTC.
+  # Virtual Satellite Core should always run quite early,
+  # so all artifacts are deployed for other builds such as CEF
   # --------------------------------------------
   schedule:
-    - cron: '0 3 * * *'
+    - cron: '37 20 * * *'
       
   # --------------------------------------------
   # Run this workflow every time a new commit pushed to the repository
@@ -43,7 +45,7 @@ jobs:
       # --------------------------------------------
       # Checks out a copy of the repository
       # --------------------------------------------
-      - name: Checkout code
+      - name: Setup - Checkout code
         uses: actions/checkout@v2
         
       # --------------------------------------------
@@ -51,12 +53,9 @@ jobs:
       # handed in by known users
       #---------------------------------------------
       - name: Verify - Authors Sanity Check
-        run: ./bash/verify_commit_authors.sh known_authors.txt
-        env:
-          base_ref:  ${{ github.base_ref || github.ref }}
-          to_repository: ${{ github.repository }}
-          from_repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
-          
+        uses: virtualsatellite/ci-actions/ci-verify-authors-action@v3
+      # Actions can also be accessed by other refs such as the latest from branch when using @master such as: 
+      # uses: virtualsatellite/ci-actions/ci-verify-authors-action@master   
   # -----------------------------------------------------
   # Build and Test - SpotBugs Job
   # -----------------------------------------------------
@@ -69,13 +68,13 @@ jobs:
       # --------------------------------------------
       # Checks out a copy of the repository
       # --------------------------------------------
-      - name: Checkout code
+      - name: Setup - Checkout code
         uses: actions/checkout@v2
       
       # --------------------------------------------
       # Setup caching for m2 repository
       # --------------------------------------------
-      - name: Cache local Maven repository
+      - name: Setup - Cache local Maven repository
         uses: actions/cache@v2
         with:
           path: ~/.m2/repository/
@@ -83,41 +82,28 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-local-maven-spotbugs-
             ${{ runner.os }}-local-maven-
-
+     
       # --------------------------------------------
       # Perform various setup operations
-      # --------------------------------------------
-      - name: Setup
-        run: ./bash/setup.sh
+      # --------------------------------------------      
+      - name: Setup - Prepare OS
+        uses: virtualsatellite/ci-actions/ci-setup-action@v3
 
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
-      - name: Build and Test - SpotBugs - Development and Features
-        run: ./bash/maven_build.sh -j spotbugs -p development
-        if: ${{ !contains(github.ref, 'integration') 
-             && !contains(github.base_ref, 'integration') 
-             && !contains(github.ref, 'integration_snapshot') 
-             && !contains(github.ref, 'development_snapshot') 
-             && !contains(github.ref, 'master') 
-             && !contains(github.base_ref, 'master')
-             && !contains(github.ref, 'Release') }}
+      - name: Build - Build and Deploy Decision
+        id: build_decision
+        uses: virtualsatellite/ci-actions/ci-build-decision-action@v3
 
       # --------------------------------------------
-      # Integration branch
+      # Development and Feature branches
       # --------------------------------------------
-      - name: Build and Test - SpotBugs - Integration
-        run: ./bash/maven_build.sh -j spotbugs -p integration
-        if: ${{ github.ref == 'refs/heads/integration' 
-             || github.event_name == 'pull_request' && contains(github.base_ref, 'integration')   }}
-
-      # --------------------------------------------
-      # Master branch or Release tag
-      # --------------------------------------------
-      - name: Build and Test - SpotBugs - Release
-        run: ./bash/maven_build.sh -j spotbugs -p release
-        if: ${{ contains(github.ref, 'master') || (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release')) 
-             || github.event_name == 'pull_request' && contains(github.base_ref, 'master')  }}
+      - name: Build and Test - Spotbugs
+        uses: virtualsatellite/ci-actions/ci-maven-build-action@v3
+        with:
+          build_job: spotbugs
+          build_profile: ${{ steps.build_decision.outputs.build_type }}
 
   # -----------------------------------------------------
   # Build and Test - Surefire Job
@@ -131,13 +117,13 @@ jobs:
       # --------------------------------------------
       # Checks out a copy of your repository
       # --------------------------------------------
-      - name: Checkout code
+      - name: Setup - Checkout code
         uses: actions/checkout@v2
 
       # --------------------------------------------
       # Setup caching for m2 repository
       # --------------------------------------------
-      - name: Cache local Maven repository
+      - name: Setup - Cache local Maven repository
         uses: actions/cache@v2
         with:
           path: ~/.m2/repository/
@@ -148,49 +134,50 @@ jobs:
 
       # --------------------------------------------
       # Perform various setup operations
-      # --------------------------------------------
-      - name: Setup
-        run: ./bash/setup.sh
-      
+      # --------------------------------------------      
+      - name: Setup - Prepare OS
+        uses: virtualsatellite/ci-actions/ci-setup-action@v3
+        with:
+           xvfb: -x
+           pkgs_file: apt_vtk_zmq_packages
+
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
-      - name: Build and Test - Surefire - Development and Features
-        run: ./bash/maven_build.sh -j sureheadless -p development
-        if: ${{ !contains(github.ref, 'integration') 
-             && !contains(github.base_ref, 'integration') 
-             && !contains(github.ref, 'integration_snapshot') 
-             && !contains(github.ref, 'development_snapshot') 
-             && !contains(github.ref, 'master') 
-             && !contains(github.base_ref, 'master')
-             && !contains(github.ref, 'Release') }}
+      - name: Build - Build and Deploy Decision
+        id: build_decision
+        uses: virtualsatellite/ci-actions/ci-build-decision-action@v3
 
       # --------------------------------------------
-      # Integration branch
+      # Development and Feature branches
       # --------------------------------------------
-      - name: Build and Test - Surefire - Integration
-        run: ./bash/maven_build.sh -j sureheadless -p integration
-        if: ${{ github.ref == 'refs/heads/integration' 
-             || github.event_name == 'pull_request' && contains(github.base_ref, 'integration')   }}
-             
-      # --------------------------------------------
-      # Master branch or Release tag
-      # --------------------------------------------
-      - name: Build and Test - Surefire - Release
-        run: ./bash/maven_build.sh -j sureheadless -p release
-        if: ${{ contains(github.ref, 'master') || (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release')) 
-             || github.event_name == 'pull_request' && contains(github.base_ref, 'master')  }}
-       
+      - name: Build and Test - Surefire
+        uses: virtualsatellite/ci-actions/ci-maven-build-action@v3
+        with:
+          build_job: sureheadless
+          build_profile: ${{ steps.build_decision.outputs.build_type }}
+
       # --------------------------------------------
       # Upload SWTBout screenshots to github artifacts
       # --------------------------------------------
-      - name: Upload SWTBot Screenshots on Failure
+      - name: Build and Test - Upload SWTBot Screenshots on Failure
         if: ${{ failure() }}
         uses: actions/upload-artifact@v2
         with:
           name: SWTBot Screenshots
           path: 
             swtbot/*
+
+      # --------------------------------------------
+      # Upload Surefire Reports to github artifacts
+      # --------------------------------------------            
+      - name: Build and Test - Upload Surefire Reports on Failure
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: Surefire Reports
+          path: 
+            ./**/target/surefire-reports/*
 
   # -----------------------------------------------------
   # Build and Test - Checkstyle Job
@@ -204,13 +191,13 @@ jobs:
       # --------------------------------------------
       # Checks out a copy of your repository
       # --------------------------------------------
-      - name: Checkout code
+      - name: Setup - Checkout code
         uses: actions/checkout@v2
       
       # --------------------------------------------
       # Setup caching for m2 repository
       # --------------------------------------------      
-      - name: Cache local Maven repository
+      - name: Setup - Cache local Maven repository
         uses: actions/cache@v2
         with:
           path: ~/.m2/repository/
@@ -219,40 +206,28 @@ jobs:
             ${{ runner.os }}-local-maven-checkstyle-
             ${{ runner.os }}-local-maven-
             
+    
       # --------------------------------------------
       # Perform various setup operations
       # --------------------------------------------      
-      - name: Setup
-        run: ./bash/setup.sh
-      
+      - name: Setup - Prepare OS
+        uses: virtualsatellite/ci-actions/ci-setup-action@v3
+
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
-      - name: Build and Test - Checkstyle - Development and Features
-        run: ./bash/maven_build.sh -j checkstyle -p development
-        if: ${{ !contains(github.ref, 'integration') 
-             && !contains(github.base_ref, 'integration') 
-             && !contains(github.ref, 'integration_snapshot') 
-             && !contains(github.ref, 'development_snapshot') 
-             && !contains(github.ref, 'master') 
-             && !contains(github.base_ref, 'master')
-             && !contains(github.ref, 'Release') }}
+      - name: Build - Build and Deploy Decision
+        id: build_decision
+        uses: virtualsatellite/ci-actions/ci-build-decision-action@v3
 
       # --------------------------------------------
-      # Integration branch
+      # Development and Feature branches
       # --------------------------------------------
-      - name: Build and Test - Checkstyle - Integration
-        run: ./bash/maven_build.sh -j checkstyle -p integration
-        if: ${{ github.ref == 'refs/heads/integration' 
-             || github.event_name == 'pull_request' && contains(github.base_ref, 'integration')   }}
-       
-      # --------------------------------------------
-      # Master branch or Release tag
-      # -------------------------------------------- 
-      - name: Build and Test - Checkstyle - Release
-        run: ./bash/maven_build.sh -j checkstyle -p release
-        if: ${{ contains(github.ref, 'master') || (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release')) 
-             || github.event_name == 'pull_request' && contains(github.base_ref, 'master')  }}
+      - name: Build and Test - Checkstyle
+        uses: virtualsatellite/ci-actions/ci-maven-build-action@v3
+        with:
+          build_job: checkstyle
+          build_profile: ${{ steps.build_decision.outputs.build_type }}
 
   # -----------------------------------------------------
   # Build, Assemble and Deploy Job
@@ -266,13 +241,13 @@ jobs:
       # --------------------------------------------
       # Checks out a copy of your repository
       # --------------------------------------------
-      - name: Checkout code
+      - name: Setup - Checkout code
         uses: actions/checkout@v2
 
       # --------------------------------------------
       # Setup caching for m2 repository
       # --------------------------------------------
-      - name: Cache local Maven repository
+      - name: Setup - Cache local Maven repository
         uses: actions/cache@v2
         with:
           path: ~/.m2/repository/
@@ -284,107 +259,67 @@ jobs:
       # --------------------------------------------
       # Perform various setup operations
       # --------------------------------------------
-      - name: Setup
-        run: ./bash/setup.sh
-      
+      - name: Setup - Prepare OS
+        uses: virtualsatellite/ci-actions/ci-setup-action@v3
+
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
-      - name: Build-Assemble - Development
-        run: ./bash/maven_build.sh -j assemble -p development
-        if: ${{ !contains(github.ref, 'integration') 
-             && !contains(github.base_ref, 'integration') 
-             && !contains(github.ref, 'integration_snapshot') 
-             && !contains(github.ref, 'development_snapshot') 
-             && !contains(github.ref, 'master') 
-             && !contains(github.base_ref, 'master')
-             && !contains(github.ref, 'Release') }}
+      - name: Build - Build and Deploy Decision
+        id: build_decision
+        uses: virtualsatellite/ci-actions/ci-build-decision-action@v3
 
       # --------------------------------------------
-      # Integration branch
+      # Development and Feature branches
       # --------------------------------------------
-      - name: Build-Assemble - Integration
-        run: ./bash/maven_build.sh -j assemble -p integration
-        if: ${{ github.ref == 'refs/heads/integration' 
-             || github.event_name == 'pull_request' && contains(github.base_ref, 'integration')   }}
-
+      - name: Build - Assemble
+        uses: virtualsatellite/ci-actions/ci-maven-build-action@v3
+        with:
+          build_job: assemble
+          build_profile: ${{ steps.build_decision.outputs.build_type }}
+     
       # --------------------------------------------
-      # Master branch or Release tag
+      # Upload SWTBout screenshots to github artifacts
       # --------------------------------------------
-      - name: Build-Assemble - Release
-        run: ./bash/maven_build.sh -j assemble -p release
-        if: ${{ contains(github.ref, 'master') || (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release')) 
-             || github.event_name == 'pull_request' && contains(github.base_ref, 'master')  }}
-        env:
-          github.sha:  ${{ github.sha }}
-
+      - name: Build - Upload Build Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: Deployable Applications
+          path: |
+            deploy/**/*.zip
+            deploy/**/*.tar.gz
+          retention-days: 3
+     
+      # ---------------------------------------------
+      # Deploying to github releases
       # --------------------------------------------
-      # Create a tag on the Development branch
-      # --------------------------------------------
-      - name: Create Development Tag
-        run: |
-         git tag -f development_snapshot
-         git remote add github-mtd https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-         git push -f github-mtd development_snapshot
-         git remote remove github-mtd
-        if: ${{ github.ref == 'refs/heads/development'  }}
-
-      # --------------------------------------------
-      # Create a tag on the Integration branch
-      # --------------------------------------------
-      - name: Create Integration Tag
-        run: |
-         git tag -f integration_snapshot
-         git remote add github-mtd https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-         git push -f github-mtd integration_snapshot
-         git remote remove github-mtd
-        if: ${{ github.ref == 'refs/heads/integration'  }}
-
-      # --------------------------------------------
-      # Create a new development release and delete the old one
-      # --------------------------------------------
-      - name: Deploy - Development
-        if: ${{ github.ref == 'refs/heads/development'  }}
-        env:
-          openssl_pass: ${{ secrets.SF_SSH_KEY_OPENSSL_PASS }}
-          ssh_key_pass: ${{ secrets.SF_SSH_KEY_PASS }}         
-        run: |
-           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c delete -r development_snapshot
-           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c create -r development_snapshot -d "Development build on latest commit by Github Actions CI - ${{ github.ref }} (${{ github.sha }}) - $(date +'%F %T %Z'). This release is subject to constant change."
-           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r development_snapshot -p "*.zip" -dir deploy/unsecured
-           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r development_snapshot -p "*.tar.gz" -dir deploy/unsecured
-           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r development_snapshot -p "*.pdf" -dir de.dlr.sc.virsat.docs.feature/docs
-           ./bash/deploy_sourceforge.sh -s -u development
-
-      # --------------------------------------------
-      # Create a new integration release and delete the old one
-      # --------------------------------------------
-      - name: Deploy - Integration
-        if: ${{ github.ref == 'refs/heads/integration'  }}
-        env:
-          openssl_pass: ${{ secrets.SF_SSH_KEY_OPENSSL_PASS }}
-          ssh_key_pass: ${{ secrets.SF_SSH_KEY_PASS }}   
-        run: |
-           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c delete -r integration_snapshot
-           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c create -r integration_snapshot -d "Integration build on latest commit by Github Actions CI - ${{ github.ref }} (${{ github.sha }}) - $(date +'%F %T %Z'). This release is subject to constant change." 
-           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r integration_snapshot -p "*.zip" -dir deploy/unsecured
-           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r integration_snapshot -p "*.tar.gz" -dir deploy/unsecured
-           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r integration_snapshot -p "*.pdf" -dir de.dlr.sc.virsat.docs.feature/docs   
-           ./bash/deploy_sourceforge.sh -s -u integration
-
-      # --------------------------------------------
-      # Fill a manually created Release with the build artifacts and description info
-      # --------------------------------------------
-      - name: Deploy - Release
-        if: ${{ (contains(github.ref, 'refs/tags/') && contains(github.ref, 'Release'))  }}
-        env:
+      - name: Build - Deploy GH
+        uses: virtualsatellite/ci-actions/ci-deploy-gh-product-action@v4
+        with:
+          build_profile: ${{ steps.build_decision.outputs.build_type }}
+          gh_token: ${{ secrets.GITHUB_TOKEN }}
+        if: ${{ steps.build_decision.outputs.deploy_type == 'deploy' }}
+        
+      # ----------------------------------------------
+      # SF Deploy still to be done
+      # ----------------------------------------------
+      - name: Build - Deploy SF (Core)
+        uses: virtualsatellite/ci-actions/ci-deploy-sf-product-action@v3
+        with:
+          build_profile: ${{ steps.build_decision.outputs.build_type }}
           openssl_pass: ${{ secrets.SF_SSH_KEY_OPENSSL_PASS }}
           ssh_key_pass: ${{ secrets.SF_SSH_KEY_PASS }}
-          github.sha: ${{ github.sha }}
-        run: |
-           TAG_NAME=${GITHUB_REF#refs/*/}
-           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c patch -r $TAG_NAME -d "Release build on latest commit by Github Actions CI - ${{ github.ref }} (${{ github.sha }}) - $(date +'%F %T %Z'). This is a stable release."  
-           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r $TAG_NAME -p "*.zip" -dir deploy/secured
-           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r $TAG_NAME -p "*.tar.gz" -dir deploy/secured
-           ./bash/github_release.sh -t ${{ secrets.GITHUB_TOKEN }} -c multi -r $TAG_NAME -p "*.pdf" -dir de.dlr.sc.virsat.docs.feature/docs
-           ./bash/deploy_sourceforge.sh -s -u release
+          local_dir: VirSat4_Core_Application
+          remote_dir: virtualsatellite/VirtualSatellite4-Core
+        if: ${{ steps.build_decision.outputs.deploy_type == 'deploy' }}
+      
+      - name: Build - Deploy SF (IDE Tools)
+        uses: virtualsatellite/ci-actions/ci-deploy-sf-product-action@v3
+        with:
+          build_profile: ${{ steps.build_decision.outputs.build_type }}
+          openssl_pass: ${{ secrets.SF_SSH_KEY_OPENSSL_PASS }}
+          ssh_key_pass: ${{ secrets.SF_SSH_KEY_PASS }}
+          local_dir: VirSat4_Dvlm_ConceptIDE
+          remote_dir: virtualsatellite/VirtualSatellite4-DVLM
+        if: ${{ steps.build_decision.outputs.deploy_type == 'deploy' }}
+        

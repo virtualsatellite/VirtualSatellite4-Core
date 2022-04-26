@@ -10,19 +10,26 @@
 package de.dlr.sc.virsat.model.concept.types.property;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.command.UnexecutableCommand;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
+import de.dlr.sc.virsat.model.concept.types.factory.BeanUnitFactory;
+import de.dlr.sc.virsat.model.concept.types.qudv.ABeanUnit;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumPropertyHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumValueDefinition;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyInstanceHelper;
+import de.dlr.sc.virsat.model.dvlm.json.ABeanUnitAdapter;
 import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModelProperty.AccessMode;
 
 /**
  * Class to wrap EnumPropertyInstances
@@ -52,7 +59,6 @@ public class BeanPropertyEnum extends ABeanProperty<EnumUnitPropertyInstance, St
 	}
 	
 	@Override
-	@XmlElement(nillable = true)
 	public void setValue(String value) {
 		EnumProperty ep = (EnumProperty) getTypeInstance().getType();
 		EnumValueDefinition evd = new EnumPropertyHelper().getEvdForName(ep, value);
@@ -61,6 +67,7 @@ public class BeanPropertyEnum extends ABeanProperty<EnumUnitPropertyInstance, St
 
 	@Override
 	@XmlElement(nillable = true)
+	@ApiModelProperty(value = "Name of an enum")
 	public String getValue() {
 		if (isSet()) {
 			return getTypeInstance().getValue().getName();
@@ -102,11 +109,37 @@ public class BeanPropertyEnum extends ABeanProperty<EnumUnitPropertyInstance, St
 
 	@Override
 	@XmlElement(nillable = true)
+	@ApiModelProperty(value = "Unit of the enum")
+	@XmlJavaTypeAdapter(ABeanUnitAdapter.class)
+	public ABeanUnit<? extends AUnit> getUnitBean() {
+		if (ti.getUnit() == null) {
+			return null;
+		}
+		return (ABeanUnit<? extends AUnit>) new BeanUnitFactory().getInstanceFor(ti.getUnit());
+	}
+	
+	@Override
+	public void setUnitBean(ABeanUnit<? extends AUnit> unitBean) {
+		if (unitBean != null) {
+			ti.setUnit(unitBean.getUnit());
+		}
+	}
+	
+	@Override
+	public Command setUnitBean(EditingDomain ed, ABeanUnit<? extends AUnit> unitBean) {
+		if (unitBean != null) {
+			return SetCommand.create(ed, ti, PropertyinstancesPackage.Literals.IUNIT_PROPERTY_INSTANCE__UNIT, unitBean.getUnit());
+		}
+		return UnexecutableCommand.INSTANCE;
+	}
+	
+	@Override
 	public String getUnit() {
 		return new PropertyInstanceHelper().getUnit(ti);
 	}
 	
 	@Override
+	@ApiModelProperty(hidden = true)
 	public boolean setUnit(String unitName) {
 		return new PropertyInstanceHelper().setUnit(ti, unitName);
 	}
@@ -116,8 +149,21 @@ public class BeanPropertyEnum extends ABeanProperty<EnumUnitPropertyInstance, St
 		return new PropertyInstanceHelper().setUnit(ed, ti, unitName);
 	}
 	
+	@ApiModelProperty(
+			value = "Always returns constant: \"enum\"", 
+			example = "enum",
+			accessMode = AccessMode.READ_ONLY)
 	@Override
 	public BeanPropertyType getPropertyType() {
 		return BeanPropertyType.ENUM;
+	}
+	
+	@XmlElement
+	public boolean getOverride() {
+		return ti.isOverride();
+	}
+	
+	public void setOverride(boolean override) {
+		ti.setOverride(override);
 	}
 }

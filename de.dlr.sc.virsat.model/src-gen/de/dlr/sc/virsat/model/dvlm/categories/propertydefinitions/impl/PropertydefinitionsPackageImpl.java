@@ -30,6 +30,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumValueDefin
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.FloatProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IArrayModifier;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IIntrinsicTypeProperty;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IVerificationSpecification;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IntProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.PropertydefinitionsFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.PropertydefinitionsPackage;
@@ -38,6 +39,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ResourceProper
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.StaticArrayModifier;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.StringProperty;
 
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.VerificationTypeSpecification;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.impl.PropertyinstancesPackageImpl;
@@ -208,6 +210,20 @@ public class PropertydefinitionsPackageImpl extends EPackageImpl implements Prop
 	private EClass dynamicArrayModifierEClass = null;
 
 	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass iVerificationSpecificationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass verificationTypeSpecificationEClass = null;
+
+	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
 	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
 	 * package URI value.
@@ -328,6 +344,15 @@ public class PropertydefinitionsPackageImpl extends EPackageImpl implements Prop
 	 */
 	public EReference getAProperty_ArrayModifier() {
 		return (EReference)aPropertyEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getAProperty_Verification() {
+		return (EReference)aPropertyEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -578,6 +603,33 @@ public class PropertydefinitionsPackageImpl extends EPackageImpl implements Prop
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getIVerificationSpecification() {
+		return iVerificationSpecificationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getVerificationTypeSpecification() {
+		return verificationTypeSpecificationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getVerificationTypeSpecification_VerificationType() {
+		return (EReference)verificationTypeSpecificationEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public PropertydefinitionsFactory getPropertydefinitionsFactory() {
 		return (PropertydefinitionsFactory)getEFactoryInstance();
 	}
@@ -603,6 +655,7 @@ public class PropertydefinitionsPackageImpl extends EPackageImpl implements Prop
 		// Create classes and their features
 		aPropertyEClass = createEClass(APROPERTY);
 		createEReference(aPropertyEClass, APROPERTY__ARRAY_MODIFIER);
+		createEReference(aPropertyEClass, APROPERTY__VERIFICATION);
 
 		composedPropertyEClass = createEClass(COMPOSED_PROPERTY);
 		createEReference(composedPropertyEClass, COMPOSED_PROPERTY__TYPE);
@@ -645,6 +698,11 @@ public class PropertydefinitionsPackageImpl extends EPackageImpl implements Prop
 		iArrayModifierEClass = createEClass(IARRAY_MODIFIER);
 
 		dynamicArrayModifierEClass = createEClass(DYNAMIC_ARRAY_MODIFIER);
+
+		iVerificationSpecificationEClass = createEClass(IVERIFICATION_SPECIFICATION);
+
+		verificationTypeSpecificationEClass = createEClass(VERIFICATION_TYPE_SPECIFICATION);
+		createEReference(verificationTypeSpecificationEClass, VERIFICATION_TYPE_SPECIFICATION__VERIFICATION_TYPE);
 	}
 
 	/**
@@ -701,10 +759,12 @@ public class PropertydefinitionsPackageImpl extends EPackageImpl implements Prop
 		resourcePropertyEClass.getESuperTypes().add(this.getAProperty());
 		staticArrayModifierEClass.getESuperTypes().add(this.getIArrayModifier());
 		dynamicArrayModifierEClass.getESuperTypes().add(this.getIArrayModifier());
+		verificationTypeSpecificationEClass.getESuperTypes().add(this.getIVerificationSpecification());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(aPropertyEClass, AProperty.class, "AProperty", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getAProperty_ArrayModifier(), this.getIArrayModifier(), null, "arrayModifier", null, 0, 1, AProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAProperty_Verification(), this.getIVerificationSpecification(), null, "verification", null, 0, 1, AProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(composedPropertyEClass, ComposedProperty.class, "ComposedProperty", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getComposedProperty_Type(), theCategoriesPackage.getCategory(), null, "type", null, 1, 1, ComposedProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -747,6 +807,11 @@ public class PropertydefinitionsPackageImpl extends EPackageImpl implements Prop
 		initEClass(iArrayModifierEClass, IArrayModifier.class, "IArrayModifier", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(dynamicArrayModifierEClass, DynamicArrayModifier.class, "DynamicArrayModifier", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(iVerificationSpecificationEClass, IVerificationSpecification.class, "IVerificationSpecification", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(verificationTypeSpecificationEClass, VerificationTypeSpecification.class, "VerificationTypeSpecification", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getVerificationTypeSpecification_VerificationType(), theCategoriesPackage.getATypeDefinition(), null, "verificationType", null, 0, 1, VerificationTypeSpecification.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 	}
 
 } //PropertydefinitionsPackageImpl

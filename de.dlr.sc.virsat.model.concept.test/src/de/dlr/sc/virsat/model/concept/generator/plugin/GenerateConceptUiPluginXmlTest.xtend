@@ -122,4 +122,71 @@ class GenerateConceptUiPluginXmlTest {
 		
 		Assert.assertEquals("Both file outputs are exactly the same. No addition indentation for plugin.XML", expected.toString, expectedFromRealPlugin.toString);
 	}
+	
+	@Test
+    def void testCreateUiXmlVerifications() {
+    	var concept = '''
+			Concept «TEST_CONCEPT_NAME»{
+				
+				StructuralElement «TEST_STRUCTURAL_1_NAME» {
+					IsRootStructuralElement;
+				}
+				
+				StructuralElement «TEST_STRUCTURAL_2_NAME» {
+					Applicable For [«TEST_STRUCTURAL_1_NAME»];
+				}				
+				
+				Category TestVerification {
+					IsVerification;
+				}
+				
+				Category «TEST_CATEGORY_NAME» {
+					StringProperty tpSringArrayDynamic[] verification TestVerification;
+					StringProperty tpSringArrayStatic[5];
+					IntProperty tpIntArrayDynamic[];
+					IntProperty tpIntArrayStatic[6];
+					FloatProperty tpFloatArrayDynamic[];
+					FloatProperty tpFloatArrayStatic[7];
+					BooleanProperty tpBooleanArrayDynamic[];
+					BooleanProperty tpBooleanArrayStatic[8];
+					Resource tpResourceDynamich[];
+					Resource tpResourceStatic[9];
+					Applicable For All;
+				}
+				
+			}
+		'''.parse
+		
+		val expected = pluginGenerator.createUiXml(concept, concept.name + ".ui/")
+		GeneratorJunitAssert.assertEqualContent(expected, "/resources/expectedOutputFilesForGenerators/ConceptUiPluginVerification.xml");
+
+		// now do the same thing, but store the just generated content into a temporary file,
+		// thus it can be read again by the PluginXML Reader, which should preserve the protected region
+		// then generate again, an d the output should not have any difference. Previously the
+		// protected region got indented by each generation with an additional TAB
+		val project = ResourcesPlugin.workspace.root.getProject("PluginXmlGenerator");
+		if (!project.exists) {
+			project.create(null);
+		}
+		project.open
+
+		val TEMPORARY_PLUGIN_XML = "TestGeneratorUiPlugin.xml";
+		val iFile = project.getFile(TEMPORARY_PLUGIN_XML);
+		val iFileLocation = iFile.getRawLocation().toOSString();
+		Files.write(Paths.get(iFileLocation), expected.toString.bytes);
+		pluginGenerator.pluginXmlReader = new PluginXmlReader() {
+			override init(String pluginId) {
+				try {
+					lines = Files.readAllLines(Paths.get(iFileLocation));
+				} catch (IOException e) {
+					throw new RuntimeException("Could not read plugin.xml in project " + pluginId);
+				}
+				return this;
+			}
+		}
+	
+		val expectedFromRealPlugin = pluginGenerator.createUiXml(concept, concept.name + ".ui/")
+		
+		Assert.assertEquals("Both file outputs are exactly the same. No addition indentation for plugin.XML", expected.toString, expectedFromRealPlugin.toString);
+	}
 }

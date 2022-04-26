@@ -51,6 +51,7 @@
 <setEntry value="de.dlr.sc.virsat.model.extension.requirements.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.statemachines.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.tests.feature:default"/>
+<setEntry value="de.dlr.sc.virsat.model.extension.thermal.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.visualisation.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.project.feature:default"/>
@@ -86,6 +87,8 @@
 <setEntry value="org.eclipse.pde:default"/>
 <setEntry value="org.eclipse.platform:default"/>
 <setEntry value="org.eclipse.rcp:default"/>
+<setEntry value="org.eclipse.rmf.reqif10.feature:default"/>
+<setEntry value="org.eclipse.rmf.reqif10.pror.feature:default"/>
 <setEntry value="org.eclipse.swtbot.generator.feature:default"/>
 <setEntry value="org.eclipse.team.svn:default"/>
 <setEntry value="org.eclipse.xtext.runtime:default"/>
