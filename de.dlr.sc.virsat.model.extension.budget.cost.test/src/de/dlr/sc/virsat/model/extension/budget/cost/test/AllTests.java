@@ -20,14 +20,12 @@ import org.junit.runners.Suite.SuiteClasses;
 import de.dlr.sc.virsat.model.extension.budget.cost.unit.EuroUnitCreatorTest;
 import junit.framework.JUnit4TestAdapter;
 
-
 /**
  * 
  */
 @RunWith(Suite.class)
 
-@SuiteClasses({		 EuroUnitCreatorTest.class
-				})
+@SuiteClasses({ EuroUnitCreatorTest.class })
 
 /**
  * 
@@ -41,12 +39,13 @@ public class AllTests {
 	 */
 	private AllTests() {
 	}
-	
+
 	/**
 	 * Test Adapter
+	 * 
 	 * @return Executable JUnit Tests
 	 */
 	public static junit.framework.Test suite() {
 		return new JUnit4TestAdapter(AllTests.class);
-	}	
+	}
 }
