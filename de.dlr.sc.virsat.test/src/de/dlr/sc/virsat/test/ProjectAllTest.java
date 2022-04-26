@@ -59,8 +59,8 @@ import org.junit.runners.Suite;
 	de.dlr.sc.virsat.model.extension.funcelectrical.test.AllTestsGen.class,
 	de.dlr.sc.virsat.model.extension.thermal.test.AllTests.class,
 	de.dlr.sc.virsat.model.extension.thermal.test.AllTestsGen.class,
-	de.dlr.sc.virsat.model.extension.cost.test.AllTests.class,
-	de.dlr.sc.virsat.model.extension.cost.test.AllTestsGen.class,
+	de.dlr.sc.virsat.model.extension.budget.cost.test.AllTests.class,
+	de.dlr.sc.virsat.model.extension.budget.cost.test.AllTestsGen.class,
 	})
 
 /**

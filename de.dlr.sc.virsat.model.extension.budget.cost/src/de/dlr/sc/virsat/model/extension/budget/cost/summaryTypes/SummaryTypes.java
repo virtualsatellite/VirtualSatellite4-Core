@@ -36,16 +36,17 @@ public class SummaryTypes {
 	}
 
 	/**
-	 * 
-	 * @param costSummary
-	 * @return the CostType with the Value of the cost.
+	 * Creates a map assigning to each cost type a cost table entry
+	 * containing the cost contribution of said cost type
+	 * @param costSummary a costSummary element in te model
+	 * @return a map containing the entries to be added to the costSummary
 	 */
 	public Map<CostType, CostTableEntry> createSummaryMap(CostSummary costSummary) {
 		Map<CostType, CostTableEntry> map = new HashMap<>();
 
 		StructuralElementInstance sei = (StructuralElementInstance) costSummary.getTypeInstance()
 				.getCategoryAssignmentContainer();
-
+		
 		if (sei == null) {
 			return map;
 		}

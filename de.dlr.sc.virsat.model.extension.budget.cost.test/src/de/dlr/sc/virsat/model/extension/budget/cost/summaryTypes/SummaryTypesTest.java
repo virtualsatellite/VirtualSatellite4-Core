@@ -35,59 +35,57 @@ public class SummaryTypesTest extends AProjectTestCase {
 	protected Concept concept;
 	protected StructuralInstantiator structInstantiator;
 	protected StructuralElement se;
-	
+
 	private static final int COSTVALUE_ELEVEN = 11;
 	private static final int COSTVALUE_TEN = 10;
 	private static final int COSTVALUE_FIVE = 5;
 	private static final double COSTVALUE_FIVE_POINT_FIVE = 5.5d;
 	private static final double COSTVALUE_FIVE_POINT_ZERO = 5.0d;
 	private static final double ROUNDING_VALUE = 0.0001;
-	
+
 	@Before
 	public void setUp() throws CoreException {
 		super.setUp();
 		addEditingDomainAndRepository();
-		
+
 		String conceptXmiPluginPath = "de.dlr.sc.virsat.model.extension.budget.cost/concept/concept.xmi";
 		concept = de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader.loadConceptFromPlugin(conceptXmiPluginPath);
-	
+
 		se = StructuralFactory.eINSTANCE.createStructuralElement();
 		structInstantiator = new StructuralInstantiator();
 	}
-	
+
 	@Test
 	public void testEmpty() {
 		CostSummary costSummary = new CostSummary(concept);
 		SummaryTypes summaryTyp = new SummaryTypes();
 		Map<CostType, CostTableEntry> summary = summaryTyp.createSummaryMap(costSummary);
-		
+
 		assertTrue(summary.isEmpty());
 	}
-	
+
 	@Test
 	public void testSameTypes() {
-		// Build a simple test model
-		// ...
 		StructuralElementInstance parentSei = structInstantiator.generateInstance(se, "parent");
 		BeanStructuralElementInstance parent = new BeanStructuralElementInstance(parentSei);
-		
+
 		CostSummary costSummary = new CostSummary(concept);
 		parent.add(costSummary);
-		
+
 		CostType materialCost = new CostType(concept);
-		
+
 		CostEquipment costEquipment1 = new CostEquipment(concept);
 		costEquipment1.setType(materialCost);
 		costEquipment1.setCost(COSTVALUE_TEN);
 		parent.add(costEquipment1);
-		
+
 		CostEquipment costEquipment2 = new CostEquipment(concept);
 		costEquipment2.setType(materialCost);
 		costEquipment2.setCost(COSTVALUE_FIVE);
 		parent.add(costEquipment2);
-		
+
 		SummaryTypes summaryTyp = new SummaryTypes();
-		
+
 		Map<CostType, CostTableEntry> summary = summaryTyp.createSummaryMap(costSummary);
 
 		assertEquals(1, summary.size());
@@ -97,14 +95,12 @@ public class SummaryTypesTest extends AProjectTestCase {
 
 	@Test
 	public void testDifferentTypes() {
-		// Build a simple test model
-		// ...
 		StructuralElementInstance parentSei = structInstantiator.generateInstance(se, "parent");
 		BeanStructuralElementInstance parent = new BeanStructuralElementInstance(parentSei);
-		
+
 		CostSummary costSummary = new CostSummary(concept);
 		parent.add(costSummary);
-		
+
 		CostType materialCost = new CostType(concept);
 		CostType testCosts = new CostType(concept);
 
@@ -112,32 +108,32 @@ public class SummaryTypesTest extends AProjectTestCase {
 		costEquipment1.setType(materialCost);
 		costEquipment1.setCost(COSTVALUE_TEN);
 		parent.add(costEquipment1);
-		
+
 		CostEquipment costEquipment2 = new CostEquipment(concept);
 		costEquipment2.setType(testCosts);
 		costEquipment2.setCost(COSTVALUE_FIVE);
 		parent.add(costEquipment2);
 
 		SummaryTypes summaryTyp = new SummaryTypes();
-		
+
 		Map<CostType, CostTableEntry> summary = summaryTyp.createSummaryMap(costSummary);
-		
+
 		assertEquals(2, summary.size());
 		CostTableEntry totalMaterial = summary.get(materialCost);
 		CostTableEntry totalTest = summary.get(testCosts);
 		assertEquals(COSTVALUE_TEN, totalMaterial.getCost(), ROUNDING_VALUE);
 		assertEquals(COSTVALUE_FIVE, totalTest.getCost(), ROUNDING_VALUE);
 
-	}	@Test
+	}
+
+	@Test
 	public void testSameTypesWithMargin() {
-		// Build a simple test model
-		// ...
 		StructuralElementInstance parentSei = structInstantiator.generateInstance(se, "parent");
 		BeanStructuralElementInstance parent = new BeanStructuralElementInstance(parentSei);
-		
+
 		CostSummary costSummary = new CostSummary(concept);
 		parent.add(costSummary);
-		
+
 		CostType materialCost = new CostType(concept);
 
 		CostEquipment costEquipment1 = new CostEquipment(concept);
@@ -147,7 +143,7 @@ public class SummaryTypesTest extends AProjectTestCase {
 		costEquipment1.setCostMargin(COSTVALUE_FIVE_POINT_ZERO);
 		costEquipment1.setMargin(COSTVALUE_TEN);
 		parent.add(costEquipment1);
-		
+
 		CostEquipment costEquipment2 = new CostEquipment(concept);
 		costEquipment2.setType(materialCost);
 		costEquipment2.setCost(COSTVALUE_FIVE);
@@ -157,7 +153,7 @@ public class SummaryTypesTest extends AProjectTestCase {
 		parent.add(costEquipment2);
 
 		SummaryTypes summaryTyp = new SummaryTypes();
-		
+
 		Map<CostType, CostTableEntry> summary = summaryTyp.createSummaryMap(costSummary);
 
 		assertEquals(1, summary.size());
@@ -165,7 +161,7 @@ public class SummaryTypesTest extends AProjectTestCase {
 		CostTableEntry costWithMargin = summary.get(materialCost);
 		CostTableEntry costMargin = summary.get(materialCost);
 		CostTableEntry margin = summary.get(materialCost);
-		
+
 		assertEquals(COSTVALUE_TEN, cost.getCost(), ROUNDING_VALUE);
 		assertEquals(COSTVALUE_ELEVEN, costWithMargin.getCostWithMargin(), ROUNDING_VALUE);
 		assertEquals(1, costMargin.getCostMargin(), ROUNDING_VALUE);
