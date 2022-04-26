@@ -43,7 +43,7 @@ import io.swagger.annotations.ApiModelProperty;
 		ABeanConversionBasedUnit.class,
 		BeanUnitSimple.class,
 		BeanUnitDerived.class
-})
+	})
 public abstract class ABeanUnit<U_TYPE extends AUnit> implements IBeanUnit<U_TYPE> {
 
 	protected U_TYPE unit;
@@ -121,11 +121,12 @@ public abstract class ABeanUnit<U_TYPE extends AUnit> implements IBeanUnit<U_TYP
 		return SetCommand.create(ed, unit, QudvPackage.Literals.AUNIT__SYMBOL, symbol);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@ApiModelProperty(required = true)
 	@XmlElement(nillable = true)
 	@XmlJavaTypeAdapter(ABeanQuantityKindAdapter.class)
 	@Override
-	public ABeanQuantityKind<? extends AQuantityKind> getQuantityKindBean() {
+	public ABeanQuantityKind getQuantityKindBean() {
 		if (unit.getQuantityKind() == null) {
 			return null;
 		}
@@ -133,8 +134,9 @@ public abstract class ABeanUnit<U_TYPE extends AUnit> implements IBeanUnit<U_TYP
 		return (ABeanQuantityKind<? extends AQuantityKind>) new BeanQuantityKindFactory().getInstanceFor(unit.getQuantityKind());
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
-	public void setQuantityKindBean(ABeanQuantityKind<? extends AQuantityKind> quantityKindBean) {
+	public void setQuantityKindBean(ABeanQuantityKind quantityKindBean) {
 		unit.setQuantityKind(quantityKindBean.getQuantityKind());
 	}
 

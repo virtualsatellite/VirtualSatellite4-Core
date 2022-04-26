@@ -28,9 +28,9 @@ import junit.framework.JUnit4TestAdapter;
 @RunWith(Suite.class)
 
 @SuiteClasses({		
-		ProductStructureHelperTest.class,
-		ProductStructureDragAndDropInheritanceCommandHelperTest.class
-				})
+	ProductStructureHelperTest.class,
+	ProductStructureDragAndDropInheritanceCommandHelperTest.class
+	})
 
 /**
  * 

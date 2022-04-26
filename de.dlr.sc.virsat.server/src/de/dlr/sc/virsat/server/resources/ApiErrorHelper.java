@@ -11,11 +11,18 @@ package de.dlr.sc.virsat.server.resources;
 
 import javax.ws.rs.core.Response;
 
+import org.eclipse.emf.common.command.Command;
+
+import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
+
 public class ApiErrorHelper {
 
 	public static final String SUCCESSFUL_OPERATION = "Successful operation";
-	public static final String SYNC_ERROR = "Synchronization error";
+	public static final String INTERNAL_SERVER_ERROR = "Internal server error";
 	public static final String COULD_NOT_FIND_REQUESTED_ELEMENT = "Could not find requested element";
+	public static final String INVALID_TYPE_ERROR = "Is not a valid type";
+	public static final String NOT_EXECUTEABLE = "Command was not executeable";
 	
 	private ApiErrorHelper() { };
 	
@@ -27,7 +34,23 @@ public class ApiErrorHelper {
 		return createBadRequestResponse(COULD_NOT_FIND_REQUESTED_ELEMENT);
 	}
 
-	public static Response createSyncErrorResponse(String msg) {
-		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ApiErrorHelper.SYNC_ERROR + ": " + msg).build();
+	public static Response createInvalidTypeErrorResponse(String type) {
+		return createBadRequestResponse(INVALID_TYPE_ERROR + ": " + type);
+	}
+
+	public static Response createInternalErrorResponse(String msg) {
+		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(ApiErrorHelper.INTERNAL_SERVER_ERROR + ": " + msg).build();
+	}
+	
+	public static void executeCommandIffCanExecute(Command command, VirSatTransactionalEditingDomain ed, IUserContext iUserContext) {
+		if (ed.getVirSatCommandStack().canExecute(command, iUserContext)) {
+			ed.getVirSatCommandStack().executeNoUndo(command, iUserContext, false);
+		} else {
+			throw new RuntimeException(NOT_EXECUTEABLE);
+		}
+	}
+
+	public static Response createNotExecuteableErrorResponse() {
+		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(NOT_EXECUTEABLE).build();
 	}
 }

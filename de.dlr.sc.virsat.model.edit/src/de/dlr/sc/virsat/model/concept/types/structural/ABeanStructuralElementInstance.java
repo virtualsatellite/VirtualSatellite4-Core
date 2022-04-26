@@ -352,7 +352,7 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	}
 
 	@Override
-	@XmlElement(name = "parent")
+	@XmlElement(name = "parent", nillable = true)
 	@ApiModelProperty(required = true,
 		value = "Unique identifier for the parent bean",
 		example = "b168b0df-84b6-4b7f-bede-69298b215f40")
@@ -368,7 +368,11 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	
 	@Override
 	public void setParent(BeanStructuralElementInstance newParent) {
-		sei.setParent(newParent.getStructuralElementInstance());
+		if (newParent == null) {
+			sei.setParent(null);
+		} else {
+			sei.setParent(newParent.getStructuralElementInstance());
+		}
 	}
 	
 	@Override

@@ -195,4 +195,138 @@ public class GenerateConceptUiPluginXmlTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
+  
+  @Test
+  public void testCreateUiXmlVerifications() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("Concept ");
+      _builder.append(this.TEST_CONCEPT_NAME);
+      _builder.append("{");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("StructuralElement ");
+      _builder.append(this.TEST_STRUCTURAL_1_NAME, "\t");
+      _builder.append(" {");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t\t");
+      _builder.append("IsRootStructuralElement;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("StructuralElement ");
+      _builder.append(this.TEST_STRUCTURAL_2_NAME, "\t");
+      _builder.append(" {");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t\t");
+      _builder.append("Applicable For [");
+      _builder.append(this.TEST_STRUCTURAL_1_NAME, "\t\t");
+      _builder.append("];");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t");
+      _builder.append("}\t\t\t\t");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("Category TestVerification {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("IsVerification;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("Category ");
+      _builder.append(this.TEST_CATEGORY_NAME, "\t");
+      _builder.append(" {");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t\t");
+      _builder.append("StringProperty tpSringArrayDynamic[] verification TestVerification;");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("StringProperty tpSringArrayStatic[5];");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("IntProperty tpIntArrayDynamic[];");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("IntProperty tpIntArrayStatic[6];");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("FloatProperty tpFloatArrayDynamic[];");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("FloatProperty tpFloatArrayStatic[7];");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("BooleanProperty tpBooleanArrayDynamic[];");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("BooleanProperty tpBooleanArrayStatic[8];");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("Resource tpResourceDynamich[];");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("Resource tpResourceStatic[9];");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("Applicable For All;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      Concept concept = this._parseHelper.parse(_builder);
+      String _name = concept.getName();
+      String _plus = (_name + ".ui/");
+      final CharSequence expected = this.pluginGenerator.createUiXml(concept, _plus);
+      GeneratorJunitAssert.assertEqualContent(expected, "/resources/expectedOutputFilesForGenerators/ConceptUiPluginVerification.xml");
+      final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject("PluginXmlGenerator");
+      boolean _exists = project.exists();
+      boolean _not = (!_exists);
+      if (_not) {
+        project.create(null);
+      }
+      project.isOpen();
+      final String TEMPORARY_PLUGIN_XML = "TestGeneratorUiPlugin.xml";
+      final IFile iFile = project.getFile(TEMPORARY_PLUGIN_XML);
+      final String iFileLocation = iFile.getRawLocation().toOSString();
+      Files.write(Paths.get(iFileLocation), expected.toString().getBytes());
+      this.pluginGenerator.setPluginXmlReader(new PluginXmlReader() {
+        @Override
+        public PluginXmlReader init(final String pluginId) {
+          try {
+            this.lines = Files.readAllLines(Paths.get(iFileLocation));
+          } catch (final Throwable _t) {
+            if (_t instanceof IOException) {
+              throw new RuntimeException(("Could not read plugin.xml in project " + pluginId));
+            } else {
+              throw Exceptions.sneakyThrow(_t);
+            }
+          }
+          return this;
+        }
+      });
+      String _name_1 = concept.getName();
+      String _plus_1 = (_name_1 + ".ui/");
+      final CharSequence expectedFromRealPlugin = this.pluginGenerator.createUiXml(concept, _plus_1);
+      Assert.assertEquals("Both file outputs are exactly the same. No addition indentation for plugin.XML", expected.toString(), expectedFromRealPlugin.toString());
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
 }

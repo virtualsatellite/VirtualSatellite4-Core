@@ -41,7 +41,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
 
-@Api(hidden = true, authorizations = {@Authorization(value = "basic")})
+@Api(hidden = true, authorizations = {@Authorization(value = "basic")}, tags = {ModelAccessResource.TAG_SEI})
 public class StructuralElementInstanceResource {
 	
 	private RepoModelAccessResource parentResource;
@@ -60,16 +60,16 @@ public class StructuralElementInstanceResource {
 			httpMethod = "GET",
 			notes = "This service fetches a StructuralElementInstance.")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					response = ABeanStructuralElementInstance.class,
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.BAD_REQUEST_400, 
-					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				response = ABeanStructuralElementInstance.class,
+				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.BAD_REQUEST_400, 
+				message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response getSei(@PathParam("seiUuid") @ApiParam(value = "Uuid of the SEI", required = true) String seiUuid) {
 		try {
 			parentResource.synchronize();
@@ -83,7 +83,7 @@ public class StructuralElementInstanceResource {
 			IBeanStructuralElementInstance beanSei = new BeanStructuralElementInstanceFactory().getInstanceFor(sei);
 			return Response.ok(beanSei).build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 
@@ -97,18 +97,18 @@ public class StructuralElementInstanceResource {
 			httpMethod = "PUT",
 			notes = "This service updates an existing StructuralElementInstance")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response putSei(@ApiParam(value = "SEI to put", required = true) ABeanStructuralElementInstance bean) {
 		try {
 			parentResource.synchronize();
 			return Response.status(Response.Status.OK).build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 	
@@ -122,16 +122,19 @@ public class StructuralElementInstanceResource {
 			httpMethod = "POST",
 			notes = "This service creates a new StructuralElementInstance and returns it")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					response = String.class,
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.BAD_REQUEST_400, 
-					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				response = String.class,
+				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.BAD_REQUEST_400, 
+				message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.NOT_EXECUTEABLE),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response createSei(@PathParam("seiUuid") @ApiParam(value = "parent uuid", required = true) String parentUuid,
 			@QueryParam(value = ModelAccessResource.QP_FULL_QUALIFIED_NAME)
 			@ApiParam(value = "Full qualified name of the SEI type", required = true) String fullQualifiedName) {
@@ -143,15 +146,14 @@ public class StructuralElementInstanceResource {
 			if (parentSei == null) {
 				return ApiErrorHelper.createNotFoundErrorResponse();
 			}
-			String newSeiUuid = ModelAccessResource.createSeiFromFqn(fullQualifiedName, parentSei, parentResource.getEd());
+			String newSeiUuid = ModelAccessResource.createSeiFromFqn(fullQualifiedName, parentSei, parentResource.getEd(), parentResource.getUser());
 			
 			parentResource.synchronize();
 			return Response.ok(newSeiUuid).build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
-	
 	
 	/** **/
 	@DELETE
@@ -163,15 +165,18 @@ public class StructuralElementInstanceResource {
 			httpMethod = "DELETE",
 			notes = "This service deletes a StructuralElementInstance.")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.BAD_REQUEST_400,
-					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.SYNC_ERROR)})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.BAD_REQUEST_400,
+				message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.NOT_EXECUTEABLE),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response deleteSei(@PathParam("seiUuid") @ApiParam(value = "Uuid of the SEI", required = true)  String seiUuid) {
 		try {
 			// Sync before delete
@@ -184,13 +189,13 @@ public class StructuralElementInstanceResource {
 			}
 			
 			Command deleteCommand = CreateRemoveSeiWithFileStructureCommand.create(sei, RemoveFileStructureCommand.DELETE_RESOURCE_OPERATION_FUNCTION);
-			parentResource.getEd().getCommandStack().execute(deleteCommand);
+			ApiErrorHelper.executeCommandIffCanExecute(deleteCommand, parentResource.getEd(), parentResource.getUser());
 			
 			// Sync after delete
 			parentResource.synchronize();
 			return Response.ok().build();
 		} catch (Exception e) {
-			return ApiErrorHelper.createSyncErrorResponse(e.getMessage());
+			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
 	

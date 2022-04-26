@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.model.concept.types.property;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.UnexecutableCommand;
@@ -24,6 +25,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumValueDefin
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyInstanceHelper;
+import de.dlr.sc.virsat.model.dvlm.json.ABeanUnitAdapter;
 import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
 import io.swagger.annotations.ApiModelProperty;
@@ -106,7 +108,13 @@ public class BeanPropertyEnum extends ABeanProperty<EnumUnitPropertyInstance, St
 	}
 
 	@Override
+	@XmlElement(nillable = true)
+	@ApiModelProperty(value = "Unit of the enum")
+	@XmlJavaTypeAdapter(ABeanUnitAdapter.class)
 	public ABeanUnit<? extends AUnit> getUnitBean() {
+		if (ti.getUnit() == null) {
+			return null;
+		}
 		return (ABeanUnit<? extends AUnit>) new BeanUnitFactory().getInstanceFor(ti.getUnit());
 	}
 	
@@ -126,13 +134,12 @@ public class BeanPropertyEnum extends ABeanProperty<EnumUnitPropertyInstance, St
 	}
 	
 	@Override
-	@XmlElement(nillable = true)
 	public String getUnit() {
 		return new PropertyInstanceHelper().getUnit(ti);
 	}
 	
 	@Override
-	@ApiModelProperty(value = "Unit of the enum")
+	@ApiModelProperty(hidden = true)
 	public boolean setUnit(String unitName) {
 		return new PropertyInstanceHelper().setUnit(ti, unitName);
 	}
@@ -149,5 +156,14 @@ public class BeanPropertyEnum extends ABeanProperty<EnumUnitPropertyInstance, St
 	@Override
 	public BeanPropertyType getPropertyType() {
 		return BeanPropertyType.ENUM;
+	}
+	
+	@XmlElement
+	public boolean getOverride() {
+		return ti.isOverride();
+	}
+	
+	public void setOverride(boolean override) {
+		ti.setOverride(override);
 	}
 }

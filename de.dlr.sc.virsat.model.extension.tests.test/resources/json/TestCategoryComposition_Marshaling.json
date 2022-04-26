@@ -9,19 +9,22 @@
          "uuid" : "b9bfb08f-2778-4fe9-a774-3d8b0ad638d0",
          "isCalculated" : false,
          "propertyType" : "boolean",
+         "override" : false,
          "value" : false
       },
       "testEnumBean" : {
          "uuid" : "ed62d73c-dbba-409c-b73c-f0d3d9f49390",
          "isCalculated" : false,
          "propertyType" : "enum",
-         "unit" : "",
+         "override" : false,
+         "unitBean" : null,
          "value" : null
       },
       "testFloatBean" : {
          "uuid" : "2870876e-4d6c-4128-801d-54fa109f3820",
          "isCalculated" : false,
          "propertyType" : "float",
+         "override" : false,
          "unitBean" : null,
          "value" : null
       },
@@ -29,6 +32,7 @@
          "uuid" : "0f37aff6-ccc0-436f-a592-bd466f74bd80",
          "isCalculated" : false,
          "propertyType" : "int",
+         "override" : false,
          "unitBean" : null,
          "value" : null
       },
@@ -36,12 +40,14 @@
          "uuid" : "fa822159-51a5-4bf2-99cf-e565b67e0eb0",
          "isCalculated" : false,
          "propertyType" : "resource",
+         "override" : false,
          "value" : null
       },
       "testStringBean" : {
          "uuid" : "26edbae8-9f05-4ef5-8673-91e1af668aa0",
          "isCalculated" : false,
          "propertyType" : "string",
+         "override" : false,
          "value" : "testString"
       }
    }

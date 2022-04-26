@@ -125,13 +125,22 @@ public interface PropertydefinitionsPackage extends EPackage {
 	int APROPERTY__ARRAY_MODIFIER = CategoriesPackage.ATYPE_DEFINITION_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Verification</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int APROPERTY__VERIFICATION = CategoriesPackage.ATYPE_DEFINITION_FEATURE_COUNT + 1;
+
+	/**
 	 * The number of structural features of the '<em>AProperty</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int APROPERTY_FEATURE_COUNT = CategoriesPackage.ATYPE_DEFINITION_FEATURE_COUNT + 1;
+	int APROPERTY_FEATURE_COUNT = CategoriesPackage.ATYPE_DEFINITION_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of operations of the '<em>AProperty</em>' class.
@@ -196,6 +205,15 @@ public interface PropertydefinitionsPackage extends EPackage {
 	 * @ordered
 	 */
 	int COMPOSED_PROPERTY__ARRAY_MODIFIER = APROPERTY__ARRAY_MODIFIER;
+
+	/**
+	 * The feature id for the '<em><b>Verification</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOSED_PROPERTY__VERIFICATION = APROPERTY__VERIFICATION;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference.
@@ -298,6 +316,15 @@ public interface PropertydefinitionsPackage extends EPackage {
 	int REFERENCE_PROPERTY__ARRAY_MODIFIER = APROPERTY__ARRAY_MODIFIER;
 
 	/**
+	 * The feature id for the '<em><b>Verification</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REFERENCE_PROPERTY__VERIFICATION = APROPERTY__VERIFICATION;
+
+	/**
 	 * The feature id for the '<em><b>Reference Type</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -378,6 +405,15 @@ public interface PropertydefinitionsPackage extends EPackage {
 	 * @ordered
 	 */
 	int EREFERENCE_PROPERTY__ARRAY_MODIFIER = APROPERTY__ARRAY_MODIFIER;
+
+	/**
+	 * The feature id for the '<em><b>Verification</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EREFERENCE_PROPERTY__VERIFICATION = APROPERTY__VERIFICATION;
 
 	/**
 	 * The feature id for the '<em><b>Reference Type</b></em>' reference.
@@ -499,13 +535,22 @@ public interface PropertydefinitionsPackage extends EPackage {
 	int AQUDV_TYPE_PROPERTY__ARRAY_MODIFIER = CalculationPackage.IEQUATION_DEFINITION_INPUT_FEATURE_COUNT + 4;
 
 	/**
+	 * The feature id for the '<em><b>Verification</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int AQUDV_TYPE_PROPERTY__VERIFICATION = CalculationPackage.IEQUATION_DEFINITION_INPUT_FEATURE_COUNT + 5;
+
+	/**
 	 * The feature id for the '<em><b>Quantity Kind Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int AQUDV_TYPE_PROPERTY__QUANTITY_KIND_NAME = CalculationPackage.IEQUATION_DEFINITION_INPUT_FEATURE_COUNT + 5;
+	int AQUDV_TYPE_PROPERTY__QUANTITY_KIND_NAME = CalculationPackage.IEQUATION_DEFINITION_INPUT_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Unit Name</b></em>' attribute.
@@ -514,7 +559,7 @@ public interface PropertydefinitionsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int AQUDV_TYPE_PROPERTY__UNIT_NAME = CalculationPackage.IEQUATION_DEFINITION_INPUT_FEATURE_COUNT + 6;
+	int AQUDV_TYPE_PROPERTY__UNIT_NAME = CalculationPackage.IEQUATION_DEFINITION_INPUT_FEATURE_COUNT + 7;
 
 	/**
 	 * The number of structural features of the '<em>AQudv Type Property</em>' class.
@@ -523,7 +568,7 @@ public interface PropertydefinitionsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int AQUDV_TYPE_PROPERTY_FEATURE_COUNT = CalculationPackage.IEQUATION_DEFINITION_INPUT_FEATURE_COUNT + 7;
+	int AQUDV_TYPE_PROPERTY_FEATURE_COUNT = CalculationPackage.IEQUATION_DEFINITION_INPUT_FEATURE_COUNT + 8;
 
 	/**
 	 * The number of operations of the '<em>AQudv Type Property</em>' class.
@@ -588,6 +633,15 @@ public interface PropertydefinitionsPackage extends EPackage {
 	 * @ordered
 	 */
 	int INT_PROPERTY__ARRAY_MODIFIER = AQUDV_TYPE_PROPERTY__ARRAY_MODIFIER;
+
+	/**
+	 * The feature id for the '<em><b>Verification</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INT_PROPERTY__VERIFICATION = AQUDV_TYPE_PROPERTY__VERIFICATION;
 
 	/**
 	 * The feature id for the '<em><b>Quantity Kind Name</b></em>' attribute.
@@ -690,6 +744,15 @@ public interface PropertydefinitionsPackage extends EPackage {
 	int FLOAT_PROPERTY__ARRAY_MODIFIER = AQUDV_TYPE_PROPERTY__ARRAY_MODIFIER;
 
 	/**
+	 * The feature id for the '<em><b>Verification</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FLOAT_PROPERTY__VERIFICATION = AQUDV_TYPE_PROPERTY__VERIFICATION;
+
+	/**
 	 * The feature id for the '<em><b>Quantity Kind Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -790,6 +853,15 @@ public interface PropertydefinitionsPackage extends EPackage {
 	int STRING_PROPERTY__ARRAY_MODIFIER = APROPERTY__ARRAY_MODIFIER;
 
 	/**
+	 * The feature id for the '<em><b>Verification</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STRING_PROPERTY__VERIFICATION = APROPERTY__VERIFICATION;
+
+	/**
 	 * The feature id for the '<em><b>Default Value</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -872,6 +944,15 @@ public interface PropertydefinitionsPackage extends EPackage {
 	int BOOLEAN_PROPERTY__ARRAY_MODIFIER = APROPERTY__ARRAY_MODIFIER;
 
 	/**
+	 * The feature id for the '<em><b>Verification</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int BOOLEAN_PROPERTY__VERIFICATION = APROPERTY__VERIFICATION;
+
+	/**
 	 * The feature id for the '<em><b>Default Value</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -952,6 +1033,15 @@ public interface PropertydefinitionsPackage extends EPackage {
 	 * @ordered
 	 */
 	int ENUM_PROPERTY__ARRAY_MODIFIER = AQUDV_TYPE_PROPERTY__ARRAY_MODIFIER;
+
+	/**
+	 * The feature id for the '<em><b>Verification</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ENUM_PROPERTY__VERIFICATION = AQUDV_TYPE_PROPERTY__VERIFICATION;
 
 	/**
 	 * The feature id for the '<em><b>Quantity Kind Name</b></em>' attribute.
@@ -1109,6 +1199,15 @@ public interface PropertydefinitionsPackage extends EPackage {
 	int RESOURCE_PROPERTY__ARRAY_MODIFIER = APROPERTY__ARRAY_MODIFIER;
 
 	/**
+	 * The feature id for the '<em><b>Verification</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RESOURCE_PROPERTY__VERIFICATION = APROPERTY__VERIFICATION;
+
+	/**
 	 * The number of structural features of the '<em>Resource Property</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1221,6 +1320,72 @@ public interface PropertydefinitionsPackage extends EPackage {
 
 
 	/**
+	 * The meta object id for the '{@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.IVerificationSpecificationImpl <em>IVerification Specification</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.IVerificationSpecificationImpl
+	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.PropertydefinitionsPackageImpl#getIVerificationSpecification()
+	 * @generated
+	 */
+	int IVERIFICATION_SPECIFICATION = 16;
+
+	/**
+	 * The number of structural features of the '<em>IVerification Specification</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int IVERIFICATION_SPECIFICATION_FEATURE_COUNT = 0;
+
+	/**
+	 * The number of operations of the '<em>IVerification Specification</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int IVERIFICATION_SPECIFICATION_OPERATION_COUNT = 0;
+
+	/**
+	 * The meta object id for the '{@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.VerificationTypeSpecificationImpl <em>Verification Type Specification</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.VerificationTypeSpecificationImpl
+	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.PropertydefinitionsPackageImpl#getVerificationTypeSpecification()
+	 * @generated
+	 */
+	int VERIFICATION_TYPE_SPECIFICATION = 17;
+
+	/**
+	 * The feature id for the '<em><b>Verification Type</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VERIFICATION_TYPE_SPECIFICATION__VERIFICATION_TYPE = IVERIFICATION_SPECIFICATION_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Verification Type Specification</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VERIFICATION_TYPE_SPECIFICATION_FEATURE_COUNT = IVERIFICATION_SPECIFICATION_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Verification Type Specification</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int VERIFICATION_TYPE_SPECIFICATION_OPERATION_COUNT = IVERIFICATION_SPECIFICATION_OPERATION_COUNT + 0;
+
+
+	/**
 	 * Returns the meta object for class '{@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty <em>AProperty</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1240,6 +1405,17 @@ public interface PropertydefinitionsPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getAProperty_ArrayModifier();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty#getVerification <em>Verification</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Verification</em>'.
+	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty#getVerification()
+	 * @see #getAProperty()
+	 * @generated
+	 */
+	EReference getAProperty_Verification();
 
 	/**
 	 * Returns the meta object for class '{@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ComposedProperty <em>Composed Property</em>}'.
@@ -1524,6 +1700,37 @@ public interface PropertydefinitionsPackage extends EPackage {
 	EClass getDynamicArrayModifier();
 
 	/**
+	 * Returns the meta object for class '{@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IVerificationSpecification <em>IVerification Specification</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>IVerification Specification</em>'.
+	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IVerificationSpecification
+	 * @generated
+	 */
+	EClass getIVerificationSpecification();
+
+	/**
+	 * Returns the meta object for class '{@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.VerificationTypeSpecification <em>Verification Type Specification</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Verification Type Specification</em>'.
+	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.VerificationTypeSpecification
+	 * @generated
+	 */
+	EClass getVerificationTypeSpecification();
+
+	/**
+	 * Returns the meta object for the reference '{@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.VerificationTypeSpecification#getVerificationType <em>Verification Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Verification Type</em>'.
+	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.VerificationTypeSpecification#getVerificationType()
+	 * @see #getVerificationTypeSpecification()
+	 * @generated
+	 */
+	EReference getVerificationTypeSpecification_VerificationType();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1563,6 +1770,14 @@ public interface PropertydefinitionsPackage extends EPackage {
 		 * @generated
 		 */
 		EReference APROPERTY__ARRAY_MODIFIER = eINSTANCE.getAProperty_ArrayModifier();
+
+		/**
+		 * The meta object literal for the '<em><b>Verification</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference APROPERTY__VERIFICATION = eINSTANCE.getAProperty_Verification();
 
 		/**
 		 * The meta object literal for the '{@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.ComposedPropertyImpl <em>Composed Property</em>}' class.
@@ -1809,6 +2024,34 @@ public interface PropertydefinitionsPackage extends EPackage {
 		 * @generated
 		 */
 		EClass DYNAMIC_ARRAY_MODIFIER = eINSTANCE.getDynamicArrayModifier();
+
+		/**
+		 * The meta object literal for the '{@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.IVerificationSpecificationImpl <em>IVerification Specification</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.IVerificationSpecificationImpl
+		 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.PropertydefinitionsPackageImpl#getIVerificationSpecification()
+		 * @generated
+		 */
+		EClass IVERIFICATION_SPECIFICATION = eINSTANCE.getIVerificationSpecification();
+
+		/**
+		 * The meta object literal for the '{@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.VerificationTypeSpecificationImpl <em>Verification Type Specification</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.VerificationTypeSpecificationImpl
+		 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.PropertydefinitionsPackageImpl#getVerificationTypeSpecification()
+		 * @generated
+		 */
+		EClass VERIFICATION_TYPE_SPECIFICATION = eINSTANCE.getVerificationTypeSpecification();
+
+		/**
+		 * The meta object literal for the '<em><b>Verification Type</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference VERIFICATION_TYPE_SPECIFICATION__VERIFICATION_TYPE = eINSTANCE.getVerificationTypeSpecification_VerificationType();
 
 	}
 

@@ -10,13 +10,11 @@
 package de.dlr.sc.virsat.model.concept.types.qudv;
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
-import de.dlr.sc.virsat.model.dvlm.json.DoubleAdapter;
 import de.dlr.sc.virsat.model.dvlm.qudv.AffineConversionUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
 import io.swagger.annotations.ApiModelProperty;
@@ -32,13 +30,12 @@ public class BeanUnitAffineConversion extends ABeanConversionBasedUnit<AffineCon
 	}
 	
 	@ApiModelProperty(required = true)
-	@XmlElement(nillable = true)
-	@XmlJavaTypeAdapter(DoubleAdapter.class)
-	Double getFactor() {
+	@XmlElement
+	public double getFactor() {
 		return unit.getFactor();
 	}
 	
-	void setFactor(Double factor) {
+	public void setFactor(double factor) {
 		unit.setFactor(factor);
 	}
 	
@@ -47,12 +44,12 @@ public class BeanUnitAffineConversion extends ABeanConversionBasedUnit<AffineCon
 	}
 	
 	@ApiModelProperty(required = true)
-	@XmlElement(nillable = true)
-	double getOffset() {
+	@XmlElement
+	public double getOffset() {
 		return unit.getOffset();
 	}
 	
-	void setOffset(double offset) {
+	public void setOffset(double offset) {
 		unit.setOffset(offset);
 	}
 	

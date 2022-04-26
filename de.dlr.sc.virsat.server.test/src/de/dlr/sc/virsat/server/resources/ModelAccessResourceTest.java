@@ -29,8 +29,11 @@ import org.junit.Test;
 
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.general.IUuid;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.server.Activator;
+import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.test.VersionControlTestHelper;
 
 public class ModelAccessResourceTest extends AModelAccessResourceTest {
@@ -194,14 +197,20 @@ public class ModelAccessResourceTest extends AModelAccessResourceTest {
 	public void testCreateRootSei() throws Exception {
 		String wantedTypeFqn = tSei.getFullQualifiedSturcturalElementName();
 		
-		Response response = webTarget
-				.path(ModelAccessResource.ROOT_SEIS)
-				.queryParam(ModelAccessResource.QP_FULL_QUALIFIED_NAME, wantedTypeFqn)
-				.request()
-				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
-				.post(Entity.json(null));
+		Response response = getTestRequestBuilderWithQueryParam(ModelAccessResource.ROOT_SEIS, 
+				ModelAccessResource.QP_FULL_QUALIFIED_NAME, wantedTypeFqn).post(Entity.json(null));
 		
-		assertIUuidGotCreated(response, wantedTypeFqn, ed, ed.getResourceSet().getRepository().getRootEntities());
+		IUuid entity = assertIUuidGotCreated(response, wantedTypeFqn, ed, ed.getResourceSet().getRepository().getRootEntities());
+		
+		StructuralElementInstance sei = RepositoryUtility.findSei(entity.getUuid().toString(), ed.getResourceSet().getRepository());
+		assertEquals("Inherited parent discipline", ed.getResourceSet().getRepository().getAssignedDiscipline(), sei.getAssignedDiscipline());
+		
+		// Assert implicit parent discipline rights check
+		setDiscipline(ed.getResourceSet().getRepository(), anotherDiscipline);
+		
+		response = getTestRequestBuilderWithQueryParam(ModelAccessResource.ROOT_SEIS, 
+				ModelAccessResource.QP_FULL_QUALIFIED_NAME, wantedTypeFqn).post(Entity.json(null));
+		assertCommandNotExecuteableErrorResponse(response);
 	}
 	
 	@Test
@@ -210,11 +219,15 @@ public class ModelAccessResourceTest extends AModelAccessResourceTest {
 		
 		// Test all disciplines
 		String entityString = getTestRequestBuilder(ModelAccessResource.DISCIPLINES).get(String.class);
-		assertTrue("Discipline for System should be returned", entityString.contains("System"));
+		assertTrue("Test discipline should be returned", entityString.contains(DISCIPLINE_NAME));
 		
 		// Test role management discipline
 		entityString = getTestRequestBuilder(ModelAccessResource.ROLEMANAGEMENT).get(String.class);
-		assertTrue("Discipline for System should be returned", entityString.contains("System"));
+		assertTrue("Test discipline should be returned", entityString.contains(DISCIPLINE_NAME));
+		
+		// Test repository discipline
+		entityString = getTestRequestBuilder(ModelAccessResource.REPOSITORY).get(String.class);
+		assertTrue("Test discipline should be returned", entityString.contains(DISCIPLINE_NAME));
 		
 		assertEquals("No new commit on get without remote changes", commits, 
 				VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath()));

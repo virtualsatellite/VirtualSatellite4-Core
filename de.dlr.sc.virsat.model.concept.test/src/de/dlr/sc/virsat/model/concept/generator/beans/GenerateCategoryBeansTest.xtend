@@ -81,12 +81,30 @@ class GenerateCategoryBeansTest {
 			}
 		'''.parse
 
+    	val category = concept.categories.get(0)
+    	val concreteClassContents = createAddCommandGenerator.createConcreteClass(concept, category)
+    	val abstractClassContents = createAddCommandGenerator.createAbstractClass(concept, category)
+    	
+    	GeneratorJunitAssert.assertEqualContent(concreteClassContents, "/resources/expectedOutputFilesForGenerators/CategoryBeanIntrinsicProperties.java")
+    	GeneratorJunitAssert.assertEqualContent(abstractClassContents, "/resources/expectedOutputFilesForGenerators/ACategoryBeanIntrinsicProperties.java")
+    }
+    
+    @Test
+    def void testCreateForVerification() {
+    	concept = '''
+			Concept «TEST_CONCEPT_NAME»{
+				Category «TEST_CATEGORY_NAME» {
+					IsVerification;
+				}
+			}
+		'''.parse
+
 		val category = concept.categories.get(0)
     	val concreteClassContents = createAddCommandGenerator.createConcreteClass(concept, category)
     	val abstractClassContents = createAddCommandGenerator.createAbstractClass(concept, category)
     	
-		GeneratorJunitAssert.assertEqualContent(concreteClassContents, "/resources/expectedOutputFilesForGenerators/CategoryBeanIntrinsicProperties.java")
-		GeneratorJunitAssert.assertEqualContent(abstractClassContents, "/resources/expectedOutputFilesForGenerators/ACategoryBeanIntrinsicProperties.java")
+		GeneratorJunitAssert.assertEqualContent(concreteClassContents, "/resources/expectedOutputFilesForGenerators/CategoryBeanVerification.java")
+		GeneratorJunitAssert.assertEqualContent(abstractClassContents, "/resources/expectedOutputFilesForGenerators/ACategoryBeanVerification.java")
     }
     
     @Test
