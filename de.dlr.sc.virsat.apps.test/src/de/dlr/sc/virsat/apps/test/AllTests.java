@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import de.dlr.sc.virsat.apps.api.external.ModelAPITest;
+import de.dlr.sc.virsat.apps.api.external.ModelAPIAppsTest;
 import de.dlr.sc.virsat.apps.initializer.ContentBuildPropertiesTest;
 import de.dlr.sc.virsat.apps.initializer.ContentExampleAppTest;
 import de.dlr.sc.virsat.apps.initializer.ContentManifestMfTest;
@@ -31,7 +31,7 @@ import junit.framework.JUnit4TestAdapter;
 	ContentExampleAppTest.class,
 	VirsatAppsInititalizerTest.class,
 	ManifestRequiredBundlesConceptUpdaterTest.class,
-	ModelAPITest.class
+	ModelAPIAppsTest.class
 	})
 
 /**

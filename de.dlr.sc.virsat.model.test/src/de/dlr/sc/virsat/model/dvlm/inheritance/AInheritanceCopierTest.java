@@ -290,6 +290,7 @@ public abstract class AInheritanceCopierTest {
 		
 		repo = DVLMFactory.eINSTANCE.createRepository();
 		concept = ConceptsFactory.eINSTANCE.createConcept();
+		concept.setName("de.dlr.sc.virsat.inheritance.test.concept");
 		
 		concept.getStructuralElements().add(seEd);
 		concept.getStructuralElements().add(seEc);
