@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.ecore.xmi.impl;
 
+import java.util.HashMap;
+
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
@@ -40,48 +42,70 @@ public class DvlmXMIResourceImpl extends XMIResourceImpl implements Resource {
 	 */
 	public DvlmXMIResourceImpl(URI uri) {
 		super(uri);
+		setIntrinsicIDToEObjectMap(new HashMap<String, EObject>());
 	}
 
+	private static final EAttribute E_ATTRIBUTE_FQN = GeneralPackage.Literals.IQUALIFIED_NAME__FULL_QUALIFIED_NAME;
+	private static final String FQN_E_ATTRIBUTE_FQN = VirSatEcoreUtil.getFullQualifiedAttributeName(E_ATTRIBUTE_FQN);
+	
 	@Override
 	protected EObject getEObjectByID(String id) {
-		final EAttribute eAttributeFqn = GeneralPackage.Literals.IQUALIFIED_NAME__FULL_QUALIFIED_NAME;
-		final String fqnEAttributeFqn = VirSatEcoreUtil.getFullQualifiedAttributeName(eAttributeFqn);
-		
+		EObject returnObject = super.getEObjectByID(id);
+		if (returnObject != null) {
+			// There exists a cached object for this id
+			// If the object is also contained in this resource,
+			// then we can simply hand it back.
+			Resource containedResource = returnObject.eResource();
+			boolean isLoading = this.isLoading();
+			if (isLoading || containedResource == this) {
+				return returnObject;
+			} else {
+				// Otherwise, remove it from the cache and return null
+				getIntrinsicIDToEObjectMap().remove(id);
+				return null;
+			}
+		}
+
+		// It is possible, e.g. when migrating, that DynamicEObjects reference to another
+		// instance of the Ecore Model. Therefore even if an EObject and and DynamicEobject are
+		// of the same EClass, they will not be handled as such. Therefore we compare 
 		for (TreeIterator<EObject> i = getAllProperContents(getContents()); i.hasNext();) {			
 			EObject eObject = i.next();
 			// Only handle dynamic EObjects. Static EMF is handled as usual.
 			if (eObject instanceof DynamicEObjectImpl) {
-			    EClass eClass = eObject.eClass();
-			    EAttribute eIDAttribute = eClass.getEIDAttribute();
-		
-			    // if there is no ID attribute nothing more needs to be done
-			    if (eIDAttribute != null) {
-				    String fqnEAttributeCurrent = VirSatEcoreUtil.getFullQualifiedAttributeName(eIDAttribute);
-				    boolean isFqnEattributeFqn = fqnEAttributeCurrent.equals(fqnEAttributeFqn);
-		
-				    // In case the object is of type IQualifedName then we have to act as if we 
-				    // try to get the FQN using the static EMF model
-				    if (isFqnEattributeFqn) {
-				    	String eObjectId = ActiveConceptHelper.getFullQualifiedId(eObject);
-				    	if (id.equals(eObjectId)) {
-				    		return eObject;
-				    	}
-				    }
-			    }
+				EClass eClass = eObject.eClass();
+				EAttribute eIDAttribute = eClass.getEIDAttribute();
+
+				// if there is no ID attribute nothing more needs to be done
+				// If the ID attribute is the same as from the interface IQualifiedName
+				// We can use it to retrieve the actual ID of the Object.
+				if (eIDAttribute != null) {
+					String fqnEAttributeCurrent = VirSatEcoreUtil.getFullQualifiedAttributeName(eIDAttribute);
+					boolean isFqnEattributeFqn = fqnEAttributeCurrent.equals(FQN_E_ATTRIBUTE_FQN);
+
+					// In case the object is of type IQualifedName then we have to act as if we
+					// try to get the FQN using the static EMF model
+					if (isFqnEattributeFqn) {
+						String eObjectId = ActiveConceptHelper.getFullQualifiedId(eObject);
+						if (id.equals(eObjectId)) {
+							getIntrinsicIDToEObjectMap().put(id, eObject);
+							return eObject;
+						}
+					}
+				}
 			}
 		}
 		
-		// All other calls are forwarded to the standard XMIResource functionality
-		return super.getEObjectByID(id);
+		return returnObject;
 	}
 	
 	@Override
 	public String getURIFragment(EObject eObject) {
 		if (eObject instanceof DynamicEObjectImpl) {
-		    if (ActiveConceptHelper.isSafeAssignableFrom(GeneralPackage.Literals.IQUALIFIED_NAME, eObject)) {
-		    	String eObjectFqnId = ActiveConceptHelper.getFullQualifiedId(eObject);
-		    	return eObjectFqnId;
-		    }
+			if (ActiveConceptHelper.isSafeAssignableFrom(GeneralPackage.Literals.IQUALIFIED_NAME, eObject)) {
+				String eObjectFqnId = ActiveConceptHelper.getFullQualifiedId(eObject);
+				return eObjectFqnId;
+			}
 		}
 	
 		return super.getURIFragment(eObject);
@@ -89,6 +113,8 @@ public class DvlmXMIResourceImpl extends XMIResourceImpl implements Resource {
 	
 	@Override
 	protected void doUnload() {
+		getIntrinsicIDToEObjectMap().clear();
+		
 		// Remove all proper content from the ID Cache in the ActiveConceptHelper
 		// We call proper contents, so that we do not remove the child SEIs which
 		// are cross-resource containments.
