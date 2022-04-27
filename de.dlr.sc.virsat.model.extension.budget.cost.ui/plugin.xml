@@ -16,8 +16,16 @@
 		pathToImage="resources/icons/de.dlr.sc.virsat.model.extension.budget.cost.gif">
 	</conceptImage>
 	<conceptImage
+		fullQualifiedID="de.dlr.sc.virsat.model.extension.budget.cost.CostType"
+		pathToImage="resources/icons/CostType.gif">
+	</conceptImage>
+	<conceptImage
 		fullQualifiedID="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters"
 		pathToImage="resources/icons/ACostParameters.gif">
+	</conceptImage>
+	<conceptImage
+		fullQualifiedID="de.dlr.sc.virsat.model.extension.budget.cost.CostTableEntry"
+		pathToImage="resources/icons/CostTableEntry.gif">
 	</conceptImage>
 	<conceptImage
 		fullQualifiedID="de.dlr.sc.virsat.model.extension.budget.cost.CostEquipment"
@@ -27,8 +35,20 @@
 		fullQualifiedID="de.dlr.sc.virsat.model.extension.budget.cost.CostSummary"
 		pathToImage="resources/icons/CostSummary.gif">
 	</conceptImage>
+	<conceptImage
+		fullQualifiedID="de.dlr.sc.virsat.model.extension.budget.cost.CostTypesCollection"
+		pathToImage="resources/icons/CostTypesCollection.gif">
+	</conceptImage>
 	</extension>
 	<extension point="org.eclipse.ui.commands">
+	<command
+		id="de.dlr.sc.virsat.model.extension.budget.cost.ui.command.AddCostType"
+		name="Add CostType">
+	</command>
+	<command
+		id="de.dlr.sc.virsat.model.extension.budget.cost.ui.command.AddCostTableEntry"
+		name="Add CostTableEntry">
+	</command>
 	<command
 		id="de.dlr.sc.virsat.model.extension.budget.cost.ui.command.AddCostEquipment"
 		name="Add CostEquipment">
@@ -37,8 +57,22 @@
 		id="de.dlr.sc.virsat.model.extension.budget.cost.ui.command.AddCostSummary"
 		name="Add CostSummary">
 	</command>
+	<command
+		id="de.dlr.sc.virsat.model.extension.budget.cost.ui.command.AddCostTypesCollection"
+		name="Add CostTypesCollection">
+	</command>
 	</extension>
 	<extension point="org.eclipse.ui.commandImages">
+	<image
+	      commandId="de.dlr.sc.virsat.model.extension.budget.cost.ui.command.AddCostType"
+	      disabledIcon="resources/icons/CostType_disabled.gif"
+	      icon="resources/icons/CostType.gif">
+	</image>
+	<image
+	      commandId="de.dlr.sc.virsat.model.extension.budget.cost.ui.command.AddCostTableEntry"
+	      disabledIcon="resources/icons/CostTableEntry_disabled.gif"
+	      icon="resources/icons/CostTableEntry.gif">
+	</image>
 	<image
 	      commandId="de.dlr.sc.virsat.model.extension.budget.cost.ui.command.AddCostEquipment"
 	      disabledIcon="resources/icons/CostEquipment_disabled.gif"
@@ -49,8 +83,21 @@
 	      disabledIcon="resources/icons/CostSummary_disabled.gif"
 	      icon="resources/icons/CostSummary.gif">
 	</image>
+	<image
+	      commandId="de.dlr.sc.virsat.model.extension.budget.cost.ui.command.AddCostTypesCollection"
+	      disabledIcon="resources/icons/CostTypesCollection_disabled.gif"
+	      icon="resources/icons/CostTypesCollection.gif">
+	</image>
 	</extension>
 	<extension point="org.eclipse.ui.handlers">
+	<handler
+		class="de.dlr.sc.virsat.model.extension.budget.cost.ui.handler.AddCostTypeHandler"
+		commandId="de.dlr.sc.virsat.model.extension.budget.cost.ui.command.AddCostType">
+	</handler>
+	<handler
+		class="de.dlr.sc.virsat.model.extension.budget.cost.ui.handler.AddCostTableEntryHandler"
+		commandId="de.dlr.sc.virsat.model.extension.budget.cost.ui.command.AddCostTableEntry">
+	</handler>
 	<handler
 		class="de.dlr.sc.virsat.model.extension.budget.cost.ui.handler.AddCostEquipmentHandler"
 		commandId="de.dlr.sc.virsat.model.extension.budget.cost.ui.command.AddCostEquipment">
@@ -58,6 +105,10 @@
 	<handler
 		class="de.dlr.sc.virsat.model.extension.budget.cost.ui.handler.AddCostSummaryHandler"
 		commandId="de.dlr.sc.virsat.model.extension.budget.cost.ui.command.AddCostSummary">
+	</handler>
+	<handler
+		class="de.dlr.sc.virsat.model.extension.budget.cost.ui.handler.AddStructuralElementInstanceCostTypesCollectionHandler"
+		commandId="de.dlr.sc.virsat.model.extension.budget.cost.ui.command.AddCostTypesCollection">
 	</handler>
 	</extension>
 	<extension point="org.eclipse.ui.menus">
@@ -105,6 +156,50 @@
 		<menuContribution allPopups="false"
 			locationURI="popup:de.dlr.sc.virsat.model.extension.budget.cost.menu?after=categories">
 		<command
+			commandId="de.dlr.sc.virsat.model.extension.budget.cost.ui.command.AddCostType"
+			style="push">
+			<visibleWhen
+				checkEnabled="true">
+				<with
+					variable="selection">
+					<iterate
+						ifEmpty="false"
+						operator="and">
+						<test 
+							property="de.dlr.sc.virsat.model.extension.budget.cost.ui.propertyTester.conceptEnabled"
+							value="true" 
+							forcePluginActivation="true">
+						</test>		
+						<instanceof
+							value="de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer">
+						</instanceof>
+					</iterate>
+				</with>
+			</visibleWhen>
+		</command>
+		<command
+			commandId="de.dlr.sc.virsat.model.extension.budget.cost.ui.command.AddCostTableEntry"
+			style="push">
+			<visibleWhen
+				checkEnabled="true">
+				<with
+					variable="selection">
+					<iterate
+						ifEmpty="false"
+						operator="and">
+						<test 
+							property="de.dlr.sc.virsat.model.extension.budget.cost.ui.propertyTester.conceptEnabled"
+							value="true" 
+							forcePluginActivation="true">
+						</test>		
+						<instanceof
+							value="de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer">
+						</instanceof>
+					</iterate>
+				</with>
+			</visibleWhen>
+		</command>
+		<command
 			commandId="de.dlr.sc.virsat.model.extension.budget.cost.ui.command.AddCostEquipment"
 			style="push">
 			<visibleWhen
@@ -151,6 +246,38 @@
 		</menuContribution>
 		<menuContribution allPopups="false"
 			locationURI="popup:de.dlr.sc.virsat.model.extension.budget.cost.menu?after=structuralElements">
+		<command
+			commandId="de.dlr.sc.virsat.model.extension.budget.cost.ui.command.AddCostTypesCollection"
+			style="push">
+			<visibleWhen
+				checkEnabled="true">
+				 <with
+		         	variable="selection">
+		          	<iterate
+		            	ifEmpty="false"
+		                operator="and">
+		                <test 
+		              		property="de.dlr.sc.virsat.model.extension.budget.cost.ui.propertyTester.conceptEnabled"
+		              		value="true" 
+		              		forcePluginActivation="true">
+		                </test>	
+		              	<or>
+		                	<instanceof
+		                       value="de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance">
+		                 	</instanceof>
+		                 	<instanceof
+		                       value="de.dlr.sc.virsat.model.dvlm.Repository">
+		                 	</instanceof>
+		              	</or>
+		           	</iterate>
+		           	<and>
+		              <count
+		                    value="1">
+		              </count>
+		           </and>
+		        </with>
+			</visibleWhen>
+		</command>
 		</menuContribution>
 	</extension>
 	<extension
@@ -161,6 +288,26 @@
 	    </editorSection>
 	 </extension>	
 	<extension point="de.dlr.sc.virsat.uiengine.ui.EditorUiSnippets">
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.budget.cost.table.uiSnippetCostType"
+		      section="de.dlr.sc.virsat.model.extension.budget.cost.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.budget.cost.ui.snippet.UiSnippetTableCostType">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.budget.cost.section.uiSnippetCostType"
+		      section="de.dlr.sc.virsat.model.extension.budget.cost.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.budget.cost.ui.snippet.UiSnippetSectionCostType">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.budget.cost.table.uiSnippetCostTableEntry"
+		      section="de.dlr.sc.virsat.model.extension.budget.cost.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.budget.cost.ui.snippet.UiSnippetTableCostTableEntry">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.budget.cost.section.uiSnippetCostTableEntry"
+		      section="de.dlr.sc.virsat.model.extension.budget.cost.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.budget.cost.ui.snippet.UiSnippetSectionCostTableEntry">
+		</uiSnippet>
 		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.budget.cost.table.uiSnippetCostEquipment"
 		      section="de.dlr.sc.virsat.model.extension.budget.cost.ui.Section"
@@ -180,6 +327,11 @@
 		      id="de.dlr.sc.virsat.model.extension.budget.cost.section.uiSnippetCostSummary"
 		      section="de.dlr.sc.virsat.model.extension.budget.cost.ui.Section"
 		      snippet="de.dlr.sc.virsat.model.extension.budget.cost.ui.snippet.UiSnippetSectionCostSummary">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.budget.cost.table.uiSnippetCostSummaryCostTableCostTableEntry"
+		      section="de.dlr.sc.virsat.model.extension.budget.cost.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.budget.cost.ui.snippet.UiSnippetTableCostSummaryCostTableCostTableEntry">
 		</uiSnippet>
 	</extension>
 	<!-- Plugin.XML Protected Region Start -->

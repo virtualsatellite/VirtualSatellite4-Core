@@ -118,9 +118,9 @@
 				<module>de.dlr.sc.virsat.model.extension.thermal.test</module>
 				<module>de.dlr.sc.virsat.model.extension.thermal.ui</module>
 
-				<module>de.dlr.sc.virsat.model.extension.cost</module>
-				<module>de.dlr.sc.virsat.model.extension.cost.test</module>
-				<module>de.dlr.sc.virsat.model.extension.cost.ui</module>				
+				<module>de.dlr.sc.virsat.model.extension.budget.cost</module>
+				<module>de.dlr.sc.virsat.model.extension.budget.cost.test</module>
+				<module>de.dlr.sc.virsat.model.extension.budget.cost.ui</module>				
 				
 				<module>de.dlr.sc.virsat.model.extension.maturity</module>
 				<module>de.dlr.sc.virsat.model.extension.maturity.test</module>

@@ -13,14 +13,20 @@ package de.dlr.sc.virsat.model.extension.budget.cost.model;
 // * Import Statements
 // *****************************************************************
 import javax.xml.bind.annotation.XmlAccessorType;
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import javax.xml.bind.annotation.XmlRootElement;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
+import de.dlr.sc.virsat.model.concept.list.IBeanList;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import javax.xml.bind.annotation.XmlAccessType;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyBeanList;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyInstanceList;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
+import javax.xml.bind.annotation.XmlElement;
 
 
 // *****************************************************************
@@ -32,7 +38,7 @@ import javax.xml.bind.annotation.XmlAccessType;
  * 
  * Don't Manually modify this class
  * 
- * Summary of all nested equipment masses
+ * Summary of all nested equipment costs
  * 
  */	
 @XmlRootElement
@@ -50,6 +56,7 @@ public abstract class ACostSummary extends ACostParameters implements IBeanCateg
 	}
 	
 	// property name constants
+	public static final String PROPERTY_COSTTABLE = "costTable";
 	
 	
 	
@@ -70,6 +77,36 @@ public abstract class ACostSummary extends ACostParameters implements IBeanCateg
 		setTypeInstance(categoryAssignement);
 	}
 	
+	
+	// *****************************************************************
+	// * Array Attribute: costTable
+	// *****************************************************************
+	private IBeanList<CostTableEntry> costTable = new TypeSafeComposedPropertyInstanceList<>(CostTableEntry.class);
+	
+	private void safeAccessCostTable() {
+		if (costTable.getArrayInstance() == null) {
+			costTable.setArrayInstance((ArrayInstance) helper.getPropertyInstance("costTable"));
+		}
+	}
+	
+	public IBeanList<CostTableEntry> getCostTable() {
+		safeAccessCostTable();
+		return costTable;
+	}
+	
+	private IBeanList<BeanPropertyComposed<CostTableEntry>> costTableBean = new TypeSafeComposedPropertyBeanList<>();
+	
+	private void safeAccessCostTableBean() {
+		if (costTableBean.getArrayInstance() == null) {
+			costTableBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("costTable"));
+		}
+	}
+	
+	@XmlElement
+	public IBeanList<BeanPropertyComposed<CostTableEntry>> getCostTableBean() {
+		safeAccessCostTableBean();
+		return costTableBean;
+	}
 	
 	
 }

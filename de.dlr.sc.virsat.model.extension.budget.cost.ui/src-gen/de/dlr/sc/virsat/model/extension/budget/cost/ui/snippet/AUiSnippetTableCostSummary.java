@@ -23,7 +23,7 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetGenericCategoryAss
  * 
  * Don't Manually modify this class
  * 
- * Summary of all nested equipment masses
+ * Summary of all nested equipment costs
  * 
  */	
 public abstract class AUiSnippetTableCostSummary extends AUiSnippetGenericCategoryAssignmentTable implements IUiSnippet {
