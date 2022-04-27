@@ -30,7 +30,7 @@ import de.dlr.sc.virsat.model.extension.budget.cost.model.CostTableEntry;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostType;
 import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
-public class SummaryTypesTest extends AProjectTestCase {
+public class CostSummaryEntriesCreatorTest extends AProjectTestCase {
 
 	protected Concept concept;
 	protected StructuralInstantiator structInstantiator;
@@ -58,8 +58,8 @@ public class SummaryTypesTest extends AProjectTestCase {
 	@Test
 	public void testEmpty() {
 		CostSummary costSummary = new CostSummary(concept);
-		SummaryTypes summaryTyp = new SummaryTypes();
-		Map<CostType, CostTableEntry> summary = summaryTyp.createSummaryMap(costSummary);
+		CostSummaryEntriesCreator summaryEntriesCreator = new CostSummaryEntriesCreator();
+		Map<CostType, CostTableEntry> summary = summaryEntriesCreator.createSummaryMap(costSummary);
 
 		assertTrue(summary.isEmpty());
 	}
@@ -84,9 +84,9 @@ public class SummaryTypesTest extends AProjectTestCase {
 		costEquipment2.setCost(COSTVALUE_FIVE);
 		parent.add(costEquipment2);
 
-		SummaryTypes summaryTyp = new SummaryTypes();
+		CostSummaryEntriesCreator summaryEntriesCreator = new CostSummaryEntriesCreator();
 
-		Map<CostType, CostTableEntry> summary = summaryTyp.createSummaryMap(costSummary);
+		Map<CostType, CostTableEntry> summary = summaryEntriesCreator.createSummaryMap(costSummary);
 
 		assertEquals(1, summary.size());
 		CostTableEntry entry = summary.get(materialCost);
@@ -114,9 +114,9 @@ public class SummaryTypesTest extends AProjectTestCase {
 		costEquipment2.setCost(COSTVALUE_FIVE);
 		parent.add(costEquipment2);
 
-		SummaryTypes summaryTyp = new SummaryTypes();
+		CostSummaryEntriesCreator summaryEntriesCreator = new CostSummaryEntriesCreator();
 
-		Map<CostType, CostTableEntry> summary = summaryTyp.createSummaryMap(costSummary);
+		Map<CostType, CostTableEntry> summary = summaryEntriesCreator.createSummaryMap(costSummary);
 
 		assertEquals(2, summary.size());
 		CostTableEntry totalMaterial = summary.get(materialCost);
@@ -152,9 +152,9 @@ public class SummaryTypesTest extends AProjectTestCase {
 		costEquipment2.setMargin(COSTVALUE_TEN);
 		parent.add(costEquipment2);
 
-		SummaryTypes summaryTyp = new SummaryTypes();
+		CostSummaryEntriesCreator summaryEntriesCreator = new CostSummaryEntriesCreator();
 
-		Map<CostType, CostTableEntry> summary = summaryTyp.createSummaryMap(costSummary);
+		Map<CostType, CostTableEntry> summary = summaryEntriesCreator.createSummaryMap(costSummary);
 
 		assertEquals(1, summary.size());
 		CostTableEntry cost = summary.get(materialCost);

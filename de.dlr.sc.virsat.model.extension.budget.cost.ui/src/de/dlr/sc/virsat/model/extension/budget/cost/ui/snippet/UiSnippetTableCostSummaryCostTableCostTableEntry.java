@@ -20,7 +20,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostSummary;
-import de.dlr.sc.virsat.model.extension.budget.cost.summaryTypes.SummaryTypes;
+import de.dlr.sc.virsat.model.extension.budget.cost.summaryTypes.CostSummaryEntriesCreator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
@@ -35,7 +35,7 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
  */
 public class UiSnippetTableCostSummaryCostTableCostTableEntry extends AUiSnippetTableCostSummaryCostTableCostTableEntry
 		implements IUiSnippet {
-	protected SummaryTypes summaryTypes = new SummaryTypes();
+	protected CostSummaryEntriesCreator summaryEntriesCreator = new CostSummaryEntriesCreator();
 
 	@Override
 	// created a Button in CostSummary (Update CostEquipment)
@@ -57,7 +57,7 @@ public class UiSnippetTableCostSummaryCostTableCostTableEntry extends AUiSnippet
 					CostSummary costSummary = new CostSummary((CategoryAssignment) model);
 					// created a SummaryTypes in the Variable (summaryTypes)
 					
-					Command updateCommand = summaryTypes.createUpdateCostSummaryCommand(costSummary, virSatEd);
+					Command updateCommand = summaryEntriesCreator.createUpdateCostSummaryCommand(costSummary, virSatEd);
 					virSatEd.getVirSatCommandStack().execute(updateCommand);
 				}
 			}

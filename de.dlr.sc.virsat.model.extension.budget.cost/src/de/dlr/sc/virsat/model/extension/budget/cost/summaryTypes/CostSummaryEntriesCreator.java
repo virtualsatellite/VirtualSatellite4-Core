@@ -28,13 +28,10 @@ import de.dlr.sc.virsat.model.extension.budget.cost.model.CostSummary;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostTableEntry;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostType;
 
-public class SummaryTypes {
+public class CostSummaryEntriesCreator {
 
 	private static final int FACTOR_HUNDRED = 100;
-
-	public SummaryTypes() {
-	}
-
+	
 	/**
 	 * Creates a map assigning to each cost type a cost table entry
 	 * containing the cost contribution of said cost type
