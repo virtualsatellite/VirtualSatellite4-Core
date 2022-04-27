@@ -1367,8 +1367,10 @@ public class InheritanceCopierTest extends AInheritanceCopierTest {
 	@Test
 	public void testCopyWithCardinality() {
 		Category cat = CategoriesFactory.eINSTANCE.createCategory();
+		cat.setName("SomeCategory");
 		cat.setIsApplicableForAll(true);
 		IntProperty ip = PropertydefinitionsFactory.eINSTANCE.createIntProperty();
+		ip.setName("SomeProperty");
 		cat.getProperties().add(ip);
 		cat.setCardinality(1);
 		

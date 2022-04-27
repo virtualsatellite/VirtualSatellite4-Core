@@ -26,6 +26,16 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.Propertyinstance
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
+import de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind;
+import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
+import de.dlr.sc.virsat.model.dvlm.qudv.DerivedQuantityKind;
+import de.dlr.sc.virsat.model.dvlm.qudv.DerivedUnit;
+import de.dlr.sc.virsat.model.dvlm.qudv.Prefix;
+import de.dlr.sc.virsat.model.dvlm.qudv.QuantityKindFactor;
+import de.dlr.sc.virsat.model.dvlm.qudv.QudvFactory;
+import de.dlr.sc.virsat.model.dvlm.qudv.SimpleQuantityKind;
+import de.dlr.sc.virsat.model.dvlm.qudv.SimpleUnit;
+import de.dlr.sc.virsat.model.dvlm.qudv.UnitFactor;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
@@ -57,6 +67,7 @@ public class RepositoryUtilityTest extends AProjectTestCase {
 		testProperty = PropertydefinitionsFactory.eINSTANCE.createStringProperty();
 		testPropertyInstance = PropertyinstancesFactory.eINSTANCE.createValuePropertyInstance();
 		
+		testProperty.setName("SomeProperty");
 		testPropertyInstance.setType(testProperty);
 		
 		testCategory.setIsApplicableForAll(true);
@@ -64,8 +75,10 @@ public class RepositoryUtilityTest extends AProjectTestCase {
 		
 		testCa.setType(testCategory);
 		testCa.getPropertyInstances().add(testPropertyInstance);
+		testCa.setName("SomeCategory");
 		
 		testSe.setIsRootStructuralElement(true);
+		testSe.setName("SomeSe");
 		
 		rs.getAndAddStructuralElementInstanceResource(testSei);
 		testSei.setType(testSe);
@@ -73,6 +86,7 @@ public class RepositoryUtilityTest extends AProjectTestCase {
 		testSei.getCategoryAssignments();
 		
 		testConcept.getStructuralElements().add(testSe);
+		testConcept.setName("de.dlr.sc.virsat.server.dataaccess.test.concept");
 		
 		testDiscipline = RolesFactory.eINSTANCE.createDiscipline();
 		
@@ -133,6 +147,67 @@ public class RepositoryUtilityTest extends AProjectTestCase {
 		
 		property = (APropertyInstance) RepositoryUtility.findObjectById(testPropertyInstance.getUuid().toString(), repository);
 		assertEquals(testPropertyInstance, property);
+	}
+	
+	@Test
+	public void testFindUnit() {
+		AUnit unit = RepositoryUtility.findUnit("", repository);
+		assertNull(unit);
+		
+		SimpleUnit testUnit = QudvFactory.eINSTANCE.createSimpleUnit();
+		repository.getUnitManagement().getSystemOfUnit().getUnit().add(testUnit);
+		unit = RepositoryUtility.findUnit(testUnit.getUuid().toString(), repository);
+		assertEquals(testUnit, unit);
+	}
+	
+	@Test
+	public void testFindQuantityKind() {
+		AQuantityKind quantityKind = RepositoryUtility.findQuantityKind("", repository);
+		assertNull(quantityKind);
+		
+		SimpleQuantityKind testQuantityKind = QudvFactory.eINSTANCE.createSimpleQuantityKind();
+		repository.getUnitManagement().getSystemOfUnit().getSystemOfQuantities().get(0).getQuantityKind().add(testQuantityKind);
+		quantityKind = RepositoryUtility.findQuantityKind(testQuantityKind.getUuid().toString(), repository);
+		assertEquals(testQuantityKind, quantityKind);
+	}
+	
+	@Test
+	public void testFindPrefix() {
+		Prefix prefix = RepositoryUtility.findPrefix("", repository);
+		assertNull(prefix);
+		
+		Prefix testPrefix = QudvFactory.eINSTANCE.createPrefix();
+		repository.getUnitManagement().getSystemOfUnit().getPrefix().add(testPrefix);
+		prefix = RepositoryUtility.findPrefix(testPrefix.getUuid().toString(), repository);
+		assertEquals(testPrefix, prefix);
+	}
+	
+	@Test
+	public void testFindUnitFactor() {
+		UnitFactor unitFactor = RepositoryUtility.findUnitFactor("", repository);
+		assertNull(unitFactor);
+		
+		UnitFactor testUnitFactor = QudvFactory.eINSTANCE.createUnitFactor();
+		DerivedUnit testUnit = QudvFactory.eINSTANCE.createDerivedUnit();
+		testUnit.getFactor().add(testUnitFactor);
+		repository.getUnitManagement().getSystemOfUnit().getUnit().add(testUnit);
+		
+		unitFactor = RepositoryUtility.findUnitFactor(testUnitFactor.getUuid().toString(), repository);
+		assertEquals(testUnitFactor, unitFactor);
+	}
+	
+	@Test
+	public void testFindQuantityKindFactor() {
+		QuantityKindFactor quantityKindFactor = RepositoryUtility.findQuantityKindFactor("", repository);
+		assertNull(quantityKindFactor);
+		
+		QuantityKindFactor testQuantityKindFactor = QudvFactory.eINSTANCE.createQuantityKindFactor();
+		DerivedQuantityKind testQuantityKind = QudvFactory.eINSTANCE.createDerivedQuantityKind();
+		testQuantityKind.getFactor().add(testQuantityKindFactor);
+		repository.getUnitManagement().getSystemOfUnit().getSystemOfQuantities().get(0).getQuantityKind().add(testQuantityKind);
+		
+		quantityKindFactor = RepositoryUtility.findQuantityKindFactor(testQuantityKindFactor.getUuid().toString(), repository);
+		assertEquals(testQuantityKindFactor, quantityKindFactor);
 	}
 
 }

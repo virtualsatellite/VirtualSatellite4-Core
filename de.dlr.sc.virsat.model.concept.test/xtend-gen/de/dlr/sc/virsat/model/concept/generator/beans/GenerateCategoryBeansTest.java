@@ -143,6 +143,38 @@ public class GenerateCategoryBeansTest {
   }
   
   @Test
+  public void testCreateForVerification() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("Concept ");
+      _builder.append(this.TEST_CONCEPT_NAME);
+      _builder.append("{");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t");
+      _builder.append("Category ");
+      _builder.append(this.TEST_CATEGORY_NAME, "\t");
+      _builder.append(" {");
+      _builder.newLineIfNotEmpty();
+      _builder.append("\t\t");
+      _builder.append("IsVerification;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      this.concept = this._parseHelper.parse(_builder);
+      final Category category = this.concept.getCategories().get(0);
+      final CharSequence concreteClassContents = this.createAddCommandGenerator.createConcreteClass(this.concept, category);
+      final CharSequence abstractClassContents = this.createAddCommandGenerator.createAbstractClass(this.concept, category);
+      GeneratorJunitAssert.assertEqualContent(concreteClassContents, "/resources/expectedOutputFilesForGenerators/CategoryBeanVerification.java");
+      GeneratorJunitAssert.assertEqualContent(abstractClassContents, "/resources/expectedOutputFilesForGenerators/ACategoryBeanVerification.java");
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
   public void testCreateForIntrinsicArrayProperties() {
     try {
       StringConcatenation _builder = new StringConcatenation();

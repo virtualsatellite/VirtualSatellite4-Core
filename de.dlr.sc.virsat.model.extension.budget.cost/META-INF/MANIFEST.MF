@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core Model Extension Cost Budgets
 Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.budget.cost;singleton:=true
-Bundle-Version: 4.12.1.qualifier
+Bundle-Version: 4.14.0.qualifier
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -15,6 +15,6 @@ Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Export-Package: de.dlr.sc.virsat.model.extension.budget.cost.model,
  de.dlr.sc.virsat.model.extension.budget.cost.summaryTypes,
- de.dlr.sc.virsat.model.extension.budget.cost.util,
+ de.dlr.sc.virsat.model.extension.budget.cost.unit,
  de.dlr.sc.virsat.model.extension.budget.cost.validator
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.budget.cost

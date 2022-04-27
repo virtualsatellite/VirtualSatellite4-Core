@@ -1,5 +1,5 @@
 {
-   "type" : "testStructuralElement",
+   "type" : "de.dlr.sc.virsat.model.extension.tests.TestStructuralElement",
    "uuid" : "f2d3ef60-389f-4fec-87a6-bd928da08f2c",
    "name" : "name",
    "parent" : "f2d3ef60-389f-4fec-87a6-bd928da08f2a",
@@ -11,35 +11,18 @@
       "name" : "TestCategoryAllProperty"
    } ],
    "children" : [ {
-      "type" : "testStructuralElement",
       "uuid" : "e8be1f69-86b1-45b2-9077-0d9b6b846cac",
-      "name" : null,
-      "parent" : "f2d3ef60-389f-4fec-87a6-bd928da08f2c",
-      "categoryAssignments" : [ ],
-      "children" : [ ],
-      "superSeis" : [ ]
+      "name" : null
    }, {
-      "type" : "testStructuralElement",
       "uuid" : "c280a34d-c6f7-4444-8a0a-4fad738ffef3",
-      "name" : null,
-      "parent" : "f2d3ef60-389f-4fec-87a6-bd928da08f2c",
-      "categoryAssignments" : [ ],
-      "children" : [ ],
-      "superSeis" : [ ]
+      "name" : null
    } ],
    "superSeis" : [ {
-      "type" : "testStructuralElement",
       "uuid" : "3a9c9f8a-66e0-4f54-9052-f0d54bb18f92",
-      "name" : null,
-      "categoryAssignments" : [ ],
-      "children" : [ ],
-      "superSeis" : [ ]
+      "name" : null
    }, {
-      "type" : "testStructuralElement",
       "uuid" : "e04ef537-36fb-4b16-b776-579c7fdacc8b",
-      "name" : null,
-      "categoryAssignments" : [ ],
-      "children" : [ ],
-      "superSeis" : [ ]
-   } ]
+      "name" : null
+   } ],
+   "assignedDiscipline" : "e4e175f5-88c8-474f-bb25-2cdf1d3061cb"
 }

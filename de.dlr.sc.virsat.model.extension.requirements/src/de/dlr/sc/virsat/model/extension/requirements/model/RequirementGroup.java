@@ -13,6 +13,9 @@ package de.dlr.sc.virsat.model.extension.requirements.model;
 // * Import Statements
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+
+import javax.xml.bind.annotation.XmlType;
+
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 
 // *****************************************************************
@@ -27,6 +30,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
  * 
  * 
  */
+@XmlType(name = ARequirementGroup.FULL_QUALIFIED_CATEGORY_NAME)
 public  class RequirementGroup extends ARequirementGroup {
 	
 	/**
@@ -51,5 +55,10 @@ public  class RequirementGroup extends ARequirementGroup {
 	 */
 	public RequirementGroup(CategoryAssignment categoryAssignment) {
 		super(categoryAssignment);
+	}
+	
+	@Override
+	public String getIdentifier() {
+		return getName();
 	}
 }

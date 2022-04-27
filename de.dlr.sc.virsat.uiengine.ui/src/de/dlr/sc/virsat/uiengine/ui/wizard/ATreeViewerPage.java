@@ -38,6 +38,7 @@ public abstract class ATreeViewerPage  extends WizardPage {
 	
 	protected Object model;
 	protected Object selection;
+	protected int treeViewerStyle = SWT.BORDER;
 	
 	
 	/**
@@ -64,7 +65,7 @@ public abstract class ATreeViewerPage  extends WizardPage {
 	 * @return the created tree viewer
 	 */
 	public TreeViewer createTreeUI() {
-		TreeViewer treeViewer = new TreeViewer((Composite) getControl(), SWT.BORDER);
+		TreeViewer treeViewer = new TreeViewer((Composite) getControl(), treeViewerStyle);
 		treeViewer.getTree().setLayoutData(new GridData(GridData.FILL_BOTH | GridData.GRAB_HORIZONTAL | GridData.GRAB_VERTICAL));
 		VirSatComposedContentProvider cp = new VirSatComposedContentProvider();
 		cp.registerSubContentProvider(new VirSatWorkspaceContentProvider());
@@ -86,6 +87,16 @@ public abstract class ATreeViewerPage  extends WizardPage {
 		treeViewer.setInput(model);
 		treeViewer.setComparator(new VirSatNavigatorSeiSorter());
 
+		addTreeSelectionListener(treeViewer);
+		
+		return treeViewer;
+	}
+	
+	/**
+	 * Adds a selection changed listener to the given TreeViewer.
+	 * @param treeViewer 
+	 */
+	protected void addTreeSelectionListener(TreeViewer treeViewer) {
 		treeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
@@ -96,8 +107,6 @@ public abstract class ATreeViewerPage  extends WizardPage {
 				}
 			}
 		});
-		
-		return treeViewer;
 	}
 	
 	/**

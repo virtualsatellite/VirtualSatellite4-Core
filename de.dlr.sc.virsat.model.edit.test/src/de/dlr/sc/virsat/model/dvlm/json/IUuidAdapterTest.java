@@ -16,24 +16,48 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.junit.Before;
+import org.junit.Test;
 
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesFactory;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.general.IUuid;
+import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
+import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
+import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 
 public class IUuidAdapterTest extends AUuidAdapterTest {
 
-	private ValuePropertyInstance vpi;
+	private StructuralElementInstance sei;
+	private IUserContext userContext;
+	private Discipline discipline;
+	private static final String USER = "user";
 
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
 		
-		vpi = PropertyinstancesFactory.eINSTANCE.createValuePropertyInstance();
-		vpi.setUuid(UUID);
-		resourceImpl.getContents().add(vpi);
+		sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		sei.setUuid(UUID);
+		resourceImpl.getContents().add(sei);
 		
 		adapter = new IUuidAdapter(resourceSet);
+		
+		userContext = new IUserContext() {
+			@Override
+			public boolean isSuperUser() {
+				return false;
+			}
+
+			@Override
+			public String getUserName() {
+				return USER;
+			}
+		};
+		
+		discipline = RolesFactory.eINSTANCE.createDiscipline();
+		discipline.setUser(USER);
+		
+		sei.setAssignedDiscipline(discipline);
 	}
 
 	@Override
@@ -49,13 +73,13 @@ public class IUuidAdapterTest extends AUuidAdapterTest {
 	@Override
 	public void testMarhall() throws Exception {
 		
-		String uuid = ((XmlAdapter<String, IUuid>) adapter).marshal(vpi);
+		String uuid = ((XmlAdapter<String, IUuid>) adapter).marshal(sei);
 		assertEquals("The right uuid was returned", UUID.toString(), uuid);
 		
-		vpi.setUuid(null);
+		sei.setUuid(null);
 		assertThrows("The type instance should have a uuid",
 			NullPointerException.class, () -> {
-				((XmlAdapter<String, IUuid>) adapter).marshal(vpi);
+				((XmlAdapter<String, IUuid>) adapter).marshal(sei);
 			}
 		);
 	}
@@ -63,8 +87,8 @@ public class IUuidAdapterTest extends AUuidAdapterTest {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void testUnmarhall() throws Exception {
-		IUuid unmarshalledTi = ((XmlAdapter<String, IUuid>) adapter).unmarshal(UUID.toString());
-		assertEquals("The right vpi was returned", vpi, (ValuePropertyInstance) unmarshalledTi);		
+		IUuid unmarshalledSei = ((XmlAdapter<String, IUuid>) adapter).unmarshal(UUID.toString());
+		assertEquals("The right sei was returned", sei, unmarshalledSei);		
 	}
 	
 	@Override
@@ -82,6 +106,36 @@ public class IUuidAdapterTest extends AUuidAdapterTest {
 				((XmlAdapter<String, IUuid>) adapterWithEmptyResourceSet).unmarshal(UUID.toString());
 			}
 		);
+	}
+	
+	@Test
+	public void testUnmarshallRolemanagement() throws Exception {
+		IUuidAdapter adapterNullUserContext = new IUuidAdapter(resourceSet, null);
+		IUuid unmarshalledSei = adapterNullUserContext.unmarshal(UUID.toString());
+		assertEquals("The right sei was returned", sei, unmarshalledSei);
+		
+		IUserContext wrongUserContext = new IUserContext() {
+			@Override
+			public boolean isSuperUser() {
+				return false;
+			}
+			
+			@Override
+			public String getUserName() {
+				return "user2";
+			}
+		};
+		
+		IUuidAdapter adapterWrongUserContext = new IUuidAdapter(resourceSet, wrongUserContext);
+		assertThrows("UserContext should not be null",
+			IllegalArgumentException.class, () -> {
+				adapterWrongUserContext.unmarshal(UUID.toString());
+			}
+		);
+		
+		IUuidAdapter adapterWithUserContext = new IUuidAdapter(resourceSet, userContext);
+		unmarshalledSei = adapterWithUserContext.unmarshal(UUID.toString());
+		assertEquals("The right sei was returned", sei, unmarshalledSei);
 	}
 
 }

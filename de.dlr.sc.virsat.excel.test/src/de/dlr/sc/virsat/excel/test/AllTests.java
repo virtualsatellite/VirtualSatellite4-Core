@@ -26,11 +26,11 @@ import junit.framework.JUnit4TestAdapter;
 @RunWith(Suite.class)
 
 @SuiteClasses({
-		ExcelExportHelperTest.class,
-		ExcelExporterTest.class,
-		ExcelImporterTest.class,
-		FaultTest.class,
-		ImportCommandTest.class
+	ExcelExportHelperTest.class,
+	ExcelExporterTest.class,
+	ExcelImporterTest.class,
+	FaultTest.class,
+	ImportCommandTest.class
 	})
 
 public class AllTests {

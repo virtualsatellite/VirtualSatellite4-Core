@@ -25,8 +25,10 @@ import org.eclipse.team.svn.core.IStateFilter;
 import org.eclipse.team.svn.core.IStateFilter.OrStateFilter;
 import org.eclipse.team.svn.core.SVNMessages;
 import org.eclipse.team.svn.core.connector.ISVNConnector;
+import org.eclipse.team.svn.core.connector.SVNChangeStatus;
 import org.eclipse.team.svn.core.connector.SVNConflictResolution.Choice;
 import org.eclipse.team.svn.core.connector.SVNDepth;
+import org.eclipse.team.svn.core.connector.SVNEntryStatus.Kind;
 import org.eclipse.team.svn.core.connector.SVNRevision;
 import org.eclipse.team.svn.core.operation.AbstractActionOperation;
 import org.eclipse.team.svn.core.operation.CompositeOperation;
@@ -47,6 +49,9 @@ import org.eclipse.team.svn.core.utility.SVNUtility;
 
 import de.dlr.sc.virsat.team.Activator;
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
+import de.dlr.sc.virsat.team.VersionControlChange;
+import de.dlr.sc.virsat.team.VersionControlChangeType;
+import de.dlr.sc.virsat.team.VersionControlUpdateResult;
 
 public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBackend {
 
@@ -123,15 +128,17 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 	}
 
 	@Override
-	public void update(IProject project, IProgressMonitor monitor) throws Exception {
+	public VersionControlUpdateResult update(IProject project, IProgressMonitor monitor) throws Exception {
 		SubMonitor updateMonitor = SubMonitor.convert(monitor, "Virtual Satellite svn update", PROGRESS_INDEX_COMMIT_UPDATE_STEPS);
-		
+
 		updateMonitor.split(1).subTask("Updating files");
 		UpdateProjectOperation updateProjectOperation = new UpdateProjectOperation(project);
 		
 		updateProjectOperation.run(updateMonitor);
+		VersionControlUpdateResult result = updateProjectOperation.getResult();
 		
 		checkStatus(updateProjectOperation);
+		return result;
 	}
 	
 	// The default UpdateOperation provided by SubVersive was unstable and sometimes failed.
@@ -139,6 +146,7 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 	private static class UpdateProjectOperation extends AbstractActionOperation {
 		
 		private IProject project;
+		private VersionControlUpdateResult result;
 		
 		UpdateProjectOperation(IProject project) {
 			super("Operation_UpdateProject", SVNMessages.class);
@@ -155,12 +163,52 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 			try {
 				// First update the local copy
 				proxy.update(paths, SVNRevision.HEAD, SVNDepth.INFINITY, ISVNConnector.Options.ALLOW_UNVERSIONED_OBSTRUCTIONS, new SVNProgressMonitor(this, monitor, null));
-				
+			
 				// Then resolve potential conflicts by taking the remote versions
 				proxy.resolve(paths[0], Choice.CHOOSE_REMOTE, SVNDepth.INFINITY, new SVNProgressMonitor(this, monitor, null));
+			
+				result = new VersionControlUpdateResult();
+				
+				// Get the changes
+				SVNChangeStatus[] statuses = SVNUtility.status(proxy, paths[0], SVNDepth.INFINITY, ISVNConnector.Options.NONE, new SVNProgressMonitor(this, monitor, null));
+				
+				result = new VersionControlUpdateResult();
+				for (SVNChangeStatus svnChangeStatus : statuses) {
+					VersionControlChange change = new VersionControlChange(
+							workingCopy.toURI().relativize(new File(svnChangeStatus.path).toURI()).getPath(),
+							null, getChangeType(svnChangeStatus.textStatus));
+					result.addChange(change);
+				}
 			} finally {
 				location.releaseSVNProxy(proxy);
 			}
+		}
+		
+		public VersionControlUpdateResult getResult() {
+			return result;
+		}
+	}
+	
+	/**
+	 * Gets the VersionControlChangeType for a given svn Kind
+	 * @param kind
+	 * @return VersionControlChangeType
+	 */
+	private static VersionControlChangeType getChangeType(Kind kind) {
+		// There exists many more kinds that maybe have to be handled in the future
+		switch (kind) {
+			case ADDED:
+				return VersionControlChangeType.ADDED;
+			case DELETED:
+				return VersionControlChangeType.DELETED;
+			case REPLACED:
+				return VersionControlChangeType.REPLACED;
+			case MODIFIED:
+				return VersionControlChangeType.MODIFIED;
+			case UNVERSIONED:
+				return VersionControlChangeType.UNVERSIONED;
+			default:
+				return VersionControlChangeType.UNKNOWN;
 		}
 	}
 	
@@ -182,7 +230,7 @@ public class VirSatSvnVersionControlBackend implements IVirSatVersionControlBack
 		if (SVNUtility.hasSVNFolderInOrAbove(projectWorkingCopy.getParentFile())) {
 			filesList.add(projectWorkingCopy);
 		} else {
-			IStateFilter[] filters = { IStateFilter.SF_MODIFIED, IStateFilter.SF_UNVERSIONED };
+			IStateFilter[] filters = { IStateFilter.SF_MODIFIED, IStateFilter.SF_NEW };
 			IResource[] resources = FileUtility.getResourcesRecursive(project.members(), new OrStateFilter(filters));
 			for (IResource resource : resources) {
 				filesList.add(new File(FileUtility.getWorkingCopyPath(resource)));

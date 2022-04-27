@@ -11,14 +11,24 @@ package de.dlr.sc.virsat.server.jetty;
 
 import static org.eclipse.jetty.servlet.ServletContextHandler.NO_SESSIONS;
 
+import org.eclipse.jetty.http.HttpScheme;
+import org.eclipse.jetty.http.HttpVersion;
 import org.eclipse.jetty.security.ConstraintSecurityHandler;
 import org.eclipse.jetty.security.LoginService;
 import org.eclipse.jetty.security.authentication.BasicAuthenticator;
+import org.eclipse.jetty.server.HttpConfiguration;
+import org.eclipse.jetty.server.HttpConnectionFactory;
+import org.eclipse.jetty.server.SecureRequestCustomizer;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.server.SslConnectionFactory;
 import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.util.ssl.SslContextFactory;
 
 import de.dlr.sc.virsat.server.auth.LoginServiceFactory;
+import de.dlr.sc.virsat.server.configuration.ServerConfiguration;
 import de.dlr.sc.virsat.server.servlet.RepoManagementServlet;
+import de.dlr.sc.virsat.server.servlet.StatusServlet;
 import de.dlr.sc.virsat.server.servlet.VirSatModelAccessServlet;
 
 /**
@@ -31,8 +41,10 @@ public class VirSatJettyServer {
 
 	public VirSatJettyServer() { }
 	
-	private static final int VIRSAT_JETTY_PORT = 8000; 
-	private static final String PATH = "/rest";
+	public static final int VIRSAT_JETTY_PORT = 8000;
+	public static final int VIRSAT_JETTY_PORT_HTTPS = 8443;
+	public static final String PATH = "/rest";
+	public static final String STATUS = "/status";
 	private static final String SUFFIX = "/*";
 	
 	private LoginService loginService = null;
@@ -66,16 +78,79 @@ public class VirSatJettyServer {
 	 * Call this method to setup the server
 	 */
 	public void init() {
-		server = new Server(VIRSAT_JETTY_PORT);
+		boolean httpsOnly = ServerConfiguration.getHttpsOnly();
+		boolean httpsEnabled = ServerConfiguration.getHttpsEnabled();
+		
+		server = new Server();
+		
+		// Setup HTTP and/or HTTPS
+		if (httpsEnabled) {
+			setupHttps(server);
+			if (!httpsOnly) {
+				setupHttp(server, httpsEnabled);
+			}
+		} else {
+			setupHttp(server, httpsEnabled);
+		}
 
 		ServletContextHandler servletContextHandler = new ServletContextHandler(NO_SESSIONS);
 		servletContextHandler.setContextPath("/");
+		servletContextHandler.addServlet(StatusServlet.class, "/status");
 		servletContextHandler.addServlet(VirSatModelAccessServlet.class, PATH + VirSatModelAccessServlet.MODEL_API + SUFFIX);
 		servletContextHandler.addServlet(RepoManagementServlet.class, PATH + RepoManagementServlet.MANAGEMENT_API + SUFFIX);
 		
 		setupSecurity(server, servletContextHandler);
 	}
 	
+	/**
+	 * Setup and add HTTP connector to the server
+	 * @param server the Server
+	 */
+	private void setupHttps(Server server) {
+		// Setup SSL keystore
+		SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
+		sslContextFactory.setKeyStorePath(ServerConfiguration.getHttpsKeystorePath());
+		sslContextFactory.setKeyStorePassword(ServerConfiguration.getHttpsKeystorePassword());
+		sslContextFactory.setKeyManagerPassword(ServerConfiguration.getHttpsKeystoreManagerPassword());
+
+		// Setup HTTPS
+		HttpConfiguration httpsConf = new HttpConfiguration();
+		httpsConf.setSecureScheme(HttpScheme.HTTPS.asString());
+		httpsConf.setSecurePort(VIRSAT_JETTY_PORT_HTTPS);
+		// Customizer that extracts the attribute from an SSLContext and sets them on the request
+		// So that servlets can see the encryption details
+		httpsConf.addCustomizer(new SecureRequestCustomizer());
+
+		// HTTPS connector using the HTTP protocol over an SSL connection
+		ServerConnector httpsConnector = new ServerConnector(server,
+			new SslConnectionFactory(sslContextFactory, HttpVersion.HTTP_1_1.asString()),
+			new HttpConnectionFactory(httpsConf));
+		httpsConnector.setPort(VIRSAT_JETTY_PORT_HTTPS);
+
+		server.addConnector(httpsConnector);
+	}
+
+	/**
+	 * Setup and add HTTPS connector to the server
+	 * @param server the Server
+	 * @param httpsEnabled if HTTPS is enabled
+	 */
+	private void setupHttp(Server server, boolean httpsEnabled) {
+		final HttpConfiguration httpConfiguration = new HttpConfiguration();
+
+		if (httpsEnabled) {
+			// For confidential or integral redirections
+			httpConfiguration.setSecureScheme(HttpScheme.HTTPS.asString());
+			httpConfiguration.setSecurePort(VIRSAT_JETTY_PORT_HTTPS);
+		}
+
+		// Simple HTTP connector
+		final ServerConnector http = new ServerConnector(server,
+				new HttpConnectionFactory(httpConfiguration));
+		http.setPort(VIRSAT_JETTY_PORT);
+		server.addConnector(http);
+	}
+
 	/**
 	 * Sets up the server security
 	 * @param server the Server

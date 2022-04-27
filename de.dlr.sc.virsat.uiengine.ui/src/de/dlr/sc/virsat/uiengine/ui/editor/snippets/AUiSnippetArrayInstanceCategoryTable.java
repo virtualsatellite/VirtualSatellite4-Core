@@ -72,7 +72,8 @@ public abstract class AUiSnippetArrayInstanceCategoryTable extends AUiSnippetGen
 
 	@Override
 	public boolean isActive(EObject model) {
-		if (!(model instanceof CategoryAssignment)) {
+		initializeHelperForModel(model);
+		if (!(model instanceof CategoryAssignment) || !isConceptActive()) {
 			return false;
 		}
 		
