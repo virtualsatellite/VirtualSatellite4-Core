@@ -486,13 +486,23 @@ public class VirSatProjectCommons {
 	 * @return the runnable which initializes the whole project
 	 */
 	public static IWorkspaceRunnable createNewProjectRunnable(IProject newProject) {
+		return createNewProjectRunnable(newProject, true);
+	}
+	
+	/**
+	 * This method creates a runnable to create a new Project in Virtual Satellite
+	 * @param newProject The new Project which should be initialized
+	 * @param handleExternalWorkspaceChanges if true, a listener will check for external workspace changes
+	 * @return the runnable which initializes the whole project
+	 */
+	public static IWorkspaceRunnable createNewProjectRunnable(IProject newProject, boolean handleExternalWorkspaceChanges) {
 		IWorkspaceRunnable runnable = new IWorkspaceRunnable() {
 			@Override
 			public void run(IProgressMonitor monitor) throws CoreException {
 				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatProjectWizard: Started VirSat Project Initialization"));
 				// Set up the Workspace Modification Unit to create the VirSat DataModel folder
 				// layout and to initialize the Data Model files with correct content
-				VirSatResourceSet resSet = VirSatResourceSet.getResourceSet(newProject);
+				VirSatResourceSet resSet = VirSatResourceSet.getResourceSet(newProject, handleExternalWorkspaceChanges);
 				VirSatTransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(newProject);
 
 				SubMonitor progressMonitor = SubMonitor.convert(monitor, PROGRESS_MONITOR_NEW_PROJECT_RUNNABLE_STEPS);

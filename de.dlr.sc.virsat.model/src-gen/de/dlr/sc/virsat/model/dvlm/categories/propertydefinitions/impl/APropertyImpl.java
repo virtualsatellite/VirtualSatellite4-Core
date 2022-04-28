@@ -14,6 +14,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.impl.ATypeDefinitionImpl;
 
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IArrayModifier;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IVerificationSpecification;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.PropertydefinitionsPackage;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -33,6 +34,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * </p>
  * <ul>
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.APropertyImpl#getArrayModifier <em>Array Modifier</em>}</li>
+ *   <li>{@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.APropertyImpl#getVerification <em>Verification</em>}</li>
  * </ul>
  *
  * @generated
@@ -47,6 +49,16 @@ public abstract class APropertyImpl extends ATypeDefinitionImpl implements AProp
 	 * @ordered
 	 */
 	protected IArrayModifier arrayModifier;
+
+	/**
+	 * The cached value of the '{@link #getVerification() <em>Verification</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getVerification()
+	 * @generated
+	 * @ordered
+	 */
+	protected IVerificationSpecification verification;
 
 	/**
 	 * *********************************
@@ -148,11 +160,83 @@ public abstract class APropertyImpl extends ATypeDefinitionImpl implements AProp
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public IVerificationSpecification getVerification() {
+		if (verification != null && verification.eIsProxy()) {
+			InternalEObject oldVerification = (InternalEObject)verification;
+			verification = (IVerificationSpecification)eResolveProxy(oldVerification);
+			if (verification != oldVerification) {
+				InternalEObject newVerification = (InternalEObject)verification;
+				NotificationChain msgs = oldVerification.eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PropertydefinitionsPackage.APROPERTY__VERIFICATION, null, null);
+				if (newVerification.eInternalContainer() == null) {
+					msgs = newVerification.eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PropertydefinitionsPackage.APROPERTY__VERIFICATION, null, msgs);
+				}
+				if (msgs != null) msgs.dispatch();
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, PropertydefinitionsPackage.APROPERTY__VERIFICATION, oldVerification, verification));
+			}
+		}
+		return verification;
+	}
+
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public IVerificationSpecification basicGetVerification() {
+		return verification;
+	}
+
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetVerification(IVerificationSpecification newVerification, NotificationChain msgs) {
+		IVerificationSpecification oldVerification = verification;
+		verification = newVerification;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PropertydefinitionsPackage.APROPERTY__VERIFICATION, oldVerification, newVerification);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setVerification(IVerificationSpecification newVerification) {
+		if (newVerification != verification) {
+			NotificationChain msgs = null;
+			if (verification != null)
+				msgs = ((InternalEObject)verification).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PropertydefinitionsPackage.APROPERTY__VERIFICATION, null, msgs);
+			if (newVerification != null)
+				msgs = ((InternalEObject)newVerification).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PropertydefinitionsPackage.APROPERTY__VERIFICATION, null, msgs);
+			msgs = basicSetVerification(newVerification, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, PropertydefinitionsPackage.APROPERTY__VERIFICATION, newVerification, newVerification));
+	}
+
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case PropertydefinitionsPackage.APROPERTY__ARRAY_MODIFIER:
 				return basicSetArrayModifier(null, msgs);
+			case PropertydefinitionsPackage.APROPERTY__VERIFICATION:
+				return basicSetVerification(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -168,6 +252,9 @@ public abstract class APropertyImpl extends ATypeDefinitionImpl implements AProp
 			case PropertydefinitionsPackage.APROPERTY__ARRAY_MODIFIER:
 				if (resolve) return getArrayModifier();
 				return basicGetArrayModifier();
+			case PropertydefinitionsPackage.APROPERTY__VERIFICATION:
+				if (resolve) return getVerification();
+				return basicGetVerification();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -182,6 +269,9 @@ public abstract class APropertyImpl extends ATypeDefinitionImpl implements AProp
 		switch (featureID) {
 			case PropertydefinitionsPackage.APROPERTY__ARRAY_MODIFIER:
 				setArrayModifier((IArrayModifier)newValue);
+				return;
+			case PropertydefinitionsPackage.APROPERTY__VERIFICATION:
+				setVerification((IVerificationSpecification)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -198,6 +288,9 @@ public abstract class APropertyImpl extends ATypeDefinitionImpl implements AProp
 			case PropertydefinitionsPackage.APROPERTY__ARRAY_MODIFIER:
 				setArrayModifier((IArrayModifier)null);
 				return;
+			case PropertydefinitionsPackage.APROPERTY__VERIFICATION:
+				setVerification((IVerificationSpecification)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -212,6 +305,8 @@ public abstract class APropertyImpl extends ATypeDefinitionImpl implements AProp
 		switch (featureID) {
 			case PropertydefinitionsPackage.APROPERTY__ARRAY_MODIFIER:
 				return arrayModifier != null;
+			case PropertydefinitionsPackage.APROPERTY__VERIFICATION:
+				return verification != null;
 		}
 		return super.eIsSet(featureID);
 	}

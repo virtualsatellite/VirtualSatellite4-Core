@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -26,6 +27,7 @@ import javax.ws.rs.core.Response;
 
 import org.eclipse.jetty.http.HttpStatus;
 
+import de.dlr.sc.virsat.server.auth.ServerRoles;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
 import de.dlr.sc.virsat.server.controller.RepoManagementController;
 import de.dlr.sc.virsat.server.jetty.VirSatJettyServer;
@@ -36,10 +38,13 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
 import io.swagger.annotations.Info;
 import io.swagger.annotations.SwaggerDefinition;
 
-@Api
+@Api(authorizations = {
+	@Authorization(value = "basic")
+	})
 @SwaggerDefinition(
 	info = @Info(
 		version = RepoManagementServlet.MANAGEMENT_API_VERSION,
@@ -49,6 +54,7 @@ import io.swagger.annotations.SwaggerDefinition;
 	basePath = VirSatJettyServer.PATH + RepoManagementServlet.MANAGEMENT_API
 )
 @Path(ProjectManagementResource.PATH)
+@RolesAllowed(ServerRoles.ADMIN)
 public class ProjectManagementResource {
 
 	private static final String SUCCESSFUL_OPERATION = "Successful operation";
@@ -95,13 +101,13 @@ public class ProjectManagementResource {
 			httpMethod = "GET",
 			notes = "This service fetches the configuration for the given project name")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					response = RepositoryConfiguration.class,
-					message = SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.NOT_FOUND_404,
-					message = "Project not found")})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				response = RepositoryConfiguration.class,
+				message = SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.NOT_FOUND_404,
+				message = "Project not found")})
 	public Response getProject(@PathParam("projectName") @ApiParam(value = PROJECT_NAME, required = true) String projectName) {
 		ServerRepository serverRepository = controller.getRepository(projectName);
 		if (serverRepository != null) {
@@ -125,12 +131,12 @@ public class ProjectManagementResource {
 			httpMethod = "DELETE",
 			notes = "This service deletes the configuration for the given project name")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					message = SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.BAD_REQUEST_400,
-					message = "Project could not be deleted")})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				message = SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.BAD_REQUEST_400,
+				message = "Project could not be deleted")})
 	public Response deleteProject(@PathParam("projectName") @ApiParam(value = PROJECT_NAME, required = true) String repoName) {
 		try {
 			controller.deleteRepository(repoName);
@@ -156,13 +162,13 @@ public class ProjectManagementResource {
 			notes = "This service creates or updates a project configuration on the project specified by the URL."
 					+ " URL project overrides project name in the passed configuration if they are different.")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					message = SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.BAD_REQUEST_400,
-					message = "An error occured, returns error message",
-					response = String.class)})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				message = SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.BAD_REQUEST_400,
+				message = "An error occured, returns error message",
+				response = String.class)})
 	public Response createOrUpdateProject(@PathParam("projectName") @ApiParam(value = PROJECT_NAME, required = true) String projectName,
 			@ApiParam(value = "New Configuration", required = true) RepositoryConfiguration configuration) {
 		configuration.setProjectName(projectName);

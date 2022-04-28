@@ -62,6 +62,7 @@ public abstract class AAttributeValue extends GenericCategory implements IBeanCa
 	// property name constants
 	public static final String PROPERTY_ATTTYPE = "attType";
 	public static final String PROPERTY_VALUE = "value";
+	public static final String PROPERTY_FORMATTEDVALUE = "formattedValue";
 	
 	
 	
@@ -145,6 +146,38 @@ public abstract class AAttributeValue extends GenericCategory implements IBeanCa
 	public BeanPropertyString getValueBean() {
 		safeAccessValue();
 		return value;
+	}
+	
+	// *****************************************************************
+	// * Attribute: formattedValue
+	// *****************************************************************
+	private BeanPropertyString formattedValue = new BeanPropertyString();
+	
+	private void safeAccessFormattedValue() {
+		if (formattedValue.getTypeInstance() == null) {
+			formattedValue.setTypeInstance((ValuePropertyInstance) helper.getPropertyInstance("formattedValue"));
+		}
+	}
+	
+	public Command setFormattedValue(EditingDomain ed, String value) {
+		safeAccessFormattedValue();
+		return this.formattedValue.setValue(ed, value);
+	}
+	
+	public void setFormattedValue(String value) {
+		safeAccessFormattedValue();
+		this.formattedValue.setValue(value);
+	}
+	
+	public String getFormattedValue() {
+		safeAccessFormattedValue();
+		return formattedValue.getValue();
+	}
+	
+	@XmlElement
+	public BeanPropertyString getFormattedValueBean() {
+		safeAccessFormattedValue();
+		return formattedValue;
 	}
 	
 	

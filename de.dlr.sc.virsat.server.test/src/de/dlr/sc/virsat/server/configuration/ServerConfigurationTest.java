@@ -30,7 +30,6 @@ import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
 import de.dlr.sc.virsat.server.Activator;
 
 public class ServerConfigurationTest {
-	
 	@Test
 	public void testDefaultProperties() throws IOException {
 		String expectedDefaultPropertiesFilePath = "resources/server.properties";
@@ -39,6 +38,11 @@ public class ServerConfigurationTest {
 		assertFalse(ServerConfiguration.getRepositoryConfigurationsDir().isEmpty());
 		assertFalse(ServerConfiguration.getLoginServiceClass().isEmpty());
 		assertFalse(ServerConfiguration.getAuthPropertiesFile().isEmpty());
+		assertFalse(ServerConfiguration.getHttpsEnabled());
+		assertTrue(ServerConfiguration.getHttpsKeystorePath().isEmpty());
+		assertTrue(ServerConfiguration.getHttpsKeystorePassword().isEmpty());
+		assertTrue(ServerConfiguration.getHttpsKeystoreManagerPassword().isEmpty());
+		assertFalse(ServerConfiguration.getHttpsOnly());
 	}
 
 	@Test

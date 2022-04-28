@@ -15,6 +15,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import de.dlr.sc.virsat.graphiti.diagram.BeanIndependenceSolverTest;
 import de.dlr.sc.virsat.graphiti.diagram.ToolBehaviorProviderTest;
+import de.dlr.sc.virsat.graphiti.label.MultilineLabelFormatterTest;
 import de.dlr.sc.virsat.graphiti.util.DiagramHelperTest;
 import junit.framework.JUnit4TestAdapter;
 
@@ -24,7 +25,8 @@ import junit.framework.JUnit4TestAdapter;
 @SuiteClasses({
 	BeanIndependenceSolverTest.class,
 	DiagramHelperTest.class,
-	ToolBehaviorProviderTest.class
+	ToolBehaviorProviderTest.class,
+	MultilineLabelFormatterTest.class
 })
 
 public class AllTests {

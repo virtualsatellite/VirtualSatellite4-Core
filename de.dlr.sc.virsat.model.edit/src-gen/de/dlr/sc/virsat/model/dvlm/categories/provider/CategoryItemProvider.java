@@ -89,6 +89,7 @@ public class CategoryItemProvider extends ATypeDefinitionItemProvider {
 			addCardinalityPropertyDescriptor(object);
 			addIsAbstractPropertyDescriptor(object);
 			addExtendsCategoryPropertyDescriptor(object);
+			addIsVerificationPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -204,6 +205,28 @@ public class CategoryItemProvider extends ATypeDefinitionItemProvider {
 	}
 
 	/**
+	 * This adds a property descriptor for the Is Verification feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addIsVerificationPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Category_isVerification_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Category_isVerification_feature", "_UI_Category_type"),
+				 CategoriesPackage.Literals.CATEGORY__IS_VERIFICATION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
 	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
 	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
 	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
@@ -306,6 +329,7 @@ public class CategoryItemProvider extends ATypeDefinitionItemProvider {
 			case CategoriesPackage.CATEGORY__IS_APPLICABLE_FOR_ALL:
 			case CategoriesPackage.CATEGORY__CARDINALITY:
 			case CategoriesPackage.CATEGORY__IS_ABSTRACT:
+			case CategoriesPackage.CATEGORY__IS_VERIFICATION:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 			case CategoriesPackage.CATEGORY__EQUATION_DEFINITIONS:

@@ -106,11 +106,26 @@ public class JAXBUtility {
 		IUuidAdapter uuidAdapter = new IUuidAdapter(resourceSet);
 		jsonUnmarshaller.setAdapter(uuidAdapter);
 		
+		IUuidAdapterNoRoleManagement uuidAdapterNoRm = new IUuidAdapterNoRoleManagement(resourceSet);
+		jsonUnmarshaller.setAdapter(uuidAdapterNoRm);
+		
 		ABeanObjectAdapter aBeanObjectAdapter = new ABeanObjectAdapter(resourceSet);
 		jsonUnmarshaller.setAdapter(aBeanObjectAdapter);
 		
 		ABeanStructuralElementInstanceAdapter aBeanSeiAdapter = new ABeanStructuralElementInstanceAdapter(resourceSet);
 		jsonUnmarshaller.setAdapter(aBeanSeiAdapter);
+		
+		BeanDisciplineAdapter beanDisciplineAdapter = new BeanDisciplineAdapter(resourceSet);
+		jsonUnmarshaller.setAdapter(beanDisciplineAdapter);
+		
+		ABeanUnitAdapter aBeanUnitAdapter = new ABeanUnitAdapter(resourceSet);
+		jsonUnmarshaller.setAdapter(aBeanUnitAdapter);
+		
+		BeanPrefixAdapter beanPrefixAdapter = new BeanPrefixAdapter(resourceSet);
+		jsonUnmarshaller.setAdapter(beanPrefixAdapter);
+		
+		ABeanQuantityKindAdapter aBeanQuanityKindAdapter = new ABeanQuantityKindAdapter(resourceSet);
+		jsonUnmarshaller.setAdapter(aBeanQuanityKindAdapter);
 		
 		return jsonUnmarshaller;
 	}

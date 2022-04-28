@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.project.editingDomain;
 
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.IOperationHistory;
@@ -86,6 +87,7 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 	 * history, so it cannot be undone. The Transaction.OPTION_NO_UNDO 
 	 * seems to be not implemented.
 	 * @param command The command to be executed.
+	 * @param userContextOverride Override for the User Context. Can be null.
 	 */
 	public void executeNoUndo(Command command) throws RuntimeException {
 		executeNoUndo(command, null, false);
@@ -129,6 +131,22 @@ public class VirSatWorkspaceCommandStack extends WorkspaceCommandStackImpl {
 		atomicException.throwAsRuntimeExceptionIfSet();
 		
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatWorkspaceCommandStack: Finished execute Command with no undo"));
+	}
+	
+	/**
+	 * Checks if the given command can be executed in a given userContextOverride
+	 * @param command The command to be checked.
+	 * @param userContextOverride The user context to be used when checking the command.
+	 * @return true if it can be executed
+	 */
+	public boolean canExecute(Command command, IUserContext userContextOverride) {
+		AtomicBoolean canExecute = new AtomicBoolean();
+		
+		editingDomain.executeInWorkspace(() -> {
+			canExecute.set(command.canExecute());
+		}, userContextOverride);
+		
+		return canExecute.get();
 	}
 	
 	@Override

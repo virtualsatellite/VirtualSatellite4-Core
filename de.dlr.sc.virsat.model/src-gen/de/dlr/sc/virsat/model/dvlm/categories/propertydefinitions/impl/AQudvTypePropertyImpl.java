@@ -17,6 +17,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AQudvTypeProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IArrayModifier;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IVerificationSpecification;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.PropertydefinitionsPackage;
 
 import de.dlr.sc.virsat.model.dvlm.concepts.IConceptTypeDefinition;
@@ -48,6 +49,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.AQudvTypePropertyImpl#getShortName <em>Short Name</em>}</li>
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.AQudvTypePropertyImpl#getDescription <em>Description</em>}</li>
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.AQudvTypePropertyImpl#getArrayModifier <em>Array Modifier</em>}</li>
+ *   <li>{@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.AQudvTypePropertyImpl#getVerification <em>Verification</em>}</li>
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.AQudvTypePropertyImpl#getQuantityKindName <em>Quantity Kind Name</em>}</li>
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.AQudvTypePropertyImpl#getUnitName <em>Unit Name</em>}</li>
  * </ul>
@@ -134,6 +136,16 @@ public abstract class AQudvTypePropertyImpl extends IEquationDefinitionInputImpl
 	 * @ordered
 	 */
 	protected IArrayModifier arrayModifier;
+
+	/**
+	 * The cached value of the '{@link #getVerification() <em>Verification</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getVerification()
+	 * @generated
+	 * @ordered
+	 */
+	protected IVerificationSpecification verification;
 
 	/**
 	 * The default value of the '{@link #getQuantityKindName() <em>Quantity Kind Name</em>}' attribute.
@@ -355,6 +367,76 @@ public abstract class AQudvTypePropertyImpl extends IEquationDefinitionInputImpl
 	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
+	public IVerificationSpecification getVerification() {
+		if (verification != null && verification.eIsProxy()) {
+			InternalEObject oldVerification = (InternalEObject)verification;
+			verification = (IVerificationSpecification)eResolveProxy(oldVerification);
+			if (verification != oldVerification) {
+				InternalEObject newVerification = (InternalEObject)verification;
+				NotificationChain msgs = oldVerification.eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PropertydefinitionsPackage.AQUDV_TYPE_PROPERTY__VERIFICATION, null, null);
+				if (newVerification.eInternalContainer() == null) {
+					msgs = newVerification.eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PropertydefinitionsPackage.AQUDV_TYPE_PROPERTY__VERIFICATION, null, msgs);
+				}
+				if (msgs != null) msgs.dispatch();
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, PropertydefinitionsPackage.AQUDV_TYPE_PROPERTY__VERIFICATION, oldVerification, verification));
+			}
+		}
+		return verification;
+	}
+
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public IVerificationSpecification basicGetVerification() {
+		return verification;
+	}
+
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetVerification(IVerificationSpecification newVerification, NotificationChain msgs) {
+		IVerificationSpecification oldVerification = verification;
+		verification = newVerification;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, PropertydefinitionsPackage.AQUDV_TYPE_PROPERTY__VERIFICATION, oldVerification, newVerification);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setVerification(IVerificationSpecification newVerification) {
+		if (newVerification != verification) {
+			NotificationChain msgs = null;
+			if (verification != null)
+				msgs = ((InternalEObject)verification).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - PropertydefinitionsPackage.AQUDV_TYPE_PROPERTY__VERIFICATION, null, msgs);
+			if (newVerification != null)
+				msgs = ((InternalEObject)newVerification).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - PropertydefinitionsPackage.AQUDV_TYPE_PROPERTY__VERIFICATION, null, msgs);
+			msgs = basicSetVerification(newVerification, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, PropertydefinitionsPackage.AQUDV_TYPE_PROPERTY__VERIFICATION, newVerification, newVerification));
+	}
+
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public String getQuantityKindName() {
 		return quantityKindName;
 	}
@@ -403,6 +485,8 @@ public abstract class AQudvTypePropertyImpl extends IEquationDefinitionInputImpl
 		switch (featureID) {
 			case PropertydefinitionsPackage.AQUDV_TYPE_PROPERTY__ARRAY_MODIFIER:
 				return basicSetArrayModifier(null, msgs);
+			case PropertydefinitionsPackage.AQUDV_TYPE_PROPERTY__VERIFICATION:
+				return basicSetVerification(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -426,6 +510,9 @@ public abstract class AQudvTypePropertyImpl extends IEquationDefinitionInputImpl
 			case PropertydefinitionsPackage.AQUDV_TYPE_PROPERTY__ARRAY_MODIFIER:
 				if (resolve) return getArrayModifier();
 				return basicGetArrayModifier();
+			case PropertydefinitionsPackage.AQUDV_TYPE_PROPERTY__VERIFICATION:
+				if (resolve) return getVerification();
+				return basicGetVerification();
 			case PropertydefinitionsPackage.AQUDV_TYPE_PROPERTY__QUANTITY_KIND_NAME:
 				return getQuantityKindName();
 			case PropertydefinitionsPackage.AQUDV_TYPE_PROPERTY__UNIT_NAME:
@@ -453,6 +540,9 @@ public abstract class AQudvTypePropertyImpl extends IEquationDefinitionInputImpl
 				return;
 			case PropertydefinitionsPackage.AQUDV_TYPE_PROPERTY__ARRAY_MODIFIER:
 				setArrayModifier((IArrayModifier)newValue);
+				return;
+			case PropertydefinitionsPackage.AQUDV_TYPE_PROPERTY__VERIFICATION:
+				setVerification((IVerificationSpecification)newValue);
 				return;
 			case PropertydefinitionsPackage.AQUDV_TYPE_PROPERTY__QUANTITY_KIND_NAME:
 				setQuantityKindName((String)newValue);
@@ -484,6 +574,9 @@ public abstract class AQudvTypePropertyImpl extends IEquationDefinitionInputImpl
 			case PropertydefinitionsPackage.AQUDV_TYPE_PROPERTY__ARRAY_MODIFIER:
 				setArrayModifier((IArrayModifier)null);
 				return;
+			case PropertydefinitionsPackage.AQUDV_TYPE_PROPERTY__VERIFICATION:
+				setVerification((IVerificationSpecification)null);
+				return;
 			case PropertydefinitionsPackage.AQUDV_TYPE_PROPERTY__QUANTITY_KIND_NAME:
 				setQuantityKindName(QUANTITY_KIND_NAME_EDEFAULT);
 				return;
@@ -512,6 +605,8 @@ public abstract class AQudvTypePropertyImpl extends IEquationDefinitionInputImpl
 				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
 			case PropertydefinitionsPackage.AQUDV_TYPE_PROPERTY__ARRAY_MODIFIER:
 				return arrayModifier != null;
+			case PropertydefinitionsPackage.AQUDV_TYPE_PROPERTY__VERIFICATION:
+				return verification != null;
 			case PropertydefinitionsPackage.AQUDV_TYPE_PROPERTY__QUANTITY_KIND_NAME:
 				return QUANTITY_KIND_NAME_EDEFAULT == null ? quantityKindName != null : !QUANTITY_KIND_NAME_EDEFAULT.equals(quantityKindName);
 			case PropertydefinitionsPackage.AQUDV_TYPE_PROPERTY__UNIT_NAME:
@@ -554,6 +649,7 @@ public abstract class AQudvTypePropertyImpl extends IEquationDefinitionInputImpl
 		if (baseClass == AProperty.class) {
 			switch (derivedFeatureID) {
 				case PropertydefinitionsPackage.AQUDV_TYPE_PROPERTY__ARRAY_MODIFIER: return PropertydefinitionsPackage.APROPERTY__ARRAY_MODIFIER;
+				case PropertydefinitionsPackage.AQUDV_TYPE_PROPERTY__VERIFICATION: return PropertydefinitionsPackage.APROPERTY__VERIFICATION;
 				default: return -1;
 			}
 		}
@@ -594,6 +690,7 @@ public abstract class AQudvTypePropertyImpl extends IEquationDefinitionInputImpl
 		if (baseClass == AProperty.class) {
 			switch (baseFeatureID) {
 				case PropertydefinitionsPackage.APROPERTY__ARRAY_MODIFIER: return PropertydefinitionsPackage.AQUDV_TYPE_PROPERTY__ARRAY_MODIFIER;
+				case PropertydefinitionsPackage.APROPERTY__VERIFICATION: return PropertydefinitionsPackage.AQUDV_TYPE_PROPERTY__VERIFICATION;
 				default: return -1;
 			}
 		}

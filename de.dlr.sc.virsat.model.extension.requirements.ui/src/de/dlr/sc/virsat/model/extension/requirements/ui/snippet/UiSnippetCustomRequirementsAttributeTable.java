@@ -42,7 +42,9 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition;
+import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ReferenceProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
@@ -50,12 +52,14 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedProperty
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.requirements.command.InitializeRequirementCommand;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementsConfigurationCollection;
 import de.dlr.sc.virsat.model.extension.requirements.ui.Activator;
+import de.dlr.sc.virsat.model.extension.requirements.ui.celleditor.RequirementTraceEditingSupport;
 import de.dlr.sc.virsat.model.extension.requirements.ui.celleditor.RequirementsAttributeValuePerColumnEditingSupport;
 import de.dlr.sc.virsat.model.extension.requirements.ui.provider.RequirementsAttributeLabelProvider;
 import de.dlr.sc.virsat.project.ui.labelProvider.VirSatTransactionalAdapterFactoryLabelProvider;
@@ -74,13 +78,15 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	protected static final String COLUMN_ATTRIBUTE_SEPARATOR = " / ";
 
 	protected static final String COLUMN_TEXT_VERIFICATION = "Verification";
+	protected static final String COLUMN_TEXT_TRACE = "Tracing";
 	
 	protected static final String FQN_PROPERTY_REQUIREMENT_TYPE = Requirement.FULL_QUALIFIED_CATEGORY_NAME + "." + Requirement.PROPERTY_REQTYPE;
 
 	private static final int TABLE_HIGHT = 500;
 	private static final int STATUS_COLUMN_WIDTH = 100;
+	private static final int TRACE_VERIFICATION_WIDTH = 100;
 	private static final int TRACE_COLUMN_WIDTH = 100;
-	private static final int FIXED_COLUMNS_NUMBER = 2; // status + verification column
+	public static final int FIXED_COLUMNS_NUMBER = 3; // status + verification column + tracing 
 	private static final String COLUMN_PREFIX = "attColumn";
 	
 	protected final String arrayInstanceID;
@@ -89,7 +95,8 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	protected int maxNumberAttributes = 0;
 
 	protected TableViewerColumn colStatus = null;
-	protected TableViewerColumn colValidation = null;
+	protected TableViewerColumn colVerification = null;
+	protected TableViewerColumn colTracing = null;
 	protected List<TableViewerColumn> attColumns;
 	
 	protected boolean controlListenerActive = true;
@@ -124,8 +131,7 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 		if (colStatus == null) {
 			colStatus = (TableViewerColumn) createDefaultColumn(COLUMN_TEXT_STATUS);
 
-			colStatus.setEditingSupport(createEditingSupport(editingDomain, categoryModel.getProperties()
-					.get(RequirementsAttributeLabelProvider.REQUIREMENT_STATUS_PROPERTY_NUMBER)));
+			colStatus.setEditingSupport(createEditingSupport(editingDomain, getActiveStatusProperty()));
 
 			colStatus.getColumn().setWidth(STATUS_COLUMN_WIDTH);
 			colStatus.getColumn().addControlListener(this);
@@ -134,24 +140,31 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 			attColumns.add(colStatus);
 		}
 		
-		if (colValidation == null) {
-			colValidation = (TableViewerColumn) createDefaultColumn(COLUMN_TEXT_VERIFICATION);
+		if (colVerification == null) {
+			colVerification = (TableViewerColumn) createDefaultColumn(COLUMN_TEXT_VERIFICATION);
 
-			colValidation.getColumn().setWidth(TRACE_COLUMN_WIDTH);
-			colValidation.getColumn().addControlListener(this);
-			attColumns.add(colValidation);
+			colVerification.getColumn().setWidth(TRACE_VERIFICATION_WIDTH);
+			colVerification.getColumn().addControlListener(this);
+			attColumns.add(colVerification);
+		}
+		
+		if (colTracing == null) {
+			colTracing = (TableViewerColumn) createDefaultColumn(COLUMN_TEXT_TRACE);
 
+			colTracing.getColumn().setWidth(TRACE_COLUMN_WIDTH);
+			colTracing.getColumn().addControlListener(this);
+			colTracing.setEditingSupport(new RequirementTraceEditingSupport(editingDomain, columnViewer, getActiveTraceProperty(), toolkit));
+			attColumns.add(colTracing);
 		}
 
 		if (model instanceof CategoryAssignment) {
 
 			// Find all necessary requirement types
-			CategoryAssignmentHelper helper = new CategoryAssignmentHelper((CategoryAssignment) model);
-			ArrayInstance array = (ArrayInstance) helper.getPropertyInstance(arrayInstanceID);
-			List<APropertyInstance> arrayInstances = array.getArrayInstances();
+			List<APropertyInstance> arrayInstances = getArrayInstances();
 
 			// Some ugly casting is necessary here because beans cannot be used as the array
 			// property can be in different CAs
+			requirementTypes.clear();
 			for (APropertyInstance arrayInstance : arrayInstances) {
 				CategoryAssignment reqObject = ((ComposedPropertyInstance) arrayInstance).getTypeInstance();
 				if (reqObject.getType().getFullQualifiedName()
@@ -197,6 +210,12 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 			}
 		}
 		restoreColumnWitdh();
+	}
+	
+	protected List<APropertyInstance> getArrayInstances() {
+		CategoryAssignmentHelper helper = new CategoryAssignmentHelper((CategoryAssignment) model);
+		ArrayInstance array = (ArrayInstance) helper.getPropertyInstance(arrayInstanceID);
+		return array.getArrayInstances();
 	}
 	
 	@Override
@@ -409,6 +428,18 @@ public abstract class UiSnippetCustomRequirementsAttributeTable extends AUiSnipp
 	
 	@Override
 	public void controlMoved(ControlEvent e) {
+	}
+	
+	protected AProperty getActiveStatusProperty() {
+		Concept concept = ActiveConceptHelper.getConcept(categoryModel);
+		Category category = ActiveConceptHelper.getCategory(concept, Requirement.FULL_QUALIFIED_CATEGORY_NAME);
+		return ActiveConceptHelper.getProperty(category, Requirement.PROPERTY_STATUS);
+	}
+	
+	protected AProperty getActiveTraceProperty() {
+		Concept concept = ActiveConceptHelper.getConcept(categoryModel);
+		Category category = ActiveConceptHelper.getCategory(concept, Requirement.FULL_QUALIFIED_CATEGORY_NAME);
+		return ActiveConceptHelper.getProperty(category, Requirement.PROPERTY_TRACE);
 	}
 
 }

@@ -331,13 +331,22 @@ public interface CategoriesPackage extends EPackage {
 	int CATEGORY__EXTENDS_CATEGORY = ATYPE_DEFINITION_FEATURE_COUNT + 6;
 
 	/**
+	 * The feature id for the '<em><b>Is Verification</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CATEGORY__IS_VERIFICATION = ATYPE_DEFINITION_FEATURE_COUNT + 7;
+
+	/**
 	 * The number of structural features of the '<em>Category</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CATEGORY_FEATURE_COUNT = ATYPE_DEFINITION_FEATURE_COUNT + 7;
+	int CATEGORY_FEATURE_COUNT = ATYPE_DEFINITION_FEATURE_COUNT + 8;
 
 	/**
 	 * The operation id for the '<em>Get All Properties</em>' operation.
@@ -634,6 +643,17 @@ public interface CategoriesPackage extends EPackage {
 	EReference getCategory_ExtendsCategory();
 
 	/**
+	 * Returns the meta object for the attribute '{@link de.dlr.sc.virsat.model.dvlm.categories.Category#isIsVerification <em>Is Verification</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Is Verification</em>'.
+	 * @see de.dlr.sc.virsat.model.dvlm.categories.Category#isIsVerification()
+	 * @see #getCategory()
+	 * @generated
+	 */
+	EAttribute getCategory_IsVerification();
+
+	/**
 	 * Returns the meta object for the '{@link de.dlr.sc.virsat.model.dvlm.categories.Category#getAllProperties() <em>Get All Properties</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -807,6 +827,14 @@ public interface CategoriesPackage extends EPackage {
 		 * @generated
 		 */
 		EReference CATEGORY__EXTENDS_CATEGORY = eINSTANCE.getCategory_ExtendsCategory();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Verification</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CATEGORY__IS_VERIFICATION = eINSTANCE.getCategory_IsVerification();
 
 		/**
 		 * The meta object literal for the '<em><b>Get All Properties</b></em>' operation.

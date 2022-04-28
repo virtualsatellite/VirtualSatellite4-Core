@@ -53,7 +53,7 @@ jobs:
       # handed in by known users
       #---------------------------------------------
       - name: Verify - Authors Sanity Check
-        uses: virtualsatellite/ci-actions/ci-verify-authors-action@v2
+        uses: virtualsatellite/ci-actions/ci-verify-authors-action@v3
       # Actions can also be accessed by other refs such as the latest from branch when using @master such as: 
       # uses: virtualsatellite/ci-actions/ci-verify-authors-action@master   
   # -----------------------------------------------------
@@ -87,20 +87,20 @@ jobs:
       # Perform various setup operations
       # --------------------------------------------      
       - name: Setup - Prepare OS
-        uses: virtualsatellite/ci-actions/ci-setup-action@v2
+        uses: virtualsatellite/ci-actions/ci-setup-action@v3
 
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
       - name: Build - Build and Deploy Decision
         id: build_decision
-        uses: virtualsatellite/ci-actions/ci-build-decision-action@v2
+        uses: virtualsatellite/ci-actions/ci-build-decision-action@v3
 
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
       - name: Build and Test - Spotbugs
-        uses: virtualsatellite/ci-actions/ci-maven-build-action@v2
+        uses: virtualsatellite/ci-actions/ci-maven-build-action@v3
         with:
           build_job: spotbugs
           build_profile: ${{ steps.build_decision.outputs.build_type }}
@@ -136,7 +136,7 @@ jobs:
       # Perform various setup operations
       # --------------------------------------------      
       - name: Setup - Prepare OS
-        uses: virtualsatellite/ci-actions/ci-setup-action@v2
+        uses: virtualsatellite/ci-actions/ci-setup-action@v3
         with:
            xvfb: -x
            pkgs_file: apt_vtk_zmq_packages
@@ -146,13 +146,13 @@ jobs:
       # --------------------------------------------
       - name: Build - Build and Deploy Decision
         id: build_decision
-        uses: virtualsatellite/ci-actions/ci-build-decision-action@v2
+        uses: virtualsatellite/ci-actions/ci-build-decision-action@v3
 
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
       - name: Build and Test - Surefire
-        uses: virtualsatellite/ci-actions/ci-maven-build-action@v2
+        uses: virtualsatellite/ci-actions/ci-maven-build-action@v3
         with:
           build_job: sureheadless
           build_profile: ${{ steps.build_decision.outputs.build_type }}
@@ -171,7 +171,7 @@ jobs:
       # --------------------------------------------
       # Upload Surefire Reports to github artifacts
       # --------------------------------------------            
-      - name: Upload Surefire Reports on Failure
+      - name: Build and Test - Upload Surefire Reports on Failure
         if: ${{ failure() }}
         uses: actions/upload-artifact@v2
         with:
@@ -211,20 +211,20 @@ jobs:
       # Perform various setup operations
       # --------------------------------------------      
       - name: Setup - Prepare OS
-        uses: virtualsatellite/ci-actions/ci-setup-action@v2
+        uses: virtualsatellite/ci-actions/ci-setup-action@v3
 
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
       - name: Build - Build and Deploy Decision
         id: build_decision
-        uses: virtualsatellite/ci-actions/ci-build-decision-action@v2
+        uses: virtualsatellite/ci-actions/ci-build-decision-action@v3
 
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
       - name: Build and Test - Checkstyle
-        uses: virtualsatellite/ci-actions/ci-maven-build-action@v2
+        uses: virtualsatellite/ci-actions/ci-maven-build-action@v3
         with:
           build_job: checkstyle
           build_profile: ${{ steps.build_decision.outputs.build_type }}
@@ -260,29 +260,41 @@ jobs:
       # Perform various setup operations
       # --------------------------------------------
       - name: Setup - Prepare OS
-        uses: virtualsatellite/ci-actions/ci-setup-action@v2
+        uses: virtualsatellite/ci-actions/ci-setup-action@v3
 
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
       - name: Build - Build and Deploy Decision
         id: build_decision
-        uses: virtualsatellite/ci-actions/ci-build-decision-action@v2
+        uses: virtualsatellite/ci-actions/ci-build-decision-action@v3
 
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
       - name: Build - Assemble
-        uses: virtualsatellite/ci-actions/ci-maven-build-action@v2
+        uses: virtualsatellite/ci-actions/ci-maven-build-action@v3
         with:
           build_job: assemble
           build_profile: ${{ steps.build_decision.outputs.build_type }}
+     
+      # --------------------------------------------
+      # Upload SWTBout screenshots to github artifacts
+      # --------------------------------------------
+      - name: Build - Upload Build Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: Deployable Applications
+          path: |
+            deploy/**/*.zip
+            deploy/**/*.tar.gz
+          retention-days: 3
      
       # ---------------------------------------------
       # Deploying to github releases
       # --------------------------------------------
       - name: Build - Deploy GH
-        uses: virtualsatellite/ci-actions/ci-deploy-gh-product-action@v2
+        uses: virtualsatellite/ci-actions/ci-deploy-gh-product-action@v4
         with:
           build_profile: ${{ steps.build_decision.outputs.build_type }}
           gh_token: ${{ secrets.GITHUB_TOKEN }}
@@ -292,7 +304,7 @@ jobs:
       # SF Deploy still to be done
       # ----------------------------------------------
       - name: Build - Deploy SF (Core)
-        uses: virtualsatellite/ci-actions/ci-deploy-sf-product-action@v2
+        uses: virtualsatellite/ci-actions/ci-deploy-sf-product-action@v3
         with:
           build_profile: ${{ steps.build_decision.outputs.build_type }}
           openssl_pass: ${{ secrets.SF_SSH_KEY_OPENSSL_PASS }}
@@ -302,7 +314,7 @@ jobs:
         if: ${{ steps.build_decision.outputs.deploy_type == 'deploy' }}
       
       - name: Build - Deploy SF (IDE Tools)
-        uses: virtualsatellite/ci-actions/ci-deploy-sf-product-action@v2
+        uses: virtualsatellite/ci-actions/ci-deploy-sf-product-action@v3
         with:
           build_profile: ${{ steps.build_decision.outputs.build_type }}
           openssl_pass: ${{ secrets.SF_SSH_KEY_OPENSSL_PASS }}
@@ -310,3 +322,4 @@ jobs:
           local_dir: VirSat4_Dvlm_ConceptIDE
           remote_dir: virtualsatellite/VirtualSatellite4-DVLM
         if: ${{ steps.build_decision.outputs.deploy_type == 'deploy' }}
+        

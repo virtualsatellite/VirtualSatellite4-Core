@@ -10,7 +10,7 @@
 	<parent>
 		<artifactId>de.dlr.sc.virsat.parent</artifactId>
 		<groupId>de.dlr.sc.virsat</groupId>
-		<version>4.12.1-SNAPSHOT</version>
+		<version>4.14.0-SNAPSHOT</version>
 		<relativePath>../maven/pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
@@ -73,7 +73,13 @@
 											<modelSubstitute>/model.substitution</modelSubstitute>
 											<schemes>
 												<scheme>http</scheme>
+												<scheme>https</scheme>
 											</schemes>
+											<securityDefinitions>
+												<securityDefinition>
+													<json>/securityDefinitions.json</json>
+												</securityDefinition>
+											</securityDefinitions>
 										</apiSource>
 									</apiSources>
 								</configuration>
@@ -99,7 +105,13 @@
 											<modelSubstitute>/model.substitution</modelSubstitute>
 											<schemes>
 												<scheme>http</scheme>
+												<scheme>https</scheme>
 											</schemes>
+											<securityDefinitions>
+												<securityDefinition>
+													<json>/securityDefinitions.json</json>
+												</securityDefinition>
+											</securityDefinitions>
 										</apiSource>
 									</apiSources>
 								</configuration>

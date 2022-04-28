@@ -24,6 +24,7 @@ import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.IWorkspaceRunnable;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -34,9 +35,11 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 import de.dlr.sc.virsat.project.structure.nature.VirSatProjectNature;
+import de.dlr.sc.virsat.server.Activator;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
 import de.dlr.sc.virsat.team.IVirSatVersionControlBackend;
 import de.dlr.sc.virsat.team.VersionControlBackendProvider;
+import de.dlr.sc.virsat.team.VersionControlUpdateResult;
 
 /**
  * Entry point to the eclipse project.
@@ -55,6 +58,7 @@ public class ServerRepository {
 	private File localRepository;
 	
 	protected static final String PREFIX_LOCAL_REPO_NAME = "repo_";
+	private static final String PREFIX_LOG_MESSAGE = "Server synchronization: ";
 	/**
 	 * Constructor for a Server Repository.
 	 * @param localRepositoryHome The repository home in which mostly all projects checkout to.
@@ -145,7 +149,7 @@ public class ServerRepository {
 	protected void createVirSatProjectIfNeeded() throws CoreException {
 		boolean hasVirSatNature = Arrays.asList(project.getDescription().getNatureIds()).contains(VirSatProjectNature.NATURE_ID);
 		if (!hasVirSatNature) {
-			VirSatProjectCommons.createNewProjectRunnable(project).run(new NullProgressMonitor());
+			VirSatProjectCommons.createNewProjectRunnable(project, false).run(new NullProgressMonitor());
 		}
 	}
 	
@@ -186,23 +190,57 @@ public class ServerRepository {
 	 * @throws Exception
 	 */
 	public void syncRepository() throws Exception {
+		syncRepository(true);
+	}
+	
+	/**
+	 * This method syncs the repository, which means it updates from remote
+	 * and then sends all the changes to remote
+	 * @param build if a build should be triggered
+	 * @throws Exception
+	 */
+	public void syncRepository(boolean build) throws Exception {
 		AtomicExceptionReference<Exception> atomicException = new AtomicExceptionReference<>();
+		String projectName = repositoryConfiguration.getProjectName();
 		
 		runInWorkspace((progress) -> {
 			try {
-				String projectName = repositoryConfiguration.getProjectName();
+				
+				Activator.getDefault().getLog().info("Server synchronizing project with backend: " + projectName);
+				Activator.getDefault().getLog().info(PREFIX_LOG_MESSAGE + "Saving all resources");
 
-				// Simple approach for the moment but maybe not enough for git. Maybe a sync has to be implemented for SVN and GIT
-				// in the backend. E.g. Usually Git should works like: 1. commit your changes locally. 2. Pull remote changes and merge.
-				// 3. push the merged changes.
-				versionControlBackEnd.update(project, new NullProgressMonitor());
+				// Ensure that all changes are saved on FS level
+				if (ed.isDirty()) {
+					ed.saveAll();
+				}
+				
+				// Get remote changes
+				Activator.getDefault().getLog().info(PREFIX_LOG_MESSAGE + "Update from remote");
+				VersionControlUpdateResult result = versionControlBackEnd.update(project, new NullProgressMonitor());
+				
+				// Only reload if we detected changes in the update step
+				if (result.hasChanges()) {
+					Activator.getDefault().getLog().info(PREFIX_LOG_MESSAGE + "Reload all resources");
+					// Maybe we could reload only the changed resources here
+					ed.reloadAll();
+				}
+				
+				// Run the builders
+				if (build) {
+					Activator.getDefault().getLog().info(PREFIX_LOG_MESSAGE + "Run build");
+					project.build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor());
+				}
+				
+				// Commit and push the new state to the repository
+				Activator.getDefault().getLog().info(PREFIX_LOG_MESSAGE + "Push changes");
 				versionControlBackEnd.commit(project, SERVER_REPOSITORY_COMMIT_PUSH_MESSAGE + projectName, new NullProgressMonitor());
+				
 			} catch (Exception e) {
 				atomicException.set(e);
 			}
 		});
-		
 		atomicException.throwIfSet();
+	
 	}
 	
 	public void retrieveProjectFromConfiguration() {
@@ -213,7 +251,7 @@ public class ServerRepository {
 	public void retrieveEdAndResurceSetFromConfiguration() {
 		retrieveProjectFromConfiguration();
 		
-		resourceSet = VirSatResourceSet.getResourceSet(project);
+		resourceSet = VirSatResourceSet.getResourceSet(project, false);
 		ed = VirSatEditingDomainRegistry.INSTANCE.getEd(resourceSet);
 	}
 	

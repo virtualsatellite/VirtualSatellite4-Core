@@ -29,11 +29,12 @@ import junit.framework.JUnit4TestAdapter;
  */
 @RunWith(Suite.class)
 
-@SuiteClasses({	ExcelExporterTest.class,
-				ExcelImporterTest.class,
-				ValidatorTest.class,
-				ConstraintTableHelperTest.class
-				})
+@SuiteClasses({
+	ExcelExporterTest.class,
+	ExcelImporterTest.class,
+	ValidatorTest.class,
+	ConstraintTableHelperTest.class
+	})
 
 /**
  * 

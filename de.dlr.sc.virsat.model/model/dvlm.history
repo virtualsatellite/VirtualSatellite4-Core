@@ -5393,56 +5393,62 @@
     </changes>
   </releases>
   <releases xmi:id="_z9zaEIL0EeqQ2L2u1ztINA">
-    <changes xsi:type="history:Create" xmi:id="_10sSMGB6Eeum8qfshOhL6Q" referenceName="eAnnotations">
-      <target href="dvlm.ecore#//categories/Category/isExtensionOf/typeDefinition"/>
-      <element href="dvlm.ecore#//categories/Category/isExtensionOf/typeDefinition/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%"/>
-      <changes xsi:type="history:Set" xmi:id="_10sSMWB6Eeum8qfshOhL6Q" featureName="source" dataValue="http://www.eclipse.org/emf/2002/GenModel">
-        <element href="dvlm.ecore#//categories/Category/isExtensionOf/typeDefinition/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%"/>
-      </changes>
+    <changes xsi:type="history:Create" xmi:id="_oFXccFIiEey7cs0vuDBPzA" referenceName="eClassifiers">
+      <target href="dvlm.ecore#//categories/propertydefinitions"/>
+      <element href="dvlm.ecore#//categories/propertydefinitions/IVerificationSpecification"/>
     </changes>
-    <changes xsi:type="history:Create" xmi:id="_10sSMmB6Eeum8qfshOhL6Q" referenceName="details">
-      <target href="dvlm.ecore#//categories/Category/isExtensionOf/typeDefinition/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%"/>
-      <element href="dvlm.ecore#//categories/Category/isExtensionOf/typeDefinition/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%/@details.0"/>
-      <changes xsi:type="history:Set" xmi:id="_10sSM2B6Eeum8qfshOhL6Q" featureName="key" dataValue="documentation">
-        <element href="dvlm.ecore#//categories/Category/isExtensionOf/typeDefinition/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%/@details.0"/>
-      </changes>
-      <changes xsi:type="history:Set" xmi:id="_10sSNGB6Eeum8qfshOhL6Q" featureName="value" dataValue="of which the current is an extension of or not.">
-        <element href="dvlm.ecore#//categories/Category/isExtensionOf/typeDefinition/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%/@details.0"/>
-      </changes>
+    <changes xsi:type="history:Set" xmi:id="_tH8lgFIiEey7cs0vuDBPzA" featureName="name" dataValue="IVerificationSpecification">
+      <element href="dvlm.ecore#//categories/propertydefinitions/IVerificationSpecification"/>
     </changes>
-    <changes xsi:type="history:Create" xmi:id="_BCWi0GCOEeum8qfshOhL6Q" referenceName="eAnnotations">
-      <target href="dvlm.ecore#//categories/propertyinstances/ResourcePropertyInstance/setUri/uri"/>
-      <element href="dvlm.ecore#//categories/propertyinstances/ResourcePropertyInstance/setUri/uri/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%"/>
-      <changes xsi:type="history:Set" xmi:id="_BCWi0WCOEeum8qfshOhL6Q" featureName="source" dataValue="http://www.eclipse.org/emf/2002/GenModel">
-        <element href="dvlm.ecore#//categories/propertyinstances/ResourcePropertyInstance/setUri/uri/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%"/>
-      </changes>
+    <changes xsi:type="history:Create" xmi:id="_urmJkFIiEey7cs0vuDBPzA" referenceName="eStructuralFeatures">
+      <target href="dvlm.ecore#//categories/propertydefinitions/AProperty"/>
+      <element href="dvlm.ecore#//categories/propertydefinitions/AProperty/verification"/>
     </changes>
-    <changes xsi:type="history:Create" xmi:id="_BCWi0mCOEeum8qfshOhL6Q" referenceName="details">
-      <target href="dvlm.ecore#//categories/propertyinstances/ResourcePropertyInstance/setUri/uri/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%"/>
-      <element href="dvlm.ecore#//categories/propertyinstances/ResourcePropertyInstance/setUri/uri/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%/@details.0"/>
-      <changes xsi:type="history:Set" xmi:id="_BCWi02COEeum8qfshOhL6Q" featureName="key" dataValue="documentation">
-        <element href="dvlm.ecore#//categories/propertyinstances/ResourcePropertyInstance/setUri/uri/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%/@details.0"/>
-      </changes>
-      <changes xsi:type="history:Set" xmi:id="_BCWi1GCOEeum8qfshOhL6Q" featureName="value" dataValue="the uri of the reosource to be set">
-        <element href="dvlm.ecore#//categories/propertyinstances/ResourcePropertyInstance/setUri/uri/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%/@details.0"/>
-      </changes>
+    <changes xsi:type="history:Set" xmi:id="_vwCCEFIiEey7cs0vuDBPzA" featureName="name" dataValue="veri">
+      <element href="dvlm.ecore#//categories/propertydefinitions/AProperty/verification"/>
     </changes>
-    <changes xsi:type="history:Create" xmi:id="_lkR8wGCQEeum8qfshOhL6Q" referenceName="eAnnotations">
-      <target href="dvlm.ecore#//categories/propertyinstances/UnitValuePropertyInstance/setValueAsBaseUnit/value"/>
-      <element href="dvlm.ecore#//categories/propertyinstances/UnitValuePropertyInstance/setValueAsBaseUnit/value/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%"/>
-      <changes xsi:type="history:Set" xmi:id="_lkR8wWCQEeum8qfshOhL6Q" featureName="source" dataValue="http://www.eclipse.org/emf/2002/GenModel">
-        <element href="dvlm.ecore#//categories/propertyinstances/UnitValuePropertyInstance/setValueAsBaseUnit/value/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%"/>
-      </changes>
+    <changes xsi:type="history:Set" xmi:id="_00Fx0FIiEey7cs0vuDBPzA" featureName="name" dataValue="verification" oldDataValue="veri">
+      <element href="dvlm.ecore#//categories/propertydefinitions/AProperty/verification"/>
     </changes>
-    <changes xsi:type="history:Create" xmi:id="_lkR8wmCQEeum8qfshOhL6Q" referenceName="details">
-      <target href="dvlm.ecore#//categories/propertyinstances/UnitValuePropertyInstance/setValueAsBaseUnit/value/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%"/>
-      <element href="dvlm.ecore#//categories/propertyinstances/UnitValuePropertyInstance/setValueAsBaseUnit/value/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%/@details.0"/>
-      <changes xsi:type="history:Set" xmi:id="_lkR8w2CQEeum8qfshOhL6Q" featureName="key" dataValue="documentation">
-        <element href="dvlm.ecore#//categories/propertyinstances/UnitValuePropertyInstance/setValueAsBaseUnit/value/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%/@details.0"/>
-      </changes>
-      <changes xsi:type="history:Set" xmi:id="_lkR8xGCQEeum8qfshOhL6Q" featureName="value" dataValue="the value to be set in base unit.">
-        <element href="dvlm.ecore#//categories/propertyinstances/UnitValuePropertyInstance/setValueAsBaseUnit/value/%http:%2F%2Fwww.eclipse.org%2Femf%2F2002%2FGenModel%/@details.0"/>
-      </changes>
+    <changes xsi:type="history:Set" xmi:id="_1xo_MFIiEey7cs0vuDBPzA" featureName="eType">
+      <element href="dvlm.ecore#//categories/propertydefinitions/AProperty/verification"/>
+      <referenceValue href="dvlm.ecore#//categories/propertydefinitions/IVerificationSpecification"/>
+    </changes>
+    <changes xsi:type="history:Create" xmi:id="_3xKm8FIiEey7cs0vuDBPzA" referenceName="eClassifiers">
+      <target href="dvlm.ecore#//categories/propertydefinitions"/>
+      <element href="dvlm.ecore#//categories/propertydefinitions/VerificationTypeSpecification"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_-OHcQFIiEey7cs0vuDBPzA" featureName="name" dataValue="VerificationTypeSpecification">
+      <element href="dvlm.ecore#//categories/propertydefinitions/VerificationTypeSpecification"/>
+    </changes>
+    <changes xsi:type="history:Create" xmi:id="__OtWkFIiEey7cs0vuDBPzA" referenceName="eStructuralFeatures">
+      <target href="dvlm.ecore#//categories/propertydefinitions/VerificationTypeSpecification"/>
+      <element href="dvlm.ecore#//categories/propertydefinitions/VerificationTypeSpecification/verificationType"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_DR5fMFIjEey7cs0vuDBPzA" featureName="name" dataValue="verificationType">
+      <element href="dvlm.ecore#//categories/propertydefinitions/VerificationTypeSpecification/verificationType"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_HO45MFIjEey7cs0vuDBPzA" featureName="eType">
+      <element href="dvlm.ecore#//categories/propertydefinitions/VerificationTypeSpecification/verificationType"/>
+      <referenceValue href="dvlm.ecore#//categories/ATypeDefinition"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_In-zEFIjEey7cs0vuDBPzA" featureName="containment" dataValue="true" oldDataValue="false">
+      <element href="dvlm.ecore#//categories/propertydefinitions/AProperty/verification"/>
+    </changes>
+    <changes xsi:type="history:Add" xmi:id="_Ni-bgFIlEey7cs0vuDBPzA" featureName="eSuperTypes">
+      <element href="dvlm.ecore#//categories/propertydefinitions/VerificationTypeSpecification"/>
+      <referenceValue href="dvlm.ecore#//categories/propertydefinitions/IVerificationSpecification"/>
+    </changes>
+    <changes xsi:type="history:Create" xmi:id="_EoZbQFInEey7cs0vuDBPzA" referenceName="eStructuralFeatures">
+      <target href="dvlm.ecore#//categories/Category"/>
+      <element href="dvlm.ecore#//categories/Category/isVerification"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_G0WVcFInEey7cs0vuDBPzA" featureName="eType">
+      <element href="dvlm.ecore#//categories/Category/isVerification"/>
+      <referenceValue href="../../../plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_Iu-PEFInEey7cs0vuDBPzA" featureName="name" dataValue="isVerification">
+      <element href="dvlm.ecore#//categories/Category/isVerification"/>
     </changes>
   </releases>
 </history:History>

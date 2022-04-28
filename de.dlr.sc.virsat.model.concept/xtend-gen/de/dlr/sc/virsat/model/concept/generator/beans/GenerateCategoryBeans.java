@@ -69,7 +69,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -88,6 +90,10 @@ import org.eclipse.xtext.xbase.lib.StringExtensions;
  */
 @SuppressWarnings("all")
 public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
+  private static final String IAUTOMATIC_VERIFICATION_FQN = "de.dlr.sc.virsat.model.extension.requirements.verification.build.steps.IAutomaticVerification";
+  
+  private static final String REQUIREMENT_FQN = "de.dlr.sc.virsat.model.extension.requirements.model.Requirement";
+  
   public static String getConcreteClassName(final ATypeDefinition typeDefinition) {
     return StringExtensions.toFirstUpper(typeDefinition.getName());
   }
@@ -388,6 +394,23 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
     _builder.newLineIfNotEmpty();
     importManager.register(CategoryAssignment.class);
     _builder.newLineIfNotEmpty();
+    importManager.register(XmlType.class);
+    _builder.newLineIfNotEmpty();
+    {
+      boolean _isIsVerification = category.isIsVerification();
+      if (_isIsVerification) {
+        importManager.register(GenerateCategoryBeans.IAUTOMATIC_VERIFICATION_FQN);
+        _builder.newLineIfNotEmpty();
+        importManager.register(IProgressMonitor.class);
+        _builder.newLineIfNotEmpty();
+        importManager.register(Command.class);
+        _builder.newLineIfNotEmpty();
+        importManager.register(EditingDomain.class);
+        _builder.newLineIfNotEmpty();
+        importManager.register(GenerateCategoryBeans.REQUIREMENT_FQN);
+        _builder.newLineIfNotEmpty();
+      }
+    }
     _builder.append("// *****************************************************************");
     _builder.newLine();
     _builder.append("// * Class Declaration");
@@ -395,6 +418,11 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
     _builder.append("// *****************************************************************");
     _builder.newLine();
     _builder.newLine();
+    _builder.append("@XmlType(name = A");
+    String _firstUpper = StringExtensions.toFirstUpper(category.getName());
+    _builder.append(_firstUpper);
+    _builder.append(".FULL_QUALIFIED_CATEGORY_NAME)");
+    _builder.newLineIfNotEmpty();
     CharSequence _generateClassHeader = ConceptGeneratorUtil.generateClassHeader(category);
     _builder.append(_generateClassHeader);
     _builder.newLineIfNotEmpty();
@@ -402,11 +430,17 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
     String _declareIfAbstract = this.declareIfAbstract(category);
     _builder.append(_declareIfAbstract);
     _builder.append(" class ");
-    String _firstUpper = StringExtensions.toFirstUpper(category.getName());
-    _builder.append(_firstUpper);
-    _builder.append(" extends A");
     String _firstUpper_1 = StringExtensions.toFirstUpper(category.getName());
     _builder.append(_firstUpper_1);
+    _builder.append(" extends A");
+    String _firstUpper_2 = StringExtensions.toFirstUpper(category.getName());
+    _builder.append(_firstUpper_2);
+    {
+      boolean _isIsVerification_1 = category.isIsVerification();
+      if (_isIsVerification_1) {
+        _builder.append(" implements IAutomaticVerification");
+      }
+    }
     _builder.append(" {");
     _builder.newLineIfNotEmpty();
     _builder.append("\t");
@@ -422,8 +456,8 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
     _builder.newLine();
     _builder.append("\t");
     _builder.append("public ");
-    String _firstUpper_2 = StringExtensions.toFirstUpper(category.getName());
-    _builder.append(_firstUpper_2, "\t");
+    String _firstUpper_3 = StringExtensions.toFirstUpper(category.getName());
+    _builder.append(_firstUpper_3, "\t");
     _builder.append("() {");
     _builder.newLineIfNotEmpty();
     _builder.append("\t\t");
@@ -450,8 +484,8 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
     _builder.newLine();
     _builder.append("\t");
     _builder.append("public ");
-    String _firstUpper_3 = StringExtensions.toFirstUpper(category.getName());
-    _builder.append(_firstUpper_3, "\t");
+    String _firstUpper_4 = StringExtensions.toFirstUpper(category.getName());
+    _builder.append(_firstUpper_4, "\t");
     _builder.append("(Concept concept) {");
     _builder.newLineIfNotEmpty();
     _builder.append("\t\t");
@@ -475,8 +509,8 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
     _builder.newLine();
     _builder.append("\t");
     _builder.append("public ");
-    String _firstUpper_4 = StringExtensions.toFirstUpper(category.getName());
-    _builder.append(_firstUpper_4, "\t");
+    String _firstUpper_5 = StringExtensions.toFirstUpper(category.getName());
+    _builder.append(_firstUpper_5, "\t");
     _builder.append("(CategoryAssignment categoryAssignment) {");
     _builder.newLineIfNotEmpty();
     _builder.append("\t\t");
@@ -485,6 +519,34 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
     _builder.append("\t");
     _builder.append("}");
     _builder.newLine();
+    {
+      boolean _isIsVerification_2 = category.isIsVerification();
+      if (_isIsVerification_2) {
+        _builder.append("\t");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("@Override");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("public Command runCustomVerification(EditingDomain editingDomain, Requirement requirement,");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("\t\t");
+        _builder.append("IProgressMonitor monitor) {");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("\t");
+        _builder.append("// TODO implement custom verification\t\t");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("\t");
+        _builder.append("return null;");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("}");
+        _builder.newLine();
+      }
+    }
     _builder.append("}");
     _builder.newLine();
     return _builder;

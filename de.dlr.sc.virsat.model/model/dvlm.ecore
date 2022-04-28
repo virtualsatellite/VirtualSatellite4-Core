@@ -237,6 +237,7 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="isAbstract" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
           defaultValueLiteral="FALSE"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="extendsCategory" eType="#//categories/Category"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="isVerification" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="CategoryAssignment" eSuperTypes="#//categories/ATypeInstance #//general/IName #//calculation/IEquationInput #//calculation/IEquationSectionContainer">
       <eStructuralFeatures xsi:type="ecore:EReference" name="propertyInstances" upperBound="-1"
@@ -251,6 +252,8 @@
         nsPrefix="dvlm_cppd">
       <eClassifiers xsi:type="ecore:EClass" name="AProperty" abstract="true" eSuperTypes="#//categories/ATypeDefinition">
         <eStructuralFeatures xsi:type="ecore:EReference" name="arrayModifier" eType="#//categories/propertydefinitions/IArrayModifier"
+            containment="true"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="verification" eType="#//categories/propertydefinitions/IVerificationSpecification"
             containment="true"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="ComposedProperty" eSuperTypes="#//categories/propertydefinitions/AProperty #//calculation/IEquationDefinitionInput">
@@ -321,6 +324,10 @@
       <eClassifiers xsi:type="ecore:EClass" name="IArrayModifier" abstract="true"
           interface="true"/>
       <eClassifiers xsi:type="ecore:EClass" name="DynamicArrayModifier" eSuperTypes="#//categories/propertydefinitions/IArrayModifier"/>
+      <eClassifiers xsi:type="ecore:EClass" name="IVerificationSpecification"/>
+      <eClassifiers xsi:type="ecore:EClass" name="VerificationTypeSpecification" eSuperTypes="#//categories/propertydefinitions/IVerificationSpecification">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="verificationType" eType="#//categories/ATypeDefinition"/>
+      </eClassifiers>
     </eSubpackages>
     <eSubpackages name="propertyinstances" nsURI="http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppi"
         nsPrefix="dvlm_cppi">

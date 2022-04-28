@@ -2,7 +2,7 @@
 :imagesdir: images
 :title-logo-image: images/title/VirtualSatellite_Server.jpg
 :toc:
-:toclevels: 3
+:toclevels: 4
 :experimental: 
 
 == Introduction
@@ -37,7 +37,8 @@ So a Client can read or write into the Virtual Satellite model.
 The server provides functionality for administrators, that can manipulate the server configuration, and users.
 For that purpose it uses authentication and authorization.
 // For authentication purposes it is planned to an LDAP server can be connected to the REST server.
-// The connection can be secured via HTTPS.
+The connection can be secured via HTTPS.
+The server uses the port 8000 for HTTP and 8443 for HTTPS requests.
 Each user can only access the _Server Repositories_ to which he has been granted access.
 
 The connected SVN/git repositories can also be manipulated from _Clients using the Virtual Satellite UI_.
@@ -73,13 +74,13 @@ The _Data Model_ is connected to a _SVN_ or _git_ backend.
 The REST API can be accessed via the 
 [subs=+quotes]
 ....
-{*server adress*}:8000/rest
+{*server adress*}:{*http/https port*}/rest
 ....
 and currently supports multiple APIs for different purposes.
 Each API can be accessed via it's *name* and *version number*:
 [subs=+quotes]
 ....
-{*server adress*}:8000/rest/{*name*}/{*version number*}
+{*server adress*}:{*http/https port*}/rest/{*name*}/{*version number*}
 ....
 
 Currently the following APIs are provided:
@@ -91,13 +92,13 @@ The following documentation of the REST endpoints is automatically generated usi
 For each API the swagger documentation also is provided via the REST API at:
 [subs=+quotes]
 ....
-{*server adress*}:8000/rest/{*name*}/{*version number*}/swagger.json or /swagger.yaml
+{*server adress*}:{*http/https port*}/rest/{*name*}/{*version number*}/swagger.json or /swagger.yaml
 ....
 
 It can help you, if you want to connect Virtual Satellite to your own application.
 E.g. it can be used to automatically generate your client, using Swaggers Codegen capabilities.
 
-WARNING: Important concept: Inheritance
+=== Important concept: Inheritance
 
 Some resources in the following documentation return abstract model classes (e.g. AClass).
 Here the server will instead return the concrete model class (e.g. ConcreteClass) inheriting from AClass.
@@ -116,6 +117,9 @@ So the JSON for ConcreteClass will look like this:
 ....
 This concept is most relevant for CategoryAssignments, which can additionally have
 fields in the form of Properties.
+
+WARNING: A good understanding of Modeling in Virtual Satellite is required to use the the APIs.
+If you are new to Virtual Satellite, please refer to the User Manual before continuing.
 
 NOTE: Now follows the generated documentation
 
@@ -204,9 +208,27 @@ The Server will start and try to load the repositories defined in
         demo2.repository
 ....
 
+|{counter:step}.
+|Send your first request to the server!
+The server provides a status endpoint that can be accessed without authentication and repositories.
+Send a HTTP/S GET request to the following address:
+[subs=+quotes]
+....
+{*server adress*}:{*http/https port*}/status
+....
+|
+The server should return HTTP status OK (200) and the following response body:
+....
+{
+	"status": "ok"
+}
+....
+
 |===
 
 === The Configuration File
+[WARNING]
+This file should be stored in a secure location on the server.
 
 [WARNING]
 .Connection is UNSECURED by default
@@ -214,7 +236,7 @@ The Server will start and try to load the repositories defined in
 By default the REST server communicates over HTTP, so your credentials (username and password) are transmitted unencrypted.
 ====
 
-// TIP: Configure the server to use the secure HTTPS connection.
+TIP: Configure the server to use the secure HTTPS connection.
 
 By convention this file is named *server.properties*:
 
@@ -234,8 +256,63 @@ By convention this file is named *server.properties*:
  
 # Location of the .properties file for authentication 
 # *WARNING*: will only be used if the HashLoginService is used
-*auth.propierties.file* = ...
+*auth.properties.file* = ...
+
+# "true" if HTTPS should be enabled
+*https.enabled* = 
+# Path to the JSSE keystore containing the certificates (by JDKs keytool)
+*https.keystore.path* = 
+# Password for the keystore
+*https.keystore.password* = 
+# Optional password for the key "jetty", will default to https.keystore.password if left empty
+*https.keystore.manager.password* = 
+# "true" if HTTP should be disabled (*WARNING*: will only be used if HTTPS is enabled)
+*https.only* = 
 ....
+
+Authentication credentials are stored in <<The Authentication File>>.
+To use HTTPS you have to enable it in the server configuration and provide a certificate that is stored in a JSSE keystore.
+Such a keystore can be created and managed (e.g. create or add certificates) via the JDKs keytool.
+The server will use the certificate stored with the key "jetty", that is secured by the keystore password and an optional password for the key.
+HTTP can be disabled in the server configuration if HTTPS is enabled.
+
+TIP: For more information regarding the keystore you can refer to the Jetty, JSSE and keytool documentation.
+
+=== The Authentication File
+[WARNING]
+This file should be stored in a secure location on the server.
+
+This file persists the known users and their roles. The server currently supports the following roles:
+
+[%header,cols=">30,80a"] 
+|===
+
+|Role
+|Permission
+
+|ADMIN
+|Can access all resources on the server. This includes the Management API and all repositories.
+
+|USER
+|Can access resources available to users, has to be granted access to the specific repositories (see below).
+
+|repositoryName
+|A USER with this role can also access this repository. Has no effect on ADMINs.
+
+|===
+
+An example configuration:
+
+[subs=+quotes]
+....
+# Properties for user authentication with entries in the format:
+# username: password[,rolename ...]
+admin: password,ADMIN
+user: password,USER
+user2: password,USER,testRepository
+....
+
+Only the _admin_ can access the Management API. Only _admin_ and _user2_ can access the _testRepository_.
 
 === How to add a Repository manually instead of using the REST API
 

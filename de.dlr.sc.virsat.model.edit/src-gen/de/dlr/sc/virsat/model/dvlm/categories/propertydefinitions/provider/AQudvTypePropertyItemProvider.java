@@ -236,6 +236,7 @@ public class AQudvTypePropertyItemProvider extends IEquationDefinitionInputItemP
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(PropertydefinitionsPackage.Literals.APROPERTY__ARRAY_MODIFIER);
+			childrenFeatures.add(PropertydefinitionsPackage.Literals.APROPERTY__VERIFICATION);
 		}
 		return childrenFeatures;
 	}
@@ -294,6 +295,7 @@ public class AQudvTypePropertyItemProvider extends IEquationDefinitionInputItemP
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 			case PropertydefinitionsPackage.AQUDV_TYPE_PROPERTY__ARRAY_MODIFIER:
+			case PropertydefinitionsPackage.AQUDV_TYPE_PROPERTY__VERIFICATION:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -320,6 +322,16 @@ public class AQudvTypePropertyItemProvider extends IEquationDefinitionInputItemP
 			(createChildParameter
 				(PropertydefinitionsPackage.Literals.APROPERTY__ARRAY_MODIFIER,
 				 PropertydefinitionsFactory.eINSTANCE.createDynamicArrayModifier()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(PropertydefinitionsPackage.Literals.APROPERTY__VERIFICATION,
+				 PropertydefinitionsFactory.eINSTANCE.createIVerificationSpecification()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(PropertydefinitionsPackage.Literals.APROPERTY__VERIFICATION,
+				 PropertydefinitionsFactory.eINSTANCE.createVerificationTypeSpecification()));
 	}
 	
 	

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: de.dlr.sc.virsat.model.edit;singleton:=true
-Bundle-Version: 4.12.1.qualifier
+Bundle-Version: 4.14.0.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin$Implementation
 Bundle-Vendor: %providerName
@@ -16,6 +16,8 @@ Export-Package: de.dlr.sc.virsat.model.concept.list,
  de.dlr.sc.virsat.model.concept.types.category,
  de.dlr.sc.virsat.model.concept.types.factory,
  de.dlr.sc.virsat.model.concept.types.property,
+ de.dlr.sc.virsat.model.concept.types.roles,
+ de.dlr.sc.virsat.model.concept.types.qudv,
  de.dlr.sc.virsat.model.concept.types.structural,
  de.dlr.sc.virsat.model.concept.types.structural.level,
  de.dlr.sc.virsat.model.concept.types.structural.tree,
@@ -29,10 +31,10 @@ Export-Package: de.dlr.sc.virsat.model.concept.list,
  de.dlr.sc.virsat.model.dvlm.command,
  de.dlr.sc.virsat.model.dvlm.concepts.provider,
  de.dlr.sc.virsat.model.dvlm.concepts.registry,
- de.dlr.sc.virsat.model.dvlm.json,
  de.dlr.sc.virsat.model.dvlm.dmf.provider,
  de.dlr.sc.virsat.model.dvlm.general.provider,
  de.dlr.sc.virsat.model.dvlm.inheritance.provider,
+ de.dlr.sc.virsat.model.dvlm.json,
  de.dlr.sc.virsat.model.dvlm.mat,
  de.dlr.sc.virsat.model.dvlm.provider,
  de.dlr.sc.virsat.model.dvlm.qudv.provider,

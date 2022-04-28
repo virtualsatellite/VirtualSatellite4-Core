@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
+import javax.annotation.security.PermitAll;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -44,6 +45,7 @@ public class DocumentationResource {
     @GET
     @Path(SWAGGER_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @PermitAll
     public String swaggerJson() {
         return getFileContent(SWAGGER_JSON);
     }
@@ -51,6 +53,7 @@ public class DocumentationResource {
     @GET
     @Path(SWAGGER_YAML)
     @Produces("application/yaml")
+    @PermitAll
     public String swaggerYaml() {
         return getFileContent(SWAGGER_YAML);
     }
@@ -63,7 +66,7 @@ public class DocumentationResource {
     private String getFileContent(String fileName) {
 		
     	String content = FILE_NOT_FOUND;
-    	String realmResourceName = "doc-gen" + File.separator + directory + File.separator + fileName;
+    	String realmResourceName = directory + File.separator + fileName;
     	
 		try {
 			InputStream inputStream  = FileLocator.openStream(Activator.getDefault().getBundle(), 

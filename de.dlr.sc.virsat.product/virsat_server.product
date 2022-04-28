@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Virtual Satellite 4 - Headless Server" uid="de.dlr.virsat.server.product" application="de.dlr.sc.virsat.server.application" version="4.12.1.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="Virtual Satellite 4 - Headless Server" uid="de.dlr.virsat.server.product" application="de.dlr.sc.virsat.server.application" version="4.14.0.qualifier" useFeatures="true" includeLaunchers="true">
 
    <configIni use="default">
    </configIni>
@@ -71,6 +71,7 @@
       <plugin id="de.dlr.sc.virsat.model.concept.ui"/>
       <plugin id="de.dlr.sc.virsat.model.edit"/>
       <plugin id="de.dlr.sc.virsat.model.edit.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.model.extension..ui"/>
       <plugin id="de.dlr.sc.virsat.model.extension.budget.mass"/>
       <plugin id="de.dlr.sc.virsat.model.extension.budget.mass.test" fragment="true"/>
       <plugin id="de.dlr.sc.virsat.model.extension.budget.mass.ui"/>
@@ -100,6 +101,8 @@
       <plugin id="de.dlr.sc.virsat.model.extension.tests.edit.test" fragment="true"/>
       <plugin id="de.dlr.sc.virsat.model.extension.tests.test" fragment="true"/>
       <plugin id="de.dlr.sc.virsat.model.extension.tests.ui"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.thermal"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.thermal.test" fragment="true"/>
       <plugin id="de.dlr.sc.virsat.model.extension.visualisation"/>
       <plugin id="de.dlr.sc.virsat.model.extension.visualisation.test" fragment="true"/>
       <plugin id="de.dlr.sc.virsat.model.extension.visualisation.ui"/>
@@ -182,6 +185,7 @@
       <feature id="org.eclipse.emf" installMode="root"/>
       <feature id="org.eclipse.xtext.sdk" installMode="root"/>
       <feature id="org.eclipse.jgit" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.model.extension.thermal.feature" installMode="root"/>
    </features>
 
    <configurations>

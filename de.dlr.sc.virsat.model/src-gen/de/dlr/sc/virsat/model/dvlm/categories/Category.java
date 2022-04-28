@@ -32,6 +32,7 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.categories.Category#getProperties <em>Properties</em>}</li>
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.categories.Category#isIsAbstract <em>Is Abstract</em>}</li>
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.categories.Category#getExtendsCategory <em>Extends Category</em>}</li>
+ *   <li>{@link de.dlr.sc.virsat.model.dvlm.categories.Category#isIsVerification <em>Is Verification</em>}</li>
  * </ul>
  *
  * @see de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage#getCategory()
@@ -107,6 +108,32 @@ public interface Category extends ATypeDefinition, IApplicableFor, IEquationDefi
 	 * @generated
 	 */
 	void setExtendsCategory(Category value);
+
+	/**
+	 * Returns the value of the '<em><b>Is Verification</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Is Verification</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Is Verification</em>' attribute.
+	 * @see #setIsVerification(boolean)
+	 * @see de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage#getCategory_IsVerification()
+	 * @model
+	 * @generated
+	 */
+	boolean isIsVerification();
+
+	/**
+	 * Sets the value of the '{@link de.dlr.sc.virsat.model.dvlm.categories.Category#isIsVerification <em>Is Verification</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Is Verification</em>' attribute.
+	 * @see #isIsVerification()
+	 * @generated
+	 */
+	void setIsVerification(boolean value);
 
 	/**
 	 * <!-- begin-user-doc -->

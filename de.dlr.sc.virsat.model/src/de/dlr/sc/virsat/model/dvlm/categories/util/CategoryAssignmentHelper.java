@@ -238,9 +238,11 @@ public class CategoryAssignmentHelper {
 	 *            the Category Assignments
 	 * @param caId
 	 *            the ID of the Category Type that should be searched for
+	 * @param deepSearch
+	 *            specify weather to search more than one level
 	 * @return all Category Assignments of the given type
 	 */
-	public static List<CategoryAssignment> getNestedCategoryAssignments(CategoryAssignment ca, String caId) {
+	public static List<CategoryAssignment> getNestedCategoryAssignments(CategoryAssignment ca, String caId, boolean deepSearch) {
 		List<CategoryAssignment> cas = new LinkedList<>();
 
 		ATypeDefinition c = ca.getType();
@@ -256,6 +258,9 @@ public class CategoryAssignmentHelper {
 				ComposedPropertyInstance cpi = (ComposedPropertyInstance) pi;
 				CategoryAssignment caNested = cpi.getTypeInstance();
 				ATypeDefinition cNested = caNested.getType();
+				if (deepSearch) {
+					cas.addAll(getNestedCategoryAssignments(caNested, caId, deepSearch));
+				}
 				if (cNested != null) {
 					if (caId.equals(cNested.getFullQualifiedName())) {
 						cas.add(caNested);
@@ -267,6 +272,9 @@ public class CategoryAssignmentHelper {
 					if (arrayPi instanceof ComposedPropertyInstance) {
 						ComposedPropertyInstance cpi = (ComposedPropertyInstance) arrayPi;
 						CategoryAssignment caNested = cpi.getTypeInstance();
+						if (deepSearch) {
+							cas.addAll(getNestedCategoryAssignments(caNested, caId, deepSearch));
+						}
 						ATypeDefinition cNested = caNested.getType();
 						if (cNested != null) {
 							if (caId.equals(cNested.getFullQualifiedName())) {
@@ -279,6 +287,22 @@ public class CategoryAssignmentHelper {
 		}
 
 		return cas;
+	}
+	
+	/**
+	 * Use this method to hand back all CategoryAssignments of a given type from
+	 * a given StructuralElementInstance while also considering category
+	 * assignments that may be nested in others through composed property
+	 * instances
+	 * 
+	 * @param ca
+	 *            the Category Assignments
+	 * @param caId
+	 *            the ID of the Category Type that should be searched for
+	 * @return all Category Assignments of the given type
+	 */
+	public static List<CategoryAssignment> getNestedCategoryAssignments(CategoryAssignment ca, String caId) {
+		return getNestedCategoryAssignments(ca, caId, false);
 	}
 	
 	/**

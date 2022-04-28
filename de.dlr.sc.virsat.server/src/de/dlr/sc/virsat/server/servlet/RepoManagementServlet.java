@@ -10,12 +10,16 @@
 
 package de.dlr.sc.virsat.server.servlet;
 
+import java.io.File;
+
 import javax.servlet.Servlet;
 
 import org.glassfish.jersey.internal.inject.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.glassfish.jersey.servlet.ServletContainer;
 
+import de.dlr.sc.virsat.server.auth.filter.CorsFilter;
 import de.dlr.sc.virsat.server.resources.DocumentationResource;
 import de.dlr.sc.virsat.server.resources.ProjectManagementResource;
 import de.dlr.virsat.external.lib.jersey.servlet.ApplicationServletContainer;
@@ -38,9 +42,15 @@ public class RepoManagementServlet extends ApplicationServletContainer implement
 		 */
 		private RepoManagementRestApplication() {
 			register(ProjectManagementResource.class);
+			
+			// Registering this feature enables jetty to check for java security annotations e.g. roles allowed
+			register(RolesAllowedDynamicFeature.class);
+			
+			// Register the Cross origin resource sharing filter
+			register(CorsFilter.class);
 
 			// Register documentation resource via binder
-			final DocumentationResource docProvider = new DocumentationResource("management");
+			final DocumentationResource docProvider = new DocumentationResource("doc-gen" + File.separator + "management");
 			final AbstractBinder docBinder = new AbstractBinder() {
 				@Override
 				public void configure() {

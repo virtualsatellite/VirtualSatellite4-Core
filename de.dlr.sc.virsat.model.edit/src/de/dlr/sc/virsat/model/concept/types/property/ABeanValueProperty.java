@@ -9,8 +9,11 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.property;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Abstract implementation to the interface dealing with Attributes without QUDV unit
@@ -44,6 +47,18 @@ public abstract class ABeanValueProperty<P_TYPE extends ValuePropertyInstance, V
 	@Override
 	public void unset() {
 		ti.setValue(null);
+	}
+	
+	@XmlElement
+	@ApiModelProperty(
+			value = "If true this property overrides a super property"
+	)
+	public boolean getOverride() {
+		return ti.isOverride();
+	}
+	
+	public void setOverride(boolean override) {
+		ti.setOverride(override);
 	}
 
 }

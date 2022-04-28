@@ -50,7 +50,7 @@ import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 public class ModelAPI {
 
 	protected static ResourceSet resourceSet;
-	private static Resource resource;
+	protected static Resource resource;
 	private static final String JAVA_SYSTEM_PROPERTY_WORKING_DIR = "user.dir";
 	
 	/**
@@ -78,10 +78,16 @@ public class ModelAPI {
 			System.out.println("SysProp: " + key + ": " + value);
 		});
 		System.out.println("---------------- App output: --------------");
-
+		
+		initializeRepositoryResource();
+	}
+	
+	/**
+	 * Initializes the resource containing the Repository object
+	 */
+	protected void initializeRepositoryResource() {
 		String resourceFullPath = Paths.get(getCurrentProjectAbsolutePath(), VirSatProjectCommons.FOLDERNAME_DATA + "/" + VirSatProjectCommons.FILENAME_REPOSITORY).toAbsolutePath().toString();
 		URI modelUri = URI.createFileURI(resourceFullPath);
-
 		resource = resourceSet.getResource(modelUri, true);
 	}
 	
@@ -181,7 +187,7 @@ public class ModelAPI {
 	 * @param directory The directory to be removed
 	 * @throws IOException Exception in case a file or directory could not be removed
 	 */
-	private void deleteFolderStructures(Path directory) throws IOException {
+	protected void deleteFolderStructures(Path directory) throws IOException {
 		Files.walkFileTree(directory, new SimpleFileVisitor<Path>() {
 			@Override
 			public FileVisitResult visitFile(Path subFile, BasicFileAttributes basicFileAttributes) throws IOException {

@@ -51,6 +51,7 @@
 <setEntry value="de.dlr.sc.virsat.model.extension.ps.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.requirements.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.statemachines.feature:default"/>
+<setEntry value="de.dlr.sc.virsat.model.extension.thermal.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.visualisation.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.project.feature:default"/>
@@ -79,6 +80,7 @@
 <setEntry value="org.eclipse.equinox.p2.extras.feature:default"/>
 <setEntry value="org.eclipse.equinox.p2.rcp.feature:default"/>
 <setEntry value="org.eclipse.equinox.p2.user.ui:default"/>
+<setEntry value="org.eclipse.graphiti.export.feature:default"/>
 <setEntry value="org.eclipse.graphiti.feature:default"/>
 <setEntry value="org.eclipse.help:default"/>
 <setEntry value="org.eclipse.jdt:default"/>
@@ -86,6 +88,8 @@
 <setEntry value="org.eclipse.pde:default"/>
 <setEntry value="org.eclipse.platform:default"/>
 <setEntry value="org.eclipse.rcp:default"/>
+<setEntry value="org.eclipse.rmf.reqif10.feature:default"/>
+<setEntry value="org.eclipse.rmf.reqif10.pror.feature:default"/>
 <setEntry value="org.eclipse.team.svn:default"/>
 <setEntry value="org.eclipse.xtext.runtime:default"/>
 <setEntry value="org.eclipse.xtext.xbase.lib:default"/>
