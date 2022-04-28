@@ -58,6 +58,7 @@ public interface IVirSatVersionControlBackend {
 	 * Gets all remote changes for a project from the version control system
 	 * @param project the project to update
 	 * @param monitor an update monitor
+	 * @return an object containg meta information about the update result
 	 * @throws Exception in case something goes wrong
 	 */
 	VersionControlUpdateResult update(IProject project, IProgressMonitor monitor) throws Exception;

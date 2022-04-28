@@ -125,7 +125,7 @@ public class BeanPropertyFloat extends ABeanUnitValueProperty<Double> {
 
 	/**
 	 * Convenience method to easily get a value in a specified unit.
-	 * @param targetUnit the unit the return value should be expressed in
+	 * @param targetUnitName the unit the return value should be expressed in
 	 * @return Returns a double value in the specified unit
 	 */
 	public double getValueInUnit(String targetUnitName) {
