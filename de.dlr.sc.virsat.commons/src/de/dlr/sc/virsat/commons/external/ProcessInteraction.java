@@ -50,30 +50,7 @@ public class ProcessInteraction {
 		p.waitFor();
 		return output;
 	}
-	
-	/**
-	 * 
-	 * @param applicationpath path to the application
-	 * @param command command to run and application path
-	 * @return returns true if the process was successfully finished
-	 * @throws IOException cannot find exe for starting the process
-	 * @throws InterruptedException 
-	 */
-	public List<String> startCommandRunner(String command1, String command2, String command3, String command4, String command5, String command6, String command7, String command8, String command9) throws IOException, InterruptedException {
-		// Fix that that strings have not to be entered seperate
-		List<String> output = new ArrayList<String>();
-		ProcessBuilder pb = new ProcessBuilder(command1, command2, command3, command4, command5, command6, command7, command8, command9);
-		pb.redirectErrorStream(true);
-		Process p = pb.start();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-		String line = null;
-		while ((line = reader.readLine()) != null) {
-			output.add(line);
-		}
-		reader.close();
-		p.waitFor();
-		return output;
-	}
+
 	
 	/***
 	 * Opens the results of the command runner inside the IDE

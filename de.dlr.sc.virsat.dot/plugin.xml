@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.4"?>
-<plugin>
-   <extension-point id="de.dlr.sc.virsat.dot.export" name="Export" schema="schema/de.dlr.sc.virsat.dot.exsd"/>
-</plugin>
