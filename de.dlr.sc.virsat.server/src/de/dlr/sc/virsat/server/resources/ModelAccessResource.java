@@ -547,8 +547,8 @@ public class ModelAccessResource {
 	 * Create a new Sei typed by the Se identified by the fullQualifiedName
 	 * @param fullQualifiedName of the sei type (se)
 	 * @param owner of the sei (either another sei or the repository for root seis)
-	 * @param editingDomain
-	 * @param iUserContext 
+	 * @param editingDomain the editing domain
+	 * @param iUserContext the user context
 	 * @return uuid of the created sei
 	 */
 	public static String createSeiFromFqn(String fullQualifiedName, EObject owner, VirSatTransactionalEditingDomain editingDomain, IUserContext iUserContext) {
