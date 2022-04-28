@@ -214,7 +214,7 @@ public class ModelAccessResource {
 
 		/**
 		 * Synchronize depending on the synchronize and build query parameter
-		 * @throws Exception
+		 * @throws Exception thrown if the synchronization fails
 		 */
 		public void synchronize() throws Exception {
 			if (synchronize) {
@@ -265,7 +265,10 @@ public class ModelAccessResource {
 		}
 		
 		// Actual resources
-		/** **/
+		/**
+		 * This service forces a synchronization with the backend.
+		 * @return ok iff no exception occurred during synchronization
+		 */
 		@GET
 		@Path(FORCE_SYNC)
 		@ApiOperation(
@@ -288,7 +291,11 @@ public class ModelAccessResource {
 			return Response.ok().build();
 		}
 		
-		/** **/
+		/**
+		 * This service fetches the root StructuralElementInstances.
+		 * It can be used as an entry point into the data model.
+		 * @return the fetched root structural element instances
+		 */
 		@GET
 		@Path(ROOT_SEIS)
 		@Produces(MediaType.APPLICATION_JSON)
@@ -327,7 +334,11 @@ public class ModelAccessResource {
 			}
 		}
 		
-		/** **/
+		/**
+		 * This service creates a new root StructuralElementInstance and returns its uuid
+		 * @param fullQualifiedName the full qualified name of the SEI type
+		 * @return the created root sei
+		 */
 		@POST
 		@Path(ROOT_SEIS)
 		@Consumes(MediaType.APPLICATION_JSON)
@@ -361,7 +372,11 @@ public class ModelAccessResource {
 			}
 		}
 
-		/** **/
+		/**
+		 * This service fetches the active Concepts
+		 * @param onlyActiveConcepts only fetch the active concepts
+		 * @return fetched list of concepts
+		 */
 		@GET
 		@Path(CONCEPTS)
 		@Produces(MediaType.APPLICATION_JSON)
@@ -416,7 +431,10 @@ public class ModelAccessResource {
 			}
 		}
 		
-		/** **/
+		/**
+		 * This service fetches the existing Disciplines
+		 * @return the fetched disciplines
+		 */
 		@GET
 		@Path(DISCIPLINES)
 		@Produces(MediaType.APPLICATION_JSON)
@@ -453,7 +471,10 @@ public class ModelAccessResource {
 			}
 		}
 		
-		/** **/
+		/**
+		 * This service fetches the discipline of the rolemanagement
+		 * @return the fetched discipline
+		 */
 		@GET
 		@Path(ROLEMANAGEMENT)
 		@Produces(MediaType.APPLICATION_JSON)
@@ -485,7 +506,10 @@ public class ModelAccessResource {
 			}
 		}
 		
-		/** **/
+		/**
+		 * This service fetches the discipline of the repository
+		 * @return the fetched discipline
+		 */
 		@GET
 		@Path(REPOSITORY)
 		@Produces(MediaType.APPLICATION_JSON)
