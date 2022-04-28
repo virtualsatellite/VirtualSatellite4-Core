@@ -102,9 +102,10 @@ public class MassRequirementsVerification extends AMassRequirementsVerification 
 	/**
 	 * Check if mass equipment is compliant
 	 * 
-	 * @param verificationMethod
-	 * @param massEquipment
-	 * @return
+	 * @param massSummary the mass summary
+	 * @param lowerLimit the lower limit
+	 * @param upperLimit the upper limit
+	 * @return true iff the mass with margin is within the lower and upper limit
 	 */
 	public boolean isCompliant(MassSummary massSummary, double lowerLimit, double upperLimit) {
 		double value = massSummary.getMassWithMargin();
@@ -117,9 +118,10 @@ public class MassRequirementsVerification extends AMassRequirementsVerification 
 	/**
 	 * Check if mass equipment is compliant
 	 * 
-	 * @param verificationMethod
-	 * @param massEquipment
-	 * @return
+	 * @param massEquipment the mass equipment
+	 * @param lowerLimit the lower limit
+	 * @param upperLimit the upper limit
+	 * @return true iff the mass with margin is within the limits
 	 */
 	public boolean isCompliant(MassEquipment massEquipment, double lowerLimit, double upperLimit) {
 		double value = massEquipment.getMassWithMargin();
