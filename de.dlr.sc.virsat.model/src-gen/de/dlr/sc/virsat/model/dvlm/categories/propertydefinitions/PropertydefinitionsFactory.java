@@ -137,6 +137,24 @@ public interface PropertydefinitionsFactory extends EFactory {
 	DynamicArrayModifier createDynamicArrayModifier();
 
 	/**
+	 * Returns a new object of class '<em>IVerification Specification</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>IVerification Specification</em>'.
+	 * @generated
+	 */
+	IVerificationSpecification createIVerificationSpecification();
+
+	/**
+	 * Returns a new object of class '<em>Verification Type Specification</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Verification Type Specification</em>'.
+	 * @generated
+	 */
+	VerificationTypeSpecification createVerificationTypeSpecification();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

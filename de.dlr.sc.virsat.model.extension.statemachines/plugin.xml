@@ -18,20 +18,16 @@
 	</extension>
 	<extension point="de.dlr.sc.virsat.model.edit.ConceptTypeFactoryCaBeanRegistration">
 		<CategoryAssignmentBean
-			id="de.dlr.sc.virsat.model.extension.statemachines.StateMachine"
-			caBean="de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine">
-		</CategoryAssignmentBean>
-		<CategoryAssignmentBean
-			id="de.dlr.sc.virsat.model.extension.statemachines.TransitionTriggerEvent"
-			caBean="de.dlr.sc.virsat.model.extension.statemachines.model.TransitionTriggerEvent">
+			id="de.dlr.sc.virsat.model.extension.statemachines.State"
+			caBean="de.dlr.sc.virsat.model.extension.statemachines.model.State">
 		</CategoryAssignmentBean>
 		<CategoryAssignmentBean
 			id="de.dlr.sc.virsat.model.extension.statemachines.Transition"
 			caBean="de.dlr.sc.virsat.model.extension.statemachines.model.Transition">
 		</CategoryAssignmentBean>
 		<CategoryAssignmentBean
-			id="de.dlr.sc.virsat.model.extension.statemachines.State"
-			caBean="de.dlr.sc.virsat.model.extension.statemachines.model.State">
+			id="de.dlr.sc.virsat.model.extension.statemachines.TransitionTriggerEvent"
+			caBean="de.dlr.sc.virsat.model.extension.statemachines.model.TransitionTriggerEvent">
 		</CategoryAssignmentBean>
 		<CategoryAssignmentBean
 			id="de.dlr.sc.virsat.model.extension.statemachines.AllowsConstraint"
@@ -40,6 +36,10 @@
 		<CategoryAssignmentBean
 			id="de.dlr.sc.virsat.model.extension.statemachines.ForbidsConstraint"
 			caBean="de.dlr.sc.virsat.model.extension.statemachines.model.ForbidsConstraint">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.statemachines.StateMachine"
+			caBean="de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine">
 		</CategoryAssignmentBean>
 	</extension>
 	<!-- Plugin.XML Protected Region Start -->

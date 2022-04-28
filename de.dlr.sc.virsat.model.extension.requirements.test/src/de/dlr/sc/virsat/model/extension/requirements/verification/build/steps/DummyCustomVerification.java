@@ -10,6 +10,8 @@
 package de.dlr.sc.virsat.model.extension.requirements.verification.build.steps;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.command.CompoundCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.extension.requirements.model.IVerification;
@@ -18,14 +20,15 @@ import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 /**
  *
  */
-public class DummyCustomVerification implements IAutomaticVerification {
+public class DummyCustomVerification extends IVerification implements IAutomaticVerification {
 	
 	private static boolean didRun = false;
 
 	@Override
-	public void runCustomVerification(EditingDomain editingDomain, IVerification verification, Requirement requirement,
+	public Command runCustomVerification(EditingDomain editingDomain, Requirement requirement,
 			IProgressMonitor monitor) {
 		didRun = true;
+		return new CompoundCommand();
 	}
 	
 	public static boolean didRun() {
@@ -34,6 +37,10 @@ public class DummyCustomVerification implements IAutomaticVerification {
 	
 	public static void reset() {
 		didRun = false;
+	}
+	
+	public String getFullQualifiedCategoryName() {
+		return "de.dlr.sc.virsat.model.extension.requirements.ModelVerification";
 	}
 
 }

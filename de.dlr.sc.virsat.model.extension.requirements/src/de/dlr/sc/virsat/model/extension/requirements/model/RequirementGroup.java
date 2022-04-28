@@ -56,4 +56,9 @@ public  class RequirementGroup extends ARequirementGroup {
 	public RequirementGroup(CategoryAssignment categoryAssignment) {
 		super(categoryAssignment);
 	}
+	
+	@Override
+	public String getIdentifier() {
+		return getName();
+	}
 }

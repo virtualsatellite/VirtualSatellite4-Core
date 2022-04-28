@@ -1,0 +1,8 @@
+{
+   "type" : "beanUnitLinearConversion",
+   "uuid" : "c54347d1-80b2-4db4-9d3d-e10d3b50be08",
+   "name" : "Byte",
+   "quantityKindBean" : "cf277f96-e167-45a1-85f7-0470e9c85ecb",
+   "symbol" : "byte",
+   "factor" : 8.0
+}

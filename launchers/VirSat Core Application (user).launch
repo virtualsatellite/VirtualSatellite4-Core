@@ -53,6 +53,7 @@
 <setEntry value="de.dlr.sc.virsat.model.extension.requirements.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.sequencing.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.statemachines.feature:default"/>
+<setEntry value="de.dlr.sc.virsat.model.extension.thermal.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.visualisation.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.project.feature:default"/>

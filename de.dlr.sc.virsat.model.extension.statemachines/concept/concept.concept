@@ -9,7 +9,36 @@
  *******************************************************************************/
 Concept de.dlr.sc.virsat.model.extension.statemachines displayname "State Machines" description "Concept for modeling State Machines"  version 1.4 beta {
 	Import de.dlr.sc.virsat.model.extension.ps.*; 
-
+	
+	Category State description "State of the component at a given time"{
+		StringProperty detail description "Optional additional detail information about the state";
+		FloatProperty maxTime description "The maximum time spent in the state" default 0.0 quantityKind "Time" unit "Second";
+	}	
+	
+	Category Transition description "Transitions among states" { 
+		Reference stateFrom of Type State description "The Transition starts in this state";
+		Reference stateTo of Type State description "The Transition ends in this state";
+		Reference trigger of Type TransitionTriggerEvent description "The event that triggers the Transition";
+	}
+	
+	Category TransitionTriggerEvent description "Some kind of event or action that triggers a transition" {
+		StringProperty detail description "Optional additional detail information about this trigger";
+	}
+	
+	Category AConstraint description "General constraint in statemachines "{
+		IsAbstract;
+		Reference stateConstraining of Type State description "The state that constraints the influenced state";
+		Reference stateInfluenced of Type State description "The state that is influenced by this constraint";
+	}
+	
+	Category AllowsConstraint  extends AConstraint description "A state explicitly allows another state" {
+		
+	}
+	
+	Category ForbidsConstraint  extends AConstraint description "A state forbids another state" { 
+		
+	}
+	
 	Category StateMachine description "A state machine with states and transitions" {
 		Applicable For [ElementDefinition, ElementConfiguration, ElementOccurence];
 		
@@ -25,47 +54,4 @@ Concept de.dlr.sc.virsat.model.extension.statemachines displayname "State Machin
 		Type constraints[] of Category AConstraint description "A collection of constraints of this state machine";
 		Type triggerEvents[] of Category TransitionTriggerEvent description "List of explicit events that trigger a transition";
 	}
-	
-	Category TransitionTriggerEvent description "Some kind of event or action that triggers a transition" {
-		EnumProperty type values [
-			auto = 0,
-			telecommand = 1,
-			reconfiguration = 2
-		] default auto;
-		
-		EnumProperty sending values [
-			send = 0,
-			receive= 1
-		] default send;
-		
-		StringProperty detail description "Optional additional detail information about this trigger";
-		FloatProperty minDelay description "The minimum time required to execute the trigger" default 0.0 quantityKind "Time" unit "Second";
-		FloatProperty maxDelay description "The maximum time required to execute the trigger" default 0.0 quantityKind "Time" unit "Second";	
-	}
-	
-	Category AConstraint description "General constraint in statemachines "{
-		IsAbstract;
-		Reference stateConstraining of Type State description "The state that constraints the influenced state";
-		Reference stateInfluenced of Type State description "The state that is influenced by this constraint";
-	}
-	
-	Category Transition description "Transitions among states" { 
-		Reference stateFrom of Type State description "The Transition starts in this state";
-		Reference stateTo of Type State description "The Transition ends in this state";
-		Reference trigger of Type TransitionTriggerEvent description "The event that triggers the Transition";
-	}
-	
-	Category State description "State of the component at a given time"{
-		StringProperty detail description "Optional additional detail information about the state";
-		FloatProperty maxTime description "The maximum time spend in the state" default 0.0 quantityKind "Time" unit "Second";
-	}	
-	
-	Category AllowsConstraint  extends AConstraint description "A state explicitly allows another state" {
-		
-	}
-	
-	Category ForbidsConstraint  extends AConstraint description "A state forbids another state" { 
-		
-	}
-	
 }

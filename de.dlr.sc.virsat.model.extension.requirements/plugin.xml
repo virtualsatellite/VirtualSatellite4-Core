@@ -4,7 +4,7 @@
 	<extension point="de.dlr.sc.virsat.model.Concept">
 		<concept
 			id="de.dlr.sc.virsat.model.extension.requirements"
-			version="0.5"
+			version="0.6"
 			xmi="concept/concept.xmi">
 		</concept>
 	</extension>
@@ -18,8 +18,16 @@
 	</extension>
 	<extension point="de.dlr.sc.virsat.model.edit.ConceptTypeFactoryCaBeanRegistration">
 		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.requirements.IRequirementTreeElement"
+			caBean="de.dlr.sc.virsat.model.extension.requirements.model.IRequirementTreeElement">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
 			id="de.dlr.sc.virsat.model.extension.requirements.RequirementsSpecification"
 			caBean="de.dlr.sc.virsat.model.extension.requirements.model.RequirementsSpecification">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.requirements.RequirementsView"
+			caBean="de.dlr.sc.virsat.model.extension.requirements.model.RequirementsView">
 		</CategoryAssignmentBean>
 		<CategoryAssignmentBean
 			id="de.dlr.sc.virsat.model.extension.requirements.RequirementsConfiguration"
@@ -89,6 +97,18 @@
 			id="de.dlr.sc.virsat.model.extension.requirements.ExistenceVerification"
 			caBean="de.dlr.sc.virsat.model.extension.requirements.model.ExistenceVerification">
 		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.requirements.UpperLimitVerification"
+			caBean="de.dlr.sc.virsat.model.extension.requirements.model.UpperLimitVerification">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.requirements.LowerLimitVerification"
+			caBean="de.dlr.sc.virsat.model.extension.requirements.model.LowerLimitVerification">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.requirements.BoundedValueVerification"
+			caBean="de.dlr.sc.virsat.model.extension.requirements.model.BoundedValueVerification">
+		</CategoryAssignmentBean>
 	</extension>
 	<extension point="de.dlr.sc.virsat.model.edit.ConceptTypeFactorySeiBeanRegistration">
 		<StructuralElementInstanceBean
@@ -137,9 +157,16 @@
 		xmi="concept/concept_v0_5.xmi">
 	</migrator>
 </extension>
+<extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">
+	<migrator
+		id="de.dlr.sc.virsat.model.extension.requirements"
+		version="0.6"
+		class="de.dlr.sc.virsat.model.extension.requirements.migrator.Migrator0v6"
+		xmi="concept/concept_v0_6.xmi">
+	</migrator>
+</extension>
 	<!-- Plugin.XML Protected Region End -->
 	<!-- Plugin.XML Protected Region Start -->
-<extension-point id="de.dlr.sc.virsat.model.extension.requirements.verification" name="CustomVerification" schema="schema/de.dlr.sc.virsat.model.extension.requirements.verification.exsd"/>
 <extension
          id="de.dlr.sc.virsat.model.extension.requirements.build.verification"
          name="VirSat Requirements Verification Builder"
@@ -148,13 +175,5 @@
          <run class="de.dlr.sc.virsat.model.extension.requirements.verification.build.RequirementsVerificationBuilder" />
       </builder>
    </extension>
-<extension
-      name="Existence Verification"
-      point="de.dlr.sc.virsat.model.extension.requirements.verification">
-   <verification
-         model_element="de.dlr.sc.virsat.model.extension.requirements.model.ExistenceVerification"
-         verification_impl="de.dlr.sc.virsat.model.extension.requirements.verification.impl.ExistenceVerificationImpl">
-   </verification>
-</extension>
 	<!-- Plugin.XML Protected Region End -->
 </plugin>

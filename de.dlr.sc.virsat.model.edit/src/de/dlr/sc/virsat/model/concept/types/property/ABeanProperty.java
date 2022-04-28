@@ -14,6 +14,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import de.dlr.sc.virsat.model.concept.types.ABeanObject;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyInstanceHelper;
 import de.dlr.sc.virsat.model.dvlm.json.BeanPropertyTypeAdapter;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -51,4 +52,13 @@ public abstract class ABeanProperty<P_TYPE extends APropertyInstance, V_TYPE> ex
 		accessMode = AccessMode.READ_ONLY,
 		value = "Enum to idenify a property by it's type")
 	public abstract BeanPropertyType getPropertyType();
+	
+	@XmlElement
+	@ApiModelProperty(
+			accessMode = AccessMode.READ_ONLY,
+			value = "If true this property is calculated by an equation, thus it should not be changed via the API"
+	)
+	public boolean getIsCalculated() {
+		return new PropertyInstanceHelper().isCalculated(ti);
+	}
 }

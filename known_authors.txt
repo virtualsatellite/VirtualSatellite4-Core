@@ -12,3 +12,5 @@ maurpa
 maur_pa
 kempra
 GeorgeNasrDLR
+PeterOhrDLR
+heib_he

@@ -7,19 +7,31 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"  description "Extension for Requirement Specification" version 0.5 beta 
+Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"  description "Extension for Requirement Specification" version 0.6 beta 
 {
+	EImport "http://www.virsat.sc.dlr.de/dvlm/v8/cp";
 
 	StructuralElement RequirementsConfigurationCollection description "Storage for configuration elements of requirements" {
 		IsRootStructuralElement;
 	}
 
-	Category RequirementsSpecification {
+	Category IRequirementTreeElement {}
+
+	Category RequirementsSpecification extends IRequirementTreeElement {
 		Applicable For All;
 		
 		Resource exportFile;
 		Type requirements [] of Category RequirementObject;
 		Type links [] of Category RequirementLink;
+	}
+	
+	Category RequirementsView {
+		Applicable For All;
+		
+		Reference treeElementToView of Type IRequirementTreeElement description "Specifies from where requirements are shown, if non pointing to the element itself";
+		BooleanProperty showDeepChildren;
+		
+		Reference reqTypesToView[] of Type RequirementType;
 	}	
 	
 	Category RequirementsConfiguration {
@@ -34,7 +46,7 @@ Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"
 		Type verificationTypes [] of Category VerificationType;
 	}
 	
-	Category RequirementObject description "Interface for specification objects" {
+	Category RequirementObject extends IRequirementTreeElement description "Interface for specification objects" {
 		IsAbstract;
 	}
 	
@@ -46,10 +58,12 @@ Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"
 		Reference reqType of Type RequirementType;
 		Type elements [] of Category AttributeValue;
 		EnumProperty status values [Open = 0, FullyCompliant = 1, PartialCompliant = 2, NonCompliant = 3, NotApplicable = 4];
-		Type verification[] of Category IVerification;
+		Type verifications[] of Category IVerification;
 		Type trace of Category RequirementTrace;
 		StringProperty descriptionText;
+		Type children [] of Category RequirementObject;
 	}
+	
 	
 	Category RequirementLink {
 		Reference type of Type RequirementLinkType;
@@ -82,8 +96,10 @@ Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"
 	
 	Category ImportConfiguration description "Mapping specification of imported requirements" {
 		Applicable For [ RequirementsConfigurationCollection];
+		StringProperty selectedTypeKeys[] description "List of requirement types to be imported, using ReqIF identifiers";
 		Reference typeDefinitionsContainer of Type RequirementsConfiguration;
 		Type mappedSpecifications[] of Category SpecificationMapping;
+		BooleanProperty groupSupport description "If true using RequirementGroups for requirement objects with children";
 	}
 	
 	Category SpecificationMapping {
@@ -113,10 +129,32 @@ Concept de.dlr.sc.virsat.model.extension.requirements displayname "Requirements"
 	
 	Category ModelVerification extends IVerification {
 		IsAbstract;
+		EReference elementToBeVerified of Type dvlm.categories.ATypeDefinition description "The exact element (Class / property) to be verified";
 	}
 	
 	Category ExistenceVerification extends ModelVerification {
-		Reference target[] of Type GenericCategory;
 	}
+	
+	Category IValueVerification extends ModelVerification {
+		IsAbstract;
+		//IsVerification; concept language changes need to be merged first
+	}
+	
+	Category UpperLimitVerification extends IValueVerification {
+		//IsVerification;
+		FloatProperty upperBound;
+	}
+	
+	Category LowerLimitVerification extends IValueVerification {
+		//IsVerification;
+		FloatProperty lowerBound;
+	}
+	
+	Category BoundedValueVerification extends IValueVerification {
+		//IsVerification;
+		FloatProperty lowerBound;
+		FloatProperty upperBound;
+	}
+	
 }
 

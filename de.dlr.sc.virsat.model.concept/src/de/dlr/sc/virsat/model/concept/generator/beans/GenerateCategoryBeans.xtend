@@ -12,16 +12,25 @@
 import de.dlr.sc.virsat.model.concept.generator.AGeneratorGapGenerator
 import de.dlr.sc.virsat.model.concept.generator.ConceptOutputConfigurationProvider
 import de.dlr.sc.virsat.model.concept.generator.ImportManager
+import de.dlr.sc.virsat.model.concept.generator.ereference.ExternalGenModelHelper
 import de.dlr.sc.virsat.model.concept.generator.util.ConceptGeneratorUtil
 import de.dlr.sc.virsat.model.concept.list.IBeanList
 import de.dlr.sc.virsat.model.concept.list.TypeSafeArrayInstanceList
+import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyBeanList
 import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyInstanceList
+import de.dlr.sc.virsat.model.concept.list.TypeSafeEReferenceArrayInstanceList
+import de.dlr.sc.virsat.model.concept.list.TypeSafeReferencePropertyBeanList
 import de.dlr.sc.virsat.model.concept.list.TypeSafeReferencePropertyInstanceList
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment
+import de.dlr.sc.virsat.model.concept.types.factory.BeanRegistry
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyBoolean
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEReference
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnum
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloat
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyInt
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyResource
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition
@@ -30,6 +39,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.BooleanProperty
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ComposedProperty
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EnumProperty
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.FloatProperty
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IntProperty
@@ -40,7 +50,8 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.util.Propertyd
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ResourcePropertyInstance
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance
@@ -48,43 +59,19 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyIns
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper
+import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapter
+import javax.xml.bind.annotation.XmlAccessType
+import javax.xml.bind.annotation.XmlAccessorType
+import javax.xml.bind.annotation.XmlElement
+import javax.xml.bind.annotation.XmlRootElement
+import javax.xml.bind.annotation.XmlType
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter
+import org.eclipse.core.runtime.IProgressMonitor
 import org.eclipse.emf.common.command.Command
 import org.eclipse.emf.common.util.URI
-import org.eclipse.emf.edit.command.SetCommand
+import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.edit.domain.EditingDomain
 import org.eclipse.xtext.generator.IFileSystemAccess
-import org.eclipse.core.runtime.CoreException
-import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnum
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance
-import de.dlr.sc.virsat.model.concept.types.factory.BeanRegistry
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProperty
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEReference
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance
-import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.EPackage
-import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage
-import org.eclipse.emf.codegen.ecore.genmodel.GenModel
-import org.eclipse.emf.ecore.util.EcoreUtil
-import org.eclipse.emf.codegen.ecore.genmodel.GenPackage
-import org.eclipse.emf.ecore.resource.ResourceSet
-import org.eclipse.emf.ecore.resource.Resource
-import java.io.IOException
-import de.dlr.sc.virsat.model.concept.Activator
-import org.eclipse.core.runtime.Status
-import de.dlr.sc.virsat.model.concept.list.TypeSafeEReferenceArrayInstanceList
-import de.dlr.sc.virsat.model.concept.generator.ereference.ExternalGenModelHelper
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference
-import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyBeanList
-import de.dlr.sc.virsat.model.concept.list.TypeSafeReferencePropertyBeanList
-import javax.xml.bind.annotation.XmlRootElement
-import javax.xml.bind.annotation.XmlAccessorType
-import javax.xml.bind.annotation.XmlAccessType
-import javax.xml.bind.annotation.XmlElement
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter
-import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapter
-import javax.xml.bind.annotation.XmlType
 
 /**
  * This class is the generator for the category beans of our model extension.
@@ -92,6 +79,9 @@ import javax.xml.bind.annotation.XmlType
  * Furthermore it will provide strong typing
  */
 class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
+	
+	static final String IAUTOMATIC_VERIFICATION_FQN = "de.dlr.sc.virsat.model.extension.requirements.verification.build.steps.IAutomaticVerification";
+	static final String REQUIREMENT_FQN = "de.dlr.sc.virsat.model.extension.requirements.model.Requirement";
 	
 	static def getConcreteClassName(ATypeDefinition typeDefinition) {
 		typeDefinition.name.toFirstUpper
@@ -237,13 +227,20 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 	«importManager.register(Concept)»
 	«importManager.register(CategoryAssignment)»
 	«importManager.register(XmlType)»
+	«IF category.isIsVerification»
+	«importManager.register(IAUTOMATIC_VERIFICATION_FQN)»
+	«importManager.register(IProgressMonitor)»
+	«importManager.register(Command)»
+	«importManager.register(EditingDomain)»
+	«importManager.register(REQUIREMENT_FQN)»
+	«ENDIF»
 	// *****************************************************************
 	// * Class Declaration
 	// *****************************************************************
 	
 	@XmlType(name = A«category.name.toFirstUpper».FULL_QUALIFIED_CATEGORY_NAME)
 	«ConceptGeneratorUtil.generateClassHeader(category)»
-	public «declareIfAbstract(category)» class «category.name.toFirstUpper» extends A«category.name.toFirstUpper» {
+	public «declareIfAbstract(category)» class «category.name.toFirstUpper» extends A«category.name.toFirstUpper»«IF category.isIsVerification» implements IAutomaticVerification«ENDIF» {
 		
 		/**
 		 * Constructor of Concept Class
@@ -268,6 +265,15 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 		public «category.name.toFirstUpper»(CategoryAssignment categoryAssignment) {
 			super(categoryAssignment);
 		}
+		«IF category.isIsVerification»
+		
+		@Override
+		public Command runCustomVerification(EditingDomain editingDomain, Requirement requirement,
+				IProgressMonitor monitor) {
+			// TODO implement custom verification		
+			return null;
+		}
+		«ENDIF»
 	}
 	'''
 	

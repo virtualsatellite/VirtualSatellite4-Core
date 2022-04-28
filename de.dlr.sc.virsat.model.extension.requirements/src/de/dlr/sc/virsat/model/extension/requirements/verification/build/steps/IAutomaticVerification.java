@@ -10,9 +10,9 @@
 package de.dlr.sc.virsat.model.extension.requirements.verification.build.steps;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
-import de.dlr.sc.virsat.model.extension.requirements.model.IVerification;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 
 /**
@@ -24,10 +24,10 @@ public interface IAutomaticVerification {
 	/**
 	 * Run a customized implementation of a verification method
 	 * @param editingDomain the editing domain 
-	 * @param verification the verification object
 	 * @param requirement the requirement to be verified
 	 * @param monitor progress monitor
+	 * @return the EMF command to be executed 
 	 */
-	void runCustomVerification(EditingDomain editingDomain, IVerification verification, Requirement requirement, IProgressMonitor monitor);
+	Command runCustomVerification(EditingDomain editingDomain, Requirement requirement, IProgressMonitor monitor);
 
 }
