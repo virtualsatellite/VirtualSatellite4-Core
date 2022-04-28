@@ -52,7 +52,7 @@ public abstract class AUISnippetTableRequirementsVerification extends AUiSnippet
 	 * @param verificationConceptId the concept ID of the verification element container
 	 * @param verificationId the categoryID of the verification element
 	 * @param fullQualifiedCategoryId the full qualified category name of the verification element
-	 * @param style
+	 * @param style The style as binary mask defining which buttons should be displayed with the given table (e.g. Add/Remove/Drill-Down)
 	 */
 	public AUISnippetTableRequirementsVerification(String activeForConceptID, String verificationConceptId, String verificationId, String fullQualifiedCategoryId, int style) {
 		super(verificationConceptId, verificationId, REQUIREMENT_VERIFICATION_PROPERTY_ID, REQUIREMENT_CATEGORY_ID, fullQualifiedCategoryId, style);

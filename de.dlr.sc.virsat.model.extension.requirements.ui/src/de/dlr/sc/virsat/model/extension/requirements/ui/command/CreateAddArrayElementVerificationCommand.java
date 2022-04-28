@@ -49,11 +49,11 @@ public class CreateAddArrayElementVerificationCommand extends ACreateAddArrayEle
 	
 	/**
 	 * Create a model based verification method, that targets a specific property
-	 * @param editingDomain
-	 * @param arrayInstance
-	 * @param type
-	 * @param propertyTypeDef
-	 * @return
+	 * @param editingDomain the editing domain
+	 * @param arrayInstance the array instance
+	 * @param type the category type
+	 * @param propertyTypeDef the property type definition
+	 * @return the created command
 	 */
 	public Command create(EditingDomain editingDomain, ArrayInstance arrayInstance, Category type, ATypeDefinition propertyTypeDef) {
 		ATypeInstance ati = new CategoryInstantiator().generateInstance(arrayInstance, type);

@@ -140,9 +140,13 @@ public class ModelAccessResource {
 	
 	public ModelAccessResource() { }
 	
+	
 	/**
 	 * Get the ServerRepository corresponding to the repoName and create a new RepoModelAccessResource
 	 * @param repoName of the repository to be accessed by the request
+	 * @param synchronize if synchronization is requested
+	 * @param build if building is requested
+	 * @param sc the security context
 	 * @return RepoModelAccessResource or null if the repo is not found
 	 */
 	@Path("{repoName}")
