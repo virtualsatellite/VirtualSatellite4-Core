@@ -392,6 +392,7 @@ public class CategoryImpl extends ATypeDefinitionImpl implements Category {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code boolean}'.
 	 * @generated
 	 */
 	public boolean isIsVerification() {

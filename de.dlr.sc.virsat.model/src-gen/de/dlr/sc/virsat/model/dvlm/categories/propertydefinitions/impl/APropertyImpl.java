@@ -158,6 +158,7 @@ public abstract class APropertyImpl extends ATypeDefinitionImpl implements AProp
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code IVerificationSpecification}'.
 	 * @generated
 	 */
 	public IVerificationSpecification getVerification() {
@@ -182,6 +183,7 @@ public abstract class APropertyImpl extends ATypeDefinitionImpl implements AProp
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code IVerificationSpecification}'.
 	 * @generated
 	 */
 	public IVerificationSpecification basicGetVerification() {
@@ -192,6 +194,9 @@ public abstract class APropertyImpl extends ATypeDefinitionImpl implements AProp
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param newVerification new value to be of type '{@code IVerificationSpecification}' to be set. 
+	 * @param msgs notifications of type '{@code NotificationChain}'.
+	 * @return notification of type '{@code NotificationChain}'.
 	 * @generated
 	 */
 	public NotificationChain basicSetVerification(IVerificationSpecification newVerification, NotificationChain msgs) {
