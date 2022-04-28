@@ -8,6 +8,6 @@ dianapeters-dlr
 ALEhmerDLR
 christoph-pietsch-DLR
 watollah-dlr
-maur_pa
+maurpa
 kempra
 GeorgeNasrDLR
