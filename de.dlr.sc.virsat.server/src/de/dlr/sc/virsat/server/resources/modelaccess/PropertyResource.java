@@ -62,16 +62,16 @@ public class PropertyResource {
 			httpMethod = "GET",
 			notes = "This service fetches a Property")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					response = ABeanProperty.class,
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.BAD_REQUEST_400, 
-					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				response = ABeanProperty.class,
+				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.BAD_REQUEST_400, 
+				message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response getProperty(@PathParam("propertyUuid") @ApiParam(value = "Uuid of the property", required = true) String propertyUuid) {
 		try {
 			parentResource.synchronize();
@@ -99,24 +99,24 @@ public class PropertyResource {
 			httpMethod = "GET",
 			notes = "This service fetches the resource of a property")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					responseHeaders = {
-							@ResponseHeader(
-									name = HttpHeaders.CONTENT_DISPOSITION,
-									description = "attachment; filename=\"{name}\"",
-									response = String.class)
-					},
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.BAD_REQUEST_400, 
-					message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
-			@ApiResponse(
-					code = HttpStatus.BAD_REQUEST_400, 
-					message = PROPERTY_DOES_NOT_CONTAIN_A_SERVEABLE_RESOURCE),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				responseHeaders = {
+					@ResponseHeader(
+							name = HttpHeaders.CONTENT_DISPOSITION,
+							description = "attachment; filename=\"{name}\"",
+							response = String.class)
+				},
+				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.BAD_REQUEST_400, 
+				message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
+		@ApiResponse(
+				code = HttpStatus.BAD_REQUEST_400, 
+				message = PROPERTY_DOES_NOT_CONTAIN_A_SERVEABLE_RESOURCE),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response getResource(@PathParam("propertyUuid") @ApiParam(value = "Uuid of the property", required = true) String propertyUuid) {
 		try {
 			parentResource.synchronize();
@@ -156,12 +156,12 @@ public class PropertyResource {
 			httpMethod = "PUT",
 			notes = "This service updates an existing Property")
 	@ApiResponses(value = { 
-			@ApiResponse(
-					code = HttpStatus.OK_200,
-					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(
-					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+		@ApiResponse(
+				code = HttpStatus.OK_200,
+				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+		@ApiResponse(
+				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response putProperty(@SuppressWarnings("rawtypes") @ApiParam(value = "Property to put", required = true) ABeanProperty bean) {
 		try {
 			parentResource.synchronize();

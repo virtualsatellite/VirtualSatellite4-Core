@@ -39,7 +39,7 @@ import io.swagger.annotations.ApiModelProperty;
 	subTypes = {
 		BeanQuantityKindSimple.class,
 		BeanQuantityKindDerived.class
-})
+	})
 public abstract class ABeanQuantityKind<QK_TYPE extends AQuantityKind> implements IBeanQuantityKind<QK_TYPE> {
 
 	protected QK_TYPE quantityKind;

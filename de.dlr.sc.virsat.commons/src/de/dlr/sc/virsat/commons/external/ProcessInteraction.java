@@ -11,20 +11,10 @@ package de.dlr.sc.virsat.commons.external;
 
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.eclipse.core.filesystem.EFS;
-import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.ide.IDE;
 
 public class ProcessInteraction {
 	
@@ -37,6 +27,7 @@ public class ProcessInteraction {
 	 * @throws InterruptedException 
 	 */
 	public List<String> startCommandRunner(String command) throws IOException, InterruptedException {
+		
 		List<String> output = new ArrayList<String>();
 		ProcessBuilder pb = new ProcessBuilder(command);
 		pb.redirectErrorStream(true);
@@ -49,35 +40,5 @@ public class ProcessInteraction {
 		reader.close();
 		p.waitFor();
 		return output;
-	}
-
-	
-	/***
-	 * Opens the results of the command runner inside the IDE
-	 * 
-	 * @param file with the result of the command runner
-	 */
-	public void openCommandResult(String filename) {
-		try {
-			String path = new File(".").getCanonicalPath();
-			
-			File file = new File(path + filename);
-			IFileStore fileStore = EFS.getLocalFileSystem().getStore(file.toURI());
-			if (fileStore != null) {
-				IWorkbench workbench = PlatformUI.getWorkbench();
-				if (workbench != null) {
-					IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
-					if (window != null) {
-						IWorkbenchPage page = window.getActivePage();
-						try {
-							IDE.openEditorOnFileStore(page, fileStore);
-						} catch (PartInitException e) {
-						}
-					}
-				}
-			}
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
 	}
 }

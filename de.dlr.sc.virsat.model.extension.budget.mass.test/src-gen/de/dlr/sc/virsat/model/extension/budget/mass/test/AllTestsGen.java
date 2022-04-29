@@ -20,6 +20,7 @@ import org.junit.runners.Suite.SuiteClasses;
 import junit.framework.JUnit4TestAdapter;
 
 import de.dlr.sc.virsat.model.extension.budget.mass.migrator.Migrator1v3Test;
+import de.dlr.sc.virsat.model.extension.budget.mass.migrator.Migrator1v4Test;
 import de.dlr.sc.virsat.model.extension.budget.mass.migrator.Migrator1v2Test;
 import de.dlr.sc.virsat.model.extension.budget.mass.model.MassSummaryTest;
 import de.dlr.sc.virsat.model.extension.budget.mass.migrator.Migrator1v0Test;
@@ -41,6 +42,7 @@ import de.dlr.sc.virsat.model.extension.budget.mass.model.MassRequirementsVerifi
 	Migrator1v1Test.class,
 	Migrator1v2Test.class,
 	Migrator1v3Test.class,
+	Migrator1v4Test.class,
 	MassValidatorTest.class,
 				})
 

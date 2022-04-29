@@ -22,7 +22,20 @@ Concept de.dlr.sc.virsat.model.extension.statemachines displayname "State Machin
 	}
 	
 	Category TransitionTriggerEvent description "Some kind of event or action that triggers a transition" {
+		EnumProperty type values [
+			auto = 0,
+			telecommand = 1,
+			reconfiguration = 2
+		] default auto;
+		
+		EnumProperty sending values [
+			send = 0,
+			receive= 1
+		] default send;
+		
 		StringProperty detail description "Optional additional detail information about this trigger";
+		FloatProperty minDelay description "The minimum time required to execute the trigger" default 0.0 quantityKind "Time" unit "Second";
+		FloatProperty maxDelay description "The maximum time required to execute the trigger" default 0.0 quantityKind "Time" unit "Second";
 	}
 	
 	Category AConstraint description "General constraint in statemachines "{

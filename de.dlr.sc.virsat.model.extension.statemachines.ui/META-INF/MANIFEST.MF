@@ -22,8 +22,3 @@ Bundle-ActivationPolicy: lazy
 Bundle-Activator: de.dlr.sc.virsat.model.extension.statemachines.ui.Activator
 Bundle-Vendor: DLR (German Aerospace Center)
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.statemachines.ui
-Export-Package: de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.constraints,
- de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.stateMachines,
- de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.states,
- de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.transitions,
- de.dlr.sc.virsat.model.extension.statemachines.ui.handler

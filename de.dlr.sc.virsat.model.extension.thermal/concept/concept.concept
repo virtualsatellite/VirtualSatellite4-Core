@@ -11,6 +11,7 @@ Concept de.dlr.sc.virsat.model.extension.thermal displayname "Thermal" descripti
 	
 	StructuralElement MaterialCollection description "Materials can be created here or imported from .csv" {
 		IsRootStructuralElement;
+		
 	}
 	
 	Category ComponentMeshSize description "The maximum specific size of the mesh is specified here."{

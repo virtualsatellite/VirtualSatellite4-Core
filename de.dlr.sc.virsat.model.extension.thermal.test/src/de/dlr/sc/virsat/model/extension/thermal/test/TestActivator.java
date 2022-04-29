@@ -9,9 +9,13 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.thermal.test;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Activator of test Fragment as central info hub, even though
@@ -27,20 +31,28 @@ public class TestActivator {
 	private TestActivator() {
 	}
 	
-	public static final String FRAGMENT_ID = "de.dlr.sc.virsat.model.extension.funcelectrical.test";
+	public static final String FRAGMENT_ID = "de.dlr.sc.virsat.model.extension.thermal.test";
 
 	/**
-	 * Method to access the fragments contents from the resource folder and to ahnd it back as string
+	 * Method to access the fragments contents from the resource folder and to hand it back as string
 	 * @param resourcePath the path to the resource starting with "resource/"
 	 * @return the content of the resource as string
 	 * @throws IOException throws
 	 */
-	public static InputStream getResourceContentAsString(String resourcePath) throws IOException {
-		URL url;
-
-		url = new URL("platform:/plugin/" + FRAGMENT_ID + resourcePath);
+	public static List<String> getResourceContentAsString(String resourcePath) throws IOException {
+		URL url = new URL("platform:/plugin/" + FRAGMENT_ID + resourcePath);
 		InputStream inputStream = url.openConnection().getInputStream();
+		
+		BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
+		String inputLine;
+		List<String> lines = new ArrayList<>();
 
-		return inputStream;
+		while ((inputLine = in.readLine()) != null) {
+			lines.add(inputLine);
+		}
+
+		in.close();
+
+		return lines;
 	}
 }

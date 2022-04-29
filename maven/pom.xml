@@ -134,12 +134,12 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-checkstyle-plugin</artifactId>
-						<version>3.1.1</version>
+						<version>3.1.2</version>
 						<dependencies>
 							<dependency>
 								<groupId>com.puppycrawl.tools</groupId>
 								<artifactId>checkstyle</artifactId>
-								<version>8.26</version>
+								<version>9.1</version>
 							</dependency>
 						</dependencies>
 						<executions>
@@ -188,10 +188,10 @@
 							<trimStackTrace>false</trimStackTrace>
 							<!-- <argLine>-ea -Xms256m -Xmx512m -javaagent:%USERPROFILE%\.m2\repository\org\jacoco\org.jacoco.agent\0.7.4.201502262128\org.jacoco.agent-0.7.4.201502262128-runtime.jar=destfile='${sonar.jacoco.reportPath}',append=true</argLine> -->
 							<useUIHarness>false</useUIHarness>
-							<!-- Setup the osgi data and workspace directory. Otherwise the workspace 
-								will be placed in the plugins target directory, thus creating a repository 
-								within a repository (git from the source code). UI tests will then sometimes 
-								believe that the project is already connected to a VCS but in fact isn't. -->
+							<!--  Setup the osgi data and workspace directory. Otherwise the workspace will be placed
+								in the plugins target directory, thus creating a repository within a repository (git from
+								the source code). UI tests will then sometimes believe that the project is already connected
+								to a VCS but in fact isn't. -->
 							<osgiDataDirectory>${basedir}/../../surefire-work/${project.artifactId}/data</osgiDataDirectory>
 							<work>${basedir}/../../surefire-work/${project.artifactId}/work</work>
 						</configuration>

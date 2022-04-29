@@ -67,6 +67,7 @@ public class RepositoryUtilityTest extends AProjectTestCase {
 		testProperty = PropertydefinitionsFactory.eINSTANCE.createStringProperty();
 		testPropertyInstance = PropertyinstancesFactory.eINSTANCE.createValuePropertyInstance();
 		
+		testProperty.setName("SomeProperty");
 		testPropertyInstance.setType(testProperty);
 		
 		testCategory.setIsApplicableForAll(true);
@@ -74,8 +75,10 @@ public class RepositoryUtilityTest extends AProjectTestCase {
 		
 		testCa.setType(testCategory);
 		testCa.getPropertyInstances().add(testPropertyInstance);
+		testCa.setName("SomeCategory");
 		
 		testSe.setIsRootStructuralElement(true);
+		testSe.setName("SomeSe");
 		
 		rs.getAndAddStructuralElementInstanceResource(testSei);
 		testSei.setType(testSe);
@@ -83,6 +86,7 @@ public class RepositoryUtilityTest extends AProjectTestCase {
 		testSei.getCategoryAssignments();
 		
 		testConcept.getStructuralElements().add(testSe);
+		testConcept.setName("de.dlr.sc.virsat.server.dataaccess.test.concept");
 		
 		testDiscipline = RolesFactory.eINSTANCE.createDiscipline();
 		
