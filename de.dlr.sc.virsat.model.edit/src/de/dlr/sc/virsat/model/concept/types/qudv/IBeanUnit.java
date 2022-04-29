@@ -78,7 +78,7 @@ public interface IBeanUnit<U_TYPE extends AUnit> extends IBeanUuid, IBeanName {
 	/**
 	 * Set the quantityKind of the wrapped unit
 	 * @param ed The EditingDomain in which the command should act.
-	 * @param quantityKind the quantitity kind
+	 * @param quantityKindBean the quantitity kind
 	 * @return EMF command to set the quantityKind
 	 */
 	Command setQuantityKindBean(EditingDomain ed, ABeanQuantityKind<? extends AQuantityKind> quantityKindBean);

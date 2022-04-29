@@ -57,7 +57,7 @@ public interface IBeanQuantityKind<QK_TYPE extends AQuantityKind> extends IBeanU
 	/**
 	 * Set the symbol of the wrapped quantity kind
 	 * @param ed The EditingDomain in which the command should act.
-	 * @param symbol
+	 * @param symbol the symbol
 	 * @return EMF command to set the symbol
 	 */
 	Command setSymbol(EditingDomain ed, String symbol);
