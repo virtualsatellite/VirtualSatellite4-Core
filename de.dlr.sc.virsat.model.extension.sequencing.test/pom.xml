@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
 <!--
 Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
 
@@ -9,13 +11,13 @@ SPDX-License-Identifier: EPL-2.0
 -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<artifactId>de.dlr.sc.virsat.parent</artifactId>
 		<groupId>de.dlr.sc.virsat</groupId>
 		<version>4.14.0-SNAPSHOT</version>
 		<relativePath>../maven/pom.xml</relativePath>
-	</parent>>
+	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>de.dlr.sc.virsat.model.extension.sequencing.test</artifactId>
 	<name>de.dlr.sc.virsat.model.extension.sequencing.test</name>
