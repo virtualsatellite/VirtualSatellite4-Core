@@ -17,6 +17,10 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import de.dlr.sc.virsat.model.extension.sequencing.model.EventToInterfaceEndMappingTest;
+import de.dlr.sc.virsat.model.extension.sequencing.model.EventToOutputMappingTest;
+import de.dlr.sc.virsat.model.extension.sequencing.model.SequenceEntryTest;
+import de.dlr.sc.virsat.model.extension.sequencing.model.SequenceTest;
 import junit.framework.JUnit4TestAdapter;
 
 
@@ -25,8 +29,11 @@ import junit.framework.JUnit4TestAdapter;
  */
 @RunWith(Suite.class)
 
-@SuiteClasses({		
-				})
+@SuiteClasses({
+	EventToInterfaceEndMappingTest.class,
+	EventToOutputMappingTest.class,
+	SequenceEntryTest.class,
+	SequenceTest.class})
 
 /**
  * 
