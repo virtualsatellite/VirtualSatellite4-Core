@@ -68,7 +68,7 @@ import de.dlr.sc.virsat.project.ui.labelProvider.VirSatTransactionalAdapterFacto
  */
 public class UiSnippetTableCostSummary extends AUiSnippetTableCostSummary {
 	private static final int PLOT_VIEW_ANGLE_290 = 290;
-	public static final int SINGLE_LINE_TABLE_HEIGHT = 35;
+	public static final int SINGLE_LINE_TABLE_HEIGHT = 55;
 	private static final float PLOT_ALPHA = 0.5f;
 
 	@Override
@@ -218,8 +218,6 @@ public class UiSnippetTableCostSummary extends AUiSnippetTableCostSummary {
 
 	/**
 	 * The Table Change Listener to update the Selection to the two Pie Charts
-	 * 
-	 * @author fisc_ph
 	 *
 	 */
 	class CostTableChangeListener implements ISelectionChangedListener {
@@ -296,8 +294,6 @@ public class UiSnippetTableCostSummary extends AUiSnippetTableCostSummary {
 	/**
 	 * The common label provider to display cost summary and cost equipment CAs
 	 * correctly it also supports the interface needed by the pie chart viewers
-	 * 
-	 * @author fisc_ph
 	 *
 	 */
 	class CostConceptTableLabelProvider extends VirSatTransactionalAdapterFactoryLabelProvider

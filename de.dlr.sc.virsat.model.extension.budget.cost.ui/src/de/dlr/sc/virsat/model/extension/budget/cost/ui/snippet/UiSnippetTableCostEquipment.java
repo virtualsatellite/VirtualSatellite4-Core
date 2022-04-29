@@ -28,7 +28,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
  */
 public class UiSnippetTableCostEquipment extends AUiSnippetTableCostEquipment {
 
-	public static final int SINGLE_LINE_TABLE_HEIGHT = 35;
+	public static final int SINGLE_LINE_TABLE_HEIGHT = 55;
 	
 	@Override
 	protected Table createDefaultTable(FormToolkit toolkit, Composite sectionBody) {

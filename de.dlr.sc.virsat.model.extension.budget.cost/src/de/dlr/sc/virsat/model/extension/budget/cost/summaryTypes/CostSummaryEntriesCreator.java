@@ -62,12 +62,14 @@ public class CostSummaryEntriesCreator {
 				Double costs = costEquipment.getCost();
 				Double costWithMargin = costEquipment.getCostWithMargin();
 				CostType type = costEquipment.getType();
-				String typeName = type.getName();
 				CostTableEntry entry = map.computeIfAbsent(type, key -> new CostTableEntry(concept));
 				entry.setCost(costs + entry.getCost());
 				entry.setCostWithMargin(costWithMargin + entry.getCostWithMargin());
-				entry.setName(typeName);
-				entry.setType(type);
+				if (type != null) {
+					String typeName = type.getName();
+					entry.setName(typeName);
+					entry.setType(type);			
+				}
 			}
 		}
 		
