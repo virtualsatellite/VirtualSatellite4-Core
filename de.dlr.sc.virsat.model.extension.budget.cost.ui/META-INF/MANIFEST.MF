@@ -4,6 +4,7 @@ Bundle-Name: VirSat Core Model Extension Cost Budgets UI
 Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.budget.cost.ui;singleton:=true
 Bundle-Version: 4.14.0.qualifier
 Require-Bundle: de.dlr.sc.virsat.model.extension.budget.cost,
+ de.dlr.sc.virsat.external.lib.jfreechart,
  org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.expressions,
@@ -15,7 +16,8 @@ Require-Bundle: de.dlr.sc.virsat.model.extension.budget.cost,
  de.dlr.sc.virsat.project.ui,
  de.dlr.sc.virsat.uiengine.ui,
  org.eclipse.core.commands,
- org.eclipse.emf.common
+ org.eclipse.emf.common,
+ de.dlr.sc.virsat.commons.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.budget.cost.ui
