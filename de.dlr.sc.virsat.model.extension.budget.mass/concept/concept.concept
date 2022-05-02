@@ -7,7 +7,9 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-  Concept de.dlr.sc.virsat.model.extension.budget.mass displayname "Mass Budget" description "Mass Budget Concept" version 1.2 {
+  Concept de.dlr.sc.virsat.model.extension.budget.mass displayname "Mass Budget" description "Mass Budget Concept" version 1.4 {
+	 
+	Import de.dlr.sc.virsat.model.extension.requirements.*;
 	 
 	Category AMassParameters description "Definition of the equipment mass" {
 		IsAbstract;
@@ -34,5 +36,9 @@
 		Ref:AMassParameters.massMargin = AMassParameters.massWithMargin - AMassParameters.mass;
 		Ref:AMassParameters.margin = AMassParameters.massMargin / AMassParameters.mass;
 	} 
+	
+	Category MassRequirementsVerification extends BoundedValueVerification {
+		IsVerification;
+	}
 }
 

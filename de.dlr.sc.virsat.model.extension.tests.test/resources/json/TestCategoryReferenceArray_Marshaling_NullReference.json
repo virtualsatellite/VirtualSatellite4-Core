@@ -1,33 +1,57 @@
 {
-   "type" : "testCategoryReferenceArray",
+   "type" : "de.dlr.sc.virsat.model.extension.tests.TestCategoryReferenceArray",
    "uuid" : "f34d30b0-80f5-4c96-864f-29ab4d3ae9f2",
    "name" : "TestCategoryReferenceArray",
    "testCategoryReferenceArrayDynamicBean" : [ ],
    "testCategoryReferenceArrayStaticBean" : [ {
       "uuid" : "8872b433-968c-4f48-b9a3-d734c6e239a0",
+      "isCalculated" : false,
+      "propertyType" : "reference",
+      "override" : false,
       "value" : null
    }, {
       "uuid" : "8872b433-968c-4f48-b9a3-d734c6e239a1",
+      "isCalculated" : false,
+      "propertyType" : "reference",
+      "override" : false,
       "value" : "f34d30b0-80f5-4c96-864f-29ab4d3ae9f0"
    }, {
       "uuid" : "8872b433-968c-4f48-b9a3-d734c6e239a2",
+      "isCalculated" : false,
+      "propertyType" : "reference",
+      "override" : false,
       "value" : "f34d30b0-80f5-4c96-864f-29ab4d3ae9f0"
    }, {
       "uuid" : "8872b433-968c-4f48-b9a3-d734c6e239a3",
+      "isCalculated" : false,
+      "propertyType" : "reference",
+      "override" : false,
       "value" : "f34d30b0-80f5-4c96-864f-29ab4d3ae9f0"
    } ],
    "testPropertyReferenceArrayDynamicBean" : [ ],
    "testPropertyReferenceArrayStaticBean" : [ {
       "uuid" : "49177554-f1e4-4529-bf1b-3036abb1ee30",
+      "isCalculated" : false,
+      "propertyType" : "reference",
+      "override" : false,
       "value" : null
    }, {
       "uuid" : "49177554-f1e4-4529-bf1b-3036abb1ee31",
+      "isCalculated" : false,
+      "propertyType" : "reference",
+      "override" : false,
       "value" : "7256e7a2-9a1f-443c-85f8-7b766eac3f50"
    }, {
       "uuid" : "49177554-f1e4-4529-bf1b-3036abb1ee32",
+      "isCalculated" : false,
+      "propertyType" : "reference",
+      "override" : false,
       "value" : "7256e7a2-9a1f-443c-85f8-7b766eac3f50"
    }, {
       "uuid" : "49177554-f1e4-4529-bf1b-3036abb1ee33",
+      "isCalculated" : false,
+      "propertyType" : "reference",
+      "override" : false,
       "value" : "7256e7a2-9a1f-443c-85f8-7b766eac3f50"
    } ]
 }

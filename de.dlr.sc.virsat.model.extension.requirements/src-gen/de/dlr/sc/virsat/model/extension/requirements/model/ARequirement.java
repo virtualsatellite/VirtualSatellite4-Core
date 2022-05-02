@@ -12,28 +12,31 @@ package de.dlr.sc.virsat.model.extension.requirements.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
-import javax.xml.bind.annotation.XmlAccessorType;
-import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnum;
-import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance;
-import javax.xml.bind.annotation.XmlRootElement;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
-import de.dlr.sc.virsat.model.concept.list.IBeanList;
-import de.dlr.sc.virsat.model.dvlm.categories.Category;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
-import javax.xml.bind.annotation.XmlAccessType;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyString;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyReference;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.emf.common.command.Command;
-import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyBeanList;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapter;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyInstanceList;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
+import javax.xml.bind.annotation.XmlAccessorType;
+import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
+import javax.xml.bind.annotation.XmlRootElement;
+import de.dlr.sc.virsat.model.concept.list.IBeanList;
+import de.dlr.sc.virsat.model.dvlm.categories.Category;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
+import javax.xml.bind.annotation.XmlAccessType;
+import org.eclipse.emf.common.command.Command;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyBeanList;
+import de.dlr.sc.virsat.model.concept.list.TypeSafeComposedPropertyInstanceList;
 import javax.xml.bind.annotation.XmlElement;
 
 
@@ -67,7 +70,10 @@ public abstract class ARequirement extends RequirementObject implements IBeanCat
 	public static final String PROPERTY_REQTYPE = "reqType";
 	public static final String PROPERTY_ELEMENTS = "elements";
 	public static final String PROPERTY_STATUS = "status";
-	public static final String PROPERTY_VERIFICATION = "verification";
+	public static final String PROPERTY_VERIFICATIONS = "verifications";
+	public static final String PROPERTY_TRACE = "trace";
+	public static final String PROPERTY_DESCRIPTIONTEXT = "descriptionText";
+	public static final String PROPERTY_CHILDREN = "children";
 	
 	// Status enumeration value names
 	public static final String STATUS_Open_NAME = "Open";
@@ -201,33 +207,118 @@ public abstract class ARequirement extends RequirementObject implements IBeanCat
 	}
 	
 	// *****************************************************************
-	// * Array Attribute: verification
+	// * Array Attribute: verifications
 	// *****************************************************************
-	private IBeanList<IVerification> verification = new TypeSafeComposedPropertyInstanceList<>(IVerification.class);
+	private IBeanList<IVerification> verifications = new TypeSafeComposedPropertyInstanceList<>(IVerification.class);
 	
-	private void safeAccessVerification() {
-		if (verification.getArrayInstance() == null) {
-			verification.setArrayInstance((ArrayInstance) helper.getPropertyInstance("verification"));
+	private void safeAccessVerifications() {
+		if (verifications.getArrayInstance() == null) {
+			verifications.setArrayInstance((ArrayInstance) helper.getPropertyInstance("verifications"));
 		}
 	}
 	
-	public IBeanList<IVerification> getVerification() {
-		safeAccessVerification();
-		return verification;
+	public IBeanList<IVerification> getVerifications() {
+		safeAccessVerifications();
+		return verifications;
 	}
 	
-	private IBeanList<BeanPropertyComposed<IVerification>> verificationBean = new TypeSafeComposedPropertyBeanList<>();
+	private IBeanList<BeanPropertyComposed<IVerification>> verificationsBean = new TypeSafeComposedPropertyBeanList<>();
 	
-	private void safeAccessVerificationBean() {
-		if (verificationBean.getArrayInstance() == null) {
-			verificationBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("verification"));
+	private void safeAccessVerificationsBean() {
+		if (verificationsBean.getArrayInstance() == null) {
+			verificationsBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("verifications"));
 		}
 	}
 	
 	@XmlElement
-	public IBeanList<BeanPropertyComposed<IVerification>> getVerificationBean() {
-		safeAccessVerificationBean();
-		return verificationBean;
+	public IBeanList<BeanPropertyComposed<IVerification>> getVerificationsBean() {
+		safeAccessVerificationsBean();
+		return verificationsBean;
+	}
+	
+	// *****************************************************************
+	// * Attribute: trace
+	// *****************************************************************
+	private BeanPropertyComposed<RequirementTrace> trace = new BeanPropertyComposed<>();
+	
+	private void safeAccessTrace() {
+		if (trace.getTypeInstance() == null) {
+			ComposedPropertyInstance propertyInstance = (ComposedPropertyInstance) helper.getPropertyInstance("trace");
+			trace.setTypeInstance(propertyInstance);
+		}
+	}
+	
+	@XmlElement(nillable = true)
+	public RequirementTrace getTrace() {
+		safeAccessTrace();
+		return trace.getValue();
+	}
+	
+	public BeanPropertyComposed<RequirementTrace> getTraceBean() {
+		safeAccessTrace();
+		return trace;
+	}
+	
+	// *****************************************************************
+	// * Attribute: descriptionText
+	// *****************************************************************
+	private BeanPropertyString descriptionText = new BeanPropertyString();
+	
+	private void safeAccessDescriptionText() {
+		if (descriptionText.getTypeInstance() == null) {
+			descriptionText.setTypeInstance((ValuePropertyInstance) helper.getPropertyInstance("descriptionText"));
+		}
+	}
+	
+	public Command setDescriptionText(EditingDomain ed, String value) {
+		safeAccessDescriptionText();
+		return this.descriptionText.setValue(ed, value);
+	}
+	
+	public void setDescriptionText(String value) {
+		safeAccessDescriptionText();
+		this.descriptionText.setValue(value);
+	}
+	
+	public String getDescriptionText() {
+		safeAccessDescriptionText();
+		return descriptionText.getValue();
+	}
+	
+	@XmlElement
+	public BeanPropertyString getDescriptionTextBean() {
+		safeAccessDescriptionText();
+		return descriptionText;
+	}
+	
+	// *****************************************************************
+	// * Array Attribute: children
+	// *****************************************************************
+	private IBeanList<RequirementObject> children = new TypeSafeComposedPropertyInstanceList<>(RequirementObject.class);
+	
+	private void safeAccessChildren() {
+		if (children.getArrayInstance() == null) {
+			children.setArrayInstance((ArrayInstance) helper.getPropertyInstance("children"));
+		}
+	}
+	
+	public IBeanList<RequirementObject> getChildren() {
+		safeAccessChildren();
+		return children;
+	}
+	
+	private IBeanList<BeanPropertyComposed<RequirementObject>> childrenBean = new TypeSafeComposedPropertyBeanList<>();
+	
+	private void safeAccessChildrenBean() {
+		if (childrenBean.getArrayInstance() == null) {
+			childrenBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("children"));
+		}
+	}
+	
+	@XmlElement
+	public IBeanList<BeanPropertyComposed<RequirementObject>> getChildrenBean() {
+		safeAccessChildrenBean();
+		return childrenBean;
 	}
 	
 	

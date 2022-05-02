@@ -12,9 +12,11 @@ package de.dlr.sc.virsat.model.dvlm.concepts.util;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -250,25 +252,96 @@ public class ActiveConceptHelper {
 	}
 	
 	/**
+	 * Call this method to retrieve a Category from a Concept by its 
+	 * full qualified name consisting of the Concept and Category name
+	 * @param fullQualifiedName Concept name + "." + Category name
+	 * @return the Category in case it was found, otherwise null
+	 */
+	public Category getCategory(String fullQualifiedName) {
+		int idx = fullQualifiedName.lastIndexOf(".");
+		Concept concept = getConcept(fullQualifiedName.substring(0, idx));
+		String categoryFqn = fullQualifiedName.substring(idx + 1);
+		
+		return getCategory(concept, categoryFqn);
+	}
+	
+	private static final String DVLM_CONCEPT_NO_ID = "de.dlr.sc.model.dvlm.noid";
+	
+	/**
 	 * This method hands back the full qualified path of a type and the Concept as well
+	 * The FQN is taken from a cache if it exists, otherwise, it will
+	 * be calculated and placed into the cache. The cache is maintained
+	 * externally by the VirSatResourceset. 
 	 * @param type the category or property to start searching from
 	 * @return the full qualified path being delimited with "."
 	 */
 	public static String getFullQualifiedId(EObject type) {
-		List<EObject> objectPath = getFullQualifiedPath(type);
-	
-		String fullQualifiedPath = "";
-		boolean delimit = false;
-		
-		for (EObject pathObject : objectPath) {
-			String pathElement = extractFullQualifiedNameName(pathObject);
+		String fullQualifiedPath = mapEObjectToIDs.get(type);
+
+		if (fullQualifiedPath == null) {
+			fullQualifiedPath = "";
+			List<EObject> objectPath = getFullQualifiedPath(type);
+
+			boolean delimit = false;
+
+			for (EObject pathObject : objectPath) {
+				String pathElement = extractFullQualifiedNameName(pathObject);
+
+				fullQualifiedPath = ((delimit) ? pathElement + FQID_DELIMITER : pathElement) + fullQualifiedPath;
+				delimit = true;
+			}
 			
-			fullQualifiedPath = ((delimit) ? pathElement + FQID_DELIMITER : pathElement) + fullQualifiedPath;
-			delimit = true;
+			// In case the calculated ID tells us noid it is not allowed to be cached.
+			// It also has to return a null. The reason behind this is, that Loading a
+			// DvlmXMI Resource using the intrinsic cache changes the behavior of loading
+			// and tries to read the ID before the objects are completely read. This call
+			// usually checks if the ID is null and would not cache it intrinsically. Since
+			// Virtual Satellite uses the noid string as default value for the ID it may
+			// corrupt the cache.
+			if (fullQualifiedPath.contains(DVLM_CONCEPT_NO_ID)) {
+				return null;
+			}
+			
+			mapEObjectToIDs.put(type, fullQualifiedPath);
 		}
 		return fullQualifiedPath;
-	}
+	}	
 	
+	static Map<EObject, String> mapEObjectToIDs = new HashMap<>();
+	
+	/**
+	 * This method hands back the full qualified name for an EClass.
+	 * The FQN is taken from a cache if it exists, otherwise, it will
+	 * be calculated and placed into the cache. The cache is maintained
+	 * externally by the VirSatResourceset. 
+	 * @param eClass the EClass for which to get the FQN
+	 * @return The FQN as string.
+	 */
+	private static String getCachedQualifiedClassName(EClass eClass) {
+		String fqn = mapEObjectToIDs.get(eClass);
+		if (fqn == null) {
+			fqn = VirSatEcoreUtil.getFullQualifiedClassName(eClass);
+			mapEObjectToIDs.put(eClass, fqn);
+		}
+		return fqn;
+	}
+
+	/**
+	 * This method hands back the full qualified name for an EAttribute.
+	 * The FQN is taken from a cache if it exists, otherwise, it will
+	 * be calculated and placed into the cache. The cache is maintained
+	 * externally by the VirSatResourceset. 
+	 * @param eClass the EAttribute for which to get the FQN
+	 * @return The FQN as string.
+	 */
+	private static String getCachedQualifiedAttributeName(EAttribute eAttribute) {
+		String fqn = mapEObjectToIDs.get(eAttribute);
+		if (fqn == null) {
+			fqn = VirSatEcoreUtil.getFullQualifiedAttributeName(eAttribute);
+			mapEObjectToIDs.put(eAttribute, fqn);
+		}
+		return fqn;
+	}
 	
 	/**
 	 * This method hands back all full qualified ids of a type including its own and the
@@ -276,7 +349,6 @@ public class ActiveConceptHelper {
 	 * @param typeDefinition the type
 	 * @return all full qualified ids including the passed type and all extended types
 	 */
-	
 	public static Set<String> getAllFullQualifiedIds(ATypeDefinition typeDefinition) {
 		Set<String> fqIds = new HashSet<>();
 		
@@ -325,9 +397,9 @@ public class ActiveConceptHelper {
 	 * @return the value of the name attribute found
 	 */
 	private static String extractFullQualifiedNameName(EObject fqnEobject) {
-		final String fqnFqnName = VirSatEcoreUtil.getFullQualifiedAttributeName(GeneralPackage.Literals.IQUALIFIED_NAME__NAME);
+		final String fqnFqnName = getCachedQualifiedAttributeName(GeneralPackage.Literals.IQUALIFIED_NAME__NAME);
 		for (EAttribute eAttribute : fqnEobject.eClass().getEAllAttributes()) {
-			String fqnEAttributeName = VirSatEcoreUtil.getFullQualifiedAttributeName(eAttribute);
+			String fqnEAttributeName = getCachedQualifiedAttributeName(eAttribute);
 			if (fqnFqnName.equals(fqnEAttributeName)) {
 				return (String) fqnEobject.eGet(eAttribute);
 			}
@@ -404,6 +476,20 @@ public class ActiveConceptHelper {
 	}
 	
 	/**
+	 * Call this method to retrieve a Structural Element from a Concept by its 
+	 * full qualified name consisting of the Concept and Structural Element name
+	 * @param fullQualifiedName Concept name + "." + Structural Element name
+	 * @return the StructuralElement in case it was found, otherwise null
+	 */
+	public StructuralElement getStructuralElement(String fullQualifiedName) {
+		int idx = fullQualifiedName.lastIndexOf(".");
+		Concept concept = getConcept(fullQualifiedName.substring(0, idx));
+		String seName = fullQualifiedName.substring(idx + 1);
+		
+		return getStructuralElement(concept, seName);
+	}
+	
+	/**
 	 * Method to be used together with dynamic EMF and EDAPT. The method can check if 
 	 * a certain class is a super type of another one or not. Rather than using the direct comparison by
 	 * the objects delivered by EMFs model package factories, it tries to compare the objects by the full qualified IDs
@@ -419,8 +505,8 @@ public class ActiveConceptHelper {
 		}
 		
 		EClass eObjectClass = eObject.eClass();
-		final String fqnTypeClazz = VirSatEcoreUtil.getFullQualifiedClassName(eTypeClazz);
-		final String fqnObjectClazz = VirSatEcoreUtil.getFullQualifiedClassName(eObjectClass);
+		final String fqnTypeClazz = getCachedQualifiedClassName(eTypeClazz);
+		final String fqnObjectClazz = getCachedQualifiedClassName(eObjectClass);
 
 		// If the object is of the same type as the one where it should be assigned to, than the result is true;
 		if (fqnTypeClazz.equals(fqnObjectClazz)) {
@@ -431,7 +517,7 @@ public class ActiveConceptHelper {
 		if ((fqnTypeClazz != null) && (!fqnTypeClazz.isEmpty())) {
 
 			for (EClass eObjectSuperType : eObjectClass.getEAllSuperTypes()) {
-				String fqnObjectSuperType = VirSatEcoreUtil.getFullQualifiedClassName(eObjectSuperType); 
+				String fqnObjectSuperType = getCachedQualifiedClassName(eObjectSuperType); 
 				if (fqnTypeClazz.equals(fqnObjectSuperType)) {
 					return true;
 				}
@@ -617,5 +703,24 @@ public class ActiveConceptHelper {
 			importedConceptIds.add(cleanedConceptImport);
 		});
 		return importedConceptIds;
+	}
+
+	/**
+	 * This method maintains the cache of IDs by deleting keys to uncontained eObjects.
+	 * The method is called externally by the VirSatResourceSet after resources are unloaded.
+	 * @return the current number of keys in the cache.
+	 */
+	public static int maintainIdCache() {
+		mapEObjectToIDs.entrySet().removeIf(entry -> entry.getKey().eResource() == null);
+		return mapEObjectToIDs.size();
+	}
+
+	/**
+	 * This method is called from the DvlmXMIResource when unloading the resource.
+	 * It removes an EObject from the Cache.
+	 * @param objectToUnload the Object to be taken of the cache
+	 */
+	public static void removeEObjectFromCache(EObject objectToUnload) {
+		mapEObjectToIDs.remove(objectToUnload);
 	}
 }

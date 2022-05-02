@@ -30,6 +30,7 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.concept.types.category.BeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
+import de.dlr.sc.virsat.model.concept.types.roles.BeanDiscipline;
 import de.dlr.sc.virsat.model.concept.types.util.BeanCategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.concept.types.util.BeanStructuralElementInstanceHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
@@ -38,12 +39,16 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import de.dlr.sc.virsat.model.dvlm.inheritance.InheritancePackage;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanStructuralElementInstanceAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.BeanDisciplineAdapter;
 import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapter;
+import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralPackage;
 import de.dlr.sc.virsat.model.dvlm.structural.command.DeleteStructuralElementInstanceCommand;
 import de.dlr.sc.virsat.model.ecore.VirSatEcoreUtil;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Core functionality for a Concept Bean  that wraps SturcturalElementInstances
@@ -53,7 +58,10 @@ import de.dlr.sc.virsat.model.ecore.VirSatEcoreUtil;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement
 // Ensure that the sei (by uuid) gets unmarshalled first
-@XmlType(propOrder = {"structuralElementInstance", "name", "parent", "jaxbCategoryAssignments", "jaxbChildren", "jaxbSuperSeis"})
+@XmlType(propOrder = {"structuralElementInstance", "name", "parent", "jaxbCategoryAssignments", "jaxbChildren", "jaxbSuperSeis", "assignedDiscipline"})
+@ApiModel(description = "Abstract model class for bean SEIs."
+		+ " Instead return a concrete bean SEI that is identified by a type field."
+		+ " Currently concrete SEIs have no additional fields.")
 public abstract class ABeanStructuralElementInstance implements IBeanStructuralElementInstance {
 
 	protected StructuralElementInstance sei;
@@ -80,6 +88,7 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	}
 	
 	@XmlElement(nillable = true)
+	@ApiModelProperty(required = true)
 	@Override
 	public void setName(String seiName) {
 		sei.setName(seiName);
@@ -97,6 +106,9 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	
 	@XmlElement(name = "uuid")
 	@XmlJavaTypeAdapter(IUuidAdapter.class)
+	@ApiModelProperty(name = "uuid", required = true,
+		value = "Unique identifier for a bean",
+		example = "b168b0df-84b6-4b7f-bede-69298b215f40")
 	@Override
 	public	void setStructuralElementInstance(StructuralElementInstance sei) {
 		this.sei = sei;
@@ -152,13 +164,15 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	 * Shadows the original function, but makes the list modifiable
 	 * so it can be used by JAXB
 	 */
-	@SuppressWarnings("unused")
-	private List<BeanCategoryAssignment> getJaxbCategoryAssignments() {
+	public List<BeanCategoryAssignment> getJaxbCategoryAssignments() {
 		return new ArrayList<BeanCategoryAssignment>(getCategoryAssignments());
 	}
 	
 	@XmlElement(name = "categoryAssignments")
-	private void setJaxbCategoryAssignments(List<BeanCategoryAssignment> newCaBeans) {
+	@ApiModelProperty(required = true,
+		name = "categoryAssignments",
+		value = "List of the CA beans")
+	public void setJaxbCategoryAssignments(List<BeanCategoryAssignment> newCaBeans) {
 		setCategoryAssignments(newCaBeans);
 	}
 	
@@ -205,17 +219,46 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	}
 	
 	/**
-	 * Shadows the original function, but makes the list modifiable
-	 * so it can be used by JAXB
+	 * Create a list of BeanStructuralElementInstanceReference from a list of seis
+	 * @param seis list of seis
+	 * @return list of BeanStructuralElementInstanceReference
 	 */
-	@SuppressWarnings("unused")
-	private List<ABeanStructuralElementInstance> getJaxbChildren() {
-		return new ArrayList<ABeanStructuralElementInstance>(getChildren());
+	private List<BeanStructuralElementInstanceReference> getReferenceList(List<StructuralElementInstance> seis) {
+		ArrayList<BeanStructuralElementInstanceReference> children = new ArrayList<BeanStructuralElementInstanceReference>();
+		
+		for (StructuralElementInstance sei : seis) {
+			children.add(new BeanStructuralElementInstanceReference(sei));
+		}
+		
+		return children;
+	}
+	
+	/**
+	 * Update list of seis from a list of BeanStructuralElementInstanceReference
+	 * @param currentSeis list of seis
+	 * @param newBeanSeis list of BeanStructuralElementInstanceReference
+	 */
+	private void setReferenceList(List<StructuralElementInstance> currentSeis, List<BeanStructuralElementInstanceReference> newBeanSeis) {
+		List<StructuralElementInstance> newChildren = new ArrayList<StructuralElementInstance>();
+		
+		for (BeanStructuralElementInstanceReference beanSei : newBeanSeis) {
+			StructuralElementInstance sei = beanSei.getStructuralElementInstance();
+			newChildren.add(sei);
+		}
+		
+		currentSeis.clear();
+		currentSeis.addAll(newChildren);
+	}
+	
+	public List<BeanStructuralElementInstanceReference> getJaxbChildren() {
+		return getReferenceList(sei.getChildren());
 	}
 	
 	@XmlElement(name = "children")
-	public void setJaxbChildren(List<ABeanStructuralElementInstance> newBeanSeis) {
-		setChildren(newBeanSeis);
+	@ApiModelProperty(name = "children", required = true,
+		value = "List of the child beans")
+	public void setJaxbChildren(List<BeanStructuralElementInstanceReference> newBeanSeis) {
+		setReferenceList(sei.getChildren(), newBeanSeis);
 	}
 	
 	@Override
@@ -280,18 +323,15 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 		currentSuperSeis.addAll(newSuperSeis);
 	}
 	
-	/**
-	 * Shadows the original function, but makes the list modifiable
-	 * so it can be used by JAXB
-	 */
-	@SuppressWarnings("unused")
-	private List<ABeanStructuralElementInstance> getJaxbSuperSeis() {
-		return new ArrayList<ABeanStructuralElementInstance>(getSuperSeis());
+	public List<BeanStructuralElementInstanceReference> getJaxbSuperSeis() {
+		return getReferenceList(sei.getSuperSeis());
 	}
-	
+
 	@XmlElement(name = "superSeis")
-	public void setJaxbSuperSeis(List<ABeanStructuralElementInstance> newBeanSeis) {
-		setSuperSeis(newBeanSeis);
+	@ApiModelProperty(name = "superSeis", required = true,
+		value = "List of the super SEI beans")
+	public void setJaxbSuperSeis(List<BeanStructuralElementInstanceReference> newBeanSeis) {
+		setReferenceList(sei.getSuperSeis(), newBeanSeis);
 	}
 	
 	@Override
@@ -310,9 +350,12 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 		BeanStructuralElementInstanceHelper bseiHelper = new BeanStructuralElementInstanceHelper();
 		return bseiHelper.getParentOfClass(sei, beanSeiClazz);
 	}
-	
+
 	@Override
-	@XmlElement(name = "parent")
+	@XmlElement(name = "parent", nillable = true)
+	@ApiModelProperty(required = true,
+		value = "Unique identifier for the parent bean",
+		example = "b168b0df-84b6-4b7f-bede-69298b215f40")
 	@XmlJavaTypeAdapter(ABeanStructuralElementInstanceAdapter.class)
 	public BeanStructuralElementInstance getParent() {
 		StructuralElementInstance parentSei = VirSatEcoreUtil.getEContainerOfClass(sei, StructuralElementInstance.class);
@@ -325,7 +368,11 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	
 	@Override
 	public void setParent(BeanStructuralElementInstance newParent) {
-		sei.setParent(newParent.getStructuralElementInstance());
+		if (newParent == null) {
+			sei.setParent(null);
+		} else {
+			sei.setParent(newParent.getStructuralElementInstance());
+		}
 	}
 	
 	@Override
@@ -393,5 +440,26 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 			return se.isIsRootStructuralElement();
 		}
 		return false;
+	}
+	
+	@XmlElement(nillable = true)
+	@ApiModelProperty(value = "Uuid of the referenced Discipline that can edit this SEI")
+	@XmlJavaTypeAdapter(BeanDisciplineAdapter.class)
+	@Override
+	public BeanDiscipline getAssignedDiscipline() {
+		Discipline assignedDiscipline = sei.getAssignedDiscipline();
+		
+		if (assignedDiscipline == null) {
+			return null;
+		}
+		
+		return new BeanDiscipline(assignedDiscipline);
+	}
+	
+	@Override
+	public void setAssignedDiscipline(BeanDiscipline disciplineBean) {
+		if (disciplineBean != null) {
+			sei.setAssignedDiscipline(disciplineBean.getDiscipline());
+		}
 	}
 }

@@ -1,23 +1,182 @@
-<!--
-Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and Software Technology, Germany.
+<!-- Copyright (c) 2008-2019 German Aerospace Center (DLR), Simulation and 
+	Software Technology, Germany. This program and the accompanying materials 
+	are made available under the terms of the Eclipse Public License 2.0 which 
+	is available at http://www.eclipse.org/legal/epl-2.0. SPDX-License-Identifier: 
+	EPL-2.0 -->
 
-This program and the accompanying materials are made available under the
-terms of the Eclipse Public License 2.0 which is available at
-http://www.eclipse.org/legal/epl-2.0.
-
-SPDX-License-Identifier: EPL-2.0
--->
-
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<artifactId>de.dlr.sc.virsat.parent</artifactId>
 		<groupId>de.dlr.sc.virsat</groupId>
-		<version>4.12.1-SNAPSHOT</version>
+		<version>4.14.0-SNAPSHOT</version>
 		<relativePath>../maven/pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>de.dlr.sc.virsat.server</artifactId>
 	<name>de.dlr.sc.virsat.server</name>
 	<packaging>eclipse-plugin</packaging>
+
+	<properties>
+		<swagger-maven-plugin-version>3.1.8</swagger-maven-plugin-version>
+		<managementPath>management</managementPath>
+		<modelPath>model</modelPath>
+		<swagger.management.output>${basedir}/doc-gen/${managementPath}</swagger.management.output>
+		<swagger.model.output>${basedir}/doc-gen/${modelPath}</swagger.model.output>
+		<swagger.output.name>swagger</swagger.output.name>
+		<swagger2markup.version>1.2.0</swagger2markup.version>
+		<swagger.management.input>${swagger.management.output}/${swagger.output.name}.json</swagger.management.input>
+		<swagger.model.input>${swagger.model.output}/${swagger.output.name}.json</swagger.model.input>
+	</properties>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>jcenter-snapshots</id>
+			<name>jcenter</name>
+			<url>https://oss.jfrog.org/artifactory/oss-snapshot-local/</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>jcenter-releases</id>
+			<name>jcenter</name>
+			<url>https://jcenter.bintray.com</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<profiles>
+		<profile>
+			<id>doc</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.github.kongchen</groupId>
+						<artifactId>swagger-maven-plugin</artifactId>
+						<version>${swagger-maven-plugin-version}</version>
+						<executions>
+							<!-- Model API -->
+							<execution>
+								<id>modelAPI</id>
+								<configuration>
+									<apiSources>
+										<apiSource>
+											<springmvc>false</springmvc>
+											<locations>
+												<location>de.dlr.sc.virsat.server.resources.ModelAccessResource</location>
+											</locations>
+											<outputPath>${swagger.model.output}</outputPath>
+											<outputFormats>json,yaml</outputFormats>
+											<swaggerDirectory>${swagger.model.output}</swaggerDirectory>
+											<swaggerFileName>${swagger.output.name}</swaggerFileName>
+											<modelSubstitute>/model.substitution</modelSubstitute>
+											<schemes>
+												<scheme>http</scheme>
+												<scheme>https</scheme>
+											</schemes>
+											<securityDefinitions>
+												<securityDefinition>
+													<json>/securityDefinitions.json</json>
+												</securityDefinition>
+											</securityDefinitions>
+										</apiSource>
+									</apiSources>
+								</configuration>
+								<phase>process-classes</phase>
+								<goals>
+									<goal>generate</goal>
+								</goals>
+							</execution>
+							<!-- Management API -->
+							<execution>
+								<id>managementAPI</id>
+								<configuration>
+									<apiSources>
+										<apiSource>
+											<springmvc>false</springmvc>
+											<locations>
+												<location>de.dlr.sc.virsat.server.resources.ProjectManagementResource</location>
+											</locations>
+											<outputPath>${swagger.management.output}</outputPath>
+											<outputFormats>json,yaml</outputFormats>
+											<swaggerDirectory>${swagger.management.output}</swaggerDirectory>
+											<swaggerFileName>${swagger.output.name}</swaggerFileName>
+											<modelSubstitute>/model.substitution</modelSubstitute>
+											<schemes>
+												<scheme>http</scheme>
+												<scheme>https</scheme>
+											</schemes>
+											<securityDefinitions>
+												<securityDefinition>
+													<json>/securityDefinitions.json</json>
+												</securityDefinition>
+											</securityDefinitions>
+										</apiSource>
+									</apiSources>
+								</configuration>
+								<phase>process-classes</phase>
+								<goals>
+									<goal>generate</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>io.github.swagger2markup</groupId>
+						<artifactId>swagger2markup-maven-plugin</artifactId>
+						<version>${swagger2markup.version}</version>
+						<dependencies>
+							<dependency>
+								<groupId>io.github.swagger2markup</groupId>
+								<artifactId>swagger2markup-import-files-ext</artifactId>
+								<version>${swagger2markup.version}</version>
+							</dependency>
+							<dependency>
+								<groupId>io.github.swagger2markup</groupId>
+								<artifactId>swagger2markup-spring-restdocs-ext</artifactId>
+								<version>${swagger2markup.version}</version>
+							</dependency>
+						</dependencies>
+						<executions>
+							<!-- Model API -->
+							<execution>
+								<id>modelAPI</id>
+								<configuration>
+									<swaggerInput>${swagger.model.input}</swaggerInput>
+									<outputDir>${swagger.model.output}</outputDir>
+									<config>
+										<swagger2markup.markupLanguage>ASCIIDOC</swagger2markup.markupLanguage>
+										<swagger2markup.anchorPrefix>model_</swagger2markup.anchorPrefix>
+										<swagger2markup.generatedExamplesEnabled>true</swagger2markup.generatedExamplesEnabled>
+									</config>
+								</configuration>
+								<phase>process-classes</phase>
+								<goals>
+									<goal>convertSwagger2markup</goal>
+								</goals>
+							</execution>
+							<!-- Management API -->
+							<execution>
+								<id>managementAPI</id>
+								<configuration>
+									<swaggerInput>${swagger.management.input}</swaggerInput>
+									<outputDir>${swagger.management.output}</outputDir>
+									<config>
+										<swagger2markup.markupLanguage>ASCIIDOC</swagger2markup.markupLanguage>
+										<swagger2markup.anchorPrefix>management_</swagger2markup.anchorPrefix>
+										<swagger2markup.generatedExamplesEnabled>true</swagger2markup.generatedExamplesEnabled>
+									</config>
+								</configuration>
+								<phase>process-classes</phase>
+								<goals>
+									<goal>convertSwagger2markup</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

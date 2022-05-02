@@ -17,16 +17,19 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import de.dlr.sc.virsat.model.extension.budget.cost.unit.EuroUnitCreatorTest;
+import de.dlr.sc.virsat.model.extension.budget.cost.util.CostConceptHelperTest;
 import junit.framework.JUnit4TestAdapter;
-
 
 /**
  * 
  */
 @RunWith(Suite.class)
 
-@SuiteClasses({		
-				})
+@SuiteClasses({ 
+	EuroUnitCreatorTest.class, 
+	CostConceptHelperTest.class 
+})
 
 /**
  * 
@@ -40,12 +43,13 @@ public class AllTests {
 	 */
 	private AllTests() {
 	}
-	
+
 	/**
 	 * Test Adapter
+	 * 
 	 * @return Executable JUnit Tests
 	 */
 	public static junit.framework.Test suite() {
 		return new JUnit4TestAdapter(AllTests.class);
-	}	
+	}
 }

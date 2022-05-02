@@ -14,6 +14,7 @@ package testConcept.model;
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import javax.xml.bind.annotation.XmlType;
 
 // *****************************************************************
 // * Class Declaration
@@ -27,6 +28,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
  * 
  * 
  */
+@XmlType(name = ATestStructuralElement.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME)
 public class TestStructuralElement extends ATestStructuralElement {
 	
 	/**
@@ -52,4 +54,3 @@ public class TestStructuralElement extends ATestStructuralElement {
 		super(sei);
 	}
 }
-

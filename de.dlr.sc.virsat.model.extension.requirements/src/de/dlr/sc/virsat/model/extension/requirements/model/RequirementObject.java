@@ -13,6 +13,9 @@ package de.dlr.sc.virsat.model.extension.requirements.model;
 // * Import Statements
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+
+import javax.xml.bind.annotation.XmlType;
+
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 
 // *****************************************************************
@@ -27,6 +30,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
  * Interface for specification objects
  * 
  */
+@XmlType(name = ARequirementObject.FULL_QUALIFIED_CATEGORY_NAME)
 public abstract class RequirementObject extends ARequirementObject {
 	
 	/**
@@ -52,4 +56,10 @@ public abstract class RequirementObject extends ARequirementObject {
 	public RequirementObject(CategoryAssignment categoryAssignment) {
 		super(categoryAssignment);
 	}
+	
+	/**
+	 * Get the identifier value of this requirement
+	 * @return the identifier as string
+	 */
+	public abstract String getIdentifier();
 }

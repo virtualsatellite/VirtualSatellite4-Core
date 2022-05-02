@@ -2,7 +2,7 @@
 <feature
       id="de.dlr.sc.virsat.external.lib.feature"
       label="VirSat Core External Libraries feature"
-      version="4.12.1.qualifier"
+      version="4.14.0.qualifier"
       provider-name="DLR (German Aerospace Center)"
       plugin="de.dlr.sc.virsat.branding.ui"
       license-feature="de.dlr.sc.virsat.license.feature">
@@ -25,10 +25,11 @@ by German Aerospace Center (DLR e.V.)
 
    <requires>
       <import plugin="org.eclipse.swt"/>
+      <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.eclipse.jface"/>
       <import plugin="org.eclipse.draw2d"/>
-      <import plugin="org.eclipse.ui"/>
+      <import plugin="javax.servlet"/>
    </requires>
 
    <plugin
@@ -151,6 +152,12 @@ by German Aerospace Center (DLR e.V.)
 
    <plugin
          id="de.dlr.sc.virsat.external.lib.commons.csv"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.external.lib.swagger"
          download-size="0"
          install-size="0"
          version="0.0.0"/>

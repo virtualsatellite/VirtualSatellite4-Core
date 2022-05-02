@@ -16,6 +16,7 @@ This ticket captures all release related work of the VirtualSatellite4-Core rele
 - [ ] Remove current integration branch (Make sure no one else is integrating at the moment) 
 - [ ] Create new integration branch from development branch
 - [ ] Run ant script to update version numbers
+- [ ] Check if the server APIs had changes and update the version numbers in the servlets if necessary
 - [ ] Check if there are unreleased changes on the Ecore data model (open dvlm.ecore, check if History > Release (not yet released is empty))
   - [ ] Create a Edapt release of new changes (View "Operation Browser", click "Release" with "not yet released" selected, set the next version)
   - [ ] Generate model and edit code from Ecore (Open dvlm.genmodel, right click on the context menu)

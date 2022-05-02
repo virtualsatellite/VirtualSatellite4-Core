@@ -16,11 +16,16 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.FloatProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.json.DoubleAdapter;
 import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
+import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfUnits;
 import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModelProperty.AccessMode;
 
 /**
  * Class to wrap FloatPropertyInstances
@@ -58,6 +63,7 @@ public class BeanPropertyFloat extends ABeanUnitValueProperty<Double> {
 	
 	@XmlJavaTypeAdapter(DoubleAdapter.class)
 	@XmlElement(nillable = true)
+	@ApiModelProperty(value = "Double")
 	@Override
 	public Double getValue() {
 		try {
@@ -99,5 +105,45 @@ public class BeanPropertyFloat extends ABeanUnitValueProperty<Double> {
 			return setValue(ed, convertedValue);		
 		}
 		return setValue(ed, inputValue);		
+	}
+	
+	/**
+	 * Convenience method to easily get a value in the default unit,
+	 * that is the unit specified in the concept file.
+	 * @return Returns a double value in the default unit
+	 */
+	public double getValueInDefaultUnit() {
+		SystemOfUnits sou = CategoryAssignmentHelper.getSystemOfUnits(ti);
+
+		double sourceValue = getValue();
+		AUnit sourceUnit = ti.getUnit();
+		String targetUnitName = ((FloatProperty) ti.getType()).getUnitName();
+		AUnit targetUnit = QudvUnitHelper.getInstance().getUnitByName(sou, targetUnitName);
+		
+		return QudvUnitHelper.getInstance().convertFromSourceToTargetUnit(sourceUnit, sourceValue, targetUnit);
+	}
+
+	/**
+	 * Convenience method to easily get a value in a specified unit.
+	 * @param targetUnit the unit the return value should be expressed in
+	 * @return Returns a double value in the specified unit
+	 */
+	public double getValueInUnit(String targetUnitName) {
+		SystemOfUnits sou = CategoryAssignmentHelper.getSystemOfUnits(ti);
+		
+		double sourceValue = getValue();
+		AUnit sourceUnit = ti.getUnit();
+		AUnit targetUnit = QudvUnitHelper.getInstance().getUnitByName(sou, targetUnitName);
+		
+		return QudvUnitHelper.getInstance().convertFromSourceToTargetUnit(sourceUnit, sourceValue, targetUnit);
+	}
+	
+	@ApiModelProperty(
+			value = "Always returns constant: \"float\"", 
+			example = "float",
+			accessMode = AccessMode.READ_ONLY)
+	@Override
+	public BeanPropertyType getPropertyType() {
+		return BeanPropertyType.FLOAT;
 	}
 }

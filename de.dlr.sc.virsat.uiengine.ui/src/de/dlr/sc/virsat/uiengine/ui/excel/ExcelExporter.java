@@ -16,7 +16,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.time.LocalDateTime;
 
-import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
@@ -47,7 +48,6 @@ import de.dlr.sc.virsat.uieingine.ui.DVLMEditorPlugin;
 
 /**
  * Class for exporting excel
- * @author bell_er
  *
  */
 public class ExcelExporter {
@@ -56,6 +56,7 @@ public class ExcelExporter {
 	private static final int ADDZEROIFLESS = 10;
 	private static final int FONTSIZE = 12;
 	private static final String DEFAULT_TEMPLATE_PATH = "/resources/TableViewTemplate.xlsx";
+	
 	/**
 	 * Default constructor
 	 */
@@ -84,6 +85,7 @@ public class ExcelExporter {
 			ErrorDialog.openError(Display.getDefault().getActiveShell(), "Excel IO Failed", "Export failed", status);
 		} 
 	}
+	
 	/**
 	 * creates the workbook
 	 * @param columnViewer tableViewer to be exported
@@ -119,26 +121,26 @@ public class ExcelExporter {
 
 		// shade the background of the header row
 		XSSFCellStyle headerStyle = wb.createCellStyle();
-		headerStyle.setBorderTop(CellStyle.BORDER_THIN);
-		headerStyle.setBorderBottom(CellStyle.BORDER_THIN);
-		headerStyle.setBorderLeft(CellStyle.BORDER_THIN);
-		headerStyle.setBorderRight(CellStyle.BORDER_THIN);
+		headerStyle.setBorderTop(BorderStyle.THIN);
+		headerStyle.setBorderBottom(BorderStyle.THIN);
+		headerStyle.setBorderLeft(BorderStyle.THIN);
+		headerStyle.setBorderRight(BorderStyle.THIN);
 		headerStyle.setAlignment(HorizontalAlignment.LEFT);
 		
 		XSSFFont headerFont = wb.createFont();
 		headerFont.setFontHeightInPoints((short) FONTSIZE);
 		headerFont.setFontName("Calibri");
 		headerFont.setColor(IndexedColors.BLACK.getIndex());
-		headerStyle.setFillPattern(CellStyle.NO_FILL);
+		headerStyle.setFillPattern(FillPatternType.NO_FILL);
 		headerFont.setBold(true);
 		headerFont.setItalic(false);
 		headerStyle.setFont(headerFont);
 		
 		XSSFCellStyle dataStyle = wb.createCellStyle();	
-		dataStyle.setBorderTop(CellStyle.BORDER_THIN);
-		dataStyle.setBorderBottom(CellStyle.BORDER_THIN);
-		dataStyle.setBorderLeft(CellStyle.BORDER_THIN);
-		dataStyle.setBorderRight(CellStyle.BORDER_THIN);
+		dataStyle.setBorderTop(BorderStyle.THIN);
+		dataStyle.setBorderBottom(BorderStyle.THIN);
+		dataStyle.setBorderLeft(BorderStyle.THIN);
+		dataStyle.setBorderRight(BorderStyle.THIN);
 		dataStyle.setAlignment(HorizontalAlignment.LEFT);
 		dataStyle.setVerticalAlignment(VerticalAlignment.BOTTOM);
 		// add header row

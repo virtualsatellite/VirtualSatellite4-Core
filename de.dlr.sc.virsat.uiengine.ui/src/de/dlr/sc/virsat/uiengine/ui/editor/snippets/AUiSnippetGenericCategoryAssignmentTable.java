@@ -20,7 +20,6 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.viewers.ColumnViewer;
-import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -42,6 +41,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyInstanceValueSwitch;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
@@ -50,6 +50,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import de.dlr.sc.virsat.model.dvlm.general.IInstance;
 import de.dlr.sc.virsat.model.dvlm.general.IName;
+import de.dlr.sc.virsat.model.dvlm.general.IQualifiedName;
 import de.dlr.sc.virsat.model.dvlm.inheritance.IInheritanceLink;
 import de.dlr.sc.virsat.model.dvlm.inheritance.InheritanceCopier;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
@@ -63,7 +64,6 @@ import de.dlr.sc.virsat.project.ui.contentProvider.VirSatFilteredWrappedTreeCont
 import de.dlr.sc.virsat.project.ui.labelProvider.VirSatTransactionalAdapterFactoryLabelProvider;
 import de.dlr.sc.virsat.uieingine.ui.dnd.ADropSelectionTargetListener;
 import de.dlr.sc.virsat.uieingine.ui.dnd.DropHelper;
-import de.dlr.sc.virsat.uiengine.ui.cellEditor.aproperties.PropertyInstanceEditingSupportFactory;
 import de.dlr.sc.virsat.uiengine.ui.cellEditor.emfattributes.EStringCellEditingSupport;
 
 /**
@@ -104,10 +104,7 @@ public abstract class AUiSnippetGenericCategoryAssignmentTable extends AUiSnippe
 			}
 			
 			for (AProperty property : categoryModel.getAllProperties()) {
-				
-				TableViewerColumn colProperty = (TableViewerColumn) createDefaultColumn(property.getName());
-				colProperty.getColumn().setToolTipText(property.getDescription());
-				colProperty.setEditingSupport(createEditingSupport(editingDomain, property));
+				createPropertyTableColumn(editingDomain, property);
 			}
 			
 			if (model instanceof StructuralElementInstance) {
@@ -116,6 +113,19 @@ public abstract class AUiSnippetGenericCategoryAssignmentTable extends AUiSnippe
 					createDefaultColumn(COLUMN_TEXT_ORIGIN);
 				}
 			}
+		}
+
+		/**
+		 * Create a table column for a property, may be overwritten to customize the column
+		 * @param editingDomain the editing domain
+		 * @param property the property for which the column is created
+		 * @return the table view column in case it is to be customized
+		 */
+		protected TableViewerColumn createPropertyTableColumn(EditingDomain editingDomain, AProperty property) {
+			TableViewerColumn colProperty = (TableViewerColumn) createDefaultColumn(property.getName());
+			colProperty.getColumn().setToolTipText(property.getDescription());
+			colProperty.setEditingSupport(createEditingSupport(editingDomain, property));
+			return colProperty;
 		}
 		
 		/**
@@ -189,7 +199,16 @@ public abstract class AUiSnippetGenericCategoryAssignmentTable extends AUiSnippe
 									ATypeInstance tiArrayInstance = valueSwitch.doSwitch(piArrayInstance);
 									redirectNotification(tiArrayInstance, object);
 								}
+							} 
+							if (propertyInstance instanceof EReferencePropertyInstance) {
+								EObject value = ((EReferencePropertyInstance) propertyInstance).getReference();
+								if (value instanceof IName) {
+									return ((IName) value).getName();
+								} else if (value instanceof IQualifiedName) {
+									return ((IQualifiedName) value).getName();
+								}
 							}
+							
 							
 							return valueSwitch.getValueString(propertyInstance);
 						}
@@ -462,8 +481,7 @@ public abstract class AUiSnippetGenericCategoryAssignmentTable extends AUiSnippe
 	@Override
 	public boolean isActive(EObject model) {
 		initializeHelperForModel(model);
-		boolean hasActiveConcept = categoryModel != null;
-		if (!hasActiveConcept) {
+		if (!isConceptActive()) {
 			return false;
 		}
 		
@@ -471,6 +489,17 @@ public abstract class AUiSnippetGenericCategoryAssignmentTable extends AUiSnippe
 		boolean isCategoryAssignmentContainer = model instanceof ICategoryAssignmentContainer;
 		DVLMIsActiveCheck check = new DVLMIsActiveCheck(model, true);
 		return isCategoryAssignmentContainer && check.isValidObject(ca);
+	}
+	
+	/**
+	 * Check weather this snippets concepts is active or not
+	 * @return true if active
+	 */
+	protected boolean isConceptActive() {
+		if (model == null) {
+			return false; 
+		}
+		return acHelper.getConcept(conceptId) != null;
 	}
 	
 	@Override
@@ -482,16 +511,6 @@ public abstract class AUiSnippetGenericCategoryAssignmentTable extends AUiSnippe
 		setButtonAddEnabled(isValid);
 		//disable remove button if no object is selected
 		setButtonRemoveEnabled(!columnViewer.getSelection().isEmpty());
-	}
-	/**
-	 * An overridable method for creating an Editing Support
-	 * @param editingDomain the editing domain
-	 * @param property the property
-	 * @return the editing support
-	 */
-	protected EditingSupport createEditingSupport(EditingDomain editingDomain, AProperty property) {
-		return PropertyInstanceEditingSupportFactory.INSTANCE.createEditingSupportFor(editingDomain, columnViewer, property);
-		
 	}
 	
 	/**

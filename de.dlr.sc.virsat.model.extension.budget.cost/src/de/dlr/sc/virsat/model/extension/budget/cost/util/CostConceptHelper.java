@@ -15,8 +15,7 @@ import de.dlr.sc.virsat.model.extension.budget.cost.model.CostEquipment;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostSummary;
 
 /**
- * Mass concept helper to help getting the mass Beans from a SEI
- * @author fisc_ph
+ * Cost concept helper to help getting the cost Beans from a SEI
  *
  */
 public class CostConceptHelper {
@@ -29,10 +28,10 @@ public class CostConceptHelper {
 	
 	/**
 	 * This method extracts all important objects from a given object, which means
-	 * this method tries to create A BeanSEI and tries to find a MassSummary Bean and
-	 * MassEquipment Bean which is needed for further processing. In case the Mass Categories
+	 * this method tries to create A BeanSEI and tries to find a CostSummary Bean and
+	 * CostEquipment Bean which is needed for further processing. In case the Cost Categories
 	 * were not found to be assigned to the object, they will be set to null
-	 * @param object The object of which to get the Mass Categories
+	 * @param object The object of which to get the Cost Categories
 	 * @return true in case we found a SEI Bean otherwise false
 	 */
 	public boolean initBeansForObject(Object object) {

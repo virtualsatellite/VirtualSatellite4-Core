@@ -75,6 +75,8 @@ public class PropertydefinitionsFactoryImpl extends EFactoryImpl implements Prop
 			case PropertydefinitionsPackage.RESOURCE_PROPERTY: return createResourceProperty();
 			case PropertydefinitionsPackage.STATIC_ARRAY_MODIFIER: return createStaticArrayModifier();
 			case PropertydefinitionsPackage.DYNAMIC_ARRAY_MODIFIER: return createDynamicArrayModifier();
+			case PropertydefinitionsPackage.IVERIFICATION_SPECIFICATION: return createIVerificationSpecification();
+			case PropertydefinitionsPackage.VERIFICATION_TYPE_SPECIFICATION: return createVerificationTypeSpecification();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -198,6 +200,26 @@ public class PropertydefinitionsFactoryImpl extends EFactoryImpl implements Prop
 	public DynamicArrayModifier createDynamicArrayModifier() {
 		DynamicArrayModifierImpl dynamicArrayModifier = new DynamicArrayModifierImpl();
 		return dynamicArrayModifier;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public IVerificationSpecification createIVerificationSpecification() {
+		IVerificationSpecificationImpl iVerificationSpecification = new IVerificationSpecificationImpl();
+		return iVerificationSpecification;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public VerificationTypeSpecification createVerificationTypeSpecification() {
+		VerificationTypeSpecificationImpl verificationTypeSpecification = new VerificationTypeSpecificationImpl();
+		return verificationTypeSpecification;
 	}
 
 	/**

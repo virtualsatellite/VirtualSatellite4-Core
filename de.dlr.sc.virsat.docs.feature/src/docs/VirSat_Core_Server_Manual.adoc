@@ -1,0 +1,348 @@
+= Virtual Satellite 4 Core: Server Manual
+:imagesdir: images
+:title-logo-image: images/title/VirtualSatellite_Server.jpg
+:toc:
+:toclevels: 4
+:experimental: 
+
+== Introduction
+
+Virtual Satellite can be run headless as a server.
+That allows you to connect Virtual Satellite to a network, e.g. the Internet.
+The REST API can be used to access and manipulate the Virtual Satellite model remotely and without the desktop interface.
+It provides the Model in form of Resources that can be manipulated via the standard HTTP commands GET, PUT, POST and DELETE.
+
+The Server functions as a general-purpose interface to connect Virtual Satellite to your own application.
+For example the API could be called via JavaScript, that runs inside your Browser, from within a Python program or directly from the command line.
+
+You will learn about the Servers Architecture in the next chapter.
+If you are interested in connecting the Server to your own application, refer to <<The REST API>>.
+Or if you want to set up your own Server, then refer to <<How to run your own Headless Virtual Satellite Server>>.
+
+== Architecture of the Virtual Satellite Server
+
+In this chapter an overview and a more in depth description of the Servers Functionality and Components is given.
+
+=== Overview
+
+The Figure <<RestServerOverview>> gives an overview of the Server and its environment.
+
+.Overview of the Headless REST Server in the Virtual Satellite environment
+[#RestServerOverview]
+image::chapterServerOverview/REST_server_overview.png[Server Overview]
+
+A Server instance can maintain multiple _Server Repositories_, with each repository connected to a _git_ or _SVN repository_.
+_REST Clients_ can access the Server using the HTTP commands GET, PUT, DELETE and POST. 
+So a Client can read or write into the Virtual Satellite model. 
+The server provides functionality for administrators, that can manipulate the server configuration, and users.
+For that purpose it uses authentication and authorization.
+// For authentication purposes it is planned to an LDAP server can be connected to the REST server.
+The connection can be secured via HTTPS.
+The server uses the port 8000 for HTTP and 8443 for HTTPS requests.
+Each user can only access the _Server Repositories_ to which he has been granted access.
+
+The connected SVN/git repositories can also be manipulated from _Clients using the Virtual Satellite UI_.
+The server resolves these conflicts and also handles simultaneous changes from multiple REST clients.
+The SVN/git repository is supposed to be the single source of truth in those cases.
+
+=== Components
+
+Figure <<RestServerComponents>> gives a more detailed view on the REST Server components.
+
+.Components of the Headless REST Server.
+[#RestServerComponents]
+image::chapterServerComponents/REST_server_components.png[Server Components]
+
+The server is divided into three main layers: the _REST API_ (View), _Server Controller_ and _Persistence_ (Model).
+Between the API and the controller also is an _Access check_ layer.
+
+A REST Client can send a request to the provided _REST API_ that is partitioned into multiple Resources:
+An _Admin Resource_, in which an administrator can manipulate the Server Configuration (_ServerConf_), e.g. add Repository Configurations (_RepoConf_),
+and a _Repository Resource_. Each _Server Repository_ provided has its own _Subresource_.
+
+In the _Access check_ layer the credentials are obtained from the HTTP Header and it is checked if the requested Resources can be accessed.
+The credentials are handed over to be used for user role handling in the Virtual Satellite _Data Model_.
+
+The _Server Controller_ handles requests to the _Admin Resource_. In its _ServerConf_ the server settings are stored.
+Requests to a specific _Repository Subresource_ via the _Repository Resource_ directly change the underlying _Data Model_.
+
+The persistence level is composed of _Server Repositories_, each with a _Repository Configuration_ and a _Data Model_. 
+The _Data Model_ is connected to a _SVN_ or _git_ backend.
+
+== The REST API
+
+The REST API can be accessed via the 
+[subs=+quotes]
+....
+{*server adress*}:{*http/https port*}/rest
+....
+and currently supports multiple APIs for different purposes.
+Each API can be accessed via it's *name* and *version number*:
+[subs=+quotes]
+....
+{*server adress*}:{*http/https port*}/rest/{*name*}/{*version number*}
+....
+
+Currently the following APIs are provided:
+
+* The Model API to access Virtual Satellite Models ({*name*} = *model*)
+* The Management API for administrative tasks ({*name*} = *management*)
+
+The following documentation of the REST endpoints is automatically generated using Swagger.
+For each API the swagger documentation also is provided via the REST API at:
+[subs=+quotes]
+....
+{*server adress*}:{*http/https port*}/rest/{*name*}/{*version number*}/swagger.json or /swagger.yaml
+....
+
+It can help you, if you want to connect Virtual Satellite to your own application.
+E.g. it can be used to automatically generate your client, using Swaggers Codegen capabilities.
+
+=== Important concept: Inheritance
+
+Some resources in the following documentation return abstract model classes (e.g. AClass).
+Here the server will instead return the concrete model class (e.g. ConcreteClass) inheriting from AClass.
+So the JSON will contain all fields from AClass, but may contain additional fields.
+Furthermore, a *type* field will be inserted, identifying the concrete class. 
+So the JSON for ConcreteClass will look like this:
+....
+{
+  "type" : "concreteClass",
+  // fields from AClass e.g. uuid
+  "uuid" : ...,
+  ...
+  // fields from ConcreteClass
+  ...
+}
+....
+This concept is most relevant for CategoryAssignments, which can additionally have
+fields in the form of Properties.
+
+WARNING: A good understanding of Modeling in Virtual Satellite is required to use the the APIs.
+If you are new to Virtual Satellite, please refer to the User Manual before continuing.
+
+NOTE: Now follows the generated documentation
+
+:serverdocdir: ../../../de.dlr.sc.virsat.server/doc-gen
+:modeldocdir: {serverdocdir}/model
+:managementdocdir: {serverdocdir}/management
+
+include::{modeldocdir}/overview.adoc[leveloffset=2]
+include::{modeldocdir}/paths.adoc[leveloffset=2]
+include::{modeldocdir}/definitions.adoc[leveloffset=2]
+include::{modeldocdir}/security.adoc[leveloffset=2]
+
+include::{managementdocdir}/overview.adoc[leveloffset=2]
+include::{managementdocdir}/paths.adoc[leveloffset=2]
+include::{managementdocdir}/definitions.adoc[leveloffset=2]
+include::{managementdocdir}/security.adoc[leveloffset=2]
+
+== How to run your own Headless Virtual Satellite Server
+
+In this chapter you will learn how to setup and configure your own Virtual Satellite Server.
+
+:step: 0
+[%header,cols=">8,62a,40a"] 
+|===
+
+|Step
+|Task
+|Image
+
+|{counter:step}.
+|Download the Virtual Satellite Server zip-file from the GitHub releases section.
+|image:chapterInstallation/DownloadGitHubRelease.png[Download]
+
+|{counter:step}.
+|Create a new folder structure in an empty directory.
+|....
+├───repositories
+└───repository_configs
+....
+
+
+|{counter:step}.
+|Create a server configuration file that contains all required configuration. See <<The Configuration File>>.
+[TIP]
+The paths of *repositories* and *repository_configurations* are defined in the 
+*server.properties*. So you could locate them anywhere in the file system.
+|....
+│   server.properties
+├───repositories
+└───repository_configs
+....
+
+|{counter:step}.
+|
+NOTE: Optional:
+
+Now you can add repositories manually, e.g. *demo1* and *demo2*.
+See <<How to add a Repository manually instead of using the REST API>>.
+
+TIP: Instead you can also use the Management API of the running Server.
+|....
+│   server.properties
+├───repositories
+└───repository_configs
+        demo1.repository
+        demo2.repository
+....
+
+|{counter:step}.
+|Start the Server executable with:
+[subs=+quotes]
+....
+*"-configFile {path to server.properties}"*
+....
+
+The Server will start and try to load the repositories defined in 
+*repository_configurations* into the *repositories* folder.
+|Results in:
+....
+│   server.properties
+├───repositories
+│   ├───repo_demo1
+│   └───repo_demo2
+└───repository_configs
+        demo1.repository
+        demo2.repository
+....
+
+|{counter:step}.
+|Send your first request to the server!
+The server provides a status endpoint that can be accessed without authentication and repositories.
+Send a HTTP/S GET request to the following address:
+[subs=+quotes]
+....
+{*server adress*}:{*http/https port*}/status
+....
+|
+The server should return HTTP status OK (200) and the following response body:
+....
+{
+	"status": "ok"
+}
+....
+
+|===
+
+=== The Configuration File
+[WARNING]
+This file should be stored in a secure location on the server.
+
+[WARNING]
+.Connection is UNSECURED by default
+====
+By default the REST server communicates over HTTP, so your credentials (username and password) are transmitted unencrypted.
+====
+
+TIP: Configure the server to use the secure HTTPS connection.
+
+By convention this file is named *server.properties*:
+
+.server.properties
+[[server-properties]]
+[subs=+quotes]
+....
+# Directory in which repository configurations are stored
+*repository.configurations.dir* = ...
+ 
+# Directory into which all projects will be checked out from their repositories
+# *NOT* the workspace
+*project.repositories.dir* = ...
+ 
+# Class of the login service
+*login.service.class* = *org.eclipse.jetty.security.HashLoginService*
+ 
+# Location of the .properties file for authentication 
+# *WARNING*: will only be used if the HashLoginService is used
+*auth.properties.file* = ...
+
+# "true" if HTTPS should be enabled
+*https.enabled* = 
+# Path to the JSSE keystore containing the certificates (by JDKs keytool)
+*https.keystore.path* = 
+# Password for the keystore
+*https.keystore.password* = 
+# Optional password for the key "jetty", will default to https.keystore.password if left empty
+*https.keystore.manager.password* = 
+# "true" if HTTP should be disabled (*WARNING*: will only be used if HTTPS is enabled)
+*https.only* = 
+....
+
+Authentication credentials are stored in <<The Authentication File>>.
+To use HTTPS you have to enable it in the server configuration and provide a certificate that is stored in a JSSE keystore.
+Such a keystore can be created and managed (e.g. create or add certificates) via the JDKs keytool.
+The server will use the certificate stored with the key "jetty", that is secured by the keystore password and an optional password for the key.
+HTTP can be disabled in the server configuration if HTTPS is enabled.
+
+TIP: For more information regarding the keystore you can refer to the Jetty, JSSE and keytool documentation.
+
+=== The Authentication File
+[WARNING]
+This file should be stored in a secure location on the server.
+
+This file persists the known users and their roles. The server currently supports the following roles:
+
+[%header,cols=">30,80a"] 
+|===
+
+|Role
+|Permission
+
+|ADMIN
+|Can access all resources on the server. This includes the Management API and all repositories.
+
+|USER
+|Can access resources available to users, has to be granted access to the specific repositories (see below).
+
+|repositoryName
+|A USER with this role can also access this repository. Has no effect on ADMINs.
+
+|===
+
+An example configuration:
+
+[subs=+quotes]
+....
+# Properties for user authentication with entries in the format:
+# username: password[,rolename ...]
+admin: password,ADMIN
+user: password,USER
+user2: password,USER,testRepository
+....
+
+Only the _admin_ can access the Management API. Only _admin_ and _user2_ can access the _testRepository_.
+
+=== How to add a Repository manually instead of using the REST API
+
+Create a {*repository*}.properties file located in *repository.configurations.dir* (see <<server-properties>>):
+
+.{*repository*}.properties
+[subs=+quotes]
+....
+# The name of the project in the repository
+*project.name* = ...
+*repository.backend* = {*GIT* or *SVN*}
+*repository.remoteURI* = {*uri*}
+*repository.localPath* = {*localPath*}
+*repository.credentials.username* = ...
+*repository.credentials.password* = ...
+....
+
+This will checkout the project located in the folder {*localPath*} in the repository at {*uri*} into *project.repositories.dir*/repo_{*name*} at the next Server start.
+
+[colophone]
+== Legal - License & Copyright
+
+|===
+| Product Version:      | {revnumber}
+| Build Date Qualifier: | {revdate}
+| CI Job Number:        | {buildnr}
+|=== 
+
+Copyright (c) 2008-2020 DLR (German Aerospace Center),
+Simulation and Software Technology.
+Lilienthalplatz 7, 38108 Braunschweig, Germany
+
+This program and the accompanying materials are made available under the terms of the Eclipse Public License 2.0 which is available at https://www.eclipse.org/legal/epl-2.0/ . A copy of the license is shipped with the Virtual Satellite software product.

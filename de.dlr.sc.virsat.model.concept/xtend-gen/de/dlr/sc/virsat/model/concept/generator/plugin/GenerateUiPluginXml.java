@@ -24,7 +24,10 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ComposedProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.DynamicArrayModifier;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IArrayModifier;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IVerificationSpecification;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.VerificationTypeSpecification;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.general.IQualifiedName;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import org.eclipse.emf.common.util.EList;
@@ -270,6 +273,16 @@ public class GenerateUiPluginXml {
             _builder.append(_declareUiSnippetSections, "\t\t");
             _builder.newLineIfNotEmpty();
             {
+              boolean _isIsVerification = category_5.isIsVerification();
+              if (_isIsVerification) {
+                _builder.append("\t");
+                _builder.append("\t");
+                CharSequence _declareUiSnippetVerificationTables = this.declareUiSnippetVerificationTables(concept, category_5);
+                _builder.append(_declareUiSnippetVerificationTables, "\t\t");
+                _builder.newLineIfNotEmpty();
+              }
+            }
+            {
               EList<AProperty> _allProperties = category_5.getAllProperties();
               for(final AProperty property : _allProperties) {
                 {
@@ -305,6 +318,17 @@ public class GenerateUiPluginXml {
                         _builder.newLineIfNotEmpty();
                       }
                     }
+                  }
+                }
+                {
+                  if (((this.getVerificationType(property) != null) && (!this.isVerificationTypeInConcept(concept, property)))) {
+                    _builder.append("\t");
+                    _builder.append("\t");
+                    IVerificationSpecification _verification = property.getVerification();
+                    ATypeDefinition _verificationType = ((VerificationTypeSpecification) _verification).getVerificationType();
+                    CharSequence _declareUiSnippetVerificationTables_1 = this.declareUiSnippetVerificationTables(concept, ((Category) _verificationType));
+                    _builder.append(_declareUiSnippetVerificationTables_1, "\t\t");
+                    _builder.newLineIfNotEmpty();
                   }
                 }
               }
@@ -847,6 +871,36 @@ public class GenerateUiPluginXml {
     return _builder;
   }
   
+  public CharSequence declareUiSnippetVerificationTables(final Concept conceptToBeVerified, final Category verificationCategory) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("<uiSnippet");
+    _builder.newLine();
+    _builder.append("      ");
+    _builder.append("id=\"");
+    String _name = conceptToBeVerified.getName();
+    _builder.append(_name, "      ");
+    _builder.append(".table.uISnippetTableRequirementVerifications");
+    String _firstUpper = StringExtensions.toFirstUpper(verificationCategory.getName());
+    _builder.append(_firstUpper, "      ");
+    _builder.append("\"");
+    _builder.newLineIfNotEmpty();
+    _builder.append("      ");
+    _builder.append("section=\"de.dlr.sc.virsat.model.extension.requirements.ui.Section.Verifications\"");
+    _builder.newLine();
+    _builder.append("      ");
+    _builder.append("snippet=\"");
+    String _name_1 = conceptToBeVerified.getName();
+    _builder.append(_name_1, "      ");
+    _builder.append(".ui.snippet.UiSnippetTableRequirementVerifications");
+    String _firstUpper_1 = StringExtensions.toFirstUpper(verificationCategory.getName());
+    _builder.append(_firstUpper_1, "      ");
+    _builder.append("\">");
+    _builder.newLineIfNotEmpty();
+    _builder.append("</uiSnippet>");
+    _builder.newLine();
+    return _builder;
+  }
+  
   public CharSequence declareUiSnippetArrayTables(final Concept concept, final AProperty property, final Category category) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("<uiSnippet");
@@ -954,6 +1008,23 @@ public class GenerateUiPluginXml {
       _xifexpression = concept.getName();
     }
     return _xifexpression;
+  }
+  
+  public ATypeDefinition getVerificationType(final AProperty property) {
+    Object _xblockexpression = null;
+    {
+      if (((property.getVerification() != null) && (property.getVerification() instanceof VerificationTypeSpecification))) {
+        IVerificationSpecification _verification = property.getVerification();
+        final VerificationTypeSpecification verification = ((VerificationTypeSpecification) _verification);
+        return verification.getVerificationType();
+      }
+      _xblockexpression = null;
+    }
+    return ((ATypeDefinition)_xblockexpression);
+  }
+  
+  public boolean isVerificationTypeInConcept(final Concept concept, final AProperty property) {
+    return ActiveConceptHelper.getConcept(this.getVerificationType(property)).equals(concept);
   }
   
   @Pure

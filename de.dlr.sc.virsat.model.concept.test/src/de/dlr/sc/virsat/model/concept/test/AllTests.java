@@ -48,6 +48,7 @@ import de.dlr.sc.virsat.model.concept.project.filecontent.ConceptPluginExampleCo
 import de.dlr.sc.virsat.model.concept.project.filecontent.ConceptPluginManifestGeneratorTest;
 import de.dlr.sc.virsat.model.concept.project.filecontent.ConceptPluginUiBuildPropertiesGeneratorTest;
 import de.dlr.sc.virsat.model.concept.project.filecontent.ConceptPluginUiManifestGeneratorTest;
+import de.dlr.sc.virsat.model.concept.resources.ConceptResourceLoaderTest;
 import junit.framework.JUnit4TestAdapter;
 
 /**
@@ -56,42 +57,43 @@ import junit.framework.JUnit4TestAdapter;
 @RunWith(Suite.class)
 
 @SuiteClasses({
-				ConceptLanguageTest.class,
-				GenerateDmfCategoriesTest.class,
-				GenerateStructuralElementBeansTest.class,
-				GenerateCategoryBeansTest.class,
-				GenerateValidatorTest.class,
-				GenerateArrayCreateAddCommandTest.class,
-				GenerateCategoryCreateAddCommandTest.class,
-				GenerateCategoryAddHandlerTest.class,
-				GenerateCategoryTestsTest.class,
-				GenerateStructuralElementTestsTest.class,
-				GenerateStructuralElementInstanceAddHandlerTest.class,
-				GenerateCategoryUiSnippetArrayTableTest.class,
-				GenerateCategoryUiSnippetPropertySectionTest.class,
-				GenerateCategoryUiSnippetTableTest.class,
-				ConceptFeatureBuildPropertiesGeneratorTest.class,
-				ConceptFeatureXmlGeneratorTest.class,
-				ConceptPluginBuildPropertiesGeneratorTest.class,
-				ConceptPluginUiBuildPropertiesGeneratorTest.class,
-				ConceptPluginManifestGeneratorTest.class,
-				ConceptPluginUiManifestGeneratorTest.class,
-				ConceptPluginExampleConceptGeneratorTest.class,
-				ConceptProjectGenerationRunnableTest.class,
-				GenerateMigratorTest.class,
-				GenerateConceptUiPluginXmlTest.class,
-				GenerateConceptPluginXmlTest.class,
-				ConceptOutputConfigurationProviderTest.class,
-				GenerateConceptEnabledTesterTest.class,
-				ImportManagerTest.class,
-				ConceptFragmentTestBuildPropertiesGeneratorTest.class,
-				ConceptFragmentTestManifestGeneratorTest.class,
-				GenerateAllTestsTest.class,
-				GenerateMigratorTestsTest.class,
-				GenerateValidatorTestsTest.class,
-				ResourceAccessBuilderTest.class,
-				ConceptPreprocessorTest.class
-				})
+	ConceptResourceLoaderTest.class,
+	ConceptLanguageTest.class,
+	GenerateDmfCategoriesTest.class,
+	GenerateStructuralElementBeansTest.class,
+	GenerateCategoryBeansTest.class,
+	GenerateValidatorTest.class,
+	GenerateArrayCreateAddCommandTest.class,
+	GenerateCategoryCreateAddCommandTest.class,
+	GenerateCategoryAddHandlerTest.class,
+	GenerateCategoryTestsTest.class,
+	GenerateStructuralElementTestsTest.class,
+	GenerateStructuralElementInstanceAddHandlerTest.class,
+	GenerateCategoryUiSnippetArrayTableTest.class,
+	GenerateCategoryUiSnippetPropertySectionTest.class,
+	GenerateCategoryUiSnippetTableTest.class,
+	ConceptFeatureBuildPropertiesGeneratorTest.class,
+	ConceptFeatureXmlGeneratorTest.class,
+	ConceptPluginBuildPropertiesGeneratorTest.class,
+	ConceptPluginUiBuildPropertiesGeneratorTest.class,
+	ConceptPluginManifestGeneratorTest.class,
+	ConceptPluginUiManifestGeneratorTest.class,
+	ConceptPluginExampleConceptGeneratorTest.class,
+	ConceptProjectGenerationRunnableTest.class,
+	GenerateMigratorTest.class,
+	GenerateConceptUiPluginXmlTest.class,
+	GenerateConceptPluginXmlTest.class,
+	ConceptOutputConfigurationProviderTest.class,
+	GenerateConceptEnabledTesterTest.class,
+	ImportManagerTest.class,
+	ConceptFragmentTestBuildPropertiesGeneratorTest.class,
+	ConceptFragmentTestManifestGeneratorTest.class,
+	GenerateAllTestsTest.class,
+	GenerateMigratorTestsTest.class,
+	GenerateValidatorTestsTest.class,
+	ResourceAccessBuilderTest.class,
+	ConceptPreprocessorTest.class
+	})
 
 /**
  * 
