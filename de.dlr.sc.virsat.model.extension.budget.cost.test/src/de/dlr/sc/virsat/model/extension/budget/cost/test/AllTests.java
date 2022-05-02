@@ -18,6 +18,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import de.dlr.sc.virsat.model.extension.budget.cost.unit.EuroUnitCreatorTest;
+import de.dlr.sc.virsat.model.extension.budget.cost.util.CostConceptHelperTest;
 import junit.framework.JUnit4TestAdapter;
 
 /**
@@ -25,7 +26,10 @@ import junit.framework.JUnit4TestAdapter;
  */
 @RunWith(Suite.class)
 
-@SuiteClasses({ EuroUnitCreatorTest.class })
+@SuiteClasses({ 
+	EuroUnitCreatorTest.class, 
+	CostConceptHelperTest.class 
+})
 
 /**
  * 
