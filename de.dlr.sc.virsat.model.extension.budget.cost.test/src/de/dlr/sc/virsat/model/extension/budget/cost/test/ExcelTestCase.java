@@ -46,7 +46,6 @@ public class ExcelTestCase extends AConceptTestCase {
 	protected ProductTreeDomain productTreeDomain;
 	protected ElementConfiguration elementConf;
 	protected ConfigurationTree configTree;
-	protected QudvUnitHelper qudvUnitHelper;
 
 	protected Concept conceptEgscc;
 	protected Concept conceptCost;

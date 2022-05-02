@@ -40,9 +40,7 @@ public class CostExporterTest extends de.dlr.sc.virsat.model.extension.budget.co
 	@Override
 	public void setUp() throws CoreException {
 		super.setUp();
-		//CHECKSTYLE:OFF
 		localDateTime = LocalDateTime.now();
-		//CHECKSTYLE:ON
 	}
 	
 	@Test
