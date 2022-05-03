@@ -12,7 +12,8 @@ Require-Bundle: org.eclipse.ui,
  de.dlr.sc.virsat.model.ext.core;visibility:=reexport,
  de.dlr.sc.virsat.model.extension.ps,
  de.dlr.sc.virsat.model.extension.funcelectrical,
- de.dlr.sc.virsat.model.extension.statemachines
+ de.dlr.sc.virsat.model.extension.statemachines,
+ de.dlr.sc.virsat.build
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
