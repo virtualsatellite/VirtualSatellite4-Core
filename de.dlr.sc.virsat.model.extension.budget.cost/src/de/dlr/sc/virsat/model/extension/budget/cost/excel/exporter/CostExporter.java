@@ -195,13 +195,13 @@ public class CostExporter implements IExport {
 			//create the Type
 			row.getCell(AExcelCostIO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_TYPE).setCellValue(helper.getCreationHelper().createRichTextString(getCostTypeName(costEquipment)));
 			//create the Cost
-			row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_COST).setCellValue(costEquipment.getCost() + "€");
+			row.getCell(AExcelCostIO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_COST).setCellValue(costEquipment.getCost() + "€");
 			//create the CostWithMargin
-			row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_COSTWITHMARGIN).setCellValue(costEquipment.getCostWithMargin() + "€");
+			row.getCell(AExcelCostIO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_COSTWITHMARGIN).setCellValue(costEquipment.getCostWithMargin() + "€");
 			//create the CostMargin
-			row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_COSTMARGIN).setCellValue(costEquipment.getCostMargin() + "€");
+			row.getCell(AExcelCostIO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_COSTMARGIN).setCellValue(costEquipment.getCostMargin() + "€");
 			//create the CostMargin
-			row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_MARGIN).setCellValue(costEquipment.getMargin() + "%");
+			row.getCell(AExcelCostIO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_MARGIN).setCellValue(costEquipment.getMargin() + "%");
 			//create the full Name
 			row.getCell(AExcelCostIO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_FQN).setCellValue(helper.getCreationHelper().createRichTextString(costEquipment.getTypeInstance().getFullQualifiedInstanceName()));
 			i++;
