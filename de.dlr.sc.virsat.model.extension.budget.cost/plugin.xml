@@ -49,6 +49,12 @@
 		xmi="concept/concept_v1_0.xmi">
 	</migrator>
 </extension>
+<extension
+      point="de.dlr.sc.virsat.excel.export">
+   <Exporter
+         class="de.dlr.sc.virsat.model.extension.budget.cost.excel.exporter.CostExporter">
+   </Exporter>
+</extension>
 	<!-- Plugin.XML Protected Region End -->
 	<!-- Plugin.XML Protected Region Start -->
 	<!-- Plugin.XML Protected Region End -->
