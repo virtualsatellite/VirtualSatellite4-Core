@@ -107,9 +107,9 @@ public class CostImporter implements IImport {
 			// Get the UUID of the first cost equipment
 			String tempUUID = Objects.toString(row.getCell(AExcelCostIO.COMMON_COLUMN_UUID), "");
 			// Get the Cost of the first cost equipment
-			Double tempCost = Double.parseDouble(row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_COST).toString());
+			Double tempCost = Double.parseDouble(row.getCell(AExcelCostIO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_COST).toString());
 			// Get the Margin of the first cost equipment
-			Double tempMargin = Double.parseDouble(row.getCell(AExcelCostIO.COSTEQUIPMENT_CULUMN_COSTEQUIPMENT_MARGIN).toString());
+			Double tempMargin = Double.parseDouble(row.getCell(AExcelCostIO.COSTEQUIPMENT_COLUMN_COSTEQUIPMENT_MARGIN).toString());
 			// Updated the CostMargin
 			Double tempCostMargin = (tempCost / ONE_HUNDRED) * tempMargin;
 			// Update the CostWithMargin
