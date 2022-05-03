@@ -215,7 +215,11 @@
           <details key="documentation" value="This method returns true iff it is an instance of the passed typeDefinition"/>
           <details key="body" value="Category category = this;&#xD;&#xA;&#x9;&#x9;&#xD;&#xA;while (category != null) {&#xD;&#xA;&#x9;if (category.equals(typeDefinition)) {&#xD;&#xA;&#x9;&#x9;return true;&#xD;&#xA;&#x9;}&#xD;&#xA;&#x9;&#x9;&#x9;&#xD;&#xA;&#x9;category = category.getExtendsCategory();&#xD;&#xA;}&#xD;&#xA;&#x9;&#x9;&#xD;&#xA;return false;"/>
         </eAnnotations>
-        <eParameters name="typeDefinition" eType="#//categories/ATypeDefinition"/>
+        <eParameters name="typeDefinition" eType="#//categories/ATypeDefinition">
+          <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+            <details key="documentation" value="of which the current is an extension of or not."/>
+          </eAnnotations>
+        </eParameters>
       </eOperations>
       <eOperations name="getAllEquationDefinitions" upperBound="-1" eType="#//calculation/EquationDefinition">
         <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -348,7 +352,11 @@
             <details key="documentation" value="Convenience Method to directly set a value in the frame of the base unit and convert it to the target unit as set in the current UnitValuePropertyInstance."/>
             <details key="body" value="AUnit unit = getUnit();&#xD;&#xA;if (unit != null) {&#xD;&#xA;&#x9;double targetValue = de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper.getInstance().convertFromBaseUnitToTargetUnit(unit, value);&#xD;&#xA;&#x9;String textualValue = Double.toString(targetValue);&#xD;&#xA;&#x9;setValue(textualValue);&#xD;&#xA;} else {&#xD;&#xA;&#x9;setValue(Double.toString(value));&#xD;&#xA;}"/>
           </eAnnotations>
-          <eParameters name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+          <eParameters name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble">
+            <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+              <details key="documentation" value="the value to be set in base unit."/>
+            </eAnnotations>
+          </eParameters>
         </eOperations>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="ReferencePropertyInstance" eSuperTypes="#//categories/propertyinstances/APropertyInstance #//inheritance/IOverridableInheritanceLink">
@@ -377,7 +385,11 @@
             <details key="documentation" value="Convenience Method to set the Uri String via an EMF URI"/>
             <details key="body" value="if (uri != null) {&#xD;&#xA;&#x9;setResourceUri(uri.toPlatformString(false));&#xD;&#xA;} else {&#xD;&#xA;&#x9;setResourceUri(null);&#xD;&#xA;}"/>
           </eAnnotations>
-          <eParameters name="uri" eType="#//types/URI"/>
+          <eParameters name="uri" eType="#//types/URI">
+            <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+              <details key="documentation" value="the uri of the reosource to be set"/>
+            </eAnnotations>
+          </eParameters>
         </eOperations>
         <eOperations name="getUri" eType="#//types/URI">
           <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">

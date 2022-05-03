@@ -59,8 +59,8 @@ public class EnumPropertyCellEditingSupport extends APropertyCellEditingSupport 
 	 * @param editingDomain the editing domain
 	 * @param viewer the table viewer
 	 * @param property an aproperty
-	 * @param showEmptyField 
-	 * @param valueSwitch 
+	 * @param showEmptyField true in case empty fields should be shown as well
+	 * @param valueSwitch value switch to be used for the editing support
 	 */
 	public EnumPropertyCellEditingSupport(EditingDomain editingDomain, ColumnViewer viewer, EnumProperty property, PropertyInstanceValueSwitch valueSwitch, boolean showEmptyField) {
 		super(editingDomain, viewer, property);

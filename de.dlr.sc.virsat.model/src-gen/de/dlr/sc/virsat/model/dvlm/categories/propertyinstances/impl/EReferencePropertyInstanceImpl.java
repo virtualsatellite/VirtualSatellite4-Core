@@ -114,6 +114,7 @@ public class EReferencePropertyInstanceImpl extends APropertyInstanceImpl implem
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code boolean}'.
 	 * @generated
 	 */
 	public boolean isOverride() {
@@ -135,6 +136,7 @@ public class EReferencePropertyInstanceImpl extends APropertyInstanceImpl implem
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EObject}'.
 	 * @generated
 	 */
 	public EObject getReference() {
@@ -152,6 +154,7 @@ public class EReferencePropertyInstanceImpl extends APropertyInstanceImpl implem
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code EObject}'.
 	 * @generated
 	 */
 	public EObject basicGetReference() {

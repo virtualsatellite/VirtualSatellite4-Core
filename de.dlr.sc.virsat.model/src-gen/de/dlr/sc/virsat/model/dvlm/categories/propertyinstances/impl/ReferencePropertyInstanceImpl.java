@@ -117,6 +117,7 @@ public class ReferencePropertyInstanceImpl extends APropertyInstanceImpl impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code boolean}'.
 	 * @generated
 	 */
 	public boolean isOverride() {
@@ -138,6 +139,7 @@ public class ReferencePropertyInstanceImpl extends APropertyInstanceImpl impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code ATypeInstance}'.
 	 * @generated
 	 */
 	public ATypeInstance getReference() {
@@ -155,6 +157,7 @@ public class ReferencePropertyInstanceImpl extends APropertyInstanceImpl impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code ATypeInstance}'.
 	 * @generated
 	 */
 	public ATypeInstance basicGetReference() {

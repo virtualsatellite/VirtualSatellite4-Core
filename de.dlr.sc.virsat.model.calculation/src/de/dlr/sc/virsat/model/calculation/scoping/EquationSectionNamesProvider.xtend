@@ -27,6 +27,8 @@ class EquationSectionNamesProvider extends DefaultDeclarativeQualifiedNameProvid
 	 * Get the qualified name for an EquationSection. The method is
 	 * aware of the fact that the Equation section might be a direct content
 	 * of an xtext resource or that it might be an contained eObject in a VirSatResource 
+	 * @param equationSection of which to get the FQN
+	 * @return the FQN of the equationSection
 	 */
 	def qualifiedName(EquationSection equationSection) {
 		val eContainer = equationSection.eContainer

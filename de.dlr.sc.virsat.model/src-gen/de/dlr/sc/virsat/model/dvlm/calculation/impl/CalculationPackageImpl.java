@@ -370,6 +370,7 @@ public class CalculationPackageImpl extends EPackageImpl implements CalculationP
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
+	 * @return an initialized instance of CalculationPackage.
 	 * @generated
 	 */
 	public static CalculationPackage init() {

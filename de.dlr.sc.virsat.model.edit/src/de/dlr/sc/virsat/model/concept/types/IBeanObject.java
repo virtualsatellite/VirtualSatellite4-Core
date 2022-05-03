@@ -15,7 +15,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
  * interface of a Concept Bean
  * @author leps_je
  *
- * @param <CP_TYPE>
+ * @param <CP_TYPE> specific bean type
  */
 public interface IBeanObject<CP_TYPE extends ATypeInstance> extends IBeanUuid {
 

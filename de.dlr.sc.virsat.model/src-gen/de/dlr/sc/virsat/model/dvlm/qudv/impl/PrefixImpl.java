@@ -170,6 +170,7 @@ public class PrefixImpl extends MinimalEObjectImpl.Container implements Prefix {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getName() {
@@ -191,6 +192,7 @@ public class PrefixImpl extends MinimalEObjectImpl.Container implements Prefix {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code VirSatUuid}'.
 	 * @generated
 	 */
 	public VirSatUuid getUuid() {
@@ -212,6 +214,7 @@ public class PrefixImpl extends MinimalEObjectImpl.Container implements Prefix {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getSymbol() {
@@ -233,6 +236,7 @@ public class PrefixImpl extends MinimalEObjectImpl.Container implements Prefix {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code double}'.
 	 * @generated
 	 */
 	public double getFactor() {

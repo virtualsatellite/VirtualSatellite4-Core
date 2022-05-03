@@ -30,6 +30,7 @@ public class QudvFactoryImpl extends EFactoryImpl implements QudvFactory {
 	 * Creates the default factory implementation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return an initialized instance of 'QudvFactory'.
 	 * @generated
 	 */
 	public static QudvFactory init() {
@@ -246,6 +247,7 @@ public class QudvFactoryImpl extends EFactoryImpl implements QudvFactory {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @deprecated
+	 * @return an instance of QudvPackage.
 	 * @generated
 	 */
 	@Deprecated

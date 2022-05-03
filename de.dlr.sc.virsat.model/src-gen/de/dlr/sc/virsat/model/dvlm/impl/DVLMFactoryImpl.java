@@ -30,6 +30,7 @@ public class DVLMFactoryImpl extends EFactoryImpl implements DVLMFactory {
 	 * Creates the default factory implementation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return an initialized instance of 'DVLMFactory'.
 	 * @generated
 	 */
 	public static DVLMFactory init() {
@@ -92,6 +93,7 @@ public class DVLMFactoryImpl extends EFactoryImpl implements DVLMFactory {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @deprecated
+	 * @return an instance of DVLMPackage.
 	 * @generated
 	 */
 	@Deprecated

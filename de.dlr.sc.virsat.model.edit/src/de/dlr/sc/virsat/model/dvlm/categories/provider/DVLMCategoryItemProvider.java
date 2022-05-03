@@ -25,7 +25,7 @@ public class DVLMCategoryItemProvider extends CategoryItemProvider {
 
 	/**
 	 * this class constructor is an instance of the factory and notifier 
-	 * @param adapterFactory 
+	 * @param adapterFactory to be used for initalization
 	 */
 	public DVLMCategoryItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);

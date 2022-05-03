@@ -20,7 +20,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
  * interface to a Bean that will represent a list
  * @author leps_je
  *
- * @param <TYPE>
+ * @param <TYPE> the bean type to be used for the list
  */
 public interface IBeanList<TYPE> extends List<TYPE> {
 

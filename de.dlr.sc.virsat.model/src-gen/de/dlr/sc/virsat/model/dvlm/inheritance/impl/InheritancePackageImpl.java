@@ -145,6 +145,7 @@ public class InheritancePackageImpl extends EPackageImpl implements InheritanceP
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
+	 * @return an initialized instance of InheritancePackage.
 	 * @generated
 	 */
 	public static InheritancePackage init() {

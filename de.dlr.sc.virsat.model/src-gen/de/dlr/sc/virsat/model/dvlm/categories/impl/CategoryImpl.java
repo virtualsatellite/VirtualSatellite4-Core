@@ -230,6 +230,7 @@ public class CategoryImpl extends ATypeDefinitionImpl implements Category {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<StructuralElement>}'.
 	 * @generated
 	 */
 	public EList<StructuralElement> getApplicableFor() {
@@ -244,6 +245,7 @@ public class CategoryImpl extends ATypeDefinitionImpl implements Category {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code boolean}'.
 	 * @generated
 	 */
 	public boolean isIsApplicableForAll() {
@@ -265,6 +267,7 @@ public class CategoryImpl extends ATypeDefinitionImpl implements Category {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code int}'.
 	 * @generated
 	 */
 	public int getCardinality_() {
@@ -297,6 +300,7 @@ public class CategoryImpl extends ATypeDefinitionImpl implements Category {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<EquationDefinition>}'.
 	 * @generated
 	 */
 	public EList<EquationDefinition> getEquationDefinitions() {
@@ -311,6 +315,7 @@ public class CategoryImpl extends ATypeDefinitionImpl implements Category {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<AProperty>}'.
 	 * @generated
 	 */
 	public EList<AProperty> getProperties() {
@@ -325,6 +330,7 @@ public class CategoryImpl extends ATypeDefinitionImpl implements Category {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code boolean}'.
 	 * @generated
 	 */
 	public boolean isIsAbstract() {
@@ -346,6 +352,7 @@ public class CategoryImpl extends ATypeDefinitionImpl implements Category {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code Category}'.
 	 * @generated
 	 */
 	public Category getExtendsCategory() {
@@ -363,6 +370,7 @@ public class CategoryImpl extends ATypeDefinitionImpl implements Category {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code Category}'.
 	 * @generated
 	 */
 	public Category basicGetExtendsCategory() {
@@ -384,6 +392,7 @@ public class CategoryImpl extends ATypeDefinitionImpl implements Category {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code boolean}'.
 	 * @generated
 	 */
 	public boolean isIsVerification() {

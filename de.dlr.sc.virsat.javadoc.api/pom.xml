@@ -50,7 +50,14 @@
 										<includes>
 											<include>de.dlr.sc.*</include>
 										</includes>
+										<excludes>
+											<exclude>de.dlr.sc.visproto</exclude>
+										</excludes>
+										<ignoreError>false</ignoreError>
 										<additionalArguments>
+											<additionalArgument>-tag "generated:a:EMF tag generated:"</additionalArgument>
+											<additionalArgument>-tag "model:a:EMF tag model:"</additionalArgument>
+											<additionalArgument>-tag "ordered:a:EMF tag ordered:"</additionalArgument>
 											<additionalArgument>
 												-link
 												https://docs.oracle.com/javase/8/docs/api
@@ -62,6 +69,7 @@
 											</additionalArgument>
 											<additionalArgument>-public</additionalArgument>
 										</additionalArguments>
+										
 									</javadocOptions>
 								</configuration>
 							</execution>

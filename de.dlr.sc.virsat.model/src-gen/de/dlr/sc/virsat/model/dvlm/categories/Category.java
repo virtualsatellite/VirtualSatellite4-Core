@@ -141,6 +141,7 @@ public interface Category extends ATypeDefinition, IApplicableFor, IEquationDefi
 	 * <!-- begin-model-doc -->
 	 * This method hands back all properties of the catgeory including the ones from super (extends) categories
 	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>{@code getAllProperties}</em>' operation as '{@code EList<AProperty>}'.
 	 * @model kind="operation"
 	 * @generated
 	 */
@@ -151,7 +152,9 @@ public interface Category extends ATypeDefinition, IApplicableFor, IEquationDefi
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
 	 * This method returns true iff it is an instance of the passed typeDefinition
+	 * @param typeDefinition of which the current is an extension of or not.
 	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>{@code isExtensionOf}</em>' operation as '{@code boolean}'.
 	 * @model
 	 * @generated
 	 */
@@ -163,6 +166,7 @@ public interface Category extends ATypeDefinition, IApplicableFor, IEquationDefi
 	 * <!-- begin-model-doc -->
 	 * This method hands back all equation definitions of the catgeory including the ones from super (extends) categories
 	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>{@code getAllEquationDefinitions}</em>' operation as '{@code EList<EquationDefinition>}'.
 	 * @model kind="operation"
 	 * @generated
 	 */

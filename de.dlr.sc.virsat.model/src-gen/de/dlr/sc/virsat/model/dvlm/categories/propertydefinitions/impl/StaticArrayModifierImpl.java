@@ -101,6 +101,7 @@ public class StaticArrayModifierImpl extends MinimalEObjectImpl.Container implem
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code int}'.
 	 * @generated
 	 */
 	public int getArraySize() {

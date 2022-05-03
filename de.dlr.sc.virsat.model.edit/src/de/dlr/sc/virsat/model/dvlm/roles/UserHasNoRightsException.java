@@ -19,7 +19,7 @@ public class UserHasNoRightsException extends RuntimeException {
 
 	/**
 	 * Constructor
-	 * @param message 
+	 * @param message to be added to the exception
 	 */
     public UserHasNoRightsException(String message) {
         super(message);

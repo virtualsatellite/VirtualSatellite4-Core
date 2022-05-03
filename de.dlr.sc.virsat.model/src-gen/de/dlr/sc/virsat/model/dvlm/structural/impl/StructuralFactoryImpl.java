@@ -30,6 +30,7 @@ public class StructuralFactoryImpl extends EFactoryImpl implements StructuralFac
 	 * Creates the default factory implementation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return an initialized instance of 'StructuralFactory'.
 	 * @generated
 	 */
 	public static StructuralFactory init() {
@@ -125,6 +126,7 @@ public class StructuralFactoryImpl extends EFactoryImpl implements StructuralFac
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @deprecated
+	 * @return an instance of StructuralPackage.
 	 * @generated
 	 */
 	@Deprecated

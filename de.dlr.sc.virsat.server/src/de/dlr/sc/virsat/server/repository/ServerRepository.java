@@ -197,7 +197,7 @@ public class ServerRepository {
 	 * This method syncs the repository, which means it updates from remote
 	 * and then sends all the changes to remote
 	 * @param build if a build should be triggered
-	 * @throws Exception
+	 * @throws Exception thrown if the synchronization fails
 	 */
 	public void syncRepository(boolean build) throws Exception {
 		AtomicExceptionReference<Exception> atomicException = new AtomicExceptionReference<>();

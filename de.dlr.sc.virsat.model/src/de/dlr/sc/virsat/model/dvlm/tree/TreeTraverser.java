@@ -21,8 +21,8 @@ public class TreeTraverser<TYPE> {
 	
 	/**
 	 * Traverses the tree starting from the given root
-	 * calling a typed {@link ITreeTraverserMatcher#isMatching(IBeanStructuralElementInstance)}
-	 * on all nodes and {@link ITreeTraverserMatcher#processMatch(IBeanStructuralElementInstance, IBeanStructuralElementInstance)}
+	 * calling a typed {@link ITreeTraverserMatcher#isMatching(Object)}
+	 * on all nodes and {@link ITreeTraverserMatcher#processMatch(Object, Object)}
 	 * on all found matches
 	 * @param root traverse the subtree of this bean
 	 * @param matcher matcher for callbacks

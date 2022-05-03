@@ -18,6 +18,7 @@ import org.eclipse.emf.common.notify.Adapter;
  */
 
 public class DVLMPropertyinstancesItemProviderAdapterFactory extends PropertyinstancesItemProviderAdapterFactory {
+	
 	/**
 	 * Constructor for the Factory
 	 */
