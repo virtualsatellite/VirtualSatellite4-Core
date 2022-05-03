@@ -17,9 +17,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import de.dlr.sc.virsat.model.extension.budget.cost.excel.exporter.CostExporterTest;
 import de.dlr.sc.virsat.model.extension.budget.cost.unit.EuroUnitCreatorTest;
 import de.dlr.sc.virsat.model.extension.budget.cost.util.CostConceptHelperTest;
-import de.dlr.sc.virsat.model.extension.cost.excel.exporter.CostExporterTest;
 import junit.framework.JUnit4TestAdapter;
 
 /**
