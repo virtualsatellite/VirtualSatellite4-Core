@@ -39,7 +39,6 @@ import de.dlr.sc.virsat.project.ui.contentProvider.VirSatFilteredWrappedTreeCont
 import de.dlr.sc.virsat.project.ui.labelProvider.VirSatTransactionalAdapterFactoryLabelProvider;
 import de.dlr.sc.virsat.uieingine.ui.dnd.ADropSelectionTargetListener;
 import de.dlr.sc.virsat.uieingine.ui.dnd.DropHelper;
-import de.dlr.sc.virsat.uiengine.ui.cellEditor.aproperties.PropertyInstanceEditingSupportFactory;
 
 /**
  * this abstract class extends the ui snippet generic table and implements the ui snippet for the ui array instance property table
@@ -171,7 +170,7 @@ public abstract class AUiSnippetArrayInstancePropertyTable extends AUiSnippetGen
 		
 		ViewerColumn columnValue = createDefaultColumn(COLUMN_TEXT_VALUE);
 		AProperty property = getType();
-		columnValue.setEditingSupport(PropertyInstanceEditingSupportFactory.INSTANCE.createEditingSupportFor(editingDomain, columnViewer, property));
+		columnValue.setEditingSupport(createEditingSupport(editingDomain, property));
 	}
 
 	@Override

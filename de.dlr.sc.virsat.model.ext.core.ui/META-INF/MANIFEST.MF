@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core Model Concept Core UI
 Bundle-SymbolicName: de.dlr.sc.virsat.model.ext.core.ui;singleton:=true
-Bundle-Version: 4.12.1.qualifier
+Bundle-Version: 4.14.0.qualifier
 Require-Bundle: de.dlr.sc.virsat.model.ext.core,
  org.eclipse.ui,
  org.eclipse.core.runtime,

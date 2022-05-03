@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="VirSat 4 - Core" uid="de.dlr.virsat.core.product" id="de.dlr.sc.virsat.branding.ui.VirSat_Core" application="org.eclipse.ui.ide.workbench" version="4.12.1.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="VirSat 4 - Core" uid="de.dlr.virsat.core.product" id="de.dlr.sc.virsat.branding.ui.VirSat_Core" application="org.eclipse.ui.ide.workbench" version="4.14.0.qualifier" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/de.dlr.sc.virsat.branding.ui/resources/images/Branding/Configuration.gif"/>
       <text>
          Virtual Satellite 4 - DVLM Core
 
-Version 4.12.1
+Version 4.14.0
 
 © Copyright by DLR (Deutsches Zentrum fuer Luft- und Raumfahrt e. V., German Aerospace Center) 2020. 
 
@@ -87,6 +87,7 @@ Germany
       <feature id="de.dlr.sc.virsat.model.extension.budget.mass.feature" installMode="root"/>
       <feature id="de.dlr.sc.virsat.model.extension.mechanical.feature" installMode="root"/>
       <feature id="de.dlr.sc.virsat.model.extension.requirements.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.model.extension.thermal.feature" installMode="root"/>
       <feature id="de.dlr.sc.virsat.model.extension.budget.cost.feature" installMode="root"/>
       <feature id="de.dlr.sc.virsat.model.ext.core.feature" installMode="root"/>
       <feature id="de.dlr.sc.virsat.docs.feature" installMode="root"/>
@@ -127,6 +128,7 @@ Germany
       <feature id="org.eclipse.equinox.executable" installMode="root"/>
       <feature id="org.eclipse.draw2d" installMode="root"/>
       <feature id="org.eclipse.graphiti.feature" installMode="root"/>
+      <feature id="org.eclipse.graphiti.export.feature" installMode="root"/>
       <feature id="org.eclipse.egit" installMode="root"/>
       <feature id="org.eclipse.jgit" installMode="root"/>
       <feature id="org.eclipse.jgit.ssh.apache" installMode="root"/>
@@ -136,6 +138,11 @@ Germany
       <feature id="org.polarion.eclipse.team.svn.connector" installMode="root"/>
       <feature id="org.polarion.eclipse.team.svn.connector.svnkit18" installMode="root"/>
       <feature id="org.eclipse.xtext.ui" installMode="root"/>
+      <feature id="org.eclipse.sphinx.emf.serialization" installMode="root"/>
+      <feature id="org.eclipse.rmf.reqif10.feature" installMode="root"/>
+      <feature id="org.eclipse.rmf.reqif10.pror.feature" installMode="root"/>
+      <feature id="org.eclipse.rmf.reqif10.thirdparty.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.model.extension.thermal.feature" installMode="root"/>
    </features>
 
    <configurations>

@@ -35,7 +35,6 @@ import javax.xml.bind.ValidationEventHandler;
 import javax.xml.bind.helpers.DefaultValidationEventHandler;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.persistence.jaxb.rs.MOXyJsonProvider;
@@ -44,12 +43,25 @@ import de.dlr.sc.virsat.commons.exception.AtomicExceptionReference;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanQuantityKindDerived;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanQuantityKindSimple;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitAffineConversion;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitDerived;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitLinearConversion;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitPrefixed;
+import de.dlr.sc.virsat.model.concept.types.qudv.BeanUnitSimple;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.ABeanQuantityKindAdapter;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanStructuralElementInstanceAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.ABeanUnitAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.BeanPrefixAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.BeanDisciplineAdapter;
 import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapter;
+import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapterNoRoleManagement;
+import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
@@ -62,14 +74,31 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 	
 	private ValidationEventHandler eventHandler;
 	
-	private ServerRepository repo;
 	private VirSatTransactionalEditingDomain ed;
 	private VirSatResourceSet resourceSet;
+	private IUserContext context;
 	
 	private static final Set<Class<?>> LIST_CLASSES = new HashSet<Class<?>>(
 			Arrays.asList(
 				IUuidAdapter.class,
-				ABeanStructuralElementInstanceAdapter.class
+				IUuidAdapterNoRoleManagement.class,
+				ABeanObjectAdapter.class,
+				ABeanStructuralElementInstanceAdapter.class,
+				BeanDisciplineAdapter.class,
+				ABeanUnitAdapter.class,
+				ABeanQuantityKindAdapter.class,
+				BeanPrefixAdapter.class
+	));
+	
+	private static final Set<Class<?>> QUDV_CLASSES = new HashSet<Class<?>>(
+			Arrays.asList(
+				BeanQuantityKindSimple.class,
+				BeanQuantityKindDerived.class,
+				BeanUnitSimple.class,
+				BeanUnitPrefixed.class,
+				BeanUnitDerived.class,
+				BeanUnitAffineConversion.class,
+				BeanUnitLinearConversion.class
 	));
 	
 	public TransactionalJsonProvider() {
@@ -78,9 +107,12 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 	}
 	
 	public void setServerRepository(ServerRepository repo) {
-		this.repo = repo;
 		this.ed = repo.getEd();
 		this.resourceSet = repo.getResourceSet();
+	}
+
+	public void setContext(IUserContext userContext) {
+		this.context = userContext;
 	}
 
 	/**
@@ -143,8 +175,14 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 			Unmarshaller unmarshaller) throws JAXBException {
 		super.preReadFrom(type, genericType, annotations, mediaType, httpHeaders, unmarshaller);
 		unmarshaller.setEventHandler(eventHandler);
-		unmarshaller.setAdapter(new IUuidAdapter(resourceSet));
+		unmarshaller.setAdapter(new IUuidAdapter(resourceSet, ed));
+		unmarshaller.setAdapter(new IUuidAdapterNoRoleManagement(resourceSet));
 		unmarshaller.setAdapter(new ABeanObjectAdapter(resourceSet));
+		unmarshaller.setAdapter(new ABeanStructuralElementInstanceAdapter(resourceSet));
+		unmarshaller.setAdapter(new ABeanUnitAdapter(resourceSet));
+		unmarshaller.setAdapter(new BeanPrefixAdapter(resourceSet));
+		unmarshaller.setAdapter(new ABeanQuantityKindAdapter(resourceSet));
+		unmarshaller.setAdapter(new BeanDisciplineAdapter(resourceSet));
 	}
 	
 	@Override
@@ -155,8 +193,9 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 		ReadFromArguments arguments = new ReadFromArguments(
 				type, genericType, annotations, mediaType, httpHeaders, entityStream);
 		ReadFromCommand readFromCommand = new ReadFromCommand(ed, arguments);
-		
-		ed.getCommandStack().execute(readFromCommand);
+
+		// Run as command to directly change resource in the editing domain
+		ed.getVirSatCommandStack().executeNoUndo(readFromCommand, context, false);
 		
 		readFromCommand.throwExceptionsIfSet();
 		
@@ -226,7 +265,6 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 
 		private AtomicExceptionReference<WebApplicationException> atomicWebAppException;
 		private AtomicExceptionReference<IOException> atomicIoException;
-		private AtomicExceptionReference<Exception> atomicException;
 		
 		/**
 		 * Create a command to call ConfigurableMoxyJsonProvider.readFrom()
@@ -240,7 +278,6 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 			
 			atomicIoException = new AtomicExceptionReference<>();
 			atomicWebAppException = new AtomicExceptionReference<>();
-			atomicException = new AtomicExceptionReference<>();
 		}
 
 		@Override
@@ -253,15 +290,11 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 					arguments.getMediaType(),
 					arguments.getHttpHeaders(),
 					arguments.getEntityStream());
-				resourceSet.saveAllResources(new NullProgressMonitor(), ed);
-				repo.syncRepository();
 				results.add(result);
 			} catch (WebApplicationException e) {
 				atomicWebAppException.set(e);
 			} catch (IOException e) {
 				atomicIoException.set(e);
-			} catch (Exception e) {
-				atomicException.set(e);
 			}
 		}
 		
@@ -276,9 +309,6 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 		public void throwExceptionsIfSet() throws IOException, WebApplicationException {
 			atomicWebAppException.throwIfSet();
 			atomicIoException.throwIfSet();
-			// Has to be thrown as RuntimeException because
-			// we can't change the method signature in the parent class
-			atomicException.throwAsRuntimeExceptionIfSet();
 		}
 	}
 	
@@ -292,7 +322,7 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 		// And we don't want to register the CA because their depending classes
 		// (e.g. the property beans) won't be resolved either and result in errors.
 		if (domainClasses.contains(List.class)) {
-			// Currently this is only the case for the RootSeis,
+			// Currently this is only the case for the RootSeis, Units, QuantityKinds and Prefixes
 			// so we only register those missing classes here.
 			domainClasses.addAll(LIST_CLASSES);
 		} else {
@@ -301,6 +331,9 @@ public class TransactionalJsonProvider extends MOXyJsonProvider {
 			if (ed != null) {
 				domainClasses.addAll(getClassesToRegister());
 			}
+			// As they are not registered dynamically and jaxb has problems resolving the inheritance
+			// Register the concrete qudv classes here
+			domainClasses.addAll(QUDV_CLASSES);
 		}
 		
 		// But the contexts are being cashed on domainClasses

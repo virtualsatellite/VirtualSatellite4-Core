@@ -22,7 +22,10 @@ import de.dlr.sc.virsat.concept.unittest.util.test.AConceptProjectTestCase;
 import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
+import de.dlr.sc.virsat.model.dvlm.units.UnitManagement;
+import de.dlr.sc.virsat.model.dvlm.units.UnitsFactory;
 import de.dlr.sc.virsat.model.extension.ps.model.ConfigurationTree;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
 import de.dlr.sc.virsat.model.extension.statemachines.model.AllowsConstraint;
@@ -54,6 +57,10 @@ public class ValidatorTest extends AConceptProjectTestCase {
 		super.setUp();
 
 		repository = DVLMFactory.eINSTANCE.createRepository();
+		UnitManagement unitManagement = UnitsFactory.eINSTANCE.createUnitManagement();
+		unitManagement.setSystemOfUnit(QudvUnitHelper.getInstance().initializeSystemOfUnits("SystemOfUnits", "SoU",
+				"This is the system of units for this study", "N/A"));
+		repository.setUnitManagement(unitManagement);
 		VirSatResourceSet resourceSet = VirSatResourceSet.createUnmanagedResourceSet(testProject);
 		resourceSet.getRepositoryResource().getContents().add(repository);
 

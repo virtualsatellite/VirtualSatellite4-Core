@@ -17,6 +17,8 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiModelProperty.AccessMode;
 
 /**
  * Class to wrap StringPropertyInstances
@@ -50,7 +52,17 @@ public class BeanPropertyString extends ABeanValueProperty<ValuePropertyInstance
 	
 	@Override
 	@XmlElement(nillable = true)
+	@ApiModelProperty(value = "String")
 	public String getValue() {
 		return ti.getValue();
+	}
+
+	@ApiModelProperty(
+			value = "Always returns constant: \"string\"", 
+			example = "string",
+			accessMode = AccessMode.READ_ONLY)
+	@Override
+	public BeanPropertyType getPropertyType() {
+		return BeanPropertyType.STRING;
 	}
 }

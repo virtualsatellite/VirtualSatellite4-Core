@@ -17,8 +17,10 @@ import java.util.Objects;
 import java.util.Properties;
 
 import de.dlr.sc.virsat.team.VersionControlSystem;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
-
+@ApiModel
 public class RepositoryConfiguration {
 
 	// Infrastructure
@@ -90,6 +92,8 @@ public class RepositoryConfiguration {
 		properties.store(configFileOutputStream, "");
 	}
 
+	@ApiModelProperty(value = "URI to the remote (can also be local on your machine)",
+			example = "some/path.git")
 	public String getRemoteUri() {
 		return properties.getProperty(REMOTE_URL_KEY);
 	}
@@ -98,6 +102,8 @@ public class RepositoryConfiguration {
 		properties.setProperty(REMOTE_URL_KEY, remoteUri);
 	}
 
+	@ApiModelProperty(value = "Backend kind",
+			example = "GIT")
 	public VersionControlSystem getBackend() {
 		return VersionControlSystem.valueOf(properties.getProperty(BACKEND_KEY));
 	}
@@ -106,6 +112,8 @@ public class RepositoryConfiguration {
 		properties.setProperty(BACKEND_KEY, backend.name());
 	}
 
+	@ApiModelProperty(value = "Name used for the functional account,"
+			+ " that the server uses to access the project backend.")
 	public String getFunctionalAccountName() {
 		return properties.getProperty(FUNCTIONAL_ACCOUNT_NAME_KEY);
 	}
@@ -114,6 +122,7 @@ public class RepositoryConfiguration {
 		properties.setProperty(FUNCTIONAL_ACCOUNT_NAME_KEY, functionalAccountName);
 	}
 
+	@ApiModelProperty(value = "Password used for the functional account")
 	public String getFunctionalAccountPassword() {
 		return properties.getProperty(FUNCTIONAL_ACCOUNT_PASSWORD_KEY);
 	}
@@ -121,7 +130,8 @@ public class RepositoryConfiguration {
 	public void setFunctionalAccountPassword(String functionalAccountPassword) {
 		properties.setProperty(FUNCTIONAL_ACCOUNT_PASSWORD_KEY, functionalAccountPassword);
 	}
-	
+
+	@ApiModelProperty(value = "The name used via the API. Should be unique!")
 	public String getProjectName() {
 		return properties.getProperty(PROJECT_NAME_KEY);
 	}
@@ -130,6 +140,9 @@ public class RepositoryConfiguration {
 		properties.setProperty(PROJECT_NAME_KEY, projectName);
 	}
 
+	@ApiModelProperty(value = "Local path of the project folder in the repository."
+			+ " This allows to have multiple projects in one repository.",
+			example = "projectName")
 	public String getLocalPath() {
 		return properties.getProperty(LOCAL_PATH_KEY);
 	}
@@ -161,6 +174,7 @@ public class RepositoryConfiguration {
 		return Objects.equals(properties, other.properties);
 	}
 	
+	@ApiModelProperty(hidden = true)
 	public boolean isValid() {
 		return getProjectName() != null
 				&& !getProjectName().isEmpty()

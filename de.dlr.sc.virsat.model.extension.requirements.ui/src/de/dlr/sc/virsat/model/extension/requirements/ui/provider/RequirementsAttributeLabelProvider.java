@@ -24,13 +24,16 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyInstanceValueSwitch;
+import de.dlr.sc.virsat.model.dvlm.general.IName;
 import de.dlr.sc.virsat.model.extension.requirements.model.AttributeValue;
 import de.dlr.sc.virsat.model.extension.requirements.model.IVerification;
 import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttribute;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementType;
 import de.dlr.sc.virsat.model.extension.requirements.ui.Activator;
+import de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetCustomRequirementsAttributeTable;
 import de.dlr.sc.virsat.model.ui.propertyinstance.util.PreferencedPropertyInstanceValueSwitchFactory;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
@@ -42,13 +45,13 @@ import de.dlr.sc.virsat.project.ui.labelProvider.VirSatTransactionalAdapterFacto
 public class RequirementsAttributeLabelProvider extends VirSatTransactionalAdapterFactoryLabelProvider {
 
 	public static final int STATUS_COLUMN = 0;
-
-	public static final int TRACE_COLUMN = 1;
+	public static final int VERIFICATION_COLUMN = 1;
+	public static final int TRACE_COLUMN = 2;
 
 	public static final int REQUIREMENT_STATUS_PROPERTY_NUMBER = 2;
 	public static final int REQUIREMENT_ELEMENTS_PROPERTY_NUMBER = 1;
-	public static final int REQUIREMENT_TRACE_PROPERTY_NUMBER = 3;
-	public static final int REQUIREMENT_TRACE_TARGET_PROPERTY_NUMBER = 0;
+	public static final int REQUIREMENT_VERIFICIATION_PROPERTY_NUMBER = 3;
+	public static final int REQUIREMENT_TRACE_PROPERTY_NUMBER = 4;
 
 	public static final String EMPTY_TRACE_STRING = "-";
 	
@@ -89,33 +92,47 @@ public class RequirementsAttributeLabelProvider extends VirSatTransactionalAdapt
 
 				APropertyInstance propertyInstance = ca.getPropertyInstances().get(REQUIREMENT_STATUS_PROPERTY_NUMBER);
 				redirectNotification(propertyInstance, object);
-				ATypeInstance ti = valueSwitch.doSwitch(propertyInstance);
-				redirectNotification(ti, object);
-
+				
 				return valueSwitch.getValueString(propertyInstance);
+
+			} else if (columnIndex == VERIFICATION_COLUMN) {
+
+				APropertyInstance propertyInstance = ca.getPropertyInstances().get(REQUIREMENT_VERIFICIATION_PROPERTY_NUMBER);
+				redirectNotification(propertyInstance, object);
+				
+				return getVerificationLabel(new Requirement(ca));
+				
 
 			} else if (columnIndex == TRACE_COLUMN) {
 
 				APropertyInstance propertyInstance = ca.getPropertyInstances().get(REQUIREMENT_TRACE_PROPERTY_NUMBER);
 				redirectNotification(propertyInstance, object);
-				ATypeInstance ti = valueSwitch.doSwitch(propertyInstance);
-				redirectNotification(ti, object);
 				
-				return getVerificationLabel(new Requirement(ca));
+				return getTracingLabel(new Requirement(ca));
 				
 
-			} else if (columnIndex > STATUS_COLUMN) {
+			} else if (columnIndex >= UiSnippetCustomRequirementsAttributeTable.FIXED_COLUMNS_NUMBER) {
 				APropertyInstance propertyInstance = ca.getPropertyInstances()
 						.get(REQUIREMENT_ELEMENTS_PROPERTY_NUMBER);
 				redirectNotification(propertyInstance, object);
 
 				if (propertyInstance instanceof ArrayInstance) {
-					int attIndex = columnIndex - 2; // Status + Trace Column
+					int attIndex = columnIndex - UiSnippetCustomRequirementsAttributeTable.FIXED_COLUMNS_NUMBER; 
 					return getValueOfAttributeIndex((ArrayInstance) propertyInstance, attIndex);
 				}
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * Redirect the notification to property instance and its type instance
+	 * @param propertyInstance the property instance
+	 * @param object the object for which we want to have the label
+	 */
+	protected void redirectNotification(APropertyInstance propertyInstance, Object object) {
+		ATypeInstance ti = valueSwitch.doSwitch(propertyInstance);
+		redirectNotification(ti, object);
 	}
 
 	/**
@@ -254,16 +271,43 @@ public class RequirementsAttributeLabelProvider extends VirSatTransactionalAdapt
 	 * @return the label
 	 */
 	protected String getVerificationLabel(Requirement req) {
-		if (req.getVerification().isEmpty()) {
+		if (req.getVerifications().isEmpty()) {
 			return EMPTY_TRACE_STRING;
 		} else {
 			List<String> verificationStringArtifacts = new ArrayList<String>();
 			
-			for (IVerification verification : req.getVerification()) {
+			for (IVerification verification : req.getVerifications()) {
 				verificationStringArtifacts.add(verification.getName());
 			}
 
 			return "{" + String.join(", ", verificationStringArtifacts) + "}";
+		}
+	}
+	
+	/**
+	 * Create a label for requirements tracing property customized to this table 
+	 * 
+	 * @param req the requirement for which the label is created
+	 * @return the label
+	 */
+	protected String getTracingLabel(Requirement req) {
+		if (req.getTrace().getTarget().isEmpty()) {
+			return EMPTY_TRACE_STRING;
+		} else {
+			List<String> traceStringArtifacts = new ArrayList<String>();
+
+			// Some heavy casting necessary because Bean GenericCategory is abstract
+			APropertyInstance targetProperty = req.getTrace().getTypeInstance().getPropertyInstances()
+					.get(0);
+			for (APropertyInstance targetRPI : ((ArrayInstance) targetProperty).getArrayInstances()) {
+				CategoryAssignment target = (CategoryAssignment) ((ReferencePropertyInstance) targetRPI)
+						.getReference();
+				if (target != null && target.eContainer() != null && target.eContainer() instanceof IName) {
+					traceStringArtifacts.add(((IName) target.eContainer()).getName());
+				}
+			}
+
+			return "{" + String.join(", ", traceStringArtifacts) + "}";
 		}
 	}
 

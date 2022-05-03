@@ -9,11 +9,14 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.ps.model;
 
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+
+import javax.xml.bind.annotation.XmlType;
+
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 
 // *****************************************************************
 // * Class Declaration
@@ -27,6 +30,7 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
  * Product tree to describe specifications of used components
  * 
  */	
+@XmlType(name = AProductTree.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME)
 public class ProductTree extends AProductTree {
 	
 	/**
