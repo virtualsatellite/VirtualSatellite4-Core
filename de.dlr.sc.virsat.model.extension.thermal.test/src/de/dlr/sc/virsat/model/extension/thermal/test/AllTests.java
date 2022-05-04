@@ -17,6 +17,12 @@ import de.dlr.sc.virsat.model.extension.thermal.cad.CadExporterThermalTest;
 import de.dlr.sc.virsat.model.extension.thermal.cad.CadImporterThermalTest;
 import de.dlr.sc.virsat.model.extension.thermal.model.AnalysisResultTest;
 import de.dlr.sc.virsat.model.extension.thermal.model.AnalysisTypeTest;
+import de.dlr.sc.virsat.model.extension.thermal.model.BoundaryConditionsTest;
+import de.dlr.sc.virsat.model.extension.thermal.model.TemperatureBoundaryTest;
+import de.dlr.sc.virsat.model.extension.thermal.model.ThermalDataTest;
+import de.dlr.sc.virsat.model.extension.thermal.model.ThermalElementParametersTest;
+import de.dlr.sc.virsat.model.extension.thermal.model.ThermalInterfaceTest;
+import de.dlr.sc.virsat.model.extension.thermal.model.ThermalPortTest;
 import de.dlr.sc.virsat.model.extension.thermal.validator.ValidatorTest;
 import junit.framework.JUnit4TestAdapter;
 
@@ -30,7 +36,26 @@ import junit.framework.JUnit4TestAdapter;
 	CadExporterThermalTest.class,
 	CadImporterThermalTest.class,
 	AnalysisResultTest.class,
-	AnalysisTypeTest.class})
+	AnalysisTypeTest.class,
+	BoundaryConditionsTest.class,
+	BoundaryConditionTest.class,
+	ComponentMeshSizeTest.class,
+	ComponentResultTest.class,
+	FaceRadiationTest.class,
+	HeatFlowToFaceTest.class,
+	MaterialCollectionTest.class,
+	MaterialTest.class,
+	ReportsTest.class,
+	SingleFaceEmissivitiesTest.class,
+	SingleFaceRadiationTest.class,
+	TemperatureBoundaryTest.class,
+	ThermalAnalysisTest.class,
+	ThermalContactsTest.class,
+	ThermalDataTest.class,
+	ThermalElementParametersTest.class,
+	ThermalInterfaceTest.class,
+	ThermalPortTest.class
+	})
 
 public class AllTests {
 	
