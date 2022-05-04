@@ -82,7 +82,7 @@ public class CostImporter implements IImport {
 
 		seiCostEquipments = bCaHelper.getAllBeanCategories(sei, CostEquipment.class);
 		costCTypes = bCaHelper.getAllBeanCategories(sei, CostType.class);
-		costTypes = costArchiHelper.getAllInterfaceTypes(repository);
+		costTypes = costArchiHelper.getAllCostTypes(repository);
 	}
 
 	/**

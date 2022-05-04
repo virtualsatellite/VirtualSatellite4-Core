@@ -65,7 +65,7 @@ public class ImportValidator {
 		itcTypes = bCaHelper.getAllBeanCategories(importSei, CostType.class);
 		// Grab the repository using the concept
 		Repository repository = (Repository) ActiveConceptHelper.getConcept(importSei.getType()).eContainer();
-		costTypes = costArchiHelper.getAllInterfaceTypes(repository);
+		costTypes = costArchiHelper.getAllCostTypes(repository);
 		faultList = new ArrayList<Fault>();
 	}
 

@@ -19,28 +19,26 @@ import de.dlr.sc.virsat.model.extension.budget.cost.model.CostTypesCollection;
 import de.dlr.sc.virsat.model.concept.types.util.BeanCategoryAssignmentHelper;
 
 
-
 /**
  * 
- * @author bell_er
- *
+ * Helper class for working with the cost collection.
  */
 public class CostArchitectureHelper {
 
-	public static final String INTERFACE_TYPES_CONTAINER_ID = CostTypesCollection.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME;
+	public static final String COST_COLLECTION_FQN = CostTypesCollection.FULL_QUALIFIED_STRUCTURAL_ELEMENT_NAME;
 
 	/**
 	 * This method returns all CostTypes from a given Repository
 	 * @param repo The repository in which to look for CostTypes
 	 * @return A List with all CostTypes it could find
 	 */
-	public List<CostType> getAllInterfaceTypes(Repository repo) {
+	public List<CostType> getAllCostTypes(Repository repo) {
 
 		List<StructuralElementInstance> seiTypeContainers = new LinkedList<>();
 		
 		//Get all Structural Element instances which are typed as a a container for CostTypes 
 		for (StructuralElementInstance sei : repo.getRootEntities()) {
-			if (INTERFACE_TYPES_CONTAINER_ID.equals(sei.getType().getFullQualifiedName())) {
+			if (COST_COLLECTION_FQN.equals(sei.getType().getFullQualifiedName())) {
 				seiTypeContainers.add(sei);
 			}
 		}
