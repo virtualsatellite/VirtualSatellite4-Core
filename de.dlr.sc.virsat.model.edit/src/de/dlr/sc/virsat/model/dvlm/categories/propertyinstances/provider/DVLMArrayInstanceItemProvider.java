@@ -27,7 +27,7 @@ public class DVLMArrayInstanceItemProvider extends ArrayInstanceItemProvider {
 
 	/**
 	 * this class constructor is an instance of the factory and notifier 
-	 * @param adapterFactory 
+	 * @param adapterFactory  to be used for initialization
 	 */
 	public DVLMArrayInstanceItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);

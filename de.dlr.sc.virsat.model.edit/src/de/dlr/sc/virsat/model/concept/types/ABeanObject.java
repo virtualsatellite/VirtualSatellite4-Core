@@ -25,7 +25,7 @@ import io.swagger.annotations.ApiModelProperty;
  * Core functionality for a Concept Bean and abstract implementation to the interface
  * @author fisc_ph
  * 
- *@param <CP_TYPE>
+ *@param <CP_TYPE> specific bean type
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement

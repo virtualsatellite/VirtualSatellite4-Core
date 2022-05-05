@@ -65,8 +65,8 @@ public class VirSatJettyServer {
 	
 	/**
 	 *  Call this method to start the Virtual Satellite specific Jetty Server.
-	 * @throws Exception
-	 * @throws InterruptedException
+	 * @return the started virsat jetty instance
+	 * @throws Exception in case server fails to start correctly
 	 */
 	public VirSatJettyServer start() throws Exception {	
 
@@ -183,7 +183,7 @@ public class VirSatJettyServer {
 	
 	/**
 	 * Call this method to stop the server
-	 * @throws Exception
+	 * @throws Exception in case the server cannot be stopped correctly
 	 */
 	public void stop() throws Exception {
 		if (server != null) {

@@ -55,7 +55,7 @@ public class EStringCellEditingSupport extends EditingSupport {
 
 	/**
 	 * this method avoid composed properties
-	 * @param element 
+	 * @param element a potential composed property
 	 * @return the object 
 	 */
 	public Object avoidComposedProperty(Object element) {

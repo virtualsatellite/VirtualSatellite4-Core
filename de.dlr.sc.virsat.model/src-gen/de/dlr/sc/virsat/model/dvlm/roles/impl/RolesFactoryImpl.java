@@ -30,6 +30,7 @@ public class RolesFactoryImpl extends EFactoryImpl implements RolesFactory {
 	 * Creates the default factory implementation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return an initialized instance of 'RolesFactory'.
 	 * @generated
 	 */
 	public static RolesFactory init() {
@@ -103,6 +104,7 @@ public class RolesFactoryImpl extends EFactoryImpl implements RolesFactory {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @deprecated
+	 * @return an instance of RolesPackage.
 	 * @generated
 	 */
 	@Deprecated

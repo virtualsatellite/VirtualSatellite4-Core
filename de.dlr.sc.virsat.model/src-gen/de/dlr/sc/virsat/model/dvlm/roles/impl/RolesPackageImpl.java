@@ -129,6 +129,7 @@ public class RolesPackageImpl extends EPackageImpl implements RolesPackage {
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
+	 * @return an initialized instance of RolesPackage.
 	 * @generated
 	 */
 	public static RolesPackage init() {

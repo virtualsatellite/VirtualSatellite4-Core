@@ -101,6 +101,7 @@ public class BooleanPropertyImpl extends APropertyImpl implements BooleanPropert
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getDefaultValue() {

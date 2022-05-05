@@ -23,11 +23,10 @@ import junit.framework.JUnit4TestAdapter;
  */
 @RunWith(Suite.class)
 
-@SuiteClasses({ 
+@SuiteClasses({
 	ValidatorTest.class,
 	CadExporterThermalTest.class,
-	CadImporterThermalTest.class
-	})
+	CadImporterThermalTest.class})
 
 public class AllTests {
 

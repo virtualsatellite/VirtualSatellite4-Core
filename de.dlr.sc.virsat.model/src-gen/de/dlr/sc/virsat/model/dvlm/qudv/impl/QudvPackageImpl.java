@@ -257,6 +257,7 @@ public class QudvPackageImpl extends EPackageImpl implements QudvPackage {
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
+	 * @return an initialized instance of QudvPackage.
 	 * @generated
 	 */
 	public static QudvPackage init() {

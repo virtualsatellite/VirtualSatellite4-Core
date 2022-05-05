@@ -40,21 +40,21 @@ public class Shape {
 	
 	/**
 	 * Create a shape with given parameters
-	 * @param id 
-	 * @param geometryFile 
-	 * @param sizeX 
-	 * @param sizeY 
-	 * @param sizeZ 
-	 * @param radius 
-	 * @param positionX 
-	 * @param positionY 
-	 * @param positionZ 
-	 * @param rotationX 
-	 * @param rotationY 
-	 * @param rotationZ 
-	 * @param color 
-	 * @param transparency 
-	 * @param shape 
+	 * @param id Id of the shape
+	 * @param geometryFile the geometry fiel to be displayed
+	 * @param sizeX x size in si units
+	 * @param sizeY y size in si units
+	 * @param sizeZ z size in si units
+	 * @param radius radius in si units
+	 * @param positionX x position in si units
+	 * @param positionY y position in si units
+	 * @param positionZ z position in si units
+	 * @param rotationX x rotation in si units
+	 * @param rotationY y rotation in si units
+	 * @param rotationZ z rotation in si units
+	 * @param color color in Hex RGB
+	 * @param transparency transparency from 0 to 1
+	 * @param shape the shape type
 	 */
 	public Shape(String id, URI geometryFile, float sizeX, float sizeY, float sizeZ, float radius, double positionX, 
 			double positionY, double positionZ, double rotationX, double rotationY, double rotationZ, int color, float transparency,
@@ -85,7 +85,7 @@ public class Shape {
 
 	/**
 	 * Copy constructor
-	 * @param shapeToCopyFrom 
+	 * @param shapeToCopyFrom Shape from which to create a copy
 	 */
 	public Shape(Shape shapeToCopyFrom) {
 		this.id = shapeToCopyFrom.id;

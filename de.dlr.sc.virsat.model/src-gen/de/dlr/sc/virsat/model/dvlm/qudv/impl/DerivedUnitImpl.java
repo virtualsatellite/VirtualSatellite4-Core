@@ -94,6 +94,7 @@ public class DerivedUnitImpl extends AUnitImpl implements DerivedUnit {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<UnitFactor>}'.
 	 * @generated
 	 */
 	public EList<UnitFactor> getFactor() {

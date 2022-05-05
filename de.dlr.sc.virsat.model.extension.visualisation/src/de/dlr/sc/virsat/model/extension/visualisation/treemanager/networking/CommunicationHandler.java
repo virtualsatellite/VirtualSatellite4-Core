@@ -123,8 +123,8 @@ public abstract class CommunicationHandler extends Thread {
 	
 	/**
 	 * Generates Endpoint string for ZMQ for given port
-	 * @param port 
-	 * @param ipAddress 
+	 * @param port the port of the connection
+	 * @param ipAddress the tcp/ip address of the conection
 	 * @return endpoint string
 	 */
 	public String getEndpoint(String ipAddress, int port) {

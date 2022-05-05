@@ -30,6 +30,7 @@ public class UnitsFactoryImpl extends EFactoryImpl implements UnitsFactory {
 	 * Creates the default factory implementation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return an initialized instance of 'UnitsFactory'.
 	 * @generated
 	 */
 	public static UnitsFactory init() {
@@ -92,6 +93,7 @@ public class UnitsFactoryImpl extends EFactoryImpl implements UnitsFactory {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @deprecated
+	 * @return an instance of UnitsPackage.
 	 * @generated
 	 */
 	@Deprecated

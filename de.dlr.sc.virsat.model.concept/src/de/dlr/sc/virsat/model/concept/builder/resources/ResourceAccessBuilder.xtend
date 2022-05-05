@@ -77,6 +77,8 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 
 	/**
 	 * Do the incremental build
+	 * @param delta describing the changes in the resource
+	 * @param monitor for communicating progress
 	 */
 	def incrementalBuild(IResourceDelta delta, IProgressMonitor monitor) {
 		delta.accept [
@@ -102,6 +104,7 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 
 	/**
 	 * do the full build
+	 * @param monitor to follow the progress
 	 */
 	def fullBuild(IProgressMonitor monitor) {
 		writeAccessClass(buildManifestAccessClass(), MANIFEST_MF_JAVA);
@@ -111,6 +114,7 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 	/**
 	 * This method builds the manifest access java file
 	 * from the default manifest file in the project.
+	 * @return the input stream
 	 */
 	def buildManifestAccessClass() {
 		var iFileManifest = project.getFile("META-INF/" + MANIFEST_MF);
@@ -123,6 +127,8 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 	/**
 	 * This method builds the manifest access java file
 	 * from a given input stream.
+	 * @param manifestInputStream under which to create the access class
+	 * @return the input stream
 	 */
 	def buildManifestAccessClass(InputStream manifestInputStream) {
 		var manifest = new Manifest(manifestInputStream);
@@ -133,6 +139,9 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 
 	/**
 	 * This method creates the string that should be written into the
+	 * @param packageName of the access class
+	 * @param attributes of the access class
+	 * @return charcter sequence of the generated class
 	 */
 	def createManifestAccessClass(String packageName, Attributes attributes) '''
 		/*******************************************************************************
@@ -161,6 +170,7 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 	/**
 	 * This method is called to build the plugin.xml access class
 	 * from the default plugin.xml in the project.
+	 * @return the input stream
 	 */
 	def buildPluginXmlAccessClass() {
 		var iFilePlugin = project.getFile("plugin.xml");
@@ -173,6 +183,8 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 	/**
 	 * This method is called to build the plugin.xml access class
 	 * from a given input stream.
+	 * @param pluginInputStream to the class representing the plugin xml file
+	 * @return the input stream
 	 */
 	def buildPluginXmlAccessClass(InputStream pluginInputStream) {
 		val dbFactory = DocumentBuilderFactory.newInstance();
@@ -185,6 +197,11 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 		return classSourceStream;
 	}
 
+	/**
+	 * Method to write the actual access class
+	 * @param classSourceStream the stream to write
+	 * @param fileName the actual filename to write
+	 */
 	def writeAccessClass(StringInputStream classSourceStream, String fileName) {
 		val iFolderSrc = getProject().getFolder("src-gen");
 		if (!iFolderSrc.exists) {
@@ -217,6 +234,9 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 
 	/**
 	 * This method creates the string that should be written into the
+	 * @param packageName to be used for access class
+	 * @param node of the plugin xml to be generated
+	 * @return characterSequence of the plugin xml access class
 	 */
 	def createPluginXmlAccessClass(String packageName, Node node) '''
 		/*******************************************************************************
@@ -275,6 +295,8 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 	
 	/**
 	 * Gets all children of a node, including nested nodes.
+	 * @param node the node of which to get the children
+	 * @return an iterable with all child nodes
 	 */
 	def Iterable<Node> getAllChildren(Node node) {
 		val children = getChildren(node);
@@ -293,6 +315,9 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 	 * The primary use case is when the user wants to "overwrite" an extension from the generated section
 	 * of a plugin.xml in the protected region (for example to refine the section of an uiSnippet).
 	 * In this case, Eclipse takes the last declaration, the resource builder should reflect this.
+	 * @param node for which to find the children
+	 * @param extensionType to filter the children
+	 * @return list of identified children
 	 */
 	def getClassDefiningChildren(Node node, String extensionType) {
 		val children = getAllChildren(node);
@@ -317,6 +342,8 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 	
 	/**
 	 * Gets an iterateable list of child nodes from a node.
+	 * @param node for which to get the children
+	 * @return list of identified children
 	 */
 	def getChildren(Node node) {
 		val arraylist = new ArrayList<Node>;
@@ -328,6 +355,8 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 
 	/**
 	 * Gets an iterateable list of attributes nodes from a node
+	 * @param node for which to get the attributes
+	 * @return list of attributes
 	 */
 	def getAttributes(Node node) {
 		val eElement = node as Element;
@@ -341,6 +370,8 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 
 	/**
 	 * Tries to constructs a unique, versioned class name for a given extension.
+	 * @param node for which to construcht the class name
+	 * @return the constructed class name
 	 */
 	def getClassName(Node node) {
 		return getClassNameFromIdentifier(node) + getClassSuffixFromVersion(node);
@@ -348,6 +379,8 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 	
 	/**
 	 * Remap the name of an attribute in case that it conflicts with a java keyword
+	 * @param node for which to get the attribute name
+	 * @return the name if identified
 	 */
 	def getAttributeName(Node node) {
 		if (node.nodeName.equals("class")) {
@@ -359,6 +392,8 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 
 	/**
 	 * Gets the name of the class for a given node.
+	 * @param node for which to get the class name
+	 * @return class name build on the basis of the identifier
 	 */
 	def getClassNameFromIdentifier(Node node) {		
 		val tokens = getIdentifierAttribute(node).nodeValue.split("[.]");
@@ -370,6 +405,8 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 	
 	/** 
 	 * Gets the identifier attribute for constructing class name from a node
+	 * @param node for which to get the identifier attribute
+	 * @return the attribute if it could be found
 	 */
 	def getIdentifierAttribute(Node node) {
 		var identifierAttribute = node.attributes.getNamedItem("id");
@@ -388,6 +425,8 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 
 	/** 
 	 * Gets a version attribute from the extension, if one is defined.
+	 * @param node for which to get the class suffix
+	 * @return the suffix in case it could be detected
 	 */
 	def getClassSuffixFromVersion(Node node) {
 		val versionAttribute = node.attributes.getNamedItem("version");
@@ -400,6 +439,9 @@ class ResourceAccessBuilder extends IncrementalProjectBuilder {
 
 	/**
 	 * Checks if a given node defines an extension point of the passed group.
+	 * @param node to check for the extension point
+	 * @param group to filter for
+	 * @return identified node or null
 	 */
 	def getExtensionPointNode(Node node, String group) {
 		val children = getChildren(node);

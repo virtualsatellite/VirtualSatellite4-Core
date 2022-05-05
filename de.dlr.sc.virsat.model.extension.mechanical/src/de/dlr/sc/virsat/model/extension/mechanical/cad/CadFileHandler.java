@@ -40,10 +40,10 @@ public class CadFileHandler {
 	 * Exports productRoot to json and copies it to outputJsonFilePath
 	 * Also copies all geometry files to the same directory
 	 * @param outputJsonFilePath full absolute path to the JSON file to be created
-	 * @param productRoot 
-	 * @param progressMonitor 
-	 * @throws CoreException 
-	 * @throws IOException 
+	 * @param productRoot root SEI Bean of the product
+	 * @param progressMonitor a progress monitor for reporting
+	 * @throws CoreException in case of eclipse problems
+	 * @throws IOException in case files could not be read or written
 	 */
 	public void writeFiles(String outputJsonFilePath, IBeanStructuralElementInstance productRoot, IProgressMonitor progressMonitor) throws CoreException, IOException {
 		SubMonitor jsonSubMonitor = SubMonitor.convert(progressMonitor, 2);
@@ -82,8 +82,8 @@ public class CadFileHandler {
 	 * Reads a JSON file from a CAD export and returns it as JSON content
 	 * @param outputJsonFilePath  the file path to the JSON file
 	 * @return the JSON content as JsonObject
-	 * @throws JsonException 
-	 * @throws IOException 
+	 * @throws JsonException in case the json could not be read
+	 * @throws IOException  in case the file could not be read
 	 */
 	public JsonObject readJsonFile(String outputJsonFilePath) throws JsonException, IOException {
 		JsonObject jsonContent = null;

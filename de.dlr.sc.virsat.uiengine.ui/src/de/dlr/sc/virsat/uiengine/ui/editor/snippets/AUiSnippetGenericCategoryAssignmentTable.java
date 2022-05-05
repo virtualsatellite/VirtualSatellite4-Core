@@ -384,7 +384,7 @@ public abstract class AUiSnippetGenericCategoryAssignmentTable extends AUiSnippe
 	 * @param conceptId The ID of the Concept in which to look for the Category
 	 * @param categoryId The ID of the Category
 	 * @param fullQualifiedCategoryId The full qualified Name which means the conceptID + plus nested IDs of the categories
-	 * @param style 
+	 * @param style the style to be used
 	 */
 	public AUiSnippetGenericCategoryAssignmentTable(String conceptId, String categoryId, String fullQualifiedCategoryId, int style) {
 		super(conceptId, categoryId, style);

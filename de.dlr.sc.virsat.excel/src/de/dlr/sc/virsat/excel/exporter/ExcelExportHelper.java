@@ -81,6 +81,7 @@ public class ExcelExportHelper {
 	/**
 	* Creates the header page for all
 	* @param exportSei Structural element instance to be exported
+	* @param localDateTime the current local time to be used when writing the header sheet
 	*/
 	public void writeHeaderSheet(StructuralElementInstance exportSei, LocalDateTime localDateTime) {
 		final int datacell = 1;

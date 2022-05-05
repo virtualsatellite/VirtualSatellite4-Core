@@ -31,6 +31,7 @@ public class CoreFactoryImpl extends EFactoryImpl implements CoreFactory {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
+	 * @return instance of CoreFactory
 	 */
 	public static CoreFactory init() {
 		try {
@@ -83,6 +84,7 @@ public class CoreFactoryImpl extends EFactoryImpl implements CoreFactory {
 	 * <!-- end-user-doc -->
 	 * @deprecated
 	 * @generated
+	 * @return instance of CorePackage
 	 */
 	@Deprecated
 	public static CorePackage getPackage() {

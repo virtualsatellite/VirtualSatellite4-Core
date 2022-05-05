@@ -30,6 +30,7 @@ public class InheritanceFactoryImpl extends EFactoryImpl implements InheritanceF
 	 * Creates the default factory implementation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return an initialized instance of 'InheritanceFactory'.
 	 * @generated
 	 */
 	public static InheritanceFactory init() {
@@ -81,6 +82,7 @@ public class InheritanceFactoryImpl extends EFactoryImpl implements InheritanceF
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @deprecated
+	 * @return an instance of InheritancePackage.
 	 * @generated
 	 */
 	@Deprecated
