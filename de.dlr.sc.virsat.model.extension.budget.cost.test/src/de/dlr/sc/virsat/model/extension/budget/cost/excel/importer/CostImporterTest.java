@@ -18,8 +18,6 @@ import java.io.InputStream;
 import java.util.List;
 
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.eclipse.core.runtime.CoreException;
-import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.excel.fault.Fault;
@@ -32,12 +30,6 @@ import de.dlr.sc.virsat.model.extension.budget.cost.test.ExcelTestCase;
  * Test Case for Importing from Excel
  */
 public class CostImporterTest extends ExcelTestCase {
-
-	@Before
-	public void setUp() throws CoreException {
-		super.setUp();
-
-	}
 
 	@Test
 	public void testImportCostTypeCollection() throws IOException {
@@ -53,7 +45,7 @@ public class CostImporterTest extends ExcelTestCase {
 		assertEquals(NUMBER_OF_COST_TYPES, costTypesCollection.getStructuralElementInstance().getCategoryAssignments().size());
 		assertEquals("Personal", costTypesCollection.getStructuralElementInstance().getCategoryAssignments().get(0).getName());
 		assertEquals("Test", costTypesCollection.getStructuralElementInstance().getCategoryAssignments().get(1).getName());
-		assertEquals("Demo", costTypesCollection.getStructuralElementInstance().getCategoryAssignments().get(2).getName());
+		assertEquals("Development", costTypesCollection.getStructuralElementInstance().getCategoryAssignments().get(2).getName());
 	}
 
 	@Test
