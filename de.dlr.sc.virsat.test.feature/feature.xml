@@ -217,18 +217,18 @@ by German Aerospace Center (DLR e.V.)
          unpack="false"/>
 
    <plugin
-         id="de.dlr.sc.virsat.swtbot.test"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="de.dlr.sc.virsat.model.extension.tests.edit.test"
          download-size="0"
          install-size="0"
          version="0.0.0"
          fragment="true"
+         unpack="false"/>
+  
+     <plugin
+         id="de.dlr.sc.virsat.swtbot.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
@@ -351,6 +351,14 @@ by German Aerospace Center (DLR e.V.)
 
    <plugin
          id="de.dlr.sc.virsat.model.extension.thermal.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.model.extension.sequencing.test"
          download-size="0"
          install-size="0"
          version="0.0.0"

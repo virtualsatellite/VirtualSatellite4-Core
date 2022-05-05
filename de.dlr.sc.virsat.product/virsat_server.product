@@ -186,6 +186,7 @@
       <feature id="org.eclipse.xtext.sdk" installMode="root"/>
       <feature id="org.eclipse.jgit" installMode="root"/>
       <feature id="de.dlr.sc.virsat.model.extension.thermal.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.model.extension.sequencing.feature" installMode="root"/>
    </features>
 
    <configurations>
