@@ -81,9 +81,10 @@ public class CostExporter implements IExport {
 							: new FileInputStream(templatePath);
 
 					export(sei, iStream);
-					File file = new File(path + "/" + sei.getFullQualifiedInstanceName() + ".xlsx");
-					FileOutputStream out = new FileOutputStream(file);
-					helper.getWb().write(out);
+					File file = new File(path + "/" + sei.getFullQualifiedInstanceName() + "_Cost.xlsx");
+					try (FileOutputStream out = new FileOutputStream(file)) {
+						helper.getWb().write(out);
+					}
 				} catch (IOException e) {
 					Status status = new Status(Status.ERROR, Activator.getPluginId(),
 							"Failed to perform an export operation!" + System.lineSeparator() + e.getMessage(), e);
