@@ -62,7 +62,7 @@ public class ImportValidatorTest extends ExcelTestCase {
 
 	@Test
 	public void testValidateEmptyCostTypeSheet() throws IOException {
-		InputStream iStream = Activator.getResourceContentAsString("/resources/InterfaceTypeCollectionTest.xlsx");
+		InputStream iStream = Activator.getResourceContentAsString("/resources/CostTypeCollectionTest.xlsx");
 		XSSFWorkbook wb = new XSSFWorkbook(iStream);
 
 		int headerSheetIndex = wb.getSheetIndex(AExcelCostIO.TEMPLATE_SHEETNAME_HEADER);
