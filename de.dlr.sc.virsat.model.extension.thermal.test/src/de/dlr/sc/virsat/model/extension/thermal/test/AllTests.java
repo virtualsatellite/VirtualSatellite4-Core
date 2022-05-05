@@ -15,7 +15,6 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import de.dlr.sc.virsat.model.extension.thermal.cad.CadExporterThermalTest;
 import de.dlr.sc.virsat.model.extension.thermal.cad.CadImporterThermalTest;
-import de.dlr.sc.virsat.model.extension.thermal.validator.ThermalValidatorTest;
 import de.dlr.sc.virsat.model.extension.thermal.validator.ValidatorTest;
 import junit.framework.JUnit4TestAdapter;
 
@@ -27,8 +26,7 @@ import junit.framework.JUnit4TestAdapter;
 @SuiteClasses({ 
 	ValidatorTest.class,
 	CadExporterThermalTest.class,
-	CadImporterThermalTest.class,
-	ThermalValidatorTest.class,
+	CadImporterThermalTest.class
 	})
 
 public class AllTests {
