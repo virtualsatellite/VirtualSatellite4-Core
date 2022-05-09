@@ -32,10 +32,10 @@ import de.dlr.sc.virsat.excel.exporter.IExport;
 import de.dlr.sc.virsat.model.concept.types.util.BeanCategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.budget.cost.activator.Activator;
+import de.dlr.sc.virsat.model.extension.budget.cost.excel.AExcelCostIO;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostEquipment;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostType;
 import de.dlr.sc.virsat.model.extension.budget.cost.model.CostTypesCollection;
-import de.dlr.sc.virsat.model.extension.cost.excel.AExcelCostIO;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementConfiguration;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementDefinition;
 import de.dlr.sc.virsat.model.extension.ps.model.ElementOccurence;
@@ -81,9 +81,10 @@ public class CostExporter implements IExport {
 							: new FileInputStream(templatePath);
 
 					export(sei, iStream);
-					File file = new File(path + "/" + sei.getFullQualifiedInstanceName() + ".xlsx");
-					FileOutputStream out = new FileOutputStream(file);
-					helper.getWb().write(out);
+					File file = new File(path + "/" + sei.getFullQualifiedInstanceName() + "_Cost.xlsx");
+					try (FileOutputStream out = new FileOutputStream(file)) {
+						helper.getWb().write(out);
+					}
 				} catch (IOException e) {
 					Status status = new Status(Status.ERROR, Activator.getPluginId(),
 							"Failed to perform an export operation!" + System.lineSeparator() + e.getMessage(), e);

@@ -55,6 +55,12 @@
          class="de.dlr.sc.virsat.model.extension.budget.cost.excel.exporter.CostExporter">
    </Exporter>
 </extension>
+<extension
+      point="de.dlr.sc.virsat.excel.import">
+   <Importer
+         class="de.dlr.sc.virsat.model.extension.budget.cost.excel.importer.CostImporter">
+   </Importer>
+</extension>
 	<!-- Plugin.XML Protected Region End -->
 	<!-- Plugin.XML Protected Region Start -->
 	<!-- Plugin.XML Protected Region End -->

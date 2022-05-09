@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
 
-package de.dlr.sc.virsat.model.extension.cost.excel.exporter;
+package de.dlr.sc.virsat.model.extension.budget.cost.excel.exporter;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -27,8 +27,7 @@ import org.junit.Test;
 
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.extension.budget.cost.excel.exporter.CostExporter;
-import de.dlr.sc.virsat.model.extension.cost.excel.AExcelCostIO;
+import de.dlr.sc.virsat.model.extension.budget.cost.excel.AExcelCostIO;
 
 /**
  * Test Case for Exporting to Excel
