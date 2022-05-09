@@ -14,12 +14,6 @@ import org.eclipse.jface.viewers.ViewerComparator;
 
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 
-/**
- * Sorter for the Navigator which sorts the Added SEIs by their names.
- * Does also work for Repositories
- * @author fisc_ph
- *
- */
 public class VirSatNavigatorSeiSorter extends ViewerComparator {
 
 	@Override
