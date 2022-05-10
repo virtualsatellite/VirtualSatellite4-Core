@@ -220,6 +220,7 @@
 				<module>de.dlr.sc.virsat.model.extension.requirements.feature</module>
 				<module>de.dlr.sc.virsat.model.extension.visualisation.feature</module>
 				<module>de.dlr.sc.virsat.model.extension.tests.feature</module>
+				<module>de.dlr.sc.virsat.model.extension.sequencing.feature</module>
 				<module>de.dlr.sc.virsat.javadoc.api.feature</module>
 				<module>de.dlr.sc.virsat.docs.feature</module>
 				
