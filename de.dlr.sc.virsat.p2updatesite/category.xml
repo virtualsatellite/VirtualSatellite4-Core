@@ -96,6 +96,9 @@
     <feature id="de.dlr.sc.virsat.model.extension.thermal.feature">
       <category name="VirSat_Core_Features"/>
    </feature>
+   <feature id="de.dlr.sc.virsat.model.extension.budget.cost.feature">
+      <category name="VirSat_Core_Features"/>
+   </feature>
    <category-def name="VirSat_Core_Features" label="VirSat Core Features">
       <description>
          Including VirSat Data Model and EGS-CC ProductS tructure.

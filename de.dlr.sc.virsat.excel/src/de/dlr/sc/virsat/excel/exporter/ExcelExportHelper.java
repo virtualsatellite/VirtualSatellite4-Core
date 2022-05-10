@@ -133,7 +133,7 @@ public class ExcelExportHelper {
 	}
 
 	/**
-	* Checks the user template, if there are some rows or cells not created by the user ( or in the template) it creates them to ppulate them with data
+	* Checks the user template, if there are some rows or cells not created by the user ( or in the template) it creates them to populate them with data
 	* @param sheet the excel data sheet
 	* @param rowCount expected rows in this sheet
 	* @param cellCount expected cell number in each row
