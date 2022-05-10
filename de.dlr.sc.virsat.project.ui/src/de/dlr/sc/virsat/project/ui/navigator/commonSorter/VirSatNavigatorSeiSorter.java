@@ -23,9 +23,9 @@ public class VirSatNavigatorSeiSorter extends ViewerComparator {
 
 		// In case one object is SEI, and the other isn't
 		// Make sure that the SEIs come first
-		if ((e1Sei) && !(e2Sei)) {
+		if (e1Sei && !e2Sei) {
 			return -1;
-		} else if (!(e1Sei) && (e2Sei)) {
+		} else if (!e1Sei && e2Sei) {
 			return 1;
 		}
 		
