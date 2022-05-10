@@ -11,7 +11,6 @@ package de.dlr.sc.virsat.excel.ui.wizards;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.List;
 
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -95,23 +94,19 @@ public class ImportWizard extends Wizard implements INewWizard {
 		getDialogSettings().put(ImportPage.DESTINATION_FILE_KEY, path);
 		
 		File file = new File(path);
-		XSSFWorkbook wb = null;
-		try {
-			wb = new XSSFWorkbook(new FileInputStream(file));
-		} catch (IOException e) {
-			Status status = new Status(Status.ERROR, "de.dlr.sc.virsat.excel.ui", "Failed to create the workbook ", e);
-			DVLMEditPlugin.getPlugin().getLog().log(status);
-		}
-		TransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(eObject);
-		try {
+		try (FileInputStream fileInputStream = new FileInputStream(file)) {
+			XSSFWorkbook wb = new XSSFWorkbook(fileInputStream);
 			ExcelImporter ei = new ExcelImporter();
 			List<Fault> faultList = ei.validate(eObject, wb);
+			
 			if (faultList.isEmpty()) {
-				ImportCommand importCommand = new ImportCommand(eObject, wb, ed);
+				TransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(eObject);
+				ImportCommand importCommand = new ImportCommand(eObject, wb, ed, ei);
 				ed.getCommandStack().execute(importCommand);
 				DVLMEditPlugin.getPlugin().getLog().log(new Status(Status.INFO, "Excel IO", "Successfully imported excel file " + file.getAbsolutePath()));
 				return true;
 			}
+			
 			StringBuilder errorMessage = new StringBuilder();
 			for (int i = 0; i < faultList.size(); i++) {
 				errorMessage.append(faultList.get(i).getFaultType().toString() + " in sheet " + faultList.get(i).getSheetNumber() + " in line " + faultList.get(i).getLineNumber() + "\n");	     		
@@ -121,8 +116,8 @@ public class ImportWizard extends Wizard implements INewWizard {
 			Status status = new Status(Status.ERROR, "de.dlr.sc.virsat.excel.ui", "Failed to perform an import operation! ", e);
 			DVLMEditPlugin.getPlugin().getLog().log(status);
 			ErrorDialog.openError(Display.getDefault().getActiveShell(), "Excel IO Failed", "Import failed", status);
-			return false;
 		}
+		
 		return false;
 	}
 
