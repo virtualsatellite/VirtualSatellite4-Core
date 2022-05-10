@@ -40,7 +40,7 @@ public abstract class AMigrator1v1Test {
 	@Before
 	public void setUp() throws Exception {
 		String conceptXmiPluginPathMigrateTo = "de.dlr.sc.virsat.model.extension.sequencing/concept/concept_v1_1.xmi";
-		String conceptXmiPluginPathMigrateFrom = "de.dlr.sc.virsat.model.extension.sequencing/concept/concept_v1_1.xmi";
+		String conceptXmiPluginPathMigrateFrom = "de.dlr.sc.virsat.model.extension.sequencing/concept/concept_v1_0.xmi";
 		
 		conceptMigrateTo = de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader.loadConceptFromPlugin(conceptXmiPluginPathMigrateTo);
 		conceptMigrateFromRepository = de.dlr.sc.virsat.concept.unittest.util.ConceptXmiLoader.loadConceptFromPlugin(conceptXmiPluginPathMigrateFrom);
