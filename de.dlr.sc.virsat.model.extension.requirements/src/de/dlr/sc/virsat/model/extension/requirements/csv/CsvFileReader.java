@@ -84,10 +84,11 @@ public class CsvFileReader {
 	/**
 	 * Reads a CSV values and returns them as matrix. File has to be parsed before.
 	 * 
+	 * @param filePath path to CSV file
 	 * @param startLine the first line number to read
 	 * @param endLine the last line number to read
 	 * @return the CSV content as matrix of two lists
-	 * @throws IOException 
+	 * @throws IOException IO exception if file could not be read
 	 */
 	public List<List<String>> readCsvFile(String filePath, int startLine, int endLine) throws IOException {
 		List<List<String>> csvContentMatrix = new ArrayList<List<String>>();

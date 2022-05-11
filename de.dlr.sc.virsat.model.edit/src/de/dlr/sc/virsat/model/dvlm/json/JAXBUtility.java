@@ -49,7 +49,7 @@ public class JAXBUtility {
 	/**
 	 * Create a instance with JSON properties and a context from the registerClasses
 	 * @param registerClasses classes to be recognized by the context
-	 * @throws JAXBException
+	 * @throws JAXBException in case init fails
 	 */
 	public JAXBUtility(@SuppressWarnings("rawtypes") Class[] registerClasses) throws JAXBException {
 		init();
@@ -122,7 +122,7 @@ public class JAXBUtility {
 	/**
 	 * Create a new Marshaller from the context
 	 * @return Marshaller or null if no context is set
-	 * @throws JAXBException
+	 * @throws JAXBException in case marshaller cannot be retrieved
 	 */
 	public Marshaller getJsonMarshaller() throws JAXBException {
 		if (jaxbCtx == null) {
@@ -141,7 +141,7 @@ public class JAXBUtility {
 	 * Create a new Unmarshaller from the context and the resourceSet
 	 * @param resourceSet containing the elements to be recognized during unmarshalling
 	 * @return Unmarshaller or null if no context is set
-	 * @throws JAXBException
+	 * @throws JAXBException in case unmarshaller cannot be retrieved
 	 */
 	public Unmarshaller getJsonUnmarshaller(ResourceSet resourceSet) throws JAXBException {
 		if (jaxbCtx == null) {

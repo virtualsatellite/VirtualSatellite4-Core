@@ -41,7 +41,7 @@ public class CreateMigrateConceptToLatestCommand {
 	 * Creates a recording command to migrate a concept to the latest version
 	 * @param concept the concept to migrate
 	 * @param editingDomain the editing domain
-	 * @param progressMonitor 
+	 * @param progressMonitor for observing the command execution
 	 * @throws CoreException if the creation of migrators fails
 	 * @return the migration command
 	 */

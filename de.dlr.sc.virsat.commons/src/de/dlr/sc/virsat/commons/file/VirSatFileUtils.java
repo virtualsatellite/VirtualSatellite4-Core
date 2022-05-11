@@ -30,7 +30,7 @@ public class VirSatFileUtils extends FileUtils {
 	 * folder will be mark to be deleted when the JVM exits.
 	 * @param pathName The name of the path to be generated
 	 * @return the path of the newly generated temp folder
-	 * @throws IOException
+	 * @throws IOException in case the temp fail cannot be created
 	 */
 	public static synchronized Path createAutoDeleteTempDirectory(String pathName) throws IOException {
 			// Add the TEMP_DIRECTORY_POST_FIX ("_") if needed

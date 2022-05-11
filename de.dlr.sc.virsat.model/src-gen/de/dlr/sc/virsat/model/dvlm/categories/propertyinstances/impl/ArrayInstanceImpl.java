@@ -96,6 +96,7 @@ public class ArrayInstanceImpl extends APropertyInstanceImpl implements ArrayIns
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<APropertyInstance>}'.
 	 * @generated
 	 */
 	public EList<APropertyInstance> getArrayInstances() {

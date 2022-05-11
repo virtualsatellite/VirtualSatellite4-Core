@@ -124,6 +124,7 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<IInheritanceLink>}'.
 	 * @generated
 	 */
 	public EList<IInheritanceLink> getSuperTis() {
@@ -138,6 +139,7 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code boolean}'.
 	 * @generated
 	 */
 	public boolean isIsInherited() {
@@ -159,6 +161,7 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code IInstance}'.
 	 * @generated
 	 */
 	public IInstance getImportedNamespace() {
@@ -176,6 +179,7 @@ public class ImportImpl extends MinimalEObjectImpl.Container implements Import {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code IInstance}'.
 	 * @generated
 	 */
 	public IInstance basicGetImportedNamespace() {

@@ -30,6 +30,7 @@ public class GeneralFactoryImpl extends EFactoryImpl implements GeneralFactory {
 	 * Creates the default factory implementation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return an initialized instance of 'GeneralFactory'.
 	 * @generated
 	 */
 	public static GeneralFactory init() {
@@ -81,6 +82,7 @@ public class GeneralFactoryImpl extends EFactoryImpl implements GeneralFactory {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @deprecated
+	 * @return an instance of GeneralPackage.
 	 * @generated
 	 */
 	@Deprecated

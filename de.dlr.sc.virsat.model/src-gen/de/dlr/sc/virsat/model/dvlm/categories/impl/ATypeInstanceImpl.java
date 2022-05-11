@@ -168,6 +168,7 @@ public abstract class ATypeInstanceImpl extends MinimalEObjectImpl.Container imp
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code VirSatUuid}'.
 	 * @generated
 	 */
 	public VirSatUuid getUuid() {
@@ -189,6 +190,7 @@ public abstract class ATypeInstanceImpl extends MinimalEObjectImpl.Container imp
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getComment() {
@@ -210,6 +212,7 @@ public abstract class ATypeInstanceImpl extends MinimalEObjectImpl.Container imp
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<IInheritanceLink>}'.
 	 * @generated
 	 */
 	public EList<IInheritanceLink> getSuperTis() {
@@ -224,6 +227,7 @@ public abstract class ATypeInstanceImpl extends MinimalEObjectImpl.Container imp
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code boolean}'.
 	 * @generated
 	 */
 	public boolean isIsInherited() {
@@ -245,6 +249,7 @@ public abstract class ATypeInstanceImpl extends MinimalEObjectImpl.Container imp
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code ATypeDefinition}'.
 	 * @generated
 	 */
 	public ATypeDefinition getType() {
@@ -262,6 +267,7 @@ public abstract class ATypeInstanceImpl extends MinimalEObjectImpl.Container imp
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code ATypeDefinition}'.
 	 * @generated
 	 */
 	public ATypeDefinition basicGetType() {

@@ -60,6 +60,8 @@ public class Activator extends Plugin {
 	/**
 	 * Get the properties file input stream - uses path specified from CLI or default config file
 	 * @return input stream of the properties file
+	 * @throws IOException in case something goes wrong with the file access
+	 * @throws FileNotFoundException in case something goes wrong with the file access
 	 */
 	public InputStream getPropertiesFileInputStream() throws IOException, FileNotFoundException {
 		CommandLineManager cliManager = de.dlr.sc.virsat.external.lib.commons.cli.Activator.getCommandLineManager();

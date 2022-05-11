@@ -163,6 +163,7 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	/**
 	 * Shadows the original function, but makes the list modifiable
 	 * so it can be used by JAXB
+	 * @return modifiable list with all super seis
 	 */
 	public List<BeanCategoryAssignment> getJaxbCategoryAssignments() {
 		return new ArrayList<BeanCategoryAssignment>(getCategoryAssignments());

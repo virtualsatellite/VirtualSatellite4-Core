@@ -149,6 +149,7 @@ public class DisciplineImpl extends MinimalEObjectImpl.Container implements Disc
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code VirSatUuid}'.
 	 * @generated
 	 */
 	public VirSatUuid getUuid() {
@@ -170,6 +171,7 @@ public class DisciplineImpl extends MinimalEObjectImpl.Container implements Disc
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getName() {
@@ -191,6 +193,7 @@ public class DisciplineImpl extends MinimalEObjectImpl.Container implements Disc
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getUser() {

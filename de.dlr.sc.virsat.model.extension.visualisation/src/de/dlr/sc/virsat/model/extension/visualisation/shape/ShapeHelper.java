@@ -45,7 +45,7 @@ public class ShapeHelper {
 	/**
 	 * Traverse a tree starting at given StructuralElementInstance
 	 * and create a corresponding visualisation tree
-	 * @param sei 
+	 * @param sei The SEI for which to create a shape.
 	 */
 	public void traverseTreeAndCreateShapes(StructuralElementInstance sei) {
 		pauseVisTreeManagerUpdateSending();
@@ -58,7 +58,7 @@ public class ShapeHelper {
 	/**
 	 * Recursively traverse a tree of StructuralElementInstances starting in a given StructuralElementInstance
 	 * and create a corresponding visualisation tree
-	 * @param sei 
+	 * @param sei the SEI for which to create shape
 	 * @param parentShapeId id of parent StructuralElementInstance or null if it is root
 	 */
 	private void traverseTreeAndCreateShapes(StructuralElementInstance sei, String parentShapeId) {
@@ -78,8 +78,8 @@ public class ShapeHelper {
 
 	/**
 	 * Creates child-parent link in visualisationTreeManager
-	 * @param parentShapeId 
-	 * @param shapeId 
+	 * @param parentShapeId The ID of the parent shape
+	 * @param shapeId the ID of the shape which should be registered by the parent
 	 */
 	protected void setShapeParent(String parentShapeId, String shapeId) {
 		visualisationTreeManager.setParent(shapeId, parentShapeId);
@@ -87,7 +87,7 @@ public class ShapeHelper {
 
 	/**
 	 * Create a visualisation shape for a given StructuralElementInstance
-	 * @param sei 
+	 * @param sei The SEI for which to create a shape
 	 */
 	private void createVisShape(StructuralElementInstance sei) {
 		Visualisation visBean = new BeanStructuralElementInstance(sei).getFirst(Visualisation.class);
@@ -97,7 +97,7 @@ public class ShapeHelper {
 	
 	/**
 	 * Send a call to update visualisation shape for a given StructuralElementInstance with new values
-	 * @param sei 
+	 * @param sei The SEI for updating the shape
 	 */
 	public void editShapeFromStructuralElementInstance(StructuralElementInstance sei) {
 		Visualisation visBean = new BeanStructuralElementInstance(sei).getFirst(Visualisation.class);
@@ -107,7 +107,7 @@ public class ShapeHelper {
 
 	/**
 	 * Send a call to reload geometry file for a given StructuralElementInstance
-	 * @param sei 
+	 * @param sei The SEI for which to reload the geometry file
 	 */
 	public void reloadGeometryFileForSei(StructuralElementInstance sei) {
 		String shapeId = sei.getUuid().toString();
@@ -116,7 +116,7 @@ public class ShapeHelper {
 	
 	/**
 	 * Create a shape for given StructuralElementInstance and place it into visualisation tree
-	 * @param sei 
+	 * @param sei The SEI for which to create a shape
 	 */
 	public void createShapeFromSeiAndPlaceItIntoVisualisationTree(StructuralElementInstance sei) {
 		createVisShape(sei);
@@ -126,7 +126,7 @@ public class ShapeHelper {
 
 	/**
 	 * Removes a given StructuralElementInstance from visualisation tree setting correct child-parent relations between its parent and children
-	 * @param sei 
+	 * @param sei The SEI which to remove from the visualization
 	 */
 	public void removeVisualisationCategoryFromSei(StructuralElementInstance sei) {
 		visualisationTreeManager.removeShape(sei.getUuid().toString());
@@ -136,7 +136,7 @@ public class ShapeHelper {
 
 	/**
 	 * Removes a given StructuralElementInstance from visualisation tree
-	 * @param sei 
+	 * @param sei The SEI which to remove from the visualization
 	 */
 	public void removeSei(StructuralElementInstance sei) {
 		if (seiHasVisualisationCategoryAssignment(sei)) {
@@ -152,7 +152,7 @@ public class ShapeHelper {
 	
 	/**
 	 * Sets child-parent relations in visualisation hierarchy if a given StructuralElementInstance is removed from it
-	 * @param sei 
+	 * @param sei The SEI for which to update the relation
 	 */
 	private void setNewShapeVisParentAndChildren(StructuralElementInstance sei) {
 		String newShapeId = sei.getUuid().toString();
@@ -170,7 +170,7 @@ public class ShapeHelper {
 
 	/**
 	 * Sets all closest visualisation children of a given StructuralElementInstance to be children of its visualisation parent
-	 * @param sei 
+	 * @param sei The SEI for which to set the children
 	 */
 	private void moveChildrenOfRemovedShapeUnderItsVisParent(StructuralElementInstance sei) {
 		StructuralElementInstance visParent = getVisualisationParent(sei);
@@ -187,7 +187,7 @@ public class ShapeHelper {
 	
 	/**
 	 * Gets a StructuralElementInstance which has Visualisation attached which is the closest ancestor of a given StructuralElementInstance
-	 * @param sei 
+	 * @param sei The SEI for which to get the visualisation parent
 	 * @return Visualisation parent or null if there is none
 	 */
 	private StructuralElementInstance getVisualisationParent(StructuralElementInstance sei) {
@@ -204,8 +204,8 @@ public class ShapeHelper {
 
 	/**
 	 * Recursively collects all children of a given StructuralElementInstance into a given list
-	 * @param sei 
-	 * @param visualChildrenList 
+	 * @param sei The SEI for which to get the children
+	 * @param visualChildrenList the list to which the found children will be added
 	 */
 	private void collectVisualisationChildren(StructuralElementInstance sei, List<StructuralElementInstance> visualChildrenList) {
 		for (StructuralElementInstance child : sei.getChildren()) {
@@ -228,9 +228,9 @@ public class ShapeHelper {
 	}
 
 	/**
-	 * Edits a shape with a given id with new values from a given visualisation bean in visualisationTreeManager
-	 * @param visBean 
-	 * @param shapeId 
+	 * Creates a shape with a given id with new values from a given visualisation bean in visualisationTreeManager
+	 * @param visBean The bean from which to use the values
+	 * @param shapeId The ID to be used for creating the shape
 	 */
 	protected void createShape(Visualisation visBean, String shapeId) {
 		Shape shape = createShapeFromVisualisationBean(visBean, shapeId);
@@ -239,9 +239,9 @@ public class ShapeHelper {
 	}
 
 	/**
-	 * Creates a shape with values from a given visualisation bean and with given id in visualisationTreeManager
-	 * @param visBean 
-	 * @param shapeId 
+	 * Edits a shape with values from a given visualisation bean and with given id in visualisationTreeManager
+	 * @param visBean The bean from which to use the values
+	 * @param shapeId The ID to be used for creating the shape
 	 */
 	private void editShape(Visualisation visBean, String shapeId) {
 		Shape shape = createShapeFromVisualisationBean(visBean, shapeId);
@@ -250,7 +250,7 @@ public class ShapeHelper {
 
 	/**
 	 * Creates a Shape from values in a given visualisation bean
-	 * @param visBean 
+	 * @param visBean The bean from which to use the values
 	 * @param shapeId id for a new shape
 	 * @return created shape
 	 */
@@ -278,8 +278,8 @@ public class ShapeHelper {
 	
 	/**
 	 * Creates Shape from Vis Bean
-	 * @param visBean 
-	 * @param shapeId 
+	 * @param visBean The bean from which to use the values
+	 * @param shapeId The ID for the newly created shape
 	 * @return shape
 	 */
 	private static Shape createShapeFromBean(Visualisation visBean, String shapeId) {

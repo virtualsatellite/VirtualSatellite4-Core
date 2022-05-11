@@ -50,6 +50,7 @@ public class ResourcePropertyItemProvider extends APropertyItemProvider {
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param adapterFactory to be used for initialization
 	 * @generated
 	 */
 	public ResourcePropertyItemProvider(AdapterFactory adapterFactory) {

@@ -133,7 +133,7 @@ public class CadImporter {
 	 *            the JSON root element to look for unmapped elements in
 	 * @param mapJSONtoSEI
 	 *            the Map of JSONObject IDs to SEIs in the model created by method
-	 *            {@link #mapJSONtoSEI(JsonObject, IBeanStructuralElementInstance)}
+	 *            {@link #mapJsonUuidToSEI(JsonObject, IBeanStructuralElementInstance)}
 	 * @return a list of unmapped elements
 	 */
 	public List<JsonObject> getUnmappedJSONObjects(JsonObject jsonRoot,

@@ -243,6 +243,7 @@ public class StructuralElementInstanceImpl extends MinimalEObjectImpl.Container 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code VirSatUuid}'.
 	 * @generated
 	 */
 	public VirSatUuid getUuid() {
@@ -264,6 +265,7 @@ public class StructuralElementInstanceImpl extends MinimalEObjectImpl.Container 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getDescription() {
@@ -285,6 +287,7 @@ public class StructuralElementInstanceImpl extends MinimalEObjectImpl.Container 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getName() {
@@ -306,6 +309,7 @@ public class StructuralElementInstanceImpl extends MinimalEObjectImpl.Container 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code Discipline}'.
 	 * @generated
 	 */
 	public Discipline getAssignedDiscipline() {
@@ -323,6 +327,7 @@ public class StructuralElementInstanceImpl extends MinimalEObjectImpl.Container 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code Discipline}'.
 	 * @generated
 	 */
 	public Discipline basicGetAssignedDiscipline() {
@@ -344,6 +349,7 @@ public class StructuralElementInstanceImpl extends MinimalEObjectImpl.Container 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<CategoryAssignment>}'.
 	 * @generated
 	 */
 	public EList<CategoryAssignment> getCategoryAssignments() {
@@ -358,6 +364,7 @@ public class StructuralElementInstanceImpl extends MinimalEObjectImpl.Container 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<StructuralElementInstance>}'.
 	 * @generated
 	 */
 	public EList<StructuralElementInstance> getSuperSeis() {
@@ -372,6 +379,7 @@ public class StructuralElementInstanceImpl extends MinimalEObjectImpl.Container 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code StructuralElement}'.
 	 * @generated
 	 */
 	public StructuralElement getType() {
@@ -389,6 +397,7 @@ public class StructuralElementInstanceImpl extends MinimalEObjectImpl.Container 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code StructuralElement}'.
 	 * @generated
 	 */
 	public StructuralElement basicGetType() {
@@ -410,6 +419,7 @@ public class StructuralElementInstanceImpl extends MinimalEObjectImpl.Container 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<RelationInstance>}'.
 	 * @generated
 	 */
 	public EList<RelationInstance> getRelationInstances() {
@@ -424,6 +434,7 @@ public class StructuralElementInstanceImpl extends MinimalEObjectImpl.Container 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<StructuralElementInstance>}'.
 	 * @generated
 	 */
 	public EList<StructuralElementInstance> getChildren() {
@@ -438,6 +449,7 @@ public class StructuralElementInstanceImpl extends MinimalEObjectImpl.Container 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code StructuralElementInstance}'.
 	 * @generated
 	 */
 	public StructuralElementInstance getParent() {
@@ -448,6 +460,7 @@ public class StructuralElementInstanceImpl extends MinimalEObjectImpl.Container 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code StructuralElementInstance}'.
 	 * @generated
 	 */
 	public StructuralElementInstance basicGetParent() {
@@ -458,6 +471,9 @@ public class StructuralElementInstanceImpl extends MinimalEObjectImpl.Container 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param newParent new value to be of type '{@code StructuralElementInstance}' to be set. 
+	 * @param msgs notifications of type '{@code NotificationChain}'.
+	 * @return notification of type '{@code NotificationChain}'.
 	 * @generated
 	 */
 	public NotificationChain basicSetParent(StructuralElementInstance newParent, NotificationChain msgs) {

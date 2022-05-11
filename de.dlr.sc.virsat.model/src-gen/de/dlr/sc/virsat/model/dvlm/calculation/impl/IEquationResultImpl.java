@@ -122,6 +122,7 @@ public abstract class IEquationResultImpl extends MinimalEObjectImpl.Container i
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code VirSatUuid}'.
 	 * @generated
 	 */
 	public VirSatUuid getUuid() {
@@ -143,6 +144,7 @@ public abstract class IEquationResultImpl extends MinimalEObjectImpl.Container i
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<IInheritanceLink>}'.
 	 * @generated
 	 */
 	public EList<IInheritanceLink> getSuperTis() {
@@ -157,6 +159,7 @@ public abstract class IEquationResultImpl extends MinimalEObjectImpl.Container i
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code boolean}'.
 	 * @generated
 	 */
 	public boolean isIsInherited() {

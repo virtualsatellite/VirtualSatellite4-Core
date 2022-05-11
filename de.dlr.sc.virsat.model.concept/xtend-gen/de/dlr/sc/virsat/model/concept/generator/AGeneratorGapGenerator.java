@@ -20,6 +20,8 @@ import org.eclipse.xtend2.lib.StringConcatenation;
 public abstract class AGeneratorGapGenerator<TYPE extends EObject> implements IGeneratorGapGenerator<TYPE> {
   /**
    * This method hands back the Package as folder. It replaces the . with /
+   * @param concept for which to create the package name
+   * @return the package name for the concept
    */
   public String getPackageFolder(final Concept concept) {
     return this.getPackage(concept).replace(".", "/");

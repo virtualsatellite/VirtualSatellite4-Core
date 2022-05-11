@@ -137,6 +137,7 @@ public class DmfPackageImpl extends EPackageImpl implements DmfPackage {
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
+	 * @return an initialized instance of DmfPackage.
 	 * @generated
 	 */
 	public static DmfPackage init() {

@@ -20,44 +20,44 @@ public interface IBeanQuantityKind<QK_TYPE extends AQuantityKind> extends IBeanU
 
 	/**
 	 * Get the concrete quantityKind wrapped in this bean
-	 * @return QK_TYPE
+	 * @return the quantity kind
 	 */
 	QK_TYPE getQuantityKind();
 	
 	/**
 	 * Set the concrete quantityKind wrapped in this bean
-	 * @param QK_TYPE
+	 * @param quantityKind the quantity kind
 	 */
 	void setQuantityKind(QK_TYPE quantityKind);
 	
 	/**
 	 * Get the quantityKind wrapped in this bean
-	 * @return quantityKind
+	 * @return quantityKind the wrapped quantity kind
 	 */
 	AQuantityKind getAQuantityKind();
 	
 	/**
 	 * Set the quantityKind wrapped in this bean
-	 * @param quantityKind
+	 * @param quantityKind the to be wrapped quantity kind
 	 */
 	void setAQuantityKind(AQuantityKind quantityKind);
 	
 	/**
 	 * Get the symbol of the wrapped quantity kind
-	 * @return symbol
+	 * @return symbol the symbold of the quantity kind
 	 */
 	String getSymbol();
 	
 	/**
 	 * Set the symbol of the wrapped quantity kind
-	 * @param symbol
+	 * @param symbol the new symbold of the quantity kind
 	 */
 	void setSymbol(String symbol);
 	
 	/**
 	 * Set the symbol of the wrapped quantity kind
 	 * @param ed The EditingDomain in which the command should act.
-	 * @param symbol
+	 * @param symbol the symbol
 	 * @return EMF command to set the symbol
 	 */
 	Command setSymbol(EditingDomain ed, String symbol);

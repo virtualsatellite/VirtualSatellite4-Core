@@ -32,13 +32,13 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.Propertyinstance
  * Core functionality for the type safe composed property instance list and implementation to the interface bean list
  * @author leps_je
  *
- * @param <BEAN_TYPE>
+ * @param <BEAN_TYPE> the class of the bean type specified in the generic
  */
 public class TypeSafeComposedPropertyInstanceList<BEAN_TYPE extends IBeanCategoryAssignment> extends AArrayInstanceList<BEAN_TYPE> implements IBeanList<BEAN_TYPE> {
 
 	/**
 	 * constructor for the class type safe composed property instance list
-	 * @param beanClazz 
+	 * @param beanClazz the class of the bean type specified in the generic
 	 */
 	public TypeSafeComposedPropertyInstanceList(Class<BEAN_TYPE> beanClazz) {
 		super();
@@ -47,7 +47,7 @@ public class TypeSafeComposedPropertyInstanceList<BEAN_TYPE extends IBeanCategor
 	
 	/**
 	 * constructor for the class type safe composed property instance list
-	 * @param beanClazz 
+	 * @param beanClazz the class of the bean type specified in the generic
 	 * @param ai the array instance
 	 */
 	public TypeSafeComposedPropertyInstanceList(Class<BEAN_TYPE> beanClazz, ArrayInstance ai) {
@@ -67,7 +67,7 @@ public class TypeSafeComposedPropertyInstanceList<BEAN_TYPE extends IBeanCategor
 
 	/**
 	 * this method set the bean clazz 
-	 * @param beanClazz 
+	 * @param beanClazz the class of the bean type specified in the generic
 	 */
 	public void setBeanClazz(Class<BEAN_TYPE> beanClazz) {
 		this.beanClazz = beanClazz;

@@ -259,6 +259,7 @@ public class PropertydefinitionsPackageImpl extends EPackageImpl implements Prop
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
+	 * @return an initialized instance of PropertydefinitionsPackage.
 	 * @generated
 	 */
 	public static PropertydefinitionsPackage init() {

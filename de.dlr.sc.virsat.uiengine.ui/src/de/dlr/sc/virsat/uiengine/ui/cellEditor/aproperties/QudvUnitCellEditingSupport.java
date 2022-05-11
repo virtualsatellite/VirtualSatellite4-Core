@@ -50,9 +50,9 @@ public class QudvUnitCellEditingSupport extends ValuePropertyCellEditingSupport 
 	private Map<AUnit, Integer> currentUnitIndexes;
 	
 	/**
-	 * @param editingDomain 
-	 * @param viewer 
-	 * @param property 
+	 * @param editingDomain to be used for initialization
+	 * @param viewer for which to use the editing support
+	 * @param property for which to provide editing support
 	 */
 	public QudvUnitCellEditingSupport(EditingDomain editingDomain, ColumnViewer viewer, AProperty property) {
 		super(editingDomain, viewer, property);
