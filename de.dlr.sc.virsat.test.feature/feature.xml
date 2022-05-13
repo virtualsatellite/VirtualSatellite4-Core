@@ -40,6 +40,7 @@ by German Aerospace Center (DLR e.V.)
       <import plugin="de.dlr.sc.virsat.model.extension.tests"/>
       <import plugin="de.dlr.sc.virsat.model.extension.budget.mass"/>
       <import plugin="de.dlr.sc.virsat.model.extension.budget.power"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.budget.cost"/>
       <import plugin="de.dlr.sc.virsat.model.extension.tests.edit"/>
       <import plugin="de.dlr.sc.virsat.model.extension.maturity"/>
       <import plugin="de.dlr.sc.virsat.model.extension.mechanical"/>
@@ -210,6 +211,14 @@ by German Aerospace Center (DLR e.V.)
 
    <plugin
          id="de.dlr.sc.virsat.model.extension.budget.mass.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+         
+   <plugin
+         id="de.dlr.sc.virsat.model.extension.budget.cost.test"
          download-size="0"
          install-size="0"
          version="0.0.0"
