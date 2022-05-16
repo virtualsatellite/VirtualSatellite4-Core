@@ -187,6 +187,7 @@
       <feature id="org.eclipse.jgit" installMode="root"/>
       <feature id="de.dlr.sc.virsat.model.extension.thermal.feature" installMode="root"/>
       <feature id="de.dlr.sc.virsat.model.extension.sequencing.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.model.extension.budget.cost.feature" installMode="root"/>
    </features>
 
    <configurations>
