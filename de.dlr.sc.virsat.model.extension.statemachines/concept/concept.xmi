@@ -14,18 +14,7 @@
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="TransitionTriggerEvent" description="Some kind of event or action that triggers a transition">
-    <properties xsi:type="dvlm_cppd:EnumProperty" name="type" defaultValue="//@categories.2/@properties.0/@values.0">
-      <values name="auto" value="0"/>
-      <values name="telecommand" value="1"/>
-      <values name="reconfiguration" value="2"/>
-    </properties>
-    <properties xsi:type="dvlm_cppd:EnumProperty" name="sending" defaultValue="//@categories.2/@properties.1/@values.0">
-      <values name="send" value="0"/>
-      <values name="receive" value="1"/>
-    </properties>
     <properties xsi:type="dvlm_cppd:StringProperty" name="detail" description="Optional additional detail information about this trigger"/>
-    <properties xsi:type="dvlm_cppd:FloatProperty" name="minDelay" description="The minimum time required to execute the trigger" quantityKindName="Time" unitName="Second" defaultValue="0.0"/>
-    <properties xsi:type="dvlm_cppd:FloatProperty" name="maxDelay" description="The maximum time required to execute the trigger" quantityKindName="Time" unitName="Second" defaultValue="0.0"/>
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="AConstraint" description="General constraint in statemachines " isAbstract="true">

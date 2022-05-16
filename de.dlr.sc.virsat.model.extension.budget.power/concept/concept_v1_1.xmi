@@ -9,7 +9,7 @@
     <properties xsi:type="dvlm_cppd:FloatProperty" name="avgPowerWithMargin" description="The equipment mass plus the safety margin" quantityKindName="Power" unitName="Watt" defaultValue="0.0"/>
     <properties xsi:type="dvlm_cppd:FloatProperty" name="avgPowerMargin" description="The actual amount of margin mass" quantityKindName="Power" unitName="Watt" defaultValue="0.0"/>
     <properties xsi:type="dvlm_cppd:FloatProperty" name="margin" description="The margin to be added as safety factor" quantityKindName="Dimensionless" unitName="Percent" defaultValue="20.0"/>
-    <extendsCategory href="platform:/plugin/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="PowerEquipment" description="Definition of the equipment power" isApplicableForAll="true" cardinality="1" extendsCategory="de.dlr.sc.virsat.model.extension.budget.power.APowerParameters">
     <equationDefinitions>
@@ -93,6 +93,6 @@
     <properties xsi:type="dvlm_cppd:FloatProperty" name="power" description="The power consumption in this mode" quantityKindName="Power" unitName="Watt" defaultValue="0"/>
     <properties xsi:type="dvlm_cppd:FloatProperty" name="avgPower" description="The average power consumption of the mode" quantityKindName="Power" unitName="Watt"/>
     <properties xsi:type="dvlm_cppd:FloatProperty" name="dutyCycle" description="The percentage of time spent in the mode " quantityKindName="Dimensionless" unitName="Percent" defaultValue="0"/>
-    <extendsCategory href="platform:/plugin/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
 </dvlm_c:Concept>
