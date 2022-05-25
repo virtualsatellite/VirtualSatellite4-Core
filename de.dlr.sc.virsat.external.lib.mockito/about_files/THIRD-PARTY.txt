@@ -1,0 +1,7 @@
+
+Lists of 5 third-party dependencies.
+     (Apache 2.0) Byte Buddy (without dependencies) (net.bytebuddy:byte-buddy:1.12.4 - https://bytebuddy.net/byte-buddy)
+     (Apache 2.0) Byte Buddy agent (net.bytebuddy:byte-buddy-agent:1.12.4 - https://bytebuddy.net/byte-buddy-agent)
+     (The MIT License) mockito-core (org.mockito:mockito-core:4.2.0 - https://github.com/mockito/mockito)
+     (The MIT License) mockito-inline (org.mockito:mockito-inline:4.2.0 - https://github.com/mockito/mockito)
+     (Apache 2.0) Objenesis (org.objenesis:objenesis:3.2 - http://objenesis.org/objenesis)
