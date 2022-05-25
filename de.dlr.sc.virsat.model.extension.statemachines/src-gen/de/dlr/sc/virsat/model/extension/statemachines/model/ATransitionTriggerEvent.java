@@ -26,9 +26,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.common.command.Command;
-import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloat;
 import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
 import javax.xml.bind.annotation.XmlElement;
 
@@ -60,20 +58,18 @@ public abstract class ATransitionTriggerEvent extends GenericCategory implements
 	}
 	
 	// property name constants
-	public static final String PROPERTY_DETAIL = "detail";
 	public static final String PROPERTY_TYPE = "type";
+	public static final String PROPERTY_DETAIL = "detail";
 	public static final String PROPERTY_SENDING = "sending";
-	public static final String PROPERTY_MAXDELAY = "maxDelay";
-	public static final String PROPERTY_MINDELAY = "minDelay";
 	
 	// Type enumeration value names
 	public static final String TYPE_auto_NAME = "auto";
-	public static final String TYPE_telecommand_NAME = "telecommand";
 	public static final String TYPE_reconfiguration_NAME = "reconfiguration";
+	public static final String TYPE_telecommand_NAME = "telecommand";
 	// Type enumeration values
 	public static final String TYPE_auto_VALUE = "1";
-	public static final String TYPE_telecommand_VALUE = "2";
-	public static final String TYPE_reconfiguration_VALUE = "3";
+	public static final String TYPE_reconfiguration_VALUE = "2";
+	public static final String TYPE_telecommand_VALUE = "3";
 	// Sending enumeration value names
 	public static final String SENDING_send_NAME = "send";
 	public static final String SENDING_receive_NAME = "receive";
@@ -99,38 +95,6 @@ public abstract class ATransitionTriggerEvent extends GenericCategory implements
 		setTypeInstance(categoryAssignement);
 	}
 	
-	
-	// *****************************************************************
-	// * Attribute: detail
-	// *****************************************************************
-	private BeanPropertyString detail = new BeanPropertyString();
-	
-	private void safeAccessDetail() {
-		if (detail.getTypeInstance() == null) {
-			detail.setTypeInstance((ValuePropertyInstance) helper.getPropertyInstance("detail"));
-		}
-	}
-	
-	public Command setDetail(EditingDomain ed, String value) {
-		safeAccessDetail();
-		return this.detail.setValue(ed, value);
-	}
-	
-	public void setDetail(String value) {
-		safeAccessDetail();
-		this.detail.setValue(value);
-	}
-	
-	public String getDetail() {
-		safeAccessDetail();
-		return detail.getValue();
-	}
-	
-	@XmlElement
-	public BeanPropertyString getDetailBean() {
-		safeAccessDetail();
-		return detail;
-	}
 	
 	// *****************************************************************
 	// * Attribute: type
@@ -170,6 +134,38 @@ public abstract class ATransitionTriggerEvent extends GenericCategory implements
 	}
 	
 	// *****************************************************************
+	// * Attribute: detail
+	// *****************************************************************
+	private BeanPropertyString detail = new BeanPropertyString();
+	
+	private void safeAccessDetail() {
+		if (detail.getTypeInstance() == null) {
+			detail.setTypeInstance((ValuePropertyInstance) helper.getPropertyInstance("detail"));
+		}
+	}
+	
+	public Command setDetail(EditingDomain ed, String value) {
+		safeAccessDetail();
+		return this.detail.setValue(ed, value);
+	}
+	
+	public void setDetail(String value) {
+		safeAccessDetail();
+		this.detail.setValue(value);
+	}
+	
+	public String getDetail() {
+		safeAccessDetail();
+		return detail.getValue();
+	}
+	
+	@XmlElement
+	public BeanPropertyString getDetailBean() {
+		safeAccessDetail();
+		return detail;
+	}
+	
+	// *****************************************************************
 	// * Attribute: sending
 	// *****************************************************************
 	private BeanPropertyEnum sending = new BeanPropertyEnum();
@@ -204,80 +200,6 @@ public abstract class ATransitionTriggerEvent extends GenericCategory implements
 	public BeanPropertyEnum getSendingBean() {
 		safeAccessSending();
 		return sending;
-	}
-	
-	// *****************************************************************
-	// * Attribute: maxDelay
-	// *****************************************************************
-	private BeanPropertyFloat maxDelay = new BeanPropertyFloat();
-	
-	private void safeAccessMaxDelay() {
-		if (maxDelay.getTypeInstance() == null) {
-			maxDelay.setTypeInstance((UnitValuePropertyInstance) helper.getPropertyInstance("maxDelay"));
-		}
-	}
-	
-	public Command setMaxDelay(EditingDomain ed, double value) {
-		safeAccessMaxDelay();
-		return this.maxDelay.setValue(ed, value);
-	}
-	
-	public void setMaxDelay(double value) {
-		safeAccessMaxDelay();
-		this.maxDelay.setValue(value);
-	}
-	
-	public double getMaxDelay() {
-		safeAccessMaxDelay();
-		return maxDelay.getValue();
-	}
-	
-	public boolean isSetMaxDelay() {
-		safeAccessMaxDelay();
-		return maxDelay.isSet();
-	}
-	
-	@XmlElement
-	public BeanPropertyFloat getMaxDelayBean() {
-		safeAccessMaxDelay();
-		return maxDelay;
-	}
-	
-	// *****************************************************************
-	// * Attribute: minDelay
-	// *****************************************************************
-	private BeanPropertyFloat minDelay = new BeanPropertyFloat();
-	
-	private void safeAccessMinDelay() {
-		if (minDelay.getTypeInstance() == null) {
-			minDelay.setTypeInstance((UnitValuePropertyInstance) helper.getPropertyInstance("minDelay"));
-		}
-	}
-	
-	public Command setMinDelay(EditingDomain ed, double value) {
-		safeAccessMinDelay();
-		return this.minDelay.setValue(ed, value);
-	}
-	
-	public void setMinDelay(double value) {
-		safeAccessMinDelay();
-		this.minDelay.setValue(value);
-	}
-	
-	public double getMinDelay() {
-		safeAccessMinDelay();
-		return minDelay.getValue();
-	}
-	
-	public boolean isSetMinDelay() {
-		safeAccessMinDelay();
-		return minDelay.isSet();
-	}
-	
-	@XmlElement
-	public BeanPropertyFloat getMinDelayBean() {
-		safeAccessMinDelay();
-		return minDelay;
 	}
 	
 	
