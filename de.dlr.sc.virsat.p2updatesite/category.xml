@@ -93,7 +93,10 @@
    <feature id="de.dlr.sc.virsat.model.ext.core.feature">
       <category name="VirSat_Core_Features"/>
    </feature>
-    <feature id="de.dlr.sc.virsat.model.extension.thermal.feature">
+   <feature id="de.dlr.sc.virsat.model.extension.thermal.feature">
+      <category name="VirSat_Core_Features"/>
+   </feature>
+   <feature id="de.dlr.sc.virsat.model.extension.sequencing.feature">
       <category name="VirSat_Core_Features"/>
    </feature>
    <feature id="de.dlr.sc.virsat.model.extension.budget.cost.feature">

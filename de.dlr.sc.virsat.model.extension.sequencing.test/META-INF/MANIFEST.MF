@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Coral Sequencing Concept Test
+Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.sequencing.test
+Bundle-Version: 4.14.0.qualifier
+Bundle-Vendor: DLR (German Aerospace Center)
+Fragment-Host: de.dlr.sc.virsat.model.extension.sequencing
+Export-Package: de.dlr.sc.virsat.model.extension.sequencing.migrator,
+ de.dlr.sc.virsat.model.extension.sequencing.model,
+ de.dlr.sc.virsat.model.extension.sequencing.test,
+ de.dlr.sc.virsat.model.extension.sequencing.validator
+Require-Bundle: org.junit,
+ de.dlr.sc.virsat.model,
+ de.dlr.sc.virsat.project,
+ de.dlr.sc.virsat.concept.unittest.util,
+ de.dlr.sc.virsat.commons
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: de.dlr.sc.virsat.model.extension.sequencing.test

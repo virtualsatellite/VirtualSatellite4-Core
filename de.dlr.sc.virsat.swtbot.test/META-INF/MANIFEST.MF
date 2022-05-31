@@ -65,7 +65,9 @@ Require-Bundle: org.eclipse.swt,
  org.eclipse.jgit,
  org.eclipse.team.svn.core,
  de.dlr.sc.virsat.model.extension.thermal;bundle-version="4.14.0",
- de.dlr.sc.virsat.model.extension.thermal.ui;bundle-version="4.14.0"
+ de.dlr.sc.virsat.model.extension.thermal.ui;bundle-version="4.14.0",
+ de.dlr.sc.virsat.model.extension.sequencing;bundle-version="4.14.0",
+ de.dlr.sc.virsat.model.extension.sequencing.ui;bundle-version="4.14.0"
 Import-Package: org.eclipse.draw2d.geometry,
  org.zeromq,
  vtk,
