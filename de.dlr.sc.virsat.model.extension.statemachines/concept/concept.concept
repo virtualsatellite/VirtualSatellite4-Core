@@ -22,11 +22,15 @@ Concept de.dlr.sc.virsat.model.extension.statemachines displayname "State Machin
 	}
 	
 	Category TransitionTriggerEvent description "Some kind of event or action that triggers a transition" {
+	/*
+	** types can be used to model the source of the transition trigger
+	** Asynchronous means that this transition trigger can only be executed sequentially
+	** Synchronous means that this transition trigger can be executed in parallel with other triggers as it can be executed automatically or be the result of a reconfiguration
+	*/ 
 		EnumProperty type values [ 
-			auto=1,
-			reconfiguration=2,
-			telecommand=3
-		] default auto;
+			asynchronous=1,
+			synchronous=2
+		] default asynchronous;
 		
 		StringProperty detail description "Optional additional detail information about this trigger";
 		

@@ -63,13 +63,11 @@ public abstract class ATransitionTriggerEvent extends GenericCategory implements
 	public static final String PROPERTY_SENDING = "sending";
 	
 	// Type enumeration value names
-	public static final String TYPE_auto_NAME = "auto";
-	public static final String TYPE_reconfiguration_NAME = "reconfiguration";
-	public static final String TYPE_telecommand_NAME = "telecommand";
+	public static final String TYPE_asynchronous_NAME = "asynchronous";
+	public static final String TYPE_synchronous_NAME = "synchronous";
 	// Type enumeration values
-	public static final String TYPE_auto_VALUE = "1";
-	public static final String TYPE_reconfiguration_VALUE = "2";
-	public static final String TYPE_telecommand_VALUE = "3";
+	public static final String TYPE_asynchronous_VALUE = "1";
+	public static final String TYPE_synchronous_VALUE = "2";
 	// Sending enumeration value names
 	public static final String SENDING_send_NAME = "send";
 	public static final String SENDING_receive_NAME = "receive";

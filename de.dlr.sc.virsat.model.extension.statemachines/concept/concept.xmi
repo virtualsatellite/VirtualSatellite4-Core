@@ -15,9 +15,8 @@
   </categories>
   <categories name="TransitionTriggerEvent" description="Some kind of event or action that triggers a transition">
     <properties xsi:type="dvlm_cppd:EnumProperty" name="type" defaultValue="//@categories.2/@properties.0/@values.0">
-      <values name="auto" value="1"/>
-      <values name="reconfiguration" value="2"/>
-      <values name="telecommand" value="3"/>
+      <values name="asynchronous" value="1"/>
+      <values name="synchronous" value="2"/>
     </properties>
     <properties xsi:type="dvlm_cppd:StringProperty" name="detail" description="Optional additional detail information about this trigger"/>
     <properties xsi:type="dvlm_cppd:EnumProperty" name="sending" defaultValue="//@categories.2/@properties.2/@values.0">
