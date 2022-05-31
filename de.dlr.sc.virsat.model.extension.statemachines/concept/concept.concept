@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-Concept de.dlr.sc.virsat.model.extension.statemachines displayname "State Machines" description "Concept for modeling State Machines"  version 1.4 beta {
+Concept de.dlr.sc.virsat.model.extension.statemachines displayname "State Machines" description "Concept for modeling State Machines"  version 1.5 beta {
 	Import de.dlr.sc.virsat.model.extension.ps.*; 
 	
 	Category State description "State of the component at a given time"{
@@ -22,7 +22,23 @@ Concept de.dlr.sc.virsat.model.extension.statemachines displayname "State Machin
 	}
 	
 	Category TransitionTriggerEvent description "Some kind of event or action that triggers a transition" {
+	/*
+	** types can be used to model the source of the transition trigger
+	** Asynchronous means that this transition trigger can only be executed sequentially
+	** Synchronous means that this transition trigger can be executed in parallel with other triggers as it can be executed automatically or be the result of a reconfiguration
+	*/ 
+		EnumProperty type values [ 
+			asynchronous=1,
+			synchronous=2
+		] default asynchronous;
+		
 		StringProperty detail description "Optional additional detail information about this trigger";
+		
+		EnumProperty sending values [ 
+			send=1,
+			receive=2
+		] default send;
+		
 	}
 	
 	Category AConstraint description "General constraint in statemachines "{

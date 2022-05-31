@@ -4,7 +4,7 @@
 	<extension point="de.dlr.sc.virsat.model.Concept">
 		<concept
 			id="de.dlr.sc.virsat.model.extension.statemachines"
-			version="1.4"
+			version="1.5"
 			xmi="concept/concept.xmi">
 		</concept>
 	</extension>
@@ -111,6 +111,14 @@
 		version="1.4"
 		class="de.dlr.sc.virsat.model.extension.statemachines.migrator.Migrator1v4"
 		xmi="concept/concept_v1_4.xmi">
+	</migrator>
+</extension>
+<extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">
+	<migrator
+		id="de.dlr.sc.virsat.model.extension.statemachines"
+		version="1.5"
+		class="de.dlr.sc.virsat.model.extension.statemachines.migrator.Migrator1v5"
+		xmi="concept/concept_v1_5.xmi">
 	</migrator>
 </extension>
 	<!-- Plugin.XML Protected Region End -->

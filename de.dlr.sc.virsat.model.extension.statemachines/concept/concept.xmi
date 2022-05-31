@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v8/c" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppd" name="de.dlr.sc.virsat.model.extension.statemachines" description="Concept for modeling State Machines" version="1.4" displayName="State Machines" beta="true">
+<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v8/c" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppd" name="de.dlr.sc.virsat.model.extension.statemachines" description="Concept for modeling State Machines" version="1.5" displayName="State Machines" beta="true">
   <imports importedNamespace="de.dlr.sc.virsat.model.extension.ps.*"/>
   <imports importedNamespace="de.dlr.sc.virsat.model.ext.core.*"/>
   <categories name="State" description="State of the component at a given time">
@@ -14,7 +14,15 @@
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="TransitionTriggerEvent" description="Some kind of event or action that triggers a transition">
+    <properties xsi:type="dvlm_cppd:EnumProperty" name="type" defaultValue="//@categories.2/@properties.0/@values.0">
+      <values name="asynchronous" value="1"/>
+      <values name="synchronous" value="2"/>
+    </properties>
     <properties xsi:type="dvlm_cppd:StringProperty" name="detail" description="Optional additional detail information about this trigger"/>
+    <properties xsi:type="dvlm_cppd:EnumProperty" name="sending" defaultValue="//@categories.2/@properties.2/@values.0">
+      <values name="send" value="1"/>
+      <values name="receive" value="2"/>
+    </properties>
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="AConstraint" description="General constraint in statemachines " isAbstract="true">
