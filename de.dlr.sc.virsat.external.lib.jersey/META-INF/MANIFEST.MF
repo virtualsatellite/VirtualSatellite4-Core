@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: VirSat External Lib - Jersey
 Bundle-SymbolicName: de.dlr.sc.virsat.external.lib.jersey
 Bundle-Version: 4.14.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: .,
  externalLib/maven/aopalliance-repackaged.jar,
  externalLib/maven/hk2-api.jar,
@@ -388,6 +388,8 @@ Export-Package: .,
  org.jvnet.hk2.internal
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: de.dlr.sc.virsat.external.lib,
- javax.servlet;visibility:=reexport
+ javax.servlet;visibility:=reexport,
+ jakarta.xml.bind,
+ jakarta.activation
 Bundle-Activator: de.dlr.virsat.external.lib.jersey.Activator
 Automatic-Module-Name: de.dlr.sc.virsat.external.lib.jersey

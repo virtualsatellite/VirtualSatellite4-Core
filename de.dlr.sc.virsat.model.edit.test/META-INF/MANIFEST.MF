@@ -7,7 +7,7 @@ Bundle-ClassPath: .
 Bundle-Vendor: DLR (German Aerospace Center)
 Fragment-Host: de.dlr.sc.virsat.model.edit
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Export-Package: de.dlr.sc.virsat.model.edit.test
 Require-Bundle: org.junit,

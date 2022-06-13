@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.factory;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -107,9 +108,9 @@ public class BeanRegistry {
 					+ id.substring(lastDotIndex);
 			Object instance;
 			try {
-				instance = Class.forName(beanClassName).newInstance();
+				instance = Class.forName(beanClassName).getDeclaredConstructor().newInstance();
 				return instance;
-			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 				throw new CoreException(new Status(Status.ERROR, DVLMEditPlugin.PLUGIN_ID, "Could not create bean of type " + id, e));
 			}
 		}

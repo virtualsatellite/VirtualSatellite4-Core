@@ -22,6 +22,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.egit.ui,
  org.eclipse.egit.core,
  org.eclipse.jgit
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: de.dlr.sc.virsat.team.ui

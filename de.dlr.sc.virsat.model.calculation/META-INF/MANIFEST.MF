@@ -11,7 +11,6 @@ Require-Bundle: de.dlr.sc.virsat.model,
  de.dlr.sc.virsat.commons,
  de.dlr.sc.virsat.project,
  de.dlr.sc.virsat.external.lib.commons.math,
- org.eclipse.osgi,
  org.eclipse.equinox.common,
  org.eclipse.xtext,
  org.eclipse.xtext.util,
@@ -22,7 +21,7 @@ Require-Bundle: de.dlr.sc.virsat.model,
  org.eclipse.xtext.xbase,
  org.eclipse.xtend.lib;bundle-version="2.14.0",
  de.dlr.sc.virsat.build
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: de.dlr.sc.virsat.model.calculation,
  de.dlr.sc.virsat.model.calculation.compute,
  de.dlr.sc.virsat.model.calculation.compute.extensions,

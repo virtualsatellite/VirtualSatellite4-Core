@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.util;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -85,7 +86,7 @@ public class BeanStructuralElementInstanceHelper {
 	public <SEI_TYPE extends IBeanStructuralElementInstance> SEI_TYPE getParentOfClass(EObject eObject, Class<SEI_TYPE> beanSeiClazz) {
 		try {
 			EObject eContainer = eObject.eContainer();
-			SEI_TYPE beanSei = beanSeiClazz.newInstance();
+			SEI_TYPE beanSei = beanSeiClazz.getDeclaredConstructor().newInstance();
 			String seiID = beanSei.getFullQualifiedSturcturalElementName();
 			
 			while (eContainer != null) {
@@ -100,7 +101,7 @@ public class BeanStructuralElementInstanceHelper {
 				eContainer = eContainer.eContainer();
 			}
 		
-		} catch (InstantiationException | IllegalAccessException e) {
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			return null;
 		}
 		

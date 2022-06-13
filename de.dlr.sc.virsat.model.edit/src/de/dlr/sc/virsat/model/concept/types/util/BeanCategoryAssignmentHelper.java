@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.util;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -43,15 +44,15 @@ public class BeanCategoryAssignmentHelper {
 	 */
 	public <CA_TYPE extends IBeanCategoryAssignment> CA_TYPE getBeanCategory(CategoryAssignment ca, Class<CA_TYPE> catBeanClazz) {
 		try {
-			IBeanCategoryAssignment beanCategory = catBeanClazz.newInstance();
+			IBeanCategoryAssignment beanCategory = catBeanClazz.getDeclaredConstructor().newInstance();
 			String categoryID = beanCategory.getFullQualifiedCategoryName();
 			
 			if (ca.getType().getFullQualifiedName().equals(categoryID)) {
-				CA_TYPE wrappedBeanCa = catBeanClazz.newInstance();
+				CA_TYPE wrappedBeanCa = catBeanClazz.getDeclaredConstructor().newInstance();
 				wrappedBeanCa.setTypeInstance(ca);
 				return wrappedBeanCa;
 			}
-		} catch (InstantiationException | IllegalAccessException e) {
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			return null;
 		}
 		
@@ -68,7 +69,7 @@ public class BeanCategoryAssignmentHelper {
 	public <CA_TYPE extends IBeanCategoryAssignment> CA_TYPE getParentCaBeanOfClass(EObject eObject, Class<CA_TYPE> beanCaClazz) {
 		try {
 			EObject eContainer = eObject.eContainer();
-			CA_TYPE beanCa = beanCaClazz.newInstance();
+			CA_TYPE beanCa = beanCaClazz.getDeclaredConstructor().newInstance();
 			String seiID = beanCa.getFullQualifiedCategoryName();
 			
 			while (eContainer != null && !(eContainer instanceof StructuralElementInstance)) {
@@ -83,7 +84,7 @@ public class BeanCategoryAssignmentHelper {
 				eContainer = eContainer.eContainer();
 			}
 		
-		} catch (InstantiationException | IllegalAccessException e) {
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			return null;
 		}
 		
@@ -149,19 +150,19 @@ public class BeanCategoryAssignmentHelper {
 		List<CA_TYPE> caBeans = new LinkedList<>();
 		
 		try {
-			IBeanCategoryAssignment beanCategory = catBeanClazz.newInstance();
+			IBeanCategoryAssignment beanCategory = catBeanClazz.getDeclaredConstructor().newInstance();
 			String categoryID = beanCategory.getFullQualifiedCategoryName();
 			
 			List<CategoryAssignment> typeCompatibleCas = CategoryAssignmentHelper.getNestedCategoryAssignments(caContainer, categoryID);
 
 			// Now wrap all CAs into the proper Beans Object
 			for (CategoryAssignment typeCompatibleCa : typeCompatibleCas) {
-				IBeanCategoryAssignment wrappedBeanCa = catBeanClazz.newInstance();
+				IBeanCategoryAssignment wrappedBeanCa = catBeanClazz.getDeclaredConstructor().newInstance();
 				wrappedBeanCa.setTypeInstance(typeCompatibleCa);
 				caBeans.add((CA_TYPE) wrappedBeanCa);
 			}
 			
-		} catch (InstantiationException | IllegalAccessException e) {
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			return null;
 		}
 		
@@ -177,17 +178,17 @@ public class BeanCategoryAssignmentHelper {
 	 */
 	public <CA_TYPE extends IBeanCategoryAssignment> CA_TYPE getFirstBeanCategory(ICategoryAssignmentContainer caContainer, Class<CA_TYPE> catBeanClazz) {
 		try {
-			IBeanCategoryAssignment beanCategory = catBeanClazz.newInstance();
+			IBeanCategoryAssignment beanCategory = catBeanClazz.getDeclaredConstructor().newInstance();
 			String categoryID = beanCategory.getFullQualifiedCategoryName();
 			
 			CategoryAssignment typeCompatibelCa = CategoryAssignmentHelper.getFirstCategoryAssignment(caContainer, categoryID);
 			
 			if (typeCompatibelCa != null) {
-				CA_TYPE wrappedBeanCa = catBeanClazz.newInstance();
+				CA_TYPE wrappedBeanCa = catBeanClazz.getDeclaredConstructor().newInstance();
 				wrappedBeanCa.setTypeInstance(typeCompatibelCa);
 				return wrappedBeanCa;
 			}
-		} catch (InstantiationException | IllegalAccessException e) {
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			return null;
 		}
 		

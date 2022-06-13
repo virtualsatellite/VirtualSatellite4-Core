@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: VirSat External Lib - Swagger
 Bundle-SymbolicName: de.dlr.sc.virsat.external.lib.swagger
 Bundle-Version: 4.14.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: de.dlr.sc.virsat.external.lib,
  javax.servlet;visibility:=reexport

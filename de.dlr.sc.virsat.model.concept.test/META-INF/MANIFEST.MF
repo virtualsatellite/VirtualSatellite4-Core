@@ -20,7 +20,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.xtext.ecore,
  de.dlr.sc.virsat.model.external.tests,
  de.dlr.sc.virsat.model.extension.tests
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: de.dlr.sc.virsat.model.concept,
  de.dlr.sc.virsat.model.concept.test
 Automatic-Module-Name: de.dlr.sc.virsat.model.concept.test

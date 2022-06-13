@@ -10,7 +10,7 @@ Require-Bundle: de.dlr.sc.virsat.model,
  de.dlr.sc.virsat.project,
  org.eclipse.core.runtime,
  org.eclipse.core.resources;visibility:=reexport
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Export-Package: de.dlr.sc.virsat.build.inheritance,

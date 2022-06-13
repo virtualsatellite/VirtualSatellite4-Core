@@ -83,7 +83,9 @@ public class BeanQudvTest {
 		
 		AUnit meterPerSecondUnit = QudvUnitHelper.getInstance().getUnitByName(sou, "Meter Per Second");
 		beanUnitDerived = (BeanUnitDerived) new BeanUnitFactory().getInstanceFor(meterPerSecondUnit);
+		beanUnitDerived.setSymbol("m per s^2");
 		beanQuantityKindDerived = (BeanQuantityKindDerived) new BeanQuantityKindFactory().getInstanceFor(meterPerSecondUnit.getQuantityKind());
+		beanQuantityKindDerived.setSymbol("L T^-1");
 	}
 	
 	private String getResource(Object testSubject) {

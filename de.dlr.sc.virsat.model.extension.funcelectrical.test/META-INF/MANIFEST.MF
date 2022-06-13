@@ -11,6 +11,6 @@ Require-Bundle: org.junit,
  de.dlr.sc.virsat.model,
  de.dlr.sc.virsat.project,
  de.dlr.sc.virsat.concept.unittest.util
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Import-Package: de.dlr.sc.virsat.project.test
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.funcelectrical.test

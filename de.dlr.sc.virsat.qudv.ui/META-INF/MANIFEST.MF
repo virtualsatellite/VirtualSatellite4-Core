@@ -4,7 +4,7 @@ Bundle-Name: VirSat Core QUDV UI
 Bundle-SymbolicName: de.dlr.sc.virsat.qudv.ui;singleton:=true
 Bundle-Version: 4.14.0.qualifier
 Bundle-Vendor: DLR (German Aerospace Center)
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.eclipse.osgi,
  org.eclipse.core.runtime,
  org.eclipse.ui,

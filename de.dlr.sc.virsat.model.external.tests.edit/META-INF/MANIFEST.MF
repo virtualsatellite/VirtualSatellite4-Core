@@ -8,7 +8,7 @@ Bundle-ClassPath: .
 Bundle-Activator: de.dlr.sc.virsat.model.external.tests.provider.ExternalModelEditPlugin$Implementation
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: de.dlr.sc.virsat.model.external.tests.provider
 Require-Bundle: org.eclipse.core.runtime,
  de.dlr.sc.virsat.model.external.tests;visibility:=reexport,

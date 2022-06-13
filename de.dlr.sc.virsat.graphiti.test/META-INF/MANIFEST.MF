@@ -4,7 +4,7 @@ Bundle-Name: VirSat Core Graphiti Tests
 Bundle-SymbolicName: de.dlr.sc.virsat.graphiti.test;singleton:=true
 Bundle-Version: 4.14.0.qualifier
 Fragment-Host: de.dlr.sc.virsat.graphiti
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.junit,
  org.eclipse.emf.ecore,
  org.junit,

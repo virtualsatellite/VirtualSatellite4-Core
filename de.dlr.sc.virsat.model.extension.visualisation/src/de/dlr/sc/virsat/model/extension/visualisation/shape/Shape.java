@@ -213,12 +213,12 @@ public class Shape {
 		int result = 41;
 		result = 31 * result + ((id == null) ? 0 : id.hashCode());
 		result = 31 * result + ((shape == null) ? 0 : shape.hashCode());
-		result = 31 * result + new Double(positionX).hashCode();
-		result = 31 * result + new Double(positionY).hashCode();
-		result = 31 * result + new Double(positionZ).hashCode();
-		result = 31 * result + new Double(rotationX).hashCode();
-		result = 31 * result + new Double(rotationY).hashCode();
-		result = 31 * result + new Double(rotationZ).hashCode();
+		result = 31 * result + Double.valueOf(positionX).hashCode();
+		result = 31 * result + Double.valueOf(positionY).hashCode();
+		result = 31 * result + Double.valueOf(positionZ).hashCode();
+		result = 31 * result + Double.valueOf(rotationX).hashCode();
+		result = 31 * result + Double.valueOf(rotationY).hashCode();
+		result = 31 * result + Double.valueOf(rotationZ).hashCode();
 		result = 31 * result + color;
 		result = 31 * result + Float.floatToIntBits(transparency);
 

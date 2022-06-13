@@ -18,7 +18,7 @@ Require-Bundle: de.dlr.sc.virsat.model.extension.budget.cost,
  org.eclipse.core.commands,
  org.eclipse.emf.common,
  de.dlr.sc.virsat.commons.ui
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.budget.cost.ui
 Bundle-Vendor: DLR (German Aerospace Center)
