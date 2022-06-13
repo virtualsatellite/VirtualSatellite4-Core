@@ -652,7 +652,7 @@ Bundle-Name: VirSat External Lib - JZMQ and ZeroMQ Native Libraries for 64-Bit W
 Bundle-SymbolicName: de.dlr.sc.virsat.external.lib.zmq.win32.x86_64;singleton:=true
 Bundle-Version: 4.9.1.qualifier
 Bundle-Vendor: DLR (German Aerospace Center)
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-NativeCode: native_lib/zmq/jzmq.dll; // <2>
  native_lib/zmq/libzmq-v140-mt-4_2_0.dll;
  native_lib/zmq/msvcp140.dll;
@@ -722,7 +722,7 @@ Bundle-Name: VirSat External Lib - JZMQ and ZeroMQ Native Libraries for 64-Bit L
 Bundle-SymbolicName: de.dlr.sc.virsat.external.lib.zmq.linux.x86_64;singleton:=true
 Bundle-Version: 4.9.1.qualifier
 Bundle-Vendor: DLR (German Aerospace Center)
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Eclipse-PlatformFilter: (&  (osgi.os=linux) (osgi.arch=x86_64) ) // <1>
 Eclipse-BundleShape: dir // <2>
 Require-Bundle: de.dlr.sc.virsat.external.lib
@@ -775,7 +775,7 @@ The Eclipse compilation does not care about which library is mentioned in the _M
 ----
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jd...auncher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="con" path="org.eclipse.jd...auncher.StandardVMType/JavaSE-11"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry exported="true" kind="lib" path="native_lib/zmq/zmq.jar"/> // <1>
 	<classpathentry kind="src" path="src/"/>

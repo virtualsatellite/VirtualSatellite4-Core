@@ -74,7 +74,6 @@ public class CorePackageImpl extends EPackageImpl implements CorePackage {
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
 	 * @generated
-	 * @return instance of CorePackage
 	 */
 	public static CorePackage init() {
 		if (isInited) return (CorePackage)EPackage.Registry.INSTANCE.getEPackage(CorePackage.eNS_URI);

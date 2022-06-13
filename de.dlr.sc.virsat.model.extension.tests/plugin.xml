@@ -107,7 +107,7 @@
 </extension>
 	<!-- Plugin.XML Protected Region End -->
 	<!-- Plugin.XML Protected Region Start -->
-<extension point="org.eclipse.emf.ecore.generated_package">
+   <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated concept -->
       <package
             uri="http://www.virsat.sc.dlr.de/dmf/v1.1/tests"
