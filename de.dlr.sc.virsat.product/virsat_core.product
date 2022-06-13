@@ -89,6 +89,7 @@ Germany
       <feature id="de.dlr.sc.virsat.model.extension.requirements.feature" installMode="root"/>
       <feature id="de.dlr.sc.virsat.model.extension.thermal.feature" installMode="root"/>
       <feature id="de.dlr.sc.virsat.model.extension.budget.cost.feature" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.model.extension.sequencing.feature" installMode="root"/>
       <feature id="de.dlr.sc.virsat.model.ext.core.feature" installMode="root"/>
       <feature id="de.dlr.sc.virsat.docs.feature" installMode="root"/>
       <feature id="org.eclipse.platform" installMode="root"/>
@@ -142,7 +143,6 @@ Germany
       <feature id="org.eclipse.rmf.reqif10.feature" installMode="root"/>
       <feature id="org.eclipse.rmf.reqif10.pror.feature" installMode="root"/>
       <feature id="org.eclipse.rmf.reqif10.thirdparty.feature" installMode="root"/>
-      <feature id="de.dlr.sc.virsat.model.extension.thermal.feature" installMode="root"/>
    </features>
 
    <configurations>

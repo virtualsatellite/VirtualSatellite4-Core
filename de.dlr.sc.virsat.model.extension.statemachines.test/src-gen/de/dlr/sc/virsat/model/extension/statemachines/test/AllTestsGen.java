@@ -19,18 +19,19 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import junit.framework.JUnit4TestAdapter;
 
-import de.dlr.sc.virsat.model.extension.statemachines.migrator.Migrator1v2Test;
-import de.dlr.sc.virsat.model.extension.statemachines.model.AllowsConstraintTest;
 import de.dlr.sc.virsat.model.extension.statemachines.model.ForbidsConstraintTest;
-import de.dlr.sc.virsat.model.extension.statemachines.validator.StatemachinesValidatorTest;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachineTest;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateTest;
 import de.dlr.sc.virsat.model.extension.statemachines.model.TransitionTest;
-import de.dlr.sc.virsat.model.extension.statemachines.model.TransitionTriggerEventTest;
 import de.dlr.sc.virsat.model.extension.statemachines.migrator.Migrator1v0Test;
+import de.dlr.sc.virsat.model.extension.statemachines.migrator.Migrator1v4Test;
+import de.dlr.sc.virsat.model.extension.statemachines.migrator.Migrator1v2Test;
+import de.dlr.sc.virsat.model.extension.statemachines.model.AllowsConstraintTest;
+import de.dlr.sc.virsat.model.extension.statemachines.validator.StatemachinesValidatorTest;
+import de.dlr.sc.virsat.model.extension.statemachines.migrator.Migrator1v5Test;
+import de.dlr.sc.virsat.model.extension.statemachines.model.TransitionTriggerEventTest;
 import de.dlr.sc.virsat.model.extension.statemachines.migrator.Migrator1v1Test;
 import de.dlr.sc.virsat.model.extension.statemachines.migrator.Migrator1v3Test;
-import de.dlr.sc.virsat.model.extension.statemachines.migrator.Migrator1v4Test;
 
 /**
  * 
@@ -49,6 +50,7 @@ import de.dlr.sc.virsat.model.extension.statemachines.migrator.Migrator1v4Test;
 	Migrator1v2Test.class,
 	Migrator1v3Test.class,
 	Migrator1v4Test.class,
+	Migrator1v5Test.class,
 	StatemachinesValidatorTest.class,
 				})
 
