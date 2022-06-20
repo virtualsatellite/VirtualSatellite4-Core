@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="ASCII"?>
-<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v8/c" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppd" name="de.dlr.sc.virsat.model.extension.statemachines" description="Concept for modeling State Machines" version="1.5" displayName="State Machines" beta="true">
+<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v8/c" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppd" name="de.dlr.sc.virsat.model.extension.statemachines" description="Concept for modeling State Machines" version="1.6" displayName="State Machines" beta="true">
   <imports importedNamespace="de.dlr.sc.virsat.model.extension.ps.*"/>
   <imports importedNamespace="de.dlr.sc.virsat.model.ext.core.*"/>
-  <categories name="State" description="State of the component at a given time">
+  <categories name="State" description="State of the component at a given time" extendsCategory="de.dlr.sc.virsat.model.extension.statemachines.StateMachine">
     <properties xsi:type="dvlm_cppd:StringProperty" name="detail" description="Optional additional detail information about the state"/>
     <properties xsi:type="dvlm_cppd:FloatProperty" name="maxTime" description="The maximum time spent in the state" quantityKindName="Time" unitName="Second" defaultValue="0.0"/>
-    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
   <categories name="Transition" description="Transitions among states">
     <properties xsi:type="dvlm_cppd:ReferenceProperty" name="stateFrom" description="The Transition starts in this state" referenceType="de.dlr.sc.virsat.model.extension.statemachines.State"/>
