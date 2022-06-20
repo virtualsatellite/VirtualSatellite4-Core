@@ -9,7 +9,6 @@
  */
 package de.dlr.sc.virsat.model.concept.ui.contentassist;
 
-import de.dlr.sc.virsat.model.concept.ui.contentassist.AbstractConceptLanguageProposalProvider;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AQudvTypeProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ComposedProperty;
 import de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind;

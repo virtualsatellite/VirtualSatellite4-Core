@@ -9,7 +9,6 @@
  */
 package de.dlr.sc.virsat.model.concept.validation;
 
-import de.dlr.sc.virsat.model.concept.validation.ConceptLanguageValidator;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import org.eclipse.core.resources.IFile;

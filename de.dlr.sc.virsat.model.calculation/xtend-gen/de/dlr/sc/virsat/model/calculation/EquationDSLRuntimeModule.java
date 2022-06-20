@@ -11,7 +11,6 @@ package de.dlr.sc.virsat.model.calculation;
 
 import com.google.inject.Binder;
 import com.google.inject.name.Names;
-import de.dlr.sc.virsat.model.calculation.AbstractEquationDSLRuntimeModule;
 import de.dlr.sc.virsat.model.calculation.formatting.EquationDSLFormatter;
 import de.dlr.sc.virsat.model.calculation.parser.antlr.EquationSectionNullUnloader;
 import de.dlr.sc.virsat.model.calculation.resource.EquationSectionVirSatAwareXtextResourceSet;
