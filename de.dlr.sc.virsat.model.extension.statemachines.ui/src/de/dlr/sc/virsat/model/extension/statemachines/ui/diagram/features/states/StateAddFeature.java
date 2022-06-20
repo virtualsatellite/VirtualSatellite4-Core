@@ -29,6 +29,7 @@ import org.eclipse.graphiti.util.ColorConstant;
 import org.eclipse.graphiti.util.IColorConstant;
 
 import de.dlr.sc.virsat.graphiti.label.MultilineLabelFormatter;
+import de.dlr.sc.virsat.graphiti.util.DiagramHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.extension.statemachines.model.State;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
@@ -85,7 +86,7 @@ public class StateAddFeature extends StateMachineAddFeature {
 				}	
 				
 				StateMachine sm = (StateMachine) target;
-				return sm.getStates().contains(addedState) && super.canAdd(context);
+				return sm.getStates().contains(addedState) && DiagramHelper.hasDiagramWritePermission(context.getTargetContainer());
 			}		
 		}	
 
