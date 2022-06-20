@@ -10,7 +10,6 @@
 package de.dlr.sc.virsat.model.concept.generator.migrator;
 
 import de.dlr.sc.virsat.model.concept.ConceptLanguageTestInjectorProvider;
-import de.dlr.sc.virsat.model.concept.generator.migrator.GenerateMigrator;
 import de.dlr.sc.virsat.model.concept.test.util.GeneratorJunitAssert;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.PropertydefinitionsPackage;

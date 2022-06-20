@@ -9,8 +9,6 @@
  */
 package de.dlr.sc.virsat.model.calculation.validation;
 
-import de.dlr.sc.virsat.model.calculation.validation.AbstractEquationDSLValidator;
-
 /**
  * This class contains custom validation rules.
  * 
