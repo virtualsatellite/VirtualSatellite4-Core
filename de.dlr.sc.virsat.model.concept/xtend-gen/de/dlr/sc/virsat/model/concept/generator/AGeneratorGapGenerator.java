@@ -9,8 +9,6 @@
  */
 package de.dlr.sc.virsat.model.concept.generator;
 
-import de.dlr.sc.virsat.model.concept.generator.IGeneratorGapGenerator;
-import de.dlr.sc.virsat.model.concept.generator.ImportManager;
 import de.dlr.sc.virsat.model.concept.generator.util.ConceptGeneratorUtil;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import org.eclipse.emf.ecore.EObject;

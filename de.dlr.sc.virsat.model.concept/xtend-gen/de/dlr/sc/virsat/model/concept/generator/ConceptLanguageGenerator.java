@@ -9,8 +9,6 @@
  */
 package de.dlr.sc.virsat.model.concept.generator;
 
-import de.dlr.sc.virsat.model.concept.generator.ConceptPreprocessor;
-import de.dlr.sc.virsat.model.concept.generator.IConceptGeneratorEnablement;
 import de.dlr.sc.virsat.model.concept.generator.beans.GenerateCategoryBeans;
 import de.dlr.sc.virsat.model.concept.generator.beans.GenerateStructuralElementBeans;
 import de.dlr.sc.virsat.model.concept.generator.commands.GenerateArrayCreateAddCommand;

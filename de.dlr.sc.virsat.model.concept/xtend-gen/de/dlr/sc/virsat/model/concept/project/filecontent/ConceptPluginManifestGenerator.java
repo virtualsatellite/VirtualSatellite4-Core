@@ -12,7 +12,6 @@ package de.dlr.sc.virsat.model.concept.project.filecontent;
 import de.dlr.sc.virsat.model.concept.generator.beans.GenerateCategoryBeans;
 import de.dlr.sc.virsat.model.concept.generator.validator.GenerateValidator;
 import de.dlr.sc.virsat.model.concept.project.IProjectBuilderInfo;
-import de.dlr.sc.virsat.model.concept.project.filecontent.IFileContentGenerator;
 import org.eclipse.xtend2.lib.StringConcatenation;
 
 /**

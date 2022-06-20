@@ -13,7 +13,6 @@ import de.dlr.sc.virsat.model.concept.generator.ConceptOutputConfigurationProvid
 import de.dlr.sc.virsat.model.concept.generator.beans.GenerateCategoryBeans;
 import de.dlr.sc.virsat.model.concept.generator.beans.GenerateStructuralElementBeans;
 import de.dlr.sc.virsat.model.concept.generator.migrator.GenerateMigrator;
-import de.dlr.sc.virsat.model.concept.generator.plugin.PluginXmlReader;
 import de.dlr.sc.virsat.model.concept.generator.validator.GenerateValidator;
 import de.dlr.sc.virsat.model.concept.generator.xmi.GenerateConceptXmi;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;

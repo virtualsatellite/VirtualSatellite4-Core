@@ -9,8 +9,6 @@
  */
 package de.dlr.sc.virsat.model.concept;
 
-import de.dlr.sc.virsat.model.concept.ConceptLanguageStandaloneSetupGenerated;
-
 /**
  * Initialization support for running Xtext languages without Equinox extension registry.
  */
