@@ -269,6 +269,7 @@ jobs:
       - name: Setup - Prepare OS
         uses: virtualsatellite/ci-actions/ci-setup-action@v6-beta
         with:
+           pkgs_file: apt_vtk_zmq_packages
            jdk: 11
 
       # --------------------------------------------
