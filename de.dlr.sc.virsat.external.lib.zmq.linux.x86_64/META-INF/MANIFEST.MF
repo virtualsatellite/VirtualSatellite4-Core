@@ -8,8 +8,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Eclipse-PlatformFilter: (&  (osgi.os=linux) (osgi.arch=x86_64) )
 Eclipse-BundleShape: dir
 Require-Bundle: de.dlr.sc.virsat.external.lib
-Bundle-ClassPath: native_lib/zmq/zmq.jar,
- external:$VS_JAR_ZMQ$,
+Bundle-ClassPath: external:$VS_JAR_ZMQ$,
  .
 Export-Package: org.zeromq
 Bundle-Activator: de.dlr.sc.virsat.external.lib.zmq.linux.x86_64.Activator
