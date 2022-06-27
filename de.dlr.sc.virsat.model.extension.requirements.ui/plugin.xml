@@ -76,6 +76,10 @@
 		pathToImage="resources/icons/ImportConfiguration.gif">
 	</conceptImage>
 	<conceptImage
+		fullQualifiedID="de.dlr.sc.virsat.model.extension.requirements.SynchronizationConfiguration"
+		pathToImage="resources/icons/SynchronizationConfiguration.gif">
+	</conceptImage>
+	<conceptImage
 		fullQualifiedID="de.dlr.sc.virsat.model.extension.requirements.SpecificationMapping"
 		pathToImage="resources/icons/SpecificationMapping.gif">
 	</conceptImage>
@@ -184,6 +188,10 @@
 	<command
 		id="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddImportConfiguration"
 		name="Add ImportConfiguration">
+	</command>
+	<command
+		id="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddSynchronizationConfiguration"
+		name="Add SynchronizationConfiguration">
 	</command>
 	<command
 		id="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddSpecificationMapping"
@@ -298,6 +306,11 @@
 	      icon="resources/icons/ImportConfiguration.gif">
 	</image>
 	<image
+	      commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddSynchronizationConfiguration"
+	      disabledIcon="resources/icons/SynchronizationConfiguration_disabled.gif"
+	      icon="resources/icons/SynchronizationConfiguration.gif">
+	</image>
+	<image
 	      commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddSpecificationMapping"
 	      disabledIcon="resources/icons/SpecificationMapping_disabled.gif"
 	      icon="resources/icons/SpecificationMapping.gif">
@@ -404,6 +417,10 @@
 	<handler
 		class="de.dlr.sc.virsat.model.extension.requirements.ui.handler.AddImportConfigurationHandler"
 		commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddImportConfiguration">
+	</handler>
+	<handler
+		class="de.dlr.sc.virsat.model.extension.requirements.ui.handler.AddSynchronizationConfigurationHandler"
+		commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddSynchronizationConfiguration">
 	</handler>
 	<handler
 		class="de.dlr.sc.virsat.model.extension.requirements.ui.handler.AddSpecificationMappingHandler"
@@ -778,6 +795,28 @@
 		</command>
 		<command
 			commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddImportConfiguration"
+			style="push">
+			<visibleWhen
+				checkEnabled="true">
+				<with
+					variable="selection">
+					<iterate
+						ifEmpty="false"
+						operator="and">
+						<test 
+							property="de.dlr.sc.virsat.model.extension.requirements.ui.propertyTester.conceptEnabled"
+							value="true" 
+							forcePluginActivation="true">
+						</test>		
+						<instanceof
+							value="de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer">
+						</instanceof>
+					</iterate>
+				</with>
+			</visibleWhen>
+		</command>
+		<command
+			commandId="de.dlr.sc.virsat.model.extension.requirements.ui.command.AddSynchronizationConfiguration"
 			style="push">
 			<visibleWhen
 				checkEnabled="true">
@@ -1290,6 +1329,16 @@
 		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetImportConfigurationMappedSpecificationsSpecificationMapping"
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
 		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableImportConfigurationMappedSpecificationsSpecificationMapping">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetSynchronizationConfiguration"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetTableSynchronizationConfiguration">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.requirements.section.uiSnippetSynchronizationConfiguration"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.requirements.ui.snippet.UiSnippetSectionSynchronizationConfiguration">
 		</uiSnippet>
 		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetSpecificationMapping"
