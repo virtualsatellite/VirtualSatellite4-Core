@@ -123,7 +123,10 @@ public abstract class AbstractConnectionCreateFeature  extends AbstractCreateCon
 		State target = (State) getBusinessObjectForPictogramElement(targetAnchor);
 
 		if (source != null && target != null) {
-			StateMachine stateMachine = source.getParentCaBeanOfClass(StateMachine.class);
+			// First eContainer is the composed property instance, then comes the array instance, 
+			// and finally the state machine, therefore we need to use eContainer thrice
+			CategoryAssignment caStateMachine = (CategoryAssignment) source.getATypeInstance().eContainer().eContainer().eContainer();
+			StateMachine stateMachine = new StateMachine(caStateMachine);
 			Concept concept = stateMachine.getConcept();
 			AddConnectionContext addContext = new AddConnectionContext(sourceAnchor, targetAnchor);
 			addConnection(addContext, source, target, stateMachine, concept);
