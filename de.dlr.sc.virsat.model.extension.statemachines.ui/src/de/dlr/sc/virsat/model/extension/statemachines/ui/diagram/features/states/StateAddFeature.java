@@ -29,7 +29,7 @@ import org.eclipse.graphiti.util.ColorConstant;
 import org.eclipse.graphiti.util.IColorConstant;
 
 import de.dlr.sc.virsat.graphiti.label.MultilineLabelFormatter;
-import de.dlr.sc.virsat.graphiti.util.DiagramHelper;
+import de.dlr.sc.virsat.graphiti.ui.diagram.feature.VirSatAddShapeFeature;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.extension.statemachines.model.State;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
@@ -40,7 +40,7 @@ import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.stateM
  *
  */
 
-public class StateAddFeature extends StateMachineAddFeature {
+public class StateAddFeature extends VirSatAddShapeFeature {
 	public static  final int RADIUS = 65;
 	
 	public static final int INDEX_ELLIPSE = 0;
@@ -52,12 +52,15 @@ public class StateAddFeature extends StateMachineAddFeature {
 	
 	public static final IColorConstant ELEMENT_BACKGROUND =	new ColorConstant(232, 94, 74);
 	
+	private StateMachineAddFeature stateMachineAddFeature;
+	
 	/** 
 	 * Default constructor.
 	 * @param fp the feature provider.
 	 */
 	public StateAddFeature(IFeatureProvider fp) {
 		super(fp);
+		this.stateMachineAddFeature = new StateMachineAddFeature(fp);
 	}
 	
 	@Override
@@ -86,11 +89,11 @@ public class StateAddFeature extends StateMachineAddFeature {
 				}	
 				
 				StateMachine sm = (StateMachine) target;
-				return sm.getStates().contains(addedState) && DiagramHelper.hasDiagramWritePermission(context.getTargetContainer());
+				return sm.getStates().contains(addedState) && super.canAdd(context);
 			}		
 		}	
 
-		return super.canAdd(context);	
+		return stateMachineAddFeature.canAdd(context);	
 	}
 	
 	@Override
@@ -155,6 +158,6 @@ public class StateAddFeature extends StateMachineAddFeature {
 	    	return containerShape;
 		}
 		
-		return super.add(context);
+		return stateMachineAddFeature.add(context);
 	}
 }

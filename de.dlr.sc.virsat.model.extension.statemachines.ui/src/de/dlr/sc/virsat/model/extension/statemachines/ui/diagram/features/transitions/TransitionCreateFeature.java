@@ -47,6 +47,4 @@ public class TransitionCreateFeature extends AbstractConnectionCreateFeature {
 	public boolean canDraw(State state1, State state2) {
 		return statesAreInSameStateMachine(state1, state2);
 	}
-	
-
 }
