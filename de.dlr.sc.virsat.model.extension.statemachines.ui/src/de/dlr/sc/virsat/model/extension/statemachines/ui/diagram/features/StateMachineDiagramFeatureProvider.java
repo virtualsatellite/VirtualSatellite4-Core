@@ -113,8 +113,8 @@ public class StateMachineDiagramFeatureProvider extends VirSatDiagramFeatureProv
 	public ICustomFeature[] getCustomFeatures(ICustomContext context) {
 		PictogramElement[] pe = context.getPictogramElements();
 		Object object = getBusinessObjectForPictogramElement(pe[0]);
-		List<ICustomFeature> customFeaturs = new ArrayList<>();
-		customFeaturs.add(new VirsatCategoryAssignmentOpenEditorFeature(this));
+		List<ICustomFeature> customFeatures = new ArrayList<>();
+		customFeatures.add(new VirsatCategoryAssignmentOpenEditorFeature(this));
 
 		if (object instanceof State && !(pe[0].eContainer() instanceof Diagram)) {
 			State state = (State) object;
@@ -122,18 +122,18 @@ public class StateMachineDiagramFeatureProvider extends VirSatDiagramFeatureProv
 			// and finally the state machine, therefore we need to use eContainer thrice
 			CategoryAssignment caStateMachine = (CategoryAssignment) state.getATypeInstance().eContainer().eContainer().eContainer();
 			StateMachine stateMachine = new StateMachine(caStateMachine);
-			customFeaturs.add(new StateChangeColorFeature(this));
+			customFeatures.add(new StateChangeColorFeature(this));
 			State initialState = stateMachine.getInitialState();
 			if (initialState == null || !(initialState.equals(state))) {
-				customFeaturs.add(new StateSetAsInitialStateFeature(this));
+				customFeatures.add(new StateSetAsInitialStateFeature(this));
 			} else {
-				customFeaturs.add(new StateUnsetAsInitialStateFeature(this));
+				customFeatures.add(new StateUnsetAsInitialStateFeature(this));
 			} 
 		} else {
-			customFeaturs.add(new VirSatChangeColorFeature(this));
+			customFeatures.add(new VirSatChangeColorFeature(this));
 		}
 		
-		return customFeaturs.toArray(new ICustomFeature[0]);
+		return customFeatures.toArray(new ICustomFeature[0]);
 	} 
 	
 	@Override
