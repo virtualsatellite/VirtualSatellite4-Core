@@ -28,6 +28,7 @@ import org.eclipse.ui.statushandlers.StatusManager;
 
 import de.dlr.sc.virsat.graphiti.util.DiagramHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
@@ -72,7 +73,7 @@ public abstract class AOpenInDiagramEdiorHandler extends AEditingDomainCommandHa
 		
 		String diagramName = ca.getUuid().toString();
 		
-		StructuralElementInstance sei = (StructuralElementInstance) ca.eContainer();
+		StructuralElementInstance sei = (StructuralElementInstance) CategoryAssignmentHelper.getContainerFor(ca);
 		IFolder documentsFolder = VirSatProjectCommons.getDocumentFolder(sei);
 		
 		// Generate the URI for the diagram from the structural element instance

@@ -19,12 +19,14 @@ import org.eclipse.graphiti.features.IReason;
 import org.eclipse.graphiti.features.IRemoveFeature;
 import org.eclipse.graphiti.features.context.IUpdateContext;
 import org.eclipse.graphiti.features.context.impl.RemoveContext;
+import org.eclipse.graphiti.features.context.impl.UpdateContext;
 import org.eclipse.graphiti.features.impl.Reason;
 import org.eclipse.graphiti.mm.algorithms.AbstractText;
 import org.eclipse.graphiti.mm.algorithms.Image;
 import org.eclipse.graphiti.mm.pictograms.Anchor;
 import org.eclipse.graphiti.mm.pictograms.Connection;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
+import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 
@@ -56,7 +58,13 @@ public class StateMachineUpdateFeature extends VirSatUpdateFeature {
 		String pictogramName = null;
 		PictogramElement pictogramElement = context.getPictogramElement();
 		StateMachine stateMachine =  (StateMachine) getBusinessObjectForPictogramElement(pictogramElement);
-
+		
+		if (!(pictogramElement.eContainer() instanceof Diagram)) {
+			// If the parent pictogram is not a diagram, then we leave
+			// the updating process to the parent pictogram element
+			return Reason.createFalseReason();
+		}
+		
 		if (stateMachine == null) {
 			return Reason.createTrueReason("StateMachine is deleted");
 		}
@@ -107,7 +115,7 @@ public class StateMachineUpdateFeature extends VirSatUpdateFeature {
 				}
 			}
 			// compare connections
-			if (!connectionsChanged(stateMachine)) {
+			if (connectionsChanged(stateMachine)) {
 				return Reason.createTrueReason("A connection is changed");
 			}
 		} 
@@ -175,7 +183,6 @@ public class StateMachineUpdateFeature extends VirSatUpdateFeature {
 			feature.remove(removeContext);
 
 		}
-
 
 		// update the changed names
 		for (Connection c : allConnections) {
@@ -258,27 +265,27 @@ public class StateMachineUpdateFeature extends VirSatUpdateFeature {
 	 * @return true if they are changed
 	 */
 	private boolean connectionsChanged(StateMachine stateMachine) {
-
 		// get the graphical information
 		List<Connection> allConnections = getDiagram().getConnections();
 		for (Connection c : allConnections) {
 			Object connectionObj = getBusinessObjectForPictogramElement(c);
 			if (connectionObj == null) {
-				return false;
+				return true;
 			}
 			if (connectionObj instanceof Transition) {
 				Transition diagramTransition = (Transition) connectionObj;
 				for (Transition t : stateMachine.getTransitions()) {
 					if (t.getUuid().equals(diagramTransition.getUuid())) {
 						AbstractText text = (AbstractText) c.getConnectionDecorators().get(0).getGraphicsAlgorithm();
-						if (!t.getName().equals(text.getValue())) {
-							return false;
+						ITransitionLabelProvider labelProvider = new LabelProviderInstantiator().getLabelProvider();	
+						if (!labelProvider.getLabel(t).equals(text.getValue())) {
+							return true;
 						}
 						if (!t.getStateFrom().equals((State) getBusinessObjectForPictogramElement(c.getStart()))) {
-							return false;
+							return true;
 						}
 						if (!t.getStateTo().equals((State) getBusinessObjectForPictogramElement(c.getEnd()))) {
-							return false;
+							return true;
 						}
 					}
 				}
@@ -287,22 +294,21 @@ public class StateMachineUpdateFeature extends VirSatUpdateFeature {
 				for (AConstraint constraint : stateMachine.getConstraints()) {
 					if (constraint.getUuid().equals(diagramConstraint.getUuid())) {
 						if (!constraint.getStateConstraining().equals((State) getBusinessObjectForPictogramElement(c.getStart()))) {
-							return false;
+							return true;
 						}
 						if (!constraint.getStateInfluenced().equals((State) getBusinessObjectForPictogramElement(c.getEnd()))) {
-							return false;
+							return true;
 						}
 					}
 				}
 			}
 		}
-		return true;
-
+		
+		return false;
 	}
 
 	@Override
 	public boolean update(IUpdateContext context) {
-
 		// retrieve name from business model
 		PictogramElement pictogramElement = context.getPictogramElement();
 		Object obj = getBusinessObjectForPictogramElement(pictogramElement);
@@ -311,6 +317,16 @@ public class StateMachineUpdateFeature extends VirSatUpdateFeature {
 			IRemoveFeature feature = getFeatureProvider().getRemoveFeature(removeContext);
 			feature.remove(removeContext);
 			return true;
+		}
+		
+		if (!(pictogramElement.eContainer() instanceof Diagram)) {
+			// If the parent pictogram is not a diagram, then we leave
+			// the updating process to the parent pictogram element
+			// Also notify the state machine containing this state to update
+			ContainerShape parent = (ContainerShape) pictogramElement.eContainer();
+			UpdateContext stateMachineUpdateContext = new UpdateContext(parent);
+			getFeatureProvider().updateIfPossible(stateMachineUpdateContext);	
+			return false;
 		}
 
 		StateMachine stateMachine = null;
@@ -322,10 +338,8 @@ public class StateMachineUpdateFeature extends VirSatUpdateFeature {
 
 		boolean changeDuringUpdate = false;
 
-
 		// this list will hold the states on the diagram
 		List<State> diagramStates = new ArrayList<>();  
-
 		// Set name in pictogram model
 		if (pictogramElement instanceof ContainerShape) {
 			ContainerShape cs = (ContainerShape) pictogramElement;
@@ -347,10 +361,10 @@ public class StateMachineUpdateFeature extends VirSatUpdateFeature {
 					} else {
 						diagramStates.add(state);
 					}
+					
 					String stateName = state.getName();
 					//Look for the state names
 					ContainerShape aStateShape = (ContainerShape) shape;
-
 					if (state.equals(stateMachine.getInitialState())) {
 						setInitialState(aStateShape);
 					} else {
@@ -358,7 +372,6 @@ public class StateMachineUpdateFeature extends VirSatUpdateFeature {
 					}
 
 					for (Shape stateNameShape : aStateShape.getChildren()) {
-						
 						if (stateNameShape.getGraphicsAlgorithm() instanceof AbstractText) {
 							AbstractText text = (AbstractText) stateNameShape.getGraphicsAlgorithm();
 							String pictogramName = text.getValue();
@@ -381,10 +394,8 @@ public class StateMachineUpdateFeature extends VirSatUpdateFeature {
 			}
 		}
 
-
 		// update connections
 		updateConnections(stateMachine, diagramStates);
-
 		return changeDuringUpdate;
 	}
 
@@ -399,8 +410,6 @@ public class StateMachineUpdateFeature extends VirSatUpdateFeature {
 			}
 		}
 	}
-
-
 
 	/**
 	 * Normal states do not have an arrow image and they are narrower

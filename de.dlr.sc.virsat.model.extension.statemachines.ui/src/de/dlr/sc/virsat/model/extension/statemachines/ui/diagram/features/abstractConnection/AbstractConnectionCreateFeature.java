@@ -16,9 +16,11 @@ import org.eclipse.graphiti.features.impl.AbstractCreateConnectionFeature;
 import org.eclipse.graphiti.mm.pictograms.Anchor;
 import org.eclipse.graphiti.mm.pictograms.Connection;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
+import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 
 import de.dlr.sc.virsat.graphiti.util.DiagramHelper;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.extension.statemachines.model.State;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
@@ -121,7 +123,10 @@ public abstract class AbstractConnectionCreateFeature  extends AbstractCreateCon
 		State target = (State) getBusinessObjectForPictogramElement(targetAnchor);
 
 		if (source != null && target != null) {
-			StateMachine stateMachine = source.getParentCaBeanOfClass(StateMachine.class);
+			// First eContainer is the composed property instance, then comes the array instance, 
+			// and finally the state machine, therefore we need to use eContainer thrice
+			CategoryAssignment caStateMachine = (CategoryAssignment) source.getATypeInstance().eContainer().eContainer().eContainer();
+			StateMachine stateMachine = new StateMachine(caStateMachine);
 			Concept concept = stateMachine.getConcept();
 			AddConnectionContext addContext = new AddConnectionContext(sourceAnchor, targetAnchor);
 			addConnection(addContext, source, target, stateMachine, concept);
@@ -137,6 +142,11 @@ public abstract class AbstractConnectionCreateFeature  extends AbstractCreateCon
 		// Check if start anchor is properly linked
 		Anchor anchor = context.getSourceAnchor();
 		PictogramElement pe = context.getSourcePictogramElement();
+		if (pe.eContainer() instanceof Diagram) {
+			// If this is a top-level state, then don't allow connecting to it
+			return false;
+		}
+		
 		Object sourceAnchor = getBusinessObjectForPictogramElement(anchor);
 		Object sourcePe = getBusinessObjectForPictogramElement(pe);
 		if (sourceAnchor instanceof State || sourcePe instanceof State) {
@@ -153,12 +163,11 @@ public abstract class AbstractConnectionCreateFeature  extends AbstractCreateCon
 	 * @return true if they are
 	 */
 	public boolean statesAreInSameStateMachine(State state1, State state2) {
-		StateMachine stateMachine1 = state1.getParentCaBeanOfClass(StateMachine.class);
-		StateMachine stateMachine2 = state2.getParentCaBeanOfClass(StateMachine.class);	
-		if (stateMachine1.equals(stateMachine2)) {			
-			return true;
-		}
-		return false;
+		CategoryAssignment caStateMachine1 = (CategoryAssignment) state1.getATypeInstance().eContainer().eContainer().eContainer();
+		StateMachine stateMachine1 = new StateMachine(caStateMachine1);
+		CategoryAssignment caStateMachine2 = (CategoryAssignment) state2.getATypeInstance().eContainer().eContainer().eContainer();
+		StateMachine stateMachine2 = new StateMachine(caStateMachine2);
+		return stateMachine1.equals(stateMachine2);
 	}
 	
 	/**	

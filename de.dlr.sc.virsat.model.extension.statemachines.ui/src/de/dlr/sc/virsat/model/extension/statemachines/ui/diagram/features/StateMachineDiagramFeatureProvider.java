@@ -9,6 +9,9 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.graphiti.dt.IDiagramTypeProvider;
 import org.eclipse.graphiti.features.IAddFeature;
 import org.eclipse.graphiti.features.ICopyFeature;
@@ -110,18 +113,27 @@ public class StateMachineDiagramFeatureProvider extends VirSatDiagramFeatureProv
 	public ICustomFeature[] getCustomFeatures(ICustomContext context) {
 		PictogramElement[] pe = context.getPictogramElements();
 		Object object = getBusinessObjectForPictogramElement(pe[0]);
-		if (object instanceof State) {
+		List<ICustomFeature> customFeaturs = new ArrayList<>();
+		customFeaturs.add(new VirsatCategoryAssignmentOpenEditorFeature(this));
+
+		if (object instanceof State && !(pe[0].eContainer() instanceof Diagram)) {
 			State state = (State) object;
-			StateMachine stateMachine = state.getParentCaBeanOfClass(StateMachine.class);
+			// First eContainer is the composed property instance, then comes the array instance, 
+			// and finally the state machine, therefore we need to use eContainer thrice
+			CategoryAssignment caStateMachine = (CategoryAssignment) state.getATypeInstance().eContainer().eContainer().eContainer();
+			StateMachine stateMachine = new StateMachine(caStateMachine);
+			customFeaturs.add(new StateChangeColorFeature(this));
 			State initialState = stateMachine.getInitialState();
-			if (initialState == null ||  !(initialState.equals(state))) {
-				return new ICustomFeature[] { new VirsatCategoryAssignmentOpenEditorFeature(this), new StateChangeColorFeature(this), new StateSetAsInitialStateFeature(this)};
+			if (initialState == null || !(initialState.equals(state))) {
+				customFeaturs.add(new StateSetAsInitialStateFeature(this));
 			} else {
-				return new ICustomFeature[] { new VirsatCategoryAssignmentOpenEditorFeature(this), new StateChangeColorFeature(this), new StateUnsetAsInitialStateFeature(this)};
-			}
+				customFeaturs.add(new StateUnsetAsInitialStateFeature(this));
+			} 
+		} else {
+			customFeaturs.add(new VirSatChangeColorFeature(this));
 		}
 		
-		return new ICustomFeature[] { new VirsatCategoryAssignmentOpenEditorFeature(this), new VirSatChangeColorFeature(this)};
+		return customFeaturs.toArray(new ICustomFeature[0]);
 	} 
 	
 	@Override
@@ -184,7 +196,7 @@ public class StateMachineDiagramFeatureProvider extends VirSatDiagramFeatureProv
 	@Override
 	public IDirectEditingFeature getDirectEditingFeature(IDirectEditingContext context) {
 		Object object = getBusinessObjectForPictogramElement(context.getPictogramElement());
-		if (object instanceof StateMachine || object instanceof State || object instanceof Transition) {
+		if (object instanceof StateMachine || object instanceof Transition) {
 			return new BeanDirectEditNameFeature(this);
 		}
 		return super.getDirectEditingFeature(context);
