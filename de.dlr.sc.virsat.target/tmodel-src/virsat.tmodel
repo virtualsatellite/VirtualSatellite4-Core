@@ -17,27 +17,27 @@ TargetLibrary virsat {
 	// Purely named Eclipse. The name is important for target models having this one as 
 	// super model. Then this name can be referenced to explicitly exclude
 	// certain features from the target model
-	RepositoryLocation Eclipse url "http://download.eclipse.org/releases/2021-12"{ 
-		Unit org.eclipse.emf.compare.ide.ui.feature.group version 3.3.17.202111290942;
+	RepositoryLocation Eclipse url "http://download.eclipse.org/releases/2022-03"{ 
+		Unit org.eclipse.emf.compare.ide.ui.feature.group version 3.3.18.202202240907;
 		Unit org.eclipse.emf.edapt.runtime.feature.feature.group version 1.4.1.202002140949;
-		Unit org.eclipse.emf.sdk.feature.group version 2.28.0.v20211110-0654;
+		Unit org.eclipse.emf.sdk.feature.group version 2.29.0.v20220226-1304;
 		Unit org.eclipse.emf.transaction.sdk.feature.group version 1.12.0.201805140824;
-		Unit org.eclipse.equinox.executable.feature.group version 3.8.1400.v20211117-0650;
+		Unit org.eclipse.equinox.executable.feature.group version 3.8.1500.v20220210-1108;
 		Unit org.eclipse.graphiti.sdk.feature.feature.group version 0.18.0.202106091000;
 		Unit org.eclipse.graphiti.export.feature.feature.group version 0.18.0.202106091000;
-		Unit org.eclipse.jdt.source.feature.group version 3.18.1000.v20211124-1800;
-		Unit org.eclipse.ocl.all.sdk.feature.group version 5.17.0.v20211130-1448;
-		Unit org.eclipse.pde.source.feature.group version 3.14.1000.v20211124-1800;  
-		Unit org.eclipse.platform.sdk version 4.22.0.I20211124-1800;
+		Unit org.eclipse.jdt.source.feature.group version 3.18.1100.v20220308-0310;
+		Unit org.eclipse.ocl.all.sdk.feature.group version 5.17.1.v20220309-0840;
+		Unit org.eclipse.pde.source.feature.group version 3.14.1100.v20220308-0310;  
+		Unit org.eclipse.platform.sdk version 4.23.0.I20220308-0310;
 		Unit org.eclipse.swtbot.eclipse.feature.group version 3.1.0.202106041005;
 		Unit org.eclipse.swtbot.eclipse.gef.feature.group version 3.1.0.202106041005;
 		Unit org.eclipse.swtbot.feature.group version 3.1.0.202106041005;
 		Unit org.eclipse.swtbot.forms.feature.group version 3.1.0.202106041005;
 		Unit org.eclipse.swtbot.generator.feature.feature.group version 3.1.0.202106041005;
 		Unit org.eclipse.swtbot.ide.feature.group version 3.1.0.202106041005; 
-		Unit org.eclipse.xtext.sdk.feature.group version 2.25.0.v20210301-1429;
+		Unit org.eclipse.xtext.sdk.feature.group version 2.26.0.v20220228-0901;
 		Unit org.eclipse.gef.feature.group version 3.11.0.201606061308;  
-		Unit org.eclipse.egit.feature.group version 6.0.0.202111291000-r; 
+		Unit org.eclipse.egit.feature.group version 6.1.0.202203080745-r; 
 		
 	}
 	
