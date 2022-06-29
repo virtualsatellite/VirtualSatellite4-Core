@@ -27,7 +27,7 @@ public class EnumPropertyHelper {
 	/**
 	 * This method hands back all textual values belonging to a given ENUM property
 	 * @param ep the EnumProperty of which to get all possible values from
-	 * @param showEmptyValue 
+	 * @param showEmptyValue set to true if no value is an option
 	 * @return a List of string with all possible values
 	 */
 	public List<String> getEnumValueDefinitionStrings(EnumProperty ep, boolean showEmptyValue) {
@@ -47,7 +47,7 @@ public class EnumPropertyHelper {
 	/**
 	 * This method hands back all textual values belonging to a given ENUM property
 	 * @param ep the EnumProperty of which to get all possible values from
-	 * @param showEmptyValue 
+	 * @param showEmptyValue set to true if no value is an option
 	 * @return a List of string with all possible values
 	 */
 	public List<String> getEnumValues(EnumProperty ep, boolean showEmptyValue) {
@@ -67,7 +67,7 @@ public class EnumPropertyHelper {
 	/**
 	 * This method hands back all textual names belonging to a given ENUM property
 	 * @param ep the EnumProperty of which to get all possible names from
-	 * @param showEmptyValue 
+	 * @param showEmptyValue set to true if no value is an option
 	 * @return a List of string with all possible names
 	 */
 	public List<String> getEnumNames(EnumProperty ep, boolean showEmptyValue) {

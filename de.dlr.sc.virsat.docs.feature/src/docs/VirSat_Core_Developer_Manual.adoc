@@ -652,7 +652,7 @@ Bundle-Name: VirSat External Lib - JZMQ and ZeroMQ Native Libraries for 64-Bit W
 Bundle-SymbolicName: de.dlr.sc.virsat.external.lib.zmq.win32.x86_64;singleton:=true
 Bundle-Version: 4.9.1.qualifier
 Bundle-Vendor: DLR (German Aerospace Center)
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-NativeCode: native_lib/zmq/jzmq.dll; // <2>
  native_lib/zmq/libzmq-v140-mt-4_2_0.dll;
  native_lib/zmq/msvcp140.dll;
@@ -722,7 +722,7 @@ Bundle-Name: VirSat External Lib - JZMQ and ZeroMQ Native Libraries for 64-Bit L
 Bundle-SymbolicName: de.dlr.sc.virsat.external.lib.zmq.linux.x86_64;singleton:=true
 Bundle-Version: 4.9.1.qualifier
 Bundle-Vendor: DLR (German Aerospace Center)
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Eclipse-PlatformFilter: (&  (osgi.os=linux) (osgi.arch=x86_64) ) // <1>
 Eclipse-BundleShape: dir // <2>
 Require-Bundle: de.dlr.sc.virsat.external.lib
@@ -775,7 +775,7 @@ The Eclipse compilation does not care about which library is mentioned in the _M
 ----
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jd...auncher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="con" path="org.eclipse.jd...auncher.StandardVMType/JavaSE-11"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry exported="true" kind="lib" path="native_lib/zmq/zmq.jar"/> // <1>
 	<classpathentry kind="src" path="src/"/>
@@ -789,6 +789,66 @@ Eclipse and Tycho compile against the library which is part of the source code.
 This library can be different during runtime.
 Differences may lead to unexpected behavior.
 Therefore, it is recommended to have the expected versions specified in the environment variables.
+
+=== Loading multiple Concepts in test cases
+
+To test multiple Concepts in one Testcase or Concepts that depend on other Concepts the `AConceptProjectTestCase` class can be used for this.
+An EditingDomain and a Repository is necessary to load the concepts. 
+The methods of `AConceptProjectTestCase` can be used for this.
+The `ActiveConceptHelper` is recommended for getting the loaded Concepts and use them to initialize the Concept objects.
+
+Explanation of the example below:
+
+To initialize the test case `super.setUp()` and `addEditingDomainAndRepository(true)` needs to be called. Afterwards all concepts can be loaded with `+executeAsCommand(() -> loadConceptAndInstallToRepository(CONCEPT_ID))+`. The recommended `ActiveConceptHelper` can be initialized through the `repository` and all concepts can be fetched that are needed to initialize objects. 
+An optional `ConfigurationTree` is added to the repository in which the Concept objects can be added.
+
+.Example of a multi concept test
+[source,java,#MultiConceptTestExample]
+----
+public class MultiConceptTestExample extends AConceptProjectTestCase { 
+	
+	private static final String CONCEPT_ID_DEP = "de.dlr.sc.virsat.model.extension.dependency";
+	private static final String CONCEPT_ID_TEST = "de.dlr.sc.virsat.model.extension.testconcept";
+	
+	protected Concept conceptDependency;
+	protected Concept conceptTest;
+	
+	private ActiveConceptHelper acHelper;
+	
+	@Before
+	public void setUp() throws CoreException {
+		
+		super.setUp();
+		addEditingDomainAndRepository(true);
+		
+		// CONCEPT_ID_CORE is definded in AConceptProjectTestCase.java. All dependencies have to be loaded first
+		executeAsCommand(() -> loadConceptAndInstallToRepository(CONCEPT_ID_CORE));		 
+		executeAsCommand(() -> loadConceptAndInstallToRepository(CONCEPT_ID_DEP));		 
+		executeAsCommand(() -> loadConceptAndInstallToRepository(CONCEPT_ID_TEST));
+		
+		acHelper = new ActiveConceptHelper(repository);
+		conceptDependency = acHelper.getConcept(CONCEPT_ID_DEP);
+		conceptTest = acHelper.getConcept(CONCEPT_ID_TEST);
+				
+		/*
+		 * Initialize your Concept objects here
+		 */ 
+		
+		ConfigurationTree ct = new ConfigurationTree(conceptPS);
+		ct.add(/* concept object */);
+		executeAsCommand(() -> repository.getRootEntities().add(ct.getStructuralElementInstance()));
+
+		// rs is defined in AProjectTestCase.java
+		editingDomain.getCommandStack().execute(new CreateSeiResourceAndFileCommand(rs, ct.getStructuralElementInstance()));		
+	}
+		
+	@Test
+	public void testAll() {
+		// your JUnit tests here
+	}
+}
+----
+
 
 === Important Eclipse Information
 

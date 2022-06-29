@@ -141,6 +141,7 @@ public class RoleManagementImpl extends MinimalEObjectImpl.Container implements 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code Discipline}'.
 	 * @generated
 	 */
 	public Discipline getAssignedDiscipline() {
@@ -158,6 +159,7 @@ public class RoleManagementImpl extends MinimalEObjectImpl.Container implements 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code Discipline}'.
 	 * @generated
 	 */
 	public Discipline basicGetAssignedDiscipline() {
@@ -179,6 +181,7 @@ public class RoleManagementImpl extends MinimalEObjectImpl.Container implements 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code VirSatUuid}'.
 	 * @generated
 	 */
 	public VirSatUuid getUuid() {
@@ -200,6 +203,7 @@ public class RoleManagementImpl extends MinimalEObjectImpl.Container implements 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<Discipline>}'.
 	 * @generated
 	 */
 	public EList<Discipline> getDisciplines() {

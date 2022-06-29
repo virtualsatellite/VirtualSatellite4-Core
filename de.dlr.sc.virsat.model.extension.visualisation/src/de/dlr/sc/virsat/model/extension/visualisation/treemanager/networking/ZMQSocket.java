@@ -38,7 +38,7 @@ public class ZMQSocket {
 	 * 
 	 * @param endpoint String that contains the type of protocol and the port
 	 * @param type Type of Socket
-	 * @param bindSockets 
+	 * @param bindSockets wheteher to bind sockets or not
 	 */
 	public void open(String endpoint, int type, boolean bindSockets) {
 		Context context = ZMQ.context(1);

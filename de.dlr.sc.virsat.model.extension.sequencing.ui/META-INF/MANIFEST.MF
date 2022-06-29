@@ -1,0 +1,28 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Core Model Extension Sequencing UI
+Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.sequencing.ui;singleton:=true
+Bundle-Version: 4.14.0.qualifier
+Require-Bundle: de.dlr.sc.virsat.model.extension.sequencing,
+ org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.expressions,
+ org.eclipse.emf.edit,
+ org.eclipse.emf.transaction,
+ org.eclipse.core.resources,
+ de.dlr.sc.virsat.model,
+ de.dlr.sc.virsat.project,
+ de.dlr.sc.virsat.project.ui,
+ de.dlr.sc.virsat.uiengine.ui,
+ de.dlr.sc.virsat.commons.ui,
+ org.eclipse.core.filesystem;bundle-version="1.7.700",
+ de.dlr.sc.virsat.excel;bundle-version="4.13.0",
+ de.dlr.sc.virsat.model.extension.statemachines;bundle-version="4.13.0",
+ org.eclipse.draw2d;bundle-version="3.10.100",
+ org.eclipse.gef;bundle-version="3.11.0",
+ javax.annotation,
+ jakarta.xml.bind
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-ActivationPolicy: lazy
+Bundle-Vendor: DLR (German Aerospace Center)
+Automatic-Module-Name: de.dlr.sc.virsat.model.extension.sequencing.ui

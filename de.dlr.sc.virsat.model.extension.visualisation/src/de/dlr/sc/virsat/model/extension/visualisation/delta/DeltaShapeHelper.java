@@ -37,8 +37,8 @@ public class DeltaShapeHelper extends ShapeHelper {
 	
 	/**
 	 * Constructor
-	 * @param visualisationTreeManager 
-	 * @param shapeEditObserver 
+	 * @param visualisationTreeManager The VisualizationTreeManager to connetc to
+	 * @param shapeEditObserver The Edit Observer for detecting changes
 	 * @param deltaModel Visualisation Deltas
 	 */
 	public DeltaShapeHelper(IVisualisationTreeManager visualisationTreeManager, ShapeEditObserver shapeEditObserver, VisualisationDeltaModel deltaModel) {

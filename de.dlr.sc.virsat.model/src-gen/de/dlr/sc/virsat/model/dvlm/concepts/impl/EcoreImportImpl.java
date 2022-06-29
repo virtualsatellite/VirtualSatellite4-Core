@@ -122,6 +122,7 @@ public class EcoreImportImpl extends MinimalEObjectImpl.Container implements Eco
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getImportedNsURI() {
@@ -143,6 +144,7 @@ public class EcoreImportImpl extends MinimalEObjectImpl.Container implements Eco
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getImportedGenModel() {

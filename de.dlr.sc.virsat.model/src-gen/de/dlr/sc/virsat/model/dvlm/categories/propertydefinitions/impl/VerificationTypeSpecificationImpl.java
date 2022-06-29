@@ -92,6 +92,7 @@ public class VerificationTypeSpecificationImpl extends IVerificationSpecificatio
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code ATypeDefinition}'.
 	 * @generated
 	 */
 	public ATypeDefinition getVerificationType() {
@@ -109,6 +110,7 @@ public class VerificationTypeSpecificationImpl extends IVerificationSpecificatio
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code ATypeDefinition}'.
 	 * @generated
 	 */
 	public ATypeDefinition basicGetVerificationType() {

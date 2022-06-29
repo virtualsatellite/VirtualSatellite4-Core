@@ -271,6 +271,7 @@ public interface <%=genPackage.getPackageInterfaceName()%> extends <%=genModel.g
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
   <%}%>
+	 * @return an initialized instance of <%=genPackage.getImportedPackageInterfaceName()%>.
 	 * @generated
 	 */
 	public static <%=genPackage.getImportedPackageInterfaceName()%> init()

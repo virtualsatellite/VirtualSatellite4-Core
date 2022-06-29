@@ -328,6 +328,31 @@
 		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetSectionState">
 		</uiSnippet>
 		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.statemachines.table.uiSnippetStateStatesState"
+		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetTableStateStatesState">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.statemachines.table.uiSnippetStateTransitionsTransition"
+		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetTableStateTransitionsTransition">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.statemachines.table.uiSnippetStateConstraintsAllowsConstraint"
+		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetTableStateConstraintsAllowsConstraint">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.statemachines.table.uiSnippetStateConstraintsForbidsConstraint"
+		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetTableStateConstraintsForbidsConstraint">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.statemachines.table.uiSnippetStateTriggerEventsTransitionTriggerEvent"
+		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
+		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetTableStateTriggerEventsTransitionTriggerEvent">
+		</uiSnippet>
+		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.statemachines.table.uiSnippetTransition"
 		      section="de.dlr.sc.virsat.model.extension.statemachines.ui.Section"
 		      snippet="de.dlr.sc.virsat.model.extension.statemachines.ui.snippet.UiSnippetTableTransition">

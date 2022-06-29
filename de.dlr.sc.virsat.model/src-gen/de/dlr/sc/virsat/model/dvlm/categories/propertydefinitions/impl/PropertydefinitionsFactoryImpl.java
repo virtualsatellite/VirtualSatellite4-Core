@@ -30,6 +30,7 @@ public class PropertydefinitionsFactoryImpl extends EFactoryImpl implements Prop
 	 * Creates the default factory implementation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return an initialized instance of 'PropertydefinitionsFactory'.
 	 * @generated
 	 */
 	public static PropertydefinitionsFactory init() {
@@ -235,6 +236,7 @@ public class PropertydefinitionsFactoryImpl extends EFactoryImpl implements Prop
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @deprecated
+	 * @return an instance of PropertydefinitionsPackage.
 	 * @generated
 	 */
 	@Deprecated

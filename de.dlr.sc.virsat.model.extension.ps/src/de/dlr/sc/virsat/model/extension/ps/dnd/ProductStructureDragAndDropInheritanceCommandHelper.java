@@ -72,11 +72,9 @@ public class ProductStructureDragAndDropInheritanceCommandHelper {
 	/**
 	 * Call this method to create a command to add or replace the SEI in the list of superSEIs
 	 * @param ed The editing domain for which the command should be created
-	 * @param dragObject the object which is dragged and shall be used for replacing
-	 * @param dropOperation the kind of operation
-	 * @param dropSei the SEI where the superSEIs should be changed
+	 * @param dragObjects the object which is dragged and shall be used for replacing
+	 * @param dropBeanSei the bean SEI where the superSEIs should be changed
 	 * @return The command to add or replace a superSEI
-	 * @throws CoreException 
 	 */
 	public Command createDropCommand(VirSatTransactionalEditingDomain ed, Collection<Object> dragObjects, IBeanStructuralElementInstance dropBeanSei) {
 		// Identify the dragObject and create a Bean for it;
@@ -129,9 +127,8 @@ public class ProductStructureDragAndDropInheritanceCommandHelper {
 	
 	/**
 	 * Call this method to create a BeanSei for a given drop Target SEI
-	 * @param ed The editing domain in which the object will be dropped
-	 * @param beanDragSei The objects preferably SEIs which are dragged
-	 * @param dropSei the SEI to which the objects shall get dropped
+	 * @param dragBeanSei The objects preferably SEIs which are dragged
+	 * @param dropBeanSei the SEI to which the objects shall get dropped
 	 * @return A BeanSEI corresponding to the drop target with correct name and discipline
 	 */
 	public IBeanStructuralElementInstance createBeanStructuralElementInstanceForDrop(IBeanStructuralElementInstance dragBeanSei, IBeanStructuralElementInstance dropBeanSei) {

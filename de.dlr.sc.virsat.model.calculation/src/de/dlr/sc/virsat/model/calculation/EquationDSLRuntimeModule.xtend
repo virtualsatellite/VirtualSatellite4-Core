@@ -54,6 +54,7 @@ class EquationDSLRuntimeModule extends AbstractEquationDSLRuntimeModule {
 	 * would then need deeper considerations in cases such as other equations referencing the one that was 
 	 * just copied. At the moment it looks like the unloading is just done for performance considerations.
 	 * Hence we don't need it for the moment.
+	 * @return class of type IReferableElementsUnloader
 	 */
 	def Class<? extends IReferableElementsUnloader> bindIReferableElementsUnloader() {
 		return EquationSectionNullUnloader

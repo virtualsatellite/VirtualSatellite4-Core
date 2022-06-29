@@ -136,6 +136,7 @@ public interface StructuralElementInstance extends IUuid, IDescription, IName, I
 	 * <!-- begin-model-doc -->
 	 * This method hands back all StructuralElement Instances which are nested by a TreeRelation
 	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>{@code getDeepChildren}</em>' operation as '{@code EList<StructuralElementInstance>}'.
 	 * @model kind="operation"
 	 * @generated
 	 */

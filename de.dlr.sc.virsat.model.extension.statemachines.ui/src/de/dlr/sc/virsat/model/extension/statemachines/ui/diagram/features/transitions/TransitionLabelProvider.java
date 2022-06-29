@@ -26,14 +26,18 @@ public class TransitionLabelProvider implements ITransitionLabelProvider {
 		String label = "";
 		if (transition.getTrigger() != null) {
 			label += transition.getTrigger().getName();
-		} 
-		if (transition.getName() != null 
-				&& !transition.getName().equals(transition.getTypeInstance().getType().getName())
-				&& !transition.getName().equals("")) {
-			label += " : " + transition.getName();
+		}
+		
+		String name = transition.getName();
+		if (name != null && !name.equals("")) {
+			if (!label.equals("")) {
+				// Add a separator
+				label += " : ";
+			}
+			
+			label += name;
 		}
 		return label;
 	
 	}
-
 }

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="ASCII"?>
+<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v8/c" xmlns:dvlm_calc="http://www.virsat.sc.dlr.de/dvlm/v8/calc" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v8/cp/cppd" name="de.dlr.sc.virsat.model.extension.budget.cost" description="Cost Budget Concept" displayName="Cost Budget">
+  <imports importedNamespace="de.dlr.sc.virsat.model.extension.ps.*"/>
+  <imports importedNamespace="de.dlr.sc.virsat.model.ext.core.*"/>
+  <categories name="CostType" shortName="CT" description="InterfaceTypes such as MIL or CAN to type communication of InterfaceEnds" applicableFor="de.dlr.sc.virsat.model.extension.budget.cost.CostTypesCollection">
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
+  <categories name="ACostParameters" description="Definition of the equipment cost" isAbstract="true">
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="cost" description="The Equipment costs" quantityKindName="Dimensionless" unitName="Euro" defaultValue="0.0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="costWithMargin" description="The equipment cost plus the safety margin" quantityKindName="Dimensionless" unitName="Euro" defaultValue="0.0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="costMargin" description="The actual amount of margin cost" quantityKindName="Dimensionless" unitName="Euro" defaultValue="0.0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="margin" description="The margin to be added as safety factor" quantityKindName="Dimensionless" unitName="Percent" defaultValue="20.0"/>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
+  <categories name="CostTableEntry" description="Definition the equipment cost of the type">
+    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="type" referenceType="de.dlr.sc.virsat.model.extension.budget.cost.CostType"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="cost" description="The Equipment costs" quantityKindName="Dimensionless" unitName="Euro" defaultValue="0.0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="costWithMargin" description="The equipment cost plus the safety margin" quantityKindName="Dimensionless" unitName="Euro" defaultValue="0.0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="costMargin" description="The actual amount of margin cost" quantityKindName="Dimensionless" unitName="Euro" defaultValue="0.0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="margin" description="The margin to be added as safety factor" quantityKindName="Dimensionless" unitName="Percent" defaultValue="20.0"/>
+    <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
+  </categories>
+  <categories name="CostEquipment" description="Definition of the equipment cost" isApplicableForAll="true" extendsCategory="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters">
+    <equationDefinitions>
+      <expression xsi:type="dvlm_calc:MultiplicationAndDivision" operator="*">
+        <left xsi:type="dvlm_calc:ReferencedDefinitionInput" reference="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters.cost"/>
+        <right xsi:type="dvlm_calc:Parenthesis">
+          <right xsi:type="dvlm_calc:AdditionAndSubtraction">
+            <left xsi:type="dvlm_calc:NumberLiteral" value="1"/>
+            <right xsi:type="dvlm_calc:ReferencedDefinitionInput" reference="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters.margin"/>
+          </right>
+        </right>
+      </expression>
+      <result xsi:type="dvlm_calc:TypeDefinitionResult" reference="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters.costWithMargin"/>
+    </equationDefinitions>
+    <equationDefinitions>
+      <expression xsi:type="dvlm_calc:AdditionAndSubtraction" operator="-">
+        <left xsi:type="dvlm_calc:ReferencedDefinitionInput" reference="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters.costWithMargin"/>
+        <right xsi:type="dvlm_calc:ReferencedDefinitionInput" reference="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters.cost"/>
+      </expression>
+      <result xsi:type="dvlm_calc:TypeDefinitionResult" reference="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters.costMargin"/>
+    </equationDefinitions>
+    <properties xsi:type="dvlm_cppd:ReferenceProperty" name="type" referenceType="de.dlr.sc.virsat.model.extension.budget.cost.CostType"/>
+  </categories>
+  <categories name="CostSummary" description="Summary of all nested equipment costs" isApplicableForAll="true" cardinality="1" extendsCategory="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters">
+    <equationDefinitions>
+      <expression xsi:type="dvlm_calc:SetFunction" operator="summary" typeDefinition="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters.cost"/>
+      <result xsi:type="dvlm_calc:TypeDefinitionResult" reference="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters.cost"/>
+    </equationDefinitions>
+    <equationDefinitions>
+      <expression xsi:type="dvlm_calc:SetFunction" operator="summary" typeDefinition="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters.costWithMargin"/>
+      <result xsi:type="dvlm_calc:TypeDefinitionResult" reference="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters.costWithMargin"/>
+    </equationDefinitions>
+    <equationDefinitions>
+      <expression xsi:type="dvlm_calc:AdditionAndSubtraction" operator="-">
+        <left xsi:type="dvlm_calc:ReferencedDefinitionInput" reference="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters.costWithMargin"/>
+        <right xsi:type="dvlm_calc:ReferencedDefinitionInput" reference="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters.cost"/>
+      </expression>
+      <result xsi:type="dvlm_calc:TypeDefinitionResult" reference="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters.costMargin"/>
+    </equationDefinitions>
+    <equationDefinitions>
+      <expression xsi:type="dvlm_calc:MultiplicationAndDivision" operator="/">
+        <left xsi:type="dvlm_calc:ReferencedDefinitionInput" reference="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters.costMargin"/>
+        <right xsi:type="dvlm_calc:ReferencedDefinitionInput" reference="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters.cost"/>
+      </expression>
+      <result xsi:type="dvlm_calc:TypeDefinitionResult" reference="de.dlr.sc.virsat.model.extension.budget.cost.ACostParameters.margin"/>
+    </equationDefinitions>
+    <properties xsi:type="dvlm_cppd:ComposedProperty" name="costTable" type="de.dlr.sc.virsat.model.extension.budget.cost.CostTableEntry">
+      <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
+    </properties>
+  </categories>
+  <structuralElements name="CostTypesCollection" description="A Container to summarize all CostTypes" isRootStructuralElement="true"/>
+</dvlm_c:Concept>

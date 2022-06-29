@@ -43,6 +43,7 @@
 <setEntry value="de.dlr.sc.virsat.license.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.calculation.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.ext.core.feature:default"/>
+<setEntry value="de.dlr.sc.virsat.model.extension.budget.cost.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.budget.mass.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.budget.power.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.funcelectrical.feature:default"/>
@@ -50,6 +51,7 @@
 <setEntry value="de.dlr.sc.virsat.model.extension.mechanical.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.ps.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.requirements.feature:default"/>
+<setEntry value="de.dlr.sc.virsat.model.extension.sequencing.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.statemachines.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.thermal.feature:default"/>
 <setEntry value="de.dlr.sc.virsat.model.extension.visualisation.feature:default"/>

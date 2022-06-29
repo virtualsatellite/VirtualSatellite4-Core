@@ -66,7 +66,7 @@ public class MarkerImageProvider {
 
 	/**
 	 * Get problem image for a given eObject
-	 * @param eObject 
+	 * @param eObject the object for which to get the image
 	 * @return image or null if there are no resource markers for this eObject
 	 */
 	public Image getProblemImageForEObject(EObject eObject) {
@@ -76,7 +76,7 @@ public class MarkerImageProvider {
 
 	/**
 	 * Get problem image tooltip for a given element
-	 * @param eObject 
+	 * @param eObject  the object for which to get the tooltip
 	 * @return tooltip text
 	 */
 	public String getProblemImageToolTipForEObject(EObject eObject) {
@@ -86,7 +86,7 @@ public class MarkerImageProvider {
 	
 	/**
 	 * Get problem image descriptor a given object
-	 * @param eObject 
+	 * @param eObject the obejct for which to get the description
 	 * @return image descriptor or null if there are no resource markers for this object or severity is below warning
 	 */
 	public ImageDescriptor getProblemImageDescriptorForEobject(EObject eObject) {
@@ -96,7 +96,7 @@ public class MarkerImageProvider {
 	
 	/**
 	 * Returns the highest severity of given resource markers
-	 * @param markers 
+	 * @param markers set of markers to be crawled
 	 * @return IMarker.SEVERITY or IMarker.SEVERITY_WARNING or IMarker.SEVERITY_INFO. If the Set is empty returns -1
 	 */
 	protected int getHighestSeverityForMarkers(Set<IMarker> markers) {
@@ -130,7 +130,7 @@ public class MarkerImageProvider {
 	
 	/**
 	 * Get problem image for given severity
-	 * @param severity 
+	 * @param severity for which to get an image
 	 * @return if severity is IMarker.SEVERITY or IMarker.SEVERITY_WARNING or IMarker.SEVERITY_INFO returns corresponding image, otherwise returns null
 	 */
 	public Image getProblemImageForSeverity(int severity) {
@@ -148,7 +148,7 @@ public class MarkerImageProvider {
 
 	/**
 	 * Get problem image descriptor for given severity
-	 * @param severity 
+	 * @param severity severity for which to get the image descripto
 	 * @return if severity is IMarker.SEVERITY or IMarker.SEVERITY_WARNING returns corresponding image descriptor, otherwise returns null
 	 */
 	private ImageDescriptor getProblemImageDescriptorForSeverity(int severity) {
@@ -171,7 +171,7 @@ public class MarkerImageProvider {
 	
 	/**
 	 * Get tooltip text for markers
-	 * @param markers 
+	 * @param markers set of marker for which to get the tool tips
 	 * @return tooltip text
 	 */
 	protected String getToolTipForMarkers(Set<IMarker> markers) {

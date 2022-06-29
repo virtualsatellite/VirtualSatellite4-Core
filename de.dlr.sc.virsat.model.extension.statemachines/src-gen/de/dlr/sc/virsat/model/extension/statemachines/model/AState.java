@@ -27,7 +27,6 @@ import org.eclipse.emf.common.command.Command;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloat;
-import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
 import javax.xml.bind.annotation.XmlElement;
 
 
@@ -45,7 +44,7 @@ import javax.xml.bind.annotation.XmlElement;
  */	
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-public abstract class AState extends GenericCategory implements IBeanCategoryAssignment {
+public abstract class AState extends StateMachine implements IBeanCategoryAssignment {
 
 	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.statemachines.State";
 	

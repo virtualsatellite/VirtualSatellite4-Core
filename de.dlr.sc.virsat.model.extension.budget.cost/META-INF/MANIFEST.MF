@@ -1,0 +1,27 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Core Model Extension Cost Budgets
+Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.budget.cost;singleton:=true
+Bundle-Version: 4.14.0.qualifier
+Bundle-Vendor: DLR (German Aerospace Center)
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ de.dlr.sc.virsat.model,
+ de.dlr.sc.virsat.model.edit,
+ de.dlr.sc.virsat.project,
+ de.dlr.sc.virsat.model.ext.core;visibility:=reexport,
+ de.dlr.sc.virsat.excel,
+ de.dlr.sc.virsat.external.lib.apache.poi,
+ javax.annotation,
+ jakarta.xml.bind
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-ActivationPolicy: lazy
+Eclipse-ExtensibleAPI: true
+Bundle-Activator: de.dlr.sc.virsat.model.extension.budget.cost.activator.Activator
+Export-Package: de.dlr.sc.virsat.model.extension.budget.cost.model,
+ de.dlr.sc.virsat.model.extension.budget.cost.summaryTypes,
+ de.dlr.sc.virsat.model.extension.budget.cost.unit,
+ de.dlr.sc.virsat.model.extension.budget.cost.util,
+ de.dlr.sc.virsat.model.extension.budget.cost.validator
+Automatic-Module-Name: de.dlr.sc.virsat.model.extension.budget.cost
+Import-Package: de.dlr.sc.virsat.model.extension.ps.model

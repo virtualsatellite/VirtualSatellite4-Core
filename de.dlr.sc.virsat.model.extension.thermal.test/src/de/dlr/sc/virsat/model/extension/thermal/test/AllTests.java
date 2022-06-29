@@ -29,7 +29,7 @@ import junit.framework.JUnit4TestAdapter;
 	CadImporterThermalTest.class})
 
 public class AllTests {
-	
+
 	/**
 	 * Constructor for Test Suite
 	 */
@@ -38,9 +38,10 @@ public class AllTests {
 
 	/**
 	 * entry point for test suite
+	 * 
 	 * @return the test suite
 	 */
 	public static junit.framework.Test suite() {
 		return new JUnit4TestAdapter(AllTests.class);
-	}	
+	}
 }

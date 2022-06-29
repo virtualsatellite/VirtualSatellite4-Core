@@ -23,7 +23,7 @@ public class DVLMEnumUnitPropertyInstanceItemProvider extends EnumUnitPropertyIn
 
 	/**
 	 * this class constructor is an instance of the factory and notifier 
-	 * @param adapterFactory 
+	 * @param adapterFactory to be used for initialization
 	 */
 	public DVLMEnumUnitPropertyInstanceItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);

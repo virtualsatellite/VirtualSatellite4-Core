@@ -52,14 +52,14 @@ public interface IBeanUnitProperty {
 
 	/**
 	 * Set the unit wrapped in an unitBean
-	 * @param unitBean
+	 * @param unitBean the unit bean
 	 */
 	void setUnitBean(ABeanUnit<? extends AUnit> unitBean);
 	
 	/**
 	 * Set the unit wrapped in an unitBean
 	 * @param ed the editing domain to be used when creating the command
-	 * @param unitBean
+	 * @param unitBean the unit bean
 	 * @return the command that changes the unit
 	 */
 	Command setUnitBean(EditingDomain ed, ABeanUnit<? extends AUnit> unitBean);
