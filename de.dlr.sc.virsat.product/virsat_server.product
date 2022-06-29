@@ -177,7 +177,7 @@
       <feature id="org.eclipse.equinox.p2.extras.feature" installMode="root"/>
       <feature id="org.eclipse.emf.compare" installMode="root"/>
       <feature id="org.eclipse.ecf.core.feature" installMode="root"/>
-      <feature id="org.eclipse.ecf.filetransfer.httpclient45.feature" installMode="root"/>
+      <feature id="org.eclipse.ecf.filetransfer.httpclient5.feature" installMode="root"/>
       <feature id="org.eclipse.platform" installMode="root"/>
       <feature id="org.eclipse.emf.databinding" installMode="root"/>
       <feature id="org.eclipse.emf.validation" installMode="root"/>

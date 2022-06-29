@@ -6,7 +6,7 @@ Bundle-Version: 4.14.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: de.dlr.sc.virsat.external.lib,
- javax.servlet;visibility:=reexport
+ jakarta.servlet-api
 Bundle-Activator: de.dlr.sc.virsat.external.lib.swagger.Activator
 Automatic-Module-Name: de.dlr.sc.virsat.external.lib.jersey
 Export-Package: .,

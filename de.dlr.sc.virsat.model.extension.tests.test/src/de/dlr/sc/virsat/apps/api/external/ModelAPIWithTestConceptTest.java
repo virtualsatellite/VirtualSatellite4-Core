@@ -44,7 +44,7 @@ import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
  *
  */
 
-public class ModelAPITestWithTestConcept extends ATestConceptTestCase {
+public class ModelAPIWithTestConceptTest extends ATestConceptTestCase {
 
 	private ModelAPI modelAPI;
 	private UnitManagement virSatUnitManagement;

@@ -37,7 +37,7 @@ by German Aerospace Center (DLR e.V.)
       <import feature="de.dlr.sc.virsat.branding.feature" version="0.0.0" match="greaterOrEqual"/>
       <import feature="de.dlr.sc.virsat.license.feature" version="0.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.swt" version="0.0.0" match="greaterOrEqual"/>
-      <import feature="org.eclipse.ecf.filetransfer.httpclient45.feature" version="0.0.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.ecf.filetransfer.httpclient5.feature" version="1.1.600.v20220215-0126"/>
    </requires>
 
    <plugin

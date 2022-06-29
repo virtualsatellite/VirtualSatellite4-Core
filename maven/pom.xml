@@ -321,6 +321,19 @@
 								<pluginExecution>
 									<pluginExecutionFilter>
 										<groupId>org.eclipse.tycho.extras</groupId>
+										<artifactId>target-platform-configuration</artifactId>
+										<versionRange>[2.6.0,)</versionRange>
+										<goals>
+											<goal>compile</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.eclipse.tycho.extras</groupId>
 										<artifactId>tycho-document-bundle-plugin</artifactId>
 										<versionRange>[1.0.0,)</versionRange>
 										<goals>
@@ -333,19 +346,37 @@
 								</pluginExecution>
 								<pluginExecution>
 									<pluginExecutionFilter>
-										<groupId>
-											org.apache.maven.plugins
-										</groupId>
-										<artifactId>
-											maven-dependency-plugin
-										</artifactId>
-										<versionRange>
-											[2.8,)
-										</versionRange>
+										<groupId>org.eclipse.tycho</groupId>
+										<artifactId>target-platform-configuration</artifactId>
+										<versionRange>[2.6.0,)</versionRange>
 										<goals>
-											<goal>
-												copy-dependencies
-											</goal>
+											<goal>target-platform</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-dependency-plugin</artifactId>
+										<versionRange>[2.8,)</versionRange>
+										<goals>
+											<goal>copy-dependencies</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-clean-plugin</artifactId>
+										<versionRange>[2.5,)</versionRange>
+										<goals>
+											<goal>clean</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>

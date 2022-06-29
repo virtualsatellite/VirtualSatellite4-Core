@@ -29,7 +29,7 @@ by German Aerospace Center (DLR e.V.)
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.eclipse.jface"/>
       <import plugin="org.eclipse.draw2d"/>
-      <import plugin="javax.servlet"/>
+      <import plugin="jakarta.servlet-api"/>
    </requires>
 
    <plugin
