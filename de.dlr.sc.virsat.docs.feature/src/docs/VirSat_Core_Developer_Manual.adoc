@@ -372,6 +372,16 @@ Cardinality::
 Defines how many Category Assignments of this Category can be assigned to one Structural Element Instance.
 If no Cardinality is defined, then the number is unlimited.
 
+isVerification::
+Defines that the annotated Category Assignment is a verification element that can be added to requirements. A verification category has specific UI and its, to be implemented, verification logic is automatically executed from the requirements verification engine.
+The verification implementation can be added into the generated bean's function:
+----
+@Override
+public Command runCustomVerification(EditingDomain editingDomain, Requirement requirement, IProgressMonitor monitor) {
+	// Do verification here
+}
+----
+
 === Properties
 
 A Category can be extended with further data by adding _Properties_.
@@ -392,7 +402,8 @@ Only units based on the quantity kind of this attribute will be assignable in th
 * _unit_: 
 The default unit after instantiation.
 Has to be a unit compatible to the _quantityKind_ attribute. 
- 
+* _verification_: 
+A verification category that can be used to verify requirements targeting this property. Verification categories can be imported from the requirements concept (UpperLimitVerification...) or be implemented by adding the _isVerification_ to categories. This keyword will lead to additional UI in the requirements Virtual Satellite editor. 
 
 IntegerProperty:: 
 Contains an integer number.
@@ -406,7 +417,9 @@ The quantity kind of this property.
 Only units based on the quantity kind of this attribute will be assignable in the user interface.
 * _unit_: 
 The default unit after instantiation.
-Has to be a unit compatible to the _quantityKind_ attribute. 
+Has to be a unit compatible to the _quantityKind_ attribute.
+* _verification_: 
+A verification category that can be used to verify requirements targeting this property. Verification categories can be imported from the requirements concept (UpperLimitVerification...) or be implemented by adding the _isVerification_ to categories. This keyword will lead to additional UI in the requirements Virtual Satellite editor. 
 
 BooleanProperty::
 Contains a Boolean value.
@@ -415,6 +428,8 @@ Can be equipped further with the following attributes:
 A description of the property.
 * _default_: 
 The default value after instantiation.
+* _verification_: 
+A verification category that can be used to verify requirements targeting this property. Verification categories can be imported from the requirements concept (UpperLimitVerification...) or be implemented by adding the _isVerification_ to categories. This keyword will lead to additional UI in the requirements Virtual Satellite editor.
 
 StringProperty::
 Contains a string value.
@@ -423,12 +438,16 @@ Can be equipped further with the following attributes:
 A description of the property.
 * _default_: 
 The default value after instantiation.
+* _verification_: 
+A verification category that can be used to verify requirements targeting this property. Verification categories can be imported from the requirements concept (UpperLimitVerification...) or be implemented by adding the _isVerification_ to categories. This keyword will lead to additional UI in the requirements Virtual Satellite editor.
 
 Resource::
 Contains a link to a resource on the file system.
 Can be equipped further with the following attributes:
 * _description_: 
 A description of the property.
+* _verification_: 
+A verification category that can be used to verify requirements targeting this property. Verification categories can be imported from the requirements concept (UpperLimitVerification...) or be implemented by adding the _isVerification_ to categories. This keyword will lead to additional UI in the requirements Virtual Satellite editor.
 
 Reference::
 Contains a reference to a Category Assignment or  in the model.
@@ -437,6 +456,8 @@ Can be equipped further with the following attributes:
 The _Category_ or _Property_ that can be referenced.
 * _description_: 
 A description of the property.
+* _verification_: 
+A verification category that can be used to verify requirements targeting this property. Verification categories can be imported from the requirements concept (UpperLimitVerification...) or be implemented by adding the _isVerification_ to categories. This keyword will lead to additional UI in the requirements Virtual Satellite editor.
 
 EReference::
 Contains a reference to an EMF object outside of the model.
@@ -445,6 +466,8 @@ Can be equipped further with the following attributes:
 The EMF class that can be referenced.
 * _description_: 
 A description of the property.
+* _verification_: 
+A verification category that can be used to verify requirements targeting this property. Verification categories can be imported from the requirements concept (UpperLimitVerification...) or be implemented by adding the _isVerification_ to categories. This keyword will lead to additional UI in the requirements Virtual Satellite editor.
 
 EnumProperty::
 Contains a value from an enumeration.
@@ -462,6 +485,8 @@ Has to be a unit compatible to the _quantityKind_ attribute.
 * _values_:
 A list of enumeration values.
 Given in the form _[enumValue1 = number, enumValue2 = number, ...]_.
+* _verification_: 
+A verification category that can be used to verify requirements targeting this property. Verification categories can be imported from the requirements concept (UpperLimitVerification...) or be implemented by adding the _isVerification_ to categories. This keyword will lead to additional UI in the requirements Virtual Satellite editor.
 
 Type::
 Contains another Category Assignment.
@@ -475,6 +500,8 @@ The quantity kind of the enumeration values.
 * _unit_: 
 The unit of the enumeration values after instantiation.
 Has to be a unit compatible to the _quantityKind_ attribute. 
+* _verification_: 
+A verification category that can be used to verify requirements targeting this property. Verification categories can be imported from the requirements concept (UpperLimitVerification...) or be implemented by adding the _isVerification_ to categories. This keyword will lead to additional UI in the requirements Virtual Satellite editor.
 
 Any property can be defined as a dynamic array by adding _[]_ after the property name.
 By adding the expression _[number]_ after a property name, a static array of properties with the given size will be created.
