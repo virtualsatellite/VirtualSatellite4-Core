@@ -25,10 +25,6 @@
 			id="de.dlr.sc.virsat.model.extension.budget.mass.MassSummary"
 			caBean="de.dlr.sc.virsat.model.extension.budget.mass.model.MassSummary">
 		</CategoryAssignmentBean>
-		<CategoryAssignmentBean
-			id="de.dlr.sc.virsat.model.extension.budget.mass.MassRequirementsVerification"
-			caBean="de.dlr.sc.virsat.model.extension.budget.mass.model.MassRequirementsVerification">
-		</CategoryAssignmentBean>
 	</extension>
 	<!-- Plugin.XML Protected Region Start -->
 <extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">

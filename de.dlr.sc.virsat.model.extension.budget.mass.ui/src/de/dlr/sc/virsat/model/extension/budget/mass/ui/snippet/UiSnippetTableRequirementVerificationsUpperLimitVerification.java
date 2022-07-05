@@ -22,5 +22,5 @@ package de.dlr.sc.virsat.model.extension.budget.mass.ui.snippet;
  * 
  * 
  */
-public class UiSnippetTableRequirementVerificationsBoundedValueVerification extends AUiSnippetTableRequirementVerificationsBoundedValueVerification {
+public class UiSnippetTableRequirementVerificationsUpperLimitVerification extends AUiSnippetTableRequirementVerificationsUpperLimitVerification {
 }

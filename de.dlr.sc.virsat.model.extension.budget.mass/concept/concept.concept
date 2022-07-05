@@ -13,8 +13,8 @@
 	 
 	Category AMassParameters description "Definition of the equipment mass" {
 		IsAbstract;
-		FloatProperty mass description "The Equipment mass" default 0.0 quantityKind "Mass" unit "Kilogram";
-		FloatProperty massWithMargin description "The equipment mass plus the safety margin" default 0.0 quantityKind "Mass" unit "Kilogram";
+		FloatProperty mass description "The Equipment mass" default 0.0 quantityKind "Mass" unit "Kilogram" verification UpperLimitVerification;
+		FloatProperty massWithMargin description "The equipment mass plus the safety margin" default 0.0 quantityKind "Mass" unit "Kilogram" verification UpperLimitVerification;
 		FloatProperty massMargin description "The actual amount of margin mass" default 0.0 quantityKind "Mass" unit "Kilogram";
 		FloatProperty margin description "The margin to be added as safety factor" default 20.0 quantityKind "Dimensionless" unit "Percent"; 
 	}
@@ -36,9 +36,5 @@
 		Ref:AMassParameters.massMargin = AMassParameters.massWithMargin - AMassParameters.mass;
 		Ref:AMassParameters.margin = AMassParameters.massMargin / AMassParameters.mass;
 	} 
-	
-	Category MassRequirementsVerification extends BoundedValueVerification {
-		IsVerification;
-	}
 }
 

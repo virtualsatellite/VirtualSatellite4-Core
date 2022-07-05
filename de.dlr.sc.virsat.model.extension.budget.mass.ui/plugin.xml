@@ -27,10 +27,6 @@
 		fullQualifiedID="de.dlr.sc.virsat.model.extension.budget.mass.MassSummary"
 		pathToImage="resources/icons/MassSummary.gif">
 	</conceptImage>
-	<conceptImage
-		fullQualifiedID="de.dlr.sc.virsat.model.extension.budget.mass.MassRequirementsVerification"
-		pathToImage="resources/icons/MassRequirementsVerification.gif">
-	</conceptImage>
 	</extension>
 	<extension point="org.eclipse.ui.commands">
 	<command
@@ -40,10 +36,6 @@
 	<command
 		id="de.dlr.sc.virsat.model.extension.budget.mass.ui.command.AddMassSummary"
 		name="Add MassSummary">
-	</command>
-	<command
-		id="de.dlr.sc.virsat.model.extension.budget.mass.ui.command.AddMassRequirementsVerification"
-		name="Add MassRequirementsVerification">
 	</command>
 	</extension>
 	<extension point="org.eclipse.ui.commandImages">
@@ -57,11 +49,6 @@
 	      disabledIcon="resources/icons/MassSummary_disabled.gif"
 	      icon="resources/icons/MassSummary.gif">
 	</image>
-	<image
-	      commandId="de.dlr.sc.virsat.model.extension.budget.mass.ui.command.AddMassRequirementsVerification"
-	      disabledIcon="resources/icons/MassRequirementsVerification_disabled.gif"
-	      icon="resources/icons/MassRequirementsVerification.gif">
-	</image>
 	</extension>
 	<extension point="org.eclipse.ui.handlers">
 	<handler
@@ -71,10 +58,6 @@
 	<handler
 		class="de.dlr.sc.virsat.model.extension.budget.mass.ui.handler.AddMassSummaryHandler"
 		commandId="de.dlr.sc.virsat.model.extension.budget.mass.ui.command.AddMassSummary">
-	</handler>
-	<handler
-		class="de.dlr.sc.virsat.model.extension.budget.mass.ui.handler.AddMassRequirementsVerificationHandler"
-		commandId="de.dlr.sc.virsat.model.extension.budget.mass.ui.command.AddMassRequirementsVerification">
 	</handler>
 	</extension>
 	<extension point="org.eclipse.ui.menus">
@@ -165,28 +148,6 @@
 				</with>
 			</visibleWhen>
 		</command>
-		<command
-			commandId="de.dlr.sc.virsat.model.extension.budget.mass.ui.command.AddMassRequirementsVerification"
-			style="push">
-			<visibleWhen
-				checkEnabled="true">
-				<with
-					variable="selection">
-					<iterate
-						ifEmpty="false"
-						operator="and">
-						<test 
-							property="de.dlr.sc.virsat.model.extension.budget.mass.ui.propertyTester.conceptEnabled"
-							value="true" 
-							forcePluginActivation="true">
-						</test>		
-						<instanceof
-							value="de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer">
-						</instanceof>
-					</iterate>
-				</with>
-			</visibleWhen>
-		</command>
 		</menuContribution>
 		<menuContribution allPopups="false"
 			locationURI="popup:de.dlr.sc.virsat.model.extension.budget.mass.menu?after=structuralElements">
@@ -211,6 +172,16 @@
 		      snippet="de.dlr.sc.virsat.model.extension.budget.mass.ui.snippet.UiSnippetSectionMassEquipment">
 		</uiSnippet>
 		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.budget.mass.table.uISnippetTableRequirementVerificationsUpperLimitVerification"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section.Verifications"
+		      snippet="de.dlr.sc.virsat.model.extension.budget.mass.ui.snippet.UiSnippetTableRequirementVerificationsUpperLimitVerification">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.budget.mass.table.uISnippetTableRequirementVerificationsUpperLimitVerification"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section.Verifications"
+		      snippet="de.dlr.sc.virsat.model.extension.budget.mass.ui.snippet.UiSnippetTableRequirementVerificationsUpperLimitVerification">
+		</uiSnippet>
+		<uiSnippet
 		      id="de.dlr.sc.virsat.model.extension.budget.mass.table.uiSnippetMassSummary"
 		      section="de.dlr.sc.virsat.model.extension.budget.mass.ui.Section"
 		      snippet="de.dlr.sc.virsat.model.extension.budget.mass.ui.snippet.UiSnippetTableMassSummary">
@@ -221,28 +192,16 @@
 		      snippet="de.dlr.sc.virsat.model.extension.budget.mass.ui.snippet.UiSnippetSectionMassSummary">
 		</uiSnippet>
 		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.budget.mass.table.uiSnippetMassRequirementsVerification"
-		      section="de.dlr.sc.virsat.model.extension.budget.mass.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.budget.mass.ui.snippet.UiSnippetTableMassRequirementsVerification">
-		</uiSnippet>
-		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.budget.mass.section.uiSnippetMassRequirementsVerification"
-		      section="de.dlr.sc.virsat.model.extension.budget.mass.ui.Section"
-		      snippet="de.dlr.sc.virsat.model.extension.budget.mass.ui.snippet.UiSnippetSectionMassRequirementsVerification">
-		</uiSnippet>
-		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.budget.mass.table.uISnippetTableRequirementVerificationsMassRequirementsVerification"
+		      id="de.dlr.sc.virsat.model.extension.budget.mass.table.uISnippetTableRequirementVerificationsUpperLimitVerification"
 		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section.Verifications"
-		      snippet="de.dlr.sc.virsat.model.extension.budget.mass.ui.snippet.UiSnippetTableRequirementVerificationsMassRequirementsVerification">
+		      snippet="de.dlr.sc.virsat.model.extension.budget.mass.ui.snippet.UiSnippetTableRequirementVerificationsUpperLimitVerification">
+		</uiSnippet>
+		<uiSnippet
+		      id="de.dlr.sc.virsat.model.extension.budget.mass.table.uISnippetTableRequirementVerificationsUpperLimitVerification"
+		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section.Verifications"
+		      snippet="de.dlr.sc.virsat.model.extension.budget.mass.ui.snippet.UiSnippetTableRequirementVerificationsUpperLimitVerification">
 		</uiSnippet>
 	</extension>
 	<!-- Plugin.XML Protected Region Start -->
-<extension point="de.dlr.sc.virsat.uiengine.ui.EditorUiSnippets">
-		<uiSnippet
-		      id="de.dlr.sc.virsat.model.extension.requirements.table.uiSnippetTableRequirementVerificationMassRequirementsVerification"
-		      section="de.dlr.sc.virsat.model.extension.requirements.ui.Section.Verifications"
-		      snippet="de.dlr.sc.virsat.model.extension.budget.mass.ui.snippet.UiSnippetTableRequirementVerificationMassRequirementsVerification">
-		</uiSnippet>
-	</extension>
 	<!-- Plugin.XML Protected Region End -->
 </plugin>

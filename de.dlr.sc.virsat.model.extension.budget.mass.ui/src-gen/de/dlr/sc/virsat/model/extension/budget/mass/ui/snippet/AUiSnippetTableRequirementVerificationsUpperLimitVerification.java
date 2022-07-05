@@ -11,17 +11,22 @@ package de.dlr.sc.virsat.model.extension.budget.mass.ui.snippet;
 
 import de.dlr.sc.virsat.model.extension.requirements.ui.snippet.AUISnippetTableRequirementsVerification;
 
-public class UiSnippetTableRequirementVerificationMassRequirementsVerification extends AUISnippetTableRequirementsVerification {
 
-	/**
-	 * Constructor
-	 */
-	public UiSnippetTableRequirementVerificationMassRequirementsVerification() {
+/**
+ * Auto Generated Abstract Generator Gap Class
+ * 
+ * Don't Manually modify this class
+ * 
+ * 
+ * 
+ */	
+public abstract class AUiSnippetTableRequirementVerificationsUpperLimitVerification extends AUISnippetTableRequirementsVerification {
+	public AUiSnippetTableRequirementVerificationsUpperLimitVerification() {
 		super("de.dlr.sc.virsat.model.extension.budget.mass",
-			"de.dlr.sc.virsat.model.extension.budget.mass",
-			"MassRequirementsVerification",
-			"de.dlr.sc.virsat.model.extension.budget.mass.MassRequirementsVerification",
+			"de.dlr.sc.virsat.model.extension.requirements",
+			"UpperLimitVerification",
+			"de.dlr.sc.virsat.model.extension.requirements.UpperLimitVerification",
 			STYLE_ADD_BUTTON | STYLE_REMOVE_BUTTON | STYLE_EDITOR_BUTTON);
 	}
-	
+
 }
