@@ -18,7 +18,6 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 import de.dlr.sc.virsat.model.extension.budget.mass.util.MassConceptHelperTest;
-import de.dlr.sc.virsat.model.extension.budget.mass.verification.MassRequirementsVerificationImplTest;
 import junit.framework.JUnit4TestAdapter;
 
 
@@ -29,7 +28,6 @@ import junit.framework.JUnit4TestAdapter;
 
 @SuiteClasses({
 	MassConceptHelperTest.class,
-	MassRequirementsVerificationImplTest.class
 	})
 
 /**
