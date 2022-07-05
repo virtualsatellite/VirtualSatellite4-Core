@@ -2,7 +2,7 @@
 <feature
       id="de.dlr.sc.virsat.model.extension.sequencing.feature"
       label="VirSat Core Model Extension Sequencing Feature"
-      version="4.14.0.qualifier"
+      version="4.15.0.qualifier"
       plugin="de.dlr.sc.virsat.branding.ui"
       license-feature="de.dlr.sc.virsat.license.feature">
 
