@@ -1517,16 +1517,21 @@ NOTE: Basic verification types are created in the _VerificationConfiguration_.
 NOTE: System model-based verification methods can be added via dedicated editor sections.
 Depending on the used concepts in the project there might be different model-based verification methods. 
 
+NOTE: Model-based verification methods automatically verify that the system model element, which is traced by this requirements fulfills the added verification rules.
+
 |image:chapterModeling/subsectionRequirements/AddVerification.png[Add a verification methods to requirement]
 
 |===
 
-The verification methods have a *status* attribute which also has influence on the requirement status which is shown in the specification table.
+The verification methods contain a *status* attribute which has influence on the requirement status, shown in the specification table.
 
 NOTE: Depending on the verification status, the requirement status might change automatically.
 
 image:chapterModeling/subsectionRequirements/RequirementStatus.png[Requirement status]
 
+Model based verification methods can be used to continuously check that requirements are fulfilled. For now these verification rules have to be selected and configured manually. See the mass budget concept as an example: A requirement specifying that the "mass of system X shall not exceed 5kg" can be verified by an UpperLimitVerification method that links to the mass property (done automatically by the UI) and then specifying the value to be checked - in this case 5kg. These verification methods always automatically use the trace-link to the system model to find the element to be verified. It is also possible to verify multiple system model elements, by having multiple trace links. 
+
+|image:chapterModeling/subsectionRequirements/VerificationMethodSpecification.png[Configuration of a upper limit verification]
 
 ==== Equipment mass and mass summaries concept
 
