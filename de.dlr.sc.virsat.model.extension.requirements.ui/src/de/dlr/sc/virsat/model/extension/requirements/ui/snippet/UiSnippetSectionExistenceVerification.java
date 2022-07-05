@@ -9,6 +9,12 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.ui.snippet;
 
+import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.forms.widgets.FormToolkit;
+
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
+import de.dlr.sc.virsat.model.extension.requirements.model.ExistenceVerification;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
 
 
@@ -21,4 +27,20 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
  * 
  */
 public class UiSnippetSectionExistenceVerification extends AUiSnippetSectionExistenceVerification implements IUiSnippet {
+	
+	@Override
+	protected void createCommonPropertyWidgets(FormToolkit toolkit, Composite sectionBody, AProperty property) {
+		if (!property.getName().equals(ExistenceVerification.PROPERTY_ELEMENTTOBEVERIFIED)) {
+			super.createCommonPropertyWidgets(toolkit, sectionBody, property);
+		}
+	}
+	
+	@Override
+	protected void createCustomPropertyWidgets(FormToolkit toolkit, EditingDomain editingDomain, Composite sectionBody,
+			AProperty property) {
+		if (!property.getName().equals(ExistenceVerification.PROPERTY_ELEMENTTOBEVERIFIED)) {
+			super.createCustomPropertyWidgets(toolkit, editingDomain, sectionBody, property);
+		}
+	}
+	
 }
