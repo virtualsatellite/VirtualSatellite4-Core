@@ -49,7 +49,7 @@ public interface CalculationPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v8/calc";
+	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v9/calc";
 
 	/**
 	 * The package namespace name.

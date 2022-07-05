@@ -46,7 +46,7 @@ public interface GeneralPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v8/g";
+	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v9/g";
 
 	/**
 	 * The package namespace name.

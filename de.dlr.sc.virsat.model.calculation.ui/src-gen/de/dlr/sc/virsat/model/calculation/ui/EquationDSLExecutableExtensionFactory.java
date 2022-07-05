@@ -11,9 +11,9 @@ package de.dlr.sc.virsat.model.calculation.ui;
 
 import com.google.inject.Injector;
 import de.dlr.sc.virsat.model.calculation.ui.internal.CalculationActivator;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.xtext.ui.guice.AbstractGuiceAwareExecutableExtensionFactory;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
 /**
  * This class was generated. Customizations should only happen in a newly
@@ -23,7 +23,7 @@ public class EquationDSLExecutableExtensionFactory extends AbstractGuiceAwareExe
 
 	@Override
 	protected Bundle getBundle() {
-		return Platform.getBundle(CalculationActivator.PLUGIN_ID);
+		return FrameworkUtil.getBundle(CalculationActivator.class);
 	}
 	
 	@Override
