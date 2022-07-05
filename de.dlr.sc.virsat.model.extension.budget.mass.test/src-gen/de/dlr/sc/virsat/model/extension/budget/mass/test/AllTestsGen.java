@@ -27,7 +27,6 @@ import de.dlr.sc.virsat.model.extension.budget.mass.migrator.Migrator1v0Test;
 import de.dlr.sc.virsat.model.extension.budget.mass.migrator.Migrator1v1Test;
 import de.dlr.sc.virsat.model.extension.budget.mass.validator.MassValidatorTest;
 import de.dlr.sc.virsat.model.extension.budget.mass.model.MassEquipmentTest;
-import de.dlr.sc.virsat.model.extension.budget.mass.model.MassRequirementsVerificationTest;
 
 /**
  * 
@@ -37,7 +36,6 @@ import de.dlr.sc.virsat.model.extension.budget.mass.model.MassRequirementsVerifi
 @SuiteClasses({
 	MassEquipmentTest.class,
 	MassSummaryTest.class,
-	MassRequirementsVerificationTest.class,
 	Migrator1v0Test.class,
 	Migrator1v1Test.class,
 	Migrator1v2Test.class,
