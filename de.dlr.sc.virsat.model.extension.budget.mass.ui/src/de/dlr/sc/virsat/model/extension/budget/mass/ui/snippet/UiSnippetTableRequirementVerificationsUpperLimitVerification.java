@@ -7,12 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.model.extension.budget.mass.model;
-
-// *****************************************************************
-// * Import Statements
-// *****************************************************************
-
+package de.dlr.sc.virsat.model.extension.budget.mass.ui.snippet;
 
 
 // *****************************************************************
@@ -27,6 +22,5 @@ package de.dlr.sc.virsat.model.extension.budget.mass.model;
  * 
  * 
  */
-public class MassRequirementsVerificationTest extends AMassRequirementsVerificationTest {
-
+public class UiSnippetTableRequirementVerificationsUpperLimitVerification extends AUiSnippetTableRequirementVerificationsUpperLimitVerification {
 }
