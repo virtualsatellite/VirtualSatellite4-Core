@@ -173,14 +173,6 @@
 		xmi="concept/concept_v0_7.xmi">
 	</migrator>
 </extension>
-<extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">
-	<migrator
-		id="de.dlr.sc.virsat.model.extension.requirements"
-		version="0.8"
-		class="de.dlr.sc.virsat.model.extension.requirements.migrator.Migrator0v8"
-		xmi="concept/concept_v0_8.xmi">
-	</migrator>
-</extension>
 	<!-- Plugin.XML Protected Region End -->
 	<!-- Plugin.XML Protected Region Start -->
 <extension
