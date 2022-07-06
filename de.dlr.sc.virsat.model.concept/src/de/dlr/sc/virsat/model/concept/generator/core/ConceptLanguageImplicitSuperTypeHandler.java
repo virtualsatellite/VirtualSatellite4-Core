@@ -35,12 +35,12 @@ public class ConceptLanguageImplicitSuperTypeHandler {
 	 * @return a copy of the concept with updated categories
 	 */
 	public Concept addImplicitSuperType(Concept concept) {
-		Concept langaugeCoreConcept = loadLangaugeCoreConceptFromPlugin();
-		
 		//Check that the generic category does not get itself as super type
-		if (concept.getName().equals(langaugeCoreConcept.getName())) {
+		if (concept.getName().equals(Activator.getPluginId())) {
 			return concept;
 		}
+		
+		Concept langaugeCoreConcept = loadLangaugeCoreConceptFromPlugin();
 		
 		Concept conceptWithImplicitSuperType = EcoreUtil.copy(concept);
 		Category genericCategory = ActiveConceptHelper.

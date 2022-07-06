@@ -43,6 +43,7 @@ import de.dlr.sc.virsat.model.extension.requirements.model.RequirementTraceTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.ImportConfigurationTest;
 import de.dlr.sc.virsat.model.extension.requirements.migrator.Migrator0v4Test;
 import de.dlr.sc.virsat.model.extension.requirements.model.DefaultVerificationTest;
+import de.dlr.sc.virsat.model.extension.requirements.migrator.Migrator0v8Test;
 import de.dlr.sc.virsat.model.extension.requirements.model.RequirementAttributeTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.AttributeValueTest;
 import de.dlr.sc.virsat.model.extension.requirements.model.UpperLimitVerificationTest;
@@ -89,6 +90,7 @@ import de.dlr.sc.virsat.model.extension.requirements.model.RequirementLinkTypeTe
 	Migrator0v5Test.class,
 	Migrator0v6Test.class,
 	Migrator0v7Test.class,
+	Migrator0v8Test.class,
 	RequirementsValidatorTest.class,
 				})
 
