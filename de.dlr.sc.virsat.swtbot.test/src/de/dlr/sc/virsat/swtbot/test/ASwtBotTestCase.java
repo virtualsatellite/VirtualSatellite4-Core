@@ -18,6 +18,8 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.BooleanSupplier;
 
 import org.eclipse.core.resources.IProject;
@@ -103,7 +105,7 @@ public class ASwtBotTestCase {
 	protected Concept conceptTest;
 	protected Concept conceptFea;
 	protected Concept conceptMaturity;
-	protected int screenCaptureNumber = 1;
+	protected static Map<String, Integer> screenCaptureNumberMap = new HashMap<>();
 	protected WorkspaceBuilderInterlockedExecution buildCounter;
 	protected enum DiagramType { interfaces, stateMachines }
 
@@ -207,7 +209,12 @@ public class ASwtBotTestCase {
 	 * @return a screenshot filename
 	 */
 	protected String generateScreenshotFileName() {
-		return "./../swtbot/" + this.getClass().getSimpleName() + "." + testMethodNameRule.getMethodName() + screenCaptureNumber++ + ".png";
+		String baseName =  "./../swtbot/" + this.getClass().getSimpleName() + "." + testMethodNameRule.getMethodName();
+		// Since SWTBot test cases can be run multiple times to avoid flakey results, 
+		// we need an identifier for each run of each test case
+		int screenCaptureNumber = screenCaptureNumberMap.getOrDefault(baseName, 0) + 1;
+		screenCaptureNumberMap.put(baseName, screenCaptureNumber);
+		return baseName + screenCaptureNumber + ".png";
 	}
 	
 	/**
