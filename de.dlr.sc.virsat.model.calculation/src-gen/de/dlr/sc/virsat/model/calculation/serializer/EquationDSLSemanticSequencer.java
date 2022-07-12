@@ -107,12 +107,14 @@ public class EquationDSLSemanticSequencer extends AbstractDelegatingSemanticSequ
 	}
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     AdditionAndSubtraction returns AdditionAndSubtraction
 	 *     AdditionAndSubtraction.AdditionAndSubtraction_1_0 returns AdditionAndSubtraction
 	 *
 	 * Constraint:
 	 *     (left=AdditionAndSubtraction_AdditionAndSubtraction_1_0 (operator=OperatorPlus | operator=OperatorMinus) right=MultiplicationAndDivision)
+	 * </pre>
 	 */
 	protected void sequence_AdditionAndSubtraction(ISerializationContext context, AdditionAndSubtraction semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -120,6 +122,7 @@ public class EquationDSLSemanticSequencer extends AbstractDelegatingSemanticSequ
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     AdditionAndSubtraction returns AdvancedFunction
 	 *     AdditionAndSubtraction.AdditionAndSubtraction_1_0 returns AdvancedFunction
@@ -133,6 +136,7 @@ public class EquationDSLSemanticSequencer extends AbstractDelegatingSemanticSequ
 	 *
 	 * Constraint:
 	 *     (operator=ID inputs+=AdditionAndSubtraction inputs+=AdditionAndSubtraction*)
+	 * </pre>
 	 */
 	protected void sequence_AdvancedFunction(ISerializationContext context, AdvancedFunction semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -140,12 +144,14 @@ public class EquationDSLSemanticSequencer extends AbstractDelegatingSemanticSequ
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     EquationResult returns EquationIntermediateResult
 	 *     EquationIntermediateResult returns EquationIntermediateResult
 	 *
 	 * Constraint:
 	 *     name=ID
+	 * </pre>
 	 */
 	protected void sequence_EquationIntermediateResult(ISerializationContext context, EquationIntermediateResult semanticObject) {
 		if (errorAcceptor != null) {
@@ -159,11 +165,13 @@ public class EquationDSLSemanticSequencer extends AbstractDelegatingSemanticSequ
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     EquationSection returns EquationSection
 	 *
 	 * Constraint:
 	 *     ((imports+=Import+ equations+=Equation+) | equations+=Equation+)?
+	 * </pre>
 	 */
 	protected void sequence_EquationSection(ISerializationContext context, EquationSection semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -171,11 +179,13 @@ public class EquationDSLSemanticSequencer extends AbstractDelegatingSemanticSequ
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     Equation returns Equation
 	 *
 	 * Constraint:
 	 *     (result=EquationResult expression=AdditionAndSubtraction)
+	 * </pre>
 	 */
 	protected void sequence_Equation(ISerializationContext context, Equation semanticObject) {
 		if (errorAcceptor != null) {
@@ -192,6 +202,7 @@ public class EquationDSLSemanticSequencer extends AbstractDelegatingSemanticSequ
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     AdditionAndSubtraction returns Function
 	 *     AdditionAndSubtraction.AdditionAndSubtraction_1_0 returns Function
@@ -219,6 +230,7 @@ public class EquationDSLSemanticSequencer extends AbstractDelegatingSemanticSequ
 	 *         ) 
 	 *         right=AdditionAndSubtraction
 	 *     )
+	 * </pre>
 	 */
 	protected void sequence_Function(ISerializationContext context, Function semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -226,11 +238,13 @@ public class EquationDSLSemanticSequencer extends AbstractDelegatingSemanticSequ
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     Import returns Import
 	 *
 	 * Constraint:
 	 *     importedNamespace=[IInstance|QualifiedName]
+	 * </pre>
 	 */
 	protected void sequence_Import(ISerializationContext context, Import semanticObject) {
 		if (errorAcceptor != null) {
@@ -244,6 +258,7 @@ public class EquationDSLSemanticSequencer extends AbstractDelegatingSemanticSequ
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     AdditionAndSubtraction returns MultiplicationAndDivision
 	 *     AdditionAndSubtraction.AdditionAndSubtraction_1_0 returns MultiplicationAndDivision
@@ -252,6 +267,7 @@ public class EquationDSLSemanticSequencer extends AbstractDelegatingSemanticSequ
 	 *
 	 * Constraint:
 	 *     (left=MultiplicationAndDivision_MultiplicationAndDivision_1_0 (operator=OperatorMultiply | operator=OperatorDivide) right=PowerFunction)
+	 * </pre>
 	 */
 	protected void sequence_MultiplicationAndDivision(ISerializationContext context, MultiplicationAndDivision semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -259,6 +275,7 @@ public class EquationDSLSemanticSequencer extends AbstractDelegatingSemanticSequ
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     AdditionAndSubtraction returns NumberLiteral
 	 *     AdditionAndSubtraction.AdditionAndSubtraction_1_0 returns NumberLiteral
@@ -272,6 +289,7 @@ public class EquationDSLSemanticSequencer extends AbstractDelegatingSemanticSequ
 	 *
 	 * Constraint:
 	 *     value=NumberLiteralString
+	 * </pre>
 	 */
 	protected void sequence_NumberLiteral(ISerializationContext context, NumberLiteral semanticObject) {
 		if (errorAcceptor != null) {
@@ -285,6 +303,7 @@ public class EquationDSLSemanticSequencer extends AbstractDelegatingSemanticSequ
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     AdditionAndSubtraction returns Parenthesis
 	 *     AdditionAndSubtraction.AdditionAndSubtraction_1_0 returns Parenthesis
@@ -297,6 +316,7 @@ public class EquationDSLSemanticSequencer extends AbstractDelegatingSemanticSequ
 	 *
 	 * Constraint:
 	 *     (operator=OperatorMinus? right=AdditionAndSubtraction)
+	 * </pre>
 	 */
 	protected void sequence_Parenthesis(ISerializationContext context, Parenthesis semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -304,6 +324,7 @@ public class EquationDSLSemanticSequencer extends AbstractDelegatingSemanticSequ
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     AdditionAndSubtraction returns PowerFunction
 	 *     AdditionAndSubtraction.AdditionAndSubtraction_1_0 returns PowerFunction
@@ -314,6 +335,7 @@ public class EquationDSLSemanticSequencer extends AbstractDelegatingSemanticSequ
 	 *
 	 * Constraint:
 	 *     (left=PowerFunction_PowerFunction_1_0 operator=OperatorPower right=AExpression)
+	 * </pre>
 	 */
 	protected void sequence_PowerFunction(ISerializationContext context, PowerFunction semanticObject) {
 		if (errorAcceptor != null) {
@@ -333,6 +355,7 @@ public class EquationDSLSemanticSequencer extends AbstractDelegatingSemanticSequ
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     AdditionAndSubtraction returns ReferencedInput
 	 *     AdditionAndSubtraction.AdditionAndSubtraction_1_0 returns ReferencedInput
@@ -345,6 +368,7 @@ public class EquationDSLSemanticSequencer extends AbstractDelegatingSemanticSequ
 	 *
 	 * Constraint:
 	 *     reference=[IEquationInput|QualifiedName]
+	 * </pre>
 	 */
 	protected void sequence_ReferencedInput(ISerializationContext context, ReferencedInput semanticObject) {
 		if (errorAcceptor != null) {
@@ -358,6 +382,7 @@ public class EquationDSLSemanticSequencer extends AbstractDelegatingSemanticSequ
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     AdditionAndSubtraction returns SetFunction
 	 *     AdditionAndSubtraction.AdditionAndSubtraction_1_0 returns SetFunction
@@ -371,6 +396,7 @@ public class EquationDSLSemanticSequencer extends AbstractDelegatingSemanticSequ
 	 *
 	 * Constraint:
 	 *     (operator=ID typeDefinition=[ATypeDefinition|QualifiedName] depth=INT? filterName=ID?)
+	 * </pre>
 	 */
 	protected void sequence_SetFunction(ISerializationContext context, SetFunction semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -378,12 +404,14 @@ public class EquationDSLSemanticSequencer extends AbstractDelegatingSemanticSequ
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     EquationResult returns TypeInstanceResult
 	 *     TypeInstanceResult returns TypeInstanceResult
 	 *
 	 * Constraint:
 	 *     reference=[ATypeInstance|QualifiedName]
+	 * </pre>
 	 */
 	protected void sequence_TypeInstanceResult(ISerializationContext context, TypeInstanceResult semanticObject) {
 		if (errorAcceptor != null) {
@@ -397,6 +425,7 @@ public class EquationDSLSemanticSequencer extends AbstractDelegatingSemanticSequ
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     AdditionAndSubtraction returns ValueE
 	 *     AdditionAndSubtraction.AdditionAndSubtraction_1_0 returns ValueE
@@ -410,6 +439,7 @@ public class EquationDSLSemanticSequencer extends AbstractDelegatingSemanticSequ
 	 *
 	 * Constraint:
 	 *     {ValueE}
+	 * </pre>
 	 */
 	protected void sequence_ValueE(ISerializationContext context, ValueE semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -417,6 +447,7 @@ public class EquationDSLSemanticSequencer extends AbstractDelegatingSemanticSequ
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     AdditionAndSubtraction returns ValuePi
 	 *     AdditionAndSubtraction.AdditionAndSubtraction_1_0 returns ValuePi
@@ -430,6 +461,7 @@ public class EquationDSLSemanticSequencer extends AbstractDelegatingSemanticSequ
 	 *
 	 * Constraint:
 	 *     {ValuePi}
+	 * </pre>
 	 */
 	protected void sequence_ValuePi(ISerializationContext context, ValuePi semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

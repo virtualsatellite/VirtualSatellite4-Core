@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Coral Thermal Concept Test
 Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.thermal.test
-Bundle-Version: 4.14.0.qualifier
+Bundle-Version: 4.15.0.qualifier
 Bundle-Vendor: DLR (German Aerospace Center)
 Fragment-Host: de.dlr.sc.virsat.model.extension.thermal
 Export-Package: de.dlr.sc.virsat.model.extension.thermal.migrator,

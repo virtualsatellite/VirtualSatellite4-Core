@@ -40,12 +40,14 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final Assignment cEquationsAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cEquationsEquationParserRuleCall_1_0 = (RuleCall)cEquationsAssignment_1.eContents().get(0);
 		
-		//EquationSection Calc::EquationSection:
-		//	imports+=Import*
-		//	equations+=Equation*;
+		//EquationSection returns Calc::EquationSection:
+		//    imports+=Import*
+		//    equations+=Equation*
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//imports+=Import* equations+=Equation*
+		//imports+=Import*
+		//equations+=Equation*
 		public Group getGroup() { return cGroup; }
 		
 		//imports+=Import*
@@ -69,8 +71,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final RuleCall cImportedNamespaceIInstanceQualifiedNameParserRuleCall_1_0_1 = (RuleCall)cImportedNamespaceIInstanceCrossReference_1_0.eContents().get(1);
 		private final Keyword cSemicolonKeyword_2 = (Keyword)cGroup.eContents().get(2);
 		
-		//Import Calc::Import:
-		//	'Import:' importedNamespace=[General::IInstance|QualifiedName] ';';
+		//Import returns Calc::Import:
+		//    'Import:' importedNamespace=[General::IInstance|QualifiedName] ';'
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//'Import:' importedNamespace=[General::IInstance|QualifiedName] ';'
@@ -101,8 +104,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final RuleCall cExpressionAdditionAndSubtractionParserRuleCall_2_0 = (RuleCall)cExpressionAssignment_2.eContents().get(0);
 		private final Keyword cSemicolonKeyword_3 = (Keyword)cGroup.eContents().get(3);
 		
-		//Equation Calc::Equation:
-		//	result=EquationResult '=' expression=AdditionAndSubtraction ';';
+		//Equation returns Calc::Equation:
+		//    result=EquationResult '=' expression=AdditionAndSubtraction ';'
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//result=EquationResult '=' expression=AdditionAndSubtraction ';'
@@ -132,8 +136,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final RuleCall cTypeInstanceResultParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
 		private final RuleCall cEquationIntermediateResultParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		
-		//EquationResult Calc::IEquationResult:
-		//	TypeInstanceResult | EquationIntermediateResult;
+		//EquationResult returns Calc::IEquationResult:
+		//     TypeInstanceResult | EquationIntermediateResult
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//TypeInstanceResult | EquationIntermediateResult
@@ -154,12 +159,14 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final CrossReference cReferenceATypeInstanceCrossReference_2_0 = (CrossReference)cReferenceAssignment_2.eContents().get(0);
 		private final RuleCall cReferenceATypeInstanceQualifiedNameParserRuleCall_2_0_1 = (RuleCall)cReferenceATypeInstanceCrossReference_2_0.eContents().get(1);
 		
-		//TypeInstanceResult Calc::IEquationResult:
-		//	{Calc::TypeInstanceResult}
-		//	'Ref:' reference=[Categories::ATypeInstance|QualifiedName];
+		//TypeInstanceResult returns Calc::IEquationResult:
+		//    {Calc::TypeInstanceResult}
+		//    'Ref:' reference=[Categories::ATypeInstance | QualifiedName]
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Calc::TypeInstanceResult} 'Ref:' reference=[Categories::ATypeInstance|QualifiedName]
+		//{Calc::TypeInstanceResult}
+		//'Ref:' reference=[Categories::ATypeInstance | QualifiedName]
 		public Group getGroup() { return cGroup; }
 		
 		//{Calc::TypeInstanceResult}
@@ -168,10 +175,10 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		//'Ref:'
 		public Keyword getRefKeyword_1() { return cRefKeyword_1; }
 		
-		//reference=[Categories::ATypeInstance|QualifiedName]
+		//reference=[Categories::ATypeInstance | QualifiedName]
 		public Assignment getReferenceAssignment_2() { return cReferenceAssignment_2; }
 		
-		//[Categories::ATypeInstance|QualifiedName]
+		//[Categories::ATypeInstance | QualifiedName]
 		public CrossReference getReferenceATypeInstanceCrossReference_2_0() { return cReferenceATypeInstanceCrossReference_2_0; }
 		
 		//QualifiedName
@@ -185,12 +192,14 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final Assignment cNameAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cNameIDTerminalRuleCall_2_0 = (RuleCall)cNameAssignment_2.eContents().get(0);
 		
-		//EquationIntermediateResult Calc::IEquationResult:
-		//	{Calc::EquationIntermediateResult}
-		//	'Calc:' name=ID;
+		//EquationIntermediateResult returns Calc::IEquationResult:
+		//    {Calc::EquationIntermediateResult}
+		//    'Calc:' name=ID
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Calc::EquationIntermediateResult} 'Calc:' name=ID
+		//{Calc::EquationIntermediateResult}
+		//'Calc:' name=ID
 		public Group getGroup() { return cGroup; }
 		
 		//{Calc::EquationIntermediateResult}
@@ -218,28 +227,27 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final Assignment cRightAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
 		private final RuleCall cRightMultiplicationAndDivisionParserRuleCall_1_2_0 = (RuleCall)cRightAssignment_1_2.eContents().get(0);
 		
-		//AdditionAndSubtraction Calc::AExpression:
-		//	MultiplicationAndDivision ({Calc::AdditionAndSubtraction.left=current} operator=(OperatorPlus | OperatorMinus)
-		//	right=MultiplicationAndDivision)*;
+		//AdditionAndSubtraction returns Calc::AExpression:
+		//    MultiplicationAndDivision ({Calc::AdditionAndSubtraction.left=current} operator=(OperatorPlus|OperatorMinus) right=MultiplicationAndDivision)*
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//MultiplicationAndDivision ({Calc::AdditionAndSubtraction.left=current} operator=(OperatorPlus | OperatorMinus)
-		//right=MultiplicationAndDivision)*
+		//MultiplicationAndDivision ({Calc::AdditionAndSubtraction.left=current} operator=(OperatorPlus|OperatorMinus) right=MultiplicationAndDivision)*
 		public Group getGroup() { return cGroup; }
 		
 		//MultiplicationAndDivision
 		public RuleCall getMultiplicationAndDivisionParserRuleCall_0() { return cMultiplicationAndDivisionParserRuleCall_0; }
 		
-		//({Calc::AdditionAndSubtraction.left=current} operator=(OperatorPlus | OperatorMinus) right=MultiplicationAndDivision)*
+		//({Calc::AdditionAndSubtraction.left=current} operator=(OperatorPlus|OperatorMinus) right=MultiplicationAndDivision)*
 		public Group getGroup_1() { return cGroup_1; }
 		
 		//{Calc::AdditionAndSubtraction.left=current}
 		public Action getAdditionAndSubtractionLeftAction_1_0() { return cAdditionAndSubtractionLeftAction_1_0; }
 		
-		//operator=(OperatorPlus | OperatorMinus)
+		//operator=(OperatorPlus|OperatorMinus)
 		public Assignment getOperatorAssignment_1_1() { return cOperatorAssignment_1_1; }
 		
-		//(OperatorPlus | OperatorMinus)
+		//(OperatorPlus|OperatorMinus)
 		public Alternatives getOperatorAlternatives_1_1_0() { return cOperatorAlternatives_1_1_0; }
 		
 		//OperatorPlus
@@ -267,13 +275,12 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final Assignment cRightAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
 		private final RuleCall cRightPowerFunctionParserRuleCall_1_2_0 = (RuleCall)cRightAssignment_1_2.eContents().get(0);
 		
-		//MultiplicationAndDivision Calc::AExpression:
-		//	PowerFunction ({Calc::MultiplicationAndDivision.left=current} operator=(OperatorMultiply | OperatorDivide)
-		//	right=PowerFunction)*;
+		//MultiplicationAndDivision returns Calc::AExpression:
+		//     PowerFunction ({Calc::MultiplicationAndDivision.left=current} operator=(OperatorMultiply | OperatorDivide) right=PowerFunction)*
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//PowerFunction ({Calc::MultiplicationAndDivision.left=current} operator=(OperatorMultiply | OperatorDivide)
-		//right=PowerFunction)*
+		//PowerFunction ({Calc::MultiplicationAndDivision.left=current} operator=(OperatorMultiply | OperatorDivide) right=PowerFunction)*
 		public Group getGroup() { return cGroup; }
 		
 		//PowerFunction
@@ -314,26 +321,27 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final Assignment cRightAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
 		private final RuleCall cRightAExpressionParserRuleCall_1_2_0 = (RuleCall)cRightAssignment_1_2.eContents().get(0);
 		
-		//PowerFunction Calc::AExpression:
-		//	AExpression ({Calc::PowerFunction.left=current} operator=OperatorPower right=AExpression)*;
+		//PowerFunction returns Calc::AExpression:
+		//     AExpression ({Calc::PowerFunction.left=current} operator= (OperatorPower) right=AExpression)*
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//AExpression ({Calc::PowerFunction.left=current} operator=OperatorPower right=AExpression)*
+		//AExpression ({Calc::PowerFunction.left=current} operator= (OperatorPower) right=AExpression)*
 		public Group getGroup() { return cGroup; }
 		
 		//AExpression
 		public RuleCall getAExpressionParserRuleCall_0() { return cAExpressionParserRuleCall_0; }
 		
-		//({Calc::PowerFunction.left=current} operator=OperatorPower right=AExpression)*
+		//({Calc::PowerFunction.left=current} operator= (OperatorPower) right=AExpression)*
 		public Group getGroup_1() { return cGroup_1; }
 		
 		//{Calc::PowerFunction.left=current}
 		public Action getPowerFunctionLeftAction_1_0() { return cPowerFunctionLeftAction_1_0; }
 		
-		//operator=OperatorPower
+		//operator= (OperatorPower)
 		public Assignment getOperatorAssignment_1_1() { return cOperatorAssignment_1_1; }
 		
-		//OperatorPower
+		//(OperatorPower)
 		public RuleCall getOperatorOperatorPowerEnumRuleCall_1_1_0() { return cOperatorOperatorPowerEnumRuleCall_1_1_0; }
 		
 		//right=AExpression
@@ -353,20 +361,23 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final RuleCall cRightAdditionAndSubtractionParserRuleCall_3_0 = (RuleCall)cRightAssignment_3.eContents().get(0);
 		private final Keyword cRightParenthesisKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
-		//Parenthesis Calc::AOpRightExpression:
-		//	{Calc::Parenthesis} operator=OperatorMinus? '(' right=AdditionAndSubtraction ')';
+		//Parenthesis returns Calc::AOpRightExpression:
+		//    {Calc::Parenthesis}
+		//    operator =(OperatorMinus)? '(' right=AdditionAndSubtraction ')'
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Calc::Parenthesis} operator=OperatorMinus? '(' right=AdditionAndSubtraction ')'
+		//{Calc::Parenthesis}
+		//operator =(OperatorMinus)? '(' right=AdditionAndSubtraction ')'
 		public Group getGroup() { return cGroup; }
 		
 		//{Calc::Parenthesis}
 		public Action getParenthesisAction_0() { return cParenthesisAction_0; }
 		
-		//operator=OperatorMinus?
+		//operator =(OperatorMinus)?
 		public Assignment getOperatorAssignment_1() { return cOperatorAssignment_1; }
 		
-		//OperatorMinus
+		//(OperatorMinus)
 		public RuleCall getOperatorOperatorMinusEnumRuleCall_1_0() { return cOperatorOperatorMinusEnumRuleCall_1_0; }
 		
 		//'('
@@ -390,11 +401,20 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final RuleCall cFunctionParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
 		private final RuleCall cAAdvancedFunctionParserRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
 		
-		//AExpression Calc::AExpression:
-		//	ALiteral | ReferencedInput | Parenthesis | Function | AAdvancedFunction;
+		//AExpression returns Calc::AExpression:
+		//    ALiteral |
+		//    ReferencedInput  |
+		//     Parenthesis  |
+		//     Function |
+		//     AAdvancedFunction
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//ALiteral | ReferencedInput | Parenthesis | Function | AAdvancedFunction
+		//ALiteral |
+		//ReferencedInput  |
+		// Parenthesis  |
+		// Function |
+		// AAdvancedFunction
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//ALiteral
@@ -418,8 +438,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final CrossReference cReferenceIEquationInputCrossReference_0 = (CrossReference)cReferenceAssignment.eContents().get(0);
 		private final RuleCall cReferenceIEquationInputQualifiedNameParserRuleCall_0_1 = (RuleCall)cReferenceIEquationInputCrossReference_0.eContents().get(1);
 		
-		//ReferencedInput Calc::ReferencedInput:
-		//	reference=[Calc::IEquationInput|QualifiedName];
+		//ReferencedInput returns Calc::ReferencedInput:
+		//    reference=[Calc::IEquationInput|QualifiedName]
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//reference=[Calc::IEquationInput|QualifiedName]
@@ -438,11 +459,16 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final RuleCall cValueEParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		private final RuleCall cValuePiParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
 		
-		//ALiteral Calc::ALiteral:
-		//	NumberLiteral | ValueE | ValuePi;
+		//ALiteral returns Calc::ALiteral:
+		//    NumberLiteral |
+		//    ValueE |
+		//    ValuePi
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//NumberLiteral | ValueE | ValuePi
+		//NumberLiteral |
+		//ValueE |
+		//ValuePi
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//NumberLiteral
@@ -476,24 +502,23 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final RuleCall cRightAdditionAndSubtractionParserRuleCall_3_0 = (RuleCall)cRightAssignment_3.eContents().get(0);
 		private final Keyword cRightParenthesisKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
-		//Function Calc::AExpression:
-		//	{Calc::Function} operator=(OperatorCos | OperatorSin | OperatorTan | OperatorAtan | OperatorAcos | OperatorAsin |
-		//	OperatorSqrt | OperatorLog | OperatorLn | OperatorLd | OperatorExp) '(' right=AdditionAndSubtraction ')';
+		//Function returns Calc::AExpression:
+		//    {Calc::Function}
+		//    operator=(OperatorCos| OperatorSin | OperatorTan | OperatorAtan | OperatorAcos | OperatorAsin | OperatorSqrt | OperatorLog | OperatorLn | OperatorLd | OperatorExp) '(' right=AdditionAndSubtraction ')'
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Calc::Function} operator=(OperatorCos | OperatorSin | OperatorTan | OperatorAtan | OperatorAcos | OperatorAsin |
-		//OperatorSqrt | OperatorLog | OperatorLn | OperatorLd | OperatorExp) '(' right=AdditionAndSubtraction ')'
+		//{Calc::Function}
+		//operator=(OperatorCos| OperatorSin | OperatorTan | OperatorAtan | OperatorAcos | OperatorAsin | OperatorSqrt | OperatorLog | OperatorLn | OperatorLd | OperatorExp) '(' right=AdditionAndSubtraction ')'
 		public Group getGroup() { return cGroup; }
 		
 		//{Calc::Function}
 		public Action getFunctionAction_0() { return cFunctionAction_0; }
 		
-		//operator=(OperatorCos | OperatorSin | OperatorTan | OperatorAtan | OperatorAcos | OperatorAsin | OperatorSqrt |
-		//OperatorLog | OperatorLn | OperatorLd | OperatorExp)
+		//operator=(OperatorCos| OperatorSin | OperatorTan | OperatorAtan | OperatorAcos | OperatorAsin | OperatorSqrt | OperatorLog | OperatorLn | OperatorLd | OperatorExp)
 		public Assignment getOperatorAssignment_1() { return cOperatorAssignment_1; }
 		
-		//(OperatorCos | OperatorSin | OperatorTan | OperatorAtan | OperatorAcos | OperatorAsin | OperatorSqrt | OperatorLog |
-		//OperatorLn | OperatorLd | OperatorExp)
+		//(OperatorCos| OperatorSin | OperatorTan | OperatorAtan | OperatorAcos | OperatorAsin | OperatorSqrt | OperatorLog | OperatorLn | OperatorLd | OperatorExp)
 		public Alternatives getOperatorAlternatives_1_0() { return cOperatorAlternatives_1_0; }
 		
 		//OperatorCos
@@ -547,8 +572,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final RuleCall cAdvancedFunctionParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
 		private final RuleCall cSetFunctionParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		
-		//AAdvancedFunction Calc::AExpression:
-		//	AdvancedFunction | SetFunction;
+		//AAdvancedFunction returns Calc::AExpression:
+		//    AdvancedFunction | SetFunction
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//AdvancedFunction | SetFunction
@@ -575,11 +601,14 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final RuleCall cInputsAdditionAndSubtractionParserRuleCall_4_1_0 = (RuleCall)cInputsAssignment_4_1.eContents().get(0);
 		private final Keyword cRightParenthesisKeyword_5 = (Keyword)cGroup.eContents().get(5);
 		
-		//AdvancedFunction Calc::AExpression:
-		//	{Calc::AdvancedFunction} operator=ID '(' inputs+=AdditionAndSubtraction ("," inputs+=AdditionAndSubtraction)* ')';
+		//AdvancedFunction returns Calc::AExpression:
+		//    {Calc::AdvancedFunction}
+		//    operator=ID '(' inputs+=AdditionAndSubtraction ("," inputs+=AdditionAndSubtraction)* ')'
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Calc::AdvancedFunction} operator=ID '(' inputs+=AdditionAndSubtraction ("," inputs+=AdditionAndSubtraction)* ')'
+		//{Calc::AdvancedFunction}
+		//operator=ID '(' inputs+=AdditionAndSubtraction ("," inputs+=AdditionAndSubtraction)* ')'
 		public Group getGroup() { return cGroup; }
 		
 		//{Calc::AdvancedFunction}
@@ -635,13 +664,14 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final RuleCall cFilterNameIDTerminalRuleCall_5_1_0 = (RuleCall)cFilterNameAssignment_5_1.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_6 = (Keyword)cGroup.eContents().get(6);
 		
-		//SetFunction Calc::AExpression:
-		//	{Calc::SetFunction} operator=ID '{' typeDefinition=[Categories::ATypeDefinition|QualifiedName] (',' depth=INT)? (','
-		//	filterName=ID)? '}';
+		//SetFunction returns Calc::AExpression:
+		//    {Calc::SetFunction}
+		//    operator=ID '{' typeDefinition=[Categories::ATypeDefinition|QualifiedName] (','depth=INT)? (','filterName=ID)?'}'
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Calc::SetFunction} operator=ID '{' typeDefinition=[Categories::ATypeDefinition|QualifiedName] (',' depth=INT)? (','
-		//filterName=ID)? '}'
+		//{Calc::SetFunction}
+		//operator=ID '{' typeDefinition=[Categories::ATypeDefinition|QualifiedName] (','depth=INT)? (','filterName=ID)?'}'
 		public Group getGroup() { return cGroup; }
 		
 		//{Calc::SetFunction}
@@ -665,7 +695,7 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		//QualifiedName
 		public RuleCall getTypeDefinitionATypeDefinitionQualifiedNameParserRuleCall_3_0_1() { return cTypeDefinitionATypeDefinitionQualifiedNameParserRuleCall_3_0_1; }
 		
-		//(',' depth=INT)?
+		//(','depth=INT)?
 		public Group getGroup_4() { return cGroup_4; }
 		
 		//','
@@ -677,7 +707,7 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		//INT
 		public RuleCall getDepthINTTerminalRuleCall_4_1_0() { return cDepthINTTerminalRuleCall_4_1_0; }
 		
-		//(',' filterName=ID)?
+		//(','filterName=ID)?
 		public Group getGroup_5() { return cGroup_5; }
 		
 		//','
@@ -699,17 +729,20 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final Assignment cValueAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cValueNumberLiteralStringParserRuleCall_1_0 = (RuleCall)cValueAssignment_1.eContents().get(0);
 		
-		//NumberLiteral Calc::NumberLiteral:
-		//	{Calc::NumberLiteral} value=NumberLiteralString;
+		//NumberLiteral returns Calc::NumberLiteral:
+		//    {Calc::NumberLiteral}
+		//    value = NumberLiteralString
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Calc::NumberLiteral} value=NumberLiteralString
+		//{Calc::NumberLiteral}
+		//value = NumberLiteralString
 		public Group getGroup() { return cGroup; }
 		
 		//{Calc::NumberLiteral}
 		public Action getNumberLiteralAction_0() { return cNumberLiteralAction_0; }
 		
-		//value=NumberLiteralString
+		//value = NumberLiteralString
 		public Assignment getValueAssignment_1() { return cValueAssignment_1; }
 		
 		//NumberLiteralString
@@ -723,8 +756,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final Keyword cFullStopKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
 		private final RuleCall cIDTerminalRuleCall_1_1 = (RuleCall)cGroup_1.eContents().get(1);
 		
-		//QualifiedName:
-		//	ID ('.' ID)*;
+		//QualifiedName returns ecore::EString:
+		//    ID ('.' ID)*
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//ID ('.' ID)*
@@ -751,8 +785,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final Keyword cFullStopKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
 		private final RuleCall cINTTerminalRuleCall_2_1 = (RuleCall)cGroup_2.eContents().get(1);
 		
-		//NumberLiteralString:
-		//	'-'? INT ('.' INT)?;
+		//NumberLiteralString returns ecore::EString:
+		//    '-'? INT ('.' INT)?
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//'-'? INT ('.' INT)?
@@ -779,12 +814,14 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final Action cValuePiAction_0 = (Action)cGroup.eContents().get(0);
 		private final Keyword cPiKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		
-		//ValuePi Calc::ValuePi:
-		//	{Calc::ValuePi}
-		//	'pi';
+		//ValuePi returns Calc::ValuePi:
+		//    {Calc::ValuePi}
+		//    'pi'
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Calc::ValuePi} 'pi'
+		//{Calc::ValuePi}
+		//'pi'
 		public Group getGroup() { return cGroup; }
 		
 		//{Calc::ValuePi}
@@ -799,12 +836,14 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final Action cValueEAction_0 = (Action)cGroup.eContents().get(0);
 		private final Keyword cEKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		
-		//ValueE Calc::ValueE:
-		//	{Calc::ValueE}
-		//	'e';
+		//ValueE returns Calc::ValueE:
+		//    {Calc::ValueE}
+		//    'e'
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Calc::ValueE} 'e'
+		//{Calc::ValueE}
+		//'e'
 		public Group getGroup() { return cGroup; }
 		
 		//{Calc::ValueE}
@@ -819,11 +858,12 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final EnumLiteralDeclaration cPLUSEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cPLUSPlusSignKeyword_0 = (Keyword)cPLUSEnumLiteralDeclaration.eContents().get(0);
 		
-		//enum OperatorPlus returns Calc::MathOperator:
-		//	PLUS='+';
+		//enum OperatorPlus returns Calc::MathOperator :
+		//    PLUS = '+'
+		//;
 		public EnumRule getRule() { return rule; }
 		
-		//PLUS='+'
+		//PLUS = '+'
 		public EnumLiteralDeclaration getPLUSEnumLiteralDeclaration() { return cPLUSEnumLiteralDeclaration; }
 		
 		//'+'
@@ -834,11 +874,12 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final EnumLiteralDeclaration cMINUSEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cMINUSHyphenMinusKeyword_0 = (Keyword)cMINUSEnumLiteralDeclaration.eContents().get(0);
 		
-		//enum OperatorMinus returns Calc::MathOperator:
-		//	MINUS='-';
+		//enum OperatorMinus returns Calc::MathOperator :
+		//    MINUS = '-'
+		//;
 		public EnumRule getRule() { return rule; }
 		
-		//MINUS='-'
+		//MINUS = '-'
 		public EnumLiteralDeclaration getMINUSEnumLiteralDeclaration() { return cMINUSEnumLiteralDeclaration; }
 		
 		//'-'
@@ -849,11 +890,12 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final EnumLiteralDeclaration cMULTIPLYEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cMULTIPLYAsteriskKeyword_0 = (Keyword)cMULTIPLYEnumLiteralDeclaration.eContents().get(0);
 		
-		//enum OperatorMultiply returns Calc::MathOperator:
-		//	MULTIPLY='*';
+		//enum OperatorMultiply returns Calc::MathOperator :
+		//    MULTIPLY = '*'
+		//;
 		public EnumRule getRule() { return rule; }
 		
-		//MULTIPLY='*'
+		//MULTIPLY = '*'
 		public EnumLiteralDeclaration getMULTIPLYEnumLiteralDeclaration() { return cMULTIPLYEnumLiteralDeclaration; }
 		
 		//'*'
@@ -864,11 +906,12 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final EnumLiteralDeclaration cDIVIDEEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cDIVIDESolidusKeyword_0 = (Keyword)cDIVIDEEnumLiteralDeclaration.eContents().get(0);
 		
-		//enum OperatorDivide returns Calc::MathOperator:
-		//	DIVIDE='/';
+		//enum OperatorDivide returns Calc::MathOperator :
+		//    DIVIDE = '/'
+		//;
 		public EnumRule getRule() { return rule; }
 		
-		//DIVIDE='/'
+		//DIVIDE = '/'
 		public EnumLiteralDeclaration getDIVIDEEnumLiteralDeclaration() { return cDIVIDEEnumLiteralDeclaration; }
 		
 		//'/'
@@ -879,11 +922,12 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final EnumLiteralDeclaration cPOWEREnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cPOWERCircumflexAccentKeyword_0 = (Keyword)cPOWEREnumLiteralDeclaration.eContents().get(0);
 		
-		//enum OperatorPower returns Calc::MathOperator:
-		//	POWER='^';
+		//enum OperatorPower returns Calc::MathOperator :
+		//    POWER = '^'
+		//;
 		public EnumRule getRule() { return rule; }
 		
-		//POWER='^'
+		//POWER = '^'
 		public EnumLiteralDeclaration getPOWEREnumLiteralDeclaration() { return cPOWEREnumLiteralDeclaration; }
 		
 		//'^'
@@ -894,11 +938,12 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final EnumLiteralDeclaration cCOSEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cCOSCosKeyword_0 = (Keyword)cCOSEnumLiteralDeclaration.eContents().get(0);
 		
-		//enum OperatorCos returns Calc::MathOperator:
-		//	COS='cos';
+		//enum OperatorCos returns Calc::MathOperator :
+		//    COS = 'cos'
+		//;
 		public EnumRule getRule() { return rule; }
 		
-		//COS='cos'
+		//COS = 'cos'
 		public EnumLiteralDeclaration getCOSEnumLiteralDeclaration() { return cCOSEnumLiteralDeclaration; }
 		
 		//'cos'
@@ -909,11 +954,12 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final EnumLiteralDeclaration cSINEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cSINSinKeyword_0 = (Keyword)cSINEnumLiteralDeclaration.eContents().get(0);
 		
-		//enum OperatorSin returns Calc::MathOperator:
-		//	SIN='sin';
+		//enum OperatorSin returns Calc::MathOperator :
+		//    SIN = 'sin'
+		//;
 		public EnumRule getRule() { return rule; }
 		
-		//SIN='sin'
+		//SIN = 'sin'
 		public EnumLiteralDeclaration getSINEnumLiteralDeclaration() { return cSINEnumLiteralDeclaration; }
 		
 		//'sin'
@@ -924,11 +970,12 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final EnumLiteralDeclaration cTANEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cTANTanKeyword_0 = (Keyword)cTANEnumLiteralDeclaration.eContents().get(0);
 		
-		//enum OperatorTan returns Calc::MathOperator:
-		//	TAN='tan';
+		//enum OperatorTan returns Calc::MathOperator :
+		//    TAN = 'tan'
+		//;
 		public EnumRule getRule() { return rule; }
 		
-		//TAN='tan'
+		//TAN = 'tan'
 		public EnumLiteralDeclaration getTANEnumLiteralDeclaration() { return cTANEnumLiteralDeclaration; }
 		
 		//'tan'
@@ -939,11 +986,12 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final EnumLiteralDeclaration cATANEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cATANAtanKeyword_0 = (Keyword)cATANEnumLiteralDeclaration.eContents().get(0);
 		
-		//enum OperatorAtan returns Calc::MathOperator:
-		//	ATAN='atan';
+		//enum OperatorAtan returns Calc::MathOperator :
+		//    ATAN = 'atan'
+		//;
 		public EnumRule getRule() { return rule; }
 		
-		//ATAN='atan'
+		//ATAN = 'atan'
 		public EnumLiteralDeclaration getATANEnumLiteralDeclaration() { return cATANEnumLiteralDeclaration; }
 		
 		//'atan'
@@ -954,11 +1002,12 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final EnumLiteralDeclaration cACOSEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cACOSAcosKeyword_0 = (Keyword)cACOSEnumLiteralDeclaration.eContents().get(0);
 		
-		//enum OperatorAcos returns Calc::MathOperator:
-		//	ACOS='acos';
+		//enum OperatorAcos returns Calc::MathOperator :
+		//    ACOS = 'acos'
+		//;
 		public EnumRule getRule() { return rule; }
 		
-		//ACOS='acos'
+		//ACOS = 'acos'
 		public EnumLiteralDeclaration getACOSEnumLiteralDeclaration() { return cACOSEnumLiteralDeclaration; }
 		
 		//'acos'
@@ -969,11 +1018,12 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final EnumLiteralDeclaration cASINEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cASINAsinKeyword_0 = (Keyword)cASINEnumLiteralDeclaration.eContents().get(0);
 		
-		//enum OperatorAsin returns Calc::MathOperator:
-		//	ASIN='asin';
+		//enum OperatorAsin returns Calc::MathOperator :
+		//    ASIN = 'asin'
+		//;
 		public EnumRule getRule() { return rule; }
 		
-		//ASIN='asin'
+		//ASIN = 'asin'
 		public EnumLiteralDeclaration getASINEnumLiteralDeclaration() { return cASINEnumLiteralDeclaration; }
 		
 		//'asin'
@@ -984,11 +1034,12 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final EnumLiteralDeclaration cSQRTEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cSQRTSqrtKeyword_0 = (Keyword)cSQRTEnumLiteralDeclaration.eContents().get(0);
 		
-		//enum OperatorSqrt returns Calc::MathOperator:
-		//	SQRT='sqrt';
+		//enum OperatorSqrt returns Calc::MathOperator :
+		//    SQRT = 'sqrt'
+		//;
 		public EnumRule getRule() { return rule; }
 		
-		//SQRT='sqrt'
+		//SQRT = 'sqrt'
 		public EnumLiteralDeclaration getSQRTEnumLiteralDeclaration() { return cSQRTEnumLiteralDeclaration; }
 		
 		//'sqrt'
@@ -999,11 +1050,12 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final EnumLiteralDeclaration cLOGEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cLOGLogKeyword_0 = (Keyword)cLOGEnumLiteralDeclaration.eContents().get(0);
 		
-		//enum OperatorLog returns Calc::MathOperator:
-		//	LOG='log';
+		//enum OperatorLog returns Calc::MathOperator :
+		//    LOG = 'log'
+		//;
 		public EnumRule getRule() { return rule; }
 		
-		//LOG='log'
+		//LOG = 'log'
 		public EnumLiteralDeclaration getLOGEnumLiteralDeclaration() { return cLOGEnumLiteralDeclaration; }
 		
 		//'log'
@@ -1014,11 +1066,12 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final EnumLiteralDeclaration cLNEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cLNLnKeyword_0 = (Keyword)cLNEnumLiteralDeclaration.eContents().get(0);
 		
-		//enum OperatorLn returns Calc::MathOperator:
-		//	LN='ln';
+		//enum OperatorLn returns Calc::MathOperator :
+		//    LN = 'ln'
+		//;
 		public EnumRule getRule() { return rule; }
 		
-		//LN='ln'
+		//LN = 'ln'
 		public EnumLiteralDeclaration getLNEnumLiteralDeclaration() { return cLNEnumLiteralDeclaration; }
 		
 		//'ln'
@@ -1029,11 +1082,12 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final EnumLiteralDeclaration cEXPEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cEXPExpKeyword_0 = (Keyword)cEXPEnumLiteralDeclaration.eContents().get(0);
 		
-		//enum OperatorExp returns Calc::MathOperator:
-		//	EXP='exp';
+		//enum OperatorExp returns Calc::MathOperator :
+		//    EXP = 'exp'
+		//;
 		public EnumRule getRule() { return rule; }
 		
-		//EXP='exp'
+		//EXP = 'exp'
 		public EnumLiteralDeclaration getEXPEnumLiteralDeclaration() { return cEXPEnumLiteralDeclaration; }
 		
 		//'exp'
@@ -1044,11 +1098,12 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		private final EnumLiteralDeclaration cLDEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cLDLdKeyword_0 = (Keyword)cLDEnumLiteralDeclaration.eContents().get(0);
 		
-		//enum OperatorLd returns Calc::MathOperator:
-		//	LD='ld';
+		//enum OperatorLd returns Calc::MathOperator :
+		//    LD = 'ld'
+		//;
 		public EnumRule getRule() { return rule; }
 		
-		//LD='ld'
+		//LD = 'ld'
 		public EnumLiteralDeclaration getLDEnumLiteralDeclaration() { return cLDEnumLiteralDeclaration; }
 		
 		//'ld'
@@ -1170,9 +1225,10 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 	}
 
 	
-	//EquationSection Calc::EquationSection:
-	//	imports+=Import*
-	//	equations+=Equation*;
+	//EquationSection returns Calc::EquationSection:
+	//    imports+=Import*
+	//    equations+=Equation*
+	//;
 	public EquationSectionElements getEquationSectionAccess() {
 		return pEquationSection;
 	}
@@ -1181,8 +1237,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getEquationSectionAccess().getRule();
 	}
 	
-	//Import Calc::Import:
-	//	'Import:' importedNamespace=[General::IInstance|QualifiedName] ';';
+	//Import returns Calc::Import:
+	//    'Import:' importedNamespace=[General::IInstance|QualifiedName] ';'
+	//;
 	public ImportElements getImportAccess() {
 		return pImport;
 	}
@@ -1191,8 +1248,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getImportAccess().getRule();
 	}
 	
-	//Equation Calc::Equation:
-	//	result=EquationResult '=' expression=AdditionAndSubtraction ';';
+	//Equation returns Calc::Equation:
+	//    result=EquationResult '=' expression=AdditionAndSubtraction ';'
+	//;
 	public EquationElements getEquationAccess() {
 		return pEquation;
 	}
@@ -1201,8 +1259,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getEquationAccess().getRule();
 	}
 	
-	//EquationResult Calc::IEquationResult:
-	//	TypeInstanceResult | EquationIntermediateResult;
+	//EquationResult returns Calc::IEquationResult:
+	//     TypeInstanceResult | EquationIntermediateResult
+	//;
 	public EquationResultElements getEquationResultAccess() {
 		return pEquationResult;
 	}
@@ -1211,9 +1270,10 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getEquationResultAccess().getRule();
 	}
 	
-	//TypeInstanceResult Calc::IEquationResult:
-	//	{Calc::TypeInstanceResult}
-	//	'Ref:' reference=[Categories::ATypeInstance|QualifiedName];
+	//TypeInstanceResult returns Calc::IEquationResult:
+	//    {Calc::TypeInstanceResult}
+	//    'Ref:' reference=[Categories::ATypeInstance | QualifiedName]
+	//;
 	public TypeInstanceResultElements getTypeInstanceResultAccess() {
 		return pTypeInstanceResult;
 	}
@@ -1222,9 +1282,10 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getTypeInstanceResultAccess().getRule();
 	}
 	
-	//EquationIntermediateResult Calc::IEquationResult:
-	//	{Calc::EquationIntermediateResult}
-	//	'Calc:' name=ID;
+	//EquationIntermediateResult returns Calc::IEquationResult:
+	//    {Calc::EquationIntermediateResult}
+	//    'Calc:' name=ID
+	//;
 	public EquationIntermediateResultElements getEquationIntermediateResultAccess() {
 		return pEquationIntermediateResult;
 	}
@@ -1233,9 +1294,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getEquationIntermediateResultAccess().getRule();
 	}
 	
-	//AdditionAndSubtraction Calc::AExpression:
-	//	MultiplicationAndDivision ({Calc::AdditionAndSubtraction.left=current} operator=(OperatorPlus | OperatorMinus)
-	//	right=MultiplicationAndDivision)*;
+	//AdditionAndSubtraction returns Calc::AExpression:
+	//    MultiplicationAndDivision ({Calc::AdditionAndSubtraction.left=current} operator=(OperatorPlus|OperatorMinus) right=MultiplicationAndDivision)*
+	//;
 	public AdditionAndSubtractionElements getAdditionAndSubtractionAccess() {
 		return pAdditionAndSubtraction;
 	}
@@ -1244,9 +1305,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getAdditionAndSubtractionAccess().getRule();
 	}
 	
-	//MultiplicationAndDivision Calc::AExpression:
-	//	PowerFunction ({Calc::MultiplicationAndDivision.left=current} operator=(OperatorMultiply | OperatorDivide)
-	//	right=PowerFunction)*;
+	//MultiplicationAndDivision returns Calc::AExpression:
+	//     PowerFunction ({Calc::MultiplicationAndDivision.left=current} operator=(OperatorMultiply | OperatorDivide) right=PowerFunction)*
+	//;
 	public MultiplicationAndDivisionElements getMultiplicationAndDivisionAccess() {
 		return pMultiplicationAndDivision;
 	}
@@ -1255,8 +1316,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getMultiplicationAndDivisionAccess().getRule();
 	}
 	
-	//PowerFunction Calc::AExpression:
-	//	AExpression ({Calc::PowerFunction.left=current} operator=OperatorPower right=AExpression)*;
+	//PowerFunction returns Calc::AExpression:
+	//     AExpression ({Calc::PowerFunction.left=current} operator= (OperatorPower) right=AExpression)*
+	//;
 	public PowerFunctionElements getPowerFunctionAccess() {
 		return pPowerFunction;
 	}
@@ -1265,8 +1327,10 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getPowerFunctionAccess().getRule();
 	}
 	
-	//Parenthesis Calc::AOpRightExpression:
-	//	{Calc::Parenthesis} operator=OperatorMinus? '(' right=AdditionAndSubtraction ')';
+	//Parenthesis returns Calc::AOpRightExpression:
+	//    {Calc::Parenthesis}
+	//    operator =(OperatorMinus)? '(' right=AdditionAndSubtraction ')'
+	//;
 	public ParenthesisElements getParenthesisAccess() {
 		return pParenthesis;
 	}
@@ -1275,8 +1339,13 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getParenthesisAccess().getRule();
 	}
 	
-	//AExpression Calc::AExpression:
-	//	ALiteral | ReferencedInput | Parenthesis | Function | AAdvancedFunction;
+	//AExpression returns Calc::AExpression:
+	//    ALiteral |
+	//    ReferencedInput  |
+	//     Parenthesis  |
+	//     Function |
+	//     AAdvancedFunction
+	//;
 	public AExpressionElements getAExpressionAccess() {
 		return pAExpression;
 	}
@@ -1285,8 +1354,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getAExpressionAccess().getRule();
 	}
 	
-	//ReferencedInput Calc::ReferencedInput:
-	//	reference=[Calc::IEquationInput|QualifiedName];
+	//ReferencedInput returns Calc::ReferencedInput:
+	//    reference=[Calc::IEquationInput|QualifiedName]
+	//;
 	public ReferencedInputElements getReferencedInputAccess() {
 		return pReferencedInput;
 	}
@@ -1295,8 +1365,11 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getReferencedInputAccess().getRule();
 	}
 	
-	//ALiteral Calc::ALiteral:
-	//	NumberLiteral | ValueE | ValuePi;
+	//ALiteral returns Calc::ALiteral:
+	//    NumberLiteral |
+	//    ValueE |
+	//    ValuePi
+	//;
 	public ALiteralElements getALiteralAccess() {
 		return pALiteral;
 	}
@@ -1305,9 +1378,10 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getALiteralAccess().getRule();
 	}
 	
-	//Function Calc::AExpression:
-	//	{Calc::Function} operator=(OperatorCos | OperatorSin | OperatorTan | OperatorAtan | OperatorAcos | OperatorAsin |
-	//	OperatorSqrt | OperatorLog | OperatorLn | OperatorLd | OperatorExp) '(' right=AdditionAndSubtraction ')';
+	//Function returns Calc::AExpression:
+	//    {Calc::Function}
+	//    operator=(OperatorCos| OperatorSin | OperatorTan | OperatorAtan | OperatorAcos | OperatorAsin | OperatorSqrt | OperatorLog | OperatorLn | OperatorLd | OperatorExp) '(' right=AdditionAndSubtraction ')'
+	//;
 	public FunctionElements getFunctionAccess() {
 		return pFunction;
 	}
@@ -1316,8 +1390,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getFunctionAccess().getRule();
 	}
 	
-	//AAdvancedFunction Calc::AExpression:
-	//	AdvancedFunction | SetFunction;
+	//AAdvancedFunction returns Calc::AExpression:
+	//    AdvancedFunction | SetFunction
+	//;
 	public AAdvancedFunctionElements getAAdvancedFunctionAccess() {
 		return pAAdvancedFunction;
 	}
@@ -1326,8 +1401,10 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getAAdvancedFunctionAccess().getRule();
 	}
 	
-	//AdvancedFunction Calc::AExpression:
-	//	{Calc::AdvancedFunction} operator=ID '(' inputs+=AdditionAndSubtraction ("," inputs+=AdditionAndSubtraction)* ')';
+	//AdvancedFunction returns Calc::AExpression:
+	//    {Calc::AdvancedFunction}
+	//    operator=ID '(' inputs+=AdditionAndSubtraction ("," inputs+=AdditionAndSubtraction)* ')'
+	//;
 	public AdvancedFunctionElements getAdvancedFunctionAccess() {
 		return pAdvancedFunction;
 	}
@@ -1336,9 +1413,10 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getAdvancedFunctionAccess().getRule();
 	}
 	
-	//SetFunction Calc::AExpression:
-	//	{Calc::SetFunction} operator=ID '{' typeDefinition=[Categories::ATypeDefinition|QualifiedName] (',' depth=INT)? (','
-	//	filterName=ID)? '}';
+	//SetFunction returns Calc::AExpression:
+	//    {Calc::SetFunction}
+	//    operator=ID '{' typeDefinition=[Categories::ATypeDefinition|QualifiedName] (','depth=INT)? (','filterName=ID)?'}'
+	//;
 	public SetFunctionElements getSetFunctionAccess() {
 		return pSetFunction;
 	}
@@ -1347,8 +1425,10 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getSetFunctionAccess().getRule();
 	}
 	
-	//NumberLiteral Calc::NumberLiteral:
-	//	{Calc::NumberLiteral} value=NumberLiteralString;
+	//NumberLiteral returns Calc::NumberLiteral:
+	//    {Calc::NumberLiteral}
+	//    value = NumberLiteralString
+	//;
 	public NumberLiteralElements getNumberLiteralAccess() {
 		return pNumberLiteral;
 	}
@@ -1357,8 +1437,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getNumberLiteralAccess().getRule();
 	}
 	
-	//QualifiedName:
-	//	ID ('.' ID)*;
+	//QualifiedName returns ecore::EString:
+	//    ID ('.' ID)*
+	//;
 	public QualifiedNameElements getQualifiedNameAccess() {
 		return pQualifiedName;
 	}
@@ -1367,8 +1448,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getQualifiedNameAccess().getRule();
 	}
 	
-	//NumberLiteralString:
-	//	'-'? INT ('.' INT)?;
+	//NumberLiteralString returns ecore::EString:
+	//    '-'? INT ('.' INT)?
+	//;
 	public NumberLiteralStringElements getNumberLiteralStringAccess() {
 		return pNumberLiteralString;
 	}
@@ -1377,9 +1459,10 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getNumberLiteralStringAccess().getRule();
 	}
 	
-	//ValuePi Calc::ValuePi:
-	//	{Calc::ValuePi}
-	//	'pi';
+	//ValuePi returns Calc::ValuePi:
+	//    {Calc::ValuePi}
+	//    'pi'
+	//;
 	public ValuePiElements getValuePiAccess() {
 		return pValuePi;
 	}
@@ -1388,9 +1471,10 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getValuePiAccess().getRule();
 	}
 	
-	//ValueE Calc::ValueE:
-	//	{Calc::ValueE}
-	//	'e';
+	//ValueE returns Calc::ValueE:
+	//    {Calc::ValueE}
+	//    'e'
+	//;
 	public ValueEElements getValueEAccess() {
 		return pValueE;
 	}
@@ -1399,8 +1483,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getValueEAccess().getRule();
 	}
 	
-	//enum OperatorPlus returns Calc::MathOperator:
-	//	PLUS='+';
+	//enum OperatorPlus returns Calc::MathOperator :
+	//    PLUS = '+'
+	//;
 	public OperatorPlusElements getOperatorPlusAccess() {
 		return eOperatorPlus;
 	}
@@ -1409,8 +1494,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getOperatorPlusAccess().getRule();
 	}
 	
-	//enum OperatorMinus returns Calc::MathOperator:
-	//	MINUS='-';
+	//enum OperatorMinus returns Calc::MathOperator :
+	//    MINUS = '-'
+	//;
 	public OperatorMinusElements getOperatorMinusAccess() {
 		return eOperatorMinus;
 	}
@@ -1419,8 +1505,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getOperatorMinusAccess().getRule();
 	}
 	
-	//enum OperatorMultiply returns Calc::MathOperator:
-	//	MULTIPLY='*';
+	//enum OperatorMultiply returns Calc::MathOperator :
+	//    MULTIPLY = '*'
+	//;
 	public OperatorMultiplyElements getOperatorMultiplyAccess() {
 		return eOperatorMultiply;
 	}
@@ -1429,8 +1516,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getOperatorMultiplyAccess().getRule();
 	}
 	
-	//enum OperatorDivide returns Calc::MathOperator:
-	//	DIVIDE='/';
+	//enum OperatorDivide returns Calc::MathOperator :
+	//    DIVIDE = '/'
+	//;
 	public OperatorDivideElements getOperatorDivideAccess() {
 		return eOperatorDivide;
 	}
@@ -1439,8 +1527,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getOperatorDivideAccess().getRule();
 	}
 	
-	//enum OperatorPower returns Calc::MathOperator:
-	//	POWER='^';
+	//enum OperatorPower returns Calc::MathOperator :
+	//    POWER = '^'
+	//;
 	public OperatorPowerElements getOperatorPowerAccess() {
 		return eOperatorPower;
 	}
@@ -1449,8 +1538,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getOperatorPowerAccess().getRule();
 	}
 	
-	//enum OperatorCos returns Calc::MathOperator:
-	//	COS='cos';
+	//enum OperatorCos returns Calc::MathOperator :
+	//    COS = 'cos'
+	//;
 	public OperatorCosElements getOperatorCosAccess() {
 		return eOperatorCos;
 	}
@@ -1459,8 +1549,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getOperatorCosAccess().getRule();
 	}
 	
-	//enum OperatorSin returns Calc::MathOperator:
-	//	SIN='sin';
+	//enum OperatorSin returns Calc::MathOperator :
+	//    SIN = 'sin'
+	//;
 	public OperatorSinElements getOperatorSinAccess() {
 		return eOperatorSin;
 	}
@@ -1469,8 +1560,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getOperatorSinAccess().getRule();
 	}
 	
-	//enum OperatorTan returns Calc::MathOperator:
-	//	TAN='tan';
+	//enum OperatorTan returns Calc::MathOperator :
+	//    TAN = 'tan'
+	//;
 	public OperatorTanElements getOperatorTanAccess() {
 		return eOperatorTan;
 	}
@@ -1479,8 +1571,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getOperatorTanAccess().getRule();
 	}
 	
-	//enum OperatorAtan returns Calc::MathOperator:
-	//	ATAN='atan';
+	//enum OperatorAtan returns Calc::MathOperator :
+	//    ATAN = 'atan'
+	//;
 	public OperatorAtanElements getOperatorAtanAccess() {
 		return eOperatorAtan;
 	}
@@ -1489,8 +1582,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getOperatorAtanAccess().getRule();
 	}
 	
-	//enum OperatorAcos returns Calc::MathOperator:
-	//	ACOS='acos';
+	//enum OperatorAcos returns Calc::MathOperator :
+	//    ACOS = 'acos'
+	//;
 	public OperatorAcosElements getOperatorAcosAccess() {
 		return eOperatorAcos;
 	}
@@ -1499,8 +1593,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getOperatorAcosAccess().getRule();
 	}
 	
-	//enum OperatorAsin returns Calc::MathOperator:
-	//	ASIN='asin';
+	//enum OperatorAsin returns Calc::MathOperator :
+	//    ASIN = 'asin'
+	//;
 	public OperatorAsinElements getOperatorAsinAccess() {
 		return eOperatorAsin;
 	}
@@ -1509,8 +1604,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getOperatorAsinAccess().getRule();
 	}
 	
-	//enum OperatorSqrt returns Calc::MathOperator:
-	//	SQRT='sqrt';
+	//enum OperatorSqrt returns Calc::MathOperator :
+	//    SQRT = 'sqrt'
+	//;
 	public OperatorSqrtElements getOperatorSqrtAccess() {
 		return eOperatorSqrt;
 	}
@@ -1519,8 +1615,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getOperatorSqrtAccess().getRule();
 	}
 	
-	//enum OperatorLog returns Calc::MathOperator:
-	//	LOG='log';
+	//enum OperatorLog returns Calc::MathOperator :
+	//    LOG = 'log'
+	//;
 	public OperatorLogElements getOperatorLogAccess() {
 		return eOperatorLog;
 	}
@@ -1529,8 +1626,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getOperatorLogAccess().getRule();
 	}
 	
-	//enum OperatorLn returns Calc::MathOperator:
-	//	LN='ln';
+	//enum OperatorLn returns Calc::MathOperator :
+	//    LN = 'ln'
+	//;
 	public OperatorLnElements getOperatorLnAccess() {
 		return eOperatorLn;
 	}
@@ -1539,8 +1637,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getOperatorLnAccess().getRule();
 	}
 	
-	//enum OperatorExp returns Calc::MathOperator:
-	//	EXP='exp';
+	//enum OperatorExp returns Calc::MathOperator :
+	//    EXP = 'exp'
+	//;
 	public OperatorExpElements getOperatorExpAccess() {
 		return eOperatorExp;
 	}
@@ -1549,8 +1648,9 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getOperatorExpAccess().getRule();
 	}
 	
-	//enum OperatorLd returns Calc::MathOperator:
-	//	LD='ld';
+	//enum OperatorLd returns Calc::MathOperator :
+	//    LD = 'ld'
+	//;
 	public OperatorLdElements getOperatorLdAccess() {
 		return eOperatorLd;
 	}
@@ -1559,45 +1659,40 @@ public class EquationDSLGrammarAccess extends AbstractElementFinder.AbstractGram
 		return getOperatorLdAccess().getRule();
 	}
 	
-	//terminal ID:
-	//	'^'? ('a'..'z' | 'A'..'Z' | '_') ('a'..'z' | 'A'..'Z' | '_' | '0'..'9')*;
+	//terminal ID: '^'?('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*;
 	public TerminalRule getIDRule() {
 		return gaTerminals.getIDRule();
 	}
 	
-	//terminal INT returns ecore::EInt:
-	//	'0'..'9'+;
+	//terminal INT returns ecore::EInt: ('0'..'9')+;
 	public TerminalRule getINTRule() {
 		return gaTerminals.getINTRule();
 	}
 	
 	//terminal STRING:
-	//	'"' ('\\' . | !('\\' | '"'))* '"' |
-	//	"'" ('\\' . | !('\\' | "'"))* "'";
+	//            '"' ( '\\' . /* 'b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\' */ | !('\\'|'"') )* '"' |
+	//            "'" ( '\\' . /* 'b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\' */ | !('\\'|"'") )* "'"
+	//        ;
 	public TerminalRule getSTRINGRule() {
 		return gaTerminals.getSTRINGRule();
 	}
 	
-	//terminal ML_COMMENT:
-	//	'/*'->'*/';
+	//terminal ML_COMMENT : '/*' -> '*/';
 	public TerminalRule getML_COMMENTRule() {
 		return gaTerminals.getML_COMMENTRule();
 	}
 	
-	//terminal SL_COMMENT:
-	//	'//' !('\n' | '\r')* ('\r'? '\n')?;
+	//terminal SL_COMMENT : '//' !('\n'|'\r')* ('\r'? '\n')?;
 	public TerminalRule getSL_COMMENTRule() {
 		return gaTerminals.getSL_COMMENTRule();
 	}
 	
-	//terminal WS:
-	//	' ' | '\t' | '\r' | '\n'+;
+	//terminal WS         : (' '|'\t'|'\r'|'\n')+;
 	public TerminalRule getWSRule() {
 		return gaTerminals.getWSRule();
 	}
 	
-	//terminal ANY_OTHER:
-	//	.;
+	//terminal ANY_OTHER: .;
 	public TerminalRule getANY_OTHERRule() {
 		return gaTerminals.getANY_OTHERRule();
 	}
