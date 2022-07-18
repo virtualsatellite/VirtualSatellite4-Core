@@ -34,7 +34,6 @@ Germany
 -Dsun.java.command=Eclipse
 -XX:+UseG1GC
 -XX:+UseStringDeduplication
--Dosgi.requiredJavaVersion=11
 -Dosgi.dataAreaRequiresExplicitInit=true
 -Dorg.eclipse.swt.graphics.Resource.reportNonDisposed=true
 -Xms256m
@@ -164,7 +163,6 @@ Germany
    </configurations>
 
    <repositories>
-      <repository location="http://community.polarion.com/projects/subversive/download/eclipse/6.0/update-site/" enabled="true" />
       <repository location="http://community.polarion.com/projects/subversive/download/eclipse/6.0/update-site/" enabled="true" />
    </repositories>
 
