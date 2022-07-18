@@ -30,6 +30,16 @@ Germany
    <launcherArgs>
       <programArgs>-console -consoleLog
       </programArgs>
+      <vmArgs>-Dosgi.requiredJavaVersion=11
+-Dsun.java.command=Eclipse
+-XX:+UseG1GC
+-XX:+UseStringDeduplication
+-Dosgi.requiredJavaVersion=11
+-Dosgi.dataAreaRequiresExplicitInit=true
+-Dorg.eclipse.swt.graphics.Resource.reportNonDisposed=true
+-Xms256m
+-Xmx2048m
+      </vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
       </vmArgsMac>
    </launcherArgs>
@@ -154,6 +164,7 @@ Germany
    </configurations>
 
    <repositories>
+      <repository location="http://community.polarion.com/projects/subversive/download/eclipse/6.0/update-site/" enabled="true" />
       <repository location="http://community.polarion.com/projects/subversive/download/eclipse/6.0/update-site/" enabled="true" />
    </repositories>
 
