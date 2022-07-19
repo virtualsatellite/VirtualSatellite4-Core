@@ -10,19 +10,14 @@
 package de.dlr.sc.virsat.model.concept.scoping;
 
 import com.google.common.collect.Iterables;
-import de.dlr.sc.virsat.model.concept.resources.ConceptResourceLoader;
-import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.concepts.ConceptImport;
-import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.ext.core.Activator;
 import java.util.ArrayList;
 import java.util.List;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.resource.IEObjectDescription;
@@ -44,28 +39,16 @@ public class ConceptLanguageScopeProvider extends ImportedNamespaceAwareLocalSco
     IScope _xblockexpression = null;
     {
       if (((context instanceof AProperty) && reference.getName().equals("verificationType"))) {
-        IScope scope = super.getScope(context, reference);
-        ArrayList<EObject> elements = new ArrayList<EObject>();
+        final IScope scope = super.getScope(context, reference);
+        final ArrayList<EObject> elements = new ArrayList<EObject>();
         final Function1<IEObjectDescription, EObject> _function = (IEObjectDescription t) -> {
-          return t.getEObjectOrProxy();
+          return EcoreUtil.resolve(t.getEObjectOrProxy(), context.eResource().getResourceSet());
         };
         final Function1<EObject, Boolean> _function_1 = (EObject t) -> {
           return Boolean.valueOf((((t instanceof Category) && ((Category) t).isIsVerification()) && (!((Category) t).isIsAbstract())));
         };
         Iterables.<EObject>addAll(elements, 
           IterableExtensions.<EObject>filter(IterableExtensions.<IEObjectDescription, EObject>map(scope.getAllElements(), _function), _function_1));
-        Concept concept = ActiveConceptHelper.getConcept(((ATypeDefinition) context));
-        EList<ConceptImport> _imports = concept.getImports();
-        for (final ConceptImport import_ : _imports) {
-          {
-            String importedConceptName = import_.getImportedNamespace().replace(".*", "");
-            final Function1<Category, Boolean> _function_2 = (Category c) -> {
-              return Boolean.valueOf((c.isIsVerification() && (!c.isIsAbstract())));
-            };
-            Iterables.<EObject>addAll(elements, 
-              IterableExtensions.<Category>filter(ConceptResourceLoader.getInstance().loadConceptByName(importedConceptName).getCategories(), _function_2));
-          }
-        }
         return Scopes.scopeFor(elements, IScope.NULLSCOPE);
       }
       _xblockexpression = super.getScope(context, reference);
