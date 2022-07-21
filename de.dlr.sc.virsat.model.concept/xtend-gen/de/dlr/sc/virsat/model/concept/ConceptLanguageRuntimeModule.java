@@ -10,7 +10,6 @@
 package de.dlr.sc.virsat.model.concept;
 
 import com.google.inject.Binder;
-import de.dlr.sc.virsat.model.concept.AbstractConceptLanguageRuntimeModule;
 import de.dlr.sc.virsat.model.concept.generator.ConceptOutputConfigurationProvider;
 import de.dlr.sc.virsat.model.concept.naming.ConceptLanguageQualifiedNameProvider;
 import de.dlr.sc.virsat.model.concept.validation.ConceptLanguageExtendedValidator;

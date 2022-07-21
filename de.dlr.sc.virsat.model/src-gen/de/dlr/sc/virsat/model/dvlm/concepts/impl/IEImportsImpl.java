@@ -94,6 +94,7 @@ public class IEImportsImpl extends MinimalEObjectImpl.Container implements IEImp
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<EcoreImport>}'.
 	 * @generated
 	 */
 	public EList<EcoreImport> getEcoreImports() {

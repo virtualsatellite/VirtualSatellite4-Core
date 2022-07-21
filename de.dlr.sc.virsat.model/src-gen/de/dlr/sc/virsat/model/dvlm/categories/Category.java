@@ -32,6 +32,7 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.categories.Category#getProperties <em>Properties</em>}</li>
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.categories.Category#isIsAbstract <em>Is Abstract</em>}</li>
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.categories.Category#getExtendsCategory <em>Extends Category</em>}</li>
+ *   <li>{@link de.dlr.sc.virsat.model.dvlm.categories.Category#isIsVerification <em>Is Verification</em>}</li>
  * </ul>
  *
  * @see de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage#getCategory()
@@ -109,11 +110,38 @@ public interface Category extends ATypeDefinition, IApplicableFor, IEquationDefi
 	void setExtendsCategory(Category value);
 
 	/**
+	 * Returns the value of the '<em><b>Is Verification</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Is Verification</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Is Verification</em>' attribute.
+	 * @see #setIsVerification(boolean)
+	 * @see de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage#getCategory_IsVerification()
+	 * @model
+	 * @generated
+	 */
+	boolean isIsVerification();
+
+	/**
+	 * Sets the value of the '{@link de.dlr.sc.virsat.model.dvlm.categories.Category#isIsVerification <em>Is Verification</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Is Verification</em>' attribute.
+	 * @see #isIsVerification()
+	 * @generated
+	 */
+	void setIsVerification(boolean value);
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
 	 * This method hands back all properties of the catgeory including the ones from super (extends) categories
 	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>{@code getAllProperties}</em>' operation as '{@code EList<AProperty>}'.
 	 * @model kind="operation"
 	 * @generated
 	 */
@@ -124,7 +152,9 @@ public interface Category extends ATypeDefinition, IApplicableFor, IEquationDefi
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
 	 * This method returns true iff it is an instance of the passed typeDefinition
+	 * @param typeDefinition of which the current is an extension of or not.
 	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>{@code isExtensionOf}</em>' operation as '{@code boolean}'.
 	 * @model
 	 * @generated
 	 */
@@ -136,6 +166,7 @@ public interface Category extends ATypeDefinition, IApplicableFor, IEquationDefi
 	 * <!-- begin-model-doc -->
 	 * This method hands back all equation definitions of the catgeory including the ones from super (extends) categories
 	 * <!-- end-model-doc -->
+	 * @return the value of the '<em>{@code getAllEquationDefinitions}</em>' operation as '{@code EList<EquationDefinition>}'.
 	 * @model kind="operation"
 	 * @generated
 	 */

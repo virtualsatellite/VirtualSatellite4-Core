@@ -15,8 +15,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Set;
 
+import org.eclipse.core.internal.registry.ConfigurationElementHandle;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.Status;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.project.markers.IMarkerHelper;
@@ -27,6 +30,7 @@ import de.dlr.sc.virsat.project.markers.VirSatProblemMarkerHelper;
  * @author lobe_el
  *
  */
+@SuppressWarnings("restriction")
 public class VirSatInheritanceMarkerHelperTest extends ATestCase {
 
 	VirSatInheritanceMarkerHelper vimHelper = new VirSatInheritanceMarkerHelper();
@@ -36,6 +40,19 @@ public class VirSatInheritanceMarkerHelperTest extends ATestCase {
 	public void testCreateMarkerHelper() {
 		IMarker marker = vimHelper.createInheritanceMarker(IMarker.SEVERITY_WARNING, "This is a marker on the Repository Resource", repo);
 		IMarkerHelper helperMarker = VirSatProblemMarkerHelper.createMarkerHelper(marker);
+		assertTrue("Helper is correct", helperMarker instanceof VirSatInheritanceMarkerHelper);
+	}
+	
+	@Test
+	public void testCreateMarkerHelperWithException() {
+		IMarker marker = vimHelper.createInheritanceMarker(IMarker.SEVERITY_WARNING, "This is a marker on the Repository Resource", repo);
+		ConfigurationElementHandle ce = new ConfigurationElementHandle(null, 0) {
+			public Object createExecutableExtension(String attributeName) throws CoreException {
+				throw new CoreException(new Status(Status.ERROR, "Something has to go wrong", "Error"));
+			}
+		};
+
+		IMarkerHelper helperMarker = VirSatProblemMarkerHelper.createMarkerHelper(marker, new IConfigurationElement[]{ce});
 		assertTrue("Helper is correct", helperMarker instanceof VirSatInheritanceMarkerHelper);
 	}
 	

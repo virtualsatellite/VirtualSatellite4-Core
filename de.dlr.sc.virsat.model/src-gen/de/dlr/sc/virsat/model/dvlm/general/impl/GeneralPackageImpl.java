@@ -170,6 +170,7 @@ public class GeneralPackageImpl extends EPackageImpl implements GeneralPackage {
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
+	 * @return an initialized instance of GeneralPackage.
 	 * @generated
 	 */
 	public static GeneralPackage init() {

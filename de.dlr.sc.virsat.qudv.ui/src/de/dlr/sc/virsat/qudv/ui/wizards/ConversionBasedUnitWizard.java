@@ -74,7 +74,7 @@ public class ConversionBasedUnitWizard extends Wizard {
 	
 	/**
 	 * public setter method to set the unit management
-	 * @param um 
+	 * @param um the unit management to be set
 	 */
 	public void setUnitManagement(UnitManagement um) {
 		this.um = um;

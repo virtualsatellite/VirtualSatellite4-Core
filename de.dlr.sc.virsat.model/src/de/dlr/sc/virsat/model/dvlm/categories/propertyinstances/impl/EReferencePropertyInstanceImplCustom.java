@@ -18,6 +18,8 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.EReferenceProp
 
 public class EReferencePropertyInstanceImplCustom extends EReferencePropertyInstanceImpl {
 	
+	protected static final String E_OBJECT_NAME = "EObject";
+	
 	@Override
 	public void setReference(EObject newReference) {
 		if (isValueTypeValid(newReference)) {
@@ -39,11 +41,11 @@ public class EReferencePropertyInstanceImplCustom extends EReferencePropertyInst
 		}
 		EClass type = new EReferencePropertyHelper().getResolvedEClassType((EReferenceProperty) this.getType());
 		EClass newInstanceEClass = newValue.eClass();
-		if (equalsEClass(type, newInstanceEClass)) {
+		if (type.getName().equals(E_OBJECT_NAME) || equalsEClass(type, newInstanceEClass)) {
 			return true;
 		} else {
-			for (EClass superType : type.getEAllSuperTypes()) {
-				if (equalsEClass(newInstanceEClass, superType)) {
+			for (EClass superType : newInstanceEClass.getEAllSuperTypes()) {
+				if (equalsEClass(type, superType)) {
 					return true;
 				}
 			}

@@ -16,7 +16,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEReference;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import org.eclipse.emf.ecore.EObject;
 import javax.xml.bind.annotation.XmlRootElement;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EReferencePropertyInstance;
@@ -26,6 +25,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.common.command.Command;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition;
 
 
 // *****************************************************************
@@ -80,7 +80,7 @@ public abstract class AModelVerification extends IVerification implements IBeanC
 	// *****************************************************************
 	// * Attribute: elementToBeVerified
 	// *****************************************************************
-	private BeanPropertyEReference<EObject> elementToBeVerified = new BeanPropertyEReference<EObject>();
+	private BeanPropertyEReference<ATypeDefinition> elementToBeVerified = new BeanPropertyEReference<ATypeDefinition>();
 	
 	private void safeAccessElementToBeVerified() {
 		if (elementToBeVerified.getTypeInstance() == null) {
@@ -88,17 +88,17 @@ public abstract class AModelVerification extends IVerification implements IBeanC
 		}
 	}
 	
-	public Command setElementToBeVerified(EditingDomain ed, EObject value) {
+	public Command setElementToBeVerified(EditingDomain ed, ATypeDefinition value) {
 		safeAccessElementToBeVerified();
 		return this.elementToBeVerified.setValue(ed, value);
 	}
 	
-	public void setElementToBeVerified(EObject value) {
+	public void setElementToBeVerified(ATypeDefinition value) {
 		safeAccessElementToBeVerified();
 		this.elementToBeVerified.setValue(value);
 	}
 	
-	public EObject getElementToBeVerified() {
+	public ATypeDefinition getElementToBeVerified() {
 		safeAccessElementToBeVerified();
 		return elementToBeVerified.getValue();
 	}

@@ -55,20 +55,20 @@ public class VisValuePropertyCellEditingSupport extends ValuePropertyCellEditing
 		} else if (propertyFqn.contains(Visualisation.PROPERTY_TRANSPARENCY)) {
 			editor = new DialogCellEditor((Composite) viewer.getControl()) {
 
-				@Override
-				protected Object openDialogBox(Control cellEditorWindow) {
-					final int ONEHUNDRED = 100;
-					Object toSelect = getValue();
-					TransparencyDialog dialog = new TransparencyDialog(cellEditorWindow.getShell());
-					dialog.setInitialValue(Double.parseDouble((String) toSelect));
-					dialog.create();
-					if (dialog.open() == Dialog.OK) {
-						toSelect = String.valueOf(dialog.getValue() / (double) (ONEHUNDRED));
+					@Override
+					protected Object openDialogBox(Control cellEditorWindow) {
+						final int ONEHUNDRED = 100;
+						Object toSelect = getValue();
+						TransparencyDialog dialog = new TransparencyDialog(cellEditorWindow.getShell());
+						dialog.setInitialValue(Double.parseDouble((String) toSelect));
+						dialog.create();
+						if (dialog.open() == Dialog.OK) {
+							toSelect = String.valueOf(dialog.getValue() / (double) (ONEHUNDRED));
+						}
+						return toSelect;
 					}
-					return toSelect;
-				}
-
-			};
+	
+				};
 
 		} else {
 			editor = new TextCellEditor((Composite) viewer.getControl());

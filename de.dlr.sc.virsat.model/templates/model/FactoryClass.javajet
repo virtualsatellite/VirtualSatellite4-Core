@@ -94,13 +94,14 @@ public interface <%=genPackage.getFactoryInterfaceName()%><%if (!genModel.isSupp
 
 <%}%>
 <%if (isImplementation) {%>
+	<%String factoryType = genModel.isSuppressEMFMetaData() ? genPackage.getFactoryClassName() : genPackage.getImportedFactoryInterfaceName();%>
 	/**
 	 * Creates the default factory implementation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return an initialized instance of '<%=factoryType%>'.
 	 * @generated
 	 */
-<%String factoryType = genModel.isSuppressEMFMetaData() ? genPackage.getFactoryClassName() : genPackage.getImportedFactoryInterfaceName();%>
 	public static <%=factoryType%> init()
 	{
 		try
@@ -330,6 +331,9 @@ public interface <%=genPackage.getFactoryInterfaceName()%><%if (!genModel.isSupp
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param eDataType describing the type of object.
+	 * @param initialValue for the creation of the object.
+	 * @return a newly created object of type '{@code <%=genDataType.getImportedParameterizedObjectInstanceClassName()%>}.'
 	 * @generated
 	 */
     <%if (!genPackage.isDataTypeConverters() && genModel.useGenerics() && genDataType.isUncheckedCast() && !genDataType.hasCreatorBody()) {%>
@@ -548,6 +552,9 @@ public interface <%=genPackage.getFactoryInterfaceName()%><%if (!genModel.isSupp
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param eDataType describing the type of object.
+	 * @param instanceValue of the object.
+	 * @return a string representing the object.
 	 * @generated
 	 */
     <%if (genModel.useGenerics() && (genDataType.getItemType() != null || genDataType.isUncheckedCast()) && (genPackage.isDataTypeConverters() || genDataType.hasCreatorBody())) {%>
@@ -704,6 +711,7 @@ public interface <%=genPackage.getFactoryInterfaceName()%><%if (!genModel.isSupp
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @deprecated
+	 * @return an instance of <%=genPackage.getImportedPackageInterfaceName()%>.
 	 * @generated
 	 */
   <%if (genModel.useClassOverrideAnnotation()) {%>

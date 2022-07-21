@@ -76,6 +76,7 @@ public abstract class AAdvancedFunctionImpl extends AExpressionImpl implements A
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getOperator() {

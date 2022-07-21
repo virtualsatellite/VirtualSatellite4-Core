@@ -2,8 +2,8 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core UI Tests with SwtBot
 Bundle-SymbolicName: de.dlr.sc.virsat.swtbot.test;singleton:=true
-Bundle-Version: 4.14.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Version: 4.15.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: org.eclipse.swt,
  org.eclipse.equinox.event,
@@ -63,7 +63,9 @@ Require-Bundle: org.eclipse.swt,
  de.dlr.sc.virsat.external.lib.spotbugs,
  org.eclipse.gef,
  org.eclipse.jgit,
- org.eclipse.team.svn.core
+ org.eclipse.team.svn.core,
+ de.dlr.sc.virsat.model.extension.thermal,
+ de.dlr.sc.virsat.model.extension.thermal.ui
 Import-Package: org.eclipse.draw2d.geometry,
  org.zeromq,
  vtk,

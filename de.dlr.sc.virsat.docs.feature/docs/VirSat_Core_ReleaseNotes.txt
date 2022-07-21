@@ -1,6 +1,25 @@
 VirSat Core Release Notes
 -------------------------
 
+Release 4.15.0 (Xth July 2022)
+----------------------------------
+
+New Features:
+   Updated Concept IDE to simplfy creation of verification elements - #1036 Concept IDE
+   Added Thermal Concept - #1051 #1050 #1057 #1052 Feature
+   Added Cost Budget Concept - #827 #837 #839 #855 #832 #831 #869 Feature
+   Improved performance - #1075 #1001 #1074 Feature
+   Migrated to Java 11 - #1098 Feature
+   Migrated to Eclipse 2022-03 - #1099 #1101 Feature
+   Supported nesting of state machines - #1097 Feature
+   Improved support for requirements in mass concept - #1113 Feature
+
+Usability Updates:
+
+Fixed Bugs:
+   Fixed incorrect unit bean for enum properties for REST API - #1048 Bug
+   Fixed modelElementToBeVerified being shown in UI - #1107 #Bug
+
 Release 4.14.0 (3rd December 2021)
 ----------------------------------
 

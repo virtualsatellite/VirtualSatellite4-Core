@@ -44,7 +44,7 @@ public class RemoveFileStructureCommand extends AbstractCommand implements IVirS
 	/**
 	 * Constructor for creating a command that removes the file structure from a given SEI in the workspace
 	 * @param selectedProject the selected project
-	 * @param iste {@link IStructuralTreeElement}
+	 * @param iste Structural tree element for which to remove the folders
 	 * @param deleteResourcesOperationFunction the callback function that is used to create the actual delete operation in the workspace
 	 */
 	public RemoveFileStructureCommand(

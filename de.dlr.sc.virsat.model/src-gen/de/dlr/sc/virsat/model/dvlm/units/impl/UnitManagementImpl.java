@@ -139,6 +139,7 @@ public class UnitManagementImpl extends MinimalEObjectImpl.Container implements 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code Discipline}'.
 	 * @generated
 	 */
 	public Discipline getAssignedDiscipline() {
@@ -156,6 +157,7 @@ public class UnitManagementImpl extends MinimalEObjectImpl.Container implements 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code Discipline}'.
 	 * @generated
 	 */
 	public Discipline basicGetAssignedDiscipline() {
@@ -177,6 +179,7 @@ public class UnitManagementImpl extends MinimalEObjectImpl.Container implements 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code VirSatUuid}'.
 	 * @generated
 	 */
 	public VirSatUuid getUuid() {
@@ -198,6 +201,7 @@ public class UnitManagementImpl extends MinimalEObjectImpl.Container implements 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code SystemOfUnits}'.
 	 * @generated
 	 */
 	public SystemOfUnits getSystemOfUnit() {
@@ -221,6 +225,7 @@ public class UnitManagementImpl extends MinimalEObjectImpl.Container implements 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code SystemOfUnits}'.
 	 * @generated
 	 */
 	public SystemOfUnits basicGetSystemOfUnit() {
@@ -230,6 +235,9 @@ public class UnitManagementImpl extends MinimalEObjectImpl.Container implements 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param newSystemOfUnit new value to be of type '{@code SystemOfUnits}' to be set. 
+	 * @param msgs notifications of type '{@code NotificationChain}'.
+	 * @return notification of type '{@code NotificationChain}'.
 	 * @generated
 	 */
 	public NotificationChain basicSetSystemOfUnit(SystemOfUnits newSystemOfUnit, NotificationChain msgs) {

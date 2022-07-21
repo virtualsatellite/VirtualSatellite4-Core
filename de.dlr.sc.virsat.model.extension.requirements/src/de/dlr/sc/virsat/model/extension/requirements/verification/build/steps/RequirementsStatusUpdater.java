@@ -33,7 +33,7 @@ public class RequirementsStatusUpdater extends AbstractRequirementVerificationSt
 		boolean partlyCompliant = false;
 		boolean fullyCompliant = false;
 		
-		for (IVerification verification : requirement.getVerification()) {
+		for (IVerification verification : requirement.getVerifications()) {
 			String verificationStatus = verification.getStatus();
 			if (verificationStatus != null) {
 				if (verificationStatus.equals(IVerification.STATUS_FullyCompliant_NAME)) {

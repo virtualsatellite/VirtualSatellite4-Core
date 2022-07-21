@@ -100,7 +100,6 @@ public class ImageProvider {
 	 * Export block diagrams 
 	 * @param path location of the images
 	 * @param sc the structural element to be Exported
-	 * @return 
 	 */
 	public void exportImage(String path, StructuralElementInstance sc) {
 		if (isExportable(sc)) {

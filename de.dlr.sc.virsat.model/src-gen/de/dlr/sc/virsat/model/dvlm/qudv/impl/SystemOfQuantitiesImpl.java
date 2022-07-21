@@ -224,6 +224,7 @@ public class SystemOfQuantitiesImpl extends MinimalEObjectImpl.Container impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getName() {
@@ -245,6 +246,7 @@ public class SystemOfQuantitiesImpl extends MinimalEObjectImpl.Container impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code VirSatUuid}'.
 	 * @generated
 	 */
 	public VirSatUuid getUuid() {
@@ -266,6 +268,7 @@ public class SystemOfQuantitiesImpl extends MinimalEObjectImpl.Container impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getSymbol() {
@@ -287,6 +290,7 @@ public class SystemOfQuantitiesImpl extends MinimalEObjectImpl.Container impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getDescription() {
@@ -308,6 +312,7 @@ public class SystemOfQuantitiesImpl extends MinimalEObjectImpl.Container impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getDefinitionURI() {
@@ -329,6 +334,7 @@ public class SystemOfQuantitiesImpl extends MinimalEObjectImpl.Container impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<AQuantityKind>}'.
 	 * @generated
 	 */
 	public EList<AQuantityKind> getQuantityKind() {
@@ -343,6 +349,7 @@ public class SystemOfQuantitiesImpl extends MinimalEObjectImpl.Container impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<Dimension>}'.
 	 * @generated
 	 */
 	public EList<Dimension> getDimension() {

@@ -38,7 +38,7 @@ public class VisualisationListener extends EContentAdapter {
     private boolean enabled = true;
     
 	/**
-	 * @param shapeHelper 
+	 * @param shapeHelper The ShapeHelper for initialisation.
 	 */
     public VisualisationListener(ShapeHelper shapeHelper) {
 		super();

@@ -47,6 +47,7 @@ public abstract class AVirSatBuilder extends IncrementalProjectBuilder {
 	
 	/**
 	 * Constructor for the VirSatBuilder 
+	 * @param builderName The name of the builder
 	 * @param vpmHelper The generic VirSatProblemMarker
 	 */
 	public AVirSatBuilder(String builderName, VirSatProblemMarkerHelper vpmHelper) {

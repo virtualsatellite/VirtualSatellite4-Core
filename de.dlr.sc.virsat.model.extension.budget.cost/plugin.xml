@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	<extension point="de.dlr.sc.virsat.model.Concept">
+		<concept
+			id="de.dlr.sc.virsat.model.extension.budget.cost"
+			version="1.0"
+			xmi="concept/concept.xmi">
+		</concept>
+	</extension>
+	<extension point="de.dlr.sc.virsat.model.DvlmValidator">
+		<dvlmValidator>
+			<seiValidator
+				id="de.dlr.sc.virsat.model.extension.budget.cost"
+				class="de.dlr.sc.virsat.model.extension.budget.cost.validator.CostValidator">
+			</seiValidator>
+		</dvlmValidator>
+	</extension>
+	<extension point="de.dlr.sc.virsat.model.edit.ConceptTypeFactoryCaBeanRegistration">
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.budget.cost.CostType"
+			caBean="de.dlr.sc.virsat.model.extension.budget.cost.model.CostType">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.budget.cost.CostTableEntry"
+			caBean="de.dlr.sc.virsat.model.extension.budget.cost.model.CostTableEntry">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.budget.cost.CostEquipment"
+			caBean="de.dlr.sc.virsat.model.extension.budget.cost.model.CostEquipment">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.budget.cost.CostSummary"
+			caBean="de.dlr.sc.virsat.model.extension.budget.cost.model.CostSummary">
+		</CategoryAssignmentBean>
+	</extension>
+	<extension point="de.dlr.sc.virsat.model.edit.ConceptTypeFactorySeiBeanRegistration">
+		<StructuralElementInstanceBean
+			id="de.dlr.sc.virsat.model.extension.budget.cost.CostTypesCollection"
+			seiBean="de.dlr.sc.virsat.model.extension.budget.cost.model.CostTypesCollection">
+		</StructuralElementInstanceBean>
+	</extension>
+	<!-- Plugin.XML Protected Region Start -->
+<extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">
+	<migrator
+		id="de.dlr.sc.virsat.model.extension.budget.cost"
+		version="1.0"
+		class="de.dlr.sc.virsat.model.extension.budget.cost.migrator.Migrator1v0"
+		xmi="concept/concept_v1_0.xmi">
+	</migrator>
+</extension>
+<extension
+      point="de.dlr.sc.virsat.excel.export">
+   <Exporter
+         class="de.dlr.sc.virsat.model.extension.budget.cost.excel.exporter.CostExporter">
+   </Exporter>
+</extension>
+<extension
+      point="de.dlr.sc.virsat.excel.import">
+   <Importer
+         class="de.dlr.sc.virsat.model.extension.budget.cost.excel.importer.CostImporter">
+   </Importer>
+</extension>
+	<!-- Plugin.XML Protected Region End -->
+	<!-- Plugin.XML Protected Region Start -->
+	<!-- Plugin.XML Protected Region End -->
+</plugin>

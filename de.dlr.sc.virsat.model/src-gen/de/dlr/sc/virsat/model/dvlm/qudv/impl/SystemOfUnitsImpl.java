@@ -246,6 +246,7 @@ public class SystemOfUnitsImpl extends MinimalEObjectImpl.Container implements S
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getName() {
@@ -267,6 +268,7 @@ public class SystemOfUnitsImpl extends MinimalEObjectImpl.Container implements S
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code VirSatUuid}'.
 	 * @generated
 	 */
 	public VirSatUuid getUuid() {
@@ -288,6 +290,7 @@ public class SystemOfUnitsImpl extends MinimalEObjectImpl.Container implements S
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getSymbol() {
@@ -309,6 +312,7 @@ public class SystemOfUnitsImpl extends MinimalEObjectImpl.Container implements S
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getDescription() {
@@ -330,6 +334,7 @@ public class SystemOfUnitsImpl extends MinimalEObjectImpl.Container implements S
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getDefinitionURI() {
@@ -351,6 +356,7 @@ public class SystemOfUnitsImpl extends MinimalEObjectImpl.Container implements S
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<Prefix>}'.
 	 * @generated
 	 */
 	public EList<Prefix> getPrefix() {
@@ -365,6 +371,7 @@ public class SystemOfUnitsImpl extends MinimalEObjectImpl.Container implements S
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<AUnit>}'.
 	 * @generated
 	 */
 	public EList<AUnit> getUnit() {
@@ -379,6 +386,7 @@ public class SystemOfUnitsImpl extends MinimalEObjectImpl.Container implements S
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<AUnit>}'.
 	 * @generated
 	 */
 	public EList<AUnit> getBaseUnit() {
@@ -393,6 +401,7 @@ public class SystemOfUnitsImpl extends MinimalEObjectImpl.Container implements S
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<SystemOfQuantities>}'.
 	 * @generated
 	 */
 	public EList<SystemOfQuantities> getSystemOfQuantities() {

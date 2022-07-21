@@ -12,6 +12,7 @@ package de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.state
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ILayoutContext;
 import org.eclipse.graphiti.mm.pictograms.ContainerShape;
+import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.Shape;
 import org.eclipse.graphiti.services.Graphiti;
 
@@ -34,6 +35,10 @@ public class StateLayoutFeature extends VirSatLayoutFeature  {
 	@Override
 	public boolean layout(ILayoutContext context) {
 		ContainerShape cs = (ContainerShape) context.getPictogramElement();
+		
+		if (cs.eContainer() instanceof Diagram) {
+			return false;
+		}
 		
 		int csWidth = cs.getGraphicsAlgorithm().getWidth();
 		int csHeight = cs.getGraphicsAlgorithm().getHeight();

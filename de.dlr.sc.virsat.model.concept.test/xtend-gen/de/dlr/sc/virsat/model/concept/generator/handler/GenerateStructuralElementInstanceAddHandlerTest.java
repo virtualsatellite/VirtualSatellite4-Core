@@ -10,7 +10,6 @@
 package de.dlr.sc.virsat.model.concept.generator.handler;
 
 import de.dlr.sc.virsat.model.concept.ConceptLanguageTestInjectorProvider;
-import de.dlr.sc.virsat.model.concept.generator.handler.GenerateStructuralElementInstanceAddHandler;
 import de.dlr.sc.virsat.model.concept.test.util.GeneratorJunitAssert;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage;

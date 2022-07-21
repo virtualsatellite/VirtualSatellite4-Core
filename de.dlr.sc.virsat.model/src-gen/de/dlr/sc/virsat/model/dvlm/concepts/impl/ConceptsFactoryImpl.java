@@ -30,6 +30,7 @@ public class ConceptsFactoryImpl extends EFactoryImpl implements ConceptsFactory
 	 * Creates the default factory implementation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return an initialized instance of 'ConceptsFactory'.
 	 * @generated
 	 */
 	public static ConceptsFactory init() {
@@ -125,6 +126,7 @@ public class ConceptsFactoryImpl extends EFactoryImpl implements ConceptsFactory
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @deprecated
+	 * @return an instance of ConceptsPackage.
 	 * @generated
 	 */
 	@Deprecated

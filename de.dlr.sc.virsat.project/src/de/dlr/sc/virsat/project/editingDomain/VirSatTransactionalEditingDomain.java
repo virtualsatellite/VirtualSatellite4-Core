@@ -289,7 +289,7 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 	 * This method is the counter part to the run exclusive method from the transactional
 	 * editing domain. This call grants exclusive write access to the editing domain. 
 	 * 
-	 * @param readWriteRunner a runnable provided with read and write privileges
+	 * @param readWriteRunnable a runnable provided with read and write privileges
 	 * 
 	 * @return the result of the read operation if it is a
 	 *    {@link RunnableWithResult} and the transaction did not roll back;

@@ -42,6 +42,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGenerator2
 import org.eclipse.xtext.generator.IGeneratorContext
+import de.dlr.sc.virsat.model.concept.generator.snippets.GenerateRequirementsVerificationUiSnippet
 
 /**
  * Generates code from your model files on save.
@@ -105,6 +106,7 @@ class ConceptLanguageGenerator implements IGenerator2 {
 			new GenerateValidator().serializeModel(dataModel, fsa);
 			new GenerateMigrator().serializeModel(dataModel, fsa);
 			new GenerateConceptEnabledTester().serializeModel(dataModel, fsa);
+			new GenerateRequirementsVerificationUiSnippet().serializeModel(dataModel, fsa);
 			
 			// Generate Code for Test fragment
 			new GenerateCategoryTests().serializeModel(dataModel, fsa);

@@ -62,7 +62,7 @@ public abstract class AbstractRequirementVerificationStep implements IVerificati
 			
 			preVerificationStep(requirement, monitor);
 			
-			for (IVerification verification : requirement.getVerification()) {
+			for (IVerification verification : requirement.getVerifications()) {
 				doVerificationStep(verification, requirement, monitor);
 			}
 			

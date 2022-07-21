@@ -125,6 +125,7 @@ public class TypesPackageImpl extends EPackageImpl implements TypesPackage {
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
+	 * @return an initialized instance of TypesPackage.
 	 * @generated
 	 */
 	public static TypesPackage init() {

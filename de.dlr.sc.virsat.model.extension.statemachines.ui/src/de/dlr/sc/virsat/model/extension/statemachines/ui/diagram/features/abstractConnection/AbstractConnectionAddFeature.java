@@ -116,7 +116,7 @@ public abstract class AbstractConnectionAddFeature extends VirSatAddConnectionFe
 				Text text = gaService.createDefaultText(getDiagram(), textDecorator);
 				text.setForeground(manageColor(IColorConstant.BLACK));
 				gaService.setLocation(text, LABEL_X, 0);
-				String transitionName = ca.getName();
+				String transitionName = getTransitionLabel(ca);
 				text.setValue(transitionName);
 				link(text.getPictogramElement(), cc);
 

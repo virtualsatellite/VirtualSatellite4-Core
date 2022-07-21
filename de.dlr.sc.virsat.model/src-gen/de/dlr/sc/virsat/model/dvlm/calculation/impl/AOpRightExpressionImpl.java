@@ -94,6 +94,7 @@ public abstract class AOpRightExpressionImpl extends AExpressionImpl implements 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code MathOperator}'.
 	 * @generated
 	 */
 	public MathOperator getOperator() {
@@ -115,6 +116,7 @@ public abstract class AOpRightExpressionImpl extends AExpressionImpl implements 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code AExpression}'.
 	 * @generated
 	 */
 	public AExpression getRight() {
@@ -138,6 +140,7 @@ public abstract class AOpRightExpressionImpl extends AExpressionImpl implements 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code AExpression}'.
 	 * @generated
 	 */
 	public AExpression basicGetRight() {
@@ -147,6 +150,9 @@ public abstract class AOpRightExpressionImpl extends AExpressionImpl implements 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param newRight new value to be of type '{@code AExpression}' to be set. 
+	 * @param msgs notifications of type '{@code NotificationChain}'.
+	 * @return notification of type '{@code NotificationChain}'.
 	 * @generated
 	 */
 	public NotificationChain basicSetRight(AExpression newRight, NotificationChain msgs) {

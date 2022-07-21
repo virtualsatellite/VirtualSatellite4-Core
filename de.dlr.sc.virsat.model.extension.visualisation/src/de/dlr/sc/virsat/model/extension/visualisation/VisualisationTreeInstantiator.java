@@ -61,7 +61,7 @@ public class VisualisationTreeInstantiator {
 
 	/**
 	 * Sets root entities to visualise. null means no filtering
-	 * @param rootSeisToVisualise 
+	 * @param rootSeisToVisualise a list of SEIs that should be visualized
 	 */
 	public void setRootSeisToVisualise(List<StructuralElementInstance> rootSeisToVisualise) {
 		this.rootSeisToVisualise = rootSeisToVisualise;

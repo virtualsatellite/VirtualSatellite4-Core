@@ -31,7 +31,7 @@ import java.util.ArrayList;
 @SuppressWarnings("all")
 public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ID", "RULE_INT", "RULE_STRING", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'Concept'", "'displayname'", "'version'", "'beta'", "'description'", "'hasDMF'", "'{'", "'}'", "'StructuralElement'", "'shortname'", "'IsRootStructuralElement'", "';'", "'Inherits'", "'From'", "'['", "','", "']'", "'All'", "'Applicable'", "'For'", "'Cardinality'", "'GeneralRelation'", "'Referenced'", "'Type'", "'Category'", "'extends'", "'IsAbstract'", "'Import'", "'EImport'", "'genModel'", "'of'", "'quantityKind'", "'unit'", "'IntProperty'", "'default'", "'FloatProperty'", "'StringProperty'", "'BooleanProperty'", "'EnumProperty'", "'values'", "'='", "'Reference'", "'EReference'", "'Resource'", "'Ref:'", "'Calc:'", "'('", "')'", "'pi'", "'e'", "'.'", "'-'", "'true'", "'false'", "'.*'", "'+'", "'*'", "'/'", "'^'", "'cos'", "'sin'", "'tan'", "'atan'", "'acos'", "'asin'", "'sqrt'", "'log'", "'ln'", "'exp'", "'ld'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "RULE_ID", "RULE_INT", "RULE_STRING", "RULE_ML_COMMENT", "RULE_SL_COMMENT", "RULE_WS", "RULE_ANY_OTHER", "'Concept'", "'displayname'", "'version'", "'beta'", "'description'", "'hasDMF'", "'{'", "'}'", "'StructuralElement'", "'shortname'", "'IsRootStructuralElement'", "';'", "'Inherits'", "'From'", "'['", "','", "']'", "'All'", "'Applicable'", "'For'", "'Cardinality'", "'GeneralRelation'", "'Referenced'", "'Type'", "'Category'", "'extends'", "'IsAbstract'", "'IsVerification'", "'Import'", "'EImport'", "'genModel'", "'of'", "'quantityKind'", "'verification'", "'unit'", "'IntProperty'", "'default'", "'FloatProperty'", "'StringProperty'", "'BooleanProperty'", "'EnumProperty'", "'values'", "'='", "'Reference'", "'EReference'", "'Resource'", "'Ref:'", "'Calc:'", "'('", "')'", "'pi'", "'e'", "'.'", "'-'", "'true'", "'false'", "'.*'", "'+'", "'*'", "'/'", "'^'", "'cos'", "'sin'", "'tan'", "'atan'", "'acos'", "'asin'", "'sqrt'", "'log'", "'ln'", "'exp'", "'ld'"
     };
     public static final int T__50=50;
     public static final int T__19=19;
@@ -99,6 +99,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
     public static final int T__32=32;
     public static final int T__76=76;
     public static final int T__80=80;
+    public static final int T__81=81;
+    public static final int T__82=82;
     public static final int RULE_WS=9;
     public static final int RULE_ANY_OTHER=10;
     public static final int T__48=48;
@@ -698,10 +700,10 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                 int alt4=3;
                 int LA4_0 = input.LA(1);
 
-                if ( LA4_0 == 38 && getUnorderedGroupHelper().canSelect(grammarAccess.getConceptAccess().getUnorderedGroup_5(), 0) ) {
+                if ( LA4_0 == 39 && getUnorderedGroupHelper().canSelect(grammarAccess.getConceptAccess().getUnorderedGroup_5(), 0) ) {
                     alt4=1;
                 }
-                else if ( LA4_0 == 39 && getUnorderedGroupHelper().canSelect(grammarAccess.getConceptAccess().getUnorderedGroup_5(), 1) ) {
+                else if ( LA4_0 == 40 && getUnorderedGroupHelper().canSelect(grammarAccess.getConceptAccess().getUnorderedGroup_5(), 1) ) {
                     alt4=2;
                 }
 
@@ -729,7 +731,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	        int alt2=2;
             	        int LA2_0 = input.LA(1);
 
-            	        if ( (LA2_0==38) ) {
+            	        if ( (LA2_0==39) ) {
             	            int LA2_2 = input.LA(2);
 
             	            if ( ((true)) ) {
@@ -825,7 +827,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	        int alt3=2;
             	        int LA3_0 = input.LA(1);
 
-            	        if ( (LA3_0==39) ) {
+            	        if ( (LA3_0==40) ) {
             	            int LA3_2 = input.LA(2);
 
             	            if ( ((true)) ) {
@@ -2628,7 +2630,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleCategory"
-    // InternalConceptLanguage.g:1058:1: ruleCategory returns [EObject current=null] : ( () otherlv_1= 'Category' ( (lv_name_2_0= RULE_ID ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'extends' ( ( ruleQualifiedName ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'shortname' ( (lv_shortName_7_0= RULE_ID ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_10= '{' ( ( ( ( ({...}? => ( ({...}? => ( ( (lv_isAbstract_12_0= 'IsAbstract' ) ) otherlv_13= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_14= 'Applicable' otherlv_15= 'For' ( (otherlv_16= '[' ( ( ruleQualifiedName ) ) (otherlv_18= ',' ( ( ruleQualifiedName ) ) )* otherlv_20= ']' ) | ( (lv_isApplicableForAll_21_0= 'All' ) ) ) otherlv_22= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_23= 'Cardinality' ( (lv_cardinality_24_0= RULE_INT ) ) otherlv_25= ';' ) ) ) ) )* ) ) ) ( (lv_properties_26_0= ruleAProperty ) )* ( (lv_equationDefinitions_27_0= ruleEquationDefinition ) )* otherlv_28= '}' ) ;
+    // InternalConceptLanguage.g:1058:1: ruleCategory returns [EObject current=null] : ( () otherlv_1= 'Category' ( (lv_name_2_0= RULE_ID ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'extends' ( ( ruleQualifiedName ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'shortname' ( (lv_shortName_7_0= RULE_ID ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_10= '{' ( ( ( ( ({...}? => ( ({...}? => ( ( (lv_isAbstract_12_0= 'IsAbstract' ) ) otherlv_13= ';' ) ) ) ) | ({...}? => ( ({...}? => ( ( (lv_isVerification_14_0= 'IsVerification' ) ) otherlv_15= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'Applicable' otherlv_17= 'For' ( (otherlv_18= '[' ( ( ruleQualifiedName ) ) (otherlv_20= ',' ( ( ruleQualifiedName ) ) )* otherlv_22= ']' ) | ( (lv_isApplicableForAll_23_0= 'All' ) ) ) otherlv_24= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_25= 'Cardinality' ( (lv_cardinality_26_0= RULE_INT ) ) otherlv_27= ';' ) ) ) ) )* ) ) ) ( (lv_properties_28_0= ruleAProperty ) )* ( (lv_equationDefinitions_29_0= ruleEquationDefinition ) )* otherlv_30= '}' ) ;
     public final EObject ruleCategory() throws RecognitionException {
         EObject current = null;
 
@@ -2641,33 +2643,35 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         Token otherlv_10=null;
         Token lv_isAbstract_12_0=null;
         Token otherlv_13=null;
-        Token otherlv_14=null;
+        Token lv_isVerification_14_0=null;
         Token otherlv_15=null;
         Token otherlv_16=null;
+        Token otherlv_17=null;
         Token otherlv_18=null;
         Token otherlv_20=null;
-        Token lv_isApplicableForAll_21_0=null;
         Token otherlv_22=null;
-        Token otherlv_23=null;
-        Token lv_cardinality_24_0=null;
+        Token lv_isApplicableForAll_23_0=null;
+        Token otherlv_24=null;
         Token otherlv_25=null;
-        Token otherlv_28=null;
+        Token lv_cardinality_26_0=null;
+        Token otherlv_27=null;
+        Token otherlv_30=null;
         AntlrDatatypeRuleToken lv_description_9_0 = null;
 
-        EObject lv_properties_26_0 = null;
+        EObject lv_properties_28_0 = null;
 
-        EObject lv_equationDefinitions_27_0 = null;
+        EObject lv_equationDefinitions_29_0 = null;
 
 
 
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:1064:2: ( ( () otherlv_1= 'Category' ( (lv_name_2_0= RULE_ID ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'extends' ( ( ruleQualifiedName ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'shortname' ( (lv_shortName_7_0= RULE_ID ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_10= '{' ( ( ( ( ({...}? => ( ({...}? => ( ( (lv_isAbstract_12_0= 'IsAbstract' ) ) otherlv_13= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_14= 'Applicable' otherlv_15= 'For' ( (otherlv_16= '[' ( ( ruleQualifiedName ) ) (otherlv_18= ',' ( ( ruleQualifiedName ) ) )* otherlv_20= ']' ) | ( (lv_isApplicableForAll_21_0= 'All' ) ) ) otherlv_22= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_23= 'Cardinality' ( (lv_cardinality_24_0= RULE_INT ) ) otherlv_25= ';' ) ) ) ) )* ) ) ) ( (lv_properties_26_0= ruleAProperty ) )* ( (lv_equationDefinitions_27_0= ruleEquationDefinition ) )* otherlv_28= '}' ) )
-            // InternalConceptLanguage.g:1065:2: ( () otherlv_1= 'Category' ( (lv_name_2_0= RULE_ID ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'extends' ( ( ruleQualifiedName ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'shortname' ( (lv_shortName_7_0= RULE_ID ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_10= '{' ( ( ( ( ({...}? => ( ({...}? => ( ( (lv_isAbstract_12_0= 'IsAbstract' ) ) otherlv_13= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_14= 'Applicable' otherlv_15= 'For' ( (otherlv_16= '[' ( ( ruleQualifiedName ) ) (otherlv_18= ',' ( ( ruleQualifiedName ) ) )* otherlv_20= ']' ) | ( (lv_isApplicableForAll_21_0= 'All' ) ) ) otherlv_22= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_23= 'Cardinality' ( (lv_cardinality_24_0= RULE_INT ) ) otherlv_25= ';' ) ) ) ) )* ) ) ) ( (lv_properties_26_0= ruleAProperty ) )* ( (lv_equationDefinitions_27_0= ruleEquationDefinition ) )* otherlv_28= '}' )
+            // InternalConceptLanguage.g:1064:2: ( ( () otherlv_1= 'Category' ( (lv_name_2_0= RULE_ID ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'extends' ( ( ruleQualifiedName ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'shortname' ( (lv_shortName_7_0= RULE_ID ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_10= '{' ( ( ( ( ({...}? => ( ({...}? => ( ( (lv_isAbstract_12_0= 'IsAbstract' ) ) otherlv_13= ';' ) ) ) ) | ({...}? => ( ({...}? => ( ( (lv_isVerification_14_0= 'IsVerification' ) ) otherlv_15= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'Applicable' otherlv_17= 'For' ( (otherlv_18= '[' ( ( ruleQualifiedName ) ) (otherlv_20= ',' ( ( ruleQualifiedName ) ) )* otherlv_22= ']' ) | ( (lv_isApplicableForAll_23_0= 'All' ) ) ) otherlv_24= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_25= 'Cardinality' ( (lv_cardinality_26_0= RULE_INT ) ) otherlv_27= ';' ) ) ) ) )* ) ) ) ( (lv_properties_28_0= ruleAProperty ) )* ( (lv_equationDefinitions_29_0= ruleEquationDefinition ) )* otherlv_30= '}' ) )
+            // InternalConceptLanguage.g:1065:2: ( () otherlv_1= 'Category' ( (lv_name_2_0= RULE_ID ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'extends' ( ( ruleQualifiedName ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'shortname' ( (lv_shortName_7_0= RULE_ID ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_10= '{' ( ( ( ( ({...}? => ( ({...}? => ( ( (lv_isAbstract_12_0= 'IsAbstract' ) ) otherlv_13= ';' ) ) ) ) | ({...}? => ( ({...}? => ( ( (lv_isVerification_14_0= 'IsVerification' ) ) otherlv_15= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'Applicable' otherlv_17= 'For' ( (otherlv_18= '[' ( ( ruleQualifiedName ) ) (otherlv_20= ',' ( ( ruleQualifiedName ) ) )* otherlv_22= ']' ) | ( (lv_isApplicableForAll_23_0= 'All' ) ) ) otherlv_24= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_25= 'Cardinality' ( (lv_cardinality_26_0= RULE_INT ) ) otherlv_27= ';' ) ) ) ) )* ) ) ) ( (lv_properties_28_0= ruleAProperty ) )* ( (lv_equationDefinitions_29_0= ruleEquationDefinition ) )* otherlv_30= '}' )
             {
-            // InternalConceptLanguage.g:1065:2: ( () otherlv_1= 'Category' ( (lv_name_2_0= RULE_ID ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'extends' ( ( ruleQualifiedName ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'shortname' ( (lv_shortName_7_0= RULE_ID ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_10= '{' ( ( ( ( ({...}? => ( ({...}? => ( ( (lv_isAbstract_12_0= 'IsAbstract' ) ) otherlv_13= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_14= 'Applicable' otherlv_15= 'For' ( (otherlv_16= '[' ( ( ruleQualifiedName ) ) (otherlv_18= ',' ( ( ruleQualifiedName ) ) )* otherlv_20= ']' ) | ( (lv_isApplicableForAll_21_0= 'All' ) ) ) otherlv_22= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_23= 'Cardinality' ( (lv_cardinality_24_0= RULE_INT ) ) otherlv_25= ';' ) ) ) ) )* ) ) ) ( (lv_properties_26_0= ruleAProperty ) )* ( (lv_equationDefinitions_27_0= ruleEquationDefinition ) )* otherlv_28= '}' )
-            // InternalConceptLanguage.g:1066:3: () otherlv_1= 'Category' ( (lv_name_2_0= RULE_ID ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'extends' ( ( ruleQualifiedName ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'shortname' ( (lv_shortName_7_0= RULE_ID ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_10= '{' ( ( ( ( ({...}? => ( ({...}? => ( ( (lv_isAbstract_12_0= 'IsAbstract' ) ) otherlv_13= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_14= 'Applicable' otherlv_15= 'For' ( (otherlv_16= '[' ( ( ruleQualifiedName ) ) (otherlv_18= ',' ( ( ruleQualifiedName ) ) )* otherlv_20= ']' ) | ( (lv_isApplicableForAll_21_0= 'All' ) ) ) otherlv_22= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_23= 'Cardinality' ( (lv_cardinality_24_0= RULE_INT ) ) otherlv_25= ';' ) ) ) ) )* ) ) ) ( (lv_properties_26_0= ruleAProperty ) )* ( (lv_equationDefinitions_27_0= ruleEquationDefinition ) )* otherlv_28= '}'
+            // InternalConceptLanguage.g:1065:2: ( () otherlv_1= 'Category' ( (lv_name_2_0= RULE_ID ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'extends' ( ( ruleQualifiedName ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'shortname' ( (lv_shortName_7_0= RULE_ID ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_10= '{' ( ( ( ( ({...}? => ( ({...}? => ( ( (lv_isAbstract_12_0= 'IsAbstract' ) ) otherlv_13= ';' ) ) ) ) | ({...}? => ( ({...}? => ( ( (lv_isVerification_14_0= 'IsVerification' ) ) otherlv_15= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'Applicable' otherlv_17= 'For' ( (otherlv_18= '[' ( ( ruleQualifiedName ) ) (otherlv_20= ',' ( ( ruleQualifiedName ) ) )* otherlv_22= ']' ) | ( (lv_isApplicableForAll_23_0= 'All' ) ) ) otherlv_24= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_25= 'Cardinality' ( (lv_cardinality_26_0= RULE_INT ) ) otherlv_27= ';' ) ) ) ) )* ) ) ) ( (lv_properties_28_0= ruleAProperty ) )* ( (lv_equationDefinitions_29_0= ruleEquationDefinition ) )* otherlv_30= '}' )
+            // InternalConceptLanguage.g:1066:3: () otherlv_1= 'Category' ( (lv_name_2_0= RULE_ID ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'extends' ( ( ruleQualifiedName ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'shortname' ( (lv_shortName_7_0= RULE_ID ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_10= '{' ( ( ( ( ({...}? => ( ({...}? => ( ( (lv_isAbstract_12_0= 'IsAbstract' ) ) otherlv_13= ';' ) ) ) ) | ({...}? => ( ({...}? => ( ( (lv_isVerification_14_0= 'IsVerification' ) ) otherlv_15= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'Applicable' otherlv_17= 'For' ( (otherlv_18= '[' ( ( ruleQualifiedName ) ) (otherlv_20= ',' ( ( ruleQualifiedName ) ) )* otherlv_22= ']' ) | ( (lv_isApplicableForAll_23_0= 'All' ) ) ) otherlv_24= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_25= 'Cardinality' ( (lv_cardinality_26_0= RULE_INT ) ) otherlv_27= ';' ) ) ) ) )* ) ) ) ( (lv_properties_28_0= ruleAProperty ) )* ( (lv_equationDefinitions_29_0= ruleEquationDefinition ) )* otherlv_30= '}'
             {
             // InternalConceptLanguage.g:1066:3: ()
             // InternalConceptLanguage.g:1067:4: 
@@ -2985,32 +2989,35 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             			newLeafNode(otherlv_10, grammarAccess.getCategoryAccess().getLeftCurlyBracketKeyword_4());
             		
-            // InternalConceptLanguage.g:1211:3: ( ( ( ( ({...}? => ( ({...}? => ( ( (lv_isAbstract_12_0= 'IsAbstract' ) ) otherlv_13= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_14= 'Applicable' otherlv_15= 'For' ( (otherlv_16= '[' ( ( ruleQualifiedName ) ) (otherlv_18= ',' ( ( ruleQualifiedName ) ) )* otherlv_20= ']' ) | ( (lv_isApplicableForAll_21_0= 'All' ) ) ) otherlv_22= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_23= 'Cardinality' ( (lv_cardinality_24_0= RULE_INT ) ) otherlv_25= ';' ) ) ) ) )* ) ) )
-            // InternalConceptLanguage.g:1212:4: ( ( ( ({...}? => ( ({...}? => ( ( (lv_isAbstract_12_0= 'IsAbstract' ) ) otherlv_13= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_14= 'Applicable' otherlv_15= 'For' ( (otherlv_16= '[' ( ( ruleQualifiedName ) ) (otherlv_18= ',' ( ( ruleQualifiedName ) ) )* otherlv_20= ']' ) | ( (lv_isApplicableForAll_21_0= 'All' ) ) ) otherlv_22= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_23= 'Cardinality' ( (lv_cardinality_24_0= RULE_INT ) ) otherlv_25= ';' ) ) ) ) )* ) )
+            // InternalConceptLanguage.g:1211:3: ( ( ( ( ({...}? => ( ({...}? => ( ( (lv_isAbstract_12_0= 'IsAbstract' ) ) otherlv_13= ';' ) ) ) ) | ({...}? => ( ({...}? => ( ( (lv_isVerification_14_0= 'IsVerification' ) ) otherlv_15= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'Applicable' otherlv_17= 'For' ( (otherlv_18= '[' ( ( ruleQualifiedName ) ) (otherlv_20= ',' ( ( ruleQualifiedName ) ) )* otherlv_22= ']' ) | ( (lv_isApplicableForAll_23_0= 'All' ) ) ) otherlv_24= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_25= 'Cardinality' ( (lv_cardinality_26_0= RULE_INT ) ) otherlv_27= ';' ) ) ) ) )* ) ) )
+            // InternalConceptLanguage.g:1212:4: ( ( ( ({...}? => ( ({...}? => ( ( (lv_isAbstract_12_0= 'IsAbstract' ) ) otherlv_13= ';' ) ) ) ) | ({...}? => ( ({...}? => ( ( (lv_isVerification_14_0= 'IsVerification' ) ) otherlv_15= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'Applicable' otherlv_17= 'For' ( (otherlv_18= '[' ( ( ruleQualifiedName ) ) (otherlv_20= ',' ( ( ruleQualifiedName ) ) )* otherlv_22= ']' ) | ( (lv_isApplicableForAll_23_0= 'All' ) ) ) otherlv_24= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_25= 'Cardinality' ( (lv_cardinality_26_0= RULE_INT ) ) otherlv_27= ';' ) ) ) ) )* ) )
             {
-            // InternalConceptLanguage.g:1212:4: ( ( ( ({...}? => ( ({...}? => ( ( (lv_isAbstract_12_0= 'IsAbstract' ) ) otherlv_13= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_14= 'Applicable' otherlv_15= 'For' ( (otherlv_16= '[' ( ( ruleQualifiedName ) ) (otherlv_18= ',' ( ( ruleQualifiedName ) ) )* otherlv_20= ']' ) | ( (lv_isApplicableForAll_21_0= 'All' ) ) ) otherlv_22= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_23= 'Cardinality' ( (lv_cardinality_24_0= RULE_INT ) ) otherlv_25= ';' ) ) ) ) )* ) )
-            // InternalConceptLanguage.g:1213:5: ( ( ({...}? => ( ({...}? => ( ( (lv_isAbstract_12_0= 'IsAbstract' ) ) otherlv_13= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_14= 'Applicable' otherlv_15= 'For' ( (otherlv_16= '[' ( ( ruleQualifiedName ) ) (otherlv_18= ',' ( ( ruleQualifiedName ) ) )* otherlv_20= ']' ) | ( (lv_isApplicableForAll_21_0= 'All' ) ) ) otherlv_22= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_23= 'Cardinality' ( (lv_cardinality_24_0= RULE_INT ) ) otherlv_25= ';' ) ) ) ) )* )
+            // InternalConceptLanguage.g:1212:4: ( ( ( ({...}? => ( ({...}? => ( ( (lv_isAbstract_12_0= 'IsAbstract' ) ) otherlv_13= ';' ) ) ) ) | ({...}? => ( ({...}? => ( ( (lv_isVerification_14_0= 'IsVerification' ) ) otherlv_15= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'Applicable' otherlv_17= 'For' ( (otherlv_18= '[' ( ( ruleQualifiedName ) ) (otherlv_20= ',' ( ( ruleQualifiedName ) ) )* otherlv_22= ']' ) | ( (lv_isApplicableForAll_23_0= 'All' ) ) ) otherlv_24= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_25= 'Cardinality' ( (lv_cardinality_26_0= RULE_INT ) ) otherlv_27= ';' ) ) ) ) )* ) )
+            // InternalConceptLanguage.g:1213:5: ( ( ({...}? => ( ({...}? => ( ( (lv_isAbstract_12_0= 'IsAbstract' ) ) otherlv_13= ';' ) ) ) ) | ({...}? => ( ({...}? => ( ( (lv_isVerification_14_0= 'IsVerification' ) ) otherlv_15= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'Applicable' otherlv_17= 'For' ( (otherlv_18= '[' ( ( ruleQualifiedName ) ) (otherlv_20= ',' ( ( ruleQualifiedName ) ) )* otherlv_22= ']' ) | ( (lv_isApplicableForAll_23_0= 'All' ) ) ) otherlv_24= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_25= 'Cardinality' ( (lv_cardinality_26_0= RULE_INT ) ) otherlv_27= ';' ) ) ) ) )* )
             {
              
             				  getUnorderedGroupHelper().enter(grammarAccess.getCategoryAccess().getUnorderedGroup_5());
             				
-            // InternalConceptLanguage.g:1216:5: ( ( ({...}? => ( ({...}? => ( ( (lv_isAbstract_12_0= 'IsAbstract' ) ) otherlv_13= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_14= 'Applicable' otherlv_15= 'For' ( (otherlv_16= '[' ( ( ruleQualifiedName ) ) (otherlv_18= ',' ( ( ruleQualifiedName ) ) )* otherlv_20= ']' ) | ( (lv_isApplicableForAll_21_0= 'All' ) ) ) otherlv_22= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_23= 'Cardinality' ( (lv_cardinality_24_0= RULE_INT ) ) otherlv_25= ';' ) ) ) ) )* )
-            // InternalConceptLanguage.g:1217:6: ( ({...}? => ( ({...}? => ( ( (lv_isAbstract_12_0= 'IsAbstract' ) ) otherlv_13= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_14= 'Applicable' otherlv_15= 'For' ( (otherlv_16= '[' ( ( ruleQualifiedName ) ) (otherlv_18= ',' ( ( ruleQualifiedName ) ) )* otherlv_20= ']' ) | ( (lv_isApplicableForAll_21_0= 'All' ) ) ) otherlv_22= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_23= 'Cardinality' ( (lv_cardinality_24_0= RULE_INT ) ) otherlv_25= ';' ) ) ) ) )*
+            // InternalConceptLanguage.g:1216:5: ( ( ({...}? => ( ({...}? => ( ( (lv_isAbstract_12_0= 'IsAbstract' ) ) otherlv_13= ';' ) ) ) ) | ({...}? => ( ({...}? => ( ( (lv_isVerification_14_0= 'IsVerification' ) ) otherlv_15= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'Applicable' otherlv_17= 'For' ( (otherlv_18= '[' ( ( ruleQualifiedName ) ) (otherlv_20= ',' ( ( ruleQualifiedName ) ) )* otherlv_22= ']' ) | ( (lv_isApplicableForAll_23_0= 'All' ) ) ) otherlv_24= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_25= 'Cardinality' ( (lv_cardinality_26_0= RULE_INT ) ) otherlv_27= ';' ) ) ) ) )* )
+            // InternalConceptLanguage.g:1217:6: ( ({...}? => ( ({...}? => ( ( (lv_isAbstract_12_0= 'IsAbstract' ) ) otherlv_13= ';' ) ) ) ) | ({...}? => ( ({...}? => ( ( (lv_isVerification_14_0= 'IsVerification' ) ) otherlv_15= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'Applicable' otherlv_17= 'For' ( (otherlv_18= '[' ( ( ruleQualifiedName ) ) (otherlv_20= ',' ( ( ruleQualifiedName ) ) )* otherlv_22= ']' ) | ( (lv_isApplicableForAll_23_0= 'All' ) ) ) otherlv_24= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_25= 'Cardinality' ( (lv_cardinality_26_0= RULE_INT ) ) otherlv_27= ';' ) ) ) ) )*
             {
-            // InternalConceptLanguage.g:1217:6: ( ({...}? => ( ({...}? => ( ( (lv_isAbstract_12_0= 'IsAbstract' ) ) otherlv_13= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_14= 'Applicable' otherlv_15= 'For' ( (otherlv_16= '[' ( ( ruleQualifiedName ) ) (otherlv_18= ',' ( ( ruleQualifiedName ) ) )* otherlv_20= ']' ) | ( (lv_isApplicableForAll_21_0= 'All' ) ) ) otherlv_22= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_23= 'Cardinality' ( (lv_cardinality_24_0= RULE_INT ) ) otherlv_25= ';' ) ) ) ) )*
+            // InternalConceptLanguage.g:1217:6: ( ({...}? => ( ({...}? => ( ( (lv_isAbstract_12_0= 'IsAbstract' ) ) otherlv_13= ';' ) ) ) ) | ({...}? => ( ({...}? => ( ( (lv_isVerification_14_0= 'IsVerification' ) ) otherlv_15= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'Applicable' otherlv_17= 'For' ( (otherlv_18= '[' ( ( ruleQualifiedName ) ) (otherlv_20= ',' ( ( ruleQualifiedName ) ) )* otherlv_22= ']' ) | ( (lv_isApplicableForAll_23_0= 'All' ) ) ) otherlv_24= ';' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_25= 'Cardinality' ( (lv_cardinality_26_0= RULE_INT ) ) otherlv_27= ';' ) ) ) ) )*
             loop22:
             do {
-                int alt22=4;
+                int alt22=5;
                 int LA22_0 = input.LA(1);
 
                 if ( LA22_0 == 37 && getUnorderedGroupHelper().canSelect(grammarAccess.getCategoryAccess().getUnorderedGroup_5(), 0) ) {
                     alt22=1;
                 }
-                else if ( LA22_0 == 29 && getUnorderedGroupHelper().canSelect(grammarAccess.getCategoryAccess().getUnorderedGroup_5(), 1) ) {
+                else if ( LA22_0 == 38 && getUnorderedGroupHelper().canSelect(grammarAccess.getCategoryAccess().getUnorderedGroup_5(), 1) ) {
                     alt22=2;
                 }
-                else if ( LA22_0 == 31 && getUnorderedGroupHelper().canSelect(grammarAccess.getCategoryAccess().getUnorderedGroup_5(), 2) ) {
+                else if ( LA22_0 == 29 && getUnorderedGroupHelper().canSelect(grammarAccess.getCategoryAccess().getUnorderedGroup_5(), 2) ) {
                     alt22=3;
+                }
+                else if ( LA22_0 == 31 && getUnorderedGroupHelper().canSelect(grammarAccess.getCategoryAccess().getUnorderedGroup_5(), 3) ) {
+                    alt22=4;
                 }
 
 
@@ -3084,38 +3091,106 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	    }
             	    break;
             	case 2 :
-            	    // InternalConceptLanguage.g:1247:4: ({...}? => ( ({...}? => (otherlv_14= 'Applicable' otherlv_15= 'For' ( (otherlv_16= '[' ( ( ruleQualifiedName ) ) (otherlv_18= ',' ( ( ruleQualifiedName ) ) )* otherlv_20= ']' ) | ( (lv_isApplicableForAll_21_0= 'All' ) ) ) otherlv_22= ';' ) ) ) )
+            	    // InternalConceptLanguage.g:1247:4: ({...}? => ( ({...}? => ( ( (lv_isVerification_14_0= 'IsVerification' ) ) otherlv_15= ';' ) ) ) )
             	    {
-            	    // InternalConceptLanguage.g:1247:4: ({...}? => ( ({...}? => (otherlv_14= 'Applicable' otherlv_15= 'For' ( (otherlv_16= '[' ( ( ruleQualifiedName ) ) (otherlv_18= ',' ( ( ruleQualifiedName ) ) )* otherlv_20= ']' ) | ( (lv_isApplicableForAll_21_0= 'All' ) ) ) otherlv_22= ';' ) ) ) )
-            	    // InternalConceptLanguage.g:1248:5: {...}? => ( ({...}? => (otherlv_14= 'Applicable' otherlv_15= 'For' ( (otherlv_16= '[' ( ( ruleQualifiedName ) ) (otherlv_18= ',' ( ( ruleQualifiedName ) ) )* otherlv_20= ']' ) | ( (lv_isApplicableForAll_21_0= 'All' ) ) ) otherlv_22= ';' ) ) )
+            	    // InternalConceptLanguage.g:1247:4: ({...}? => ( ({...}? => ( ( (lv_isVerification_14_0= 'IsVerification' ) ) otherlv_15= ';' ) ) ) )
+            	    // InternalConceptLanguage.g:1248:5: {...}? => ( ({...}? => ( ( (lv_isVerification_14_0= 'IsVerification' ) ) otherlv_15= ';' ) ) )
             	    {
             	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getCategoryAccess().getUnorderedGroup_5(), 1) ) {
             	        throw new FailedPredicateException(input, "ruleCategory", "getUnorderedGroupHelper().canSelect(grammarAccess.getCategoryAccess().getUnorderedGroup_5(), 1)");
             	    }
-            	    // InternalConceptLanguage.g:1248:105: ( ({...}? => (otherlv_14= 'Applicable' otherlv_15= 'For' ( (otherlv_16= '[' ( ( ruleQualifiedName ) ) (otherlv_18= ',' ( ( ruleQualifiedName ) ) )* otherlv_20= ']' ) | ( (lv_isApplicableForAll_21_0= 'All' ) ) ) otherlv_22= ';' ) ) )
-            	    // InternalConceptLanguage.g:1249:6: ({...}? => (otherlv_14= 'Applicable' otherlv_15= 'For' ( (otherlv_16= '[' ( ( ruleQualifiedName ) ) (otherlv_18= ',' ( ( ruleQualifiedName ) ) )* otherlv_20= ']' ) | ( (lv_isApplicableForAll_21_0= 'All' ) ) ) otherlv_22= ';' ) )
+            	    // InternalConceptLanguage.g:1248:105: ( ({...}? => ( ( (lv_isVerification_14_0= 'IsVerification' ) ) otherlv_15= ';' ) ) )
+            	    // InternalConceptLanguage.g:1249:6: ({...}? => ( ( (lv_isVerification_14_0= 'IsVerification' ) ) otherlv_15= ';' ) )
             	    {
 
             	    						getUnorderedGroupHelper().select(grammarAccess.getCategoryAccess().getUnorderedGroup_5(), 1);
             	    					
-            	    // InternalConceptLanguage.g:1252:9: ({...}? => (otherlv_14= 'Applicable' otherlv_15= 'For' ( (otherlv_16= '[' ( ( ruleQualifiedName ) ) (otherlv_18= ',' ( ( ruleQualifiedName ) ) )* otherlv_20= ']' ) | ( (lv_isApplicableForAll_21_0= 'All' ) ) ) otherlv_22= ';' ) )
-            	    // InternalConceptLanguage.g:1252:10: {...}? => (otherlv_14= 'Applicable' otherlv_15= 'For' ( (otherlv_16= '[' ( ( ruleQualifiedName ) ) (otherlv_18= ',' ( ( ruleQualifiedName ) ) )* otherlv_20= ']' ) | ( (lv_isApplicableForAll_21_0= 'All' ) ) ) otherlv_22= ';' )
+            	    // InternalConceptLanguage.g:1252:9: ({...}? => ( ( (lv_isVerification_14_0= 'IsVerification' ) ) otherlv_15= ';' ) )
+            	    // InternalConceptLanguage.g:1252:10: {...}? => ( ( (lv_isVerification_14_0= 'IsVerification' ) ) otherlv_15= ';' )
             	    {
             	    if ( !((true)) ) {
             	        throw new FailedPredicateException(input, "ruleCategory", "true");
             	    }
-            	    // InternalConceptLanguage.g:1252:19: (otherlv_14= 'Applicable' otherlv_15= 'For' ( (otherlv_16= '[' ( ( ruleQualifiedName ) ) (otherlv_18= ',' ( ( ruleQualifiedName ) ) )* otherlv_20= ']' ) | ( (lv_isApplicableForAll_21_0= 'All' ) ) ) otherlv_22= ';' )
-            	    // InternalConceptLanguage.g:1252:20: otherlv_14= 'Applicable' otherlv_15= 'For' ( (otherlv_16= '[' ( ( ruleQualifiedName ) ) (otherlv_18= ',' ( ( ruleQualifiedName ) ) )* otherlv_20= ']' ) | ( (lv_isApplicableForAll_21_0= 'All' ) ) ) otherlv_22= ';'
+            	    // InternalConceptLanguage.g:1252:19: ( ( (lv_isVerification_14_0= 'IsVerification' ) ) otherlv_15= ';' )
+            	    // InternalConceptLanguage.g:1252:20: ( (lv_isVerification_14_0= 'IsVerification' ) ) otherlv_15= ';'
             	    {
-            	    otherlv_14=(Token)match(input,29,FOLLOW_17); 
+            	    // InternalConceptLanguage.g:1252:20: ( (lv_isVerification_14_0= 'IsVerification' ) )
+            	    // InternalConceptLanguage.g:1253:10: (lv_isVerification_14_0= 'IsVerification' )
+            	    {
+            	    // InternalConceptLanguage.g:1253:10: (lv_isVerification_14_0= 'IsVerification' )
+            	    // InternalConceptLanguage.g:1254:11: lv_isVerification_14_0= 'IsVerification'
+            	    {
+            	    lv_isVerification_14_0=(Token)match(input,38,FOLLOW_13); 
 
-            	    									newLeafNode(otherlv_14, grammarAccess.getCategoryAccess().getApplicableKeyword_5_1_0());
-            	    								
-            	    otherlv_15=(Token)match(input,30,FOLLOW_15); 
+            	    											newLeafNode(lv_isVerification_14_0, grammarAccess.getCategoryAccess().getIsVerificationIsVerificationKeyword_5_1_0_0());
+            	    										
 
-            	    									newLeafNode(otherlv_15, grammarAccess.getCategoryAccess().getForKeyword_5_1_1());
+            	    											if (current==null) {
+            	    												current = createModelElement(grammarAccess.getCategoryRule());
+            	    											}
+            	    											setWithLastConsumed(current, "isVerification", lv_isVerification_14_0 != null, "IsVerification");
+            	    										
+
+            	    }
+
+
+            	    }
+
+            	    otherlv_15=(Token)match(input,22,FOLLOW_26); 
+
+            	    									newLeafNode(otherlv_15, grammarAccess.getCategoryAccess().getSemicolonKeyword_5_1_1());
             	    								
-            	    // InternalConceptLanguage.g:1260:9: ( (otherlv_16= '[' ( ( ruleQualifiedName ) ) (otherlv_18= ',' ( ( ruleQualifiedName ) ) )* otherlv_20= ']' ) | ( (lv_isApplicableForAll_21_0= 'All' ) ) )
+
+            	    }
+
+
+            	    }
+
+            	     
+            	    						getUnorderedGroupHelper().returnFromSelection(grammarAccess.getCategoryAccess().getUnorderedGroup_5());
+            	    					
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+            	    break;
+            	case 3 :
+            	    // InternalConceptLanguage.g:1276:4: ({...}? => ( ({...}? => (otherlv_16= 'Applicable' otherlv_17= 'For' ( (otherlv_18= '[' ( ( ruleQualifiedName ) ) (otherlv_20= ',' ( ( ruleQualifiedName ) ) )* otherlv_22= ']' ) | ( (lv_isApplicableForAll_23_0= 'All' ) ) ) otherlv_24= ';' ) ) ) )
+            	    {
+            	    // InternalConceptLanguage.g:1276:4: ({...}? => ( ({...}? => (otherlv_16= 'Applicable' otherlv_17= 'For' ( (otherlv_18= '[' ( ( ruleQualifiedName ) ) (otherlv_20= ',' ( ( ruleQualifiedName ) ) )* otherlv_22= ']' ) | ( (lv_isApplicableForAll_23_0= 'All' ) ) ) otherlv_24= ';' ) ) ) )
+            	    // InternalConceptLanguage.g:1277:5: {...}? => ( ({...}? => (otherlv_16= 'Applicable' otherlv_17= 'For' ( (otherlv_18= '[' ( ( ruleQualifiedName ) ) (otherlv_20= ',' ( ( ruleQualifiedName ) ) )* otherlv_22= ']' ) | ( (lv_isApplicableForAll_23_0= 'All' ) ) ) otherlv_24= ';' ) ) )
+            	    {
+            	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getCategoryAccess().getUnorderedGroup_5(), 2) ) {
+            	        throw new FailedPredicateException(input, "ruleCategory", "getUnorderedGroupHelper().canSelect(grammarAccess.getCategoryAccess().getUnorderedGroup_5(), 2)");
+            	    }
+            	    // InternalConceptLanguage.g:1277:105: ( ({...}? => (otherlv_16= 'Applicable' otherlv_17= 'For' ( (otherlv_18= '[' ( ( ruleQualifiedName ) ) (otherlv_20= ',' ( ( ruleQualifiedName ) ) )* otherlv_22= ']' ) | ( (lv_isApplicableForAll_23_0= 'All' ) ) ) otherlv_24= ';' ) ) )
+            	    // InternalConceptLanguage.g:1278:6: ({...}? => (otherlv_16= 'Applicable' otherlv_17= 'For' ( (otherlv_18= '[' ( ( ruleQualifiedName ) ) (otherlv_20= ',' ( ( ruleQualifiedName ) ) )* otherlv_22= ']' ) | ( (lv_isApplicableForAll_23_0= 'All' ) ) ) otherlv_24= ';' ) )
+            	    {
+
+            	    						getUnorderedGroupHelper().select(grammarAccess.getCategoryAccess().getUnorderedGroup_5(), 2);
+            	    					
+            	    // InternalConceptLanguage.g:1281:9: ({...}? => (otherlv_16= 'Applicable' otherlv_17= 'For' ( (otherlv_18= '[' ( ( ruleQualifiedName ) ) (otherlv_20= ',' ( ( ruleQualifiedName ) ) )* otherlv_22= ']' ) | ( (lv_isApplicableForAll_23_0= 'All' ) ) ) otherlv_24= ';' ) )
+            	    // InternalConceptLanguage.g:1281:10: {...}? => (otherlv_16= 'Applicable' otherlv_17= 'For' ( (otherlv_18= '[' ( ( ruleQualifiedName ) ) (otherlv_20= ',' ( ( ruleQualifiedName ) ) )* otherlv_22= ']' ) | ( (lv_isApplicableForAll_23_0= 'All' ) ) ) otherlv_24= ';' )
+            	    {
+            	    if ( !((true)) ) {
+            	        throw new FailedPredicateException(input, "ruleCategory", "true");
+            	    }
+            	    // InternalConceptLanguage.g:1281:19: (otherlv_16= 'Applicable' otherlv_17= 'For' ( (otherlv_18= '[' ( ( ruleQualifiedName ) ) (otherlv_20= ',' ( ( ruleQualifiedName ) ) )* otherlv_22= ']' ) | ( (lv_isApplicableForAll_23_0= 'All' ) ) ) otherlv_24= ';' )
+            	    // InternalConceptLanguage.g:1281:20: otherlv_16= 'Applicable' otherlv_17= 'For' ( (otherlv_18= '[' ( ( ruleQualifiedName ) ) (otherlv_20= ',' ( ( ruleQualifiedName ) ) )* otherlv_22= ']' ) | ( (lv_isApplicableForAll_23_0= 'All' ) ) ) otherlv_24= ';'
+            	    {
+            	    otherlv_16=(Token)match(input,29,FOLLOW_17); 
+
+            	    									newLeafNode(otherlv_16, grammarAccess.getCategoryAccess().getApplicableKeyword_5_2_0());
+            	    								
+            	    otherlv_17=(Token)match(input,30,FOLLOW_15); 
+
+            	    									newLeafNode(otherlv_17, grammarAccess.getCategoryAccess().getForKeyword_5_2_1());
+            	    								
+            	    // InternalConceptLanguage.g:1289:9: ( (otherlv_18= '[' ( ( ruleQualifiedName ) ) (otherlv_20= ',' ( ( ruleQualifiedName ) ) )* otherlv_22= ']' ) | ( (lv_isApplicableForAll_23_0= 'All' ) ) )
             	    int alt21=2;
             	    int LA21_0 = input.LA(1);
 
@@ -3133,20 +3208,20 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	    }
             	    switch (alt21) {
             	        case 1 :
-            	            // InternalConceptLanguage.g:1261:10: (otherlv_16= '[' ( ( ruleQualifiedName ) ) (otherlv_18= ',' ( ( ruleQualifiedName ) ) )* otherlv_20= ']' )
+            	            // InternalConceptLanguage.g:1290:10: (otherlv_18= '[' ( ( ruleQualifiedName ) ) (otherlv_20= ',' ( ( ruleQualifiedName ) ) )* otherlv_22= ']' )
             	            {
-            	            // InternalConceptLanguage.g:1261:10: (otherlv_16= '[' ( ( ruleQualifiedName ) ) (otherlv_18= ',' ( ( ruleQualifiedName ) ) )* otherlv_20= ']' )
-            	            // InternalConceptLanguage.g:1262:11: otherlv_16= '[' ( ( ruleQualifiedName ) ) (otherlv_18= ',' ( ( ruleQualifiedName ) ) )* otherlv_20= ']'
+            	            // InternalConceptLanguage.g:1290:10: (otherlv_18= '[' ( ( ruleQualifiedName ) ) (otherlv_20= ',' ( ( ruleQualifiedName ) ) )* otherlv_22= ']' )
+            	            // InternalConceptLanguage.g:1291:11: otherlv_18= '[' ( ( ruleQualifiedName ) ) (otherlv_20= ',' ( ( ruleQualifiedName ) ) )* otherlv_22= ']'
             	            {
-            	            otherlv_16=(Token)match(input,25,FOLLOW_3); 
+            	            otherlv_18=(Token)match(input,25,FOLLOW_3); 
 
-            	            											newLeafNode(otherlv_16, grammarAccess.getCategoryAccess().getLeftSquareBracketKeyword_5_1_2_0_0());
+            	            											newLeafNode(otherlv_18, grammarAccess.getCategoryAccess().getLeftSquareBracketKeyword_5_2_2_0_0());
             	            										
-            	            // InternalConceptLanguage.g:1266:11: ( ( ruleQualifiedName ) )
-            	            // InternalConceptLanguage.g:1267:12: ( ruleQualifiedName )
+            	            // InternalConceptLanguage.g:1295:11: ( ( ruleQualifiedName ) )
+            	            // InternalConceptLanguage.g:1296:12: ( ruleQualifiedName )
             	            {
-            	            // InternalConceptLanguage.g:1267:12: ( ruleQualifiedName )
-            	            // InternalConceptLanguage.g:1268:13: ruleQualifiedName
+            	            // InternalConceptLanguage.g:1296:12: ( ruleQualifiedName )
+            	            // InternalConceptLanguage.g:1297:13: ruleQualifiedName
             	            {
 
             	            													if (current==null) {
@@ -3154,7 +3229,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	            													}
             	            												
 
-            	            													newCompositeNode(grammarAccess.getCategoryAccess().getApplicableForStructuralElementCrossReference_5_1_2_0_1_0());
+            	            													newCompositeNode(grammarAccess.getCategoryAccess().getApplicableForStructuralElementCrossReference_5_2_2_0_1_0());
             	            												
             	            pushFollow(FOLLOW_16);
             	            ruleQualifiedName();
@@ -3170,7 +3245,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             	            }
 
-            	            // InternalConceptLanguage.g:1282:11: (otherlv_18= ',' ( ( ruleQualifiedName ) ) )*
+            	            // InternalConceptLanguage.g:1311:11: (otherlv_20= ',' ( ( ruleQualifiedName ) ) )*
             	            loop20:
             	            do {
             	                int alt20=2;
@@ -3183,17 +3258,17 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             	                switch (alt20) {
             	            	case 1 :
-            	            	    // InternalConceptLanguage.g:1283:12: otherlv_18= ',' ( ( ruleQualifiedName ) )
+            	            	    // InternalConceptLanguage.g:1312:12: otherlv_20= ',' ( ( ruleQualifiedName ) )
             	            	    {
-            	            	    otherlv_18=(Token)match(input,26,FOLLOW_3); 
+            	            	    otherlv_20=(Token)match(input,26,FOLLOW_3); 
 
-            	            	    												newLeafNode(otherlv_18, grammarAccess.getCategoryAccess().getCommaKeyword_5_1_2_0_2_0());
+            	            	    												newLeafNode(otherlv_20, grammarAccess.getCategoryAccess().getCommaKeyword_5_2_2_0_2_0());
             	            	    											
-            	            	    // InternalConceptLanguage.g:1287:12: ( ( ruleQualifiedName ) )
-            	            	    // InternalConceptLanguage.g:1288:13: ( ruleQualifiedName )
+            	            	    // InternalConceptLanguage.g:1316:12: ( ( ruleQualifiedName ) )
+            	            	    // InternalConceptLanguage.g:1317:13: ( ruleQualifiedName )
             	            	    {
-            	            	    // InternalConceptLanguage.g:1288:13: ( ruleQualifiedName )
-            	            	    // InternalConceptLanguage.g:1289:14: ruleQualifiedName
+            	            	    // InternalConceptLanguage.g:1317:13: ( ruleQualifiedName )
+            	            	    // InternalConceptLanguage.g:1318:14: ruleQualifiedName
             	            	    {
 
             	            	    														if (current==null) {
@@ -3201,7 +3276,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	            	    														}
             	            	    													
 
-            	            	    														newCompositeNode(grammarAccess.getCategoryAccess().getApplicableForStructuralElementCrossReference_5_1_2_0_2_1_0());
+            	            	    														newCompositeNode(grammarAccess.getCategoryAccess().getApplicableForStructuralElementCrossReference_5_2_2_0_2_1_0());
             	            	    													
             	            	    pushFollow(FOLLOW_16);
             	            	    ruleQualifiedName();
@@ -3226,9 +3301,9 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	                }
             	            } while (true);
 
-            	            otherlv_20=(Token)match(input,27,FOLLOW_13); 
+            	            otherlv_22=(Token)match(input,27,FOLLOW_13); 
 
-            	            											newLeafNode(otherlv_20, grammarAccess.getCategoryAccess().getRightSquareBracketKeyword_5_1_2_0_3());
+            	            											newLeafNode(otherlv_22, grammarAccess.getCategoryAccess().getRightSquareBracketKeyword_5_2_2_0_3());
             	            										
 
             	            }
@@ -3237,23 +3312,23 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	            }
             	            break;
             	        case 2 :
-            	            // InternalConceptLanguage.g:1310:10: ( (lv_isApplicableForAll_21_0= 'All' ) )
+            	            // InternalConceptLanguage.g:1339:10: ( (lv_isApplicableForAll_23_0= 'All' ) )
             	            {
-            	            // InternalConceptLanguage.g:1310:10: ( (lv_isApplicableForAll_21_0= 'All' ) )
-            	            // InternalConceptLanguage.g:1311:11: (lv_isApplicableForAll_21_0= 'All' )
+            	            // InternalConceptLanguage.g:1339:10: ( (lv_isApplicableForAll_23_0= 'All' ) )
+            	            // InternalConceptLanguage.g:1340:11: (lv_isApplicableForAll_23_0= 'All' )
             	            {
-            	            // InternalConceptLanguage.g:1311:11: (lv_isApplicableForAll_21_0= 'All' )
-            	            // InternalConceptLanguage.g:1312:12: lv_isApplicableForAll_21_0= 'All'
+            	            // InternalConceptLanguage.g:1340:11: (lv_isApplicableForAll_23_0= 'All' )
+            	            // InternalConceptLanguage.g:1341:12: lv_isApplicableForAll_23_0= 'All'
             	            {
-            	            lv_isApplicableForAll_21_0=(Token)match(input,28,FOLLOW_13); 
+            	            lv_isApplicableForAll_23_0=(Token)match(input,28,FOLLOW_13); 
 
-            	            												newLeafNode(lv_isApplicableForAll_21_0, grammarAccess.getCategoryAccess().getIsApplicableForAllAllKeyword_5_1_2_1_0());
+            	            												newLeafNode(lv_isApplicableForAll_23_0, grammarAccess.getCategoryAccess().getIsApplicableForAllAllKeyword_5_2_2_1_0());
             	            											
 
             	            												if (current==null) {
             	            													current = createModelElement(grammarAccess.getCategoryRule());
             	            												}
-            	            												setWithLastConsumed(current, "isApplicableForAll", lv_isApplicableForAll_21_0 != null, "All");
+            	            												setWithLastConsumed(current, "isApplicableForAll", lv_isApplicableForAll_23_0 != null, "All");
             	            											
 
             	            }
@@ -3267,9 +3342,9 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    otherlv_22=(Token)match(input,22,FOLLOW_26); 
+            	    otherlv_24=(Token)match(input,22,FOLLOW_26); 
 
-            	    									newLeafNode(otherlv_22, grammarAccess.getCategoryAccess().getSemicolonKeyword_5_1_3());
+            	    									newLeafNode(otherlv_24, grammarAccess.getCategoryAccess().getSemicolonKeyword_5_2_3());
             	    								
 
             	    }
@@ -3289,43 +3364,43 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             	    }
             	    break;
-            	case 3 :
-            	    // InternalConceptLanguage.g:1335:4: ({...}? => ( ({...}? => (otherlv_23= 'Cardinality' ( (lv_cardinality_24_0= RULE_INT ) ) otherlv_25= ';' ) ) ) )
+            	case 4 :
+            	    // InternalConceptLanguage.g:1364:4: ({...}? => ( ({...}? => (otherlv_25= 'Cardinality' ( (lv_cardinality_26_0= RULE_INT ) ) otherlv_27= ';' ) ) ) )
             	    {
-            	    // InternalConceptLanguage.g:1335:4: ({...}? => ( ({...}? => (otherlv_23= 'Cardinality' ( (lv_cardinality_24_0= RULE_INT ) ) otherlv_25= ';' ) ) ) )
-            	    // InternalConceptLanguage.g:1336:5: {...}? => ( ({...}? => (otherlv_23= 'Cardinality' ( (lv_cardinality_24_0= RULE_INT ) ) otherlv_25= ';' ) ) )
+            	    // InternalConceptLanguage.g:1364:4: ({...}? => ( ({...}? => (otherlv_25= 'Cardinality' ( (lv_cardinality_26_0= RULE_INT ) ) otherlv_27= ';' ) ) ) )
+            	    // InternalConceptLanguage.g:1365:5: {...}? => ( ({...}? => (otherlv_25= 'Cardinality' ( (lv_cardinality_26_0= RULE_INT ) ) otherlv_27= ';' ) ) )
             	    {
-            	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getCategoryAccess().getUnorderedGroup_5(), 2) ) {
-            	        throw new FailedPredicateException(input, "ruleCategory", "getUnorderedGroupHelper().canSelect(grammarAccess.getCategoryAccess().getUnorderedGroup_5(), 2)");
+            	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getCategoryAccess().getUnorderedGroup_5(), 3) ) {
+            	        throw new FailedPredicateException(input, "ruleCategory", "getUnorderedGroupHelper().canSelect(grammarAccess.getCategoryAccess().getUnorderedGroup_5(), 3)");
             	    }
-            	    // InternalConceptLanguage.g:1336:105: ( ({...}? => (otherlv_23= 'Cardinality' ( (lv_cardinality_24_0= RULE_INT ) ) otherlv_25= ';' ) ) )
-            	    // InternalConceptLanguage.g:1337:6: ({...}? => (otherlv_23= 'Cardinality' ( (lv_cardinality_24_0= RULE_INT ) ) otherlv_25= ';' ) )
+            	    // InternalConceptLanguage.g:1365:105: ( ({...}? => (otherlv_25= 'Cardinality' ( (lv_cardinality_26_0= RULE_INT ) ) otherlv_27= ';' ) ) )
+            	    // InternalConceptLanguage.g:1366:6: ({...}? => (otherlv_25= 'Cardinality' ( (lv_cardinality_26_0= RULE_INT ) ) otherlv_27= ';' ) )
             	    {
 
-            	    						getUnorderedGroupHelper().select(grammarAccess.getCategoryAccess().getUnorderedGroup_5(), 2);
+            	    						getUnorderedGroupHelper().select(grammarAccess.getCategoryAccess().getUnorderedGroup_5(), 3);
             	    					
-            	    // InternalConceptLanguage.g:1340:9: ({...}? => (otherlv_23= 'Cardinality' ( (lv_cardinality_24_0= RULE_INT ) ) otherlv_25= ';' ) )
-            	    // InternalConceptLanguage.g:1340:10: {...}? => (otherlv_23= 'Cardinality' ( (lv_cardinality_24_0= RULE_INT ) ) otherlv_25= ';' )
+            	    // InternalConceptLanguage.g:1369:9: ({...}? => (otherlv_25= 'Cardinality' ( (lv_cardinality_26_0= RULE_INT ) ) otherlv_27= ';' ) )
+            	    // InternalConceptLanguage.g:1369:10: {...}? => (otherlv_25= 'Cardinality' ( (lv_cardinality_26_0= RULE_INT ) ) otherlv_27= ';' )
             	    {
             	    if ( !((true)) ) {
             	        throw new FailedPredicateException(input, "ruleCategory", "true");
             	    }
-            	    // InternalConceptLanguage.g:1340:19: (otherlv_23= 'Cardinality' ( (lv_cardinality_24_0= RULE_INT ) ) otherlv_25= ';' )
-            	    // InternalConceptLanguage.g:1340:20: otherlv_23= 'Cardinality' ( (lv_cardinality_24_0= RULE_INT ) ) otherlv_25= ';'
+            	    // InternalConceptLanguage.g:1369:19: (otherlv_25= 'Cardinality' ( (lv_cardinality_26_0= RULE_INT ) ) otherlv_27= ';' )
+            	    // InternalConceptLanguage.g:1369:20: otherlv_25= 'Cardinality' ( (lv_cardinality_26_0= RULE_INT ) ) otherlv_27= ';'
             	    {
-            	    otherlv_23=(Token)match(input,31,FOLLOW_6); 
+            	    otherlv_25=(Token)match(input,31,FOLLOW_6); 
 
-            	    									newLeafNode(otherlv_23, grammarAccess.getCategoryAccess().getCardinalityKeyword_5_2_0());
+            	    									newLeafNode(otherlv_25, grammarAccess.getCategoryAccess().getCardinalityKeyword_5_3_0());
             	    								
-            	    // InternalConceptLanguage.g:1344:9: ( (lv_cardinality_24_0= RULE_INT ) )
-            	    // InternalConceptLanguage.g:1345:10: (lv_cardinality_24_0= RULE_INT )
+            	    // InternalConceptLanguage.g:1373:9: ( (lv_cardinality_26_0= RULE_INT ) )
+            	    // InternalConceptLanguage.g:1374:10: (lv_cardinality_26_0= RULE_INT )
             	    {
-            	    // InternalConceptLanguage.g:1345:10: (lv_cardinality_24_0= RULE_INT )
-            	    // InternalConceptLanguage.g:1346:11: lv_cardinality_24_0= RULE_INT
+            	    // InternalConceptLanguage.g:1374:10: (lv_cardinality_26_0= RULE_INT )
+            	    // InternalConceptLanguage.g:1375:11: lv_cardinality_26_0= RULE_INT
             	    {
-            	    lv_cardinality_24_0=(Token)match(input,RULE_INT,FOLLOW_13); 
+            	    lv_cardinality_26_0=(Token)match(input,RULE_INT,FOLLOW_13); 
 
-            	    											newLeafNode(lv_cardinality_24_0, grammarAccess.getCategoryAccess().getCardinalityINTTerminalRuleCall_5_2_1_0());
+            	    											newLeafNode(lv_cardinality_26_0, grammarAccess.getCategoryAccess().getCardinalityINTTerminalRuleCall_5_3_1_0());
             	    										
 
             	    											if (current==null) {
@@ -3334,7 +3409,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	    											setWithLastConsumed(
             	    												current,
             	    												"cardinality",
-            	    												lv_cardinality_24_0,
+            	    												lv_cardinality_26_0,
             	    												"org.eclipse.xtext.common.Terminals.INT");
             	    										
 
@@ -3343,9 +3418,9 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    otherlv_25=(Token)match(input,22,FOLLOW_26); 
+            	    otherlv_27=(Token)match(input,22,FOLLOW_26); 
 
-            	    									newLeafNode(otherlv_25, grammarAccess.getCategoryAccess().getSemicolonKeyword_5_2_2());
+            	    									newLeafNode(otherlv_27, grammarAccess.getCategoryAccess().getSemicolonKeyword_5_3_2());
             	    								
 
             	    }
@@ -3383,29 +3458,29 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalConceptLanguage.g:1379:3: ( (lv_properties_26_0= ruleAProperty ) )*
+            // InternalConceptLanguage.g:1408:3: ( (lv_properties_28_0= ruleAProperty ) )*
             loop23:
             do {
                 int alt23=2;
                 int LA23_0 = input.LA(1);
 
-                if ( (LA23_0==34||LA23_0==44||(LA23_0>=46 && LA23_0<=49)||(LA23_0>=52 && LA23_0<=54)) ) {
+                if ( (LA23_0==34||LA23_0==46||(LA23_0>=48 && LA23_0<=51)||(LA23_0>=54 && LA23_0<=56)) ) {
                     alt23=1;
                 }
 
 
                 switch (alt23) {
             	case 1 :
-            	    // InternalConceptLanguage.g:1380:4: (lv_properties_26_0= ruleAProperty )
+            	    // InternalConceptLanguage.g:1409:4: (lv_properties_28_0= ruleAProperty )
             	    {
-            	    // InternalConceptLanguage.g:1380:4: (lv_properties_26_0= ruleAProperty )
-            	    // InternalConceptLanguage.g:1381:5: lv_properties_26_0= ruleAProperty
+            	    // InternalConceptLanguage.g:1409:4: (lv_properties_28_0= ruleAProperty )
+            	    // InternalConceptLanguage.g:1410:5: lv_properties_28_0= ruleAProperty
             	    {
 
             	    					newCompositeNode(grammarAccess.getCategoryAccess().getPropertiesAPropertyParserRuleCall_6_0());
             	    				
             	    pushFollow(FOLLOW_27);
-            	    lv_properties_26_0=ruleAProperty();
+            	    lv_properties_28_0=ruleAProperty();
 
             	    state._fsp--;
 
@@ -3416,7 +3491,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	    					add(
             	    						current,
             	    						"properties",
-            	    						lv_properties_26_0,
+            	    						lv_properties_28_0,
             	    						"de.dlr.sc.virsat.model.concept.ConceptLanguage.AProperty");
             	    					afterParserOrEnumRuleCall();
             	    				
@@ -3432,29 +3507,29 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                 }
             } while (true);
 
-            // InternalConceptLanguage.g:1398:3: ( (lv_equationDefinitions_27_0= ruleEquationDefinition ) )*
+            // InternalConceptLanguage.g:1427:3: ( (lv_equationDefinitions_29_0= ruleEquationDefinition ) )*
             loop24:
             do {
                 int alt24=2;
                 int LA24_0 = input.LA(1);
 
-                if ( ((LA24_0>=55 && LA24_0<=56)) ) {
+                if ( ((LA24_0>=57 && LA24_0<=58)) ) {
                     alt24=1;
                 }
 
 
                 switch (alt24) {
             	case 1 :
-            	    // InternalConceptLanguage.g:1399:4: (lv_equationDefinitions_27_0= ruleEquationDefinition )
+            	    // InternalConceptLanguage.g:1428:4: (lv_equationDefinitions_29_0= ruleEquationDefinition )
             	    {
-            	    // InternalConceptLanguage.g:1399:4: (lv_equationDefinitions_27_0= ruleEquationDefinition )
-            	    // InternalConceptLanguage.g:1400:5: lv_equationDefinitions_27_0= ruleEquationDefinition
+            	    // InternalConceptLanguage.g:1428:4: (lv_equationDefinitions_29_0= ruleEquationDefinition )
+            	    // InternalConceptLanguage.g:1429:5: lv_equationDefinitions_29_0= ruleEquationDefinition
             	    {
 
             	    					newCompositeNode(grammarAccess.getCategoryAccess().getEquationDefinitionsEquationDefinitionParserRuleCall_7_0());
             	    				
             	    pushFollow(FOLLOW_28);
-            	    lv_equationDefinitions_27_0=ruleEquationDefinition();
+            	    lv_equationDefinitions_29_0=ruleEquationDefinition();
 
             	    state._fsp--;
 
@@ -3465,7 +3540,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	    					add(
             	    						current,
             	    						"equationDefinitions",
-            	    						lv_equationDefinitions_27_0,
+            	    						lv_equationDefinitions_29_0,
             	    						"de.dlr.sc.virsat.model.concept.ConceptLanguage.EquationDefinition");
             	    					afterParserOrEnumRuleCall();
             	    				
@@ -3481,9 +3556,9 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                 }
             } while (true);
 
-            otherlv_28=(Token)match(input,18,FOLLOW_2); 
+            otherlv_30=(Token)match(input,18,FOLLOW_2); 
 
-            			newLeafNode(otherlv_28, grammarAccess.getCategoryAccess().getRightCurlyBracketKeyword_8());
+            			newLeafNode(otherlv_30, grammarAccess.getCategoryAccess().getRightCurlyBracketKeyword_8());
             		
 
             }
@@ -3508,7 +3583,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleConceptImport"
-    // InternalConceptLanguage.g:1425:1: entryRuleConceptImport returns [EObject current=null] : iv_ruleConceptImport= ruleConceptImport EOF ;
+    // InternalConceptLanguage.g:1454:1: entryRuleConceptImport returns [EObject current=null] : iv_ruleConceptImport= ruleConceptImport EOF ;
     public final EObject entryRuleConceptImport() throws RecognitionException {
         EObject current = null;
 
@@ -3516,8 +3591,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:1425:54: (iv_ruleConceptImport= ruleConceptImport EOF )
-            // InternalConceptLanguage.g:1426:2: iv_ruleConceptImport= ruleConceptImport EOF
+            // InternalConceptLanguage.g:1454:54: (iv_ruleConceptImport= ruleConceptImport EOF )
+            // InternalConceptLanguage.g:1455:2: iv_ruleConceptImport= ruleConceptImport EOF
             {
              newCompositeNode(grammarAccess.getConceptImportRule()); 
             pushFollow(FOLLOW_1);
@@ -3544,7 +3619,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleConceptImport"
-    // InternalConceptLanguage.g:1432:1: ruleConceptImport returns [EObject current=null] : ( () otherlv_1= 'Import' ( (lv_importedNamespace_2_0= ruleQualifiedNameWithWildcard ) ) otherlv_3= ';' ) ;
+    // InternalConceptLanguage.g:1461:1: ruleConceptImport returns [EObject current=null] : ( () otherlv_1= 'Import' ( (lv_importedNamespace_2_0= ruleQualifiedNameWithWildcard ) ) otherlv_3= ';' ) ;
     public final EObject ruleConceptImport() throws RecognitionException {
         EObject current = null;
 
@@ -3557,14 +3632,14 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:1438:2: ( ( () otherlv_1= 'Import' ( (lv_importedNamespace_2_0= ruleQualifiedNameWithWildcard ) ) otherlv_3= ';' ) )
-            // InternalConceptLanguage.g:1439:2: ( () otherlv_1= 'Import' ( (lv_importedNamespace_2_0= ruleQualifiedNameWithWildcard ) ) otherlv_3= ';' )
+            // InternalConceptLanguage.g:1467:2: ( ( () otherlv_1= 'Import' ( (lv_importedNamespace_2_0= ruleQualifiedNameWithWildcard ) ) otherlv_3= ';' ) )
+            // InternalConceptLanguage.g:1468:2: ( () otherlv_1= 'Import' ( (lv_importedNamespace_2_0= ruleQualifiedNameWithWildcard ) ) otherlv_3= ';' )
             {
-            // InternalConceptLanguage.g:1439:2: ( () otherlv_1= 'Import' ( (lv_importedNamespace_2_0= ruleQualifiedNameWithWildcard ) ) otherlv_3= ';' )
-            // InternalConceptLanguage.g:1440:3: () otherlv_1= 'Import' ( (lv_importedNamespace_2_0= ruleQualifiedNameWithWildcard ) ) otherlv_3= ';'
+            // InternalConceptLanguage.g:1468:2: ( () otherlv_1= 'Import' ( (lv_importedNamespace_2_0= ruleQualifiedNameWithWildcard ) ) otherlv_3= ';' )
+            // InternalConceptLanguage.g:1469:3: () otherlv_1= 'Import' ( (lv_importedNamespace_2_0= ruleQualifiedNameWithWildcard ) ) otherlv_3= ';'
             {
-            // InternalConceptLanguage.g:1440:3: ()
-            // InternalConceptLanguage.g:1441:4: 
+            // InternalConceptLanguage.g:1469:3: ()
+            // InternalConceptLanguage.g:1470:4: 
             {
 
             				current = forceCreateModelElement(
@@ -3574,15 +3649,15 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_1=(Token)match(input,38,FOLLOW_3); 
+            otherlv_1=(Token)match(input,39,FOLLOW_3); 
 
             			newLeafNode(otherlv_1, grammarAccess.getConceptImportAccess().getImportKeyword_1());
             		
-            // InternalConceptLanguage.g:1451:3: ( (lv_importedNamespace_2_0= ruleQualifiedNameWithWildcard ) )
-            // InternalConceptLanguage.g:1452:4: (lv_importedNamespace_2_0= ruleQualifiedNameWithWildcard )
+            // InternalConceptLanguage.g:1480:3: ( (lv_importedNamespace_2_0= ruleQualifiedNameWithWildcard ) )
+            // InternalConceptLanguage.g:1481:4: (lv_importedNamespace_2_0= ruleQualifiedNameWithWildcard )
             {
-            // InternalConceptLanguage.g:1452:4: (lv_importedNamespace_2_0= ruleQualifiedNameWithWildcard )
-            // InternalConceptLanguage.g:1453:5: lv_importedNamespace_2_0= ruleQualifiedNameWithWildcard
+            // InternalConceptLanguage.g:1481:4: (lv_importedNamespace_2_0= ruleQualifiedNameWithWildcard )
+            // InternalConceptLanguage.g:1482:5: lv_importedNamespace_2_0= ruleQualifiedNameWithWildcard
             {
 
             					newCompositeNode(grammarAccess.getConceptImportAccess().getImportedNamespaceQualifiedNameWithWildcardParserRuleCall_2_0());
@@ -3636,7 +3711,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleEcoreImport"
-    // InternalConceptLanguage.g:1478:1: entryRuleEcoreImport returns [EObject current=null] : iv_ruleEcoreImport= ruleEcoreImport EOF ;
+    // InternalConceptLanguage.g:1507:1: entryRuleEcoreImport returns [EObject current=null] : iv_ruleEcoreImport= ruleEcoreImport EOF ;
     public final EObject entryRuleEcoreImport() throws RecognitionException {
         EObject current = null;
 
@@ -3644,8 +3719,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:1478:52: (iv_ruleEcoreImport= ruleEcoreImport EOF )
-            // InternalConceptLanguage.g:1479:2: iv_ruleEcoreImport= ruleEcoreImport EOF
+            // InternalConceptLanguage.g:1507:52: (iv_ruleEcoreImport= ruleEcoreImport EOF )
+            // InternalConceptLanguage.g:1508:2: iv_ruleEcoreImport= ruleEcoreImport EOF
             {
              newCompositeNode(grammarAccess.getEcoreImportRule()); 
             pushFollow(FOLLOW_1);
@@ -3672,7 +3747,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleEcoreImport"
-    // InternalConceptLanguage.g:1485:1: ruleEcoreImport returns [EObject current=null] : ( () otherlv_1= 'EImport' ( (lv_importedNsURI_2_0= RULE_STRING ) ) (otherlv_3= 'genModel' ( (lv_importedGenModel_4_0= RULE_STRING ) ) )? otherlv_5= ';' ) ;
+    // InternalConceptLanguage.g:1514:1: ruleEcoreImport returns [EObject current=null] : ( () otherlv_1= 'EImport' ( (lv_importedNsURI_2_0= RULE_STRING ) ) (otherlv_3= 'genModel' ( (lv_importedGenModel_4_0= RULE_STRING ) ) )? otherlv_5= ';' ) ;
     public final EObject ruleEcoreImport() throws RecognitionException {
         EObject current = null;
 
@@ -3686,14 +3761,14 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:1491:2: ( ( () otherlv_1= 'EImport' ( (lv_importedNsURI_2_0= RULE_STRING ) ) (otherlv_3= 'genModel' ( (lv_importedGenModel_4_0= RULE_STRING ) ) )? otherlv_5= ';' ) )
-            // InternalConceptLanguage.g:1492:2: ( () otherlv_1= 'EImport' ( (lv_importedNsURI_2_0= RULE_STRING ) ) (otherlv_3= 'genModel' ( (lv_importedGenModel_4_0= RULE_STRING ) ) )? otherlv_5= ';' )
+            // InternalConceptLanguage.g:1520:2: ( ( () otherlv_1= 'EImport' ( (lv_importedNsURI_2_0= RULE_STRING ) ) (otherlv_3= 'genModel' ( (lv_importedGenModel_4_0= RULE_STRING ) ) )? otherlv_5= ';' ) )
+            // InternalConceptLanguage.g:1521:2: ( () otherlv_1= 'EImport' ( (lv_importedNsURI_2_0= RULE_STRING ) ) (otherlv_3= 'genModel' ( (lv_importedGenModel_4_0= RULE_STRING ) ) )? otherlv_5= ';' )
             {
-            // InternalConceptLanguage.g:1492:2: ( () otherlv_1= 'EImport' ( (lv_importedNsURI_2_0= RULE_STRING ) ) (otherlv_3= 'genModel' ( (lv_importedGenModel_4_0= RULE_STRING ) ) )? otherlv_5= ';' )
-            // InternalConceptLanguage.g:1493:3: () otherlv_1= 'EImport' ( (lv_importedNsURI_2_0= RULE_STRING ) ) (otherlv_3= 'genModel' ( (lv_importedGenModel_4_0= RULE_STRING ) ) )? otherlv_5= ';'
+            // InternalConceptLanguage.g:1521:2: ( () otherlv_1= 'EImport' ( (lv_importedNsURI_2_0= RULE_STRING ) ) (otherlv_3= 'genModel' ( (lv_importedGenModel_4_0= RULE_STRING ) ) )? otherlv_5= ';' )
+            // InternalConceptLanguage.g:1522:3: () otherlv_1= 'EImport' ( (lv_importedNsURI_2_0= RULE_STRING ) ) (otherlv_3= 'genModel' ( (lv_importedGenModel_4_0= RULE_STRING ) ) )? otherlv_5= ';'
             {
-            // InternalConceptLanguage.g:1493:3: ()
-            // InternalConceptLanguage.g:1494:4: 
+            // InternalConceptLanguage.g:1522:3: ()
+            // InternalConceptLanguage.g:1523:4: 
             {
 
             				current = forceCreateModelElement(
@@ -3703,15 +3778,15 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_1=(Token)match(input,39,FOLLOW_5); 
+            otherlv_1=(Token)match(input,40,FOLLOW_5); 
 
             			newLeafNode(otherlv_1, grammarAccess.getEcoreImportAccess().getEImportKeyword_1());
             		
-            // InternalConceptLanguage.g:1504:3: ( (lv_importedNsURI_2_0= RULE_STRING ) )
-            // InternalConceptLanguage.g:1505:4: (lv_importedNsURI_2_0= RULE_STRING )
+            // InternalConceptLanguage.g:1533:3: ( (lv_importedNsURI_2_0= RULE_STRING ) )
+            // InternalConceptLanguage.g:1534:4: (lv_importedNsURI_2_0= RULE_STRING )
             {
-            // InternalConceptLanguage.g:1505:4: (lv_importedNsURI_2_0= RULE_STRING )
-            // InternalConceptLanguage.g:1506:5: lv_importedNsURI_2_0= RULE_STRING
+            // InternalConceptLanguage.g:1534:4: (lv_importedNsURI_2_0= RULE_STRING )
+            // InternalConceptLanguage.g:1535:5: lv_importedNsURI_2_0= RULE_STRING
             {
             lv_importedNsURI_2_0=(Token)match(input,RULE_STRING,FOLLOW_29); 
 
@@ -3733,26 +3808,26 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalConceptLanguage.g:1522:3: (otherlv_3= 'genModel' ( (lv_importedGenModel_4_0= RULE_STRING ) ) )?
+            // InternalConceptLanguage.g:1551:3: (otherlv_3= 'genModel' ( (lv_importedGenModel_4_0= RULE_STRING ) ) )?
             int alt25=2;
             int LA25_0 = input.LA(1);
 
-            if ( (LA25_0==40) ) {
+            if ( (LA25_0==41) ) {
                 alt25=1;
             }
             switch (alt25) {
                 case 1 :
-                    // InternalConceptLanguage.g:1523:4: otherlv_3= 'genModel' ( (lv_importedGenModel_4_0= RULE_STRING ) )
+                    // InternalConceptLanguage.g:1552:4: otherlv_3= 'genModel' ( (lv_importedGenModel_4_0= RULE_STRING ) )
                     {
-                    otherlv_3=(Token)match(input,40,FOLLOW_5); 
+                    otherlv_3=(Token)match(input,41,FOLLOW_5); 
 
                     				newLeafNode(otherlv_3, grammarAccess.getEcoreImportAccess().getGenModelKeyword_3_0());
                     			
-                    // InternalConceptLanguage.g:1527:4: ( (lv_importedGenModel_4_0= RULE_STRING ) )
-                    // InternalConceptLanguage.g:1528:5: (lv_importedGenModel_4_0= RULE_STRING )
+                    // InternalConceptLanguage.g:1556:4: ( (lv_importedGenModel_4_0= RULE_STRING ) )
+                    // InternalConceptLanguage.g:1557:5: (lv_importedGenModel_4_0= RULE_STRING )
                     {
-                    // InternalConceptLanguage.g:1528:5: (lv_importedGenModel_4_0= RULE_STRING )
-                    // InternalConceptLanguage.g:1529:6: lv_importedGenModel_4_0= RULE_STRING
+                    // InternalConceptLanguage.g:1557:5: (lv_importedGenModel_4_0= RULE_STRING )
+                    // InternalConceptLanguage.g:1558:6: lv_importedGenModel_4_0= RULE_STRING
                     {
                     lv_importedGenModel_4_0=(Token)match(input,RULE_STRING,FOLLOW_13); 
 
@@ -3807,7 +3882,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleAProperty"
-    // InternalConceptLanguage.g:1554:1: entryRuleAProperty returns [EObject current=null] : iv_ruleAProperty= ruleAProperty EOF ;
+    // InternalConceptLanguage.g:1583:1: entryRuleAProperty returns [EObject current=null] : iv_ruleAProperty= ruleAProperty EOF ;
     public final EObject entryRuleAProperty() throws RecognitionException {
         EObject current = null;
 
@@ -3815,8 +3890,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:1554:50: (iv_ruleAProperty= ruleAProperty EOF )
-            // InternalConceptLanguage.g:1555:2: iv_ruleAProperty= ruleAProperty EOF
+            // InternalConceptLanguage.g:1583:50: (iv_ruleAProperty= ruleAProperty EOF )
+            // InternalConceptLanguage.g:1584:2: iv_ruleAProperty= ruleAProperty EOF
             {
              newCompositeNode(grammarAccess.getAPropertyRule()); 
             pushFollow(FOLLOW_1);
@@ -3843,7 +3918,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleAProperty"
-    // InternalConceptLanguage.g:1561:1: ruleAProperty returns [EObject current=null] : (this_ComposedProperty_0= ruleComposedProperty | this_IntProperty_1= ruleIntProperty | this_FloatProperty_2= ruleFloatProperty | this_StringProperty_3= ruleStringProperty | this_BooleanProperty_4= ruleBooleanProperty | this_EnumProperty_5= ruleEnumProperty | this_ReferenceProperty_6= ruleReferenceProperty | this_EReferenceProperty_7= ruleEReferenceProperty | this_ResourceProperty_8= ruleResourceProperty ) ;
+    // InternalConceptLanguage.g:1590:1: ruleAProperty returns [EObject current=null] : (this_ComposedProperty_0= ruleComposedProperty | this_IntProperty_1= ruleIntProperty | this_FloatProperty_2= ruleFloatProperty | this_StringProperty_3= ruleStringProperty | this_BooleanProperty_4= ruleBooleanProperty | this_EnumProperty_5= ruleEnumProperty | this_ReferenceProperty_6= ruleReferenceProperty | this_EReferenceProperty_7= ruleEReferenceProperty | this_ResourceProperty_8= ruleResourceProperty ) ;
     public final EObject ruleAProperty() throws RecognitionException {
         EObject current = null;
 
@@ -3870,10 +3945,10 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:1567:2: ( (this_ComposedProperty_0= ruleComposedProperty | this_IntProperty_1= ruleIntProperty | this_FloatProperty_2= ruleFloatProperty | this_StringProperty_3= ruleStringProperty | this_BooleanProperty_4= ruleBooleanProperty | this_EnumProperty_5= ruleEnumProperty | this_ReferenceProperty_6= ruleReferenceProperty | this_EReferenceProperty_7= ruleEReferenceProperty | this_ResourceProperty_8= ruleResourceProperty ) )
-            // InternalConceptLanguage.g:1568:2: (this_ComposedProperty_0= ruleComposedProperty | this_IntProperty_1= ruleIntProperty | this_FloatProperty_2= ruleFloatProperty | this_StringProperty_3= ruleStringProperty | this_BooleanProperty_4= ruleBooleanProperty | this_EnumProperty_5= ruleEnumProperty | this_ReferenceProperty_6= ruleReferenceProperty | this_EReferenceProperty_7= ruleEReferenceProperty | this_ResourceProperty_8= ruleResourceProperty )
+            // InternalConceptLanguage.g:1596:2: ( (this_ComposedProperty_0= ruleComposedProperty | this_IntProperty_1= ruleIntProperty | this_FloatProperty_2= ruleFloatProperty | this_StringProperty_3= ruleStringProperty | this_BooleanProperty_4= ruleBooleanProperty | this_EnumProperty_5= ruleEnumProperty | this_ReferenceProperty_6= ruleReferenceProperty | this_EReferenceProperty_7= ruleEReferenceProperty | this_ResourceProperty_8= ruleResourceProperty ) )
+            // InternalConceptLanguage.g:1597:2: (this_ComposedProperty_0= ruleComposedProperty | this_IntProperty_1= ruleIntProperty | this_FloatProperty_2= ruleFloatProperty | this_StringProperty_3= ruleStringProperty | this_BooleanProperty_4= ruleBooleanProperty | this_EnumProperty_5= ruleEnumProperty | this_ReferenceProperty_6= ruleReferenceProperty | this_EReferenceProperty_7= ruleEReferenceProperty | this_ResourceProperty_8= ruleResourceProperty )
             {
-            // InternalConceptLanguage.g:1568:2: (this_ComposedProperty_0= ruleComposedProperty | this_IntProperty_1= ruleIntProperty | this_FloatProperty_2= ruleFloatProperty | this_StringProperty_3= ruleStringProperty | this_BooleanProperty_4= ruleBooleanProperty | this_EnumProperty_5= ruleEnumProperty | this_ReferenceProperty_6= ruleReferenceProperty | this_EReferenceProperty_7= ruleEReferenceProperty | this_ResourceProperty_8= ruleResourceProperty )
+            // InternalConceptLanguage.g:1597:2: (this_ComposedProperty_0= ruleComposedProperty | this_IntProperty_1= ruleIntProperty | this_FloatProperty_2= ruleFloatProperty | this_StringProperty_3= ruleStringProperty | this_BooleanProperty_4= ruleBooleanProperty | this_EnumProperty_5= ruleEnumProperty | this_ReferenceProperty_6= ruleReferenceProperty | this_EReferenceProperty_7= ruleEReferenceProperty | this_ResourceProperty_8= ruleResourceProperty )
             int alt26=9;
             switch ( input.LA(1) ) {
             case 34:
@@ -3881,42 +3956,42 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                 alt26=1;
                 }
                 break;
-            case 44:
+            case 46:
                 {
                 alt26=2;
                 }
                 break;
-            case 46:
+            case 48:
                 {
                 alt26=3;
                 }
                 break;
-            case 47:
+            case 49:
                 {
                 alt26=4;
                 }
                 break;
-            case 48:
+            case 50:
                 {
                 alt26=5;
                 }
                 break;
-            case 49:
+            case 51:
                 {
                 alt26=6;
                 }
                 break;
-            case 52:
+            case 54:
                 {
                 alt26=7;
                 }
                 break;
-            case 53:
+            case 55:
                 {
                 alt26=8;
                 }
                 break;
-            case 54:
+            case 56:
                 {
                 alt26=9;
                 }
@@ -3930,7 +4005,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             switch (alt26) {
                 case 1 :
-                    // InternalConceptLanguage.g:1569:3: this_ComposedProperty_0= ruleComposedProperty
+                    // InternalConceptLanguage.g:1598:3: this_ComposedProperty_0= ruleComposedProperty
                     {
 
                     			newCompositeNode(grammarAccess.getAPropertyAccess().getComposedPropertyParserRuleCall_0());
@@ -3948,7 +4023,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalConceptLanguage.g:1578:3: this_IntProperty_1= ruleIntProperty
+                    // InternalConceptLanguage.g:1607:3: this_IntProperty_1= ruleIntProperty
                     {
 
                     			newCompositeNode(grammarAccess.getAPropertyAccess().getIntPropertyParserRuleCall_1());
@@ -3966,7 +4041,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 3 :
-                    // InternalConceptLanguage.g:1587:3: this_FloatProperty_2= ruleFloatProperty
+                    // InternalConceptLanguage.g:1616:3: this_FloatProperty_2= ruleFloatProperty
                     {
 
                     			newCompositeNode(grammarAccess.getAPropertyAccess().getFloatPropertyParserRuleCall_2());
@@ -3984,7 +4059,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 4 :
-                    // InternalConceptLanguage.g:1596:3: this_StringProperty_3= ruleStringProperty
+                    // InternalConceptLanguage.g:1625:3: this_StringProperty_3= ruleStringProperty
                     {
 
                     			newCompositeNode(grammarAccess.getAPropertyAccess().getStringPropertyParserRuleCall_3());
@@ -4002,7 +4077,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 5 :
-                    // InternalConceptLanguage.g:1605:3: this_BooleanProperty_4= ruleBooleanProperty
+                    // InternalConceptLanguage.g:1634:3: this_BooleanProperty_4= ruleBooleanProperty
                     {
 
                     			newCompositeNode(grammarAccess.getAPropertyAccess().getBooleanPropertyParserRuleCall_4());
@@ -4020,7 +4095,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 6 :
-                    // InternalConceptLanguage.g:1614:3: this_EnumProperty_5= ruleEnumProperty
+                    // InternalConceptLanguage.g:1643:3: this_EnumProperty_5= ruleEnumProperty
                     {
 
                     			newCompositeNode(grammarAccess.getAPropertyAccess().getEnumPropertyParserRuleCall_5());
@@ -4038,7 +4113,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 7 :
-                    // InternalConceptLanguage.g:1623:3: this_ReferenceProperty_6= ruleReferenceProperty
+                    // InternalConceptLanguage.g:1652:3: this_ReferenceProperty_6= ruleReferenceProperty
                     {
 
                     			newCompositeNode(grammarAccess.getAPropertyAccess().getReferencePropertyParserRuleCall_6());
@@ -4056,7 +4131,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 8 :
-                    // InternalConceptLanguage.g:1632:3: this_EReferenceProperty_7= ruleEReferenceProperty
+                    // InternalConceptLanguage.g:1661:3: this_EReferenceProperty_7= ruleEReferenceProperty
                     {
 
                     			newCompositeNode(grammarAccess.getAPropertyAccess().getEReferencePropertyParserRuleCall_7());
@@ -4074,7 +4149,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 9 :
-                    // InternalConceptLanguage.g:1641:3: this_ResourceProperty_8= ruleResourceProperty
+                    // InternalConceptLanguage.g:1670:3: this_ResourceProperty_8= ruleResourceProperty
                     {
 
                     			newCompositeNode(grammarAccess.getAPropertyAccess().getResourcePropertyParserRuleCall_8());
@@ -4114,7 +4189,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleArrayModifier"
-    // InternalConceptLanguage.g:1653:1: entryRuleArrayModifier returns [EObject current=null] : iv_ruleArrayModifier= ruleArrayModifier EOF ;
+    // InternalConceptLanguage.g:1682:1: entryRuleArrayModifier returns [EObject current=null] : iv_ruleArrayModifier= ruleArrayModifier EOF ;
     public final EObject entryRuleArrayModifier() throws RecognitionException {
         EObject current = null;
 
@@ -4122,8 +4197,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:1653:54: (iv_ruleArrayModifier= ruleArrayModifier EOF )
-            // InternalConceptLanguage.g:1654:2: iv_ruleArrayModifier= ruleArrayModifier EOF
+            // InternalConceptLanguage.g:1682:54: (iv_ruleArrayModifier= ruleArrayModifier EOF )
+            // InternalConceptLanguage.g:1683:2: iv_ruleArrayModifier= ruleArrayModifier EOF
             {
              newCompositeNode(grammarAccess.getArrayModifierRule()); 
             pushFollow(FOLLOW_1);
@@ -4150,7 +4225,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleArrayModifier"
-    // InternalConceptLanguage.g:1660:1: ruleArrayModifier returns [EObject current=null] : (this_DynmaicArrayModifier_0= ruleDynmaicArrayModifier | this_StaticArrayModifier_1= ruleStaticArrayModifier ) ;
+    // InternalConceptLanguage.g:1689:1: ruleArrayModifier returns [EObject current=null] : (this_DynmaicArrayModifier_0= ruleDynmaicArrayModifier | this_StaticArrayModifier_1= ruleStaticArrayModifier ) ;
     public final EObject ruleArrayModifier() throws RecognitionException {
         EObject current = null;
 
@@ -4163,21 +4238,21 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:1666:2: ( (this_DynmaicArrayModifier_0= ruleDynmaicArrayModifier | this_StaticArrayModifier_1= ruleStaticArrayModifier ) )
-            // InternalConceptLanguage.g:1667:2: (this_DynmaicArrayModifier_0= ruleDynmaicArrayModifier | this_StaticArrayModifier_1= ruleStaticArrayModifier )
+            // InternalConceptLanguage.g:1695:2: ( (this_DynmaicArrayModifier_0= ruleDynmaicArrayModifier | this_StaticArrayModifier_1= ruleStaticArrayModifier ) )
+            // InternalConceptLanguage.g:1696:2: (this_DynmaicArrayModifier_0= ruleDynmaicArrayModifier | this_StaticArrayModifier_1= ruleStaticArrayModifier )
             {
-            // InternalConceptLanguage.g:1667:2: (this_DynmaicArrayModifier_0= ruleDynmaicArrayModifier | this_StaticArrayModifier_1= ruleStaticArrayModifier )
+            // InternalConceptLanguage.g:1696:2: (this_DynmaicArrayModifier_0= ruleDynmaicArrayModifier | this_StaticArrayModifier_1= ruleStaticArrayModifier )
             int alt27=2;
             int LA27_0 = input.LA(1);
 
             if ( (LA27_0==25) ) {
                 int LA27_1 = input.LA(2);
 
-                if ( (LA27_1==27) ) {
-                    alt27=1;
-                }
-                else if ( (LA27_1==RULE_INT) ) {
+                if ( (LA27_1==RULE_INT) ) {
                     alt27=2;
+                }
+                else if ( (LA27_1==27) ) {
+                    alt27=1;
                 }
                 else {
                     NoViableAltException nvae =
@@ -4194,7 +4269,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             }
             switch (alt27) {
                 case 1 :
-                    // InternalConceptLanguage.g:1668:3: this_DynmaicArrayModifier_0= ruleDynmaicArrayModifier
+                    // InternalConceptLanguage.g:1697:3: this_DynmaicArrayModifier_0= ruleDynmaicArrayModifier
                     {
 
                     			newCompositeNode(grammarAccess.getArrayModifierAccess().getDynmaicArrayModifierParserRuleCall_0());
@@ -4212,7 +4287,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalConceptLanguage.g:1677:3: this_StaticArrayModifier_1= ruleStaticArrayModifier
+                    // InternalConceptLanguage.g:1706:3: this_StaticArrayModifier_1= ruleStaticArrayModifier
                     {
 
                     			newCompositeNode(grammarAccess.getArrayModifierAccess().getStaticArrayModifierParserRuleCall_1());
@@ -4252,7 +4327,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleDynmaicArrayModifier"
-    // InternalConceptLanguage.g:1689:1: entryRuleDynmaicArrayModifier returns [EObject current=null] : iv_ruleDynmaicArrayModifier= ruleDynmaicArrayModifier EOF ;
+    // InternalConceptLanguage.g:1718:1: entryRuleDynmaicArrayModifier returns [EObject current=null] : iv_ruleDynmaicArrayModifier= ruleDynmaicArrayModifier EOF ;
     public final EObject entryRuleDynmaicArrayModifier() throws RecognitionException {
         EObject current = null;
 
@@ -4260,8 +4335,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:1689:61: (iv_ruleDynmaicArrayModifier= ruleDynmaicArrayModifier EOF )
-            // InternalConceptLanguage.g:1690:2: iv_ruleDynmaicArrayModifier= ruleDynmaicArrayModifier EOF
+            // InternalConceptLanguage.g:1718:61: (iv_ruleDynmaicArrayModifier= ruleDynmaicArrayModifier EOF )
+            // InternalConceptLanguage.g:1719:2: iv_ruleDynmaicArrayModifier= ruleDynmaicArrayModifier EOF
             {
              newCompositeNode(grammarAccess.getDynmaicArrayModifierRule()); 
             pushFollow(FOLLOW_1);
@@ -4288,7 +4363,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleDynmaicArrayModifier"
-    // InternalConceptLanguage.g:1696:1: ruleDynmaicArrayModifier returns [EObject current=null] : ( () otherlv_1= '[' otherlv_2= ']' ) ;
+    // InternalConceptLanguage.g:1725:1: ruleDynmaicArrayModifier returns [EObject current=null] : ( () otherlv_1= '[' otherlv_2= ']' ) ;
     public final EObject ruleDynmaicArrayModifier() throws RecognitionException {
         EObject current = null;
 
@@ -4299,14 +4374,14 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:1702:2: ( ( () otherlv_1= '[' otherlv_2= ']' ) )
-            // InternalConceptLanguage.g:1703:2: ( () otherlv_1= '[' otherlv_2= ']' )
+            // InternalConceptLanguage.g:1731:2: ( ( () otherlv_1= '[' otherlv_2= ']' ) )
+            // InternalConceptLanguage.g:1732:2: ( () otherlv_1= '[' otherlv_2= ']' )
             {
-            // InternalConceptLanguage.g:1703:2: ( () otherlv_1= '[' otherlv_2= ']' )
-            // InternalConceptLanguage.g:1704:3: () otherlv_1= '[' otherlv_2= ']'
+            // InternalConceptLanguage.g:1732:2: ( () otherlv_1= '[' otherlv_2= ']' )
+            // InternalConceptLanguage.g:1733:3: () otherlv_1= '[' otherlv_2= ']'
             {
-            // InternalConceptLanguage.g:1704:3: ()
-            // InternalConceptLanguage.g:1705:4: 
+            // InternalConceptLanguage.g:1733:3: ()
+            // InternalConceptLanguage.g:1734:4: 
             {
 
             				current = forceCreateModelElement(
@@ -4347,7 +4422,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleStaticArrayModifier"
-    // InternalConceptLanguage.g:1723:1: entryRuleStaticArrayModifier returns [EObject current=null] : iv_ruleStaticArrayModifier= ruleStaticArrayModifier EOF ;
+    // InternalConceptLanguage.g:1752:1: entryRuleStaticArrayModifier returns [EObject current=null] : iv_ruleStaticArrayModifier= ruleStaticArrayModifier EOF ;
     public final EObject entryRuleStaticArrayModifier() throws RecognitionException {
         EObject current = null;
 
@@ -4355,8 +4430,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:1723:60: (iv_ruleStaticArrayModifier= ruleStaticArrayModifier EOF )
-            // InternalConceptLanguage.g:1724:2: iv_ruleStaticArrayModifier= ruleStaticArrayModifier EOF
+            // InternalConceptLanguage.g:1752:60: (iv_ruleStaticArrayModifier= ruleStaticArrayModifier EOF )
+            // InternalConceptLanguage.g:1753:2: iv_ruleStaticArrayModifier= ruleStaticArrayModifier EOF
             {
              newCompositeNode(grammarAccess.getStaticArrayModifierRule()); 
             pushFollow(FOLLOW_1);
@@ -4383,7 +4458,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleStaticArrayModifier"
-    // InternalConceptLanguage.g:1730:1: ruleStaticArrayModifier returns [EObject current=null] : (otherlv_0= '[' ( (lv_arraySize_1_0= RULE_INT ) ) otherlv_2= ']' ) ;
+    // InternalConceptLanguage.g:1759:1: ruleStaticArrayModifier returns [EObject current=null] : (otherlv_0= '[' ( (lv_arraySize_1_0= RULE_INT ) ) otherlv_2= ']' ) ;
     public final EObject ruleStaticArrayModifier() throws RecognitionException {
         EObject current = null;
 
@@ -4395,21 +4470,21 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:1736:2: ( (otherlv_0= '[' ( (lv_arraySize_1_0= RULE_INT ) ) otherlv_2= ']' ) )
-            // InternalConceptLanguage.g:1737:2: (otherlv_0= '[' ( (lv_arraySize_1_0= RULE_INT ) ) otherlv_2= ']' )
+            // InternalConceptLanguage.g:1765:2: ( (otherlv_0= '[' ( (lv_arraySize_1_0= RULE_INT ) ) otherlv_2= ']' ) )
+            // InternalConceptLanguage.g:1766:2: (otherlv_0= '[' ( (lv_arraySize_1_0= RULE_INT ) ) otherlv_2= ']' )
             {
-            // InternalConceptLanguage.g:1737:2: (otherlv_0= '[' ( (lv_arraySize_1_0= RULE_INT ) ) otherlv_2= ']' )
-            // InternalConceptLanguage.g:1738:3: otherlv_0= '[' ( (lv_arraySize_1_0= RULE_INT ) ) otherlv_2= ']'
+            // InternalConceptLanguage.g:1766:2: (otherlv_0= '[' ( (lv_arraySize_1_0= RULE_INT ) ) otherlv_2= ']' )
+            // InternalConceptLanguage.g:1767:3: otherlv_0= '[' ( (lv_arraySize_1_0= RULE_INT ) ) otherlv_2= ']'
             {
             otherlv_0=(Token)match(input,25,FOLLOW_6); 
 
             			newLeafNode(otherlv_0, grammarAccess.getStaticArrayModifierAccess().getLeftSquareBracketKeyword_0());
             		
-            // InternalConceptLanguage.g:1742:3: ( (lv_arraySize_1_0= RULE_INT ) )
-            // InternalConceptLanguage.g:1743:4: (lv_arraySize_1_0= RULE_INT )
+            // InternalConceptLanguage.g:1771:3: ( (lv_arraySize_1_0= RULE_INT ) )
+            // InternalConceptLanguage.g:1772:4: (lv_arraySize_1_0= RULE_INT )
             {
-            // InternalConceptLanguage.g:1743:4: (lv_arraySize_1_0= RULE_INT )
-            // InternalConceptLanguage.g:1744:5: lv_arraySize_1_0= RULE_INT
+            // InternalConceptLanguage.g:1772:4: (lv_arraySize_1_0= RULE_INT )
+            // InternalConceptLanguage.g:1773:5: lv_arraySize_1_0= RULE_INT
             {
             lv_arraySize_1_0=(Token)match(input,RULE_INT,FOLLOW_30); 
 
@@ -4457,8 +4532,103 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
     // $ANTLR end "ruleStaticArrayModifier"
 
 
+    // $ANTLR start "entryRuleVerificationTypeSpecification"
+    // InternalConceptLanguage.g:1797:1: entryRuleVerificationTypeSpecification returns [EObject current=null] : iv_ruleVerificationTypeSpecification= ruleVerificationTypeSpecification EOF ;
+    public final EObject entryRuleVerificationTypeSpecification() throws RecognitionException {
+        EObject current = null;
+
+        EObject iv_ruleVerificationTypeSpecification = null;
+
+
+        try {
+            // InternalConceptLanguage.g:1797:70: (iv_ruleVerificationTypeSpecification= ruleVerificationTypeSpecification EOF )
+            // InternalConceptLanguage.g:1798:2: iv_ruleVerificationTypeSpecification= ruleVerificationTypeSpecification EOF
+            {
+             newCompositeNode(grammarAccess.getVerificationTypeSpecificationRule()); 
+            pushFollow(FOLLOW_1);
+            iv_ruleVerificationTypeSpecification=ruleVerificationTypeSpecification();
+
+            state._fsp--;
+
+             current =iv_ruleVerificationTypeSpecification; 
+            match(input,EOF,FOLLOW_2); 
+
+            }
+
+        }
+
+            catch (RecognitionException re) {
+                recover(input,re);
+                appendSkippedTokens();
+            }
+        finally {
+        }
+        return current;
+    }
+    // $ANTLR end "entryRuleVerificationTypeSpecification"
+
+
+    // $ANTLR start "ruleVerificationTypeSpecification"
+    // InternalConceptLanguage.g:1804:1: ruleVerificationTypeSpecification returns [EObject current=null] : ( ( ruleQualifiedName ) ) ;
+    public final EObject ruleVerificationTypeSpecification() throws RecognitionException {
+        EObject current = null;
+
+
+        	enterRule();
+
+        try {
+            // InternalConceptLanguage.g:1810:2: ( ( ( ruleQualifiedName ) ) )
+            // InternalConceptLanguage.g:1811:2: ( ( ruleQualifiedName ) )
+            {
+            // InternalConceptLanguage.g:1811:2: ( ( ruleQualifiedName ) )
+            // InternalConceptLanguage.g:1812:3: ( ruleQualifiedName )
+            {
+            // InternalConceptLanguage.g:1812:3: ( ruleQualifiedName )
+            // InternalConceptLanguage.g:1813:4: ruleQualifiedName
+            {
+
+            				if (current==null) {
+            					current = createModelElement(grammarAccess.getVerificationTypeSpecificationRule());
+            				}
+            			
+
+            				newCompositeNode(grammarAccess.getVerificationTypeSpecificationAccess().getVerificationTypeATypeDefinitionCrossReference_0());
+            			
+            pushFollow(FOLLOW_2);
+            ruleQualifiedName();
+
+            state._fsp--;
+
+
+            				afterParserOrEnumRuleCall();
+            			
+
+            }
+
+
+            }
+
+
+            }
+
+
+            	leaveRule();
+
+        }
+
+            catch (RecognitionException re) {
+                recover(input,re);
+                appendSkippedTokens();
+            }
+        finally {
+        }
+        return current;
+    }
+    // $ANTLR end "ruleVerificationTypeSpecification"
+
+
     // $ANTLR start "entryRuleComposedProperty"
-    // InternalConceptLanguage.g:1768:1: entryRuleComposedProperty returns [EObject current=null] : iv_ruleComposedProperty= ruleComposedProperty EOF ;
+    // InternalConceptLanguage.g:1830:1: entryRuleComposedProperty returns [EObject current=null] : iv_ruleComposedProperty= ruleComposedProperty EOF ;
     public final EObject entryRuleComposedProperty() throws RecognitionException {
         EObject current = null;
 
@@ -4466,8 +4636,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:1768:57: (iv_ruleComposedProperty= ruleComposedProperty EOF )
-            // InternalConceptLanguage.g:1769:2: iv_ruleComposedProperty= ruleComposedProperty EOF
+            // InternalConceptLanguage.g:1830:57: (iv_ruleComposedProperty= ruleComposedProperty EOF )
+            // InternalConceptLanguage.g:1831:2: iv_ruleComposedProperty= ruleComposedProperty EOF
             {
              newCompositeNode(grammarAccess.getComposedPropertyRule()); 
             pushFollow(FOLLOW_1);
@@ -4494,7 +4664,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleComposedProperty"
-    // InternalConceptLanguage.g:1775:1: ruleComposedProperty returns [EObject current=null] : ( () otherlv_1= 'Type' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? otherlv_4= 'of' otherlv_5= 'Category' ( ( ruleQualifiedName ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_12= 'unit' ( (lv_unitName_13_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_14= ';' ) ;
+    // InternalConceptLanguage.g:1837:1: ruleComposedProperty returns [EObject current=null] : ( () otherlv_1= 'Type' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? otherlv_4= 'of' otherlv_5= 'Category' ( ( ruleQualifiedName ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_12= 'verification' ( (lv_verification_13_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_14= 'unit' ( (lv_unitName_15_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_16= ';' ) ;
     public final EObject ruleComposedProperty() throws RecognitionException {
         EObject current = null;
 
@@ -4506,27 +4676,30 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         Token otherlv_10=null;
         Token otherlv_12=null;
         Token otherlv_14=null;
+        Token otherlv_16=null;
         EObject lv_arrayModifier_3_0 = null;
 
         AntlrDatatypeRuleToken lv_description_9_0 = null;
 
         AntlrDatatypeRuleToken lv_quantityKindName_11_0 = null;
 
-        AntlrDatatypeRuleToken lv_unitName_13_0 = null;
+        EObject lv_verification_13_0 = null;
+
+        AntlrDatatypeRuleToken lv_unitName_15_0 = null;
 
 
 
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:1781:2: ( ( () otherlv_1= 'Type' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? otherlv_4= 'of' otherlv_5= 'Category' ( ( ruleQualifiedName ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_12= 'unit' ( (lv_unitName_13_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_14= ';' ) )
-            // InternalConceptLanguage.g:1782:2: ( () otherlv_1= 'Type' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? otherlv_4= 'of' otherlv_5= 'Category' ( ( ruleQualifiedName ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_12= 'unit' ( (lv_unitName_13_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_14= ';' )
+            // InternalConceptLanguage.g:1843:2: ( ( () otherlv_1= 'Type' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? otherlv_4= 'of' otherlv_5= 'Category' ( ( ruleQualifiedName ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_12= 'verification' ( (lv_verification_13_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_14= 'unit' ( (lv_unitName_15_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_16= ';' ) )
+            // InternalConceptLanguage.g:1844:2: ( () otherlv_1= 'Type' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? otherlv_4= 'of' otherlv_5= 'Category' ( ( ruleQualifiedName ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_12= 'verification' ( (lv_verification_13_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_14= 'unit' ( (lv_unitName_15_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_16= ';' )
             {
-            // InternalConceptLanguage.g:1782:2: ( () otherlv_1= 'Type' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? otherlv_4= 'of' otherlv_5= 'Category' ( ( ruleQualifiedName ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_12= 'unit' ( (lv_unitName_13_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_14= ';' )
-            // InternalConceptLanguage.g:1783:3: () otherlv_1= 'Type' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? otherlv_4= 'of' otherlv_5= 'Category' ( ( ruleQualifiedName ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_12= 'unit' ( (lv_unitName_13_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_14= ';'
+            // InternalConceptLanguage.g:1844:2: ( () otherlv_1= 'Type' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? otherlv_4= 'of' otherlv_5= 'Category' ( ( ruleQualifiedName ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_12= 'verification' ( (lv_verification_13_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_14= 'unit' ( (lv_unitName_15_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_16= ';' )
+            // InternalConceptLanguage.g:1845:3: () otherlv_1= 'Type' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? otherlv_4= 'of' otherlv_5= 'Category' ( ( ruleQualifiedName ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_12= 'verification' ( (lv_verification_13_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_14= 'unit' ( (lv_unitName_15_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_16= ';'
             {
-            // InternalConceptLanguage.g:1783:3: ()
-            // InternalConceptLanguage.g:1784:4: 
+            // InternalConceptLanguage.g:1845:3: ()
+            // InternalConceptLanguage.g:1846:4: 
             {
 
             				current = forceCreateModelElement(
@@ -4540,11 +4713,11 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             			newLeafNode(otherlv_1, grammarAccess.getComposedPropertyAccess().getTypeKeyword_1());
             		
-            // InternalConceptLanguage.g:1794:3: ( (lv_name_2_0= RULE_ID ) )
-            // InternalConceptLanguage.g:1795:4: (lv_name_2_0= RULE_ID )
+            // InternalConceptLanguage.g:1856:3: ( (lv_name_2_0= RULE_ID ) )
+            // InternalConceptLanguage.g:1857:4: (lv_name_2_0= RULE_ID )
             {
-            // InternalConceptLanguage.g:1795:4: (lv_name_2_0= RULE_ID )
-            // InternalConceptLanguage.g:1796:5: lv_name_2_0= RULE_ID
+            // InternalConceptLanguage.g:1857:4: (lv_name_2_0= RULE_ID )
+            // InternalConceptLanguage.g:1858:5: lv_name_2_0= RULE_ID
             {
             lv_name_2_0=(Token)match(input,RULE_ID,FOLLOW_31); 
 
@@ -4566,7 +4739,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalConceptLanguage.g:1812:3: ( (lv_arrayModifier_3_0= ruleArrayModifier ) )?
+            // InternalConceptLanguage.g:1874:3: ( (lv_arrayModifier_3_0= ruleArrayModifier ) )?
             int alt28=2;
             int LA28_0 = input.LA(1);
 
@@ -4575,10 +4748,10 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             }
             switch (alt28) {
                 case 1 :
-                    // InternalConceptLanguage.g:1813:4: (lv_arrayModifier_3_0= ruleArrayModifier )
+                    // InternalConceptLanguage.g:1875:4: (lv_arrayModifier_3_0= ruleArrayModifier )
                     {
-                    // InternalConceptLanguage.g:1813:4: (lv_arrayModifier_3_0= ruleArrayModifier )
-                    // InternalConceptLanguage.g:1814:5: lv_arrayModifier_3_0= ruleArrayModifier
+                    // InternalConceptLanguage.g:1875:4: (lv_arrayModifier_3_0= ruleArrayModifier )
+                    // InternalConceptLanguage.g:1876:5: lv_arrayModifier_3_0= ruleArrayModifier
                     {
 
                     					newCompositeNode(grammarAccess.getComposedPropertyAccess().getArrayModifierArrayModifierParserRuleCall_3_0());
@@ -4608,7 +4781,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_4=(Token)match(input,41,FOLLOW_33); 
+            otherlv_4=(Token)match(input,42,FOLLOW_33); 
 
             			newLeafNode(otherlv_4, grammarAccess.getComposedPropertyAccess().getOfKeyword_4());
             		
@@ -4616,11 +4789,11 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             			newLeafNode(otherlv_5, grammarAccess.getComposedPropertyAccess().getCategoryKeyword_5());
             		
-            // InternalConceptLanguage.g:1839:3: ( ( ruleQualifiedName ) )
-            // InternalConceptLanguage.g:1840:4: ( ruleQualifiedName )
+            // InternalConceptLanguage.g:1901:3: ( ( ruleQualifiedName ) )
+            // InternalConceptLanguage.g:1902:4: ( ruleQualifiedName )
             {
-            // InternalConceptLanguage.g:1840:4: ( ruleQualifiedName )
-            // InternalConceptLanguage.g:1841:5: ruleQualifiedName
+            // InternalConceptLanguage.g:1902:4: ( ruleQualifiedName )
+            // InternalConceptLanguage.g:1903:5: ruleQualifiedName
             {
 
             					if (current==null) {
@@ -4644,69 +4817,72 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalConceptLanguage.g:1855:3: ( ( ( ( ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_12= 'unit' ( (lv_unitName_13_0= ruleEString ) ) ) ) ) ) )* ) ) )
-            // InternalConceptLanguage.g:1856:4: ( ( ( ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_12= 'unit' ( (lv_unitName_13_0= ruleEString ) ) ) ) ) ) )* ) )
+            // InternalConceptLanguage.g:1917:3: ( ( ( ( ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_12= 'verification' ( (lv_verification_13_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_14= 'unit' ( (lv_unitName_15_0= ruleEString ) ) ) ) ) ) )* ) ) )
+            // InternalConceptLanguage.g:1918:4: ( ( ( ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_12= 'verification' ( (lv_verification_13_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_14= 'unit' ( (lv_unitName_15_0= ruleEString ) ) ) ) ) ) )* ) )
             {
-            // InternalConceptLanguage.g:1856:4: ( ( ( ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_12= 'unit' ( (lv_unitName_13_0= ruleEString ) ) ) ) ) ) )* ) )
-            // InternalConceptLanguage.g:1857:5: ( ( ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_12= 'unit' ( (lv_unitName_13_0= ruleEString ) ) ) ) ) ) )* )
+            // InternalConceptLanguage.g:1918:4: ( ( ( ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_12= 'verification' ( (lv_verification_13_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_14= 'unit' ( (lv_unitName_15_0= ruleEString ) ) ) ) ) ) )* ) )
+            // InternalConceptLanguage.g:1919:5: ( ( ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_12= 'verification' ( (lv_verification_13_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_14= 'unit' ( (lv_unitName_15_0= ruleEString ) ) ) ) ) ) )* )
             {
              
             				  getUnorderedGroupHelper().enter(grammarAccess.getComposedPropertyAccess().getUnorderedGroup_7());
             				
-            // InternalConceptLanguage.g:1860:5: ( ( ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_12= 'unit' ( (lv_unitName_13_0= ruleEString ) ) ) ) ) ) )* )
-            // InternalConceptLanguage.g:1861:6: ( ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_12= 'unit' ( (lv_unitName_13_0= ruleEString ) ) ) ) ) ) )*
+            // InternalConceptLanguage.g:1922:5: ( ( ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_12= 'verification' ( (lv_verification_13_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_14= 'unit' ( (lv_unitName_15_0= ruleEString ) ) ) ) ) ) )* )
+            // InternalConceptLanguage.g:1923:6: ( ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_12= 'verification' ( (lv_verification_13_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_14= 'unit' ( (lv_unitName_15_0= ruleEString ) ) ) ) ) ) )*
             {
-            // InternalConceptLanguage.g:1861:6: ( ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_12= 'unit' ( (lv_unitName_13_0= ruleEString ) ) ) ) ) ) )*
+            // InternalConceptLanguage.g:1923:6: ( ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_12= 'verification' ( (lv_verification_13_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_14= 'unit' ( (lv_unitName_15_0= ruleEString ) ) ) ) ) ) )*
             loop29:
             do {
-                int alt29=4;
+                int alt29=5;
                 int LA29_0 = input.LA(1);
 
                 if ( LA29_0 == 15 && getUnorderedGroupHelper().canSelect(grammarAccess.getComposedPropertyAccess().getUnorderedGroup_7(), 0) ) {
                     alt29=1;
                 }
-                else if ( LA29_0 == 42 && getUnorderedGroupHelper().canSelect(grammarAccess.getComposedPropertyAccess().getUnorderedGroup_7(), 1) ) {
+                else if ( LA29_0 == 43 && getUnorderedGroupHelper().canSelect(grammarAccess.getComposedPropertyAccess().getUnorderedGroup_7(), 1) ) {
                     alt29=2;
                 }
-                else if ( LA29_0 == 43 && getUnorderedGroupHelper().canSelect(grammarAccess.getComposedPropertyAccess().getUnorderedGroup_7(), 2) ) {
+                else if ( LA29_0 == 44 && getUnorderedGroupHelper().canSelect(grammarAccess.getComposedPropertyAccess().getUnorderedGroup_7(), 2) ) {
                     alt29=3;
+                }
+                else if ( LA29_0 == 45 && getUnorderedGroupHelper().canSelect(grammarAccess.getComposedPropertyAccess().getUnorderedGroup_7(), 3) ) {
+                    alt29=4;
                 }
 
 
                 switch (alt29) {
             	case 1 :
-            	    // InternalConceptLanguage.g:1862:4: ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:1924:4: ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) )
             	    {
-            	    // InternalConceptLanguage.g:1862:4: ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) )
-            	    // InternalConceptLanguage.g:1863:5: {...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:1924:4: ({...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:1925:5: {...}? => ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) )
             	    {
             	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getComposedPropertyAccess().getUnorderedGroup_7(), 0) ) {
             	        throw new FailedPredicateException(input, "ruleComposedProperty", "getUnorderedGroupHelper().canSelect(grammarAccess.getComposedPropertyAccess().getUnorderedGroup_7(), 0)");
             	    }
-            	    // InternalConceptLanguage.g:1863:113: ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) )
-            	    // InternalConceptLanguage.g:1864:6: ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:1925:113: ( ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:1926:6: ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) )
             	    {
 
             	    						getUnorderedGroupHelper().select(grammarAccess.getComposedPropertyAccess().getUnorderedGroup_7(), 0);
             	    					
-            	    // InternalConceptLanguage.g:1867:9: ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) )
-            	    // InternalConceptLanguage.g:1867:10: {...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:1929:9: ({...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:1929:10: {...}? => (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) )
             	    {
             	    if ( !((true)) ) {
             	        throw new FailedPredicateException(input, "ruleComposedProperty", "true");
             	    }
-            	    // InternalConceptLanguage.g:1867:19: (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) )
-            	    // InternalConceptLanguage.g:1867:20: otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:1929:19: (otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:1929:20: otherlv_8= 'description' ( (lv_description_9_0= ruleEString ) )
             	    {
             	    otherlv_8=(Token)match(input,15,FOLLOW_5); 
 
             	    									newLeafNode(otherlv_8, grammarAccess.getComposedPropertyAccess().getDescriptionKeyword_7_0_0());
             	    								
-            	    // InternalConceptLanguage.g:1871:9: ( (lv_description_9_0= ruleEString ) )
-            	    // InternalConceptLanguage.g:1872:10: (lv_description_9_0= ruleEString )
+            	    // InternalConceptLanguage.g:1933:9: ( (lv_description_9_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:1934:10: (lv_description_9_0= ruleEString )
             	    {
-            	    // InternalConceptLanguage.g:1872:10: (lv_description_9_0= ruleEString )
-            	    // InternalConceptLanguage.g:1873:11: lv_description_9_0= ruleEString
+            	    // InternalConceptLanguage.g:1934:10: (lv_description_9_0= ruleEString )
+            	    // InternalConceptLanguage.g:1935:11: lv_description_9_0= ruleEString
             	    {
 
             	    											newCompositeNode(grammarAccess.getComposedPropertyAccess().getDescriptionEStringParserRuleCall_7_0_1_0());
@@ -4752,38 +4928,38 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	    }
             	    break;
             	case 2 :
-            	    // InternalConceptLanguage.g:1896:4: ({...}? => ( ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:1958:4: ({...}? => ( ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) ) ) )
             	    {
-            	    // InternalConceptLanguage.g:1896:4: ({...}? => ( ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) ) ) )
-            	    // InternalConceptLanguage.g:1897:5: {...}? => ( ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:1958:4: ({...}? => ( ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:1959:5: {...}? => ( ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) ) )
             	    {
             	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getComposedPropertyAccess().getUnorderedGroup_7(), 1) ) {
             	        throw new FailedPredicateException(input, "ruleComposedProperty", "getUnorderedGroupHelper().canSelect(grammarAccess.getComposedPropertyAccess().getUnorderedGroup_7(), 1)");
             	    }
-            	    // InternalConceptLanguage.g:1897:113: ( ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) ) )
-            	    // InternalConceptLanguage.g:1898:6: ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:1959:113: ( ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:1960:6: ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) )
             	    {
 
             	    						getUnorderedGroupHelper().select(grammarAccess.getComposedPropertyAccess().getUnorderedGroup_7(), 1);
             	    					
-            	    // InternalConceptLanguage.g:1901:9: ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) )
-            	    // InternalConceptLanguage.g:1901:10: {...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:1963:9: ({...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:1963:10: {...}? => (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) )
             	    {
             	    if ( !((true)) ) {
             	        throw new FailedPredicateException(input, "ruleComposedProperty", "true");
             	    }
-            	    // InternalConceptLanguage.g:1901:19: (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) )
-            	    // InternalConceptLanguage.g:1901:20: otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:1963:19: (otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:1963:20: otherlv_10= 'quantityKind' ( (lv_quantityKindName_11_0= ruleEString ) )
             	    {
-            	    otherlv_10=(Token)match(input,42,FOLLOW_5); 
+            	    otherlv_10=(Token)match(input,43,FOLLOW_5); 
 
             	    									newLeafNode(otherlv_10, grammarAccess.getComposedPropertyAccess().getQuantityKindKeyword_7_1_0());
             	    								
-            	    // InternalConceptLanguage.g:1905:9: ( (lv_quantityKindName_11_0= ruleEString ) )
-            	    // InternalConceptLanguage.g:1906:10: (lv_quantityKindName_11_0= ruleEString )
+            	    // InternalConceptLanguage.g:1967:9: ( (lv_quantityKindName_11_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:1968:10: (lv_quantityKindName_11_0= ruleEString )
             	    {
-            	    // InternalConceptLanguage.g:1906:10: (lv_quantityKindName_11_0= ruleEString )
-            	    // InternalConceptLanguage.g:1907:11: lv_quantityKindName_11_0= ruleEString
+            	    // InternalConceptLanguage.g:1968:10: (lv_quantityKindName_11_0= ruleEString )
+            	    // InternalConceptLanguage.g:1969:11: lv_quantityKindName_11_0= ruleEString
             	    {
 
             	    											newCompositeNode(grammarAccess.getComposedPropertyAccess().getQuantityKindNameEStringParserRuleCall_7_1_1_0());
@@ -4829,44 +5005,121 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	    }
             	    break;
             	case 3 :
-            	    // InternalConceptLanguage.g:1930:4: ({...}? => ( ({...}? => (otherlv_12= 'unit' ( (lv_unitName_13_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:1992:4: ({...}? => ( ({...}? => (otherlv_12= 'verification' ( (lv_verification_13_0= ruleVerificationTypeSpecification ) ) ) ) ) )
             	    {
-            	    // InternalConceptLanguage.g:1930:4: ({...}? => ( ({...}? => (otherlv_12= 'unit' ( (lv_unitName_13_0= ruleEString ) ) ) ) ) )
-            	    // InternalConceptLanguage.g:1931:5: {...}? => ( ({...}? => (otherlv_12= 'unit' ( (lv_unitName_13_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:1992:4: ({...}? => ( ({...}? => (otherlv_12= 'verification' ( (lv_verification_13_0= ruleVerificationTypeSpecification ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:1993:5: {...}? => ( ({...}? => (otherlv_12= 'verification' ( (lv_verification_13_0= ruleVerificationTypeSpecification ) ) ) ) )
             	    {
             	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getComposedPropertyAccess().getUnorderedGroup_7(), 2) ) {
             	        throw new FailedPredicateException(input, "ruleComposedProperty", "getUnorderedGroupHelper().canSelect(grammarAccess.getComposedPropertyAccess().getUnorderedGroup_7(), 2)");
             	    }
-            	    // InternalConceptLanguage.g:1931:113: ( ({...}? => (otherlv_12= 'unit' ( (lv_unitName_13_0= ruleEString ) ) ) ) )
-            	    // InternalConceptLanguage.g:1932:6: ({...}? => (otherlv_12= 'unit' ( (lv_unitName_13_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:1993:113: ( ({...}? => (otherlv_12= 'verification' ( (lv_verification_13_0= ruleVerificationTypeSpecification ) ) ) ) )
+            	    // InternalConceptLanguage.g:1994:6: ({...}? => (otherlv_12= 'verification' ( (lv_verification_13_0= ruleVerificationTypeSpecification ) ) ) )
             	    {
 
             	    						getUnorderedGroupHelper().select(grammarAccess.getComposedPropertyAccess().getUnorderedGroup_7(), 2);
             	    					
-            	    // InternalConceptLanguage.g:1935:9: ({...}? => (otherlv_12= 'unit' ( (lv_unitName_13_0= ruleEString ) ) ) )
-            	    // InternalConceptLanguage.g:1935:10: {...}? => (otherlv_12= 'unit' ( (lv_unitName_13_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:1997:9: ({...}? => (otherlv_12= 'verification' ( (lv_verification_13_0= ruleVerificationTypeSpecification ) ) ) )
+            	    // InternalConceptLanguage.g:1997:10: {...}? => (otherlv_12= 'verification' ( (lv_verification_13_0= ruleVerificationTypeSpecification ) ) )
             	    {
             	    if ( !((true)) ) {
             	        throw new FailedPredicateException(input, "ruleComposedProperty", "true");
             	    }
-            	    // InternalConceptLanguage.g:1935:19: (otherlv_12= 'unit' ( (lv_unitName_13_0= ruleEString ) ) )
-            	    // InternalConceptLanguage.g:1935:20: otherlv_12= 'unit' ( (lv_unitName_13_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:1997:19: (otherlv_12= 'verification' ( (lv_verification_13_0= ruleVerificationTypeSpecification ) ) )
+            	    // InternalConceptLanguage.g:1997:20: otherlv_12= 'verification' ( (lv_verification_13_0= ruleVerificationTypeSpecification ) )
             	    {
-            	    otherlv_12=(Token)match(input,43,FOLLOW_5); 
+            	    otherlv_12=(Token)match(input,44,FOLLOW_3); 
 
-            	    									newLeafNode(otherlv_12, grammarAccess.getComposedPropertyAccess().getUnitKeyword_7_2_0());
+            	    									newLeafNode(otherlv_12, grammarAccess.getComposedPropertyAccess().getVerificationKeyword_7_2_0());
             	    								
-            	    // InternalConceptLanguage.g:1939:9: ( (lv_unitName_13_0= ruleEString ) )
-            	    // InternalConceptLanguage.g:1940:10: (lv_unitName_13_0= ruleEString )
+            	    // InternalConceptLanguage.g:2001:9: ( (lv_verification_13_0= ruleVerificationTypeSpecification ) )
+            	    // InternalConceptLanguage.g:2002:10: (lv_verification_13_0= ruleVerificationTypeSpecification )
             	    {
-            	    // InternalConceptLanguage.g:1940:10: (lv_unitName_13_0= ruleEString )
-            	    // InternalConceptLanguage.g:1941:11: lv_unitName_13_0= ruleEString
+            	    // InternalConceptLanguage.g:2002:10: (lv_verification_13_0= ruleVerificationTypeSpecification )
+            	    // InternalConceptLanguage.g:2003:11: lv_verification_13_0= ruleVerificationTypeSpecification
             	    {
 
-            	    											newCompositeNode(grammarAccess.getComposedPropertyAccess().getUnitNameEStringParserRuleCall_7_2_1_0());
+            	    											newCompositeNode(grammarAccess.getComposedPropertyAccess().getVerificationVerificationTypeSpecificationParserRuleCall_7_2_1_0());
             	    										
             	    pushFollow(FOLLOW_34);
-            	    lv_unitName_13_0=ruleEString();
+            	    lv_verification_13_0=ruleVerificationTypeSpecification();
+
+            	    state._fsp--;
+
+
+            	    											if (current==null) {
+            	    												current = createModelElementForParent(grammarAccess.getComposedPropertyRule());
+            	    											}
+            	    											set(
+            	    												current,
+            	    												"verification",
+            	    												lv_verification_13_0,
+            	    												"de.dlr.sc.virsat.model.concept.ConceptLanguage.VerificationTypeSpecification");
+            	    											afterParserOrEnumRuleCall();
+            	    										
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+
+            	     
+            	    						getUnorderedGroupHelper().returnFromSelection(grammarAccess.getComposedPropertyAccess().getUnorderedGroup_7());
+            	    					
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+            	    break;
+            	case 4 :
+            	    // InternalConceptLanguage.g:2026:4: ({...}? => ( ({...}? => (otherlv_14= 'unit' ( (lv_unitName_15_0= ruleEString ) ) ) ) ) )
+            	    {
+            	    // InternalConceptLanguage.g:2026:4: ({...}? => ( ({...}? => (otherlv_14= 'unit' ( (lv_unitName_15_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:2027:5: {...}? => ( ({...}? => (otherlv_14= 'unit' ( (lv_unitName_15_0= ruleEString ) ) ) ) )
+            	    {
+            	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getComposedPropertyAccess().getUnorderedGroup_7(), 3) ) {
+            	        throw new FailedPredicateException(input, "ruleComposedProperty", "getUnorderedGroupHelper().canSelect(grammarAccess.getComposedPropertyAccess().getUnorderedGroup_7(), 3)");
+            	    }
+            	    // InternalConceptLanguage.g:2027:113: ( ({...}? => (otherlv_14= 'unit' ( (lv_unitName_15_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:2028:6: ({...}? => (otherlv_14= 'unit' ( (lv_unitName_15_0= ruleEString ) ) ) )
+            	    {
+
+            	    						getUnorderedGroupHelper().select(grammarAccess.getComposedPropertyAccess().getUnorderedGroup_7(), 3);
+            	    					
+            	    // InternalConceptLanguage.g:2031:9: ({...}? => (otherlv_14= 'unit' ( (lv_unitName_15_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:2031:10: {...}? => (otherlv_14= 'unit' ( (lv_unitName_15_0= ruleEString ) ) )
+            	    {
+            	    if ( !((true)) ) {
+            	        throw new FailedPredicateException(input, "ruleComposedProperty", "true");
+            	    }
+            	    // InternalConceptLanguage.g:2031:19: (otherlv_14= 'unit' ( (lv_unitName_15_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:2031:20: otherlv_14= 'unit' ( (lv_unitName_15_0= ruleEString ) )
+            	    {
+            	    otherlv_14=(Token)match(input,45,FOLLOW_5); 
+
+            	    									newLeafNode(otherlv_14, grammarAccess.getComposedPropertyAccess().getUnitKeyword_7_3_0());
+            	    								
+            	    // InternalConceptLanguage.g:2035:9: ( (lv_unitName_15_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:2036:10: (lv_unitName_15_0= ruleEString )
+            	    {
+            	    // InternalConceptLanguage.g:2036:10: (lv_unitName_15_0= ruleEString )
+            	    // InternalConceptLanguage.g:2037:11: lv_unitName_15_0= ruleEString
+            	    {
+
+            	    											newCompositeNode(grammarAccess.getComposedPropertyAccess().getUnitNameEStringParserRuleCall_7_3_1_0());
+            	    										
+            	    pushFollow(FOLLOW_34);
+            	    lv_unitName_15_0=ruleEString();
 
             	    state._fsp--;
 
@@ -4877,7 +5130,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	    											set(
             	    												current,
             	    												"unitName",
-            	    												lv_unitName_13_0,
+            	    												lv_unitName_15_0,
             	    												"de.dlr.sc.virsat.model.concept.ConceptLanguage.EString");
             	    											afterParserOrEnumRuleCall();
             	    										
@@ -4923,9 +5176,9 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_14=(Token)match(input,22,FOLLOW_2); 
+            otherlv_16=(Token)match(input,22,FOLLOW_2); 
 
-            			newLeafNode(otherlv_14, grammarAccess.getComposedPropertyAccess().getSemicolonKeyword_8());
+            			newLeafNode(otherlv_16, grammarAccess.getComposedPropertyAccess().getSemicolonKeyword_8());
             		
 
             }
@@ -4950,7 +5203,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleIntProperty"
-    // InternalConceptLanguage.g:1979:1: entryRuleIntProperty returns [EObject current=null] : iv_ruleIntProperty= ruleIntProperty EOF ;
+    // InternalConceptLanguage.g:2075:1: entryRuleIntProperty returns [EObject current=null] : iv_ruleIntProperty= ruleIntProperty EOF ;
     public final EObject entryRuleIntProperty() throws RecognitionException {
         EObject current = null;
 
@@ -4958,8 +5211,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:1979:52: (iv_ruleIntProperty= ruleIntProperty EOF )
-            // InternalConceptLanguage.g:1980:2: iv_ruleIntProperty= ruleIntProperty EOF
+            // InternalConceptLanguage.g:2075:52: (iv_ruleIntProperty= ruleIntProperty EOF )
+            // InternalConceptLanguage.g:2076:2: iv_ruleIntProperty= ruleIntProperty EOF
             {
              newCompositeNode(grammarAccess.getIntPropertyRule()); 
             pushFollow(FOLLOW_1);
@@ -4986,7 +5239,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleIntProperty"
-    // InternalConceptLanguage.g:1986:1: ruleIntProperty returns [EObject current=null] : ( () otherlv_1= 'IntProperty' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_13= ';' ) ;
+    // InternalConceptLanguage.g:2082:1: ruleIntProperty returns [EObject current=null] : ( () otherlv_1= 'IntProperty' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_15= ';' ) ;
     public final EObject ruleIntProperty() throws RecognitionException {
         EObject current = null;
 
@@ -4997,6 +5250,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         Token otherlv_9=null;
         Token otherlv_11=null;
         Token otherlv_13=null;
+        Token otherlv_15=null;
         EObject lv_arrayModifier_3_0 = null;
 
         AntlrDatatypeRuleToken lv_description_6_0 = null;
@@ -5005,21 +5259,23 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
         AntlrDatatypeRuleToken lv_quantityKindName_10_0 = null;
 
-        AntlrDatatypeRuleToken lv_unitName_12_0 = null;
+        EObject lv_verification_12_0 = null;
+
+        AntlrDatatypeRuleToken lv_unitName_14_0 = null;
 
 
 
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:1992:2: ( ( () otherlv_1= 'IntProperty' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_13= ';' ) )
-            // InternalConceptLanguage.g:1993:2: ( () otherlv_1= 'IntProperty' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_13= ';' )
+            // InternalConceptLanguage.g:2088:2: ( ( () otherlv_1= 'IntProperty' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_15= ';' ) )
+            // InternalConceptLanguage.g:2089:2: ( () otherlv_1= 'IntProperty' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_15= ';' )
             {
-            // InternalConceptLanguage.g:1993:2: ( () otherlv_1= 'IntProperty' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_13= ';' )
-            // InternalConceptLanguage.g:1994:3: () otherlv_1= 'IntProperty' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_13= ';'
+            // InternalConceptLanguage.g:2089:2: ( () otherlv_1= 'IntProperty' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_15= ';' )
+            // InternalConceptLanguage.g:2090:3: () otherlv_1= 'IntProperty' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_15= ';'
             {
-            // InternalConceptLanguage.g:1994:3: ()
-            // InternalConceptLanguage.g:1995:4: 
+            // InternalConceptLanguage.g:2090:3: ()
+            // InternalConceptLanguage.g:2091:4: 
             {
 
             				current = forceCreateModelElement(
@@ -5029,15 +5285,15 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_1=(Token)match(input,44,FOLLOW_3); 
+            otherlv_1=(Token)match(input,46,FOLLOW_3); 
 
             			newLeafNode(otherlv_1, grammarAccess.getIntPropertyAccess().getIntPropertyKeyword_1());
             		
-            // InternalConceptLanguage.g:2005:3: ( (lv_name_2_0= RULE_ID ) )
-            // InternalConceptLanguage.g:2006:4: (lv_name_2_0= RULE_ID )
+            // InternalConceptLanguage.g:2101:3: ( (lv_name_2_0= RULE_ID ) )
+            // InternalConceptLanguage.g:2102:4: (lv_name_2_0= RULE_ID )
             {
-            // InternalConceptLanguage.g:2006:4: (lv_name_2_0= RULE_ID )
-            // InternalConceptLanguage.g:2007:5: lv_name_2_0= RULE_ID
+            // InternalConceptLanguage.g:2102:4: (lv_name_2_0= RULE_ID )
+            // InternalConceptLanguage.g:2103:5: lv_name_2_0= RULE_ID
             {
             lv_name_2_0=(Token)match(input,RULE_ID,FOLLOW_35); 
 
@@ -5059,7 +5315,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalConceptLanguage.g:2023:3: ( (lv_arrayModifier_3_0= ruleArrayModifier ) )?
+            // InternalConceptLanguage.g:2119:3: ( (lv_arrayModifier_3_0= ruleArrayModifier ) )?
             int alt30=2;
             int LA30_0 = input.LA(1);
 
@@ -5068,10 +5324,10 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             }
             switch (alt30) {
                 case 1 :
-                    // InternalConceptLanguage.g:2024:4: (lv_arrayModifier_3_0= ruleArrayModifier )
+                    // InternalConceptLanguage.g:2120:4: (lv_arrayModifier_3_0= ruleArrayModifier )
                     {
-                    // InternalConceptLanguage.g:2024:4: (lv_arrayModifier_3_0= ruleArrayModifier )
-                    // InternalConceptLanguage.g:2025:5: lv_arrayModifier_3_0= ruleArrayModifier
+                    // InternalConceptLanguage.g:2120:4: (lv_arrayModifier_3_0= ruleArrayModifier )
+                    // InternalConceptLanguage.g:2121:5: lv_arrayModifier_3_0= ruleArrayModifier
                     {
 
                     					newCompositeNode(grammarAccess.getIntPropertyAccess().getArrayModifierArrayModifierParserRuleCall_3_0());
@@ -5101,72 +5357,75 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalConceptLanguage.g:2042:3: ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) ) ) ) )* ) ) )
-            // InternalConceptLanguage.g:2043:4: ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) ) ) ) )* ) )
+            // InternalConceptLanguage.g:2138:3: ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) ) ) ) )* ) ) )
+            // InternalConceptLanguage.g:2139:4: ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) ) ) ) )* ) )
             {
-            // InternalConceptLanguage.g:2043:4: ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) ) ) ) )* ) )
-            // InternalConceptLanguage.g:2044:5: ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) ) ) ) )* )
+            // InternalConceptLanguage.g:2139:4: ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) ) ) ) )* ) )
+            // InternalConceptLanguage.g:2140:5: ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) ) ) ) )* )
             {
              
             				  getUnorderedGroupHelper().enter(grammarAccess.getIntPropertyAccess().getUnorderedGroup_4());
             				
-            // InternalConceptLanguage.g:2047:5: ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) ) ) ) )* )
-            // InternalConceptLanguage.g:2048:6: ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) ) ) ) )*
+            // InternalConceptLanguage.g:2143:5: ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) ) ) ) )* )
+            // InternalConceptLanguage.g:2144:6: ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) ) ) ) )*
             {
-            // InternalConceptLanguage.g:2048:6: ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) ) ) ) )*
+            // InternalConceptLanguage.g:2144:6: ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) ) ) ) )*
             loop31:
             do {
-                int alt31=5;
+                int alt31=6;
                 int LA31_0 = input.LA(1);
 
                 if ( LA31_0 == 15 && getUnorderedGroupHelper().canSelect(grammarAccess.getIntPropertyAccess().getUnorderedGroup_4(), 0) ) {
                     alt31=1;
                 }
-                else if ( LA31_0 == 45 && getUnorderedGroupHelper().canSelect(grammarAccess.getIntPropertyAccess().getUnorderedGroup_4(), 1) ) {
+                else if ( LA31_0 == 47 && getUnorderedGroupHelper().canSelect(grammarAccess.getIntPropertyAccess().getUnorderedGroup_4(), 1) ) {
                     alt31=2;
                 }
-                else if ( LA31_0 == 42 && getUnorderedGroupHelper().canSelect(grammarAccess.getIntPropertyAccess().getUnorderedGroup_4(), 2) ) {
+                else if ( LA31_0 == 43 && getUnorderedGroupHelper().canSelect(grammarAccess.getIntPropertyAccess().getUnorderedGroup_4(), 2) ) {
                     alt31=3;
                 }
-                else if ( LA31_0 == 43 && getUnorderedGroupHelper().canSelect(grammarAccess.getIntPropertyAccess().getUnorderedGroup_4(), 3) ) {
+                else if ( LA31_0 == 44 && getUnorderedGroupHelper().canSelect(grammarAccess.getIntPropertyAccess().getUnorderedGroup_4(), 3) ) {
                     alt31=4;
+                }
+                else if ( LA31_0 == 45 && getUnorderedGroupHelper().canSelect(grammarAccess.getIntPropertyAccess().getUnorderedGroup_4(), 4) ) {
+                    alt31=5;
                 }
 
 
                 switch (alt31) {
             	case 1 :
-            	    // InternalConceptLanguage.g:2049:4: ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:2145:4: ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) )
             	    {
-            	    // InternalConceptLanguage.g:2049:4: ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) )
-            	    // InternalConceptLanguage.g:2050:5: {...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:2145:4: ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:2146:5: {...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) )
             	    {
             	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getIntPropertyAccess().getUnorderedGroup_4(), 0) ) {
             	        throw new FailedPredicateException(input, "ruleIntProperty", "getUnorderedGroupHelper().canSelect(grammarAccess.getIntPropertyAccess().getUnorderedGroup_4(), 0)");
             	    }
-            	    // InternalConceptLanguage.g:2050:108: ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) )
-            	    // InternalConceptLanguage.g:2051:6: ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:2146:108: ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:2147:6: ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) )
             	    {
 
             	    						getUnorderedGroupHelper().select(grammarAccess.getIntPropertyAccess().getUnorderedGroup_4(), 0);
             	    					
-            	    // InternalConceptLanguage.g:2054:9: ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) )
-            	    // InternalConceptLanguage.g:2054:10: {...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:2150:9: ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:2150:10: {...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) )
             	    {
             	    if ( !((true)) ) {
             	        throw new FailedPredicateException(input, "ruleIntProperty", "true");
             	    }
-            	    // InternalConceptLanguage.g:2054:19: (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) )
-            	    // InternalConceptLanguage.g:2054:20: otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:2150:19: (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:2150:20: otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) )
             	    {
             	    otherlv_5=(Token)match(input,15,FOLLOW_5); 
 
             	    									newLeafNode(otherlv_5, grammarAccess.getIntPropertyAccess().getDescriptionKeyword_4_0_0());
             	    								
-            	    // InternalConceptLanguage.g:2058:9: ( (lv_description_6_0= ruleEString ) )
-            	    // InternalConceptLanguage.g:2059:10: (lv_description_6_0= ruleEString )
+            	    // InternalConceptLanguage.g:2154:9: ( (lv_description_6_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:2155:10: (lv_description_6_0= ruleEString )
             	    {
-            	    // InternalConceptLanguage.g:2059:10: (lv_description_6_0= ruleEString )
-            	    // InternalConceptLanguage.g:2060:11: lv_description_6_0= ruleEString
+            	    // InternalConceptLanguage.g:2155:10: (lv_description_6_0= ruleEString )
+            	    // InternalConceptLanguage.g:2156:11: lv_description_6_0= ruleEString
             	    {
 
             	    											newCompositeNode(grammarAccess.getIntPropertyAccess().getDescriptionEStringParserRuleCall_4_0_1_0());
@@ -5212,38 +5471,38 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	    }
             	    break;
             	case 2 :
-            	    // InternalConceptLanguage.g:2083:4: ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:2179:4: ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) ) ) )
             	    {
-            	    // InternalConceptLanguage.g:2083:4: ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) ) ) )
-            	    // InternalConceptLanguage.g:2084:5: {...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) ) )
+            	    // InternalConceptLanguage.g:2179:4: ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:2180:5: {...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) ) )
             	    {
             	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getIntPropertyAccess().getUnorderedGroup_4(), 1) ) {
             	        throw new FailedPredicateException(input, "ruleIntProperty", "getUnorderedGroupHelper().canSelect(grammarAccess.getIntPropertyAccess().getUnorderedGroup_4(), 1)");
             	    }
-            	    // InternalConceptLanguage.g:2084:108: ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) ) )
-            	    // InternalConceptLanguage.g:2085:6: ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) )
+            	    // InternalConceptLanguage.g:2180:108: ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) ) )
+            	    // InternalConceptLanguage.g:2181:6: ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) )
             	    {
 
             	    						getUnorderedGroupHelper().select(grammarAccess.getIntPropertyAccess().getUnorderedGroup_4(), 1);
             	    					
-            	    // InternalConceptLanguage.g:2088:9: ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) )
-            	    // InternalConceptLanguage.g:2088:10: {...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) )
+            	    // InternalConceptLanguage.g:2184:9: ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) ) )
+            	    // InternalConceptLanguage.g:2184:10: {...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) )
             	    {
             	    if ( !((true)) ) {
             	        throw new FailedPredicateException(input, "ruleIntProperty", "true");
             	    }
-            	    // InternalConceptLanguage.g:2088:19: (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) )
-            	    // InternalConceptLanguage.g:2088:20: otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) )
+            	    // InternalConceptLanguage.g:2184:19: (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) ) )
+            	    // InternalConceptLanguage.g:2184:20: otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleIntLiteralString ) )
             	    {
-            	    otherlv_7=(Token)match(input,45,FOLLOW_37); 
+            	    otherlv_7=(Token)match(input,47,FOLLOW_37); 
 
             	    									newLeafNode(otherlv_7, grammarAccess.getIntPropertyAccess().getDefaultKeyword_4_1_0());
             	    								
-            	    // InternalConceptLanguage.g:2092:9: ( (lv_defaultValue_8_0= ruleIntLiteralString ) )
-            	    // InternalConceptLanguage.g:2093:10: (lv_defaultValue_8_0= ruleIntLiteralString )
+            	    // InternalConceptLanguage.g:2188:9: ( (lv_defaultValue_8_0= ruleIntLiteralString ) )
+            	    // InternalConceptLanguage.g:2189:10: (lv_defaultValue_8_0= ruleIntLiteralString )
             	    {
-            	    // InternalConceptLanguage.g:2093:10: (lv_defaultValue_8_0= ruleIntLiteralString )
-            	    // InternalConceptLanguage.g:2094:11: lv_defaultValue_8_0= ruleIntLiteralString
+            	    // InternalConceptLanguage.g:2189:10: (lv_defaultValue_8_0= ruleIntLiteralString )
+            	    // InternalConceptLanguage.g:2190:11: lv_defaultValue_8_0= ruleIntLiteralString
             	    {
 
             	    											newCompositeNode(grammarAccess.getIntPropertyAccess().getDefaultValueIntLiteralStringParserRuleCall_4_1_1_0());
@@ -5289,38 +5548,38 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	    }
             	    break;
             	case 3 :
-            	    // InternalConceptLanguage.g:2117:4: ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:2213:4: ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) )
             	    {
-            	    // InternalConceptLanguage.g:2117:4: ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) )
-            	    // InternalConceptLanguage.g:2118:5: {...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:2213:4: ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:2214:5: {...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) )
             	    {
             	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getIntPropertyAccess().getUnorderedGroup_4(), 2) ) {
             	        throw new FailedPredicateException(input, "ruleIntProperty", "getUnorderedGroupHelper().canSelect(grammarAccess.getIntPropertyAccess().getUnorderedGroup_4(), 2)");
             	    }
-            	    // InternalConceptLanguage.g:2118:108: ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) )
-            	    // InternalConceptLanguage.g:2119:6: ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:2214:108: ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:2215:6: ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) )
             	    {
 
             	    						getUnorderedGroupHelper().select(grammarAccess.getIntPropertyAccess().getUnorderedGroup_4(), 2);
             	    					
-            	    // InternalConceptLanguage.g:2122:9: ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) )
-            	    // InternalConceptLanguage.g:2122:10: {...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:2218:9: ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:2218:10: {...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) )
             	    {
             	    if ( !((true)) ) {
             	        throw new FailedPredicateException(input, "ruleIntProperty", "true");
             	    }
-            	    // InternalConceptLanguage.g:2122:19: (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) )
-            	    // InternalConceptLanguage.g:2122:20: otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:2218:19: (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:2218:20: otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) )
             	    {
-            	    otherlv_9=(Token)match(input,42,FOLLOW_5); 
+            	    otherlv_9=(Token)match(input,43,FOLLOW_5); 
 
             	    									newLeafNode(otherlv_9, grammarAccess.getIntPropertyAccess().getQuantityKindKeyword_4_2_0());
             	    								
-            	    // InternalConceptLanguage.g:2126:9: ( (lv_quantityKindName_10_0= ruleEString ) )
-            	    // InternalConceptLanguage.g:2127:10: (lv_quantityKindName_10_0= ruleEString )
+            	    // InternalConceptLanguage.g:2222:9: ( (lv_quantityKindName_10_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:2223:10: (lv_quantityKindName_10_0= ruleEString )
             	    {
-            	    // InternalConceptLanguage.g:2127:10: (lv_quantityKindName_10_0= ruleEString )
-            	    // InternalConceptLanguage.g:2128:11: lv_quantityKindName_10_0= ruleEString
+            	    // InternalConceptLanguage.g:2223:10: (lv_quantityKindName_10_0= ruleEString )
+            	    // InternalConceptLanguage.g:2224:11: lv_quantityKindName_10_0= ruleEString
             	    {
 
             	    											newCompositeNode(grammarAccess.getIntPropertyAccess().getQuantityKindNameEStringParserRuleCall_4_2_1_0());
@@ -5366,44 +5625,121 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	    }
             	    break;
             	case 4 :
-            	    // InternalConceptLanguage.g:2151:4: ({...}? => ( ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:2247:4: ({...}? => ( ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) ) ) )
             	    {
-            	    // InternalConceptLanguage.g:2151:4: ({...}? => ( ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) ) ) )
-            	    // InternalConceptLanguage.g:2152:5: {...}? => ( ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:2247:4: ({...}? => ( ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:2248:5: {...}? => ( ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) ) )
             	    {
             	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getIntPropertyAccess().getUnorderedGroup_4(), 3) ) {
             	        throw new FailedPredicateException(input, "ruleIntProperty", "getUnorderedGroupHelper().canSelect(grammarAccess.getIntPropertyAccess().getUnorderedGroup_4(), 3)");
             	    }
-            	    // InternalConceptLanguage.g:2152:108: ( ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) ) )
-            	    // InternalConceptLanguage.g:2153:6: ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:2248:108: ( ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) ) )
+            	    // InternalConceptLanguage.g:2249:6: ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) )
             	    {
 
             	    						getUnorderedGroupHelper().select(grammarAccess.getIntPropertyAccess().getUnorderedGroup_4(), 3);
             	    					
-            	    // InternalConceptLanguage.g:2156:9: ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) )
-            	    // InternalConceptLanguage.g:2156:10: {...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:2252:9: ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) )
+            	    // InternalConceptLanguage.g:2252:10: {...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) )
             	    {
             	    if ( !((true)) ) {
             	        throw new FailedPredicateException(input, "ruleIntProperty", "true");
             	    }
-            	    // InternalConceptLanguage.g:2156:19: (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) )
-            	    // InternalConceptLanguage.g:2156:20: otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:2252:19: (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) )
+            	    // InternalConceptLanguage.g:2252:20: otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) )
             	    {
-            	    otherlv_11=(Token)match(input,43,FOLLOW_5); 
+            	    otherlv_11=(Token)match(input,44,FOLLOW_3); 
 
-            	    									newLeafNode(otherlv_11, grammarAccess.getIntPropertyAccess().getUnitKeyword_4_3_0());
+            	    									newLeafNode(otherlv_11, grammarAccess.getIntPropertyAccess().getVerificationKeyword_4_3_0());
             	    								
-            	    // InternalConceptLanguage.g:2160:9: ( (lv_unitName_12_0= ruleEString ) )
-            	    // InternalConceptLanguage.g:2161:10: (lv_unitName_12_0= ruleEString )
+            	    // InternalConceptLanguage.g:2256:9: ( (lv_verification_12_0= ruleVerificationTypeSpecification ) )
+            	    // InternalConceptLanguage.g:2257:10: (lv_verification_12_0= ruleVerificationTypeSpecification )
             	    {
-            	    // InternalConceptLanguage.g:2161:10: (lv_unitName_12_0= ruleEString )
-            	    // InternalConceptLanguage.g:2162:11: lv_unitName_12_0= ruleEString
+            	    // InternalConceptLanguage.g:2257:10: (lv_verification_12_0= ruleVerificationTypeSpecification )
+            	    // InternalConceptLanguage.g:2258:11: lv_verification_12_0= ruleVerificationTypeSpecification
             	    {
 
-            	    											newCompositeNode(grammarAccess.getIntPropertyAccess().getUnitNameEStringParserRuleCall_4_3_1_0());
+            	    											newCompositeNode(grammarAccess.getIntPropertyAccess().getVerificationVerificationTypeSpecificationParserRuleCall_4_3_1_0());
             	    										
             	    pushFollow(FOLLOW_36);
-            	    lv_unitName_12_0=ruleEString();
+            	    lv_verification_12_0=ruleVerificationTypeSpecification();
+
+            	    state._fsp--;
+
+
+            	    											if (current==null) {
+            	    												current = createModelElementForParent(grammarAccess.getIntPropertyRule());
+            	    											}
+            	    											set(
+            	    												current,
+            	    												"verification",
+            	    												lv_verification_12_0,
+            	    												"de.dlr.sc.virsat.model.concept.ConceptLanguage.VerificationTypeSpecification");
+            	    											afterParserOrEnumRuleCall();
+            	    										
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+
+            	     
+            	    						getUnorderedGroupHelper().returnFromSelection(grammarAccess.getIntPropertyAccess().getUnorderedGroup_4());
+            	    					
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+            	    break;
+            	case 5 :
+            	    // InternalConceptLanguage.g:2281:4: ({...}? => ( ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) ) ) )
+            	    {
+            	    // InternalConceptLanguage.g:2281:4: ({...}? => ( ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:2282:5: {...}? => ( ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) ) )
+            	    {
+            	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getIntPropertyAccess().getUnorderedGroup_4(), 4) ) {
+            	        throw new FailedPredicateException(input, "ruleIntProperty", "getUnorderedGroupHelper().canSelect(grammarAccess.getIntPropertyAccess().getUnorderedGroup_4(), 4)");
+            	    }
+            	    // InternalConceptLanguage.g:2282:108: ( ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:2283:6: ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) )
+            	    {
+
+            	    						getUnorderedGroupHelper().select(grammarAccess.getIntPropertyAccess().getUnorderedGroup_4(), 4);
+            	    					
+            	    // InternalConceptLanguage.g:2286:9: ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:2286:10: {...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) )
+            	    {
+            	    if ( !((true)) ) {
+            	        throw new FailedPredicateException(input, "ruleIntProperty", "true");
+            	    }
+            	    // InternalConceptLanguage.g:2286:19: (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:2286:20: otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) )
+            	    {
+            	    otherlv_13=(Token)match(input,45,FOLLOW_5); 
+
+            	    									newLeafNode(otherlv_13, grammarAccess.getIntPropertyAccess().getUnitKeyword_4_4_0());
+            	    								
+            	    // InternalConceptLanguage.g:2290:9: ( (lv_unitName_14_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:2291:10: (lv_unitName_14_0= ruleEString )
+            	    {
+            	    // InternalConceptLanguage.g:2291:10: (lv_unitName_14_0= ruleEString )
+            	    // InternalConceptLanguage.g:2292:11: lv_unitName_14_0= ruleEString
+            	    {
+
+            	    											newCompositeNode(grammarAccess.getIntPropertyAccess().getUnitNameEStringParserRuleCall_4_4_1_0());
+            	    										
+            	    pushFollow(FOLLOW_36);
+            	    lv_unitName_14_0=ruleEString();
 
             	    state._fsp--;
 
@@ -5414,7 +5750,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	    											set(
             	    												current,
             	    												"unitName",
-            	    												lv_unitName_12_0,
+            	    												lv_unitName_14_0,
             	    												"de.dlr.sc.virsat.model.concept.ConceptLanguage.EString");
             	    											afterParserOrEnumRuleCall();
             	    										
@@ -5460,9 +5796,9 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_13=(Token)match(input,22,FOLLOW_2); 
+            otherlv_15=(Token)match(input,22,FOLLOW_2); 
 
-            			newLeafNode(otherlv_13, grammarAccess.getIntPropertyAccess().getSemicolonKeyword_5());
+            			newLeafNode(otherlv_15, grammarAccess.getIntPropertyAccess().getSemicolonKeyword_5());
             		
 
             }
@@ -5487,7 +5823,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleFloatProperty"
-    // InternalConceptLanguage.g:2200:1: entryRuleFloatProperty returns [EObject current=null] : iv_ruleFloatProperty= ruleFloatProperty EOF ;
+    // InternalConceptLanguage.g:2330:1: entryRuleFloatProperty returns [EObject current=null] : iv_ruleFloatProperty= ruleFloatProperty EOF ;
     public final EObject entryRuleFloatProperty() throws RecognitionException {
         EObject current = null;
 
@@ -5495,8 +5831,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:2200:54: (iv_ruleFloatProperty= ruleFloatProperty EOF )
-            // InternalConceptLanguage.g:2201:2: iv_ruleFloatProperty= ruleFloatProperty EOF
+            // InternalConceptLanguage.g:2330:54: (iv_ruleFloatProperty= ruleFloatProperty EOF )
+            // InternalConceptLanguage.g:2331:2: iv_ruleFloatProperty= ruleFloatProperty EOF
             {
              newCompositeNode(grammarAccess.getFloatPropertyRule()); 
             pushFollow(FOLLOW_1);
@@ -5523,7 +5859,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleFloatProperty"
-    // InternalConceptLanguage.g:2207:1: ruleFloatProperty returns [EObject current=null] : ( () otherlv_1= 'FloatProperty' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_13= ';' ) ;
+    // InternalConceptLanguage.g:2337:1: ruleFloatProperty returns [EObject current=null] : ( () otherlv_1= 'FloatProperty' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_15= ';' ) ;
     public final EObject ruleFloatProperty() throws RecognitionException {
         EObject current = null;
 
@@ -5534,6 +5870,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         Token otherlv_9=null;
         Token otherlv_11=null;
         Token otherlv_13=null;
+        Token otherlv_15=null;
         EObject lv_arrayModifier_3_0 = null;
 
         AntlrDatatypeRuleToken lv_description_6_0 = null;
@@ -5542,21 +5879,23 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
         AntlrDatatypeRuleToken lv_quantityKindName_10_0 = null;
 
-        AntlrDatatypeRuleToken lv_unitName_12_0 = null;
+        EObject lv_verification_12_0 = null;
+
+        AntlrDatatypeRuleToken lv_unitName_14_0 = null;
 
 
 
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:2213:2: ( ( () otherlv_1= 'FloatProperty' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_13= ';' ) )
-            // InternalConceptLanguage.g:2214:2: ( () otherlv_1= 'FloatProperty' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_13= ';' )
+            // InternalConceptLanguage.g:2343:2: ( ( () otherlv_1= 'FloatProperty' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_15= ';' ) )
+            // InternalConceptLanguage.g:2344:2: ( () otherlv_1= 'FloatProperty' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_15= ';' )
             {
-            // InternalConceptLanguage.g:2214:2: ( () otherlv_1= 'FloatProperty' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_13= ';' )
-            // InternalConceptLanguage.g:2215:3: () otherlv_1= 'FloatProperty' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_13= ';'
+            // InternalConceptLanguage.g:2344:2: ( () otherlv_1= 'FloatProperty' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_15= ';' )
+            // InternalConceptLanguage.g:2345:3: () otherlv_1= 'FloatProperty' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_15= ';'
             {
-            // InternalConceptLanguage.g:2215:3: ()
-            // InternalConceptLanguage.g:2216:4: 
+            // InternalConceptLanguage.g:2345:3: ()
+            // InternalConceptLanguage.g:2346:4: 
             {
 
             				current = forceCreateModelElement(
@@ -5566,15 +5905,15 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_1=(Token)match(input,46,FOLLOW_3); 
+            otherlv_1=(Token)match(input,48,FOLLOW_3); 
 
             			newLeafNode(otherlv_1, grammarAccess.getFloatPropertyAccess().getFloatPropertyKeyword_1());
             		
-            // InternalConceptLanguage.g:2226:3: ( (lv_name_2_0= RULE_ID ) )
-            // InternalConceptLanguage.g:2227:4: (lv_name_2_0= RULE_ID )
+            // InternalConceptLanguage.g:2356:3: ( (lv_name_2_0= RULE_ID ) )
+            // InternalConceptLanguage.g:2357:4: (lv_name_2_0= RULE_ID )
             {
-            // InternalConceptLanguage.g:2227:4: (lv_name_2_0= RULE_ID )
-            // InternalConceptLanguage.g:2228:5: lv_name_2_0= RULE_ID
+            // InternalConceptLanguage.g:2357:4: (lv_name_2_0= RULE_ID )
+            // InternalConceptLanguage.g:2358:5: lv_name_2_0= RULE_ID
             {
             lv_name_2_0=(Token)match(input,RULE_ID,FOLLOW_35); 
 
@@ -5596,7 +5935,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalConceptLanguage.g:2244:3: ( (lv_arrayModifier_3_0= ruleArrayModifier ) )?
+            // InternalConceptLanguage.g:2374:3: ( (lv_arrayModifier_3_0= ruleArrayModifier ) )?
             int alt32=2;
             int LA32_0 = input.LA(1);
 
@@ -5605,10 +5944,10 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             }
             switch (alt32) {
                 case 1 :
-                    // InternalConceptLanguage.g:2245:4: (lv_arrayModifier_3_0= ruleArrayModifier )
+                    // InternalConceptLanguage.g:2375:4: (lv_arrayModifier_3_0= ruleArrayModifier )
                     {
-                    // InternalConceptLanguage.g:2245:4: (lv_arrayModifier_3_0= ruleArrayModifier )
-                    // InternalConceptLanguage.g:2246:5: lv_arrayModifier_3_0= ruleArrayModifier
+                    // InternalConceptLanguage.g:2375:4: (lv_arrayModifier_3_0= ruleArrayModifier )
+                    // InternalConceptLanguage.g:2376:5: lv_arrayModifier_3_0= ruleArrayModifier
                     {
 
                     					newCompositeNode(grammarAccess.getFloatPropertyAccess().getArrayModifierArrayModifierParserRuleCall_3_0());
@@ -5638,72 +5977,75 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalConceptLanguage.g:2263:3: ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) ) ) ) )* ) ) )
-            // InternalConceptLanguage.g:2264:4: ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) ) ) ) )* ) )
+            // InternalConceptLanguage.g:2393:3: ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) ) ) ) )* ) ) )
+            // InternalConceptLanguage.g:2394:4: ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) ) ) ) )* ) )
             {
-            // InternalConceptLanguage.g:2264:4: ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) ) ) ) )* ) )
-            // InternalConceptLanguage.g:2265:5: ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) ) ) ) )* )
+            // InternalConceptLanguage.g:2394:4: ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) ) ) ) )* ) )
+            // InternalConceptLanguage.g:2395:5: ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) ) ) ) )* )
             {
              
             				  getUnorderedGroupHelper().enter(grammarAccess.getFloatPropertyAccess().getUnorderedGroup_4());
             				
-            // InternalConceptLanguage.g:2268:5: ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) ) ) ) )* )
-            // InternalConceptLanguage.g:2269:6: ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) ) ) ) )*
+            // InternalConceptLanguage.g:2398:5: ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) ) ) ) )* )
+            // InternalConceptLanguage.g:2399:6: ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) ) ) ) )*
             {
-            // InternalConceptLanguage.g:2269:6: ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) ) ) ) )*
+            // InternalConceptLanguage.g:2399:6: ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) ) ) ) )*
             loop33:
             do {
-                int alt33=5;
+                int alt33=6;
                 int LA33_0 = input.LA(1);
 
                 if ( LA33_0 == 15 && getUnorderedGroupHelper().canSelect(grammarAccess.getFloatPropertyAccess().getUnorderedGroup_4(), 0) ) {
                     alt33=1;
                 }
-                else if ( LA33_0 == 45 && getUnorderedGroupHelper().canSelect(grammarAccess.getFloatPropertyAccess().getUnorderedGroup_4(), 1) ) {
+                else if ( LA33_0 == 47 && getUnorderedGroupHelper().canSelect(grammarAccess.getFloatPropertyAccess().getUnorderedGroup_4(), 1) ) {
                     alt33=2;
                 }
-                else if ( LA33_0 == 42 && getUnorderedGroupHelper().canSelect(grammarAccess.getFloatPropertyAccess().getUnorderedGroup_4(), 2) ) {
+                else if ( LA33_0 == 43 && getUnorderedGroupHelper().canSelect(grammarAccess.getFloatPropertyAccess().getUnorderedGroup_4(), 2) ) {
                     alt33=3;
                 }
-                else if ( LA33_0 == 43 && getUnorderedGroupHelper().canSelect(grammarAccess.getFloatPropertyAccess().getUnorderedGroup_4(), 3) ) {
+                else if ( LA33_0 == 44 && getUnorderedGroupHelper().canSelect(grammarAccess.getFloatPropertyAccess().getUnorderedGroup_4(), 3) ) {
                     alt33=4;
+                }
+                else if ( LA33_0 == 45 && getUnorderedGroupHelper().canSelect(grammarAccess.getFloatPropertyAccess().getUnorderedGroup_4(), 4) ) {
+                    alt33=5;
                 }
 
 
                 switch (alt33) {
             	case 1 :
-            	    // InternalConceptLanguage.g:2270:4: ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:2400:4: ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) )
             	    {
-            	    // InternalConceptLanguage.g:2270:4: ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) )
-            	    // InternalConceptLanguage.g:2271:5: {...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:2400:4: ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:2401:5: {...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) )
             	    {
             	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getFloatPropertyAccess().getUnorderedGroup_4(), 0) ) {
             	        throw new FailedPredicateException(input, "ruleFloatProperty", "getUnorderedGroupHelper().canSelect(grammarAccess.getFloatPropertyAccess().getUnorderedGroup_4(), 0)");
             	    }
-            	    // InternalConceptLanguage.g:2271:110: ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) )
-            	    // InternalConceptLanguage.g:2272:6: ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:2401:110: ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:2402:6: ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) )
             	    {
 
             	    						getUnorderedGroupHelper().select(grammarAccess.getFloatPropertyAccess().getUnorderedGroup_4(), 0);
             	    					
-            	    // InternalConceptLanguage.g:2275:9: ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) )
-            	    // InternalConceptLanguage.g:2275:10: {...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:2405:9: ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:2405:10: {...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) )
             	    {
             	    if ( !((true)) ) {
             	        throw new FailedPredicateException(input, "ruleFloatProperty", "true");
             	    }
-            	    // InternalConceptLanguage.g:2275:19: (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) )
-            	    // InternalConceptLanguage.g:2275:20: otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:2405:19: (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:2405:20: otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) )
             	    {
             	    otherlv_5=(Token)match(input,15,FOLLOW_5); 
 
             	    									newLeafNode(otherlv_5, grammarAccess.getFloatPropertyAccess().getDescriptionKeyword_4_0_0());
             	    								
-            	    // InternalConceptLanguage.g:2279:9: ( (lv_description_6_0= ruleEString ) )
-            	    // InternalConceptLanguage.g:2280:10: (lv_description_6_0= ruleEString )
+            	    // InternalConceptLanguage.g:2409:9: ( (lv_description_6_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:2410:10: (lv_description_6_0= ruleEString )
             	    {
-            	    // InternalConceptLanguage.g:2280:10: (lv_description_6_0= ruleEString )
-            	    // InternalConceptLanguage.g:2281:11: lv_description_6_0= ruleEString
+            	    // InternalConceptLanguage.g:2410:10: (lv_description_6_0= ruleEString )
+            	    // InternalConceptLanguage.g:2411:11: lv_description_6_0= ruleEString
             	    {
 
             	    											newCompositeNode(grammarAccess.getFloatPropertyAccess().getDescriptionEStringParserRuleCall_4_0_1_0());
@@ -5749,38 +6091,38 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	    }
             	    break;
             	case 2 :
-            	    // InternalConceptLanguage.g:2304:4: ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:2434:4: ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) ) ) )
             	    {
-            	    // InternalConceptLanguage.g:2304:4: ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) ) ) )
-            	    // InternalConceptLanguage.g:2305:5: {...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) ) )
+            	    // InternalConceptLanguage.g:2434:4: ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:2435:5: {...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) ) )
             	    {
             	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getFloatPropertyAccess().getUnorderedGroup_4(), 1) ) {
             	        throw new FailedPredicateException(input, "ruleFloatProperty", "getUnorderedGroupHelper().canSelect(grammarAccess.getFloatPropertyAccess().getUnorderedGroup_4(), 1)");
             	    }
-            	    // InternalConceptLanguage.g:2305:110: ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) ) )
-            	    // InternalConceptLanguage.g:2306:6: ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) )
+            	    // InternalConceptLanguage.g:2435:110: ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) ) )
+            	    // InternalConceptLanguage.g:2436:6: ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) )
             	    {
 
             	    						getUnorderedGroupHelper().select(grammarAccess.getFloatPropertyAccess().getUnorderedGroup_4(), 1);
             	    					
-            	    // InternalConceptLanguage.g:2309:9: ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) )
-            	    // InternalConceptLanguage.g:2309:10: {...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) )
+            	    // InternalConceptLanguage.g:2439:9: ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) ) )
+            	    // InternalConceptLanguage.g:2439:10: {...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) )
             	    {
             	    if ( !((true)) ) {
             	        throw new FailedPredicateException(input, "ruleFloatProperty", "true");
             	    }
-            	    // InternalConceptLanguage.g:2309:19: (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) )
-            	    // InternalConceptLanguage.g:2309:20: otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) )
+            	    // InternalConceptLanguage.g:2439:19: (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) ) )
+            	    // InternalConceptLanguage.g:2439:20: otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleFloatLiteralString ) )
             	    {
-            	    otherlv_7=(Token)match(input,45,FOLLOW_38); 
+            	    otherlv_7=(Token)match(input,47,FOLLOW_38); 
 
             	    									newLeafNode(otherlv_7, grammarAccess.getFloatPropertyAccess().getDefaultKeyword_4_1_0());
             	    								
-            	    // InternalConceptLanguage.g:2313:9: ( (lv_defaultValue_8_0= ruleFloatLiteralString ) )
-            	    // InternalConceptLanguage.g:2314:10: (lv_defaultValue_8_0= ruleFloatLiteralString )
+            	    // InternalConceptLanguage.g:2443:9: ( (lv_defaultValue_8_0= ruleFloatLiteralString ) )
+            	    // InternalConceptLanguage.g:2444:10: (lv_defaultValue_8_0= ruleFloatLiteralString )
             	    {
-            	    // InternalConceptLanguage.g:2314:10: (lv_defaultValue_8_0= ruleFloatLiteralString )
-            	    // InternalConceptLanguage.g:2315:11: lv_defaultValue_8_0= ruleFloatLiteralString
+            	    // InternalConceptLanguage.g:2444:10: (lv_defaultValue_8_0= ruleFloatLiteralString )
+            	    // InternalConceptLanguage.g:2445:11: lv_defaultValue_8_0= ruleFloatLiteralString
             	    {
 
             	    											newCompositeNode(grammarAccess.getFloatPropertyAccess().getDefaultValueFloatLiteralStringParserRuleCall_4_1_1_0());
@@ -5826,38 +6168,38 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	    }
             	    break;
             	case 3 :
-            	    // InternalConceptLanguage.g:2338:4: ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:2468:4: ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) )
             	    {
-            	    // InternalConceptLanguage.g:2338:4: ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) )
-            	    // InternalConceptLanguage.g:2339:5: {...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:2468:4: ({...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:2469:5: {...}? => ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) )
             	    {
             	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getFloatPropertyAccess().getUnorderedGroup_4(), 2) ) {
             	        throw new FailedPredicateException(input, "ruleFloatProperty", "getUnorderedGroupHelper().canSelect(grammarAccess.getFloatPropertyAccess().getUnorderedGroup_4(), 2)");
             	    }
-            	    // InternalConceptLanguage.g:2339:110: ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) )
-            	    // InternalConceptLanguage.g:2340:6: ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:2469:110: ( ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:2470:6: ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) )
             	    {
 
             	    						getUnorderedGroupHelper().select(grammarAccess.getFloatPropertyAccess().getUnorderedGroup_4(), 2);
             	    					
-            	    // InternalConceptLanguage.g:2343:9: ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) )
-            	    // InternalConceptLanguage.g:2343:10: {...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:2473:9: ({...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:2473:10: {...}? => (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) )
             	    {
             	    if ( !((true)) ) {
             	        throw new FailedPredicateException(input, "ruleFloatProperty", "true");
             	    }
-            	    // InternalConceptLanguage.g:2343:19: (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) )
-            	    // InternalConceptLanguage.g:2343:20: otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:2473:19: (otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:2473:20: otherlv_9= 'quantityKind' ( (lv_quantityKindName_10_0= ruleEString ) )
             	    {
-            	    otherlv_9=(Token)match(input,42,FOLLOW_5); 
+            	    otherlv_9=(Token)match(input,43,FOLLOW_5); 
 
             	    									newLeafNode(otherlv_9, grammarAccess.getFloatPropertyAccess().getQuantityKindKeyword_4_2_0());
             	    								
-            	    // InternalConceptLanguage.g:2347:9: ( (lv_quantityKindName_10_0= ruleEString ) )
-            	    // InternalConceptLanguage.g:2348:10: (lv_quantityKindName_10_0= ruleEString )
+            	    // InternalConceptLanguage.g:2477:9: ( (lv_quantityKindName_10_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:2478:10: (lv_quantityKindName_10_0= ruleEString )
             	    {
-            	    // InternalConceptLanguage.g:2348:10: (lv_quantityKindName_10_0= ruleEString )
-            	    // InternalConceptLanguage.g:2349:11: lv_quantityKindName_10_0= ruleEString
+            	    // InternalConceptLanguage.g:2478:10: (lv_quantityKindName_10_0= ruleEString )
+            	    // InternalConceptLanguage.g:2479:11: lv_quantityKindName_10_0= ruleEString
             	    {
 
             	    											newCompositeNode(grammarAccess.getFloatPropertyAccess().getQuantityKindNameEStringParserRuleCall_4_2_1_0());
@@ -5903,44 +6245,121 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	    }
             	    break;
             	case 4 :
-            	    // InternalConceptLanguage.g:2372:4: ({...}? => ( ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:2502:4: ({...}? => ( ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) ) ) )
             	    {
-            	    // InternalConceptLanguage.g:2372:4: ({...}? => ( ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) ) ) )
-            	    // InternalConceptLanguage.g:2373:5: {...}? => ( ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:2502:4: ({...}? => ( ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:2503:5: {...}? => ( ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) ) )
             	    {
             	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getFloatPropertyAccess().getUnorderedGroup_4(), 3) ) {
             	        throw new FailedPredicateException(input, "ruleFloatProperty", "getUnorderedGroupHelper().canSelect(grammarAccess.getFloatPropertyAccess().getUnorderedGroup_4(), 3)");
             	    }
-            	    // InternalConceptLanguage.g:2373:110: ( ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) ) )
-            	    // InternalConceptLanguage.g:2374:6: ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:2503:110: ( ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) ) )
+            	    // InternalConceptLanguage.g:2504:6: ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) )
             	    {
 
             	    						getUnorderedGroupHelper().select(grammarAccess.getFloatPropertyAccess().getUnorderedGroup_4(), 3);
             	    					
-            	    // InternalConceptLanguage.g:2377:9: ({...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) ) )
-            	    // InternalConceptLanguage.g:2377:10: {...}? => (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:2507:9: ({...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) ) )
+            	    // InternalConceptLanguage.g:2507:10: {...}? => (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) )
             	    {
             	    if ( !((true)) ) {
             	        throw new FailedPredicateException(input, "ruleFloatProperty", "true");
             	    }
-            	    // InternalConceptLanguage.g:2377:19: (otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) ) )
-            	    // InternalConceptLanguage.g:2377:20: otherlv_11= 'unit' ( (lv_unitName_12_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:2507:19: (otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) ) )
+            	    // InternalConceptLanguage.g:2507:20: otherlv_11= 'verification' ( (lv_verification_12_0= ruleVerificationTypeSpecification ) )
             	    {
-            	    otherlv_11=(Token)match(input,43,FOLLOW_5); 
+            	    otherlv_11=(Token)match(input,44,FOLLOW_3); 
 
-            	    									newLeafNode(otherlv_11, grammarAccess.getFloatPropertyAccess().getUnitKeyword_4_3_0());
+            	    									newLeafNode(otherlv_11, grammarAccess.getFloatPropertyAccess().getVerificationKeyword_4_3_0());
             	    								
-            	    // InternalConceptLanguage.g:2381:9: ( (lv_unitName_12_0= ruleEString ) )
-            	    // InternalConceptLanguage.g:2382:10: (lv_unitName_12_0= ruleEString )
+            	    // InternalConceptLanguage.g:2511:9: ( (lv_verification_12_0= ruleVerificationTypeSpecification ) )
+            	    // InternalConceptLanguage.g:2512:10: (lv_verification_12_0= ruleVerificationTypeSpecification )
             	    {
-            	    // InternalConceptLanguage.g:2382:10: (lv_unitName_12_0= ruleEString )
-            	    // InternalConceptLanguage.g:2383:11: lv_unitName_12_0= ruleEString
+            	    // InternalConceptLanguage.g:2512:10: (lv_verification_12_0= ruleVerificationTypeSpecification )
+            	    // InternalConceptLanguage.g:2513:11: lv_verification_12_0= ruleVerificationTypeSpecification
             	    {
 
-            	    											newCompositeNode(grammarAccess.getFloatPropertyAccess().getUnitNameEStringParserRuleCall_4_3_1_0());
+            	    											newCompositeNode(grammarAccess.getFloatPropertyAccess().getVerificationVerificationTypeSpecificationParserRuleCall_4_3_1_0());
             	    										
             	    pushFollow(FOLLOW_36);
-            	    lv_unitName_12_0=ruleEString();
+            	    lv_verification_12_0=ruleVerificationTypeSpecification();
+
+            	    state._fsp--;
+
+
+            	    											if (current==null) {
+            	    												current = createModelElementForParent(grammarAccess.getFloatPropertyRule());
+            	    											}
+            	    											set(
+            	    												current,
+            	    												"verification",
+            	    												lv_verification_12_0,
+            	    												"de.dlr.sc.virsat.model.concept.ConceptLanguage.VerificationTypeSpecification");
+            	    											afterParserOrEnumRuleCall();
+            	    										
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+
+            	     
+            	    						getUnorderedGroupHelper().returnFromSelection(grammarAccess.getFloatPropertyAccess().getUnorderedGroup_4());
+            	    					
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+            	    break;
+            	case 5 :
+            	    // InternalConceptLanguage.g:2536:4: ({...}? => ( ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) ) ) )
+            	    {
+            	    // InternalConceptLanguage.g:2536:4: ({...}? => ( ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:2537:5: {...}? => ( ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) ) )
+            	    {
+            	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getFloatPropertyAccess().getUnorderedGroup_4(), 4) ) {
+            	        throw new FailedPredicateException(input, "ruleFloatProperty", "getUnorderedGroupHelper().canSelect(grammarAccess.getFloatPropertyAccess().getUnorderedGroup_4(), 4)");
+            	    }
+            	    // InternalConceptLanguage.g:2537:110: ( ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:2538:6: ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) )
+            	    {
+
+            	    						getUnorderedGroupHelper().select(grammarAccess.getFloatPropertyAccess().getUnorderedGroup_4(), 4);
+            	    					
+            	    // InternalConceptLanguage.g:2541:9: ({...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:2541:10: {...}? => (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) )
+            	    {
+            	    if ( !((true)) ) {
+            	        throw new FailedPredicateException(input, "ruleFloatProperty", "true");
+            	    }
+            	    // InternalConceptLanguage.g:2541:19: (otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:2541:20: otherlv_13= 'unit' ( (lv_unitName_14_0= ruleEString ) )
+            	    {
+            	    otherlv_13=(Token)match(input,45,FOLLOW_5); 
+
+            	    									newLeafNode(otherlv_13, grammarAccess.getFloatPropertyAccess().getUnitKeyword_4_4_0());
+            	    								
+            	    // InternalConceptLanguage.g:2545:9: ( (lv_unitName_14_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:2546:10: (lv_unitName_14_0= ruleEString )
+            	    {
+            	    // InternalConceptLanguage.g:2546:10: (lv_unitName_14_0= ruleEString )
+            	    // InternalConceptLanguage.g:2547:11: lv_unitName_14_0= ruleEString
+            	    {
+
+            	    											newCompositeNode(grammarAccess.getFloatPropertyAccess().getUnitNameEStringParserRuleCall_4_4_1_0());
+            	    										
+            	    pushFollow(FOLLOW_36);
+            	    lv_unitName_14_0=ruleEString();
 
             	    state._fsp--;
 
@@ -5951,7 +6370,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	    											set(
             	    												current,
             	    												"unitName",
-            	    												lv_unitName_12_0,
+            	    												lv_unitName_14_0,
             	    												"de.dlr.sc.virsat.model.concept.ConceptLanguage.EString");
             	    											afterParserOrEnumRuleCall();
             	    										
@@ -5997,9 +6416,9 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_13=(Token)match(input,22,FOLLOW_2); 
+            otherlv_15=(Token)match(input,22,FOLLOW_2); 
 
-            			newLeafNode(otherlv_13, grammarAccess.getFloatPropertyAccess().getSemicolonKeyword_5());
+            			newLeafNode(otherlv_15, grammarAccess.getFloatPropertyAccess().getSemicolonKeyword_5());
             		
 
             }
@@ -6024,7 +6443,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleStringProperty"
-    // InternalConceptLanguage.g:2421:1: entryRuleStringProperty returns [EObject current=null] : iv_ruleStringProperty= ruleStringProperty EOF ;
+    // InternalConceptLanguage.g:2585:1: entryRuleStringProperty returns [EObject current=null] : iv_ruleStringProperty= ruleStringProperty EOF ;
     public final EObject entryRuleStringProperty() throws RecognitionException {
         EObject current = null;
 
@@ -6032,8 +6451,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:2421:55: (iv_ruleStringProperty= ruleStringProperty EOF )
-            // InternalConceptLanguage.g:2422:2: iv_ruleStringProperty= ruleStringProperty EOF
+            // InternalConceptLanguage.g:2585:55: (iv_ruleStringProperty= ruleStringProperty EOF )
+            // InternalConceptLanguage.g:2586:2: iv_ruleStringProperty= ruleStringProperty EOF
             {
              newCompositeNode(grammarAccess.getStringPropertyRule()); 
             pushFollow(FOLLOW_1);
@@ -6060,7 +6479,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleStringProperty"
-    // InternalConceptLanguage.g:2428:1: ruleStringProperty returns [EObject current=null] : ( () otherlv_1= 'StringProperty' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_9= ';' ) ;
+    // InternalConceptLanguage.g:2592:1: ruleStringProperty returns [EObject current=null] : ( () otherlv_1= 'StringProperty' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'verification' ( (lv_verification_8_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'default' ( (lv_defaultValue_10_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_11= ';' ) ;
     public final EObject ruleStringProperty() throws RecognitionException {
         EObject current = null;
 
@@ -6069,25 +6488,28 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         Token otherlv_5=null;
         Token otherlv_7=null;
         Token otherlv_9=null;
+        Token otherlv_11=null;
         EObject lv_arrayModifier_3_0 = null;
 
         AntlrDatatypeRuleToken lv_description_6_0 = null;
 
-        AntlrDatatypeRuleToken lv_defaultValue_8_0 = null;
+        EObject lv_verification_8_0 = null;
+
+        AntlrDatatypeRuleToken lv_defaultValue_10_0 = null;
 
 
 
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:2434:2: ( ( () otherlv_1= 'StringProperty' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_9= ';' ) )
-            // InternalConceptLanguage.g:2435:2: ( () otherlv_1= 'StringProperty' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_9= ';' )
+            // InternalConceptLanguage.g:2598:2: ( ( () otherlv_1= 'StringProperty' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'verification' ( (lv_verification_8_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'default' ( (lv_defaultValue_10_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_11= ';' ) )
+            // InternalConceptLanguage.g:2599:2: ( () otherlv_1= 'StringProperty' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'verification' ( (lv_verification_8_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'default' ( (lv_defaultValue_10_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_11= ';' )
             {
-            // InternalConceptLanguage.g:2435:2: ( () otherlv_1= 'StringProperty' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_9= ';' )
-            // InternalConceptLanguage.g:2436:3: () otherlv_1= 'StringProperty' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_9= ';'
+            // InternalConceptLanguage.g:2599:2: ( () otherlv_1= 'StringProperty' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'verification' ( (lv_verification_8_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'default' ( (lv_defaultValue_10_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_11= ';' )
+            // InternalConceptLanguage.g:2600:3: () otherlv_1= 'StringProperty' ( (lv_name_2_0= RULE_ID ) ) ( (lv_arrayModifier_3_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'verification' ( (lv_verification_8_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'default' ( (lv_defaultValue_10_0= ruleEString ) ) ) ) ) ) )* ) ) ) otherlv_11= ';'
             {
-            // InternalConceptLanguage.g:2436:3: ()
-            // InternalConceptLanguage.g:2437:4: 
+            // InternalConceptLanguage.g:2600:3: ()
+            // InternalConceptLanguage.g:2601:4: 
             {
 
             				current = forceCreateModelElement(
@@ -6097,15 +6519,15 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_1=(Token)match(input,47,FOLLOW_3); 
+            otherlv_1=(Token)match(input,49,FOLLOW_3); 
 
             			newLeafNode(otherlv_1, grammarAccess.getStringPropertyAccess().getStringPropertyKeyword_1());
             		
-            // InternalConceptLanguage.g:2447:3: ( (lv_name_2_0= RULE_ID ) )
-            // InternalConceptLanguage.g:2448:4: (lv_name_2_0= RULE_ID )
+            // InternalConceptLanguage.g:2611:3: ( (lv_name_2_0= RULE_ID ) )
+            // InternalConceptLanguage.g:2612:4: (lv_name_2_0= RULE_ID )
             {
-            // InternalConceptLanguage.g:2448:4: (lv_name_2_0= RULE_ID )
-            // InternalConceptLanguage.g:2449:5: lv_name_2_0= RULE_ID
+            // InternalConceptLanguage.g:2612:4: (lv_name_2_0= RULE_ID )
+            // InternalConceptLanguage.g:2613:5: lv_name_2_0= RULE_ID
             {
             lv_name_2_0=(Token)match(input,RULE_ID,FOLLOW_39); 
 
@@ -6127,7 +6549,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalConceptLanguage.g:2465:3: ( (lv_arrayModifier_3_0= ruleArrayModifier ) )?
+            // InternalConceptLanguage.g:2629:3: ( (lv_arrayModifier_3_0= ruleArrayModifier ) )?
             int alt34=2;
             int LA34_0 = input.LA(1);
 
@@ -6136,10 +6558,10 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             }
             switch (alt34) {
                 case 1 :
-                    // InternalConceptLanguage.g:2466:4: (lv_arrayModifier_3_0= ruleArrayModifier )
+                    // InternalConceptLanguage.g:2630:4: (lv_arrayModifier_3_0= ruleArrayModifier )
                     {
-                    // InternalConceptLanguage.g:2466:4: (lv_arrayModifier_3_0= ruleArrayModifier )
-                    // InternalConceptLanguage.g:2467:5: lv_arrayModifier_3_0= ruleArrayModifier
+                    // InternalConceptLanguage.g:2630:4: (lv_arrayModifier_3_0= ruleArrayModifier )
+                    // InternalConceptLanguage.g:2631:5: lv_arrayModifier_3_0= ruleArrayModifier
                     {
 
                     					newCompositeNode(grammarAccess.getStringPropertyAccess().getArrayModifierArrayModifierParserRuleCall_3_0());
@@ -6169,66 +6591,69 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalConceptLanguage.g:2484:3: ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleEString ) ) ) ) ) ) )* ) ) )
-            // InternalConceptLanguage.g:2485:4: ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleEString ) ) ) ) ) ) )* ) )
+            // InternalConceptLanguage.g:2648:3: ( ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'verification' ( (lv_verification_8_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'default' ( (lv_defaultValue_10_0= ruleEString ) ) ) ) ) ) )* ) ) )
+            // InternalConceptLanguage.g:2649:4: ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'verification' ( (lv_verification_8_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'default' ( (lv_defaultValue_10_0= ruleEString ) ) ) ) ) ) )* ) )
             {
-            // InternalConceptLanguage.g:2485:4: ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleEString ) ) ) ) ) ) )* ) )
-            // InternalConceptLanguage.g:2486:5: ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleEString ) ) ) ) ) ) )* )
+            // InternalConceptLanguage.g:2649:4: ( ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'verification' ( (lv_verification_8_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'default' ( (lv_defaultValue_10_0= ruleEString ) ) ) ) ) ) )* ) )
+            // InternalConceptLanguage.g:2650:5: ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'verification' ( (lv_verification_8_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'default' ( (lv_defaultValue_10_0= ruleEString ) ) ) ) ) ) )* )
             {
              
             				  getUnorderedGroupHelper().enter(grammarAccess.getStringPropertyAccess().getUnorderedGroup_4());
             				
-            // InternalConceptLanguage.g:2489:5: ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleEString ) ) ) ) ) ) )* )
-            // InternalConceptLanguage.g:2490:6: ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleEString ) ) ) ) ) ) )*
+            // InternalConceptLanguage.g:2653:5: ( ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'verification' ( (lv_verification_8_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'default' ( (lv_defaultValue_10_0= ruleEString ) ) ) ) ) ) )* )
+            // InternalConceptLanguage.g:2654:6: ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'verification' ( (lv_verification_8_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'default' ( (lv_defaultValue_10_0= ruleEString ) ) ) ) ) ) )*
             {
-            // InternalConceptLanguage.g:2490:6: ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleEString ) ) ) ) ) ) )*
+            // InternalConceptLanguage.g:2654:6: ( ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_7= 'verification' ( (lv_verification_8_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'default' ( (lv_defaultValue_10_0= ruleEString ) ) ) ) ) ) )*
             loop35:
             do {
-                int alt35=3;
+                int alt35=4;
                 int LA35_0 = input.LA(1);
 
                 if ( LA35_0 == 15 && getUnorderedGroupHelper().canSelect(grammarAccess.getStringPropertyAccess().getUnorderedGroup_4(), 0) ) {
                     alt35=1;
                 }
-                else if ( LA35_0 == 45 && getUnorderedGroupHelper().canSelect(grammarAccess.getStringPropertyAccess().getUnorderedGroup_4(), 1) ) {
+                else if ( LA35_0 == 44 && getUnorderedGroupHelper().canSelect(grammarAccess.getStringPropertyAccess().getUnorderedGroup_4(), 1) ) {
                     alt35=2;
+                }
+                else if ( LA35_0 == 47 && getUnorderedGroupHelper().canSelect(grammarAccess.getStringPropertyAccess().getUnorderedGroup_4(), 2) ) {
+                    alt35=3;
                 }
 
 
                 switch (alt35) {
             	case 1 :
-            	    // InternalConceptLanguage.g:2491:4: ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:2655:4: ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) )
             	    {
-            	    // InternalConceptLanguage.g:2491:4: ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) )
-            	    // InternalConceptLanguage.g:2492:5: {...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:2655:4: ({...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:2656:5: {...}? => ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) )
             	    {
             	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getStringPropertyAccess().getUnorderedGroup_4(), 0) ) {
             	        throw new FailedPredicateException(input, "ruleStringProperty", "getUnorderedGroupHelper().canSelect(grammarAccess.getStringPropertyAccess().getUnorderedGroup_4(), 0)");
             	    }
-            	    // InternalConceptLanguage.g:2492:111: ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) )
-            	    // InternalConceptLanguage.g:2493:6: ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:2656:111: ( ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:2657:6: ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) )
             	    {
 
             	    						getUnorderedGroupHelper().select(grammarAccess.getStringPropertyAccess().getUnorderedGroup_4(), 0);
             	    					
-            	    // InternalConceptLanguage.g:2496:9: ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) )
-            	    // InternalConceptLanguage.g:2496:10: {...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:2660:9: ({...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:2660:10: {...}? => (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) )
             	    {
             	    if ( !((true)) ) {
             	        throw new FailedPredicateException(input, "ruleStringProperty", "true");
             	    }
-            	    // InternalConceptLanguage.g:2496:19: (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) )
-            	    // InternalConceptLanguage.g:2496:20: otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:2660:19: (otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:2660:20: otherlv_5= 'description' ( (lv_description_6_0= ruleEString ) )
             	    {
             	    otherlv_5=(Token)match(input,15,FOLLOW_5); 
 
             	    									newLeafNode(otherlv_5, grammarAccess.getStringPropertyAccess().getDescriptionKeyword_4_0_0());
             	    								
-            	    // InternalConceptLanguage.g:2500:9: ( (lv_description_6_0= ruleEString ) )
-            	    // InternalConceptLanguage.g:2501:10: (lv_description_6_0= ruleEString )
+            	    // InternalConceptLanguage.g:2664:9: ( (lv_description_6_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:2665:10: (lv_description_6_0= ruleEString )
             	    {
-            	    // InternalConceptLanguage.g:2501:10: (lv_description_6_0= ruleEString )
-            	    // InternalConceptLanguage.g:2502:11: lv_description_6_0= ruleEString
+            	    // InternalConceptLanguage.g:2665:10: (lv_description_6_0= ruleEString )
+            	    // InternalConceptLanguage.g:2666:11: lv_description_6_0= ruleEString
             	    {
 
             	    											newCompositeNode(grammarAccess.getStringPropertyAccess().getDescriptionEStringParserRuleCall_4_0_1_0());
@@ -6274,44 +6699,121 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	    }
             	    break;
             	case 2 :
-            	    // InternalConceptLanguage.g:2525:4: ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:2689:4: ({...}? => ( ({...}? => (otherlv_7= 'verification' ( (lv_verification_8_0= ruleVerificationTypeSpecification ) ) ) ) ) )
             	    {
-            	    // InternalConceptLanguage.g:2525:4: ({...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleEString ) ) ) ) ) )
-            	    // InternalConceptLanguage.g:2526:5: {...}? => ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:2689:4: ({...}? => ( ({...}? => (otherlv_7= 'verification' ( (lv_verification_8_0= ruleVerificationTypeSpecification ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:2690:5: {...}? => ( ({...}? => (otherlv_7= 'verification' ( (lv_verification_8_0= ruleVerificationTypeSpecification ) ) ) ) )
             	    {
             	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getStringPropertyAccess().getUnorderedGroup_4(), 1) ) {
             	        throw new FailedPredicateException(input, "ruleStringProperty", "getUnorderedGroupHelper().canSelect(grammarAccess.getStringPropertyAccess().getUnorderedGroup_4(), 1)");
             	    }
-            	    // InternalConceptLanguage.g:2526:111: ( ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleEString ) ) ) ) )
-            	    // InternalConceptLanguage.g:2527:6: ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:2690:111: ( ({...}? => (otherlv_7= 'verification' ( (lv_verification_8_0= ruleVerificationTypeSpecification ) ) ) ) )
+            	    // InternalConceptLanguage.g:2691:6: ({...}? => (otherlv_7= 'verification' ( (lv_verification_8_0= ruleVerificationTypeSpecification ) ) ) )
             	    {
 
             	    						getUnorderedGroupHelper().select(grammarAccess.getStringPropertyAccess().getUnorderedGroup_4(), 1);
             	    					
-            	    // InternalConceptLanguage.g:2530:9: ({...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleEString ) ) ) )
-            	    // InternalConceptLanguage.g:2530:10: {...}? => (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:2694:9: ({...}? => (otherlv_7= 'verification' ( (lv_verification_8_0= ruleVerificationTypeSpecification ) ) ) )
+            	    // InternalConceptLanguage.g:2694:10: {...}? => (otherlv_7= 'verification' ( (lv_verification_8_0= ruleVerificationTypeSpecification ) ) )
             	    {
             	    if ( !((true)) ) {
             	        throw new FailedPredicateException(input, "ruleStringProperty", "true");
             	    }
-            	    // InternalConceptLanguage.g:2530:19: (otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleEString ) ) )
-            	    // InternalConceptLanguage.g:2530:20: otherlv_7= 'default' ( (lv_defaultValue_8_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:2694:19: (otherlv_7= 'verification' ( (lv_verification_8_0= ruleVerificationTypeSpecification ) ) )
+            	    // InternalConceptLanguage.g:2694:20: otherlv_7= 'verification' ( (lv_verification_8_0= ruleVerificationTypeSpecification ) )
             	    {
-            	    otherlv_7=(Token)match(input,45,FOLLOW_5); 
+            	    otherlv_7=(Token)match(input,44,FOLLOW_3); 
 
-            	    									newLeafNode(otherlv_7, grammarAccess.getStringPropertyAccess().getDefaultKeyword_4_1_0());
+            	    									newLeafNode(otherlv_7, grammarAccess.getStringPropertyAccess().getVerificationKeyword_4_1_0());
             	    								
-            	    // InternalConceptLanguage.g:2534:9: ( (lv_defaultValue_8_0= ruleEString ) )
-            	    // InternalConceptLanguage.g:2535:10: (lv_defaultValue_8_0= ruleEString )
+            	    // InternalConceptLanguage.g:2698:9: ( (lv_verification_8_0= ruleVerificationTypeSpecification ) )
+            	    // InternalConceptLanguage.g:2699:10: (lv_verification_8_0= ruleVerificationTypeSpecification )
             	    {
-            	    // InternalConceptLanguage.g:2535:10: (lv_defaultValue_8_0= ruleEString )
-            	    // InternalConceptLanguage.g:2536:11: lv_defaultValue_8_0= ruleEString
+            	    // InternalConceptLanguage.g:2699:10: (lv_verification_8_0= ruleVerificationTypeSpecification )
+            	    // InternalConceptLanguage.g:2700:11: lv_verification_8_0= ruleVerificationTypeSpecification
             	    {
 
-            	    											newCompositeNode(grammarAccess.getStringPropertyAccess().getDefaultValueEStringParserRuleCall_4_1_1_0());
+            	    											newCompositeNode(grammarAccess.getStringPropertyAccess().getVerificationVerificationTypeSpecificationParserRuleCall_4_1_1_0());
             	    										
             	    pushFollow(FOLLOW_40);
-            	    lv_defaultValue_8_0=ruleEString();
+            	    lv_verification_8_0=ruleVerificationTypeSpecification();
+
+            	    state._fsp--;
+
+
+            	    											if (current==null) {
+            	    												current = createModelElementForParent(grammarAccess.getStringPropertyRule());
+            	    											}
+            	    											set(
+            	    												current,
+            	    												"verification",
+            	    												lv_verification_8_0,
+            	    												"de.dlr.sc.virsat.model.concept.ConceptLanguage.VerificationTypeSpecification");
+            	    											afterParserOrEnumRuleCall();
+            	    										
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+
+            	     
+            	    						getUnorderedGroupHelper().returnFromSelection(grammarAccess.getStringPropertyAccess().getUnorderedGroup_4());
+            	    					
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+            	    break;
+            	case 3 :
+            	    // InternalConceptLanguage.g:2723:4: ({...}? => ( ({...}? => (otherlv_9= 'default' ( (lv_defaultValue_10_0= ruleEString ) ) ) ) ) )
+            	    {
+            	    // InternalConceptLanguage.g:2723:4: ({...}? => ( ({...}? => (otherlv_9= 'default' ( (lv_defaultValue_10_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:2724:5: {...}? => ( ({...}? => (otherlv_9= 'default' ( (lv_defaultValue_10_0= ruleEString ) ) ) ) )
+            	    {
+            	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getStringPropertyAccess().getUnorderedGroup_4(), 2) ) {
+            	        throw new FailedPredicateException(input, "ruleStringProperty", "getUnorderedGroupHelper().canSelect(grammarAccess.getStringPropertyAccess().getUnorderedGroup_4(), 2)");
+            	    }
+            	    // InternalConceptLanguage.g:2724:111: ( ({...}? => (otherlv_9= 'default' ( (lv_defaultValue_10_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:2725:6: ({...}? => (otherlv_9= 'default' ( (lv_defaultValue_10_0= ruleEString ) ) ) )
+            	    {
+
+            	    						getUnorderedGroupHelper().select(grammarAccess.getStringPropertyAccess().getUnorderedGroup_4(), 2);
+            	    					
+            	    // InternalConceptLanguage.g:2728:9: ({...}? => (otherlv_9= 'default' ( (lv_defaultValue_10_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:2728:10: {...}? => (otherlv_9= 'default' ( (lv_defaultValue_10_0= ruleEString ) ) )
+            	    {
+            	    if ( !((true)) ) {
+            	        throw new FailedPredicateException(input, "ruleStringProperty", "true");
+            	    }
+            	    // InternalConceptLanguage.g:2728:19: (otherlv_9= 'default' ( (lv_defaultValue_10_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:2728:20: otherlv_9= 'default' ( (lv_defaultValue_10_0= ruleEString ) )
+            	    {
+            	    otherlv_9=(Token)match(input,47,FOLLOW_5); 
+
+            	    									newLeafNode(otherlv_9, grammarAccess.getStringPropertyAccess().getDefaultKeyword_4_2_0());
+            	    								
+            	    // InternalConceptLanguage.g:2732:9: ( (lv_defaultValue_10_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:2733:10: (lv_defaultValue_10_0= ruleEString )
+            	    {
+            	    // InternalConceptLanguage.g:2733:10: (lv_defaultValue_10_0= ruleEString )
+            	    // InternalConceptLanguage.g:2734:11: lv_defaultValue_10_0= ruleEString
+            	    {
+
+            	    											newCompositeNode(grammarAccess.getStringPropertyAccess().getDefaultValueEStringParserRuleCall_4_2_1_0());
+            	    										
+            	    pushFollow(FOLLOW_40);
+            	    lv_defaultValue_10_0=ruleEString();
 
             	    state._fsp--;
 
@@ -6322,7 +6824,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	    											set(
             	    												current,
             	    												"defaultValue",
-            	    												lv_defaultValue_8_0,
+            	    												lv_defaultValue_10_0,
             	    												"de.dlr.sc.virsat.model.concept.ConceptLanguage.EString");
             	    											afterParserOrEnumRuleCall();
             	    										
@@ -6368,9 +6870,9 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_9=(Token)match(input,22,FOLLOW_2); 
+            otherlv_11=(Token)match(input,22,FOLLOW_2); 
 
-            			newLeafNode(otherlv_9, grammarAccess.getStringPropertyAccess().getSemicolonKeyword_5());
+            			newLeafNode(otherlv_11, grammarAccess.getStringPropertyAccess().getSemicolonKeyword_5());
             		
 
             }
@@ -6395,7 +6897,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleBooleanProperty"
-    // InternalConceptLanguage.g:2574:1: entryRuleBooleanProperty returns [EObject current=null] : iv_ruleBooleanProperty= ruleBooleanProperty EOF ;
+    // InternalConceptLanguage.g:2772:1: entryRuleBooleanProperty returns [EObject current=null] : iv_ruleBooleanProperty= ruleBooleanProperty EOF ;
     public final EObject entryRuleBooleanProperty() throws RecognitionException {
         EObject current = null;
 
@@ -6403,8 +6905,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:2574:56: (iv_ruleBooleanProperty= ruleBooleanProperty EOF )
-            // InternalConceptLanguage.g:2575:2: iv_ruleBooleanProperty= ruleBooleanProperty EOF
+            // InternalConceptLanguage.g:2772:56: (iv_ruleBooleanProperty= ruleBooleanProperty EOF )
+            // InternalConceptLanguage.g:2773:2: iv_ruleBooleanProperty= ruleBooleanProperty EOF
             {
              newCompositeNode(grammarAccess.getBooleanPropertyRule()); 
             pushFollow(FOLLOW_1);
@@ -6431,7 +6933,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleBooleanProperty"
-    // InternalConceptLanguage.g:2581:1: ruleBooleanProperty returns [EObject current=null] : (otherlv_0= 'BooleanProperty' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'default' ( (lv_defaultValue_7_0= ruleBooleanLiteralString ) ) ) ) ) ) )* ) ) ) otherlv_8= ';' ) ;
+    // InternalConceptLanguage.g:2779:1: ruleBooleanProperty returns [EObject current=null] : (otherlv_0= 'BooleanProperty' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'default' ( (lv_defaultValue_9_0= ruleBooleanLiteralString ) ) ) ) ) ) )* ) ) ) otherlv_10= ';' ) ;
     public final EObject ruleBooleanProperty() throws RecognitionException {
         EObject current = null;
 
@@ -6440,32 +6942,35 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         Token otherlv_4=null;
         Token otherlv_6=null;
         Token otherlv_8=null;
+        Token otherlv_10=null;
         EObject lv_arrayModifier_2_0 = null;
 
         AntlrDatatypeRuleToken lv_description_5_0 = null;
 
-        AntlrDatatypeRuleToken lv_defaultValue_7_0 = null;
+        EObject lv_verification_7_0 = null;
+
+        AntlrDatatypeRuleToken lv_defaultValue_9_0 = null;
 
 
 
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:2587:2: ( (otherlv_0= 'BooleanProperty' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'default' ( (lv_defaultValue_7_0= ruleBooleanLiteralString ) ) ) ) ) ) )* ) ) ) otherlv_8= ';' ) )
-            // InternalConceptLanguage.g:2588:2: (otherlv_0= 'BooleanProperty' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'default' ( (lv_defaultValue_7_0= ruleBooleanLiteralString ) ) ) ) ) ) )* ) ) ) otherlv_8= ';' )
+            // InternalConceptLanguage.g:2785:2: ( (otherlv_0= 'BooleanProperty' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'default' ( (lv_defaultValue_9_0= ruleBooleanLiteralString ) ) ) ) ) ) )* ) ) ) otherlv_10= ';' ) )
+            // InternalConceptLanguage.g:2786:2: (otherlv_0= 'BooleanProperty' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'default' ( (lv_defaultValue_9_0= ruleBooleanLiteralString ) ) ) ) ) ) )* ) ) ) otherlv_10= ';' )
             {
-            // InternalConceptLanguage.g:2588:2: (otherlv_0= 'BooleanProperty' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'default' ( (lv_defaultValue_7_0= ruleBooleanLiteralString ) ) ) ) ) ) )* ) ) ) otherlv_8= ';' )
-            // InternalConceptLanguage.g:2589:3: otherlv_0= 'BooleanProperty' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'default' ( (lv_defaultValue_7_0= ruleBooleanLiteralString ) ) ) ) ) ) )* ) ) ) otherlv_8= ';'
+            // InternalConceptLanguage.g:2786:2: (otherlv_0= 'BooleanProperty' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'default' ( (lv_defaultValue_9_0= ruleBooleanLiteralString ) ) ) ) ) ) )* ) ) ) otherlv_10= ';' )
+            // InternalConceptLanguage.g:2787:3: otherlv_0= 'BooleanProperty' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'default' ( (lv_defaultValue_9_0= ruleBooleanLiteralString ) ) ) ) ) ) )* ) ) ) otherlv_10= ';'
             {
-            otherlv_0=(Token)match(input,48,FOLLOW_3); 
+            otherlv_0=(Token)match(input,50,FOLLOW_3); 
 
             			newLeafNode(otherlv_0, grammarAccess.getBooleanPropertyAccess().getBooleanPropertyKeyword_0());
             		
-            // InternalConceptLanguage.g:2593:3: ( (lv_name_1_0= RULE_ID ) )
-            // InternalConceptLanguage.g:2594:4: (lv_name_1_0= RULE_ID )
+            // InternalConceptLanguage.g:2791:3: ( (lv_name_1_0= RULE_ID ) )
+            // InternalConceptLanguage.g:2792:4: (lv_name_1_0= RULE_ID )
             {
-            // InternalConceptLanguage.g:2594:4: (lv_name_1_0= RULE_ID )
-            // InternalConceptLanguage.g:2595:5: lv_name_1_0= RULE_ID
+            // InternalConceptLanguage.g:2792:4: (lv_name_1_0= RULE_ID )
+            // InternalConceptLanguage.g:2793:5: lv_name_1_0= RULE_ID
             {
             lv_name_1_0=(Token)match(input,RULE_ID,FOLLOW_39); 
 
@@ -6487,7 +6992,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalConceptLanguage.g:2611:3: ( (lv_arrayModifier_2_0= ruleArrayModifier ) )?
+            // InternalConceptLanguage.g:2809:3: ( (lv_arrayModifier_2_0= ruleArrayModifier ) )?
             int alt36=2;
             int LA36_0 = input.LA(1);
 
@@ -6496,10 +7001,10 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             }
             switch (alt36) {
                 case 1 :
-                    // InternalConceptLanguage.g:2612:4: (lv_arrayModifier_2_0= ruleArrayModifier )
+                    // InternalConceptLanguage.g:2810:4: (lv_arrayModifier_2_0= ruleArrayModifier )
                     {
-                    // InternalConceptLanguage.g:2612:4: (lv_arrayModifier_2_0= ruleArrayModifier )
-                    // InternalConceptLanguage.g:2613:5: lv_arrayModifier_2_0= ruleArrayModifier
+                    // InternalConceptLanguage.g:2810:4: (lv_arrayModifier_2_0= ruleArrayModifier )
+                    // InternalConceptLanguage.g:2811:5: lv_arrayModifier_2_0= ruleArrayModifier
                     {
 
                     					newCompositeNode(grammarAccess.getBooleanPropertyAccess().getArrayModifierArrayModifierParserRuleCall_2_0());
@@ -6529,66 +7034,69 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalConceptLanguage.g:2630:3: ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'default' ( (lv_defaultValue_7_0= ruleBooleanLiteralString ) ) ) ) ) ) )* ) ) )
-            // InternalConceptLanguage.g:2631:4: ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'default' ( (lv_defaultValue_7_0= ruleBooleanLiteralString ) ) ) ) ) ) )* ) )
+            // InternalConceptLanguage.g:2828:3: ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'default' ( (lv_defaultValue_9_0= ruleBooleanLiteralString ) ) ) ) ) ) )* ) ) )
+            // InternalConceptLanguage.g:2829:4: ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'default' ( (lv_defaultValue_9_0= ruleBooleanLiteralString ) ) ) ) ) ) )* ) )
             {
-            // InternalConceptLanguage.g:2631:4: ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'default' ( (lv_defaultValue_7_0= ruleBooleanLiteralString ) ) ) ) ) ) )* ) )
-            // InternalConceptLanguage.g:2632:5: ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'default' ( (lv_defaultValue_7_0= ruleBooleanLiteralString ) ) ) ) ) ) )* )
+            // InternalConceptLanguage.g:2829:4: ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'default' ( (lv_defaultValue_9_0= ruleBooleanLiteralString ) ) ) ) ) ) )* ) )
+            // InternalConceptLanguage.g:2830:5: ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'default' ( (lv_defaultValue_9_0= ruleBooleanLiteralString ) ) ) ) ) ) )* )
             {
              
             				  getUnorderedGroupHelper().enter(grammarAccess.getBooleanPropertyAccess().getUnorderedGroup_3());
             				
-            // InternalConceptLanguage.g:2635:5: ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'default' ( (lv_defaultValue_7_0= ruleBooleanLiteralString ) ) ) ) ) ) )* )
-            // InternalConceptLanguage.g:2636:6: ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'default' ( (lv_defaultValue_7_0= ruleBooleanLiteralString ) ) ) ) ) ) )*
+            // InternalConceptLanguage.g:2833:5: ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'default' ( (lv_defaultValue_9_0= ruleBooleanLiteralString ) ) ) ) ) ) )* )
+            // InternalConceptLanguage.g:2834:6: ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'default' ( (lv_defaultValue_9_0= ruleBooleanLiteralString ) ) ) ) ) ) )*
             {
-            // InternalConceptLanguage.g:2636:6: ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'default' ( (lv_defaultValue_7_0= ruleBooleanLiteralString ) ) ) ) ) ) )*
+            // InternalConceptLanguage.g:2834:6: ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'default' ( (lv_defaultValue_9_0= ruleBooleanLiteralString ) ) ) ) ) ) )*
             loop37:
             do {
-                int alt37=3;
+                int alt37=4;
                 int LA37_0 = input.LA(1);
 
                 if ( LA37_0 == 15 && getUnorderedGroupHelper().canSelect(grammarAccess.getBooleanPropertyAccess().getUnorderedGroup_3(), 0) ) {
                     alt37=1;
                 }
-                else if ( LA37_0 == 45 && getUnorderedGroupHelper().canSelect(grammarAccess.getBooleanPropertyAccess().getUnorderedGroup_3(), 1) ) {
+                else if ( LA37_0 == 44 && getUnorderedGroupHelper().canSelect(grammarAccess.getBooleanPropertyAccess().getUnorderedGroup_3(), 1) ) {
                     alt37=2;
+                }
+                else if ( LA37_0 == 47 && getUnorderedGroupHelper().canSelect(grammarAccess.getBooleanPropertyAccess().getUnorderedGroup_3(), 2) ) {
+                    alt37=3;
                 }
 
 
                 switch (alt37) {
             	case 1 :
-            	    // InternalConceptLanguage.g:2637:4: ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:2835:4: ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) )
             	    {
-            	    // InternalConceptLanguage.g:2637:4: ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) )
-            	    // InternalConceptLanguage.g:2638:5: {...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:2835:4: ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:2836:5: {...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) )
             	    {
             	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getBooleanPropertyAccess().getUnorderedGroup_3(), 0) ) {
             	        throw new FailedPredicateException(input, "ruleBooleanProperty", "getUnorderedGroupHelper().canSelect(grammarAccess.getBooleanPropertyAccess().getUnorderedGroup_3(), 0)");
             	    }
-            	    // InternalConceptLanguage.g:2638:112: ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) )
-            	    // InternalConceptLanguage.g:2639:6: ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:2836:112: ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:2837:6: ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) )
             	    {
 
             	    						getUnorderedGroupHelper().select(grammarAccess.getBooleanPropertyAccess().getUnorderedGroup_3(), 0);
             	    					
-            	    // InternalConceptLanguage.g:2642:9: ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) )
-            	    // InternalConceptLanguage.g:2642:10: {...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:2840:9: ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:2840:10: {...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) )
             	    {
             	    if ( !((true)) ) {
             	        throw new FailedPredicateException(input, "ruleBooleanProperty", "true");
             	    }
-            	    // InternalConceptLanguage.g:2642:19: (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) )
-            	    // InternalConceptLanguage.g:2642:20: otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:2840:19: (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:2840:20: otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) )
             	    {
             	    otherlv_4=(Token)match(input,15,FOLLOW_5); 
 
             	    									newLeafNode(otherlv_4, grammarAccess.getBooleanPropertyAccess().getDescriptionKeyword_3_0_0());
             	    								
-            	    // InternalConceptLanguage.g:2646:9: ( (lv_description_5_0= ruleEString ) )
-            	    // InternalConceptLanguage.g:2647:10: (lv_description_5_0= ruleEString )
+            	    // InternalConceptLanguage.g:2844:9: ( (lv_description_5_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:2845:10: (lv_description_5_0= ruleEString )
             	    {
-            	    // InternalConceptLanguage.g:2647:10: (lv_description_5_0= ruleEString )
-            	    // InternalConceptLanguage.g:2648:11: lv_description_5_0= ruleEString
+            	    // InternalConceptLanguage.g:2845:10: (lv_description_5_0= ruleEString )
+            	    // InternalConceptLanguage.g:2846:11: lv_description_5_0= ruleEString
             	    {
 
             	    											newCompositeNode(grammarAccess.getBooleanPropertyAccess().getDescriptionEStringParserRuleCall_3_0_1_0());
@@ -6634,44 +7142,121 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	    }
             	    break;
             	case 2 :
-            	    // InternalConceptLanguage.g:2671:4: ({...}? => ( ({...}? => (otherlv_6= 'default' ( (lv_defaultValue_7_0= ruleBooleanLiteralString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:2869:4: ({...}? => ( ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) ) ) )
             	    {
-            	    // InternalConceptLanguage.g:2671:4: ({...}? => ( ({...}? => (otherlv_6= 'default' ( (lv_defaultValue_7_0= ruleBooleanLiteralString ) ) ) ) ) )
-            	    // InternalConceptLanguage.g:2672:5: {...}? => ( ({...}? => (otherlv_6= 'default' ( (lv_defaultValue_7_0= ruleBooleanLiteralString ) ) ) ) )
+            	    // InternalConceptLanguage.g:2869:4: ({...}? => ( ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:2870:5: {...}? => ( ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) ) )
             	    {
             	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getBooleanPropertyAccess().getUnorderedGroup_3(), 1) ) {
             	        throw new FailedPredicateException(input, "ruleBooleanProperty", "getUnorderedGroupHelper().canSelect(grammarAccess.getBooleanPropertyAccess().getUnorderedGroup_3(), 1)");
             	    }
-            	    // InternalConceptLanguage.g:2672:112: ( ({...}? => (otherlv_6= 'default' ( (lv_defaultValue_7_0= ruleBooleanLiteralString ) ) ) ) )
-            	    // InternalConceptLanguage.g:2673:6: ({...}? => (otherlv_6= 'default' ( (lv_defaultValue_7_0= ruleBooleanLiteralString ) ) ) )
+            	    // InternalConceptLanguage.g:2870:112: ( ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) ) )
+            	    // InternalConceptLanguage.g:2871:6: ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) )
             	    {
 
             	    						getUnorderedGroupHelper().select(grammarAccess.getBooleanPropertyAccess().getUnorderedGroup_3(), 1);
             	    					
-            	    // InternalConceptLanguage.g:2676:9: ({...}? => (otherlv_6= 'default' ( (lv_defaultValue_7_0= ruleBooleanLiteralString ) ) ) )
-            	    // InternalConceptLanguage.g:2676:10: {...}? => (otherlv_6= 'default' ( (lv_defaultValue_7_0= ruleBooleanLiteralString ) ) )
+            	    // InternalConceptLanguage.g:2874:9: ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) )
+            	    // InternalConceptLanguage.g:2874:10: {...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) )
             	    {
             	    if ( !((true)) ) {
             	        throw new FailedPredicateException(input, "ruleBooleanProperty", "true");
             	    }
-            	    // InternalConceptLanguage.g:2676:19: (otherlv_6= 'default' ( (lv_defaultValue_7_0= ruleBooleanLiteralString ) ) )
-            	    // InternalConceptLanguage.g:2676:20: otherlv_6= 'default' ( (lv_defaultValue_7_0= ruleBooleanLiteralString ) )
+            	    // InternalConceptLanguage.g:2874:19: (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) )
+            	    // InternalConceptLanguage.g:2874:20: otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) )
             	    {
-            	    otherlv_6=(Token)match(input,45,FOLLOW_41); 
+            	    otherlv_6=(Token)match(input,44,FOLLOW_3); 
 
-            	    									newLeafNode(otherlv_6, grammarAccess.getBooleanPropertyAccess().getDefaultKeyword_3_1_0());
+            	    									newLeafNode(otherlv_6, grammarAccess.getBooleanPropertyAccess().getVerificationKeyword_3_1_0());
             	    								
-            	    // InternalConceptLanguage.g:2680:9: ( (lv_defaultValue_7_0= ruleBooleanLiteralString ) )
-            	    // InternalConceptLanguage.g:2681:10: (lv_defaultValue_7_0= ruleBooleanLiteralString )
+            	    // InternalConceptLanguage.g:2878:9: ( (lv_verification_7_0= ruleVerificationTypeSpecification ) )
+            	    // InternalConceptLanguage.g:2879:10: (lv_verification_7_0= ruleVerificationTypeSpecification )
             	    {
-            	    // InternalConceptLanguage.g:2681:10: (lv_defaultValue_7_0= ruleBooleanLiteralString )
-            	    // InternalConceptLanguage.g:2682:11: lv_defaultValue_7_0= ruleBooleanLiteralString
+            	    // InternalConceptLanguage.g:2879:10: (lv_verification_7_0= ruleVerificationTypeSpecification )
+            	    // InternalConceptLanguage.g:2880:11: lv_verification_7_0= ruleVerificationTypeSpecification
             	    {
 
-            	    											newCompositeNode(grammarAccess.getBooleanPropertyAccess().getDefaultValueBooleanLiteralStringParserRuleCall_3_1_1_0());
+            	    											newCompositeNode(grammarAccess.getBooleanPropertyAccess().getVerificationVerificationTypeSpecificationParserRuleCall_3_1_1_0());
             	    										
             	    pushFollow(FOLLOW_40);
-            	    lv_defaultValue_7_0=ruleBooleanLiteralString();
+            	    lv_verification_7_0=ruleVerificationTypeSpecification();
+
+            	    state._fsp--;
+
+
+            	    											if (current==null) {
+            	    												current = createModelElementForParent(grammarAccess.getBooleanPropertyRule());
+            	    											}
+            	    											set(
+            	    												current,
+            	    												"verification",
+            	    												lv_verification_7_0,
+            	    												"de.dlr.sc.virsat.model.concept.ConceptLanguage.VerificationTypeSpecification");
+            	    											afterParserOrEnumRuleCall();
+            	    										
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+
+            	     
+            	    						getUnorderedGroupHelper().returnFromSelection(grammarAccess.getBooleanPropertyAccess().getUnorderedGroup_3());
+            	    					
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+            	    break;
+            	case 3 :
+            	    // InternalConceptLanguage.g:2903:4: ({...}? => ( ({...}? => (otherlv_8= 'default' ( (lv_defaultValue_9_0= ruleBooleanLiteralString ) ) ) ) ) )
+            	    {
+            	    // InternalConceptLanguage.g:2903:4: ({...}? => ( ({...}? => (otherlv_8= 'default' ( (lv_defaultValue_9_0= ruleBooleanLiteralString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:2904:5: {...}? => ( ({...}? => (otherlv_8= 'default' ( (lv_defaultValue_9_0= ruleBooleanLiteralString ) ) ) ) )
+            	    {
+            	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getBooleanPropertyAccess().getUnorderedGroup_3(), 2) ) {
+            	        throw new FailedPredicateException(input, "ruleBooleanProperty", "getUnorderedGroupHelper().canSelect(grammarAccess.getBooleanPropertyAccess().getUnorderedGroup_3(), 2)");
+            	    }
+            	    // InternalConceptLanguage.g:2904:112: ( ({...}? => (otherlv_8= 'default' ( (lv_defaultValue_9_0= ruleBooleanLiteralString ) ) ) ) )
+            	    // InternalConceptLanguage.g:2905:6: ({...}? => (otherlv_8= 'default' ( (lv_defaultValue_9_0= ruleBooleanLiteralString ) ) ) )
+            	    {
+
+            	    						getUnorderedGroupHelper().select(grammarAccess.getBooleanPropertyAccess().getUnorderedGroup_3(), 2);
+            	    					
+            	    // InternalConceptLanguage.g:2908:9: ({...}? => (otherlv_8= 'default' ( (lv_defaultValue_9_0= ruleBooleanLiteralString ) ) ) )
+            	    // InternalConceptLanguage.g:2908:10: {...}? => (otherlv_8= 'default' ( (lv_defaultValue_9_0= ruleBooleanLiteralString ) ) )
+            	    {
+            	    if ( !((true)) ) {
+            	        throw new FailedPredicateException(input, "ruleBooleanProperty", "true");
+            	    }
+            	    // InternalConceptLanguage.g:2908:19: (otherlv_8= 'default' ( (lv_defaultValue_9_0= ruleBooleanLiteralString ) ) )
+            	    // InternalConceptLanguage.g:2908:20: otherlv_8= 'default' ( (lv_defaultValue_9_0= ruleBooleanLiteralString ) )
+            	    {
+            	    otherlv_8=(Token)match(input,47,FOLLOW_41); 
+
+            	    									newLeafNode(otherlv_8, grammarAccess.getBooleanPropertyAccess().getDefaultKeyword_3_2_0());
+            	    								
+            	    // InternalConceptLanguage.g:2912:9: ( (lv_defaultValue_9_0= ruleBooleanLiteralString ) )
+            	    // InternalConceptLanguage.g:2913:10: (lv_defaultValue_9_0= ruleBooleanLiteralString )
+            	    {
+            	    // InternalConceptLanguage.g:2913:10: (lv_defaultValue_9_0= ruleBooleanLiteralString )
+            	    // InternalConceptLanguage.g:2914:11: lv_defaultValue_9_0= ruleBooleanLiteralString
+            	    {
+
+            	    											newCompositeNode(grammarAccess.getBooleanPropertyAccess().getDefaultValueBooleanLiteralStringParserRuleCall_3_2_1_0());
+            	    										
+            	    pushFollow(FOLLOW_40);
+            	    lv_defaultValue_9_0=ruleBooleanLiteralString();
 
             	    state._fsp--;
 
@@ -6682,7 +7267,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	    											set(
             	    												current,
             	    												"defaultValue",
-            	    												lv_defaultValue_7_0,
+            	    												lv_defaultValue_9_0,
             	    												"de.dlr.sc.virsat.model.concept.ConceptLanguage.BooleanLiteralString");
             	    											afterParserOrEnumRuleCall();
             	    										
@@ -6728,9 +7313,9 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_8=(Token)match(input,22,FOLLOW_2); 
+            otherlv_10=(Token)match(input,22,FOLLOW_2); 
 
-            			newLeafNode(otherlv_8, grammarAccess.getBooleanPropertyAccess().getSemicolonKeyword_4());
+            			newLeafNode(otherlv_10, grammarAccess.getBooleanPropertyAccess().getSemicolonKeyword_4());
             		
 
             }
@@ -6755,7 +7340,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleEnumProperty"
-    // InternalConceptLanguage.g:2720:1: entryRuleEnumProperty returns [EObject current=null] : iv_ruleEnumProperty= ruleEnumProperty EOF ;
+    // InternalConceptLanguage.g:2952:1: entryRuleEnumProperty returns [EObject current=null] : iv_ruleEnumProperty= ruleEnumProperty EOF ;
     public final EObject entryRuleEnumProperty() throws RecognitionException {
         EObject current = null;
 
@@ -6763,8 +7348,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:2720:53: (iv_ruleEnumProperty= ruleEnumProperty EOF )
-            // InternalConceptLanguage.g:2721:2: iv_ruleEnumProperty= ruleEnumProperty EOF
+            // InternalConceptLanguage.g:2952:53: (iv_ruleEnumProperty= ruleEnumProperty EOF )
+            // InternalConceptLanguage.g:2953:2: iv_ruleEnumProperty= ruleEnumProperty EOF
             {
              newCompositeNode(grammarAccess.getEnumPropertyRule()); 
             pushFollow(FOLLOW_1);
@@ -6791,7 +7376,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleEnumProperty"
-    // InternalConceptLanguage.g:2727:1: ruleEnumProperty returns [EObject current=null] : (otherlv_0= 'EnumProperty' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'default' ( (otherlv_17= RULE_ID ) ) ) ) ) ) )+ {...}?) ) ) otherlv_18= ';' ) ;
+    // InternalConceptLanguage.g:2959:1: ruleEnumProperty returns [EObject current=null] : (otherlv_0= 'EnumProperty' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'verification' ( (lv_verification_17_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_18= 'default' ( (otherlv_19= RULE_ID ) ) ) ) ) ) )+ {...}?) ) ) otherlv_20= ';' ) ;
     public final EObject ruleEnumProperty() throws RecognitionException {
         EObject current = null;
 
@@ -6805,8 +7390,9 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         Token otherlv_13=null;
         Token otherlv_15=null;
         Token otherlv_16=null;
-        Token otherlv_17=null;
         Token otherlv_18=null;
+        Token otherlv_19=null;
+        Token otherlv_20=null;
         EObject lv_arrayModifier_2_0 = null;
 
         AntlrDatatypeRuleToken lv_description_5_0 = null;
@@ -6819,26 +7405,28 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
         EObject lv_values_14_0 = null;
 
+        EObject lv_verification_17_0 = null;
+
 
 
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:2733:2: ( (otherlv_0= 'EnumProperty' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'default' ( (otherlv_17= RULE_ID ) ) ) ) ) ) )+ {...}?) ) ) otherlv_18= ';' ) )
-            // InternalConceptLanguage.g:2734:2: (otherlv_0= 'EnumProperty' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'default' ( (otherlv_17= RULE_ID ) ) ) ) ) ) )+ {...}?) ) ) otherlv_18= ';' )
+            // InternalConceptLanguage.g:2965:2: ( (otherlv_0= 'EnumProperty' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'verification' ( (lv_verification_17_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_18= 'default' ( (otherlv_19= RULE_ID ) ) ) ) ) ) )+ {...}?) ) ) otherlv_20= ';' ) )
+            // InternalConceptLanguage.g:2966:2: (otherlv_0= 'EnumProperty' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'verification' ( (lv_verification_17_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_18= 'default' ( (otherlv_19= RULE_ID ) ) ) ) ) ) )+ {...}?) ) ) otherlv_20= ';' )
             {
-            // InternalConceptLanguage.g:2734:2: (otherlv_0= 'EnumProperty' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'default' ( (otherlv_17= RULE_ID ) ) ) ) ) ) )+ {...}?) ) ) otherlv_18= ';' )
-            // InternalConceptLanguage.g:2735:3: otherlv_0= 'EnumProperty' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'default' ( (otherlv_17= RULE_ID ) ) ) ) ) ) )+ {...}?) ) ) otherlv_18= ';'
+            // InternalConceptLanguage.g:2966:2: (otherlv_0= 'EnumProperty' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'verification' ( (lv_verification_17_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_18= 'default' ( (otherlv_19= RULE_ID ) ) ) ) ) ) )+ {...}?) ) ) otherlv_20= ';' )
+            // InternalConceptLanguage.g:2967:3: otherlv_0= 'EnumProperty' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'verification' ( (lv_verification_17_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_18= 'default' ( (otherlv_19= RULE_ID ) ) ) ) ) ) )+ {...}?) ) ) otherlv_20= ';'
             {
-            otherlv_0=(Token)match(input,49,FOLLOW_3); 
+            otherlv_0=(Token)match(input,51,FOLLOW_3); 
 
             			newLeafNode(otherlv_0, grammarAccess.getEnumPropertyAccess().getEnumPropertyKeyword_0());
             		
-            // InternalConceptLanguage.g:2739:3: ( (lv_name_1_0= RULE_ID ) )
-            // InternalConceptLanguage.g:2740:4: (lv_name_1_0= RULE_ID )
+            // InternalConceptLanguage.g:2971:3: ( (lv_name_1_0= RULE_ID ) )
+            // InternalConceptLanguage.g:2972:4: (lv_name_1_0= RULE_ID )
             {
-            // InternalConceptLanguage.g:2740:4: (lv_name_1_0= RULE_ID )
-            // InternalConceptLanguage.g:2741:5: lv_name_1_0= RULE_ID
+            // InternalConceptLanguage.g:2972:4: (lv_name_1_0= RULE_ID )
+            // InternalConceptLanguage.g:2973:5: lv_name_1_0= RULE_ID
             {
             lv_name_1_0=(Token)match(input,RULE_ID,FOLLOW_42); 
 
@@ -6860,7 +7448,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalConceptLanguage.g:2757:3: ( (lv_arrayModifier_2_0= ruleArrayModifier ) )?
+            // InternalConceptLanguage.g:2989:3: ( (lv_arrayModifier_2_0= ruleArrayModifier ) )?
             int alt38=2;
             int LA38_0 = input.LA(1);
 
@@ -6869,10 +7457,10 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             }
             switch (alt38) {
                 case 1 :
-                    // InternalConceptLanguage.g:2758:4: (lv_arrayModifier_2_0= ruleArrayModifier )
+                    // InternalConceptLanguage.g:2990:4: (lv_arrayModifier_2_0= ruleArrayModifier )
                     {
-                    // InternalConceptLanguage.g:2758:4: (lv_arrayModifier_2_0= ruleArrayModifier )
-                    // InternalConceptLanguage.g:2759:5: lv_arrayModifier_2_0= ruleArrayModifier
+                    // InternalConceptLanguage.g:2990:4: (lv_arrayModifier_2_0= ruleArrayModifier )
+                    // InternalConceptLanguage.g:2991:5: lv_arrayModifier_2_0= ruleArrayModifier
                     {
 
                     					newCompositeNode(grammarAccess.getEnumPropertyAccess().getArrayModifierArrayModifierParserRuleCall_2_0());
@@ -6902,76 +7490,79 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalConceptLanguage.g:2776:3: ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'default' ( (otherlv_17= RULE_ID ) ) ) ) ) ) )+ {...}?) ) )
-            // InternalConceptLanguage.g:2777:4: ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'default' ( (otherlv_17= RULE_ID ) ) ) ) ) ) )+ {...}?) )
+            // InternalConceptLanguage.g:3008:3: ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'verification' ( (lv_verification_17_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_18= 'default' ( (otherlv_19= RULE_ID ) ) ) ) ) ) )+ {...}?) ) )
+            // InternalConceptLanguage.g:3009:4: ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'verification' ( (lv_verification_17_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_18= 'default' ( (otherlv_19= RULE_ID ) ) ) ) ) ) )+ {...}?) )
             {
-            // InternalConceptLanguage.g:2777:4: ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'default' ( (otherlv_17= RULE_ID ) ) ) ) ) ) )+ {...}?) )
-            // InternalConceptLanguage.g:2778:5: ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'default' ( (otherlv_17= RULE_ID ) ) ) ) ) ) )+ {...}?)
+            // InternalConceptLanguage.g:3009:4: ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'verification' ( (lv_verification_17_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_18= 'default' ( (otherlv_19= RULE_ID ) ) ) ) ) ) )+ {...}?) )
+            // InternalConceptLanguage.g:3010:5: ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'verification' ( (lv_verification_17_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_18= 'default' ( (otherlv_19= RULE_ID ) ) ) ) ) ) )+ {...}?)
             {
              
             				  getUnorderedGroupHelper().enter(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3());
             				
-            // InternalConceptLanguage.g:2781:5: ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'default' ( (otherlv_17= RULE_ID ) ) ) ) ) ) )+ {...}?)
-            // InternalConceptLanguage.g:2782:6: ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'default' ( (otherlv_17= RULE_ID ) ) ) ) ) ) )+ {...}?
+            // InternalConceptLanguage.g:3013:5: ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'verification' ( (lv_verification_17_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_18= 'default' ( (otherlv_19= RULE_ID ) ) ) ) ) ) )+ {...}?)
+            // InternalConceptLanguage.g:3014:6: ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'verification' ( (lv_verification_17_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_18= 'default' ( (otherlv_19= RULE_ID ) ) ) ) ) ) )+ {...}?
             {
-            // InternalConceptLanguage.g:2782:6: ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'default' ( (otherlv_17= RULE_ID ) ) ) ) ) ) )+
+            // InternalConceptLanguage.g:3014:6: ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) ) ) ) | ({...}? => ( ({...}? => (otherlv_16= 'verification' ( (lv_verification_17_0= ruleVerificationTypeSpecification ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_18= 'default' ( (otherlv_19= RULE_ID ) ) ) ) ) ) )+
             int cnt40=0;
             loop40:
             do {
-                int alt40=6;
+                int alt40=7;
                 int LA40_0 = input.LA(1);
 
                 if ( LA40_0 == 15 && getUnorderedGroupHelper().canSelect(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3(), 0) ) {
                     alt40=1;
                 }
-                else if ( LA40_0 == 42 && getUnorderedGroupHelper().canSelect(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3(), 1) ) {
+                else if ( LA40_0 == 43 && getUnorderedGroupHelper().canSelect(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3(), 1) ) {
                     alt40=2;
                 }
-                else if ( LA40_0 == 43 && getUnorderedGroupHelper().canSelect(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3(), 2) ) {
+                else if ( LA40_0 == 45 && getUnorderedGroupHelper().canSelect(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3(), 2) ) {
                     alt40=3;
                 }
-                else if ( LA40_0 == 50 && getUnorderedGroupHelper().canSelect(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3(), 3) ) {
+                else if ( LA40_0 == 52 && getUnorderedGroupHelper().canSelect(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3(), 3) ) {
                     alt40=4;
                 }
-                else if ( LA40_0 == 45 && getUnorderedGroupHelper().canSelect(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3(), 4) ) {
+                else if ( LA40_0 == 44 && getUnorderedGroupHelper().canSelect(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3(), 4) ) {
                     alt40=5;
+                }
+                else if ( LA40_0 == 47 && getUnorderedGroupHelper().canSelect(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3(), 5) ) {
+                    alt40=6;
                 }
 
 
                 switch (alt40) {
             	case 1 :
-            	    // InternalConceptLanguage.g:2783:4: ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:3015:4: ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) )
             	    {
-            	    // InternalConceptLanguage.g:2783:4: ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) )
-            	    // InternalConceptLanguage.g:2784:5: {...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:3015:4: ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:3016:5: {...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) )
             	    {
             	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3(), 0) ) {
             	        throw new FailedPredicateException(input, "ruleEnumProperty", "getUnorderedGroupHelper().canSelect(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3(), 0)");
             	    }
-            	    // InternalConceptLanguage.g:2784:109: ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) )
-            	    // InternalConceptLanguage.g:2785:6: ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:3016:109: ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:3017:6: ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) )
             	    {
 
             	    						getUnorderedGroupHelper().select(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3(), 0);
             	    					
-            	    // InternalConceptLanguage.g:2788:9: ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) )
-            	    // InternalConceptLanguage.g:2788:10: {...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:3020:9: ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:3020:10: {...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) )
             	    {
             	    if ( !((true)) ) {
             	        throw new FailedPredicateException(input, "ruleEnumProperty", "true");
             	    }
-            	    // InternalConceptLanguage.g:2788:19: (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) )
-            	    // InternalConceptLanguage.g:2788:20: otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:3020:19: (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:3020:20: otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) )
             	    {
             	    otherlv_4=(Token)match(input,15,FOLLOW_5); 
 
             	    									newLeafNode(otherlv_4, grammarAccess.getEnumPropertyAccess().getDescriptionKeyword_3_0_0());
             	    								
-            	    // InternalConceptLanguage.g:2792:9: ( (lv_description_5_0= ruleEString ) )
-            	    // InternalConceptLanguage.g:2793:10: (lv_description_5_0= ruleEString )
+            	    // InternalConceptLanguage.g:3024:9: ( (lv_description_5_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:3025:10: (lv_description_5_0= ruleEString )
             	    {
-            	    // InternalConceptLanguage.g:2793:10: (lv_description_5_0= ruleEString )
-            	    // InternalConceptLanguage.g:2794:11: lv_description_5_0= ruleEString
+            	    // InternalConceptLanguage.g:3025:10: (lv_description_5_0= ruleEString )
+            	    // InternalConceptLanguage.g:3026:11: lv_description_5_0= ruleEString
             	    {
 
             	    											newCompositeNode(grammarAccess.getEnumPropertyAccess().getDescriptionEStringParserRuleCall_3_0_1_0());
@@ -7017,38 +7608,38 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	    }
             	    break;
             	case 2 :
-            	    // InternalConceptLanguage.g:2817:4: ({...}? => ( ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:3049:4: ({...}? => ( ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) ) ) )
             	    {
-            	    // InternalConceptLanguage.g:2817:4: ({...}? => ( ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) ) ) )
-            	    // InternalConceptLanguage.g:2818:5: {...}? => ( ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:3049:4: ({...}? => ( ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:3050:5: {...}? => ( ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) ) )
             	    {
             	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3(), 1) ) {
             	        throw new FailedPredicateException(input, "ruleEnumProperty", "getUnorderedGroupHelper().canSelect(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3(), 1)");
             	    }
-            	    // InternalConceptLanguage.g:2818:109: ( ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) ) )
-            	    // InternalConceptLanguage.g:2819:6: ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:3050:109: ( ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:3051:6: ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) )
             	    {
 
             	    						getUnorderedGroupHelper().select(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3(), 1);
             	    					
-            	    // InternalConceptLanguage.g:2822:9: ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) )
-            	    // InternalConceptLanguage.g:2822:10: {...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:3054:9: ({...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:3054:10: {...}? => (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) )
             	    {
             	    if ( !((true)) ) {
             	        throw new FailedPredicateException(input, "ruleEnumProperty", "true");
             	    }
-            	    // InternalConceptLanguage.g:2822:19: (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) )
-            	    // InternalConceptLanguage.g:2822:20: otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:3054:19: (otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:3054:20: otherlv_6= 'quantityKind' ( (lv_quantityKindName_7_0= ruleEString ) )
             	    {
-            	    otherlv_6=(Token)match(input,42,FOLLOW_5); 
+            	    otherlv_6=(Token)match(input,43,FOLLOW_5); 
 
             	    									newLeafNode(otherlv_6, grammarAccess.getEnumPropertyAccess().getQuantityKindKeyword_3_1_0());
             	    								
-            	    // InternalConceptLanguage.g:2826:9: ( (lv_quantityKindName_7_0= ruleEString ) )
-            	    // InternalConceptLanguage.g:2827:10: (lv_quantityKindName_7_0= ruleEString )
+            	    // InternalConceptLanguage.g:3058:9: ( (lv_quantityKindName_7_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:3059:10: (lv_quantityKindName_7_0= ruleEString )
             	    {
-            	    // InternalConceptLanguage.g:2827:10: (lv_quantityKindName_7_0= ruleEString )
-            	    // InternalConceptLanguage.g:2828:11: lv_quantityKindName_7_0= ruleEString
+            	    // InternalConceptLanguage.g:3059:10: (lv_quantityKindName_7_0= ruleEString )
+            	    // InternalConceptLanguage.g:3060:11: lv_quantityKindName_7_0= ruleEString
             	    {
 
             	    											newCompositeNode(grammarAccess.getEnumPropertyAccess().getQuantityKindNameEStringParserRuleCall_3_1_1_0());
@@ -7094,38 +7685,38 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	    }
             	    break;
             	case 3 :
-            	    // InternalConceptLanguage.g:2851:4: ({...}? => ( ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:3083:4: ({...}? => ( ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) ) ) )
             	    {
-            	    // InternalConceptLanguage.g:2851:4: ({...}? => ( ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) ) ) )
-            	    // InternalConceptLanguage.g:2852:5: {...}? => ( ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:3083:4: ({...}? => ( ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:3084:5: {...}? => ( ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) ) )
             	    {
             	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3(), 2) ) {
             	        throw new FailedPredicateException(input, "ruleEnumProperty", "getUnorderedGroupHelper().canSelect(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3(), 2)");
             	    }
-            	    // InternalConceptLanguage.g:2852:109: ( ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) ) )
-            	    // InternalConceptLanguage.g:2853:6: ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:3084:109: ( ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:3085:6: ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) )
             	    {
 
             	    						getUnorderedGroupHelper().select(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3(), 2);
             	    					
-            	    // InternalConceptLanguage.g:2856:9: ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) )
-            	    // InternalConceptLanguage.g:2856:10: {...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:3088:9: ({...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:3088:10: {...}? => (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) )
             	    {
             	    if ( !((true)) ) {
             	        throw new FailedPredicateException(input, "ruleEnumProperty", "true");
             	    }
-            	    // InternalConceptLanguage.g:2856:19: (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) )
-            	    // InternalConceptLanguage.g:2856:20: otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:3088:19: (otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:3088:20: otherlv_8= 'unit' ( (lv_unitName_9_0= ruleEString ) )
             	    {
-            	    otherlv_8=(Token)match(input,43,FOLLOW_5); 
+            	    otherlv_8=(Token)match(input,45,FOLLOW_5); 
 
             	    									newLeafNode(otherlv_8, grammarAccess.getEnumPropertyAccess().getUnitKeyword_3_2_0());
             	    								
-            	    // InternalConceptLanguage.g:2860:9: ( (lv_unitName_9_0= ruleEString ) )
-            	    // InternalConceptLanguage.g:2861:10: (lv_unitName_9_0= ruleEString )
+            	    // InternalConceptLanguage.g:3092:9: ( (lv_unitName_9_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:3093:10: (lv_unitName_9_0= ruleEString )
             	    {
-            	    // InternalConceptLanguage.g:2861:10: (lv_unitName_9_0= ruleEString )
-            	    // InternalConceptLanguage.g:2862:11: lv_unitName_9_0= ruleEString
+            	    // InternalConceptLanguage.g:3093:10: (lv_unitName_9_0= ruleEString )
+            	    // InternalConceptLanguage.g:3094:11: lv_unitName_9_0= ruleEString
             	    {
 
             	    											newCompositeNode(grammarAccess.getEnumPropertyAccess().getUnitNameEStringParserRuleCall_3_2_1_0());
@@ -7171,30 +7762,30 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	    }
             	    break;
             	case 4 :
-            	    // InternalConceptLanguage.g:2885:4: ({...}? => ( ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) ) ) )
+            	    // InternalConceptLanguage.g:3117:4: ({...}? => ( ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) ) ) )
             	    {
-            	    // InternalConceptLanguage.g:2885:4: ({...}? => ( ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) ) ) )
-            	    // InternalConceptLanguage.g:2886:5: {...}? => ( ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) ) )
+            	    // InternalConceptLanguage.g:3117:4: ({...}? => ( ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) ) ) )
+            	    // InternalConceptLanguage.g:3118:5: {...}? => ( ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) ) )
             	    {
             	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3(), 3) ) {
             	        throw new FailedPredicateException(input, "ruleEnumProperty", "getUnorderedGroupHelper().canSelect(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3(), 3)");
             	    }
-            	    // InternalConceptLanguage.g:2886:109: ( ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) ) )
-            	    // InternalConceptLanguage.g:2887:6: ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) )
+            	    // InternalConceptLanguage.g:3118:109: ( ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) ) )
+            	    // InternalConceptLanguage.g:3119:6: ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) )
             	    {
 
             	    						getUnorderedGroupHelper().select(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3(), 3);
             	    					
-            	    // InternalConceptLanguage.g:2890:9: ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) )
-            	    // InternalConceptLanguage.g:2890:10: {...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' )
+            	    // InternalConceptLanguage.g:3122:9: ({...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' ) )
+            	    // InternalConceptLanguage.g:3122:10: {...}? => (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' )
             	    {
             	    if ( !((true)) ) {
             	        throw new FailedPredicateException(input, "ruleEnumProperty", "true");
             	    }
-            	    // InternalConceptLanguage.g:2890:19: (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' )
-            	    // InternalConceptLanguage.g:2890:20: otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']'
+            	    // InternalConceptLanguage.g:3122:19: (otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']' )
+            	    // InternalConceptLanguage.g:3122:20: otherlv_10= 'values' otherlv_11= '[' ( (lv_values_12_0= ruleEnumValueDefinition ) ) (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )* otherlv_15= ']'
             	    {
-            	    otherlv_10=(Token)match(input,50,FOLLOW_45); 
+            	    otherlv_10=(Token)match(input,52,FOLLOW_45); 
 
             	    									newLeafNode(otherlv_10, grammarAccess.getEnumPropertyAccess().getValuesKeyword_3_3_0());
             	    								
@@ -7202,11 +7793,11 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             	    									newLeafNode(otherlv_11, grammarAccess.getEnumPropertyAccess().getLeftSquareBracketKeyword_3_3_1());
             	    								
-            	    // InternalConceptLanguage.g:2898:9: ( (lv_values_12_0= ruleEnumValueDefinition ) )
-            	    // InternalConceptLanguage.g:2899:10: (lv_values_12_0= ruleEnumValueDefinition )
+            	    // InternalConceptLanguage.g:3130:9: ( (lv_values_12_0= ruleEnumValueDefinition ) )
+            	    // InternalConceptLanguage.g:3131:10: (lv_values_12_0= ruleEnumValueDefinition )
             	    {
-            	    // InternalConceptLanguage.g:2899:10: (lv_values_12_0= ruleEnumValueDefinition )
-            	    // InternalConceptLanguage.g:2900:11: lv_values_12_0= ruleEnumValueDefinition
+            	    // InternalConceptLanguage.g:3131:10: (lv_values_12_0= ruleEnumValueDefinition )
+            	    // InternalConceptLanguage.g:3132:11: lv_values_12_0= ruleEnumValueDefinition
             	    {
 
             	    											newCompositeNode(grammarAccess.getEnumPropertyAccess().getValuesEnumValueDefinitionParserRuleCall_3_3_2_0());
@@ -7233,7 +7824,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalConceptLanguage.g:2917:9: (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )*
+            	    // InternalConceptLanguage.g:3149:9: (otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) ) )*
             	    loop39:
             	    do {
             	        int alt39=2;
@@ -7246,17 +7837,17 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             	        switch (alt39) {
             	    	case 1 :
-            	    	    // InternalConceptLanguage.g:2918:10: otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) )
+            	    	    // InternalConceptLanguage.g:3150:10: otherlv_13= ',' ( (lv_values_14_0= ruleEnumValueDefinition ) )
             	    	    {
             	    	    otherlv_13=(Token)match(input,26,FOLLOW_3); 
 
             	    	    										newLeafNode(otherlv_13, grammarAccess.getEnumPropertyAccess().getCommaKeyword_3_3_3_0());
             	    	    									
-            	    	    // InternalConceptLanguage.g:2922:10: ( (lv_values_14_0= ruleEnumValueDefinition ) )
-            	    	    // InternalConceptLanguage.g:2923:11: (lv_values_14_0= ruleEnumValueDefinition )
+            	    	    // InternalConceptLanguage.g:3154:10: ( (lv_values_14_0= ruleEnumValueDefinition ) )
+            	    	    // InternalConceptLanguage.g:3155:11: (lv_values_14_0= ruleEnumValueDefinition )
             	    	    {
-            	    	    // InternalConceptLanguage.g:2923:11: (lv_values_14_0= ruleEnumValueDefinition )
-            	    	    // InternalConceptLanguage.g:2924:12: lv_values_14_0= ruleEnumValueDefinition
+            	    	    // InternalConceptLanguage.g:3155:11: (lv_values_14_0= ruleEnumValueDefinition )
+            	    	    // InternalConceptLanguage.g:3156:12: lv_values_14_0= ruleEnumValueDefinition
             	    	    {
 
             	    	    												newCompositeNode(grammarAccess.getEnumPropertyAccess().getValuesEnumValueDefinitionParserRuleCall_3_3_3_1_0());
@@ -7315,47 +7906,124 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	    }
             	    break;
             	case 5 :
-            	    // InternalConceptLanguage.g:2952:4: ({...}? => ( ({...}? => (otherlv_16= 'default' ( (otherlv_17= RULE_ID ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:3184:4: ({...}? => ( ({...}? => (otherlv_16= 'verification' ( (lv_verification_17_0= ruleVerificationTypeSpecification ) ) ) ) ) )
             	    {
-            	    // InternalConceptLanguage.g:2952:4: ({...}? => ( ({...}? => (otherlv_16= 'default' ( (otherlv_17= RULE_ID ) ) ) ) ) )
-            	    // InternalConceptLanguage.g:2953:5: {...}? => ( ({...}? => (otherlv_16= 'default' ( (otherlv_17= RULE_ID ) ) ) ) )
+            	    // InternalConceptLanguage.g:3184:4: ({...}? => ( ({...}? => (otherlv_16= 'verification' ( (lv_verification_17_0= ruleVerificationTypeSpecification ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:3185:5: {...}? => ( ({...}? => (otherlv_16= 'verification' ( (lv_verification_17_0= ruleVerificationTypeSpecification ) ) ) ) )
             	    {
             	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3(), 4) ) {
             	        throw new FailedPredicateException(input, "ruleEnumProperty", "getUnorderedGroupHelper().canSelect(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3(), 4)");
             	    }
-            	    // InternalConceptLanguage.g:2953:109: ( ({...}? => (otherlv_16= 'default' ( (otherlv_17= RULE_ID ) ) ) ) )
-            	    // InternalConceptLanguage.g:2954:6: ({...}? => (otherlv_16= 'default' ( (otherlv_17= RULE_ID ) ) ) )
+            	    // InternalConceptLanguage.g:3185:109: ( ({...}? => (otherlv_16= 'verification' ( (lv_verification_17_0= ruleVerificationTypeSpecification ) ) ) ) )
+            	    // InternalConceptLanguage.g:3186:6: ({...}? => (otherlv_16= 'verification' ( (lv_verification_17_0= ruleVerificationTypeSpecification ) ) ) )
             	    {
 
             	    						getUnorderedGroupHelper().select(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3(), 4);
             	    					
-            	    // InternalConceptLanguage.g:2957:9: ({...}? => (otherlv_16= 'default' ( (otherlv_17= RULE_ID ) ) ) )
-            	    // InternalConceptLanguage.g:2957:10: {...}? => (otherlv_16= 'default' ( (otherlv_17= RULE_ID ) ) )
+            	    // InternalConceptLanguage.g:3189:9: ({...}? => (otherlv_16= 'verification' ( (lv_verification_17_0= ruleVerificationTypeSpecification ) ) ) )
+            	    // InternalConceptLanguage.g:3189:10: {...}? => (otherlv_16= 'verification' ( (lv_verification_17_0= ruleVerificationTypeSpecification ) ) )
             	    {
             	    if ( !((true)) ) {
             	        throw new FailedPredicateException(input, "ruleEnumProperty", "true");
             	    }
-            	    // InternalConceptLanguage.g:2957:19: (otherlv_16= 'default' ( (otherlv_17= RULE_ID ) ) )
-            	    // InternalConceptLanguage.g:2957:20: otherlv_16= 'default' ( (otherlv_17= RULE_ID ) )
+            	    // InternalConceptLanguage.g:3189:19: (otherlv_16= 'verification' ( (lv_verification_17_0= ruleVerificationTypeSpecification ) ) )
+            	    // InternalConceptLanguage.g:3189:20: otherlv_16= 'verification' ( (lv_verification_17_0= ruleVerificationTypeSpecification ) )
             	    {
-            	    otherlv_16=(Token)match(input,45,FOLLOW_3); 
+            	    otherlv_16=(Token)match(input,44,FOLLOW_3); 
 
-            	    									newLeafNode(otherlv_16, grammarAccess.getEnumPropertyAccess().getDefaultKeyword_3_4_0());
+            	    									newLeafNode(otherlv_16, grammarAccess.getEnumPropertyAccess().getVerificationKeyword_3_4_0());
             	    								
-            	    // InternalConceptLanguage.g:2961:9: ( (otherlv_17= RULE_ID ) )
-            	    // InternalConceptLanguage.g:2962:10: (otherlv_17= RULE_ID )
+            	    // InternalConceptLanguage.g:3193:9: ( (lv_verification_17_0= ruleVerificationTypeSpecification ) )
+            	    // InternalConceptLanguage.g:3194:10: (lv_verification_17_0= ruleVerificationTypeSpecification )
             	    {
-            	    // InternalConceptLanguage.g:2962:10: (otherlv_17= RULE_ID )
-            	    // InternalConceptLanguage.g:2963:11: otherlv_17= RULE_ID
+            	    // InternalConceptLanguage.g:3194:10: (lv_verification_17_0= ruleVerificationTypeSpecification )
+            	    // InternalConceptLanguage.g:3195:11: lv_verification_17_0= ruleVerificationTypeSpecification
+            	    {
+
+            	    											newCompositeNode(grammarAccess.getEnumPropertyAccess().getVerificationVerificationTypeSpecificationParserRuleCall_3_4_1_0());
+            	    										
+            	    pushFollow(FOLLOW_44);
+            	    lv_verification_17_0=ruleVerificationTypeSpecification();
+
+            	    state._fsp--;
+
+
+            	    											if (current==null) {
+            	    												current = createModelElementForParent(grammarAccess.getEnumPropertyRule());
+            	    											}
+            	    											set(
+            	    												current,
+            	    												"verification",
+            	    												lv_verification_17_0,
+            	    												"de.dlr.sc.virsat.model.concept.ConceptLanguage.VerificationTypeSpecification");
+            	    											afterParserOrEnumRuleCall();
+            	    										
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+
+            	     
+            	    						getUnorderedGroupHelper().returnFromSelection(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3());
+            	    					
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+            	    break;
+            	case 6 :
+            	    // InternalConceptLanguage.g:3218:4: ({...}? => ( ({...}? => (otherlv_18= 'default' ( (otherlv_19= RULE_ID ) ) ) ) ) )
+            	    {
+            	    // InternalConceptLanguage.g:3218:4: ({...}? => ( ({...}? => (otherlv_18= 'default' ( (otherlv_19= RULE_ID ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:3219:5: {...}? => ( ({...}? => (otherlv_18= 'default' ( (otherlv_19= RULE_ID ) ) ) ) )
+            	    {
+            	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3(), 5) ) {
+            	        throw new FailedPredicateException(input, "ruleEnumProperty", "getUnorderedGroupHelper().canSelect(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3(), 5)");
+            	    }
+            	    // InternalConceptLanguage.g:3219:109: ( ({...}? => (otherlv_18= 'default' ( (otherlv_19= RULE_ID ) ) ) ) )
+            	    // InternalConceptLanguage.g:3220:6: ({...}? => (otherlv_18= 'default' ( (otherlv_19= RULE_ID ) ) ) )
+            	    {
+
+            	    						getUnorderedGroupHelper().select(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3(), 5);
+            	    					
+            	    // InternalConceptLanguage.g:3223:9: ({...}? => (otherlv_18= 'default' ( (otherlv_19= RULE_ID ) ) ) )
+            	    // InternalConceptLanguage.g:3223:10: {...}? => (otherlv_18= 'default' ( (otherlv_19= RULE_ID ) ) )
+            	    {
+            	    if ( !((true)) ) {
+            	        throw new FailedPredicateException(input, "ruleEnumProperty", "true");
+            	    }
+            	    // InternalConceptLanguage.g:3223:19: (otherlv_18= 'default' ( (otherlv_19= RULE_ID ) ) )
+            	    // InternalConceptLanguage.g:3223:20: otherlv_18= 'default' ( (otherlv_19= RULE_ID ) )
+            	    {
+            	    otherlv_18=(Token)match(input,47,FOLLOW_3); 
+
+            	    									newLeafNode(otherlv_18, grammarAccess.getEnumPropertyAccess().getDefaultKeyword_3_5_0());
+            	    								
+            	    // InternalConceptLanguage.g:3227:9: ( (otherlv_19= RULE_ID ) )
+            	    // InternalConceptLanguage.g:3228:10: (otherlv_19= RULE_ID )
+            	    {
+            	    // InternalConceptLanguage.g:3228:10: (otherlv_19= RULE_ID )
+            	    // InternalConceptLanguage.g:3229:11: otherlv_19= RULE_ID
             	    {
 
             	    											if (current==null) {
             	    												current = createModelElement(grammarAccess.getEnumPropertyRule());
             	    											}
             	    										
-            	    otherlv_17=(Token)match(input,RULE_ID,FOLLOW_44); 
+            	    otherlv_19=(Token)match(input,RULE_ID,FOLLOW_44); 
 
-            	    											newLeafNode(otherlv_17, grammarAccess.getEnumPropertyAccess().getDefaultValueEnumValueDefinitionCrossReference_3_4_1_0());
+            	    											newLeafNode(otherlv_19, grammarAccess.getEnumPropertyAccess().getDefaultValueEnumValueDefinitionCrossReference_3_5_1_0());
             	    										
 
             	    }
@@ -7406,9 +8074,9 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_18=(Token)match(input,22,FOLLOW_2); 
+            otherlv_20=(Token)match(input,22,FOLLOW_2); 
 
-            			newLeafNode(otherlv_18, grammarAccess.getEnumPropertyAccess().getSemicolonKeyword_4());
+            			newLeafNode(otherlv_20, grammarAccess.getEnumPropertyAccess().getSemicolonKeyword_4());
             		
 
             }
@@ -7433,7 +8101,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleEnumValueDefinition"
-    // InternalConceptLanguage.g:2996:1: entryRuleEnumValueDefinition returns [EObject current=null] : iv_ruleEnumValueDefinition= ruleEnumValueDefinition EOF ;
+    // InternalConceptLanguage.g:3262:1: entryRuleEnumValueDefinition returns [EObject current=null] : iv_ruleEnumValueDefinition= ruleEnumValueDefinition EOF ;
     public final EObject entryRuleEnumValueDefinition() throws RecognitionException {
         EObject current = null;
 
@@ -7441,8 +8109,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:2996:60: (iv_ruleEnumValueDefinition= ruleEnumValueDefinition EOF )
-            // InternalConceptLanguage.g:2997:2: iv_ruleEnumValueDefinition= ruleEnumValueDefinition EOF
+            // InternalConceptLanguage.g:3262:60: (iv_ruleEnumValueDefinition= ruleEnumValueDefinition EOF )
+            // InternalConceptLanguage.g:3263:2: iv_ruleEnumValueDefinition= ruleEnumValueDefinition EOF
             {
              newCompositeNode(grammarAccess.getEnumValueDefinitionRule()); 
             pushFollow(FOLLOW_1);
@@ -7469,7 +8137,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleEnumValueDefinition"
-    // InternalConceptLanguage.g:3003:1: ruleEnumValueDefinition returns [EObject current=null] : ( ( (lv_name_0_0= RULE_ID ) ) otherlv_1= '=' ( ( (lv_value_2_1= ruleEString | lv_value_2_2= ruleFloatLiteralString ) ) ) ) ;
+    // InternalConceptLanguage.g:3269:1: ruleEnumValueDefinition returns [EObject current=null] : ( ( (lv_name_0_0= RULE_ID ) ) otherlv_1= '=' ( ( (lv_value_2_1= ruleEString | lv_value_2_2= ruleFloatLiteralString ) ) ) ) ;
     public final EObject ruleEnumValueDefinition() throws RecognitionException {
         EObject current = null;
 
@@ -7484,17 +8152,17 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:3009:2: ( ( ( (lv_name_0_0= RULE_ID ) ) otherlv_1= '=' ( ( (lv_value_2_1= ruleEString | lv_value_2_2= ruleFloatLiteralString ) ) ) ) )
-            // InternalConceptLanguage.g:3010:2: ( ( (lv_name_0_0= RULE_ID ) ) otherlv_1= '=' ( ( (lv_value_2_1= ruleEString | lv_value_2_2= ruleFloatLiteralString ) ) ) )
+            // InternalConceptLanguage.g:3275:2: ( ( ( (lv_name_0_0= RULE_ID ) ) otherlv_1= '=' ( ( (lv_value_2_1= ruleEString | lv_value_2_2= ruleFloatLiteralString ) ) ) ) )
+            // InternalConceptLanguage.g:3276:2: ( ( (lv_name_0_0= RULE_ID ) ) otherlv_1= '=' ( ( (lv_value_2_1= ruleEString | lv_value_2_2= ruleFloatLiteralString ) ) ) )
             {
-            // InternalConceptLanguage.g:3010:2: ( ( (lv_name_0_0= RULE_ID ) ) otherlv_1= '=' ( ( (lv_value_2_1= ruleEString | lv_value_2_2= ruleFloatLiteralString ) ) ) )
-            // InternalConceptLanguage.g:3011:3: ( (lv_name_0_0= RULE_ID ) ) otherlv_1= '=' ( ( (lv_value_2_1= ruleEString | lv_value_2_2= ruleFloatLiteralString ) ) )
+            // InternalConceptLanguage.g:3276:2: ( ( (lv_name_0_0= RULE_ID ) ) otherlv_1= '=' ( ( (lv_value_2_1= ruleEString | lv_value_2_2= ruleFloatLiteralString ) ) ) )
+            // InternalConceptLanguage.g:3277:3: ( (lv_name_0_0= RULE_ID ) ) otherlv_1= '=' ( ( (lv_value_2_1= ruleEString | lv_value_2_2= ruleFloatLiteralString ) ) )
             {
-            // InternalConceptLanguage.g:3011:3: ( (lv_name_0_0= RULE_ID ) )
-            // InternalConceptLanguage.g:3012:4: (lv_name_0_0= RULE_ID )
+            // InternalConceptLanguage.g:3277:3: ( (lv_name_0_0= RULE_ID ) )
+            // InternalConceptLanguage.g:3278:4: (lv_name_0_0= RULE_ID )
             {
-            // InternalConceptLanguage.g:3012:4: (lv_name_0_0= RULE_ID )
-            // InternalConceptLanguage.g:3013:5: lv_name_0_0= RULE_ID
+            // InternalConceptLanguage.g:3278:4: (lv_name_0_0= RULE_ID )
+            // InternalConceptLanguage.g:3279:5: lv_name_0_0= RULE_ID
             {
             lv_name_0_0=(Token)match(input,RULE_ID,FOLLOW_46); 
 
@@ -7516,24 +8184,24 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_1=(Token)match(input,51,FOLLOW_47); 
+            otherlv_1=(Token)match(input,53,FOLLOW_47); 
 
             			newLeafNode(otherlv_1, grammarAccess.getEnumValueDefinitionAccess().getEqualsSignKeyword_1());
             		
-            // InternalConceptLanguage.g:3033:3: ( ( (lv_value_2_1= ruleEString | lv_value_2_2= ruleFloatLiteralString ) ) )
-            // InternalConceptLanguage.g:3034:4: ( (lv_value_2_1= ruleEString | lv_value_2_2= ruleFloatLiteralString ) )
+            // InternalConceptLanguage.g:3299:3: ( ( (lv_value_2_1= ruleEString | lv_value_2_2= ruleFloatLiteralString ) ) )
+            // InternalConceptLanguage.g:3300:4: ( (lv_value_2_1= ruleEString | lv_value_2_2= ruleFloatLiteralString ) )
             {
-            // InternalConceptLanguage.g:3034:4: ( (lv_value_2_1= ruleEString | lv_value_2_2= ruleFloatLiteralString ) )
-            // InternalConceptLanguage.g:3035:5: (lv_value_2_1= ruleEString | lv_value_2_2= ruleFloatLiteralString )
+            // InternalConceptLanguage.g:3300:4: ( (lv_value_2_1= ruleEString | lv_value_2_2= ruleFloatLiteralString ) )
+            // InternalConceptLanguage.g:3301:5: (lv_value_2_1= ruleEString | lv_value_2_2= ruleFloatLiteralString )
             {
-            // InternalConceptLanguage.g:3035:5: (lv_value_2_1= ruleEString | lv_value_2_2= ruleFloatLiteralString )
+            // InternalConceptLanguage.g:3301:5: (lv_value_2_1= ruleEString | lv_value_2_2= ruleFloatLiteralString )
             int alt41=2;
             int LA41_0 = input.LA(1);
 
             if ( (LA41_0==RULE_STRING) ) {
                 alt41=1;
             }
-            else if ( (LA41_0==RULE_INT||LA41_0==62) ) {
+            else if ( (LA41_0==RULE_INT||LA41_0==64) ) {
                 alt41=2;
             }
             else {
@@ -7544,7 +8212,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             }
             switch (alt41) {
                 case 1 :
-                    // InternalConceptLanguage.g:3036:6: lv_value_2_1= ruleEString
+                    // InternalConceptLanguage.g:3302:6: lv_value_2_1= ruleEString
                     {
 
                     						newCompositeNode(grammarAccess.getEnumValueDefinitionAccess().getValueEStringParserRuleCall_2_0_0());
@@ -7569,7 +8237,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalConceptLanguage.g:3052:6: lv_value_2_2= ruleFloatLiteralString
+                    // InternalConceptLanguage.g:3318:6: lv_value_2_2= ruleFloatLiteralString
                     {
 
                     						newCompositeNode(grammarAccess.getEnumValueDefinitionAccess().getValueFloatLiteralStringParserRuleCall_2_0_1());
@@ -7625,7 +8293,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleReferenceProperty"
-    // InternalConceptLanguage.g:3074:1: entryRuleReferenceProperty returns [EObject current=null] : iv_ruleReferenceProperty= ruleReferenceProperty EOF ;
+    // InternalConceptLanguage.g:3340:1: entryRuleReferenceProperty returns [EObject current=null] : iv_ruleReferenceProperty= ruleReferenceProperty EOF ;
     public final EObject entryRuleReferenceProperty() throws RecognitionException {
         EObject current = null;
 
@@ -7633,8 +8301,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:3074:58: (iv_ruleReferenceProperty= ruleReferenceProperty EOF )
-            // InternalConceptLanguage.g:3075:2: iv_ruleReferenceProperty= ruleReferenceProperty EOF
+            // InternalConceptLanguage.g:3340:58: (iv_ruleReferenceProperty= ruleReferenceProperty EOF )
+            // InternalConceptLanguage.g:3341:2: iv_ruleReferenceProperty= ruleReferenceProperty EOF
             {
              newCompositeNode(grammarAccess.getReferencePropertyRule()); 
             pushFollow(FOLLOW_1);
@@ -7661,7 +8329,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleReferenceProperty"
-    // InternalConceptLanguage.g:3081:1: ruleReferenceProperty returns [EObject current=null] : (otherlv_0= 'Reference' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? otherlv_3= 'of' otherlv_4= 'Type' ( ( ruleQualifiedName ) ) (otherlv_6= 'description' ( (lv_description_7_0= ruleEString ) ) )? otherlv_8= ';' ) ;
+    // InternalConceptLanguage.g:3347:1: ruleReferenceProperty returns [EObject current=null] : (otherlv_0= 'Reference' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? otherlv_3= 'of' otherlv_4= 'Type' ( ( ruleQualifiedName ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )* ) ) ) otherlv_11= ';' ) ;
     public final EObject ruleReferenceProperty() throws RecognitionException {
         EObject current = null;
 
@@ -7669,32 +8337,35 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         Token lv_name_1_0=null;
         Token otherlv_3=null;
         Token otherlv_4=null;
-        Token otherlv_6=null;
-        Token otherlv_8=null;
+        Token otherlv_7=null;
+        Token otherlv_9=null;
+        Token otherlv_11=null;
         EObject lv_arrayModifier_2_0 = null;
 
-        AntlrDatatypeRuleToken lv_description_7_0 = null;
+        AntlrDatatypeRuleToken lv_description_8_0 = null;
+
+        EObject lv_verification_10_0 = null;
 
 
 
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:3087:2: ( (otherlv_0= 'Reference' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? otherlv_3= 'of' otherlv_4= 'Type' ( ( ruleQualifiedName ) ) (otherlv_6= 'description' ( (lv_description_7_0= ruleEString ) ) )? otherlv_8= ';' ) )
-            // InternalConceptLanguage.g:3088:2: (otherlv_0= 'Reference' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? otherlv_3= 'of' otherlv_4= 'Type' ( ( ruleQualifiedName ) ) (otherlv_6= 'description' ( (lv_description_7_0= ruleEString ) ) )? otherlv_8= ';' )
+            // InternalConceptLanguage.g:3353:2: ( (otherlv_0= 'Reference' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? otherlv_3= 'of' otherlv_4= 'Type' ( ( ruleQualifiedName ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )* ) ) ) otherlv_11= ';' ) )
+            // InternalConceptLanguage.g:3354:2: (otherlv_0= 'Reference' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? otherlv_3= 'of' otherlv_4= 'Type' ( ( ruleQualifiedName ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )* ) ) ) otherlv_11= ';' )
             {
-            // InternalConceptLanguage.g:3088:2: (otherlv_0= 'Reference' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? otherlv_3= 'of' otherlv_4= 'Type' ( ( ruleQualifiedName ) ) (otherlv_6= 'description' ( (lv_description_7_0= ruleEString ) ) )? otherlv_8= ';' )
-            // InternalConceptLanguage.g:3089:3: otherlv_0= 'Reference' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? otherlv_3= 'of' otherlv_4= 'Type' ( ( ruleQualifiedName ) ) (otherlv_6= 'description' ( (lv_description_7_0= ruleEString ) ) )? otherlv_8= ';'
+            // InternalConceptLanguage.g:3354:2: (otherlv_0= 'Reference' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? otherlv_3= 'of' otherlv_4= 'Type' ( ( ruleQualifiedName ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )* ) ) ) otherlv_11= ';' )
+            // InternalConceptLanguage.g:3355:3: otherlv_0= 'Reference' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? otherlv_3= 'of' otherlv_4= 'Type' ( ( ruleQualifiedName ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )* ) ) ) otherlv_11= ';'
             {
-            otherlv_0=(Token)match(input,52,FOLLOW_3); 
+            otherlv_0=(Token)match(input,54,FOLLOW_3); 
 
             			newLeafNode(otherlv_0, grammarAccess.getReferencePropertyAccess().getReferenceKeyword_0());
             		
-            // InternalConceptLanguage.g:3093:3: ( (lv_name_1_0= RULE_ID ) )
-            // InternalConceptLanguage.g:3094:4: (lv_name_1_0= RULE_ID )
+            // InternalConceptLanguage.g:3359:3: ( (lv_name_1_0= RULE_ID ) )
+            // InternalConceptLanguage.g:3360:4: (lv_name_1_0= RULE_ID )
             {
-            // InternalConceptLanguage.g:3094:4: (lv_name_1_0= RULE_ID )
-            // InternalConceptLanguage.g:3095:5: lv_name_1_0= RULE_ID
+            // InternalConceptLanguage.g:3360:4: (lv_name_1_0= RULE_ID )
+            // InternalConceptLanguage.g:3361:5: lv_name_1_0= RULE_ID
             {
             lv_name_1_0=(Token)match(input,RULE_ID,FOLLOW_31); 
 
@@ -7716,7 +8387,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalConceptLanguage.g:3111:3: ( (lv_arrayModifier_2_0= ruleArrayModifier ) )?
+            // InternalConceptLanguage.g:3377:3: ( (lv_arrayModifier_2_0= ruleArrayModifier ) )?
             int alt42=2;
             int LA42_0 = input.LA(1);
 
@@ -7725,10 +8396,10 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             }
             switch (alt42) {
                 case 1 :
-                    // InternalConceptLanguage.g:3112:4: (lv_arrayModifier_2_0= ruleArrayModifier )
+                    // InternalConceptLanguage.g:3378:4: (lv_arrayModifier_2_0= ruleArrayModifier )
                     {
-                    // InternalConceptLanguage.g:3112:4: (lv_arrayModifier_2_0= ruleArrayModifier )
-                    // InternalConceptLanguage.g:3113:5: lv_arrayModifier_2_0= ruleArrayModifier
+                    // InternalConceptLanguage.g:3378:4: (lv_arrayModifier_2_0= ruleArrayModifier )
+                    // InternalConceptLanguage.g:3379:5: lv_arrayModifier_2_0= ruleArrayModifier
                     {
 
                     					newCompositeNode(grammarAccess.getReferencePropertyAccess().getArrayModifierArrayModifierParserRuleCall_2_0());
@@ -7758,7 +8429,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_3=(Token)match(input,41,FOLLOW_21); 
+            otherlv_3=(Token)match(input,42,FOLLOW_21); 
 
             			newLeafNode(otherlv_3, grammarAccess.getReferencePropertyAccess().getOfKeyword_3());
             		
@@ -7766,11 +8437,11 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             			newLeafNode(otherlv_4, grammarAccess.getReferencePropertyAccess().getTypeKeyword_4());
             		
-            // InternalConceptLanguage.g:3138:3: ( ( ruleQualifiedName ) )
-            // InternalConceptLanguage.g:3139:4: ( ruleQualifiedName )
+            // InternalConceptLanguage.g:3404:3: ( ( ruleQualifiedName ) )
+            // InternalConceptLanguage.g:3405:4: ( ruleQualifiedName )
             {
-            // InternalConceptLanguage.g:3139:4: ( ruleQualifiedName )
-            // InternalConceptLanguage.g:3140:5: ruleQualifiedName
+            // InternalConceptLanguage.g:3405:4: ( ruleQualifiedName )
+            // InternalConceptLanguage.g:3406:5: ruleQualifiedName
             {
 
             					if (current==null) {
@@ -7794,61 +8465,208 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalConceptLanguage.g:3154:3: (otherlv_6= 'description' ( (lv_description_7_0= ruleEString ) ) )?
-            int alt43=2;
-            int LA43_0 = input.LA(1);
+            // InternalConceptLanguage.g:3420:3: ( ( ( ( ({...}? => ( ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )* ) ) )
+            // InternalConceptLanguage.g:3421:4: ( ( ( ({...}? => ( ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )* ) )
+            {
+            // InternalConceptLanguage.g:3421:4: ( ( ( ({...}? => ( ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )* ) )
+            // InternalConceptLanguage.g:3422:5: ( ( ({...}? => ( ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )* )
+            {
+             
+            				  getUnorderedGroupHelper().enter(grammarAccess.getReferencePropertyAccess().getUnorderedGroup_6());
+            				
+            // InternalConceptLanguage.g:3425:5: ( ( ({...}? => ( ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )* )
+            // InternalConceptLanguage.g:3426:6: ( ({...}? => ( ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )*
+            {
+            // InternalConceptLanguage.g:3426:6: ( ({...}? => ( ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )*
+            loop43:
+            do {
+                int alt43=3;
+                int LA43_0 = input.LA(1);
 
-            if ( (LA43_0==15) ) {
-                alt43=1;
+                if ( LA43_0 == 15 && getUnorderedGroupHelper().canSelect(grammarAccess.getReferencePropertyAccess().getUnorderedGroup_6(), 0) ) {
+                    alt43=1;
+                }
+                else if ( LA43_0 == 44 && getUnorderedGroupHelper().canSelect(grammarAccess.getReferencePropertyAccess().getUnorderedGroup_6(), 1) ) {
+                    alt43=2;
+                }
+
+
+                switch (alt43) {
+            	case 1 :
+            	    // InternalConceptLanguage.g:3427:4: ({...}? => ( ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) ) ) )
+            	    {
+            	    // InternalConceptLanguage.g:3427:4: ({...}? => ( ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:3428:5: {...}? => ( ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) ) )
+            	    {
+            	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getReferencePropertyAccess().getUnorderedGroup_6(), 0) ) {
+            	        throw new FailedPredicateException(input, "ruleReferenceProperty", "getUnorderedGroupHelper().canSelect(grammarAccess.getReferencePropertyAccess().getUnorderedGroup_6(), 0)");
+            	    }
+            	    // InternalConceptLanguage.g:3428:114: ( ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:3429:6: ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) )
+            	    {
+
+            	    						getUnorderedGroupHelper().select(grammarAccess.getReferencePropertyAccess().getUnorderedGroup_6(), 0);
+            	    					
+            	    // InternalConceptLanguage.g:3432:9: ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:3432:10: {...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) )
+            	    {
+            	    if ( !((true)) ) {
+            	        throw new FailedPredicateException(input, "ruleReferenceProperty", "true");
+            	    }
+            	    // InternalConceptLanguage.g:3432:19: (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:3432:20: otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) )
+            	    {
+            	    otherlv_7=(Token)match(input,15,FOLLOW_5); 
+
+            	    									newLeafNode(otherlv_7, grammarAccess.getReferencePropertyAccess().getDescriptionKeyword_6_0_0());
+            	    								
+            	    // InternalConceptLanguage.g:3436:9: ( (lv_description_8_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:3437:10: (lv_description_8_0= ruleEString )
+            	    {
+            	    // InternalConceptLanguage.g:3437:10: (lv_description_8_0= ruleEString )
+            	    // InternalConceptLanguage.g:3438:11: lv_description_8_0= ruleEString
+            	    {
+
+            	    											newCompositeNode(grammarAccess.getReferencePropertyAccess().getDescriptionEStringParserRuleCall_6_0_1_0());
+            	    										
+            	    pushFollow(FOLLOW_48);
+            	    lv_description_8_0=ruleEString();
+
+            	    state._fsp--;
+
+
+            	    											if (current==null) {
+            	    												current = createModelElementForParent(grammarAccess.getReferencePropertyRule());
+            	    											}
+            	    											set(
+            	    												current,
+            	    												"description",
+            	    												lv_description_8_0,
+            	    												"de.dlr.sc.virsat.model.concept.ConceptLanguage.EString");
+            	    											afterParserOrEnumRuleCall();
+            	    										
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+
+            	     
+            	    						getUnorderedGroupHelper().returnFromSelection(grammarAccess.getReferencePropertyAccess().getUnorderedGroup_6());
+            	    					
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+            	    break;
+            	case 2 :
+            	    // InternalConceptLanguage.g:3461:4: ({...}? => ( ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) ) ) )
+            	    {
+            	    // InternalConceptLanguage.g:3461:4: ({...}? => ( ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:3462:5: {...}? => ( ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) ) )
+            	    {
+            	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getReferencePropertyAccess().getUnorderedGroup_6(), 1) ) {
+            	        throw new FailedPredicateException(input, "ruleReferenceProperty", "getUnorderedGroupHelper().canSelect(grammarAccess.getReferencePropertyAccess().getUnorderedGroup_6(), 1)");
+            	    }
+            	    // InternalConceptLanguage.g:3462:114: ( ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) ) )
+            	    // InternalConceptLanguage.g:3463:6: ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) )
+            	    {
+
+            	    						getUnorderedGroupHelper().select(grammarAccess.getReferencePropertyAccess().getUnorderedGroup_6(), 1);
+            	    					
+            	    // InternalConceptLanguage.g:3466:9: ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) )
+            	    // InternalConceptLanguage.g:3466:10: {...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) )
+            	    {
+            	    if ( !((true)) ) {
+            	        throw new FailedPredicateException(input, "ruleReferenceProperty", "true");
+            	    }
+            	    // InternalConceptLanguage.g:3466:19: (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) )
+            	    // InternalConceptLanguage.g:3466:20: otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) )
+            	    {
+            	    otherlv_9=(Token)match(input,44,FOLLOW_3); 
+
+            	    									newLeafNode(otherlv_9, grammarAccess.getReferencePropertyAccess().getVerificationKeyword_6_1_0());
+            	    								
+            	    // InternalConceptLanguage.g:3470:9: ( (lv_verification_10_0= ruleVerificationTypeSpecification ) )
+            	    // InternalConceptLanguage.g:3471:10: (lv_verification_10_0= ruleVerificationTypeSpecification )
+            	    {
+            	    // InternalConceptLanguage.g:3471:10: (lv_verification_10_0= ruleVerificationTypeSpecification )
+            	    // InternalConceptLanguage.g:3472:11: lv_verification_10_0= ruleVerificationTypeSpecification
+            	    {
+
+            	    											newCompositeNode(grammarAccess.getReferencePropertyAccess().getVerificationVerificationTypeSpecificationParserRuleCall_6_1_1_0());
+            	    										
+            	    pushFollow(FOLLOW_48);
+            	    lv_verification_10_0=ruleVerificationTypeSpecification();
+
+            	    state._fsp--;
+
+
+            	    											if (current==null) {
+            	    												current = createModelElementForParent(grammarAccess.getReferencePropertyRule());
+            	    											}
+            	    											set(
+            	    												current,
+            	    												"verification",
+            	    												lv_verification_10_0,
+            	    												"de.dlr.sc.virsat.model.concept.ConceptLanguage.VerificationTypeSpecification");
+            	    											afterParserOrEnumRuleCall();
+            	    										
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+
+            	     
+            	    						getUnorderedGroupHelper().returnFromSelection(grammarAccess.getReferencePropertyAccess().getUnorderedGroup_6());
+            	    					
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+            	    break;
+
+            	default :
+            	    break loop43;
+                }
+            } while (true);
+
+
             }
-            switch (alt43) {
-                case 1 :
-                    // InternalConceptLanguage.g:3155:4: otherlv_6= 'description' ( (lv_description_7_0= ruleEString ) )
-                    {
-                    otherlv_6=(Token)match(input,15,FOLLOW_5); 
 
-                    				newLeafNode(otherlv_6, grammarAccess.getReferencePropertyAccess().getDescriptionKeyword_6_0());
-                    			
-                    // InternalConceptLanguage.g:3159:4: ( (lv_description_7_0= ruleEString ) )
-                    // InternalConceptLanguage.g:3160:5: (lv_description_7_0= ruleEString )
-                    {
-                    // InternalConceptLanguage.g:3160:5: (lv_description_7_0= ruleEString )
-                    // InternalConceptLanguage.g:3161:6: lv_description_7_0= ruleEString
-                    {
-
-                    						newCompositeNode(grammarAccess.getReferencePropertyAccess().getDescriptionEStringParserRuleCall_6_1_0());
-                    					
-                    pushFollow(FOLLOW_13);
-                    lv_description_7_0=ruleEString();
-
-                    state._fsp--;
-
-
-                    						if (current==null) {
-                    							current = createModelElementForParent(grammarAccess.getReferencePropertyRule());
-                    						}
-                    						set(
-                    							current,
-                    							"description",
-                    							lv_description_7_0,
-                    							"de.dlr.sc.virsat.model.concept.ConceptLanguage.EString");
-                    						afterParserOrEnumRuleCall();
-                    					
-
-                    }
-
-
-                    }
-
-
-                    }
-                    break;
 
             }
 
-            otherlv_8=(Token)match(input,22,FOLLOW_2); 
+             
+            				  getUnorderedGroupHelper().leave(grammarAccess.getReferencePropertyAccess().getUnorderedGroup_6());
+            				
 
-            			newLeafNode(otherlv_8, grammarAccess.getReferencePropertyAccess().getSemicolonKeyword_7());
+            }
+
+            otherlv_11=(Token)match(input,22,FOLLOW_2); 
+
+            			newLeafNode(otherlv_11, grammarAccess.getReferencePropertyAccess().getSemicolonKeyword_7());
             		
 
             }
@@ -7873,7 +8691,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleEReferenceProperty"
-    // InternalConceptLanguage.g:3187:1: entryRuleEReferenceProperty returns [EObject current=null] : iv_ruleEReferenceProperty= ruleEReferenceProperty EOF ;
+    // InternalConceptLanguage.g:3510:1: entryRuleEReferenceProperty returns [EObject current=null] : iv_ruleEReferenceProperty= ruleEReferenceProperty EOF ;
     public final EObject entryRuleEReferenceProperty() throws RecognitionException {
         EObject current = null;
 
@@ -7881,8 +8699,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:3187:59: (iv_ruleEReferenceProperty= ruleEReferenceProperty EOF )
-            // InternalConceptLanguage.g:3188:2: iv_ruleEReferenceProperty= ruleEReferenceProperty EOF
+            // InternalConceptLanguage.g:3510:59: (iv_ruleEReferenceProperty= ruleEReferenceProperty EOF )
+            // InternalConceptLanguage.g:3511:2: iv_ruleEReferenceProperty= ruleEReferenceProperty EOF
             {
              newCompositeNode(grammarAccess.getEReferencePropertyRule()); 
             pushFollow(FOLLOW_1);
@@ -7909,7 +8727,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleEReferenceProperty"
-    // InternalConceptLanguage.g:3194:1: ruleEReferenceProperty returns [EObject current=null] : (otherlv_0= 'EReference' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? otherlv_3= 'of' otherlv_4= 'Type' ( ( ruleQualifiedName ) ) (otherlv_6= 'description' ( (lv_description_7_0= ruleEString ) ) )? otherlv_8= ';' ) ;
+    // InternalConceptLanguage.g:3517:1: ruleEReferenceProperty returns [EObject current=null] : (otherlv_0= 'EReference' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? otherlv_3= 'of' otherlv_4= 'Type' ( ( ruleQualifiedName ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )* ) ) ) otherlv_11= ';' ) ;
     public final EObject ruleEReferenceProperty() throws RecognitionException {
         EObject current = null;
 
@@ -7917,32 +8735,35 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         Token lv_name_1_0=null;
         Token otherlv_3=null;
         Token otherlv_4=null;
-        Token otherlv_6=null;
-        Token otherlv_8=null;
+        Token otherlv_7=null;
+        Token otherlv_9=null;
+        Token otherlv_11=null;
         EObject lv_arrayModifier_2_0 = null;
 
-        AntlrDatatypeRuleToken lv_description_7_0 = null;
+        AntlrDatatypeRuleToken lv_description_8_0 = null;
+
+        EObject lv_verification_10_0 = null;
 
 
 
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:3200:2: ( (otherlv_0= 'EReference' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? otherlv_3= 'of' otherlv_4= 'Type' ( ( ruleQualifiedName ) ) (otherlv_6= 'description' ( (lv_description_7_0= ruleEString ) ) )? otherlv_8= ';' ) )
-            // InternalConceptLanguage.g:3201:2: (otherlv_0= 'EReference' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? otherlv_3= 'of' otherlv_4= 'Type' ( ( ruleQualifiedName ) ) (otherlv_6= 'description' ( (lv_description_7_0= ruleEString ) ) )? otherlv_8= ';' )
+            // InternalConceptLanguage.g:3523:2: ( (otherlv_0= 'EReference' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? otherlv_3= 'of' otherlv_4= 'Type' ( ( ruleQualifiedName ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )* ) ) ) otherlv_11= ';' ) )
+            // InternalConceptLanguage.g:3524:2: (otherlv_0= 'EReference' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? otherlv_3= 'of' otherlv_4= 'Type' ( ( ruleQualifiedName ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )* ) ) ) otherlv_11= ';' )
             {
-            // InternalConceptLanguage.g:3201:2: (otherlv_0= 'EReference' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? otherlv_3= 'of' otherlv_4= 'Type' ( ( ruleQualifiedName ) ) (otherlv_6= 'description' ( (lv_description_7_0= ruleEString ) ) )? otherlv_8= ';' )
-            // InternalConceptLanguage.g:3202:3: otherlv_0= 'EReference' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? otherlv_3= 'of' otherlv_4= 'Type' ( ( ruleQualifiedName ) ) (otherlv_6= 'description' ( (lv_description_7_0= ruleEString ) ) )? otherlv_8= ';'
+            // InternalConceptLanguage.g:3524:2: (otherlv_0= 'EReference' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? otherlv_3= 'of' otherlv_4= 'Type' ( ( ruleQualifiedName ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )* ) ) ) otherlv_11= ';' )
+            // InternalConceptLanguage.g:3525:3: otherlv_0= 'EReference' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? otherlv_3= 'of' otherlv_4= 'Type' ( ( ruleQualifiedName ) ) ( ( ( ( ({...}? => ( ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )* ) ) ) otherlv_11= ';'
             {
-            otherlv_0=(Token)match(input,53,FOLLOW_3); 
+            otherlv_0=(Token)match(input,55,FOLLOW_3); 
 
             			newLeafNode(otherlv_0, grammarAccess.getEReferencePropertyAccess().getEReferenceKeyword_0());
             		
-            // InternalConceptLanguage.g:3206:3: ( (lv_name_1_0= RULE_ID ) )
-            // InternalConceptLanguage.g:3207:4: (lv_name_1_0= RULE_ID )
+            // InternalConceptLanguage.g:3529:3: ( (lv_name_1_0= RULE_ID ) )
+            // InternalConceptLanguage.g:3530:4: (lv_name_1_0= RULE_ID )
             {
-            // InternalConceptLanguage.g:3207:4: (lv_name_1_0= RULE_ID )
-            // InternalConceptLanguage.g:3208:5: lv_name_1_0= RULE_ID
+            // InternalConceptLanguage.g:3530:4: (lv_name_1_0= RULE_ID )
+            // InternalConceptLanguage.g:3531:5: lv_name_1_0= RULE_ID
             {
             lv_name_1_0=(Token)match(input,RULE_ID,FOLLOW_31); 
 
@@ -7964,7 +8785,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalConceptLanguage.g:3224:3: ( (lv_arrayModifier_2_0= ruleArrayModifier ) )?
+            // InternalConceptLanguage.g:3547:3: ( (lv_arrayModifier_2_0= ruleArrayModifier ) )?
             int alt44=2;
             int LA44_0 = input.LA(1);
 
@@ -7973,10 +8794,10 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             }
             switch (alt44) {
                 case 1 :
-                    // InternalConceptLanguage.g:3225:4: (lv_arrayModifier_2_0= ruleArrayModifier )
+                    // InternalConceptLanguage.g:3548:4: (lv_arrayModifier_2_0= ruleArrayModifier )
                     {
-                    // InternalConceptLanguage.g:3225:4: (lv_arrayModifier_2_0= ruleArrayModifier )
-                    // InternalConceptLanguage.g:3226:5: lv_arrayModifier_2_0= ruleArrayModifier
+                    // InternalConceptLanguage.g:3548:4: (lv_arrayModifier_2_0= ruleArrayModifier )
+                    // InternalConceptLanguage.g:3549:5: lv_arrayModifier_2_0= ruleArrayModifier
                     {
 
                     					newCompositeNode(grammarAccess.getEReferencePropertyAccess().getArrayModifierArrayModifierParserRuleCall_2_0());
@@ -8006,7 +8827,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_3=(Token)match(input,41,FOLLOW_21); 
+            otherlv_3=(Token)match(input,42,FOLLOW_21); 
 
             			newLeafNode(otherlv_3, grammarAccess.getEReferencePropertyAccess().getOfKeyword_3());
             		
@@ -8014,11 +8835,11 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             			newLeafNode(otherlv_4, grammarAccess.getEReferencePropertyAccess().getTypeKeyword_4());
             		
-            // InternalConceptLanguage.g:3251:3: ( ( ruleQualifiedName ) )
-            // InternalConceptLanguage.g:3252:4: ( ruleQualifiedName )
+            // InternalConceptLanguage.g:3574:3: ( ( ruleQualifiedName ) )
+            // InternalConceptLanguage.g:3575:4: ( ruleQualifiedName )
             {
-            // InternalConceptLanguage.g:3252:4: ( ruleQualifiedName )
-            // InternalConceptLanguage.g:3253:5: ruleQualifiedName
+            // InternalConceptLanguage.g:3575:4: ( ruleQualifiedName )
+            // InternalConceptLanguage.g:3576:5: ruleQualifiedName
             {
 
             					if (current==null) {
@@ -8042,61 +8863,208 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalConceptLanguage.g:3267:3: (otherlv_6= 'description' ( (lv_description_7_0= ruleEString ) ) )?
-            int alt45=2;
-            int LA45_0 = input.LA(1);
+            // InternalConceptLanguage.g:3590:3: ( ( ( ( ({...}? => ( ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )* ) ) )
+            // InternalConceptLanguage.g:3591:4: ( ( ( ({...}? => ( ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )* ) )
+            {
+            // InternalConceptLanguage.g:3591:4: ( ( ( ({...}? => ( ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )* ) )
+            // InternalConceptLanguage.g:3592:5: ( ( ({...}? => ( ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )* )
+            {
+             
+            				  getUnorderedGroupHelper().enter(grammarAccess.getEReferencePropertyAccess().getUnorderedGroup_6());
+            				
+            // InternalConceptLanguage.g:3595:5: ( ( ({...}? => ( ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )* )
+            // InternalConceptLanguage.g:3596:6: ( ({...}? => ( ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )*
+            {
+            // InternalConceptLanguage.g:3596:6: ( ({...}? => ( ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )*
+            loop45:
+            do {
+                int alt45=3;
+                int LA45_0 = input.LA(1);
 
-            if ( (LA45_0==15) ) {
-                alt45=1;
+                if ( LA45_0 == 15 && getUnorderedGroupHelper().canSelect(grammarAccess.getEReferencePropertyAccess().getUnorderedGroup_6(), 0) ) {
+                    alt45=1;
+                }
+                else if ( LA45_0 == 44 && getUnorderedGroupHelper().canSelect(grammarAccess.getEReferencePropertyAccess().getUnorderedGroup_6(), 1) ) {
+                    alt45=2;
+                }
+
+
+                switch (alt45) {
+            	case 1 :
+            	    // InternalConceptLanguage.g:3597:4: ({...}? => ( ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) ) ) )
+            	    {
+            	    // InternalConceptLanguage.g:3597:4: ({...}? => ( ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:3598:5: {...}? => ( ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) ) )
+            	    {
+            	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getEReferencePropertyAccess().getUnorderedGroup_6(), 0) ) {
+            	        throw new FailedPredicateException(input, "ruleEReferenceProperty", "getUnorderedGroupHelper().canSelect(grammarAccess.getEReferencePropertyAccess().getUnorderedGroup_6(), 0)");
+            	    }
+            	    // InternalConceptLanguage.g:3598:115: ( ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:3599:6: ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) )
+            	    {
+
+            	    						getUnorderedGroupHelper().select(grammarAccess.getEReferencePropertyAccess().getUnorderedGroup_6(), 0);
+            	    					
+            	    // InternalConceptLanguage.g:3602:9: ({...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:3602:10: {...}? => (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) )
+            	    {
+            	    if ( !((true)) ) {
+            	        throw new FailedPredicateException(input, "ruleEReferenceProperty", "true");
+            	    }
+            	    // InternalConceptLanguage.g:3602:19: (otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:3602:20: otherlv_7= 'description' ( (lv_description_8_0= ruleEString ) )
+            	    {
+            	    otherlv_7=(Token)match(input,15,FOLLOW_5); 
+
+            	    									newLeafNode(otherlv_7, grammarAccess.getEReferencePropertyAccess().getDescriptionKeyword_6_0_0());
+            	    								
+            	    // InternalConceptLanguage.g:3606:9: ( (lv_description_8_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:3607:10: (lv_description_8_0= ruleEString )
+            	    {
+            	    // InternalConceptLanguage.g:3607:10: (lv_description_8_0= ruleEString )
+            	    // InternalConceptLanguage.g:3608:11: lv_description_8_0= ruleEString
+            	    {
+
+            	    											newCompositeNode(grammarAccess.getEReferencePropertyAccess().getDescriptionEStringParserRuleCall_6_0_1_0());
+            	    										
+            	    pushFollow(FOLLOW_48);
+            	    lv_description_8_0=ruleEString();
+
+            	    state._fsp--;
+
+
+            	    											if (current==null) {
+            	    												current = createModelElementForParent(grammarAccess.getEReferencePropertyRule());
+            	    											}
+            	    											set(
+            	    												current,
+            	    												"description",
+            	    												lv_description_8_0,
+            	    												"de.dlr.sc.virsat.model.concept.ConceptLanguage.EString");
+            	    											afterParserOrEnumRuleCall();
+            	    										
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+
+            	     
+            	    						getUnorderedGroupHelper().returnFromSelection(grammarAccess.getEReferencePropertyAccess().getUnorderedGroup_6());
+            	    					
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+            	    break;
+            	case 2 :
+            	    // InternalConceptLanguage.g:3631:4: ({...}? => ( ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) ) ) )
+            	    {
+            	    // InternalConceptLanguage.g:3631:4: ({...}? => ( ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:3632:5: {...}? => ( ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) ) )
+            	    {
+            	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getEReferencePropertyAccess().getUnorderedGroup_6(), 1) ) {
+            	        throw new FailedPredicateException(input, "ruleEReferenceProperty", "getUnorderedGroupHelper().canSelect(grammarAccess.getEReferencePropertyAccess().getUnorderedGroup_6(), 1)");
+            	    }
+            	    // InternalConceptLanguage.g:3632:115: ( ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) ) )
+            	    // InternalConceptLanguage.g:3633:6: ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) )
+            	    {
+
+            	    						getUnorderedGroupHelper().select(grammarAccess.getEReferencePropertyAccess().getUnorderedGroup_6(), 1);
+            	    					
+            	    // InternalConceptLanguage.g:3636:9: ({...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) ) )
+            	    // InternalConceptLanguage.g:3636:10: {...}? => (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) )
+            	    {
+            	    if ( !((true)) ) {
+            	        throw new FailedPredicateException(input, "ruleEReferenceProperty", "true");
+            	    }
+            	    // InternalConceptLanguage.g:3636:19: (otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) ) )
+            	    // InternalConceptLanguage.g:3636:20: otherlv_9= 'verification' ( (lv_verification_10_0= ruleVerificationTypeSpecification ) )
+            	    {
+            	    otherlv_9=(Token)match(input,44,FOLLOW_3); 
+
+            	    									newLeafNode(otherlv_9, grammarAccess.getEReferencePropertyAccess().getVerificationKeyword_6_1_0());
+            	    								
+            	    // InternalConceptLanguage.g:3640:9: ( (lv_verification_10_0= ruleVerificationTypeSpecification ) )
+            	    // InternalConceptLanguage.g:3641:10: (lv_verification_10_0= ruleVerificationTypeSpecification )
+            	    {
+            	    // InternalConceptLanguage.g:3641:10: (lv_verification_10_0= ruleVerificationTypeSpecification )
+            	    // InternalConceptLanguage.g:3642:11: lv_verification_10_0= ruleVerificationTypeSpecification
+            	    {
+
+            	    											newCompositeNode(grammarAccess.getEReferencePropertyAccess().getVerificationVerificationTypeSpecificationParserRuleCall_6_1_1_0());
+            	    										
+            	    pushFollow(FOLLOW_48);
+            	    lv_verification_10_0=ruleVerificationTypeSpecification();
+
+            	    state._fsp--;
+
+
+            	    											if (current==null) {
+            	    												current = createModelElementForParent(grammarAccess.getEReferencePropertyRule());
+            	    											}
+            	    											set(
+            	    												current,
+            	    												"verification",
+            	    												lv_verification_10_0,
+            	    												"de.dlr.sc.virsat.model.concept.ConceptLanguage.VerificationTypeSpecification");
+            	    											afterParserOrEnumRuleCall();
+            	    										
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+
+            	     
+            	    						getUnorderedGroupHelper().returnFromSelection(grammarAccess.getEReferencePropertyAccess().getUnorderedGroup_6());
+            	    					
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+            	    break;
+
+            	default :
+            	    break loop45;
+                }
+            } while (true);
+
+
             }
-            switch (alt45) {
-                case 1 :
-                    // InternalConceptLanguage.g:3268:4: otherlv_6= 'description' ( (lv_description_7_0= ruleEString ) )
-                    {
-                    otherlv_6=(Token)match(input,15,FOLLOW_5); 
 
-                    				newLeafNode(otherlv_6, grammarAccess.getEReferencePropertyAccess().getDescriptionKeyword_6_0());
-                    			
-                    // InternalConceptLanguage.g:3272:4: ( (lv_description_7_0= ruleEString ) )
-                    // InternalConceptLanguage.g:3273:5: (lv_description_7_0= ruleEString )
-                    {
-                    // InternalConceptLanguage.g:3273:5: (lv_description_7_0= ruleEString )
-                    // InternalConceptLanguage.g:3274:6: lv_description_7_0= ruleEString
-                    {
-
-                    						newCompositeNode(grammarAccess.getEReferencePropertyAccess().getDescriptionEStringParserRuleCall_6_1_0());
-                    					
-                    pushFollow(FOLLOW_13);
-                    lv_description_7_0=ruleEString();
-
-                    state._fsp--;
-
-
-                    						if (current==null) {
-                    							current = createModelElementForParent(grammarAccess.getEReferencePropertyRule());
-                    						}
-                    						set(
-                    							current,
-                    							"description",
-                    							lv_description_7_0,
-                    							"de.dlr.sc.virsat.model.concept.ConceptLanguage.EString");
-                    						afterParserOrEnumRuleCall();
-                    					
-
-                    }
-
-
-                    }
-
-
-                    }
-                    break;
 
             }
 
-            otherlv_8=(Token)match(input,22,FOLLOW_2); 
+             
+            				  getUnorderedGroupHelper().leave(grammarAccess.getEReferencePropertyAccess().getUnorderedGroup_6());
+            				
 
-            			newLeafNode(otherlv_8, grammarAccess.getEReferencePropertyAccess().getSemicolonKeyword_7());
+            }
+
+            otherlv_11=(Token)match(input,22,FOLLOW_2); 
+
+            			newLeafNode(otherlv_11, grammarAccess.getEReferencePropertyAccess().getSemicolonKeyword_7());
             		
 
             }
@@ -8121,7 +9089,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleResourceProperty"
-    // InternalConceptLanguage.g:3300:1: entryRuleResourceProperty returns [EObject current=null] : iv_ruleResourceProperty= ruleResourceProperty EOF ;
+    // InternalConceptLanguage.g:3680:1: entryRuleResourceProperty returns [EObject current=null] : iv_ruleResourceProperty= ruleResourceProperty EOF ;
     public final EObject entryRuleResourceProperty() throws RecognitionException {
         EObject current = null;
 
@@ -8129,8 +9097,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:3300:57: (iv_ruleResourceProperty= ruleResourceProperty EOF )
-            // InternalConceptLanguage.g:3301:2: iv_ruleResourceProperty= ruleResourceProperty EOF
+            // InternalConceptLanguage.g:3680:57: (iv_ruleResourceProperty= ruleResourceProperty EOF )
+            // InternalConceptLanguage.g:3681:2: iv_ruleResourceProperty= ruleResourceProperty EOF
             {
              newCompositeNode(grammarAccess.getResourcePropertyRule()); 
             pushFollow(FOLLOW_1);
@@ -8157,38 +9125,41 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleResourceProperty"
-    // InternalConceptLanguage.g:3307:1: ruleResourceProperty returns [EObject current=null] : (otherlv_0= 'Resource' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? (otherlv_3= 'description' ( (lv_description_4_0= ruleEString ) ) )? otherlv_5= ';' ) ;
+    // InternalConceptLanguage.g:3687:1: ruleResourceProperty returns [EObject current=null] : (otherlv_0= 'Resource' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )* ) ) ) otherlv_8= ';' ) ;
     public final EObject ruleResourceProperty() throws RecognitionException {
         EObject current = null;
 
         Token otherlv_0=null;
         Token lv_name_1_0=null;
-        Token otherlv_3=null;
-        Token otherlv_5=null;
+        Token otherlv_4=null;
+        Token otherlv_6=null;
+        Token otherlv_8=null;
         EObject lv_arrayModifier_2_0 = null;
 
-        AntlrDatatypeRuleToken lv_description_4_0 = null;
+        AntlrDatatypeRuleToken lv_description_5_0 = null;
+
+        EObject lv_verification_7_0 = null;
 
 
 
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:3313:2: ( (otherlv_0= 'Resource' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? (otherlv_3= 'description' ( (lv_description_4_0= ruleEString ) ) )? otherlv_5= ';' ) )
-            // InternalConceptLanguage.g:3314:2: (otherlv_0= 'Resource' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? (otherlv_3= 'description' ( (lv_description_4_0= ruleEString ) ) )? otherlv_5= ';' )
+            // InternalConceptLanguage.g:3693:2: ( (otherlv_0= 'Resource' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )* ) ) ) otherlv_8= ';' ) )
+            // InternalConceptLanguage.g:3694:2: (otherlv_0= 'Resource' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )* ) ) ) otherlv_8= ';' )
             {
-            // InternalConceptLanguage.g:3314:2: (otherlv_0= 'Resource' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? (otherlv_3= 'description' ( (lv_description_4_0= ruleEString ) ) )? otherlv_5= ';' )
-            // InternalConceptLanguage.g:3315:3: otherlv_0= 'Resource' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? (otherlv_3= 'description' ( (lv_description_4_0= ruleEString ) ) )? otherlv_5= ';'
+            // InternalConceptLanguage.g:3694:2: (otherlv_0= 'Resource' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )* ) ) ) otherlv_8= ';' )
+            // InternalConceptLanguage.g:3695:3: otherlv_0= 'Resource' ( (lv_name_1_0= RULE_ID ) ) ( (lv_arrayModifier_2_0= ruleArrayModifier ) )? ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )* ) ) ) otherlv_8= ';'
             {
-            otherlv_0=(Token)match(input,54,FOLLOW_3); 
+            otherlv_0=(Token)match(input,56,FOLLOW_3); 
 
             			newLeafNode(otherlv_0, grammarAccess.getResourcePropertyAccess().getResourceKeyword_0());
             		
-            // InternalConceptLanguage.g:3319:3: ( (lv_name_1_0= RULE_ID ) )
-            // InternalConceptLanguage.g:3320:4: (lv_name_1_0= RULE_ID )
+            // InternalConceptLanguage.g:3699:3: ( (lv_name_1_0= RULE_ID ) )
+            // InternalConceptLanguage.g:3700:4: (lv_name_1_0= RULE_ID )
             {
-            // InternalConceptLanguage.g:3320:4: (lv_name_1_0= RULE_ID )
-            // InternalConceptLanguage.g:3321:5: lv_name_1_0= RULE_ID
+            // InternalConceptLanguage.g:3700:4: (lv_name_1_0= RULE_ID )
+            // InternalConceptLanguage.g:3701:5: lv_name_1_0= RULE_ID
             {
             lv_name_1_0=(Token)match(input,RULE_ID,FOLLOW_49); 
 
@@ -8210,7 +9181,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalConceptLanguage.g:3337:3: ( (lv_arrayModifier_2_0= ruleArrayModifier ) )?
+            // InternalConceptLanguage.g:3717:3: ( (lv_arrayModifier_2_0= ruleArrayModifier ) )?
             int alt46=2;
             int LA46_0 = input.LA(1);
 
@@ -8219,10 +9190,10 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             }
             switch (alt46) {
                 case 1 :
-                    // InternalConceptLanguage.g:3338:4: (lv_arrayModifier_2_0= ruleArrayModifier )
+                    // InternalConceptLanguage.g:3718:4: (lv_arrayModifier_2_0= ruleArrayModifier )
                     {
-                    // InternalConceptLanguage.g:3338:4: (lv_arrayModifier_2_0= ruleArrayModifier )
-                    // InternalConceptLanguage.g:3339:5: lv_arrayModifier_2_0= ruleArrayModifier
+                    // InternalConceptLanguage.g:3718:4: (lv_arrayModifier_2_0= ruleArrayModifier )
+                    // InternalConceptLanguage.g:3719:5: lv_arrayModifier_2_0= ruleArrayModifier
                     {
 
                     					newCompositeNode(grammarAccess.getResourcePropertyAccess().getArrayModifierArrayModifierParserRuleCall_2_0());
@@ -8252,61 +9223,208 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalConceptLanguage.g:3356:3: (otherlv_3= 'description' ( (lv_description_4_0= ruleEString ) ) )?
-            int alt47=2;
-            int LA47_0 = input.LA(1);
+            // InternalConceptLanguage.g:3736:3: ( ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )* ) ) )
+            // InternalConceptLanguage.g:3737:4: ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )* ) )
+            {
+            // InternalConceptLanguage.g:3737:4: ( ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )* ) )
+            // InternalConceptLanguage.g:3738:5: ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )* )
+            {
+             
+            				  getUnorderedGroupHelper().enter(grammarAccess.getResourcePropertyAccess().getUnorderedGroup_3());
+            				
+            // InternalConceptLanguage.g:3741:5: ( ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )* )
+            // InternalConceptLanguage.g:3742:6: ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )*
+            {
+            // InternalConceptLanguage.g:3742:6: ( ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) ) | ({...}? => ( ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) ) ) ) )*
+            loop47:
+            do {
+                int alt47=3;
+                int LA47_0 = input.LA(1);
 
-            if ( (LA47_0==15) ) {
-                alt47=1;
+                if ( LA47_0 == 15 && getUnorderedGroupHelper().canSelect(grammarAccess.getResourcePropertyAccess().getUnorderedGroup_3(), 0) ) {
+                    alt47=1;
+                }
+                else if ( LA47_0 == 44 && getUnorderedGroupHelper().canSelect(grammarAccess.getResourcePropertyAccess().getUnorderedGroup_3(), 1) ) {
+                    alt47=2;
+                }
+
+
+                switch (alt47) {
+            	case 1 :
+            	    // InternalConceptLanguage.g:3743:4: ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) )
+            	    {
+            	    // InternalConceptLanguage.g:3743:4: ({...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:3744:5: {...}? => ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) )
+            	    {
+            	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getResourcePropertyAccess().getUnorderedGroup_3(), 0) ) {
+            	        throw new FailedPredicateException(input, "ruleResourceProperty", "getUnorderedGroupHelper().canSelect(grammarAccess.getResourcePropertyAccess().getUnorderedGroup_3(), 0)");
+            	    }
+            	    // InternalConceptLanguage.g:3744:113: ( ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) ) )
+            	    // InternalConceptLanguage.g:3745:6: ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) )
+            	    {
+
+            	    						getUnorderedGroupHelper().select(grammarAccess.getResourcePropertyAccess().getUnorderedGroup_3(), 0);
+            	    					
+            	    // InternalConceptLanguage.g:3748:9: ({...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) ) )
+            	    // InternalConceptLanguage.g:3748:10: {...}? => (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) )
+            	    {
+            	    if ( !((true)) ) {
+            	        throw new FailedPredicateException(input, "ruleResourceProperty", "true");
+            	    }
+            	    // InternalConceptLanguage.g:3748:19: (otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) ) )
+            	    // InternalConceptLanguage.g:3748:20: otherlv_4= 'description' ( (lv_description_5_0= ruleEString ) )
+            	    {
+            	    otherlv_4=(Token)match(input,15,FOLLOW_5); 
+
+            	    									newLeafNode(otherlv_4, grammarAccess.getResourcePropertyAccess().getDescriptionKeyword_3_0_0());
+            	    								
+            	    // InternalConceptLanguage.g:3752:9: ( (lv_description_5_0= ruleEString ) )
+            	    // InternalConceptLanguage.g:3753:10: (lv_description_5_0= ruleEString )
+            	    {
+            	    // InternalConceptLanguage.g:3753:10: (lv_description_5_0= ruleEString )
+            	    // InternalConceptLanguage.g:3754:11: lv_description_5_0= ruleEString
+            	    {
+
+            	    											newCompositeNode(grammarAccess.getResourcePropertyAccess().getDescriptionEStringParserRuleCall_3_0_1_0());
+            	    										
+            	    pushFollow(FOLLOW_48);
+            	    lv_description_5_0=ruleEString();
+
+            	    state._fsp--;
+
+
+            	    											if (current==null) {
+            	    												current = createModelElementForParent(grammarAccess.getResourcePropertyRule());
+            	    											}
+            	    											set(
+            	    												current,
+            	    												"description",
+            	    												lv_description_5_0,
+            	    												"de.dlr.sc.virsat.model.concept.ConceptLanguage.EString");
+            	    											afterParserOrEnumRuleCall();
+            	    										
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+
+            	     
+            	    						getUnorderedGroupHelper().returnFromSelection(grammarAccess.getResourcePropertyAccess().getUnorderedGroup_3());
+            	    					
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+            	    break;
+            	case 2 :
+            	    // InternalConceptLanguage.g:3777:4: ({...}? => ( ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) ) ) )
+            	    {
+            	    // InternalConceptLanguage.g:3777:4: ({...}? => ( ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) ) ) )
+            	    // InternalConceptLanguage.g:3778:5: {...}? => ( ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) ) )
+            	    {
+            	    if ( ! getUnorderedGroupHelper().canSelect(grammarAccess.getResourcePropertyAccess().getUnorderedGroup_3(), 1) ) {
+            	        throw new FailedPredicateException(input, "ruleResourceProperty", "getUnorderedGroupHelper().canSelect(grammarAccess.getResourcePropertyAccess().getUnorderedGroup_3(), 1)");
+            	    }
+            	    // InternalConceptLanguage.g:3778:113: ( ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) ) )
+            	    // InternalConceptLanguage.g:3779:6: ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) )
+            	    {
+
+            	    						getUnorderedGroupHelper().select(grammarAccess.getResourcePropertyAccess().getUnorderedGroup_3(), 1);
+            	    					
+            	    // InternalConceptLanguage.g:3782:9: ({...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) ) )
+            	    // InternalConceptLanguage.g:3782:10: {...}? => (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) )
+            	    {
+            	    if ( !((true)) ) {
+            	        throw new FailedPredicateException(input, "ruleResourceProperty", "true");
+            	    }
+            	    // InternalConceptLanguage.g:3782:19: (otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) ) )
+            	    // InternalConceptLanguage.g:3782:20: otherlv_6= 'verification' ( (lv_verification_7_0= ruleVerificationTypeSpecification ) )
+            	    {
+            	    otherlv_6=(Token)match(input,44,FOLLOW_3); 
+
+            	    									newLeafNode(otherlv_6, grammarAccess.getResourcePropertyAccess().getVerificationKeyword_3_1_0());
+            	    								
+            	    // InternalConceptLanguage.g:3786:9: ( (lv_verification_7_0= ruleVerificationTypeSpecification ) )
+            	    // InternalConceptLanguage.g:3787:10: (lv_verification_7_0= ruleVerificationTypeSpecification )
+            	    {
+            	    // InternalConceptLanguage.g:3787:10: (lv_verification_7_0= ruleVerificationTypeSpecification )
+            	    // InternalConceptLanguage.g:3788:11: lv_verification_7_0= ruleVerificationTypeSpecification
+            	    {
+
+            	    											newCompositeNode(grammarAccess.getResourcePropertyAccess().getVerificationVerificationTypeSpecificationParserRuleCall_3_1_1_0());
+            	    										
+            	    pushFollow(FOLLOW_48);
+            	    lv_verification_7_0=ruleVerificationTypeSpecification();
+
+            	    state._fsp--;
+
+
+            	    											if (current==null) {
+            	    												current = createModelElementForParent(grammarAccess.getResourcePropertyRule());
+            	    											}
+            	    											set(
+            	    												current,
+            	    												"verification",
+            	    												lv_verification_7_0,
+            	    												"de.dlr.sc.virsat.model.concept.ConceptLanguage.VerificationTypeSpecification");
+            	    											afterParserOrEnumRuleCall();
+            	    										
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+
+            	     
+            	    						getUnorderedGroupHelper().returnFromSelection(grammarAccess.getResourcePropertyAccess().getUnorderedGroup_3());
+            	    					
+
+            	    }
+
+
+            	    }
+
+
+            	    }
+            	    break;
+
+            	default :
+            	    break loop47;
+                }
+            } while (true);
+
+
             }
-            switch (alt47) {
-                case 1 :
-                    // InternalConceptLanguage.g:3357:4: otherlv_3= 'description' ( (lv_description_4_0= ruleEString ) )
-                    {
-                    otherlv_3=(Token)match(input,15,FOLLOW_5); 
 
-                    				newLeafNode(otherlv_3, grammarAccess.getResourcePropertyAccess().getDescriptionKeyword_3_0());
-                    			
-                    // InternalConceptLanguage.g:3361:4: ( (lv_description_4_0= ruleEString ) )
-                    // InternalConceptLanguage.g:3362:5: (lv_description_4_0= ruleEString )
-                    {
-                    // InternalConceptLanguage.g:3362:5: (lv_description_4_0= ruleEString )
-                    // InternalConceptLanguage.g:3363:6: lv_description_4_0= ruleEString
-                    {
-
-                    						newCompositeNode(grammarAccess.getResourcePropertyAccess().getDescriptionEStringParserRuleCall_3_1_0());
-                    					
-                    pushFollow(FOLLOW_13);
-                    lv_description_4_0=ruleEString();
-
-                    state._fsp--;
-
-
-                    						if (current==null) {
-                    							current = createModelElementForParent(grammarAccess.getResourcePropertyRule());
-                    						}
-                    						set(
-                    							current,
-                    							"description",
-                    							lv_description_4_0,
-                    							"de.dlr.sc.virsat.model.concept.ConceptLanguage.EString");
-                    						afterParserOrEnumRuleCall();
-                    					
-
-                    }
-
-
-                    }
-
-
-                    }
-                    break;
 
             }
 
-            otherlv_5=(Token)match(input,22,FOLLOW_2); 
+             
+            				  getUnorderedGroupHelper().leave(grammarAccess.getResourcePropertyAccess().getUnorderedGroup_3());
+            				
 
-            			newLeafNode(otherlv_5, grammarAccess.getResourcePropertyAccess().getSemicolonKeyword_4());
+            }
+
+            otherlv_8=(Token)match(input,22,FOLLOW_2); 
+
+            			newLeafNode(otherlv_8, grammarAccess.getResourcePropertyAccess().getSemicolonKeyword_4());
             		
 
             }
@@ -8331,7 +9449,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleEquationDefinition"
-    // InternalConceptLanguage.g:3389:1: entryRuleEquationDefinition returns [EObject current=null] : iv_ruleEquationDefinition= ruleEquationDefinition EOF ;
+    // InternalConceptLanguage.g:3826:1: entryRuleEquationDefinition returns [EObject current=null] : iv_ruleEquationDefinition= ruleEquationDefinition EOF ;
     public final EObject entryRuleEquationDefinition() throws RecognitionException {
         EObject current = null;
 
@@ -8339,8 +9457,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:3389:59: (iv_ruleEquationDefinition= ruleEquationDefinition EOF )
-            // InternalConceptLanguage.g:3390:2: iv_ruleEquationDefinition= ruleEquationDefinition EOF
+            // InternalConceptLanguage.g:3826:59: (iv_ruleEquationDefinition= ruleEquationDefinition EOF )
+            // InternalConceptLanguage.g:3827:2: iv_ruleEquationDefinition= ruleEquationDefinition EOF
             {
              newCompositeNode(grammarAccess.getEquationDefinitionRule()); 
             pushFollow(FOLLOW_1);
@@ -8367,7 +9485,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleEquationDefinition"
-    // InternalConceptLanguage.g:3396:1: ruleEquationDefinition returns [EObject current=null] : ( ( (lv_result_0_0= ruleEquationDefinitionResult ) ) otherlv_1= '=' ( (lv_expression_2_0= ruleAdditionAndSubtraction ) ) otherlv_3= ';' ) ;
+    // InternalConceptLanguage.g:3833:1: ruleEquationDefinition returns [EObject current=null] : ( ( (lv_result_0_0= ruleEquationDefinitionResult ) ) otherlv_1= '=' ( (lv_expression_2_0= ruleAdditionAndSubtraction ) ) otherlv_3= ';' ) ;
     public final EObject ruleEquationDefinition() throws RecognitionException {
         EObject current = null;
 
@@ -8382,17 +9500,17 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:3402:2: ( ( ( (lv_result_0_0= ruleEquationDefinitionResult ) ) otherlv_1= '=' ( (lv_expression_2_0= ruleAdditionAndSubtraction ) ) otherlv_3= ';' ) )
-            // InternalConceptLanguage.g:3403:2: ( ( (lv_result_0_0= ruleEquationDefinitionResult ) ) otherlv_1= '=' ( (lv_expression_2_0= ruleAdditionAndSubtraction ) ) otherlv_3= ';' )
+            // InternalConceptLanguage.g:3839:2: ( ( ( (lv_result_0_0= ruleEquationDefinitionResult ) ) otherlv_1= '=' ( (lv_expression_2_0= ruleAdditionAndSubtraction ) ) otherlv_3= ';' ) )
+            // InternalConceptLanguage.g:3840:2: ( ( (lv_result_0_0= ruleEquationDefinitionResult ) ) otherlv_1= '=' ( (lv_expression_2_0= ruleAdditionAndSubtraction ) ) otherlv_3= ';' )
             {
-            // InternalConceptLanguage.g:3403:2: ( ( (lv_result_0_0= ruleEquationDefinitionResult ) ) otherlv_1= '=' ( (lv_expression_2_0= ruleAdditionAndSubtraction ) ) otherlv_3= ';' )
-            // InternalConceptLanguage.g:3404:3: ( (lv_result_0_0= ruleEquationDefinitionResult ) ) otherlv_1= '=' ( (lv_expression_2_0= ruleAdditionAndSubtraction ) ) otherlv_3= ';'
+            // InternalConceptLanguage.g:3840:2: ( ( (lv_result_0_0= ruleEquationDefinitionResult ) ) otherlv_1= '=' ( (lv_expression_2_0= ruleAdditionAndSubtraction ) ) otherlv_3= ';' )
+            // InternalConceptLanguage.g:3841:3: ( (lv_result_0_0= ruleEquationDefinitionResult ) ) otherlv_1= '=' ( (lv_expression_2_0= ruleAdditionAndSubtraction ) ) otherlv_3= ';'
             {
-            // InternalConceptLanguage.g:3404:3: ( (lv_result_0_0= ruleEquationDefinitionResult ) )
-            // InternalConceptLanguage.g:3405:4: (lv_result_0_0= ruleEquationDefinitionResult )
+            // InternalConceptLanguage.g:3841:3: ( (lv_result_0_0= ruleEquationDefinitionResult ) )
+            // InternalConceptLanguage.g:3842:4: (lv_result_0_0= ruleEquationDefinitionResult )
             {
-            // InternalConceptLanguage.g:3405:4: (lv_result_0_0= ruleEquationDefinitionResult )
-            // InternalConceptLanguage.g:3406:5: lv_result_0_0= ruleEquationDefinitionResult
+            // InternalConceptLanguage.g:3842:4: (lv_result_0_0= ruleEquationDefinitionResult )
+            // InternalConceptLanguage.g:3843:5: lv_result_0_0= ruleEquationDefinitionResult
             {
 
             					newCompositeNode(grammarAccess.getEquationDefinitionAccess().getResultEquationDefinitionResultParserRuleCall_0_0());
@@ -8419,15 +9537,15 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_1=(Token)match(input,51,FOLLOW_50); 
+            otherlv_1=(Token)match(input,53,FOLLOW_50); 
 
             			newLeafNode(otherlv_1, grammarAccess.getEquationDefinitionAccess().getEqualsSignKeyword_1());
             		
-            // InternalConceptLanguage.g:3427:3: ( (lv_expression_2_0= ruleAdditionAndSubtraction ) )
-            // InternalConceptLanguage.g:3428:4: (lv_expression_2_0= ruleAdditionAndSubtraction )
+            // InternalConceptLanguage.g:3864:3: ( (lv_expression_2_0= ruleAdditionAndSubtraction ) )
+            // InternalConceptLanguage.g:3865:4: (lv_expression_2_0= ruleAdditionAndSubtraction )
             {
-            // InternalConceptLanguage.g:3428:4: (lv_expression_2_0= ruleAdditionAndSubtraction )
-            // InternalConceptLanguage.g:3429:5: lv_expression_2_0= ruleAdditionAndSubtraction
+            // InternalConceptLanguage.g:3865:4: (lv_expression_2_0= ruleAdditionAndSubtraction )
+            // InternalConceptLanguage.g:3866:5: lv_expression_2_0= ruleAdditionAndSubtraction
             {
 
             					newCompositeNode(grammarAccess.getEquationDefinitionAccess().getExpressionAdditionAndSubtractionParserRuleCall_2_0());
@@ -8481,7 +9599,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleEquationDefinitionResult"
-    // InternalConceptLanguage.g:3454:1: entryRuleEquationDefinitionResult returns [EObject current=null] : iv_ruleEquationDefinitionResult= ruleEquationDefinitionResult EOF ;
+    // InternalConceptLanguage.g:3891:1: entryRuleEquationDefinitionResult returns [EObject current=null] : iv_ruleEquationDefinitionResult= ruleEquationDefinitionResult EOF ;
     public final EObject entryRuleEquationDefinitionResult() throws RecognitionException {
         EObject current = null;
 
@@ -8489,8 +9607,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:3454:65: (iv_ruleEquationDefinitionResult= ruleEquationDefinitionResult EOF )
-            // InternalConceptLanguage.g:3455:2: iv_ruleEquationDefinitionResult= ruleEquationDefinitionResult EOF
+            // InternalConceptLanguage.g:3891:65: (iv_ruleEquationDefinitionResult= ruleEquationDefinitionResult EOF )
+            // InternalConceptLanguage.g:3892:2: iv_ruleEquationDefinitionResult= ruleEquationDefinitionResult EOF
             {
              newCompositeNode(grammarAccess.getEquationDefinitionResultRule()); 
             pushFollow(FOLLOW_1);
@@ -8517,7 +9635,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleEquationDefinitionResult"
-    // InternalConceptLanguage.g:3461:1: ruleEquationDefinitionResult returns [EObject current=null] : (this_TypeDefinitionResult_0= ruleTypeDefinitionResult | this_EquationIntermediateResult_1= ruleEquationIntermediateResult ) ;
+    // InternalConceptLanguage.g:3898:1: ruleEquationDefinitionResult returns [EObject current=null] : (this_TypeDefinitionResult_0= ruleTypeDefinitionResult | this_EquationIntermediateResult_1= ruleEquationIntermediateResult ) ;
     public final EObject ruleEquationDefinitionResult() throws RecognitionException {
         EObject current = null;
 
@@ -8530,17 +9648,17 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:3467:2: ( (this_TypeDefinitionResult_0= ruleTypeDefinitionResult | this_EquationIntermediateResult_1= ruleEquationIntermediateResult ) )
-            // InternalConceptLanguage.g:3468:2: (this_TypeDefinitionResult_0= ruleTypeDefinitionResult | this_EquationIntermediateResult_1= ruleEquationIntermediateResult )
+            // InternalConceptLanguage.g:3904:2: ( (this_TypeDefinitionResult_0= ruleTypeDefinitionResult | this_EquationIntermediateResult_1= ruleEquationIntermediateResult ) )
+            // InternalConceptLanguage.g:3905:2: (this_TypeDefinitionResult_0= ruleTypeDefinitionResult | this_EquationIntermediateResult_1= ruleEquationIntermediateResult )
             {
-            // InternalConceptLanguage.g:3468:2: (this_TypeDefinitionResult_0= ruleTypeDefinitionResult | this_EquationIntermediateResult_1= ruleEquationIntermediateResult )
+            // InternalConceptLanguage.g:3905:2: (this_TypeDefinitionResult_0= ruleTypeDefinitionResult | this_EquationIntermediateResult_1= ruleEquationIntermediateResult )
             int alt48=2;
             int LA48_0 = input.LA(1);
 
-            if ( (LA48_0==55) ) {
+            if ( (LA48_0==57) ) {
                 alt48=1;
             }
-            else if ( (LA48_0==56) ) {
+            else if ( (LA48_0==58) ) {
                 alt48=2;
             }
             else {
@@ -8551,7 +9669,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             }
             switch (alt48) {
                 case 1 :
-                    // InternalConceptLanguage.g:3469:3: this_TypeDefinitionResult_0= ruleTypeDefinitionResult
+                    // InternalConceptLanguage.g:3906:3: this_TypeDefinitionResult_0= ruleTypeDefinitionResult
                     {
 
                     			newCompositeNode(grammarAccess.getEquationDefinitionResultAccess().getTypeDefinitionResultParserRuleCall_0());
@@ -8569,7 +9687,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalConceptLanguage.g:3478:3: this_EquationIntermediateResult_1= ruleEquationIntermediateResult
+                    // InternalConceptLanguage.g:3915:3: this_EquationIntermediateResult_1= ruleEquationIntermediateResult
                     {
 
                     			newCompositeNode(grammarAccess.getEquationDefinitionResultAccess().getEquationIntermediateResultParserRuleCall_1());
@@ -8609,7 +9727,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleTypeDefinitionResult"
-    // InternalConceptLanguage.g:3490:1: entryRuleTypeDefinitionResult returns [EObject current=null] : iv_ruleTypeDefinitionResult= ruleTypeDefinitionResult EOF ;
+    // InternalConceptLanguage.g:3927:1: entryRuleTypeDefinitionResult returns [EObject current=null] : iv_ruleTypeDefinitionResult= ruleTypeDefinitionResult EOF ;
     public final EObject entryRuleTypeDefinitionResult() throws RecognitionException {
         EObject current = null;
 
@@ -8617,8 +9735,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:3490:61: (iv_ruleTypeDefinitionResult= ruleTypeDefinitionResult EOF )
-            // InternalConceptLanguage.g:3491:2: iv_ruleTypeDefinitionResult= ruleTypeDefinitionResult EOF
+            // InternalConceptLanguage.g:3927:61: (iv_ruleTypeDefinitionResult= ruleTypeDefinitionResult EOF )
+            // InternalConceptLanguage.g:3928:2: iv_ruleTypeDefinitionResult= ruleTypeDefinitionResult EOF
             {
              newCompositeNode(grammarAccess.getTypeDefinitionResultRule()); 
             pushFollow(FOLLOW_1);
@@ -8645,7 +9763,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleTypeDefinitionResult"
-    // InternalConceptLanguage.g:3497:1: ruleTypeDefinitionResult returns [EObject current=null] : ( () otherlv_1= 'Ref:' ( ( ruleQualifiedName ) ) ) ;
+    // InternalConceptLanguage.g:3934:1: ruleTypeDefinitionResult returns [EObject current=null] : ( () otherlv_1= 'Ref:' ( ( ruleQualifiedName ) ) ) ;
     public final EObject ruleTypeDefinitionResult() throws RecognitionException {
         EObject current = null;
 
@@ -8655,14 +9773,14 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:3503:2: ( ( () otherlv_1= 'Ref:' ( ( ruleQualifiedName ) ) ) )
-            // InternalConceptLanguage.g:3504:2: ( () otherlv_1= 'Ref:' ( ( ruleQualifiedName ) ) )
+            // InternalConceptLanguage.g:3940:2: ( ( () otherlv_1= 'Ref:' ( ( ruleQualifiedName ) ) ) )
+            // InternalConceptLanguage.g:3941:2: ( () otherlv_1= 'Ref:' ( ( ruleQualifiedName ) ) )
             {
-            // InternalConceptLanguage.g:3504:2: ( () otherlv_1= 'Ref:' ( ( ruleQualifiedName ) ) )
-            // InternalConceptLanguage.g:3505:3: () otherlv_1= 'Ref:' ( ( ruleQualifiedName ) )
+            // InternalConceptLanguage.g:3941:2: ( () otherlv_1= 'Ref:' ( ( ruleQualifiedName ) ) )
+            // InternalConceptLanguage.g:3942:3: () otherlv_1= 'Ref:' ( ( ruleQualifiedName ) )
             {
-            // InternalConceptLanguage.g:3505:3: ()
-            // InternalConceptLanguage.g:3506:4: 
+            // InternalConceptLanguage.g:3942:3: ()
+            // InternalConceptLanguage.g:3943:4: 
             {
 
             				current = forceCreateModelElement(
@@ -8672,15 +9790,15 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_1=(Token)match(input,55,FOLLOW_3); 
+            otherlv_1=(Token)match(input,57,FOLLOW_3); 
 
             			newLeafNode(otherlv_1, grammarAccess.getTypeDefinitionResultAccess().getRefKeyword_1());
             		
-            // InternalConceptLanguage.g:3516:3: ( ( ruleQualifiedName ) )
-            // InternalConceptLanguage.g:3517:4: ( ruleQualifiedName )
+            // InternalConceptLanguage.g:3953:3: ( ( ruleQualifiedName ) )
+            // InternalConceptLanguage.g:3954:4: ( ruleQualifiedName )
             {
-            // InternalConceptLanguage.g:3517:4: ( ruleQualifiedName )
-            // InternalConceptLanguage.g:3518:5: ruleQualifiedName
+            // InternalConceptLanguage.g:3954:4: ( ruleQualifiedName )
+            // InternalConceptLanguage.g:3955:5: ruleQualifiedName
             {
 
             					if (current==null) {
@@ -8727,7 +9845,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleEquationIntermediateResult"
-    // InternalConceptLanguage.g:3536:1: entryRuleEquationIntermediateResult returns [EObject current=null] : iv_ruleEquationIntermediateResult= ruleEquationIntermediateResult EOF ;
+    // InternalConceptLanguage.g:3973:1: entryRuleEquationIntermediateResult returns [EObject current=null] : iv_ruleEquationIntermediateResult= ruleEquationIntermediateResult EOF ;
     public final EObject entryRuleEquationIntermediateResult() throws RecognitionException {
         EObject current = null;
 
@@ -8735,8 +9853,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:3536:67: (iv_ruleEquationIntermediateResult= ruleEquationIntermediateResult EOF )
-            // InternalConceptLanguage.g:3537:2: iv_ruleEquationIntermediateResult= ruleEquationIntermediateResult EOF
+            // InternalConceptLanguage.g:3973:67: (iv_ruleEquationIntermediateResult= ruleEquationIntermediateResult EOF )
+            // InternalConceptLanguage.g:3974:2: iv_ruleEquationIntermediateResult= ruleEquationIntermediateResult EOF
             {
              newCompositeNode(grammarAccess.getEquationIntermediateResultRule()); 
             pushFollow(FOLLOW_1);
@@ -8763,7 +9881,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleEquationIntermediateResult"
-    // InternalConceptLanguage.g:3543:1: ruleEquationIntermediateResult returns [EObject current=null] : ( () otherlv_1= 'Calc:' ( (lv_name_2_0= RULE_ID ) ) ) ;
+    // InternalConceptLanguage.g:3980:1: ruleEquationIntermediateResult returns [EObject current=null] : ( () otherlv_1= 'Calc:' ( (lv_name_2_0= RULE_ID ) ) ) ;
     public final EObject ruleEquationIntermediateResult() throws RecognitionException {
         EObject current = null;
 
@@ -8774,14 +9892,14 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:3549:2: ( ( () otherlv_1= 'Calc:' ( (lv_name_2_0= RULE_ID ) ) ) )
-            // InternalConceptLanguage.g:3550:2: ( () otherlv_1= 'Calc:' ( (lv_name_2_0= RULE_ID ) ) )
+            // InternalConceptLanguage.g:3986:2: ( ( () otherlv_1= 'Calc:' ( (lv_name_2_0= RULE_ID ) ) ) )
+            // InternalConceptLanguage.g:3987:2: ( () otherlv_1= 'Calc:' ( (lv_name_2_0= RULE_ID ) ) )
             {
-            // InternalConceptLanguage.g:3550:2: ( () otherlv_1= 'Calc:' ( (lv_name_2_0= RULE_ID ) ) )
-            // InternalConceptLanguage.g:3551:3: () otherlv_1= 'Calc:' ( (lv_name_2_0= RULE_ID ) )
+            // InternalConceptLanguage.g:3987:2: ( () otherlv_1= 'Calc:' ( (lv_name_2_0= RULE_ID ) ) )
+            // InternalConceptLanguage.g:3988:3: () otherlv_1= 'Calc:' ( (lv_name_2_0= RULE_ID ) )
             {
-            // InternalConceptLanguage.g:3551:3: ()
-            // InternalConceptLanguage.g:3552:4: 
+            // InternalConceptLanguage.g:3988:3: ()
+            // InternalConceptLanguage.g:3989:4: 
             {
 
             				current = forceCreateModelElement(
@@ -8791,15 +9909,15 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_1=(Token)match(input,56,FOLLOW_3); 
+            otherlv_1=(Token)match(input,58,FOLLOW_3); 
 
             			newLeafNode(otherlv_1, grammarAccess.getEquationIntermediateResultAccess().getCalcKeyword_1());
             		
-            // InternalConceptLanguage.g:3562:3: ( (lv_name_2_0= RULE_ID ) )
-            // InternalConceptLanguage.g:3563:4: (lv_name_2_0= RULE_ID )
+            // InternalConceptLanguage.g:3999:3: ( (lv_name_2_0= RULE_ID ) )
+            // InternalConceptLanguage.g:4000:4: (lv_name_2_0= RULE_ID )
             {
-            // InternalConceptLanguage.g:3563:4: (lv_name_2_0= RULE_ID )
-            // InternalConceptLanguage.g:3564:5: lv_name_2_0= RULE_ID
+            // InternalConceptLanguage.g:4000:4: (lv_name_2_0= RULE_ID )
+            // InternalConceptLanguage.g:4001:5: lv_name_2_0= RULE_ID
             {
             lv_name_2_0=(Token)match(input,RULE_ID,FOLLOW_2); 
 
@@ -8844,7 +9962,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleAdditionAndSubtraction"
-    // InternalConceptLanguage.g:3584:1: entryRuleAdditionAndSubtraction returns [EObject current=null] : iv_ruleAdditionAndSubtraction= ruleAdditionAndSubtraction EOF ;
+    // InternalConceptLanguage.g:4021:1: entryRuleAdditionAndSubtraction returns [EObject current=null] : iv_ruleAdditionAndSubtraction= ruleAdditionAndSubtraction EOF ;
     public final EObject entryRuleAdditionAndSubtraction() throws RecognitionException {
         EObject current = null;
 
@@ -8852,8 +9970,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:3584:63: (iv_ruleAdditionAndSubtraction= ruleAdditionAndSubtraction EOF )
-            // InternalConceptLanguage.g:3585:2: iv_ruleAdditionAndSubtraction= ruleAdditionAndSubtraction EOF
+            // InternalConceptLanguage.g:4021:63: (iv_ruleAdditionAndSubtraction= ruleAdditionAndSubtraction EOF )
+            // InternalConceptLanguage.g:4022:2: iv_ruleAdditionAndSubtraction= ruleAdditionAndSubtraction EOF
             {
              newCompositeNode(grammarAccess.getAdditionAndSubtractionRule()); 
             pushFollow(FOLLOW_1);
@@ -8880,7 +9998,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleAdditionAndSubtraction"
-    // InternalConceptLanguage.g:3591:1: ruleAdditionAndSubtraction returns [EObject current=null] : (this_MultiplicationAndDivision_0= ruleMultiplicationAndDivision ( () ( ( (lv_operator_2_1= ruleOperatorPlus | lv_operator_2_2= ruleOperatorMinus ) ) ) ( (lv_right_3_0= ruleMultiplicationAndDivision ) ) )* ) ;
+    // InternalConceptLanguage.g:4028:1: ruleAdditionAndSubtraction returns [EObject current=null] : (this_MultiplicationAndDivision_0= ruleMultiplicationAndDivision ( () ( ( (lv_operator_2_1= ruleOperatorPlus | lv_operator_2_2= ruleOperatorMinus ) ) ) ( (lv_right_3_0= ruleMultiplicationAndDivision ) ) )* ) ;
     public final EObject ruleAdditionAndSubtraction() throws RecognitionException {
         EObject current = null;
 
@@ -8897,11 +10015,11 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:3597:2: ( (this_MultiplicationAndDivision_0= ruleMultiplicationAndDivision ( () ( ( (lv_operator_2_1= ruleOperatorPlus | lv_operator_2_2= ruleOperatorMinus ) ) ) ( (lv_right_3_0= ruleMultiplicationAndDivision ) ) )* ) )
-            // InternalConceptLanguage.g:3598:2: (this_MultiplicationAndDivision_0= ruleMultiplicationAndDivision ( () ( ( (lv_operator_2_1= ruleOperatorPlus | lv_operator_2_2= ruleOperatorMinus ) ) ) ( (lv_right_3_0= ruleMultiplicationAndDivision ) ) )* )
+            // InternalConceptLanguage.g:4034:2: ( (this_MultiplicationAndDivision_0= ruleMultiplicationAndDivision ( () ( ( (lv_operator_2_1= ruleOperatorPlus | lv_operator_2_2= ruleOperatorMinus ) ) ) ( (lv_right_3_0= ruleMultiplicationAndDivision ) ) )* ) )
+            // InternalConceptLanguage.g:4035:2: (this_MultiplicationAndDivision_0= ruleMultiplicationAndDivision ( () ( ( (lv_operator_2_1= ruleOperatorPlus | lv_operator_2_2= ruleOperatorMinus ) ) ) ( (lv_right_3_0= ruleMultiplicationAndDivision ) ) )* )
             {
-            // InternalConceptLanguage.g:3598:2: (this_MultiplicationAndDivision_0= ruleMultiplicationAndDivision ( () ( ( (lv_operator_2_1= ruleOperatorPlus | lv_operator_2_2= ruleOperatorMinus ) ) ) ( (lv_right_3_0= ruleMultiplicationAndDivision ) ) )* )
-            // InternalConceptLanguage.g:3599:3: this_MultiplicationAndDivision_0= ruleMultiplicationAndDivision ( () ( ( (lv_operator_2_1= ruleOperatorPlus | lv_operator_2_2= ruleOperatorMinus ) ) ) ( (lv_right_3_0= ruleMultiplicationAndDivision ) ) )*
+            // InternalConceptLanguage.g:4035:2: (this_MultiplicationAndDivision_0= ruleMultiplicationAndDivision ( () ( ( (lv_operator_2_1= ruleOperatorPlus | lv_operator_2_2= ruleOperatorMinus ) ) ) ( (lv_right_3_0= ruleMultiplicationAndDivision ) ) )* )
+            // InternalConceptLanguage.g:4036:3: this_MultiplicationAndDivision_0= ruleMultiplicationAndDivision ( () ( ( (lv_operator_2_1= ruleOperatorPlus | lv_operator_2_2= ruleOperatorMinus ) ) ) ( (lv_right_3_0= ruleMultiplicationAndDivision ) ) )*
             {
 
             			newCompositeNode(grammarAccess.getAdditionAndSubtractionAccess().getMultiplicationAndDivisionParserRuleCall_0());
@@ -8915,23 +10033,23 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             			current = this_MultiplicationAndDivision_0;
             			afterParserOrEnumRuleCall();
             		
-            // InternalConceptLanguage.g:3607:3: ( () ( ( (lv_operator_2_1= ruleOperatorPlus | lv_operator_2_2= ruleOperatorMinus ) ) ) ( (lv_right_3_0= ruleMultiplicationAndDivision ) ) )*
+            // InternalConceptLanguage.g:4044:3: ( () ( ( (lv_operator_2_1= ruleOperatorPlus | lv_operator_2_2= ruleOperatorMinus ) ) ) ( (lv_right_3_0= ruleMultiplicationAndDivision ) ) )*
             loop50:
             do {
                 int alt50=2;
                 int LA50_0 = input.LA(1);
 
-                if ( (LA50_0==62||LA50_0==66) ) {
+                if ( (LA50_0==64||LA50_0==68) ) {
                     alt50=1;
                 }
 
 
                 switch (alt50) {
             	case 1 :
-            	    // InternalConceptLanguage.g:3608:4: () ( ( (lv_operator_2_1= ruleOperatorPlus | lv_operator_2_2= ruleOperatorMinus ) ) ) ( (lv_right_3_0= ruleMultiplicationAndDivision ) )
+            	    // InternalConceptLanguage.g:4045:4: () ( ( (lv_operator_2_1= ruleOperatorPlus | lv_operator_2_2= ruleOperatorMinus ) ) ) ( (lv_right_3_0= ruleMultiplicationAndDivision ) )
             	    {
-            	    // InternalConceptLanguage.g:3608:4: ()
-            	    // InternalConceptLanguage.g:3609:5: 
+            	    // InternalConceptLanguage.g:4045:4: ()
+            	    // InternalConceptLanguage.g:4046:5: 
             	    {
 
             	    					current = forceCreateModelElementAndSet(
@@ -8941,20 +10059,20 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalConceptLanguage.g:3615:4: ( ( (lv_operator_2_1= ruleOperatorPlus | lv_operator_2_2= ruleOperatorMinus ) ) )
-            	    // InternalConceptLanguage.g:3616:5: ( (lv_operator_2_1= ruleOperatorPlus | lv_operator_2_2= ruleOperatorMinus ) )
+            	    // InternalConceptLanguage.g:4052:4: ( ( (lv_operator_2_1= ruleOperatorPlus | lv_operator_2_2= ruleOperatorMinus ) ) )
+            	    // InternalConceptLanguage.g:4053:5: ( (lv_operator_2_1= ruleOperatorPlus | lv_operator_2_2= ruleOperatorMinus ) )
             	    {
-            	    // InternalConceptLanguage.g:3616:5: ( (lv_operator_2_1= ruleOperatorPlus | lv_operator_2_2= ruleOperatorMinus ) )
-            	    // InternalConceptLanguage.g:3617:6: (lv_operator_2_1= ruleOperatorPlus | lv_operator_2_2= ruleOperatorMinus )
+            	    // InternalConceptLanguage.g:4053:5: ( (lv_operator_2_1= ruleOperatorPlus | lv_operator_2_2= ruleOperatorMinus ) )
+            	    // InternalConceptLanguage.g:4054:6: (lv_operator_2_1= ruleOperatorPlus | lv_operator_2_2= ruleOperatorMinus )
             	    {
-            	    // InternalConceptLanguage.g:3617:6: (lv_operator_2_1= ruleOperatorPlus | lv_operator_2_2= ruleOperatorMinus )
+            	    // InternalConceptLanguage.g:4054:6: (lv_operator_2_1= ruleOperatorPlus | lv_operator_2_2= ruleOperatorMinus )
             	    int alt49=2;
             	    int LA49_0 = input.LA(1);
 
-            	    if ( (LA49_0==66) ) {
+            	    if ( (LA49_0==68) ) {
             	        alt49=1;
             	    }
-            	    else if ( (LA49_0==62) ) {
+            	    else if ( (LA49_0==64) ) {
             	        alt49=2;
             	    }
             	    else {
@@ -8965,7 +10083,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	    }
             	    switch (alt49) {
             	        case 1 :
-            	            // InternalConceptLanguage.g:3618:7: lv_operator_2_1= ruleOperatorPlus
+            	            // InternalConceptLanguage.g:4055:7: lv_operator_2_1= ruleOperatorPlus
             	            {
 
             	            							newCompositeNode(grammarAccess.getAdditionAndSubtractionAccess().getOperatorOperatorPlusEnumRuleCall_1_1_0_0());
@@ -8990,7 +10108,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	            }
             	            break;
             	        case 2 :
-            	            // InternalConceptLanguage.g:3634:7: lv_operator_2_2= ruleOperatorMinus
+            	            // InternalConceptLanguage.g:4071:7: lv_operator_2_2= ruleOperatorMinus
             	            {
 
             	            							newCompositeNode(grammarAccess.getAdditionAndSubtractionAccess().getOperatorOperatorMinusEnumRuleCall_1_1_0_1());
@@ -9023,11 +10141,11 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalConceptLanguage.g:3652:4: ( (lv_right_3_0= ruleMultiplicationAndDivision ) )
-            	    // InternalConceptLanguage.g:3653:5: (lv_right_3_0= ruleMultiplicationAndDivision )
+            	    // InternalConceptLanguage.g:4089:4: ( (lv_right_3_0= ruleMultiplicationAndDivision ) )
+            	    // InternalConceptLanguage.g:4090:5: (lv_right_3_0= ruleMultiplicationAndDivision )
             	    {
-            	    // InternalConceptLanguage.g:3653:5: (lv_right_3_0= ruleMultiplicationAndDivision )
-            	    // InternalConceptLanguage.g:3654:6: lv_right_3_0= ruleMultiplicationAndDivision
+            	    // InternalConceptLanguage.g:4090:5: (lv_right_3_0= ruleMultiplicationAndDivision )
+            	    // InternalConceptLanguage.g:4091:6: lv_right_3_0= ruleMultiplicationAndDivision
             	    {
 
             	    						newCompositeNode(grammarAccess.getAdditionAndSubtractionAccess().getRightMultiplicationAndDivisionParserRuleCall_1_2_0());
@@ -9086,7 +10204,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleMultiplicationAndDivision"
-    // InternalConceptLanguage.g:3676:1: entryRuleMultiplicationAndDivision returns [EObject current=null] : iv_ruleMultiplicationAndDivision= ruleMultiplicationAndDivision EOF ;
+    // InternalConceptLanguage.g:4113:1: entryRuleMultiplicationAndDivision returns [EObject current=null] : iv_ruleMultiplicationAndDivision= ruleMultiplicationAndDivision EOF ;
     public final EObject entryRuleMultiplicationAndDivision() throws RecognitionException {
         EObject current = null;
 
@@ -9094,8 +10212,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:3676:66: (iv_ruleMultiplicationAndDivision= ruleMultiplicationAndDivision EOF )
-            // InternalConceptLanguage.g:3677:2: iv_ruleMultiplicationAndDivision= ruleMultiplicationAndDivision EOF
+            // InternalConceptLanguage.g:4113:66: (iv_ruleMultiplicationAndDivision= ruleMultiplicationAndDivision EOF )
+            // InternalConceptLanguage.g:4114:2: iv_ruleMultiplicationAndDivision= ruleMultiplicationAndDivision EOF
             {
              newCompositeNode(grammarAccess.getMultiplicationAndDivisionRule()); 
             pushFollow(FOLLOW_1);
@@ -9122,7 +10240,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleMultiplicationAndDivision"
-    // InternalConceptLanguage.g:3683:1: ruleMultiplicationAndDivision returns [EObject current=null] : (this_PowerFunction_0= rulePowerFunction ( () ( ( (lv_operator_2_1= ruleOperatorMultiply | lv_operator_2_2= ruleOperatorDivide ) ) ) ( (lv_right_3_0= rulePowerFunction ) ) )* ) ;
+    // InternalConceptLanguage.g:4120:1: ruleMultiplicationAndDivision returns [EObject current=null] : (this_PowerFunction_0= rulePowerFunction ( () ( ( (lv_operator_2_1= ruleOperatorMultiply | lv_operator_2_2= ruleOperatorDivide ) ) ) ( (lv_right_3_0= rulePowerFunction ) ) )* ) ;
     public final EObject ruleMultiplicationAndDivision() throws RecognitionException {
         EObject current = null;
 
@@ -9139,11 +10257,11 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:3689:2: ( (this_PowerFunction_0= rulePowerFunction ( () ( ( (lv_operator_2_1= ruleOperatorMultiply | lv_operator_2_2= ruleOperatorDivide ) ) ) ( (lv_right_3_0= rulePowerFunction ) ) )* ) )
-            // InternalConceptLanguage.g:3690:2: (this_PowerFunction_0= rulePowerFunction ( () ( ( (lv_operator_2_1= ruleOperatorMultiply | lv_operator_2_2= ruleOperatorDivide ) ) ) ( (lv_right_3_0= rulePowerFunction ) ) )* )
+            // InternalConceptLanguage.g:4126:2: ( (this_PowerFunction_0= rulePowerFunction ( () ( ( (lv_operator_2_1= ruleOperatorMultiply | lv_operator_2_2= ruleOperatorDivide ) ) ) ( (lv_right_3_0= rulePowerFunction ) ) )* ) )
+            // InternalConceptLanguage.g:4127:2: (this_PowerFunction_0= rulePowerFunction ( () ( ( (lv_operator_2_1= ruleOperatorMultiply | lv_operator_2_2= ruleOperatorDivide ) ) ) ( (lv_right_3_0= rulePowerFunction ) ) )* )
             {
-            // InternalConceptLanguage.g:3690:2: (this_PowerFunction_0= rulePowerFunction ( () ( ( (lv_operator_2_1= ruleOperatorMultiply | lv_operator_2_2= ruleOperatorDivide ) ) ) ( (lv_right_3_0= rulePowerFunction ) ) )* )
-            // InternalConceptLanguage.g:3691:3: this_PowerFunction_0= rulePowerFunction ( () ( ( (lv_operator_2_1= ruleOperatorMultiply | lv_operator_2_2= ruleOperatorDivide ) ) ) ( (lv_right_3_0= rulePowerFunction ) ) )*
+            // InternalConceptLanguage.g:4127:2: (this_PowerFunction_0= rulePowerFunction ( () ( ( (lv_operator_2_1= ruleOperatorMultiply | lv_operator_2_2= ruleOperatorDivide ) ) ) ( (lv_right_3_0= rulePowerFunction ) ) )* )
+            // InternalConceptLanguage.g:4128:3: this_PowerFunction_0= rulePowerFunction ( () ( ( (lv_operator_2_1= ruleOperatorMultiply | lv_operator_2_2= ruleOperatorDivide ) ) ) ( (lv_right_3_0= rulePowerFunction ) ) )*
             {
 
             			newCompositeNode(grammarAccess.getMultiplicationAndDivisionAccess().getPowerFunctionParserRuleCall_0());
@@ -9157,23 +10275,23 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             			current = this_PowerFunction_0;
             			afterParserOrEnumRuleCall();
             		
-            // InternalConceptLanguage.g:3699:3: ( () ( ( (lv_operator_2_1= ruleOperatorMultiply | lv_operator_2_2= ruleOperatorDivide ) ) ) ( (lv_right_3_0= rulePowerFunction ) ) )*
+            // InternalConceptLanguage.g:4136:3: ( () ( ( (lv_operator_2_1= ruleOperatorMultiply | lv_operator_2_2= ruleOperatorDivide ) ) ) ( (lv_right_3_0= rulePowerFunction ) ) )*
             loop52:
             do {
                 int alt52=2;
                 int LA52_0 = input.LA(1);
 
-                if ( ((LA52_0>=67 && LA52_0<=68)) ) {
+                if ( ((LA52_0>=69 && LA52_0<=70)) ) {
                     alt52=1;
                 }
 
 
                 switch (alt52) {
             	case 1 :
-            	    // InternalConceptLanguage.g:3700:4: () ( ( (lv_operator_2_1= ruleOperatorMultiply | lv_operator_2_2= ruleOperatorDivide ) ) ) ( (lv_right_3_0= rulePowerFunction ) )
+            	    // InternalConceptLanguage.g:4137:4: () ( ( (lv_operator_2_1= ruleOperatorMultiply | lv_operator_2_2= ruleOperatorDivide ) ) ) ( (lv_right_3_0= rulePowerFunction ) )
             	    {
-            	    // InternalConceptLanguage.g:3700:4: ()
-            	    // InternalConceptLanguage.g:3701:5: 
+            	    // InternalConceptLanguage.g:4137:4: ()
+            	    // InternalConceptLanguage.g:4138:5: 
             	    {
 
             	    					current = forceCreateModelElementAndSet(
@@ -9183,20 +10301,20 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalConceptLanguage.g:3707:4: ( ( (lv_operator_2_1= ruleOperatorMultiply | lv_operator_2_2= ruleOperatorDivide ) ) )
-            	    // InternalConceptLanguage.g:3708:5: ( (lv_operator_2_1= ruleOperatorMultiply | lv_operator_2_2= ruleOperatorDivide ) )
+            	    // InternalConceptLanguage.g:4144:4: ( ( (lv_operator_2_1= ruleOperatorMultiply | lv_operator_2_2= ruleOperatorDivide ) ) )
+            	    // InternalConceptLanguage.g:4145:5: ( (lv_operator_2_1= ruleOperatorMultiply | lv_operator_2_2= ruleOperatorDivide ) )
             	    {
-            	    // InternalConceptLanguage.g:3708:5: ( (lv_operator_2_1= ruleOperatorMultiply | lv_operator_2_2= ruleOperatorDivide ) )
-            	    // InternalConceptLanguage.g:3709:6: (lv_operator_2_1= ruleOperatorMultiply | lv_operator_2_2= ruleOperatorDivide )
+            	    // InternalConceptLanguage.g:4145:5: ( (lv_operator_2_1= ruleOperatorMultiply | lv_operator_2_2= ruleOperatorDivide ) )
+            	    // InternalConceptLanguage.g:4146:6: (lv_operator_2_1= ruleOperatorMultiply | lv_operator_2_2= ruleOperatorDivide )
             	    {
-            	    // InternalConceptLanguage.g:3709:6: (lv_operator_2_1= ruleOperatorMultiply | lv_operator_2_2= ruleOperatorDivide )
+            	    // InternalConceptLanguage.g:4146:6: (lv_operator_2_1= ruleOperatorMultiply | lv_operator_2_2= ruleOperatorDivide )
             	    int alt51=2;
             	    int LA51_0 = input.LA(1);
 
-            	    if ( (LA51_0==67) ) {
+            	    if ( (LA51_0==69) ) {
             	        alt51=1;
             	    }
-            	    else if ( (LA51_0==68) ) {
+            	    else if ( (LA51_0==70) ) {
             	        alt51=2;
             	    }
             	    else {
@@ -9207,7 +10325,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	    }
             	    switch (alt51) {
             	        case 1 :
-            	            // InternalConceptLanguage.g:3710:7: lv_operator_2_1= ruleOperatorMultiply
+            	            // InternalConceptLanguage.g:4147:7: lv_operator_2_1= ruleOperatorMultiply
             	            {
 
             	            							newCompositeNode(grammarAccess.getMultiplicationAndDivisionAccess().getOperatorOperatorMultiplyEnumRuleCall_1_1_0_0());
@@ -9232,7 +10350,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             	            }
             	            break;
             	        case 2 :
-            	            // InternalConceptLanguage.g:3726:7: lv_operator_2_2= ruleOperatorDivide
+            	            // InternalConceptLanguage.g:4163:7: lv_operator_2_2= ruleOperatorDivide
             	            {
 
             	            							newCompositeNode(grammarAccess.getMultiplicationAndDivisionAccess().getOperatorOperatorDivideEnumRuleCall_1_1_0_1());
@@ -9265,11 +10383,11 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalConceptLanguage.g:3744:4: ( (lv_right_3_0= rulePowerFunction ) )
-            	    // InternalConceptLanguage.g:3745:5: (lv_right_3_0= rulePowerFunction )
+            	    // InternalConceptLanguage.g:4181:4: ( (lv_right_3_0= rulePowerFunction ) )
+            	    // InternalConceptLanguage.g:4182:5: (lv_right_3_0= rulePowerFunction )
             	    {
-            	    // InternalConceptLanguage.g:3745:5: (lv_right_3_0= rulePowerFunction )
-            	    // InternalConceptLanguage.g:3746:6: lv_right_3_0= rulePowerFunction
+            	    // InternalConceptLanguage.g:4182:5: (lv_right_3_0= rulePowerFunction )
+            	    // InternalConceptLanguage.g:4183:6: lv_right_3_0= rulePowerFunction
             	    {
 
             	    						newCompositeNode(grammarAccess.getMultiplicationAndDivisionAccess().getRightPowerFunctionParserRuleCall_1_2_0());
@@ -9328,7 +10446,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRulePowerFunction"
-    // InternalConceptLanguage.g:3768:1: entryRulePowerFunction returns [EObject current=null] : iv_rulePowerFunction= rulePowerFunction EOF ;
+    // InternalConceptLanguage.g:4205:1: entryRulePowerFunction returns [EObject current=null] : iv_rulePowerFunction= rulePowerFunction EOF ;
     public final EObject entryRulePowerFunction() throws RecognitionException {
         EObject current = null;
 
@@ -9336,8 +10454,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:3768:54: (iv_rulePowerFunction= rulePowerFunction EOF )
-            // InternalConceptLanguage.g:3769:2: iv_rulePowerFunction= rulePowerFunction EOF
+            // InternalConceptLanguage.g:4205:54: (iv_rulePowerFunction= rulePowerFunction EOF )
+            // InternalConceptLanguage.g:4206:2: iv_rulePowerFunction= rulePowerFunction EOF
             {
              newCompositeNode(grammarAccess.getPowerFunctionRule()); 
             pushFollow(FOLLOW_1);
@@ -9364,7 +10482,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "rulePowerFunction"
-    // InternalConceptLanguage.g:3775:1: rulePowerFunction returns [EObject current=null] : (this_AExpression_0= ruleAExpression ( () ( (lv_operator_2_0= ruleOperatorPower ) ) ( (lv_right_3_0= ruleAExpression ) ) )* ) ;
+    // InternalConceptLanguage.g:4212:1: rulePowerFunction returns [EObject current=null] : (this_AExpression_0= ruleAExpression ( () ( (lv_operator_2_0= ruleOperatorPower ) ) ( (lv_right_3_0= ruleAExpression ) ) )* ) ;
     public final EObject rulePowerFunction() throws RecognitionException {
         EObject current = null;
 
@@ -9379,11 +10497,11 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:3781:2: ( (this_AExpression_0= ruleAExpression ( () ( (lv_operator_2_0= ruleOperatorPower ) ) ( (lv_right_3_0= ruleAExpression ) ) )* ) )
-            // InternalConceptLanguage.g:3782:2: (this_AExpression_0= ruleAExpression ( () ( (lv_operator_2_0= ruleOperatorPower ) ) ( (lv_right_3_0= ruleAExpression ) ) )* )
+            // InternalConceptLanguage.g:4218:2: ( (this_AExpression_0= ruleAExpression ( () ( (lv_operator_2_0= ruleOperatorPower ) ) ( (lv_right_3_0= ruleAExpression ) ) )* ) )
+            // InternalConceptLanguage.g:4219:2: (this_AExpression_0= ruleAExpression ( () ( (lv_operator_2_0= ruleOperatorPower ) ) ( (lv_right_3_0= ruleAExpression ) ) )* )
             {
-            // InternalConceptLanguage.g:3782:2: (this_AExpression_0= ruleAExpression ( () ( (lv_operator_2_0= ruleOperatorPower ) ) ( (lv_right_3_0= ruleAExpression ) ) )* )
-            // InternalConceptLanguage.g:3783:3: this_AExpression_0= ruleAExpression ( () ( (lv_operator_2_0= ruleOperatorPower ) ) ( (lv_right_3_0= ruleAExpression ) ) )*
+            // InternalConceptLanguage.g:4219:2: (this_AExpression_0= ruleAExpression ( () ( (lv_operator_2_0= ruleOperatorPower ) ) ( (lv_right_3_0= ruleAExpression ) ) )* )
+            // InternalConceptLanguage.g:4220:3: this_AExpression_0= ruleAExpression ( () ( (lv_operator_2_0= ruleOperatorPower ) ) ( (lv_right_3_0= ruleAExpression ) ) )*
             {
 
             			newCompositeNode(grammarAccess.getPowerFunctionAccess().getAExpressionParserRuleCall_0());
@@ -9397,23 +10515,23 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             			current = this_AExpression_0;
             			afterParserOrEnumRuleCall();
             		
-            // InternalConceptLanguage.g:3791:3: ( () ( (lv_operator_2_0= ruleOperatorPower ) ) ( (lv_right_3_0= ruleAExpression ) ) )*
+            // InternalConceptLanguage.g:4228:3: ( () ( (lv_operator_2_0= ruleOperatorPower ) ) ( (lv_right_3_0= ruleAExpression ) ) )*
             loop53:
             do {
                 int alt53=2;
                 int LA53_0 = input.LA(1);
 
-                if ( (LA53_0==69) ) {
+                if ( (LA53_0==71) ) {
                     alt53=1;
                 }
 
 
                 switch (alt53) {
             	case 1 :
-            	    // InternalConceptLanguage.g:3792:4: () ( (lv_operator_2_0= ruleOperatorPower ) ) ( (lv_right_3_0= ruleAExpression ) )
+            	    // InternalConceptLanguage.g:4229:4: () ( (lv_operator_2_0= ruleOperatorPower ) ) ( (lv_right_3_0= ruleAExpression ) )
             	    {
-            	    // InternalConceptLanguage.g:3792:4: ()
-            	    // InternalConceptLanguage.g:3793:5: 
+            	    // InternalConceptLanguage.g:4229:4: ()
+            	    // InternalConceptLanguage.g:4230:5: 
             	    {
 
             	    					current = forceCreateModelElementAndSet(
@@ -9423,11 +10541,11 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalConceptLanguage.g:3799:4: ( (lv_operator_2_0= ruleOperatorPower ) )
-            	    // InternalConceptLanguage.g:3800:5: (lv_operator_2_0= ruleOperatorPower )
+            	    // InternalConceptLanguage.g:4236:4: ( (lv_operator_2_0= ruleOperatorPower ) )
+            	    // InternalConceptLanguage.g:4237:5: (lv_operator_2_0= ruleOperatorPower )
             	    {
-            	    // InternalConceptLanguage.g:3800:5: (lv_operator_2_0= ruleOperatorPower )
-            	    // InternalConceptLanguage.g:3801:6: lv_operator_2_0= ruleOperatorPower
+            	    // InternalConceptLanguage.g:4237:5: (lv_operator_2_0= ruleOperatorPower )
+            	    // InternalConceptLanguage.g:4238:6: lv_operator_2_0= ruleOperatorPower
             	    {
 
             	    						newCompositeNode(grammarAccess.getPowerFunctionAccess().getOperatorOperatorPowerEnumRuleCall_1_1_0());
@@ -9454,11 +10572,11 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             	    }
 
-            	    // InternalConceptLanguage.g:3818:4: ( (lv_right_3_0= ruleAExpression ) )
-            	    // InternalConceptLanguage.g:3819:5: (lv_right_3_0= ruleAExpression )
+            	    // InternalConceptLanguage.g:4255:4: ( (lv_right_3_0= ruleAExpression ) )
+            	    // InternalConceptLanguage.g:4256:5: (lv_right_3_0= ruleAExpression )
             	    {
-            	    // InternalConceptLanguage.g:3819:5: (lv_right_3_0= ruleAExpression )
-            	    // InternalConceptLanguage.g:3820:6: lv_right_3_0= ruleAExpression
+            	    // InternalConceptLanguage.g:4256:5: (lv_right_3_0= ruleAExpression )
+            	    // InternalConceptLanguage.g:4257:6: lv_right_3_0= ruleAExpression
             	    {
 
             	    						newCompositeNode(grammarAccess.getPowerFunctionAccess().getRightAExpressionParserRuleCall_1_2_0());
@@ -9517,7 +10635,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleParenthesis"
-    // InternalConceptLanguage.g:3842:1: entryRuleParenthesis returns [EObject current=null] : iv_ruleParenthesis= ruleParenthesis EOF ;
+    // InternalConceptLanguage.g:4279:1: entryRuleParenthesis returns [EObject current=null] : iv_ruleParenthesis= ruleParenthesis EOF ;
     public final EObject entryRuleParenthesis() throws RecognitionException {
         EObject current = null;
 
@@ -9525,8 +10643,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:3842:52: (iv_ruleParenthesis= ruleParenthesis EOF )
-            // InternalConceptLanguage.g:3843:2: iv_ruleParenthesis= ruleParenthesis EOF
+            // InternalConceptLanguage.g:4279:52: (iv_ruleParenthesis= ruleParenthesis EOF )
+            // InternalConceptLanguage.g:4280:2: iv_ruleParenthesis= ruleParenthesis EOF
             {
              newCompositeNode(grammarAccess.getParenthesisRule()); 
             pushFollow(FOLLOW_1);
@@ -9553,7 +10671,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleParenthesis"
-    // InternalConceptLanguage.g:3849:1: ruleParenthesis returns [EObject current=null] : ( () ( (lv_operator_1_0= ruleOperatorMinus ) )? otherlv_2= '(' ( (lv_right_3_0= ruleAdditionAndSubtraction ) ) otherlv_4= ')' ) ;
+    // InternalConceptLanguage.g:4286:1: ruleParenthesis returns [EObject current=null] : ( () ( (lv_operator_1_0= ruleOperatorMinus ) )? otherlv_2= '(' ( (lv_right_3_0= ruleAdditionAndSubtraction ) ) otherlv_4= ')' ) ;
     public final EObject ruleParenthesis() throws RecognitionException {
         EObject current = null;
 
@@ -9568,14 +10686,14 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:3855:2: ( ( () ( (lv_operator_1_0= ruleOperatorMinus ) )? otherlv_2= '(' ( (lv_right_3_0= ruleAdditionAndSubtraction ) ) otherlv_4= ')' ) )
-            // InternalConceptLanguage.g:3856:2: ( () ( (lv_operator_1_0= ruleOperatorMinus ) )? otherlv_2= '(' ( (lv_right_3_0= ruleAdditionAndSubtraction ) ) otherlv_4= ')' )
+            // InternalConceptLanguage.g:4292:2: ( ( () ( (lv_operator_1_0= ruleOperatorMinus ) )? otherlv_2= '(' ( (lv_right_3_0= ruleAdditionAndSubtraction ) ) otherlv_4= ')' ) )
+            // InternalConceptLanguage.g:4293:2: ( () ( (lv_operator_1_0= ruleOperatorMinus ) )? otherlv_2= '(' ( (lv_right_3_0= ruleAdditionAndSubtraction ) ) otherlv_4= ')' )
             {
-            // InternalConceptLanguage.g:3856:2: ( () ( (lv_operator_1_0= ruleOperatorMinus ) )? otherlv_2= '(' ( (lv_right_3_0= ruleAdditionAndSubtraction ) ) otherlv_4= ')' )
-            // InternalConceptLanguage.g:3857:3: () ( (lv_operator_1_0= ruleOperatorMinus ) )? otherlv_2= '(' ( (lv_right_3_0= ruleAdditionAndSubtraction ) ) otherlv_4= ')'
+            // InternalConceptLanguage.g:4293:2: ( () ( (lv_operator_1_0= ruleOperatorMinus ) )? otherlv_2= '(' ( (lv_right_3_0= ruleAdditionAndSubtraction ) ) otherlv_4= ')' )
+            // InternalConceptLanguage.g:4294:3: () ( (lv_operator_1_0= ruleOperatorMinus ) )? otherlv_2= '(' ( (lv_right_3_0= ruleAdditionAndSubtraction ) ) otherlv_4= ')'
             {
-            // InternalConceptLanguage.g:3857:3: ()
-            // InternalConceptLanguage.g:3858:4: 
+            // InternalConceptLanguage.g:4294:3: ()
+            // InternalConceptLanguage.g:4295:4: 
             {
 
             				current = forceCreateModelElement(
@@ -9585,19 +10703,19 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalConceptLanguage.g:3864:3: ( (lv_operator_1_0= ruleOperatorMinus ) )?
+            // InternalConceptLanguage.g:4301:3: ( (lv_operator_1_0= ruleOperatorMinus ) )?
             int alt54=2;
             int LA54_0 = input.LA(1);
 
-            if ( (LA54_0==62) ) {
+            if ( (LA54_0==64) ) {
                 alt54=1;
             }
             switch (alt54) {
                 case 1 :
-                    // InternalConceptLanguage.g:3865:4: (lv_operator_1_0= ruleOperatorMinus )
+                    // InternalConceptLanguage.g:4302:4: (lv_operator_1_0= ruleOperatorMinus )
                     {
-                    // InternalConceptLanguage.g:3865:4: (lv_operator_1_0= ruleOperatorMinus )
-                    // InternalConceptLanguage.g:3866:5: lv_operator_1_0= ruleOperatorMinus
+                    // InternalConceptLanguage.g:4302:4: (lv_operator_1_0= ruleOperatorMinus )
+                    // InternalConceptLanguage.g:4303:5: lv_operator_1_0= ruleOperatorMinus
                     {
 
                     					newCompositeNode(grammarAccess.getParenthesisAccess().getOperatorOperatorMinusEnumRuleCall_1_0());
@@ -9627,15 +10745,15 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_2=(Token)match(input,57,FOLLOW_50); 
+            otherlv_2=(Token)match(input,59,FOLLOW_50); 
 
             			newLeafNode(otherlv_2, grammarAccess.getParenthesisAccess().getLeftParenthesisKeyword_2());
             		
-            // InternalConceptLanguage.g:3887:3: ( (lv_right_3_0= ruleAdditionAndSubtraction ) )
-            // InternalConceptLanguage.g:3888:4: (lv_right_3_0= ruleAdditionAndSubtraction )
+            // InternalConceptLanguage.g:4324:3: ( (lv_right_3_0= ruleAdditionAndSubtraction ) )
+            // InternalConceptLanguage.g:4325:4: (lv_right_3_0= ruleAdditionAndSubtraction )
             {
-            // InternalConceptLanguage.g:3888:4: (lv_right_3_0= ruleAdditionAndSubtraction )
-            // InternalConceptLanguage.g:3889:5: lv_right_3_0= ruleAdditionAndSubtraction
+            // InternalConceptLanguage.g:4325:4: (lv_right_3_0= ruleAdditionAndSubtraction )
+            // InternalConceptLanguage.g:4326:5: lv_right_3_0= ruleAdditionAndSubtraction
             {
 
             					newCompositeNode(grammarAccess.getParenthesisAccess().getRightAdditionAndSubtractionParserRuleCall_3_0());
@@ -9662,7 +10780,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_4=(Token)match(input,58,FOLLOW_2); 
+            otherlv_4=(Token)match(input,60,FOLLOW_2); 
 
             			newLeafNode(otherlv_4, grammarAccess.getParenthesisAccess().getRightParenthesisKeyword_4());
             		
@@ -9689,7 +10807,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleAExpression"
-    // InternalConceptLanguage.g:3914:1: entryRuleAExpression returns [EObject current=null] : iv_ruleAExpression= ruleAExpression EOF ;
+    // InternalConceptLanguage.g:4351:1: entryRuleAExpression returns [EObject current=null] : iv_ruleAExpression= ruleAExpression EOF ;
     public final EObject entryRuleAExpression() throws RecognitionException {
         EObject current = null;
 
@@ -9697,8 +10815,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:3914:52: (iv_ruleAExpression= ruleAExpression EOF )
-            // InternalConceptLanguage.g:3915:2: iv_ruleAExpression= ruleAExpression EOF
+            // InternalConceptLanguage.g:4351:52: (iv_ruleAExpression= ruleAExpression EOF )
+            // InternalConceptLanguage.g:4352:2: iv_ruleAExpression= ruleAExpression EOF
             {
              newCompositeNode(grammarAccess.getAExpressionRule()); 
             pushFollow(FOLLOW_1);
@@ -9725,7 +10843,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleAExpression"
-    // InternalConceptLanguage.g:3921:1: ruleAExpression returns [EObject current=null] : (this_ALiteral_0= ruleALiteral | this_ReferencedDefinitionInput_1= ruleReferencedDefinitionInput | this_Parenthesis_2= ruleParenthesis | this_Function_3= ruleFunction | this_AAdvancedFunction_4= ruleAAdvancedFunction ) ;
+    // InternalConceptLanguage.g:4358:1: ruleAExpression returns [EObject current=null] : (this_ALiteral_0= ruleALiteral | this_ReferencedDefinitionInput_1= ruleReferencedDefinitionInput | this_Parenthesis_2= ruleParenthesis | this_Function_3= ruleFunction | this_AAdvancedFunction_4= ruleAAdvancedFunction ) ;
     public final EObject ruleAExpression() throws RecognitionException {
         EObject current = null;
 
@@ -9744,21 +10862,21 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:3927:2: ( (this_ALiteral_0= ruleALiteral | this_ReferencedDefinitionInput_1= ruleReferencedDefinitionInput | this_Parenthesis_2= ruleParenthesis | this_Function_3= ruleFunction | this_AAdvancedFunction_4= ruleAAdvancedFunction ) )
-            // InternalConceptLanguage.g:3928:2: (this_ALiteral_0= ruleALiteral | this_ReferencedDefinitionInput_1= ruleReferencedDefinitionInput | this_Parenthesis_2= ruleParenthesis | this_Function_3= ruleFunction | this_AAdvancedFunction_4= ruleAAdvancedFunction )
+            // InternalConceptLanguage.g:4364:2: ( (this_ALiteral_0= ruleALiteral | this_ReferencedDefinitionInput_1= ruleReferencedDefinitionInput | this_Parenthesis_2= ruleParenthesis | this_Function_3= ruleFunction | this_AAdvancedFunction_4= ruleAAdvancedFunction ) )
+            // InternalConceptLanguage.g:4365:2: (this_ALiteral_0= ruleALiteral | this_ReferencedDefinitionInput_1= ruleReferencedDefinitionInput | this_Parenthesis_2= ruleParenthesis | this_Function_3= ruleFunction | this_AAdvancedFunction_4= ruleAAdvancedFunction )
             {
-            // InternalConceptLanguage.g:3928:2: (this_ALiteral_0= ruleALiteral | this_ReferencedDefinitionInput_1= ruleReferencedDefinitionInput | this_Parenthesis_2= ruleParenthesis | this_Function_3= ruleFunction | this_AAdvancedFunction_4= ruleAAdvancedFunction )
+            // InternalConceptLanguage.g:4365:2: (this_ALiteral_0= ruleALiteral | this_ReferencedDefinitionInput_1= ruleReferencedDefinitionInput | this_Parenthesis_2= ruleParenthesis | this_Function_3= ruleFunction | this_AAdvancedFunction_4= ruleAAdvancedFunction )
             int alt55=5;
             switch ( input.LA(1) ) {
-            case 62:
+            case 64:
                 {
                 int LA55_1 = input.LA(2);
 
-                if ( (LA55_1==57) ) {
-                    alt55=3;
-                }
-                else if ( (LA55_1==RULE_INT) ) {
+                if ( (LA55_1==RULE_INT) ) {
                     alt55=1;
+                }
+                else if ( (LA55_1==59) ) {
+                    alt55=3;
                 }
                 else {
                     NoViableAltException nvae =
@@ -9769,8 +10887,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                 }
                 break;
             case RULE_INT:
-            case 59:
-            case 60:
+            case 61:
+            case 62:
                 {
                 alt55=1;
                 }
@@ -9779,10 +10897,10 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                 {
                 int LA55_3 = input.LA(2);
 
-                if ( (LA55_3==17||LA55_3==57) ) {
+                if ( (LA55_3==17||LA55_3==59) ) {
                     alt55=5;
                 }
-                else if ( (LA55_3==EOF||LA55_3==22||LA55_3==26||LA55_3==58||(LA55_3>=61 && LA55_3<=62)||(LA55_3>=66 && LA55_3<=69)) ) {
+                else if ( (LA55_3==EOF||LA55_3==22||LA55_3==26||LA55_3==60||(LA55_3>=63 && LA55_3<=64)||(LA55_3>=68 && LA55_3<=71)) ) {
                     alt55=2;
                 }
                 else {
@@ -9793,13 +10911,11 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                 }
                 }
                 break;
-            case 57:
+            case 59:
                 {
                 alt55=3;
                 }
                 break;
-            case 70:
-            case 71:
             case 72:
             case 73:
             case 74:
@@ -9809,6 +10925,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             case 78:
             case 79:
             case 80:
+            case 81:
+            case 82:
                 {
                 alt55=4;
                 }
@@ -9822,7 +10940,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             switch (alt55) {
                 case 1 :
-                    // InternalConceptLanguage.g:3929:3: this_ALiteral_0= ruleALiteral
+                    // InternalConceptLanguage.g:4366:3: this_ALiteral_0= ruleALiteral
                     {
 
                     			newCompositeNode(grammarAccess.getAExpressionAccess().getALiteralParserRuleCall_0());
@@ -9840,7 +10958,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalConceptLanguage.g:3938:3: this_ReferencedDefinitionInput_1= ruleReferencedDefinitionInput
+                    // InternalConceptLanguage.g:4375:3: this_ReferencedDefinitionInput_1= ruleReferencedDefinitionInput
                     {
 
                     			newCompositeNode(grammarAccess.getAExpressionAccess().getReferencedDefinitionInputParserRuleCall_1());
@@ -9858,7 +10976,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 3 :
-                    // InternalConceptLanguage.g:3947:3: this_Parenthesis_2= ruleParenthesis
+                    // InternalConceptLanguage.g:4384:3: this_Parenthesis_2= ruleParenthesis
                     {
 
                     			newCompositeNode(grammarAccess.getAExpressionAccess().getParenthesisParserRuleCall_2());
@@ -9876,7 +10994,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 4 :
-                    // InternalConceptLanguage.g:3956:3: this_Function_3= ruleFunction
+                    // InternalConceptLanguage.g:4393:3: this_Function_3= ruleFunction
                     {
 
                     			newCompositeNode(grammarAccess.getAExpressionAccess().getFunctionParserRuleCall_3());
@@ -9894,7 +11012,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 5 :
-                    // InternalConceptLanguage.g:3965:3: this_AAdvancedFunction_4= ruleAAdvancedFunction
+                    // InternalConceptLanguage.g:4402:3: this_AAdvancedFunction_4= ruleAAdvancedFunction
                     {
 
                     			newCompositeNode(grammarAccess.getAExpressionAccess().getAAdvancedFunctionParserRuleCall_4());
@@ -9934,7 +11052,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleReferencedDefinitionInput"
-    // InternalConceptLanguage.g:3977:1: entryRuleReferencedDefinitionInput returns [EObject current=null] : iv_ruleReferencedDefinitionInput= ruleReferencedDefinitionInput EOF ;
+    // InternalConceptLanguage.g:4414:1: entryRuleReferencedDefinitionInput returns [EObject current=null] : iv_ruleReferencedDefinitionInput= ruleReferencedDefinitionInput EOF ;
     public final EObject entryRuleReferencedDefinitionInput() throws RecognitionException {
         EObject current = null;
 
@@ -9942,8 +11060,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:3977:66: (iv_ruleReferencedDefinitionInput= ruleReferencedDefinitionInput EOF )
-            // InternalConceptLanguage.g:3978:2: iv_ruleReferencedDefinitionInput= ruleReferencedDefinitionInput EOF
+            // InternalConceptLanguage.g:4414:66: (iv_ruleReferencedDefinitionInput= ruleReferencedDefinitionInput EOF )
+            // InternalConceptLanguage.g:4415:2: iv_ruleReferencedDefinitionInput= ruleReferencedDefinitionInput EOF
             {
              newCompositeNode(grammarAccess.getReferencedDefinitionInputRule()); 
             pushFollow(FOLLOW_1);
@@ -9970,7 +11088,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleReferencedDefinitionInput"
-    // InternalConceptLanguage.g:3984:1: ruleReferencedDefinitionInput returns [EObject current=null] : ( ( ruleQualifiedName ) ) ;
+    // InternalConceptLanguage.g:4421:1: ruleReferencedDefinitionInput returns [EObject current=null] : ( ( ruleQualifiedName ) ) ;
     public final EObject ruleReferencedDefinitionInput() throws RecognitionException {
         EObject current = null;
 
@@ -9978,14 +11096,14 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:3990:2: ( ( ( ruleQualifiedName ) ) )
-            // InternalConceptLanguage.g:3991:2: ( ( ruleQualifiedName ) )
+            // InternalConceptLanguage.g:4427:2: ( ( ( ruleQualifiedName ) ) )
+            // InternalConceptLanguage.g:4428:2: ( ( ruleQualifiedName ) )
             {
-            // InternalConceptLanguage.g:3991:2: ( ( ruleQualifiedName ) )
-            // InternalConceptLanguage.g:3992:3: ( ruleQualifiedName )
+            // InternalConceptLanguage.g:4428:2: ( ( ruleQualifiedName ) )
+            // InternalConceptLanguage.g:4429:3: ( ruleQualifiedName )
             {
-            // InternalConceptLanguage.g:3992:3: ( ruleQualifiedName )
-            // InternalConceptLanguage.g:3993:4: ruleQualifiedName
+            // InternalConceptLanguage.g:4429:3: ( ruleQualifiedName )
+            // InternalConceptLanguage.g:4430:4: ruleQualifiedName
             {
 
             				if (current==null) {
@@ -10029,7 +11147,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleALiteral"
-    // InternalConceptLanguage.g:4010:1: entryRuleALiteral returns [EObject current=null] : iv_ruleALiteral= ruleALiteral EOF ;
+    // InternalConceptLanguage.g:4447:1: entryRuleALiteral returns [EObject current=null] : iv_ruleALiteral= ruleALiteral EOF ;
     public final EObject entryRuleALiteral() throws RecognitionException {
         EObject current = null;
 
@@ -10037,8 +11155,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:4010:49: (iv_ruleALiteral= ruleALiteral EOF )
-            // InternalConceptLanguage.g:4011:2: iv_ruleALiteral= ruleALiteral EOF
+            // InternalConceptLanguage.g:4447:49: (iv_ruleALiteral= ruleALiteral EOF )
+            // InternalConceptLanguage.g:4448:2: iv_ruleALiteral= ruleALiteral EOF
             {
              newCompositeNode(grammarAccess.getALiteralRule()); 
             pushFollow(FOLLOW_1);
@@ -10065,7 +11183,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleALiteral"
-    // InternalConceptLanguage.g:4017:1: ruleALiteral returns [EObject current=null] : (this_NumberLiteral_0= ruleNumberLiteral | this_ValueE_1= ruleValueE | this_ValuePi_2= ruleValuePi ) ;
+    // InternalConceptLanguage.g:4454:1: ruleALiteral returns [EObject current=null] : (this_NumberLiteral_0= ruleNumberLiteral | this_ValueE_1= ruleValueE | this_ValuePi_2= ruleValuePi ) ;
     public final EObject ruleALiteral() throws RecognitionException {
         EObject current = null;
 
@@ -10080,24 +11198,24 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:4023:2: ( (this_NumberLiteral_0= ruleNumberLiteral | this_ValueE_1= ruleValueE | this_ValuePi_2= ruleValuePi ) )
-            // InternalConceptLanguage.g:4024:2: (this_NumberLiteral_0= ruleNumberLiteral | this_ValueE_1= ruleValueE | this_ValuePi_2= ruleValuePi )
+            // InternalConceptLanguage.g:4460:2: ( (this_NumberLiteral_0= ruleNumberLiteral | this_ValueE_1= ruleValueE | this_ValuePi_2= ruleValuePi ) )
+            // InternalConceptLanguage.g:4461:2: (this_NumberLiteral_0= ruleNumberLiteral | this_ValueE_1= ruleValueE | this_ValuePi_2= ruleValuePi )
             {
-            // InternalConceptLanguage.g:4024:2: (this_NumberLiteral_0= ruleNumberLiteral | this_ValueE_1= ruleValueE | this_ValuePi_2= ruleValuePi )
+            // InternalConceptLanguage.g:4461:2: (this_NumberLiteral_0= ruleNumberLiteral | this_ValueE_1= ruleValueE | this_ValuePi_2= ruleValuePi )
             int alt56=3;
             switch ( input.LA(1) ) {
             case RULE_INT:
-            case 62:
+            case 64:
                 {
                 alt56=1;
                 }
                 break;
-            case 60:
+            case 62:
                 {
                 alt56=2;
                 }
                 break;
-            case 59:
+            case 61:
                 {
                 alt56=3;
                 }
@@ -10111,7 +11229,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             switch (alt56) {
                 case 1 :
-                    // InternalConceptLanguage.g:4025:3: this_NumberLiteral_0= ruleNumberLiteral
+                    // InternalConceptLanguage.g:4462:3: this_NumberLiteral_0= ruleNumberLiteral
                     {
 
                     			newCompositeNode(grammarAccess.getALiteralAccess().getNumberLiteralParserRuleCall_0());
@@ -10129,7 +11247,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalConceptLanguage.g:4034:3: this_ValueE_1= ruleValueE
+                    // InternalConceptLanguage.g:4471:3: this_ValueE_1= ruleValueE
                     {
 
                     			newCompositeNode(grammarAccess.getALiteralAccess().getValueEParserRuleCall_1());
@@ -10147,7 +11265,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 3 :
-                    // InternalConceptLanguage.g:4043:3: this_ValuePi_2= ruleValuePi
+                    // InternalConceptLanguage.g:4480:3: this_ValuePi_2= ruleValuePi
                     {
 
                     			newCompositeNode(grammarAccess.getALiteralAccess().getValuePiParserRuleCall_2());
@@ -10187,7 +11305,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleFunction"
-    // InternalConceptLanguage.g:4055:1: entryRuleFunction returns [EObject current=null] : iv_ruleFunction= ruleFunction EOF ;
+    // InternalConceptLanguage.g:4492:1: entryRuleFunction returns [EObject current=null] : iv_ruleFunction= ruleFunction EOF ;
     public final EObject entryRuleFunction() throws RecognitionException {
         EObject current = null;
 
@@ -10195,8 +11313,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:4055:49: (iv_ruleFunction= ruleFunction EOF )
-            // InternalConceptLanguage.g:4056:2: iv_ruleFunction= ruleFunction EOF
+            // InternalConceptLanguage.g:4492:49: (iv_ruleFunction= ruleFunction EOF )
+            // InternalConceptLanguage.g:4493:2: iv_ruleFunction= ruleFunction EOF
             {
              newCompositeNode(grammarAccess.getFunctionRule()); 
             pushFollow(FOLLOW_1);
@@ -10223,7 +11341,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleFunction"
-    // InternalConceptLanguage.g:4062:1: ruleFunction returns [EObject current=null] : ( () ( ( (lv_operator_1_1= ruleOperatorCos | lv_operator_1_2= ruleOperatorSin | lv_operator_1_3= ruleOperatorTan | lv_operator_1_4= ruleOperatorAtan | lv_operator_1_5= ruleOperatorAcos | lv_operator_1_6= ruleOperatorAsin | lv_operator_1_7= ruleOperatorSqrt | lv_operator_1_8= ruleOperatorLog | lv_operator_1_9= ruleOperatorLn | lv_operator_1_10= ruleOperatorLd | lv_operator_1_11= ruleOperatorExp ) ) ) otherlv_2= '(' ( (lv_right_3_0= ruleAdditionAndSubtraction ) ) otherlv_4= ')' ) ;
+    // InternalConceptLanguage.g:4499:1: ruleFunction returns [EObject current=null] : ( () ( ( (lv_operator_1_1= ruleOperatorCos | lv_operator_1_2= ruleOperatorSin | lv_operator_1_3= ruleOperatorTan | lv_operator_1_4= ruleOperatorAtan | lv_operator_1_5= ruleOperatorAcos | lv_operator_1_6= ruleOperatorAsin | lv_operator_1_7= ruleOperatorSqrt | lv_operator_1_8= ruleOperatorLog | lv_operator_1_9= ruleOperatorLn | lv_operator_1_10= ruleOperatorLd | lv_operator_1_11= ruleOperatorExp ) ) ) otherlv_2= '(' ( (lv_right_3_0= ruleAdditionAndSubtraction ) ) otherlv_4= ')' ) ;
     public final EObject ruleFunction() throws RecognitionException {
         EObject current = null;
 
@@ -10258,14 +11376,14 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:4068:2: ( ( () ( ( (lv_operator_1_1= ruleOperatorCos | lv_operator_1_2= ruleOperatorSin | lv_operator_1_3= ruleOperatorTan | lv_operator_1_4= ruleOperatorAtan | lv_operator_1_5= ruleOperatorAcos | lv_operator_1_6= ruleOperatorAsin | lv_operator_1_7= ruleOperatorSqrt | lv_operator_1_8= ruleOperatorLog | lv_operator_1_9= ruleOperatorLn | lv_operator_1_10= ruleOperatorLd | lv_operator_1_11= ruleOperatorExp ) ) ) otherlv_2= '(' ( (lv_right_3_0= ruleAdditionAndSubtraction ) ) otherlv_4= ')' ) )
-            // InternalConceptLanguage.g:4069:2: ( () ( ( (lv_operator_1_1= ruleOperatorCos | lv_operator_1_2= ruleOperatorSin | lv_operator_1_3= ruleOperatorTan | lv_operator_1_4= ruleOperatorAtan | lv_operator_1_5= ruleOperatorAcos | lv_operator_1_6= ruleOperatorAsin | lv_operator_1_7= ruleOperatorSqrt | lv_operator_1_8= ruleOperatorLog | lv_operator_1_9= ruleOperatorLn | lv_operator_1_10= ruleOperatorLd | lv_operator_1_11= ruleOperatorExp ) ) ) otherlv_2= '(' ( (lv_right_3_0= ruleAdditionAndSubtraction ) ) otherlv_4= ')' )
+            // InternalConceptLanguage.g:4505:2: ( ( () ( ( (lv_operator_1_1= ruleOperatorCos | lv_operator_1_2= ruleOperatorSin | lv_operator_1_3= ruleOperatorTan | lv_operator_1_4= ruleOperatorAtan | lv_operator_1_5= ruleOperatorAcos | lv_operator_1_6= ruleOperatorAsin | lv_operator_1_7= ruleOperatorSqrt | lv_operator_1_8= ruleOperatorLog | lv_operator_1_9= ruleOperatorLn | lv_operator_1_10= ruleOperatorLd | lv_operator_1_11= ruleOperatorExp ) ) ) otherlv_2= '(' ( (lv_right_3_0= ruleAdditionAndSubtraction ) ) otherlv_4= ')' ) )
+            // InternalConceptLanguage.g:4506:2: ( () ( ( (lv_operator_1_1= ruleOperatorCos | lv_operator_1_2= ruleOperatorSin | lv_operator_1_3= ruleOperatorTan | lv_operator_1_4= ruleOperatorAtan | lv_operator_1_5= ruleOperatorAcos | lv_operator_1_6= ruleOperatorAsin | lv_operator_1_7= ruleOperatorSqrt | lv_operator_1_8= ruleOperatorLog | lv_operator_1_9= ruleOperatorLn | lv_operator_1_10= ruleOperatorLd | lv_operator_1_11= ruleOperatorExp ) ) ) otherlv_2= '(' ( (lv_right_3_0= ruleAdditionAndSubtraction ) ) otherlv_4= ')' )
             {
-            // InternalConceptLanguage.g:4069:2: ( () ( ( (lv_operator_1_1= ruleOperatorCos | lv_operator_1_2= ruleOperatorSin | lv_operator_1_3= ruleOperatorTan | lv_operator_1_4= ruleOperatorAtan | lv_operator_1_5= ruleOperatorAcos | lv_operator_1_6= ruleOperatorAsin | lv_operator_1_7= ruleOperatorSqrt | lv_operator_1_8= ruleOperatorLog | lv_operator_1_9= ruleOperatorLn | lv_operator_1_10= ruleOperatorLd | lv_operator_1_11= ruleOperatorExp ) ) ) otherlv_2= '(' ( (lv_right_3_0= ruleAdditionAndSubtraction ) ) otherlv_4= ')' )
-            // InternalConceptLanguage.g:4070:3: () ( ( (lv_operator_1_1= ruleOperatorCos | lv_operator_1_2= ruleOperatorSin | lv_operator_1_3= ruleOperatorTan | lv_operator_1_4= ruleOperatorAtan | lv_operator_1_5= ruleOperatorAcos | lv_operator_1_6= ruleOperatorAsin | lv_operator_1_7= ruleOperatorSqrt | lv_operator_1_8= ruleOperatorLog | lv_operator_1_9= ruleOperatorLn | lv_operator_1_10= ruleOperatorLd | lv_operator_1_11= ruleOperatorExp ) ) ) otherlv_2= '(' ( (lv_right_3_0= ruleAdditionAndSubtraction ) ) otherlv_4= ')'
+            // InternalConceptLanguage.g:4506:2: ( () ( ( (lv_operator_1_1= ruleOperatorCos | lv_operator_1_2= ruleOperatorSin | lv_operator_1_3= ruleOperatorTan | lv_operator_1_4= ruleOperatorAtan | lv_operator_1_5= ruleOperatorAcos | lv_operator_1_6= ruleOperatorAsin | lv_operator_1_7= ruleOperatorSqrt | lv_operator_1_8= ruleOperatorLog | lv_operator_1_9= ruleOperatorLn | lv_operator_1_10= ruleOperatorLd | lv_operator_1_11= ruleOperatorExp ) ) ) otherlv_2= '(' ( (lv_right_3_0= ruleAdditionAndSubtraction ) ) otherlv_4= ')' )
+            // InternalConceptLanguage.g:4507:3: () ( ( (lv_operator_1_1= ruleOperatorCos | lv_operator_1_2= ruleOperatorSin | lv_operator_1_3= ruleOperatorTan | lv_operator_1_4= ruleOperatorAtan | lv_operator_1_5= ruleOperatorAcos | lv_operator_1_6= ruleOperatorAsin | lv_operator_1_7= ruleOperatorSqrt | lv_operator_1_8= ruleOperatorLog | lv_operator_1_9= ruleOperatorLn | lv_operator_1_10= ruleOperatorLd | lv_operator_1_11= ruleOperatorExp ) ) ) otherlv_2= '(' ( (lv_right_3_0= ruleAdditionAndSubtraction ) ) otherlv_4= ')'
             {
-            // InternalConceptLanguage.g:4070:3: ()
-            // InternalConceptLanguage.g:4071:4: 
+            // InternalConceptLanguage.g:4507:3: ()
+            // InternalConceptLanguage.g:4508:4: 
             {
 
             				current = forceCreateModelElement(
@@ -10275,66 +11393,66 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalConceptLanguage.g:4077:3: ( ( (lv_operator_1_1= ruleOperatorCos | lv_operator_1_2= ruleOperatorSin | lv_operator_1_3= ruleOperatorTan | lv_operator_1_4= ruleOperatorAtan | lv_operator_1_5= ruleOperatorAcos | lv_operator_1_6= ruleOperatorAsin | lv_operator_1_7= ruleOperatorSqrt | lv_operator_1_8= ruleOperatorLog | lv_operator_1_9= ruleOperatorLn | lv_operator_1_10= ruleOperatorLd | lv_operator_1_11= ruleOperatorExp ) ) )
-            // InternalConceptLanguage.g:4078:4: ( (lv_operator_1_1= ruleOperatorCos | lv_operator_1_2= ruleOperatorSin | lv_operator_1_3= ruleOperatorTan | lv_operator_1_4= ruleOperatorAtan | lv_operator_1_5= ruleOperatorAcos | lv_operator_1_6= ruleOperatorAsin | lv_operator_1_7= ruleOperatorSqrt | lv_operator_1_8= ruleOperatorLog | lv_operator_1_9= ruleOperatorLn | lv_operator_1_10= ruleOperatorLd | lv_operator_1_11= ruleOperatorExp ) )
+            // InternalConceptLanguage.g:4514:3: ( ( (lv_operator_1_1= ruleOperatorCos | lv_operator_1_2= ruleOperatorSin | lv_operator_1_3= ruleOperatorTan | lv_operator_1_4= ruleOperatorAtan | lv_operator_1_5= ruleOperatorAcos | lv_operator_1_6= ruleOperatorAsin | lv_operator_1_7= ruleOperatorSqrt | lv_operator_1_8= ruleOperatorLog | lv_operator_1_9= ruleOperatorLn | lv_operator_1_10= ruleOperatorLd | lv_operator_1_11= ruleOperatorExp ) ) )
+            // InternalConceptLanguage.g:4515:4: ( (lv_operator_1_1= ruleOperatorCos | lv_operator_1_2= ruleOperatorSin | lv_operator_1_3= ruleOperatorTan | lv_operator_1_4= ruleOperatorAtan | lv_operator_1_5= ruleOperatorAcos | lv_operator_1_6= ruleOperatorAsin | lv_operator_1_7= ruleOperatorSqrt | lv_operator_1_8= ruleOperatorLog | lv_operator_1_9= ruleOperatorLn | lv_operator_1_10= ruleOperatorLd | lv_operator_1_11= ruleOperatorExp ) )
             {
-            // InternalConceptLanguage.g:4078:4: ( (lv_operator_1_1= ruleOperatorCos | lv_operator_1_2= ruleOperatorSin | lv_operator_1_3= ruleOperatorTan | lv_operator_1_4= ruleOperatorAtan | lv_operator_1_5= ruleOperatorAcos | lv_operator_1_6= ruleOperatorAsin | lv_operator_1_7= ruleOperatorSqrt | lv_operator_1_8= ruleOperatorLog | lv_operator_1_9= ruleOperatorLn | lv_operator_1_10= ruleOperatorLd | lv_operator_1_11= ruleOperatorExp ) )
-            // InternalConceptLanguage.g:4079:5: (lv_operator_1_1= ruleOperatorCos | lv_operator_1_2= ruleOperatorSin | lv_operator_1_3= ruleOperatorTan | lv_operator_1_4= ruleOperatorAtan | lv_operator_1_5= ruleOperatorAcos | lv_operator_1_6= ruleOperatorAsin | lv_operator_1_7= ruleOperatorSqrt | lv_operator_1_8= ruleOperatorLog | lv_operator_1_9= ruleOperatorLn | lv_operator_1_10= ruleOperatorLd | lv_operator_1_11= ruleOperatorExp )
+            // InternalConceptLanguage.g:4515:4: ( (lv_operator_1_1= ruleOperatorCos | lv_operator_1_2= ruleOperatorSin | lv_operator_1_3= ruleOperatorTan | lv_operator_1_4= ruleOperatorAtan | lv_operator_1_5= ruleOperatorAcos | lv_operator_1_6= ruleOperatorAsin | lv_operator_1_7= ruleOperatorSqrt | lv_operator_1_8= ruleOperatorLog | lv_operator_1_9= ruleOperatorLn | lv_operator_1_10= ruleOperatorLd | lv_operator_1_11= ruleOperatorExp ) )
+            // InternalConceptLanguage.g:4516:5: (lv_operator_1_1= ruleOperatorCos | lv_operator_1_2= ruleOperatorSin | lv_operator_1_3= ruleOperatorTan | lv_operator_1_4= ruleOperatorAtan | lv_operator_1_5= ruleOperatorAcos | lv_operator_1_6= ruleOperatorAsin | lv_operator_1_7= ruleOperatorSqrt | lv_operator_1_8= ruleOperatorLog | lv_operator_1_9= ruleOperatorLn | lv_operator_1_10= ruleOperatorLd | lv_operator_1_11= ruleOperatorExp )
             {
-            // InternalConceptLanguage.g:4079:5: (lv_operator_1_1= ruleOperatorCos | lv_operator_1_2= ruleOperatorSin | lv_operator_1_3= ruleOperatorTan | lv_operator_1_4= ruleOperatorAtan | lv_operator_1_5= ruleOperatorAcos | lv_operator_1_6= ruleOperatorAsin | lv_operator_1_7= ruleOperatorSqrt | lv_operator_1_8= ruleOperatorLog | lv_operator_1_9= ruleOperatorLn | lv_operator_1_10= ruleOperatorLd | lv_operator_1_11= ruleOperatorExp )
+            // InternalConceptLanguage.g:4516:5: (lv_operator_1_1= ruleOperatorCos | lv_operator_1_2= ruleOperatorSin | lv_operator_1_3= ruleOperatorTan | lv_operator_1_4= ruleOperatorAtan | lv_operator_1_5= ruleOperatorAcos | lv_operator_1_6= ruleOperatorAsin | lv_operator_1_7= ruleOperatorSqrt | lv_operator_1_8= ruleOperatorLog | lv_operator_1_9= ruleOperatorLn | lv_operator_1_10= ruleOperatorLd | lv_operator_1_11= ruleOperatorExp )
             int alt57=11;
             switch ( input.LA(1) ) {
-            case 70:
+            case 72:
                 {
                 alt57=1;
                 }
                 break;
-            case 71:
+            case 73:
                 {
                 alt57=2;
                 }
                 break;
-            case 72:
+            case 74:
                 {
                 alt57=3;
                 }
                 break;
-            case 73:
+            case 75:
                 {
                 alt57=4;
                 }
                 break;
-            case 74:
+            case 76:
                 {
                 alt57=5;
                 }
                 break;
-            case 75:
+            case 77:
                 {
                 alt57=6;
                 }
                 break;
-            case 76:
+            case 78:
                 {
                 alt57=7;
                 }
                 break;
-            case 77:
+            case 79:
                 {
                 alt57=8;
                 }
                 break;
-            case 78:
+            case 80:
                 {
                 alt57=9;
                 }
                 break;
-            case 80:
+            case 82:
                 {
                 alt57=10;
                 }
                 break;
-            case 79:
+            case 81:
                 {
                 alt57=11;
                 }
@@ -10348,7 +11466,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             switch (alt57) {
                 case 1 :
-                    // InternalConceptLanguage.g:4080:6: lv_operator_1_1= ruleOperatorCos
+                    // InternalConceptLanguage.g:4517:6: lv_operator_1_1= ruleOperatorCos
                     {
 
                     						newCompositeNode(grammarAccess.getFunctionAccess().getOperatorOperatorCosEnumRuleCall_1_0_0());
@@ -10373,7 +11491,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalConceptLanguage.g:4096:6: lv_operator_1_2= ruleOperatorSin
+                    // InternalConceptLanguage.g:4533:6: lv_operator_1_2= ruleOperatorSin
                     {
 
                     						newCompositeNode(grammarAccess.getFunctionAccess().getOperatorOperatorSinEnumRuleCall_1_0_1());
@@ -10398,7 +11516,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 3 :
-                    // InternalConceptLanguage.g:4112:6: lv_operator_1_3= ruleOperatorTan
+                    // InternalConceptLanguage.g:4549:6: lv_operator_1_3= ruleOperatorTan
                     {
 
                     						newCompositeNode(grammarAccess.getFunctionAccess().getOperatorOperatorTanEnumRuleCall_1_0_2());
@@ -10423,7 +11541,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 4 :
-                    // InternalConceptLanguage.g:4128:6: lv_operator_1_4= ruleOperatorAtan
+                    // InternalConceptLanguage.g:4565:6: lv_operator_1_4= ruleOperatorAtan
                     {
 
                     						newCompositeNode(grammarAccess.getFunctionAccess().getOperatorOperatorAtanEnumRuleCall_1_0_3());
@@ -10448,7 +11566,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 5 :
-                    // InternalConceptLanguage.g:4144:6: lv_operator_1_5= ruleOperatorAcos
+                    // InternalConceptLanguage.g:4581:6: lv_operator_1_5= ruleOperatorAcos
                     {
 
                     						newCompositeNode(grammarAccess.getFunctionAccess().getOperatorOperatorAcosEnumRuleCall_1_0_4());
@@ -10473,7 +11591,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 6 :
-                    // InternalConceptLanguage.g:4160:6: lv_operator_1_6= ruleOperatorAsin
+                    // InternalConceptLanguage.g:4597:6: lv_operator_1_6= ruleOperatorAsin
                     {
 
                     						newCompositeNode(grammarAccess.getFunctionAccess().getOperatorOperatorAsinEnumRuleCall_1_0_5());
@@ -10498,7 +11616,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 7 :
-                    // InternalConceptLanguage.g:4176:6: lv_operator_1_7= ruleOperatorSqrt
+                    // InternalConceptLanguage.g:4613:6: lv_operator_1_7= ruleOperatorSqrt
                     {
 
                     						newCompositeNode(grammarAccess.getFunctionAccess().getOperatorOperatorSqrtEnumRuleCall_1_0_6());
@@ -10523,7 +11641,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 8 :
-                    // InternalConceptLanguage.g:4192:6: lv_operator_1_8= ruleOperatorLog
+                    // InternalConceptLanguage.g:4629:6: lv_operator_1_8= ruleOperatorLog
                     {
 
                     						newCompositeNode(grammarAccess.getFunctionAccess().getOperatorOperatorLogEnumRuleCall_1_0_7());
@@ -10548,7 +11666,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 9 :
-                    // InternalConceptLanguage.g:4208:6: lv_operator_1_9= ruleOperatorLn
+                    // InternalConceptLanguage.g:4645:6: lv_operator_1_9= ruleOperatorLn
                     {
 
                     						newCompositeNode(grammarAccess.getFunctionAccess().getOperatorOperatorLnEnumRuleCall_1_0_8());
@@ -10573,7 +11691,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 10 :
-                    // InternalConceptLanguage.g:4224:6: lv_operator_1_10= ruleOperatorLd
+                    // InternalConceptLanguage.g:4661:6: lv_operator_1_10= ruleOperatorLd
                     {
 
                     						newCompositeNode(grammarAccess.getFunctionAccess().getOperatorOperatorLdEnumRuleCall_1_0_9());
@@ -10598,7 +11716,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 11 :
-                    // InternalConceptLanguage.g:4240:6: lv_operator_1_11= ruleOperatorExp
+                    // InternalConceptLanguage.g:4677:6: lv_operator_1_11= ruleOperatorExp
                     {
 
                     						newCompositeNode(grammarAccess.getFunctionAccess().getOperatorOperatorExpEnumRuleCall_1_0_10());
@@ -10631,15 +11749,15 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_2=(Token)match(input,57,FOLLOW_50); 
+            otherlv_2=(Token)match(input,59,FOLLOW_50); 
 
             			newLeafNode(otherlv_2, grammarAccess.getFunctionAccess().getLeftParenthesisKeyword_2());
             		
-            // InternalConceptLanguage.g:4262:3: ( (lv_right_3_0= ruleAdditionAndSubtraction ) )
-            // InternalConceptLanguage.g:4263:4: (lv_right_3_0= ruleAdditionAndSubtraction )
+            // InternalConceptLanguage.g:4699:3: ( (lv_right_3_0= ruleAdditionAndSubtraction ) )
+            // InternalConceptLanguage.g:4700:4: (lv_right_3_0= ruleAdditionAndSubtraction )
             {
-            // InternalConceptLanguage.g:4263:4: (lv_right_3_0= ruleAdditionAndSubtraction )
-            // InternalConceptLanguage.g:4264:5: lv_right_3_0= ruleAdditionAndSubtraction
+            // InternalConceptLanguage.g:4700:4: (lv_right_3_0= ruleAdditionAndSubtraction )
+            // InternalConceptLanguage.g:4701:5: lv_right_3_0= ruleAdditionAndSubtraction
             {
 
             					newCompositeNode(grammarAccess.getFunctionAccess().getRightAdditionAndSubtractionParserRuleCall_3_0());
@@ -10666,7 +11784,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_4=(Token)match(input,58,FOLLOW_2); 
+            otherlv_4=(Token)match(input,60,FOLLOW_2); 
 
             			newLeafNode(otherlv_4, grammarAccess.getFunctionAccess().getRightParenthesisKeyword_4());
             		
@@ -10693,7 +11811,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleAAdvancedFunction"
-    // InternalConceptLanguage.g:4289:1: entryRuleAAdvancedFunction returns [EObject current=null] : iv_ruleAAdvancedFunction= ruleAAdvancedFunction EOF ;
+    // InternalConceptLanguage.g:4726:1: entryRuleAAdvancedFunction returns [EObject current=null] : iv_ruleAAdvancedFunction= ruleAAdvancedFunction EOF ;
     public final EObject entryRuleAAdvancedFunction() throws RecognitionException {
         EObject current = null;
 
@@ -10701,8 +11819,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:4289:58: (iv_ruleAAdvancedFunction= ruleAAdvancedFunction EOF )
-            // InternalConceptLanguage.g:4290:2: iv_ruleAAdvancedFunction= ruleAAdvancedFunction EOF
+            // InternalConceptLanguage.g:4726:58: (iv_ruleAAdvancedFunction= ruleAAdvancedFunction EOF )
+            // InternalConceptLanguage.g:4727:2: iv_ruleAAdvancedFunction= ruleAAdvancedFunction EOF
             {
              newCompositeNode(grammarAccess.getAAdvancedFunctionRule()); 
             pushFollow(FOLLOW_1);
@@ -10729,7 +11847,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleAAdvancedFunction"
-    // InternalConceptLanguage.g:4296:1: ruleAAdvancedFunction returns [EObject current=null] : (this_AdvancedFunction_0= ruleAdvancedFunction | this_SetFunction_1= ruleSetFunction ) ;
+    // InternalConceptLanguage.g:4733:1: ruleAAdvancedFunction returns [EObject current=null] : (this_AdvancedFunction_0= ruleAdvancedFunction | this_SetFunction_1= ruleSetFunction ) ;
     public final EObject ruleAAdvancedFunction() throws RecognitionException {
         EObject current = null;
 
@@ -10742,17 +11860,17 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:4302:2: ( (this_AdvancedFunction_0= ruleAdvancedFunction | this_SetFunction_1= ruleSetFunction ) )
-            // InternalConceptLanguage.g:4303:2: (this_AdvancedFunction_0= ruleAdvancedFunction | this_SetFunction_1= ruleSetFunction )
+            // InternalConceptLanguage.g:4739:2: ( (this_AdvancedFunction_0= ruleAdvancedFunction | this_SetFunction_1= ruleSetFunction ) )
+            // InternalConceptLanguage.g:4740:2: (this_AdvancedFunction_0= ruleAdvancedFunction | this_SetFunction_1= ruleSetFunction )
             {
-            // InternalConceptLanguage.g:4303:2: (this_AdvancedFunction_0= ruleAdvancedFunction | this_SetFunction_1= ruleSetFunction )
+            // InternalConceptLanguage.g:4740:2: (this_AdvancedFunction_0= ruleAdvancedFunction | this_SetFunction_1= ruleSetFunction )
             int alt58=2;
             int LA58_0 = input.LA(1);
 
             if ( (LA58_0==RULE_ID) ) {
                 int LA58_1 = input.LA(2);
 
-                if ( (LA58_1==57) ) {
+                if ( (LA58_1==59) ) {
                     alt58=1;
                 }
                 else if ( (LA58_1==17) ) {
@@ -10773,7 +11891,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             }
             switch (alt58) {
                 case 1 :
-                    // InternalConceptLanguage.g:4304:3: this_AdvancedFunction_0= ruleAdvancedFunction
+                    // InternalConceptLanguage.g:4741:3: this_AdvancedFunction_0= ruleAdvancedFunction
                     {
 
                     			newCompositeNode(grammarAccess.getAAdvancedFunctionAccess().getAdvancedFunctionParserRuleCall_0());
@@ -10791,7 +11909,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalConceptLanguage.g:4313:3: this_SetFunction_1= ruleSetFunction
+                    // InternalConceptLanguage.g:4750:3: this_SetFunction_1= ruleSetFunction
                     {
 
                     			newCompositeNode(grammarAccess.getAAdvancedFunctionAccess().getSetFunctionParserRuleCall_1());
@@ -10831,7 +11949,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleAdvancedFunction"
-    // InternalConceptLanguage.g:4325:1: entryRuleAdvancedFunction returns [EObject current=null] : iv_ruleAdvancedFunction= ruleAdvancedFunction EOF ;
+    // InternalConceptLanguage.g:4762:1: entryRuleAdvancedFunction returns [EObject current=null] : iv_ruleAdvancedFunction= ruleAdvancedFunction EOF ;
     public final EObject entryRuleAdvancedFunction() throws RecognitionException {
         EObject current = null;
 
@@ -10839,8 +11957,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:4325:57: (iv_ruleAdvancedFunction= ruleAdvancedFunction EOF )
-            // InternalConceptLanguage.g:4326:2: iv_ruleAdvancedFunction= ruleAdvancedFunction EOF
+            // InternalConceptLanguage.g:4762:57: (iv_ruleAdvancedFunction= ruleAdvancedFunction EOF )
+            // InternalConceptLanguage.g:4763:2: iv_ruleAdvancedFunction= ruleAdvancedFunction EOF
             {
              newCompositeNode(grammarAccess.getAdvancedFunctionRule()); 
             pushFollow(FOLLOW_1);
@@ -10867,7 +11985,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleAdvancedFunction"
-    // InternalConceptLanguage.g:4332:1: ruleAdvancedFunction returns [EObject current=null] : ( () ( (lv_operator_1_0= RULE_ID ) ) otherlv_2= '(' ( (lv_inputs_3_0= ruleAdditionAndSubtraction ) ) (otherlv_4= ',' ( (lv_inputs_5_0= ruleAdditionAndSubtraction ) ) )* otherlv_6= ')' ) ;
+    // InternalConceptLanguage.g:4769:1: ruleAdvancedFunction returns [EObject current=null] : ( () ( (lv_operator_1_0= RULE_ID ) ) otherlv_2= '(' ( (lv_inputs_3_0= ruleAdditionAndSubtraction ) ) (otherlv_4= ',' ( (lv_inputs_5_0= ruleAdditionAndSubtraction ) ) )* otherlv_6= ')' ) ;
     public final EObject ruleAdvancedFunction() throws RecognitionException {
         EObject current = null;
 
@@ -10884,14 +12002,14 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:4338:2: ( ( () ( (lv_operator_1_0= RULE_ID ) ) otherlv_2= '(' ( (lv_inputs_3_0= ruleAdditionAndSubtraction ) ) (otherlv_4= ',' ( (lv_inputs_5_0= ruleAdditionAndSubtraction ) ) )* otherlv_6= ')' ) )
-            // InternalConceptLanguage.g:4339:2: ( () ( (lv_operator_1_0= RULE_ID ) ) otherlv_2= '(' ( (lv_inputs_3_0= ruleAdditionAndSubtraction ) ) (otherlv_4= ',' ( (lv_inputs_5_0= ruleAdditionAndSubtraction ) ) )* otherlv_6= ')' )
+            // InternalConceptLanguage.g:4775:2: ( ( () ( (lv_operator_1_0= RULE_ID ) ) otherlv_2= '(' ( (lv_inputs_3_0= ruleAdditionAndSubtraction ) ) (otherlv_4= ',' ( (lv_inputs_5_0= ruleAdditionAndSubtraction ) ) )* otherlv_6= ')' ) )
+            // InternalConceptLanguage.g:4776:2: ( () ( (lv_operator_1_0= RULE_ID ) ) otherlv_2= '(' ( (lv_inputs_3_0= ruleAdditionAndSubtraction ) ) (otherlv_4= ',' ( (lv_inputs_5_0= ruleAdditionAndSubtraction ) ) )* otherlv_6= ')' )
             {
-            // InternalConceptLanguage.g:4339:2: ( () ( (lv_operator_1_0= RULE_ID ) ) otherlv_2= '(' ( (lv_inputs_3_0= ruleAdditionAndSubtraction ) ) (otherlv_4= ',' ( (lv_inputs_5_0= ruleAdditionAndSubtraction ) ) )* otherlv_6= ')' )
-            // InternalConceptLanguage.g:4340:3: () ( (lv_operator_1_0= RULE_ID ) ) otherlv_2= '(' ( (lv_inputs_3_0= ruleAdditionAndSubtraction ) ) (otherlv_4= ',' ( (lv_inputs_5_0= ruleAdditionAndSubtraction ) ) )* otherlv_6= ')'
+            // InternalConceptLanguage.g:4776:2: ( () ( (lv_operator_1_0= RULE_ID ) ) otherlv_2= '(' ( (lv_inputs_3_0= ruleAdditionAndSubtraction ) ) (otherlv_4= ',' ( (lv_inputs_5_0= ruleAdditionAndSubtraction ) ) )* otherlv_6= ')' )
+            // InternalConceptLanguage.g:4777:3: () ( (lv_operator_1_0= RULE_ID ) ) otherlv_2= '(' ( (lv_inputs_3_0= ruleAdditionAndSubtraction ) ) (otherlv_4= ',' ( (lv_inputs_5_0= ruleAdditionAndSubtraction ) ) )* otherlv_6= ')'
             {
-            // InternalConceptLanguage.g:4340:3: ()
-            // InternalConceptLanguage.g:4341:4: 
+            // InternalConceptLanguage.g:4777:3: ()
+            // InternalConceptLanguage.g:4778:4: 
             {
 
             				current = forceCreateModelElement(
@@ -10901,11 +12019,11 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalConceptLanguage.g:4347:3: ( (lv_operator_1_0= RULE_ID ) )
-            // InternalConceptLanguage.g:4348:4: (lv_operator_1_0= RULE_ID )
+            // InternalConceptLanguage.g:4784:3: ( (lv_operator_1_0= RULE_ID ) )
+            // InternalConceptLanguage.g:4785:4: (lv_operator_1_0= RULE_ID )
             {
-            // InternalConceptLanguage.g:4348:4: (lv_operator_1_0= RULE_ID )
-            // InternalConceptLanguage.g:4349:5: lv_operator_1_0= RULE_ID
+            // InternalConceptLanguage.g:4785:4: (lv_operator_1_0= RULE_ID )
+            // InternalConceptLanguage.g:4786:5: lv_operator_1_0= RULE_ID
             {
             lv_operator_1_0=(Token)match(input,RULE_ID,FOLLOW_54); 
 
@@ -10927,15 +12045,15 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_2=(Token)match(input,57,FOLLOW_50); 
+            otherlv_2=(Token)match(input,59,FOLLOW_50); 
 
             			newLeafNode(otherlv_2, grammarAccess.getAdvancedFunctionAccess().getLeftParenthesisKeyword_2());
             		
-            // InternalConceptLanguage.g:4369:3: ( (lv_inputs_3_0= ruleAdditionAndSubtraction ) )
-            // InternalConceptLanguage.g:4370:4: (lv_inputs_3_0= ruleAdditionAndSubtraction )
+            // InternalConceptLanguage.g:4806:3: ( (lv_inputs_3_0= ruleAdditionAndSubtraction ) )
+            // InternalConceptLanguage.g:4807:4: (lv_inputs_3_0= ruleAdditionAndSubtraction )
             {
-            // InternalConceptLanguage.g:4370:4: (lv_inputs_3_0= ruleAdditionAndSubtraction )
-            // InternalConceptLanguage.g:4371:5: lv_inputs_3_0= ruleAdditionAndSubtraction
+            // InternalConceptLanguage.g:4807:4: (lv_inputs_3_0= ruleAdditionAndSubtraction )
+            // InternalConceptLanguage.g:4808:5: lv_inputs_3_0= ruleAdditionAndSubtraction
             {
 
             					newCompositeNode(grammarAccess.getAdvancedFunctionAccess().getInputsAdditionAndSubtractionParserRuleCall_3_0());
@@ -10962,7 +12080,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalConceptLanguage.g:4388:3: (otherlv_4= ',' ( (lv_inputs_5_0= ruleAdditionAndSubtraction ) ) )*
+            // InternalConceptLanguage.g:4825:3: (otherlv_4= ',' ( (lv_inputs_5_0= ruleAdditionAndSubtraction ) ) )*
             loop59:
             do {
                 int alt59=2;
@@ -10975,17 +12093,17 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
                 switch (alt59) {
             	case 1 :
-            	    // InternalConceptLanguage.g:4389:4: otherlv_4= ',' ( (lv_inputs_5_0= ruleAdditionAndSubtraction ) )
+            	    // InternalConceptLanguage.g:4826:4: otherlv_4= ',' ( (lv_inputs_5_0= ruleAdditionAndSubtraction ) )
             	    {
             	    otherlv_4=(Token)match(input,26,FOLLOW_50); 
 
             	    				newLeafNode(otherlv_4, grammarAccess.getAdvancedFunctionAccess().getCommaKeyword_4_0());
             	    			
-            	    // InternalConceptLanguage.g:4393:4: ( (lv_inputs_5_0= ruleAdditionAndSubtraction ) )
-            	    // InternalConceptLanguage.g:4394:5: (lv_inputs_5_0= ruleAdditionAndSubtraction )
+            	    // InternalConceptLanguage.g:4830:4: ( (lv_inputs_5_0= ruleAdditionAndSubtraction ) )
+            	    // InternalConceptLanguage.g:4831:5: (lv_inputs_5_0= ruleAdditionAndSubtraction )
             	    {
-            	    // InternalConceptLanguage.g:4394:5: (lv_inputs_5_0= ruleAdditionAndSubtraction )
-            	    // InternalConceptLanguage.g:4395:6: lv_inputs_5_0= ruleAdditionAndSubtraction
+            	    // InternalConceptLanguage.g:4831:5: (lv_inputs_5_0= ruleAdditionAndSubtraction )
+            	    // InternalConceptLanguage.g:4832:6: lv_inputs_5_0= ruleAdditionAndSubtraction
             	    {
 
             	    						newCompositeNode(grammarAccess.getAdvancedFunctionAccess().getInputsAdditionAndSubtractionParserRuleCall_4_1_0());
@@ -11021,7 +12139,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                 }
             } while (true);
 
-            otherlv_6=(Token)match(input,58,FOLLOW_2); 
+            otherlv_6=(Token)match(input,60,FOLLOW_2); 
 
             			newLeafNode(otherlv_6, grammarAccess.getAdvancedFunctionAccess().getRightParenthesisKeyword_5());
             		
@@ -11048,7 +12166,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleSetFunction"
-    // InternalConceptLanguage.g:4421:1: entryRuleSetFunction returns [EObject current=null] : iv_ruleSetFunction= ruleSetFunction EOF ;
+    // InternalConceptLanguage.g:4858:1: entryRuleSetFunction returns [EObject current=null] : iv_ruleSetFunction= ruleSetFunction EOF ;
     public final EObject entryRuleSetFunction() throws RecognitionException {
         EObject current = null;
 
@@ -11056,8 +12174,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:4421:52: (iv_ruleSetFunction= ruleSetFunction EOF )
-            // InternalConceptLanguage.g:4422:2: iv_ruleSetFunction= ruleSetFunction EOF
+            // InternalConceptLanguage.g:4858:52: (iv_ruleSetFunction= ruleSetFunction EOF )
+            // InternalConceptLanguage.g:4859:2: iv_ruleSetFunction= ruleSetFunction EOF
             {
              newCompositeNode(grammarAccess.getSetFunctionRule()); 
             pushFollow(FOLLOW_1);
@@ -11084,7 +12202,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleSetFunction"
-    // InternalConceptLanguage.g:4428:1: ruleSetFunction returns [EObject current=null] : ( () ( (lv_operator_1_0= RULE_ID ) ) otherlv_2= '{' ( ( ruleQualifiedName ) ) (otherlv_4= ',' ( (lv_depth_5_0= RULE_INT ) ) )? (otherlv_6= ',' ( (lv_filterName_7_0= RULE_ID ) ) )? otherlv_8= '}' ) ;
+    // InternalConceptLanguage.g:4865:1: ruleSetFunction returns [EObject current=null] : ( () ( (lv_operator_1_0= RULE_ID ) ) otherlv_2= '{' ( ( ruleQualifiedName ) ) (otherlv_4= ',' ( (lv_depth_5_0= RULE_INT ) ) )? (otherlv_6= ',' ( (lv_filterName_7_0= RULE_ID ) ) )? otherlv_8= '}' ) ;
     public final EObject ruleSetFunction() throws RecognitionException {
         EObject current = null;
 
@@ -11100,14 +12218,14 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:4434:2: ( ( () ( (lv_operator_1_0= RULE_ID ) ) otherlv_2= '{' ( ( ruleQualifiedName ) ) (otherlv_4= ',' ( (lv_depth_5_0= RULE_INT ) ) )? (otherlv_6= ',' ( (lv_filterName_7_0= RULE_ID ) ) )? otherlv_8= '}' ) )
-            // InternalConceptLanguage.g:4435:2: ( () ( (lv_operator_1_0= RULE_ID ) ) otherlv_2= '{' ( ( ruleQualifiedName ) ) (otherlv_4= ',' ( (lv_depth_5_0= RULE_INT ) ) )? (otherlv_6= ',' ( (lv_filterName_7_0= RULE_ID ) ) )? otherlv_8= '}' )
+            // InternalConceptLanguage.g:4871:2: ( ( () ( (lv_operator_1_0= RULE_ID ) ) otherlv_2= '{' ( ( ruleQualifiedName ) ) (otherlv_4= ',' ( (lv_depth_5_0= RULE_INT ) ) )? (otherlv_6= ',' ( (lv_filterName_7_0= RULE_ID ) ) )? otherlv_8= '}' ) )
+            // InternalConceptLanguage.g:4872:2: ( () ( (lv_operator_1_0= RULE_ID ) ) otherlv_2= '{' ( ( ruleQualifiedName ) ) (otherlv_4= ',' ( (lv_depth_5_0= RULE_INT ) ) )? (otherlv_6= ',' ( (lv_filterName_7_0= RULE_ID ) ) )? otherlv_8= '}' )
             {
-            // InternalConceptLanguage.g:4435:2: ( () ( (lv_operator_1_0= RULE_ID ) ) otherlv_2= '{' ( ( ruleQualifiedName ) ) (otherlv_4= ',' ( (lv_depth_5_0= RULE_INT ) ) )? (otherlv_6= ',' ( (lv_filterName_7_0= RULE_ID ) ) )? otherlv_8= '}' )
-            // InternalConceptLanguage.g:4436:3: () ( (lv_operator_1_0= RULE_ID ) ) otherlv_2= '{' ( ( ruleQualifiedName ) ) (otherlv_4= ',' ( (lv_depth_5_0= RULE_INT ) ) )? (otherlv_6= ',' ( (lv_filterName_7_0= RULE_ID ) ) )? otherlv_8= '}'
+            // InternalConceptLanguage.g:4872:2: ( () ( (lv_operator_1_0= RULE_ID ) ) otherlv_2= '{' ( ( ruleQualifiedName ) ) (otherlv_4= ',' ( (lv_depth_5_0= RULE_INT ) ) )? (otherlv_6= ',' ( (lv_filterName_7_0= RULE_ID ) ) )? otherlv_8= '}' )
+            // InternalConceptLanguage.g:4873:3: () ( (lv_operator_1_0= RULE_ID ) ) otherlv_2= '{' ( ( ruleQualifiedName ) ) (otherlv_4= ',' ( (lv_depth_5_0= RULE_INT ) ) )? (otherlv_6= ',' ( (lv_filterName_7_0= RULE_ID ) ) )? otherlv_8= '}'
             {
-            // InternalConceptLanguage.g:4436:3: ()
-            // InternalConceptLanguage.g:4437:4: 
+            // InternalConceptLanguage.g:4873:3: ()
+            // InternalConceptLanguage.g:4874:4: 
             {
 
             				current = forceCreateModelElement(
@@ -11117,11 +12235,11 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalConceptLanguage.g:4443:3: ( (lv_operator_1_0= RULE_ID ) )
-            // InternalConceptLanguage.g:4444:4: (lv_operator_1_0= RULE_ID )
+            // InternalConceptLanguage.g:4880:3: ( (lv_operator_1_0= RULE_ID ) )
+            // InternalConceptLanguage.g:4881:4: (lv_operator_1_0= RULE_ID )
             {
-            // InternalConceptLanguage.g:4444:4: (lv_operator_1_0= RULE_ID )
-            // InternalConceptLanguage.g:4445:5: lv_operator_1_0= RULE_ID
+            // InternalConceptLanguage.g:4881:4: (lv_operator_1_0= RULE_ID )
+            // InternalConceptLanguage.g:4882:5: lv_operator_1_0= RULE_ID
             {
             lv_operator_1_0=(Token)match(input,RULE_ID,FOLLOW_19); 
 
@@ -11147,11 +12265,11 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             			newLeafNode(otherlv_2, grammarAccess.getSetFunctionAccess().getLeftCurlyBracketKeyword_2());
             		
-            // InternalConceptLanguage.g:4465:3: ( ( ruleQualifiedName ) )
-            // InternalConceptLanguage.g:4466:4: ( ruleQualifiedName )
+            // InternalConceptLanguage.g:4902:3: ( ( ruleQualifiedName ) )
+            // InternalConceptLanguage.g:4903:4: ( ruleQualifiedName )
             {
-            // InternalConceptLanguage.g:4466:4: ( ruleQualifiedName )
-            // InternalConceptLanguage.g:4467:5: ruleQualifiedName
+            // InternalConceptLanguage.g:4903:4: ( ruleQualifiedName )
+            // InternalConceptLanguage.g:4904:5: ruleQualifiedName
             {
 
             					if (current==null) {
@@ -11175,7 +12293,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalConceptLanguage.g:4481:3: (otherlv_4= ',' ( (lv_depth_5_0= RULE_INT ) ) )?
+            // InternalConceptLanguage.g:4918:3: (otherlv_4= ',' ( (lv_depth_5_0= RULE_INT ) ) )?
             int alt60=2;
             int LA60_0 = input.LA(1);
 
@@ -11188,17 +12306,17 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             }
             switch (alt60) {
                 case 1 :
-                    // InternalConceptLanguage.g:4482:4: otherlv_4= ',' ( (lv_depth_5_0= RULE_INT ) )
+                    // InternalConceptLanguage.g:4919:4: otherlv_4= ',' ( (lv_depth_5_0= RULE_INT ) )
                     {
                     otherlv_4=(Token)match(input,26,FOLLOW_6); 
 
                     				newLeafNode(otherlv_4, grammarAccess.getSetFunctionAccess().getCommaKeyword_4_0());
                     			
-                    // InternalConceptLanguage.g:4486:4: ( (lv_depth_5_0= RULE_INT ) )
-                    // InternalConceptLanguage.g:4487:5: (lv_depth_5_0= RULE_INT )
+                    // InternalConceptLanguage.g:4923:4: ( (lv_depth_5_0= RULE_INT ) )
+                    // InternalConceptLanguage.g:4924:5: (lv_depth_5_0= RULE_INT )
                     {
-                    // InternalConceptLanguage.g:4487:5: (lv_depth_5_0= RULE_INT )
-                    // InternalConceptLanguage.g:4488:6: lv_depth_5_0= RULE_INT
+                    // InternalConceptLanguage.g:4924:5: (lv_depth_5_0= RULE_INT )
+                    // InternalConceptLanguage.g:4925:6: lv_depth_5_0= RULE_INT
                     {
                     lv_depth_5_0=(Token)match(input,RULE_INT,FOLLOW_57); 
 
@@ -11226,7 +12344,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalConceptLanguage.g:4505:3: (otherlv_6= ',' ( (lv_filterName_7_0= RULE_ID ) ) )?
+            // InternalConceptLanguage.g:4942:3: (otherlv_6= ',' ( (lv_filterName_7_0= RULE_ID ) ) )?
             int alt61=2;
             int LA61_0 = input.LA(1);
 
@@ -11235,17 +12353,17 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             }
             switch (alt61) {
                 case 1 :
-                    // InternalConceptLanguage.g:4506:4: otherlv_6= ',' ( (lv_filterName_7_0= RULE_ID ) )
+                    // InternalConceptLanguage.g:4943:4: otherlv_6= ',' ( (lv_filterName_7_0= RULE_ID ) )
                     {
                     otherlv_6=(Token)match(input,26,FOLLOW_3); 
 
                     				newLeafNode(otherlv_6, grammarAccess.getSetFunctionAccess().getCommaKeyword_5_0());
                     			
-                    // InternalConceptLanguage.g:4510:4: ( (lv_filterName_7_0= RULE_ID ) )
-                    // InternalConceptLanguage.g:4511:5: (lv_filterName_7_0= RULE_ID )
+                    // InternalConceptLanguage.g:4947:4: ( (lv_filterName_7_0= RULE_ID ) )
+                    // InternalConceptLanguage.g:4948:5: (lv_filterName_7_0= RULE_ID )
                     {
-                    // InternalConceptLanguage.g:4511:5: (lv_filterName_7_0= RULE_ID )
-                    // InternalConceptLanguage.g:4512:6: lv_filterName_7_0= RULE_ID
+                    // InternalConceptLanguage.g:4948:5: (lv_filterName_7_0= RULE_ID )
+                    // InternalConceptLanguage.g:4949:6: lv_filterName_7_0= RULE_ID
                     {
                     lv_filterName_7_0=(Token)match(input,RULE_ID,FOLLOW_24); 
 
@@ -11300,7 +12418,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleNumberLiteral"
-    // InternalConceptLanguage.g:4537:1: entryRuleNumberLiteral returns [EObject current=null] : iv_ruleNumberLiteral= ruleNumberLiteral EOF ;
+    // InternalConceptLanguage.g:4974:1: entryRuleNumberLiteral returns [EObject current=null] : iv_ruleNumberLiteral= ruleNumberLiteral EOF ;
     public final EObject entryRuleNumberLiteral() throws RecognitionException {
         EObject current = null;
 
@@ -11308,8 +12426,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:4537:54: (iv_ruleNumberLiteral= ruleNumberLiteral EOF )
-            // InternalConceptLanguage.g:4538:2: iv_ruleNumberLiteral= ruleNumberLiteral EOF
+            // InternalConceptLanguage.g:4974:54: (iv_ruleNumberLiteral= ruleNumberLiteral EOF )
+            // InternalConceptLanguage.g:4975:2: iv_ruleNumberLiteral= ruleNumberLiteral EOF
             {
              newCompositeNode(grammarAccess.getNumberLiteralRule()); 
             pushFollow(FOLLOW_1);
@@ -11336,7 +12454,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleNumberLiteral"
-    // InternalConceptLanguage.g:4544:1: ruleNumberLiteral returns [EObject current=null] : ( () ( (lv_value_1_0= ruleFloatLiteralString ) ) ) ;
+    // InternalConceptLanguage.g:4981:1: ruleNumberLiteral returns [EObject current=null] : ( () ( (lv_value_1_0= ruleFloatLiteralString ) ) ) ;
     public final EObject ruleNumberLiteral() throws RecognitionException {
         EObject current = null;
 
@@ -11347,14 +12465,14 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:4550:2: ( ( () ( (lv_value_1_0= ruleFloatLiteralString ) ) ) )
-            // InternalConceptLanguage.g:4551:2: ( () ( (lv_value_1_0= ruleFloatLiteralString ) ) )
+            // InternalConceptLanguage.g:4987:2: ( ( () ( (lv_value_1_0= ruleFloatLiteralString ) ) ) )
+            // InternalConceptLanguage.g:4988:2: ( () ( (lv_value_1_0= ruleFloatLiteralString ) ) )
             {
-            // InternalConceptLanguage.g:4551:2: ( () ( (lv_value_1_0= ruleFloatLiteralString ) ) )
-            // InternalConceptLanguage.g:4552:3: () ( (lv_value_1_0= ruleFloatLiteralString ) )
+            // InternalConceptLanguage.g:4988:2: ( () ( (lv_value_1_0= ruleFloatLiteralString ) ) )
+            // InternalConceptLanguage.g:4989:3: () ( (lv_value_1_0= ruleFloatLiteralString ) )
             {
-            // InternalConceptLanguage.g:4552:3: ()
-            // InternalConceptLanguage.g:4553:4: 
+            // InternalConceptLanguage.g:4989:3: ()
+            // InternalConceptLanguage.g:4990:4: 
             {
 
             				current = forceCreateModelElement(
@@ -11364,11 +12482,11 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalConceptLanguage.g:4559:3: ( (lv_value_1_0= ruleFloatLiteralString ) )
-            // InternalConceptLanguage.g:4560:4: (lv_value_1_0= ruleFloatLiteralString )
+            // InternalConceptLanguage.g:4996:3: ( (lv_value_1_0= ruleFloatLiteralString ) )
+            // InternalConceptLanguage.g:4997:4: (lv_value_1_0= ruleFloatLiteralString )
             {
-            // InternalConceptLanguage.g:4560:4: (lv_value_1_0= ruleFloatLiteralString )
-            // InternalConceptLanguage.g:4561:5: lv_value_1_0= ruleFloatLiteralString
+            // InternalConceptLanguage.g:4997:4: (lv_value_1_0= ruleFloatLiteralString )
+            // InternalConceptLanguage.g:4998:5: lv_value_1_0= ruleFloatLiteralString
             {
 
             					newCompositeNode(grammarAccess.getNumberLiteralAccess().getValueFloatLiteralStringParserRuleCall_1_0());
@@ -11418,7 +12536,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleValuePi"
-    // InternalConceptLanguage.g:4582:1: entryRuleValuePi returns [EObject current=null] : iv_ruleValuePi= ruleValuePi EOF ;
+    // InternalConceptLanguage.g:5019:1: entryRuleValuePi returns [EObject current=null] : iv_ruleValuePi= ruleValuePi EOF ;
     public final EObject entryRuleValuePi() throws RecognitionException {
         EObject current = null;
 
@@ -11426,8 +12544,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:4582:48: (iv_ruleValuePi= ruleValuePi EOF )
-            // InternalConceptLanguage.g:4583:2: iv_ruleValuePi= ruleValuePi EOF
+            // InternalConceptLanguage.g:5019:48: (iv_ruleValuePi= ruleValuePi EOF )
+            // InternalConceptLanguage.g:5020:2: iv_ruleValuePi= ruleValuePi EOF
             {
              newCompositeNode(grammarAccess.getValuePiRule()); 
             pushFollow(FOLLOW_1);
@@ -11454,7 +12572,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleValuePi"
-    // InternalConceptLanguage.g:4589:1: ruleValuePi returns [EObject current=null] : ( () otherlv_1= 'pi' ) ;
+    // InternalConceptLanguage.g:5026:1: ruleValuePi returns [EObject current=null] : ( () otherlv_1= 'pi' ) ;
     public final EObject ruleValuePi() throws RecognitionException {
         EObject current = null;
 
@@ -11464,14 +12582,14 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:4595:2: ( ( () otherlv_1= 'pi' ) )
-            // InternalConceptLanguage.g:4596:2: ( () otherlv_1= 'pi' )
+            // InternalConceptLanguage.g:5032:2: ( ( () otherlv_1= 'pi' ) )
+            // InternalConceptLanguage.g:5033:2: ( () otherlv_1= 'pi' )
             {
-            // InternalConceptLanguage.g:4596:2: ( () otherlv_1= 'pi' )
-            // InternalConceptLanguage.g:4597:3: () otherlv_1= 'pi'
+            // InternalConceptLanguage.g:5033:2: ( () otherlv_1= 'pi' )
+            // InternalConceptLanguage.g:5034:3: () otherlv_1= 'pi'
             {
-            // InternalConceptLanguage.g:4597:3: ()
-            // InternalConceptLanguage.g:4598:4: 
+            // InternalConceptLanguage.g:5034:3: ()
+            // InternalConceptLanguage.g:5035:4: 
             {
 
             				current = forceCreateModelElement(
@@ -11481,7 +12599,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_1=(Token)match(input,59,FOLLOW_2); 
+            otherlv_1=(Token)match(input,61,FOLLOW_2); 
 
             			newLeafNode(otherlv_1, grammarAccess.getValuePiAccess().getPiKeyword_1());
             		
@@ -11508,7 +12626,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleValueE"
-    // InternalConceptLanguage.g:4612:1: entryRuleValueE returns [EObject current=null] : iv_ruleValueE= ruleValueE EOF ;
+    // InternalConceptLanguage.g:5049:1: entryRuleValueE returns [EObject current=null] : iv_ruleValueE= ruleValueE EOF ;
     public final EObject entryRuleValueE() throws RecognitionException {
         EObject current = null;
 
@@ -11516,8 +12634,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:4612:47: (iv_ruleValueE= ruleValueE EOF )
-            // InternalConceptLanguage.g:4613:2: iv_ruleValueE= ruleValueE EOF
+            // InternalConceptLanguage.g:5049:47: (iv_ruleValueE= ruleValueE EOF )
+            // InternalConceptLanguage.g:5050:2: iv_ruleValueE= ruleValueE EOF
             {
              newCompositeNode(grammarAccess.getValueERule()); 
             pushFollow(FOLLOW_1);
@@ -11544,7 +12662,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleValueE"
-    // InternalConceptLanguage.g:4619:1: ruleValueE returns [EObject current=null] : ( () otherlv_1= 'e' ) ;
+    // InternalConceptLanguage.g:5056:1: ruleValueE returns [EObject current=null] : ( () otherlv_1= 'e' ) ;
     public final EObject ruleValueE() throws RecognitionException {
         EObject current = null;
 
@@ -11554,14 +12672,14 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:4625:2: ( ( () otherlv_1= 'e' ) )
-            // InternalConceptLanguage.g:4626:2: ( () otherlv_1= 'e' )
+            // InternalConceptLanguage.g:5062:2: ( ( () otherlv_1= 'e' ) )
+            // InternalConceptLanguage.g:5063:2: ( () otherlv_1= 'e' )
             {
-            // InternalConceptLanguage.g:4626:2: ( () otherlv_1= 'e' )
-            // InternalConceptLanguage.g:4627:3: () otherlv_1= 'e'
+            // InternalConceptLanguage.g:5063:2: ( () otherlv_1= 'e' )
+            // InternalConceptLanguage.g:5064:3: () otherlv_1= 'e'
             {
-            // InternalConceptLanguage.g:4627:3: ()
-            // InternalConceptLanguage.g:4628:4: 
+            // InternalConceptLanguage.g:5064:3: ()
+            // InternalConceptLanguage.g:5065:4: 
             {
 
             				current = forceCreateModelElement(
@@ -11571,7 +12689,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            otherlv_1=(Token)match(input,60,FOLLOW_2); 
+            otherlv_1=(Token)match(input,62,FOLLOW_2); 
 
             			newLeafNode(otherlv_1, grammarAccess.getValueEAccess().getEKeyword_1());
             		
@@ -11598,7 +12716,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleVersion"
-    // InternalConceptLanguage.g:4642:1: entryRuleVersion returns [String current=null] : iv_ruleVersion= ruleVersion EOF ;
+    // InternalConceptLanguage.g:5079:1: entryRuleVersion returns [String current=null] : iv_ruleVersion= ruleVersion EOF ;
     public final String entryRuleVersion() throws RecognitionException {
         String current = null;
 
@@ -11606,8 +12724,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:4642:47: (iv_ruleVersion= ruleVersion EOF )
-            // InternalConceptLanguage.g:4643:2: iv_ruleVersion= ruleVersion EOF
+            // InternalConceptLanguage.g:5079:47: (iv_ruleVersion= ruleVersion EOF )
+            // InternalConceptLanguage.g:5080:2: iv_ruleVersion= ruleVersion EOF
             {
              newCompositeNode(grammarAccess.getVersionRule()); 
             pushFollow(FOLLOW_1);
@@ -11634,7 +12752,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleVersion"
-    // InternalConceptLanguage.g:4649:1: ruleVersion returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (this_INT_0= RULE_INT (kw= '.' this_INT_2= RULE_INT )* ) ;
+    // InternalConceptLanguage.g:5086:1: ruleVersion returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (this_INT_0= RULE_INT (kw= '.' this_INT_2= RULE_INT )* ) ;
     public final AntlrDatatypeRuleToken ruleVersion() throws RecognitionException {
         AntlrDatatypeRuleToken current = new AntlrDatatypeRuleToken();
 
@@ -11646,11 +12764,11 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:4655:2: ( (this_INT_0= RULE_INT (kw= '.' this_INT_2= RULE_INT )* ) )
-            // InternalConceptLanguage.g:4656:2: (this_INT_0= RULE_INT (kw= '.' this_INT_2= RULE_INT )* )
+            // InternalConceptLanguage.g:5092:2: ( (this_INT_0= RULE_INT (kw= '.' this_INT_2= RULE_INT )* ) )
+            // InternalConceptLanguage.g:5093:2: (this_INT_0= RULE_INT (kw= '.' this_INT_2= RULE_INT )* )
             {
-            // InternalConceptLanguage.g:4656:2: (this_INT_0= RULE_INT (kw= '.' this_INT_2= RULE_INT )* )
-            // InternalConceptLanguage.g:4657:3: this_INT_0= RULE_INT (kw= '.' this_INT_2= RULE_INT )*
+            // InternalConceptLanguage.g:5093:2: (this_INT_0= RULE_INT (kw= '.' this_INT_2= RULE_INT )* )
+            // InternalConceptLanguage.g:5094:3: this_INT_0= RULE_INT (kw= '.' this_INT_2= RULE_INT )*
             {
             this_INT_0=(Token)match(input,RULE_INT,FOLLOW_58); 
 
@@ -11659,22 +12777,22 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             			newLeafNode(this_INT_0, grammarAccess.getVersionAccess().getINTTerminalRuleCall_0());
             		
-            // InternalConceptLanguage.g:4664:3: (kw= '.' this_INT_2= RULE_INT )*
+            // InternalConceptLanguage.g:5101:3: (kw= '.' this_INT_2= RULE_INT )*
             loop62:
             do {
                 int alt62=2;
                 int LA62_0 = input.LA(1);
 
-                if ( (LA62_0==61) ) {
+                if ( (LA62_0==63) ) {
                     alt62=1;
                 }
 
 
                 switch (alt62) {
             	case 1 :
-            	    // InternalConceptLanguage.g:4665:4: kw= '.' this_INT_2= RULE_INT
+            	    // InternalConceptLanguage.g:5102:4: kw= '.' this_INT_2= RULE_INT
             	    {
-            	    kw=(Token)match(input,61,FOLLOW_6); 
+            	    kw=(Token)match(input,63,FOLLOW_6); 
 
             	    				current.merge(kw);
             	    				newLeafNode(kw, grammarAccess.getVersionAccess().getFullStopKeyword_1_0());
@@ -11718,7 +12836,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleIntLiteralString"
-    // InternalConceptLanguage.g:4682:1: entryRuleIntLiteralString returns [String current=null] : iv_ruleIntLiteralString= ruleIntLiteralString EOF ;
+    // InternalConceptLanguage.g:5119:1: entryRuleIntLiteralString returns [String current=null] : iv_ruleIntLiteralString= ruleIntLiteralString EOF ;
     public final String entryRuleIntLiteralString() throws RecognitionException {
         String current = null;
 
@@ -11726,8 +12844,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:4682:56: (iv_ruleIntLiteralString= ruleIntLiteralString EOF )
-            // InternalConceptLanguage.g:4683:2: iv_ruleIntLiteralString= ruleIntLiteralString EOF
+            // InternalConceptLanguage.g:5119:56: (iv_ruleIntLiteralString= ruleIntLiteralString EOF )
+            // InternalConceptLanguage.g:5120:2: iv_ruleIntLiteralString= ruleIntLiteralString EOF
             {
              newCompositeNode(grammarAccess.getIntLiteralStringRule()); 
             pushFollow(FOLLOW_1);
@@ -11754,7 +12872,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleIntLiteralString"
-    // InternalConceptLanguage.g:4689:1: ruleIntLiteralString returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : ( (kw= '-' )? (this_INT_1= RULE_INT )? ) ;
+    // InternalConceptLanguage.g:5126:1: ruleIntLiteralString returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : ( (kw= '-' )? (this_INT_1= RULE_INT )? ) ;
     public final AntlrDatatypeRuleToken ruleIntLiteralString() throws RecognitionException {
         AntlrDatatypeRuleToken current = new AntlrDatatypeRuleToken();
 
@@ -11765,24 +12883,24 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:4695:2: ( ( (kw= '-' )? (this_INT_1= RULE_INT )? ) )
-            // InternalConceptLanguage.g:4696:2: ( (kw= '-' )? (this_INT_1= RULE_INT )? )
+            // InternalConceptLanguage.g:5132:2: ( ( (kw= '-' )? (this_INT_1= RULE_INT )? ) )
+            // InternalConceptLanguage.g:5133:2: ( (kw= '-' )? (this_INT_1= RULE_INT )? )
             {
-            // InternalConceptLanguage.g:4696:2: ( (kw= '-' )? (this_INT_1= RULE_INT )? )
-            // InternalConceptLanguage.g:4697:3: (kw= '-' )? (this_INT_1= RULE_INT )?
+            // InternalConceptLanguage.g:5133:2: ( (kw= '-' )? (this_INT_1= RULE_INT )? )
+            // InternalConceptLanguage.g:5134:3: (kw= '-' )? (this_INT_1= RULE_INT )?
             {
-            // InternalConceptLanguage.g:4697:3: (kw= '-' )?
+            // InternalConceptLanguage.g:5134:3: (kw= '-' )?
             int alt63=2;
             int LA63_0 = input.LA(1);
 
-            if ( (LA63_0==62) ) {
+            if ( (LA63_0==64) ) {
                 alt63=1;
             }
             switch (alt63) {
                 case 1 :
-                    // InternalConceptLanguage.g:4698:4: kw= '-'
+                    // InternalConceptLanguage.g:5135:4: kw= '-'
                     {
-                    kw=(Token)match(input,62,FOLLOW_59); 
+                    kw=(Token)match(input,64,FOLLOW_59); 
 
                     				current.merge(kw);
                     				newLeafNode(kw, grammarAccess.getIntLiteralStringAccess().getHyphenMinusKeyword_0());
@@ -11793,7 +12911,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalConceptLanguage.g:4704:3: (this_INT_1= RULE_INT )?
+            // InternalConceptLanguage.g:5141:3: (this_INT_1= RULE_INT )?
             int alt64=2;
             int LA64_0 = input.LA(1);
 
@@ -11802,7 +12920,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             }
             switch (alt64) {
                 case 1 :
-                    // InternalConceptLanguage.g:4705:4: this_INT_1= RULE_INT
+                    // InternalConceptLanguage.g:5142:4: this_INT_1= RULE_INT
                     {
                     this_INT_1=(Token)match(input,RULE_INT,FOLLOW_2); 
 
@@ -11840,7 +12958,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleFloatLiteralString"
-    // InternalConceptLanguage.g:4717:1: entryRuleFloatLiteralString returns [String current=null] : iv_ruleFloatLiteralString= ruleFloatLiteralString EOF ;
+    // InternalConceptLanguage.g:5154:1: entryRuleFloatLiteralString returns [String current=null] : iv_ruleFloatLiteralString= ruleFloatLiteralString EOF ;
     public final String entryRuleFloatLiteralString() throws RecognitionException {
         String current = null;
 
@@ -11848,8 +12966,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:4717:58: (iv_ruleFloatLiteralString= ruleFloatLiteralString EOF )
-            // InternalConceptLanguage.g:4718:2: iv_ruleFloatLiteralString= ruleFloatLiteralString EOF
+            // InternalConceptLanguage.g:5154:58: (iv_ruleFloatLiteralString= ruleFloatLiteralString EOF )
+            // InternalConceptLanguage.g:5155:2: iv_ruleFloatLiteralString= ruleFloatLiteralString EOF
             {
              newCompositeNode(grammarAccess.getFloatLiteralStringRule()); 
             pushFollow(FOLLOW_1);
@@ -11876,7 +12994,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleFloatLiteralString"
-    // InternalConceptLanguage.g:4724:1: ruleFloatLiteralString returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : ( (kw= '-' )? this_INT_1= RULE_INT (kw= '.' this_INT_3= RULE_INT )? ) ;
+    // InternalConceptLanguage.g:5161:1: ruleFloatLiteralString returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : ( (kw= '-' )? this_INT_1= RULE_INT (kw= '.' this_INT_3= RULE_INT )? ) ;
     public final AntlrDatatypeRuleToken ruleFloatLiteralString() throws RecognitionException {
         AntlrDatatypeRuleToken current = new AntlrDatatypeRuleToken();
 
@@ -11888,24 +13006,24 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:4730:2: ( ( (kw= '-' )? this_INT_1= RULE_INT (kw= '.' this_INT_3= RULE_INT )? ) )
-            // InternalConceptLanguage.g:4731:2: ( (kw= '-' )? this_INT_1= RULE_INT (kw= '.' this_INT_3= RULE_INT )? )
+            // InternalConceptLanguage.g:5167:2: ( ( (kw= '-' )? this_INT_1= RULE_INT (kw= '.' this_INT_3= RULE_INT )? ) )
+            // InternalConceptLanguage.g:5168:2: ( (kw= '-' )? this_INT_1= RULE_INT (kw= '.' this_INT_3= RULE_INT )? )
             {
-            // InternalConceptLanguage.g:4731:2: ( (kw= '-' )? this_INT_1= RULE_INT (kw= '.' this_INT_3= RULE_INT )? )
-            // InternalConceptLanguage.g:4732:3: (kw= '-' )? this_INT_1= RULE_INT (kw= '.' this_INT_3= RULE_INT )?
+            // InternalConceptLanguage.g:5168:2: ( (kw= '-' )? this_INT_1= RULE_INT (kw= '.' this_INT_3= RULE_INT )? )
+            // InternalConceptLanguage.g:5169:3: (kw= '-' )? this_INT_1= RULE_INT (kw= '.' this_INT_3= RULE_INT )?
             {
-            // InternalConceptLanguage.g:4732:3: (kw= '-' )?
+            // InternalConceptLanguage.g:5169:3: (kw= '-' )?
             int alt65=2;
             int LA65_0 = input.LA(1);
 
-            if ( (LA65_0==62) ) {
+            if ( (LA65_0==64) ) {
                 alt65=1;
             }
             switch (alt65) {
                 case 1 :
-                    // InternalConceptLanguage.g:4733:4: kw= '-'
+                    // InternalConceptLanguage.g:5170:4: kw= '-'
                     {
-                    kw=(Token)match(input,62,FOLLOW_6); 
+                    kw=(Token)match(input,64,FOLLOW_6); 
 
                     				current.merge(kw);
                     				newLeafNode(kw, grammarAccess.getFloatLiteralStringAccess().getHyphenMinusKeyword_0());
@@ -11923,18 +13041,18 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             			newLeafNode(this_INT_1, grammarAccess.getFloatLiteralStringAccess().getINTTerminalRuleCall_1());
             		
-            // InternalConceptLanguage.g:4746:3: (kw= '.' this_INT_3= RULE_INT )?
+            // InternalConceptLanguage.g:5183:3: (kw= '.' this_INT_3= RULE_INT )?
             int alt66=2;
             int LA66_0 = input.LA(1);
 
-            if ( (LA66_0==61) ) {
+            if ( (LA66_0==63) ) {
                 alt66=1;
             }
             switch (alt66) {
                 case 1 :
-                    // InternalConceptLanguage.g:4747:4: kw= '.' this_INT_3= RULE_INT
+                    // InternalConceptLanguage.g:5184:4: kw= '.' this_INT_3= RULE_INT
                     {
-                    kw=(Token)match(input,61,FOLLOW_6); 
+                    kw=(Token)match(input,63,FOLLOW_6); 
 
                     				current.merge(kw);
                     				newLeafNode(kw, grammarAccess.getFloatLiteralStringAccess().getFullStopKeyword_2_0());
@@ -11975,7 +13093,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleBooleanLiteralString"
-    // InternalConceptLanguage.g:4764:1: entryRuleBooleanLiteralString returns [String current=null] : iv_ruleBooleanLiteralString= ruleBooleanLiteralString EOF ;
+    // InternalConceptLanguage.g:5201:1: entryRuleBooleanLiteralString returns [String current=null] : iv_ruleBooleanLiteralString= ruleBooleanLiteralString EOF ;
     public final String entryRuleBooleanLiteralString() throws RecognitionException {
         String current = null;
 
@@ -11983,8 +13101,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:4764:60: (iv_ruleBooleanLiteralString= ruleBooleanLiteralString EOF )
-            // InternalConceptLanguage.g:4765:2: iv_ruleBooleanLiteralString= ruleBooleanLiteralString EOF
+            // InternalConceptLanguage.g:5201:60: (iv_ruleBooleanLiteralString= ruleBooleanLiteralString EOF )
+            // InternalConceptLanguage.g:5202:2: iv_ruleBooleanLiteralString= ruleBooleanLiteralString EOF
             {
              newCompositeNode(grammarAccess.getBooleanLiteralStringRule()); 
             pushFollow(FOLLOW_1);
@@ -12011,7 +13129,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleBooleanLiteralString"
-    // InternalConceptLanguage.g:4771:1: ruleBooleanLiteralString returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (kw= 'true' | kw= 'false' ) ;
+    // InternalConceptLanguage.g:5208:1: ruleBooleanLiteralString returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (kw= 'true' | kw= 'false' ) ;
     public final AntlrDatatypeRuleToken ruleBooleanLiteralString() throws RecognitionException {
         AntlrDatatypeRuleToken current = new AntlrDatatypeRuleToken();
 
@@ -12021,17 +13139,17 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:4777:2: ( (kw= 'true' | kw= 'false' ) )
-            // InternalConceptLanguage.g:4778:2: (kw= 'true' | kw= 'false' )
+            // InternalConceptLanguage.g:5214:2: ( (kw= 'true' | kw= 'false' ) )
+            // InternalConceptLanguage.g:5215:2: (kw= 'true' | kw= 'false' )
             {
-            // InternalConceptLanguage.g:4778:2: (kw= 'true' | kw= 'false' )
+            // InternalConceptLanguage.g:5215:2: (kw= 'true' | kw= 'false' )
             int alt67=2;
             int LA67_0 = input.LA(1);
 
-            if ( (LA67_0==63) ) {
+            if ( (LA67_0==65) ) {
                 alt67=1;
             }
-            else if ( (LA67_0==64) ) {
+            else if ( (LA67_0==66) ) {
                 alt67=2;
             }
             else {
@@ -12042,9 +13160,9 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
             }
             switch (alt67) {
                 case 1 :
-                    // InternalConceptLanguage.g:4779:3: kw= 'true'
+                    // InternalConceptLanguage.g:5216:3: kw= 'true'
                     {
-                    kw=(Token)match(input,63,FOLLOW_2); 
+                    kw=(Token)match(input,65,FOLLOW_2); 
 
                     			current.merge(kw);
                     			newLeafNode(kw, grammarAccess.getBooleanLiteralStringAccess().getTrueKeyword_0());
@@ -12053,9 +13171,9 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
                     }
                     break;
                 case 2 :
-                    // InternalConceptLanguage.g:4785:3: kw= 'false'
+                    // InternalConceptLanguage.g:5222:3: kw= 'false'
                     {
-                    kw=(Token)match(input,64,FOLLOW_2); 
+                    kw=(Token)match(input,66,FOLLOW_2); 
 
                     			current.merge(kw);
                     			newLeafNode(kw, grammarAccess.getBooleanLiteralStringAccess().getFalseKeyword_1());
@@ -12086,7 +13204,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleEString"
-    // InternalConceptLanguage.g:4794:1: entryRuleEString returns [String current=null] : iv_ruleEString= ruleEString EOF ;
+    // InternalConceptLanguage.g:5231:1: entryRuleEString returns [String current=null] : iv_ruleEString= ruleEString EOF ;
     public final String entryRuleEString() throws RecognitionException {
         String current = null;
 
@@ -12094,8 +13212,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:4794:47: (iv_ruleEString= ruleEString EOF )
-            // InternalConceptLanguage.g:4795:2: iv_ruleEString= ruleEString EOF
+            // InternalConceptLanguage.g:5231:47: (iv_ruleEString= ruleEString EOF )
+            // InternalConceptLanguage.g:5232:2: iv_ruleEString= ruleEString EOF
             {
              newCompositeNode(grammarAccess.getEStringRule()); 
             pushFollow(FOLLOW_1);
@@ -12122,7 +13240,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleEString"
-    // InternalConceptLanguage.g:4801:1: ruleEString returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : this_STRING_0= RULE_STRING ;
+    // InternalConceptLanguage.g:5238:1: ruleEString returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : this_STRING_0= RULE_STRING ;
     public final AntlrDatatypeRuleToken ruleEString() throws RecognitionException {
         AntlrDatatypeRuleToken current = new AntlrDatatypeRuleToken();
 
@@ -12132,8 +13250,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:4807:2: (this_STRING_0= RULE_STRING )
-            // InternalConceptLanguage.g:4808:2: this_STRING_0= RULE_STRING
+            // InternalConceptLanguage.g:5244:2: (this_STRING_0= RULE_STRING )
+            // InternalConceptLanguage.g:5245:2: this_STRING_0= RULE_STRING
             {
             this_STRING_0=(Token)match(input,RULE_STRING,FOLLOW_2); 
 
@@ -12162,7 +13280,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleQualifiedNameWithWildcard"
-    // InternalConceptLanguage.g:4818:1: entryRuleQualifiedNameWithWildcard returns [String current=null] : iv_ruleQualifiedNameWithWildcard= ruleQualifiedNameWithWildcard EOF ;
+    // InternalConceptLanguage.g:5255:1: entryRuleQualifiedNameWithWildcard returns [String current=null] : iv_ruleQualifiedNameWithWildcard= ruleQualifiedNameWithWildcard EOF ;
     public final String entryRuleQualifiedNameWithWildcard() throws RecognitionException {
         String current = null;
 
@@ -12170,8 +13288,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:4818:65: (iv_ruleQualifiedNameWithWildcard= ruleQualifiedNameWithWildcard EOF )
-            // InternalConceptLanguage.g:4819:2: iv_ruleQualifiedNameWithWildcard= ruleQualifiedNameWithWildcard EOF
+            // InternalConceptLanguage.g:5255:65: (iv_ruleQualifiedNameWithWildcard= ruleQualifiedNameWithWildcard EOF )
+            // InternalConceptLanguage.g:5256:2: iv_ruleQualifiedNameWithWildcard= ruleQualifiedNameWithWildcard EOF
             {
              newCompositeNode(grammarAccess.getQualifiedNameWithWildcardRule()); 
             pushFollow(FOLLOW_1);
@@ -12198,7 +13316,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleQualifiedNameWithWildcard"
-    // InternalConceptLanguage.g:4825:1: ruleQualifiedNameWithWildcard returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (this_QualifiedName_0= ruleQualifiedName (kw= '.*' )? ) ;
+    // InternalConceptLanguage.g:5262:1: ruleQualifiedNameWithWildcard returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (this_QualifiedName_0= ruleQualifiedName (kw= '.*' )? ) ;
     public final AntlrDatatypeRuleToken ruleQualifiedNameWithWildcard() throws RecognitionException {
         AntlrDatatypeRuleToken current = new AntlrDatatypeRuleToken();
 
@@ -12210,11 +13328,11 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:4831:2: ( (this_QualifiedName_0= ruleQualifiedName (kw= '.*' )? ) )
-            // InternalConceptLanguage.g:4832:2: (this_QualifiedName_0= ruleQualifiedName (kw= '.*' )? )
+            // InternalConceptLanguage.g:5268:2: ( (this_QualifiedName_0= ruleQualifiedName (kw= '.*' )? ) )
+            // InternalConceptLanguage.g:5269:2: (this_QualifiedName_0= ruleQualifiedName (kw= '.*' )? )
             {
-            // InternalConceptLanguage.g:4832:2: (this_QualifiedName_0= ruleQualifiedName (kw= '.*' )? )
-            // InternalConceptLanguage.g:4833:3: this_QualifiedName_0= ruleQualifiedName (kw= '.*' )?
+            // InternalConceptLanguage.g:5269:2: (this_QualifiedName_0= ruleQualifiedName (kw= '.*' )? )
+            // InternalConceptLanguage.g:5270:3: this_QualifiedName_0= ruleQualifiedName (kw= '.*' )?
             {
 
             			newCompositeNode(grammarAccess.getQualifiedNameWithWildcardAccess().getQualifiedNameParserRuleCall_0());
@@ -12230,18 +13348,18 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             			afterParserOrEnumRuleCall();
             		
-            // InternalConceptLanguage.g:4843:3: (kw= '.*' )?
+            // InternalConceptLanguage.g:5280:3: (kw= '.*' )?
             int alt68=2;
             int LA68_0 = input.LA(1);
 
-            if ( (LA68_0==65) ) {
+            if ( (LA68_0==67) ) {
                 alt68=1;
             }
             switch (alt68) {
                 case 1 :
-                    // InternalConceptLanguage.g:4844:4: kw= '.*'
+                    // InternalConceptLanguage.g:5281:4: kw= '.*'
                     {
-                    kw=(Token)match(input,65,FOLLOW_2); 
+                    kw=(Token)match(input,67,FOLLOW_2); 
 
                     				current.merge(kw);
                     				newLeafNode(kw, grammarAccess.getQualifiedNameWithWildcardAccess().getFullStopAsteriskKeyword_1());
@@ -12275,7 +13393,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "entryRuleQualifiedName"
-    // InternalConceptLanguage.g:4854:1: entryRuleQualifiedName returns [String current=null] : iv_ruleQualifiedName= ruleQualifiedName EOF ;
+    // InternalConceptLanguage.g:5291:1: entryRuleQualifiedName returns [String current=null] : iv_ruleQualifiedName= ruleQualifiedName EOF ;
     public final String entryRuleQualifiedName() throws RecognitionException {
         String current = null;
 
@@ -12283,8 +13401,8 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
         try {
-            // InternalConceptLanguage.g:4854:53: (iv_ruleQualifiedName= ruleQualifiedName EOF )
-            // InternalConceptLanguage.g:4855:2: iv_ruleQualifiedName= ruleQualifiedName EOF
+            // InternalConceptLanguage.g:5291:53: (iv_ruleQualifiedName= ruleQualifiedName EOF )
+            // InternalConceptLanguage.g:5292:2: iv_ruleQualifiedName= ruleQualifiedName EOF
             {
              newCompositeNode(grammarAccess.getQualifiedNameRule()); 
             pushFollow(FOLLOW_1);
@@ -12311,7 +13429,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleQualifiedName"
-    // InternalConceptLanguage.g:4861:1: ruleQualifiedName returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (this_ID_0= RULE_ID (kw= '.' this_ID_2= RULE_ID )* ) ;
+    // InternalConceptLanguage.g:5298:1: ruleQualifiedName returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken()] : (this_ID_0= RULE_ID (kw= '.' this_ID_2= RULE_ID )* ) ;
     public final AntlrDatatypeRuleToken ruleQualifiedName() throws RecognitionException {
         AntlrDatatypeRuleToken current = new AntlrDatatypeRuleToken();
 
@@ -12323,11 +13441,11 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:4867:2: ( (this_ID_0= RULE_ID (kw= '.' this_ID_2= RULE_ID )* ) )
-            // InternalConceptLanguage.g:4868:2: (this_ID_0= RULE_ID (kw= '.' this_ID_2= RULE_ID )* )
+            // InternalConceptLanguage.g:5304:2: ( (this_ID_0= RULE_ID (kw= '.' this_ID_2= RULE_ID )* ) )
+            // InternalConceptLanguage.g:5305:2: (this_ID_0= RULE_ID (kw= '.' this_ID_2= RULE_ID )* )
             {
-            // InternalConceptLanguage.g:4868:2: (this_ID_0= RULE_ID (kw= '.' this_ID_2= RULE_ID )* )
-            // InternalConceptLanguage.g:4869:3: this_ID_0= RULE_ID (kw= '.' this_ID_2= RULE_ID )*
+            // InternalConceptLanguage.g:5305:2: (this_ID_0= RULE_ID (kw= '.' this_ID_2= RULE_ID )* )
+            // InternalConceptLanguage.g:5306:3: this_ID_0= RULE_ID (kw= '.' this_ID_2= RULE_ID )*
             {
             this_ID_0=(Token)match(input,RULE_ID,FOLLOW_58); 
 
@@ -12336,22 +13454,22 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
             			newLeafNode(this_ID_0, grammarAccess.getQualifiedNameAccess().getIDTerminalRuleCall_0());
             		
-            // InternalConceptLanguage.g:4876:3: (kw= '.' this_ID_2= RULE_ID )*
+            // InternalConceptLanguage.g:5313:3: (kw= '.' this_ID_2= RULE_ID )*
             loop69:
             do {
                 int alt69=2;
                 int LA69_0 = input.LA(1);
 
-                if ( (LA69_0==61) ) {
+                if ( (LA69_0==63) ) {
                     alt69=1;
                 }
 
 
                 switch (alt69) {
             	case 1 :
-            	    // InternalConceptLanguage.g:4877:4: kw= '.' this_ID_2= RULE_ID
+            	    // InternalConceptLanguage.g:5314:4: kw= '.' this_ID_2= RULE_ID
             	    {
-            	    kw=(Token)match(input,61,FOLLOW_3); 
+            	    kw=(Token)match(input,63,FOLLOW_3); 
 
             	    				current.merge(kw);
             	    				newLeafNode(kw, grammarAccess.getQualifiedNameAccess().getFullStopKeyword_1_0());
@@ -12395,7 +13513,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleOperatorPlus"
-    // InternalConceptLanguage.g:4894:1: ruleOperatorPlus returns [Enumerator current=null] : (enumLiteral_0= '+' ) ;
+    // InternalConceptLanguage.g:5331:1: ruleOperatorPlus returns [Enumerator current=null] : (enumLiteral_0= '+' ) ;
     public final Enumerator ruleOperatorPlus() throws RecognitionException {
         Enumerator current = null;
 
@@ -12405,13 +13523,13 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:4900:2: ( (enumLiteral_0= '+' ) )
-            // InternalConceptLanguage.g:4901:2: (enumLiteral_0= '+' )
+            // InternalConceptLanguage.g:5337:2: ( (enumLiteral_0= '+' ) )
+            // InternalConceptLanguage.g:5338:2: (enumLiteral_0= '+' )
             {
-            // InternalConceptLanguage.g:4901:2: (enumLiteral_0= '+' )
-            // InternalConceptLanguage.g:4902:3: enumLiteral_0= '+'
+            // InternalConceptLanguage.g:5338:2: (enumLiteral_0= '+' )
+            // InternalConceptLanguage.g:5339:3: enumLiteral_0= '+'
             {
-            enumLiteral_0=(Token)match(input,66,FOLLOW_2); 
+            enumLiteral_0=(Token)match(input,68,FOLLOW_2); 
 
             			current = grammarAccess.getOperatorPlusAccess().getPLUSEnumLiteralDeclaration().getEnumLiteral().getInstance();
             			newLeafNode(enumLiteral_0, grammarAccess.getOperatorPlusAccess().getPLUSEnumLiteralDeclaration());
@@ -12439,7 +13557,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleOperatorMinus"
-    // InternalConceptLanguage.g:4911:1: ruleOperatorMinus returns [Enumerator current=null] : (enumLiteral_0= '-' ) ;
+    // InternalConceptLanguage.g:5348:1: ruleOperatorMinus returns [Enumerator current=null] : (enumLiteral_0= '-' ) ;
     public final Enumerator ruleOperatorMinus() throws RecognitionException {
         Enumerator current = null;
 
@@ -12449,13 +13567,13 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:4917:2: ( (enumLiteral_0= '-' ) )
-            // InternalConceptLanguage.g:4918:2: (enumLiteral_0= '-' )
+            // InternalConceptLanguage.g:5354:2: ( (enumLiteral_0= '-' ) )
+            // InternalConceptLanguage.g:5355:2: (enumLiteral_0= '-' )
             {
-            // InternalConceptLanguage.g:4918:2: (enumLiteral_0= '-' )
-            // InternalConceptLanguage.g:4919:3: enumLiteral_0= '-'
+            // InternalConceptLanguage.g:5355:2: (enumLiteral_0= '-' )
+            // InternalConceptLanguage.g:5356:3: enumLiteral_0= '-'
             {
-            enumLiteral_0=(Token)match(input,62,FOLLOW_2); 
+            enumLiteral_0=(Token)match(input,64,FOLLOW_2); 
 
             			current = grammarAccess.getOperatorMinusAccess().getMINUSEnumLiteralDeclaration().getEnumLiteral().getInstance();
             			newLeafNode(enumLiteral_0, grammarAccess.getOperatorMinusAccess().getMINUSEnumLiteralDeclaration());
@@ -12483,7 +13601,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleOperatorMultiply"
-    // InternalConceptLanguage.g:4928:1: ruleOperatorMultiply returns [Enumerator current=null] : (enumLiteral_0= '*' ) ;
+    // InternalConceptLanguage.g:5365:1: ruleOperatorMultiply returns [Enumerator current=null] : (enumLiteral_0= '*' ) ;
     public final Enumerator ruleOperatorMultiply() throws RecognitionException {
         Enumerator current = null;
 
@@ -12493,13 +13611,13 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:4934:2: ( (enumLiteral_0= '*' ) )
-            // InternalConceptLanguage.g:4935:2: (enumLiteral_0= '*' )
+            // InternalConceptLanguage.g:5371:2: ( (enumLiteral_0= '*' ) )
+            // InternalConceptLanguage.g:5372:2: (enumLiteral_0= '*' )
             {
-            // InternalConceptLanguage.g:4935:2: (enumLiteral_0= '*' )
-            // InternalConceptLanguage.g:4936:3: enumLiteral_0= '*'
+            // InternalConceptLanguage.g:5372:2: (enumLiteral_0= '*' )
+            // InternalConceptLanguage.g:5373:3: enumLiteral_0= '*'
             {
-            enumLiteral_0=(Token)match(input,67,FOLLOW_2); 
+            enumLiteral_0=(Token)match(input,69,FOLLOW_2); 
 
             			current = grammarAccess.getOperatorMultiplyAccess().getMULTIPLYEnumLiteralDeclaration().getEnumLiteral().getInstance();
             			newLeafNode(enumLiteral_0, grammarAccess.getOperatorMultiplyAccess().getMULTIPLYEnumLiteralDeclaration());
@@ -12527,7 +13645,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleOperatorDivide"
-    // InternalConceptLanguage.g:4945:1: ruleOperatorDivide returns [Enumerator current=null] : (enumLiteral_0= '/' ) ;
+    // InternalConceptLanguage.g:5382:1: ruleOperatorDivide returns [Enumerator current=null] : (enumLiteral_0= '/' ) ;
     public final Enumerator ruleOperatorDivide() throws RecognitionException {
         Enumerator current = null;
 
@@ -12537,13 +13655,13 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:4951:2: ( (enumLiteral_0= '/' ) )
-            // InternalConceptLanguage.g:4952:2: (enumLiteral_0= '/' )
+            // InternalConceptLanguage.g:5388:2: ( (enumLiteral_0= '/' ) )
+            // InternalConceptLanguage.g:5389:2: (enumLiteral_0= '/' )
             {
-            // InternalConceptLanguage.g:4952:2: (enumLiteral_0= '/' )
-            // InternalConceptLanguage.g:4953:3: enumLiteral_0= '/'
+            // InternalConceptLanguage.g:5389:2: (enumLiteral_0= '/' )
+            // InternalConceptLanguage.g:5390:3: enumLiteral_0= '/'
             {
-            enumLiteral_0=(Token)match(input,68,FOLLOW_2); 
+            enumLiteral_0=(Token)match(input,70,FOLLOW_2); 
 
             			current = grammarAccess.getOperatorDivideAccess().getDIVIDEEnumLiteralDeclaration().getEnumLiteral().getInstance();
             			newLeafNode(enumLiteral_0, grammarAccess.getOperatorDivideAccess().getDIVIDEEnumLiteralDeclaration());
@@ -12571,7 +13689,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleOperatorPower"
-    // InternalConceptLanguage.g:4962:1: ruleOperatorPower returns [Enumerator current=null] : (enumLiteral_0= '^' ) ;
+    // InternalConceptLanguage.g:5399:1: ruleOperatorPower returns [Enumerator current=null] : (enumLiteral_0= '^' ) ;
     public final Enumerator ruleOperatorPower() throws RecognitionException {
         Enumerator current = null;
 
@@ -12581,13 +13699,13 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:4968:2: ( (enumLiteral_0= '^' ) )
-            // InternalConceptLanguage.g:4969:2: (enumLiteral_0= '^' )
+            // InternalConceptLanguage.g:5405:2: ( (enumLiteral_0= '^' ) )
+            // InternalConceptLanguage.g:5406:2: (enumLiteral_0= '^' )
             {
-            // InternalConceptLanguage.g:4969:2: (enumLiteral_0= '^' )
-            // InternalConceptLanguage.g:4970:3: enumLiteral_0= '^'
+            // InternalConceptLanguage.g:5406:2: (enumLiteral_0= '^' )
+            // InternalConceptLanguage.g:5407:3: enumLiteral_0= '^'
             {
-            enumLiteral_0=(Token)match(input,69,FOLLOW_2); 
+            enumLiteral_0=(Token)match(input,71,FOLLOW_2); 
 
             			current = grammarAccess.getOperatorPowerAccess().getPOWEREnumLiteralDeclaration().getEnumLiteral().getInstance();
             			newLeafNode(enumLiteral_0, grammarAccess.getOperatorPowerAccess().getPOWEREnumLiteralDeclaration());
@@ -12615,7 +13733,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleOperatorCos"
-    // InternalConceptLanguage.g:4979:1: ruleOperatorCos returns [Enumerator current=null] : (enumLiteral_0= 'cos' ) ;
+    // InternalConceptLanguage.g:5416:1: ruleOperatorCos returns [Enumerator current=null] : (enumLiteral_0= 'cos' ) ;
     public final Enumerator ruleOperatorCos() throws RecognitionException {
         Enumerator current = null;
 
@@ -12625,13 +13743,13 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:4985:2: ( (enumLiteral_0= 'cos' ) )
-            // InternalConceptLanguage.g:4986:2: (enumLiteral_0= 'cos' )
+            // InternalConceptLanguage.g:5422:2: ( (enumLiteral_0= 'cos' ) )
+            // InternalConceptLanguage.g:5423:2: (enumLiteral_0= 'cos' )
             {
-            // InternalConceptLanguage.g:4986:2: (enumLiteral_0= 'cos' )
-            // InternalConceptLanguage.g:4987:3: enumLiteral_0= 'cos'
+            // InternalConceptLanguage.g:5423:2: (enumLiteral_0= 'cos' )
+            // InternalConceptLanguage.g:5424:3: enumLiteral_0= 'cos'
             {
-            enumLiteral_0=(Token)match(input,70,FOLLOW_2); 
+            enumLiteral_0=(Token)match(input,72,FOLLOW_2); 
 
             			current = grammarAccess.getOperatorCosAccess().getCOSEnumLiteralDeclaration().getEnumLiteral().getInstance();
             			newLeafNode(enumLiteral_0, grammarAccess.getOperatorCosAccess().getCOSEnumLiteralDeclaration());
@@ -12659,7 +13777,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleOperatorSin"
-    // InternalConceptLanguage.g:4996:1: ruleOperatorSin returns [Enumerator current=null] : (enumLiteral_0= 'sin' ) ;
+    // InternalConceptLanguage.g:5433:1: ruleOperatorSin returns [Enumerator current=null] : (enumLiteral_0= 'sin' ) ;
     public final Enumerator ruleOperatorSin() throws RecognitionException {
         Enumerator current = null;
 
@@ -12669,13 +13787,13 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:5002:2: ( (enumLiteral_0= 'sin' ) )
-            // InternalConceptLanguage.g:5003:2: (enumLiteral_0= 'sin' )
+            // InternalConceptLanguage.g:5439:2: ( (enumLiteral_0= 'sin' ) )
+            // InternalConceptLanguage.g:5440:2: (enumLiteral_0= 'sin' )
             {
-            // InternalConceptLanguage.g:5003:2: (enumLiteral_0= 'sin' )
-            // InternalConceptLanguage.g:5004:3: enumLiteral_0= 'sin'
+            // InternalConceptLanguage.g:5440:2: (enumLiteral_0= 'sin' )
+            // InternalConceptLanguage.g:5441:3: enumLiteral_0= 'sin'
             {
-            enumLiteral_0=(Token)match(input,71,FOLLOW_2); 
+            enumLiteral_0=(Token)match(input,73,FOLLOW_2); 
 
             			current = grammarAccess.getOperatorSinAccess().getSINEnumLiteralDeclaration().getEnumLiteral().getInstance();
             			newLeafNode(enumLiteral_0, grammarAccess.getOperatorSinAccess().getSINEnumLiteralDeclaration());
@@ -12703,7 +13821,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleOperatorTan"
-    // InternalConceptLanguage.g:5013:1: ruleOperatorTan returns [Enumerator current=null] : (enumLiteral_0= 'tan' ) ;
+    // InternalConceptLanguage.g:5450:1: ruleOperatorTan returns [Enumerator current=null] : (enumLiteral_0= 'tan' ) ;
     public final Enumerator ruleOperatorTan() throws RecognitionException {
         Enumerator current = null;
 
@@ -12713,13 +13831,13 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:5019:2: ( (enumLiteral_0= 'tan' ) )
-            // InternalConceptLanguage.g:5020:2: (enumLiteral_0= 'tan' )
+            // InternalConceptLanguage.g:5456:2: ( (enumLiteral_0= 'tan' ) )
+            // InternalConceptLanguage.g:5457:2: (enumLiteral_0= 'tan' )
             {
-            // InternalConceptLanguage.g:5020:2: (enumLiteral_0= 'tan' )
-            // InternalConceptLanguage.g:5021:3: enumLiteral_0= 'tan'
+            // InternalConceptLanguage.g:5457:2: (enumLiteral_0= 'tan' )
+            // InternalConceptLanguage.g:5458:3: enumLiteral_0= 'tan'
             {
-            enumLiteral_0=(Token)match(input,72,FOLLOW_2); 
+            enumLiteral_0=(Token)match(input,74,FOLLOW_2); 
 
             			current = grammarAccess.getOperatorTanAccess().getTANEnumLiteralDeclaration().getEnumLiteral().getInstance();
             			newLeafNode(enumLiteral_0, grammarAccess.getOperatorTanAccess().getTANEnumLiteralDeclaration());
@@ -12747,7 +13865,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleOperatorAtan"
-    // InternalConceptLanguage.g:5030:1: ruleOperatorAtan returns [Enumerator current=null] : (enumLiteral_0= 'atan' ) ;
+    // InternalConceptLanguage.g:5467:1: ruleOperatorAtan returns [Enumerator current=null] : (enumLiteral_0= 'atan' ) ;
     public final Enumerator ruleOperatorAtan() throws RecognitionException {
         Enumerator current = null;
 
@@ -12757,13 +13875,13 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:5036:2: ( (enumLiteral_0= 'atan' ) )
-            // InternalConceptLanguage.g:5037:2: (enumLiteral_0= 'atan' )
+            // InternalConceptLanguage.g:5473:2: ( (enumLiteral_0= 'atan' ) )
+            // InternalConceptLanguage.g:5474:2: (enumLiteral_0= 'atan' )
             {
-            // InternalConceptLanguage.g:5037:2: (enumLiteral_0= 'atan' )
-            // InternalConceptLanguage.g:5038:3: enumLiteral_0= 'atan'
+            // InternalConceptLanguage.g:5474:2: (enumLiteral_0= 'atan' )
+            // InternalConceptLanguage.g:5475:3: enumLiteral_0= 'atan'
             {
-            enumLiteral_0=(Token)match(input,73,FOLLOW_2); 
+            enumLiteral_0=(Token)match(input,75,FOLLOW_2); 
 
             			current = grammarAccess.getOperatorAtanAccess().getATANEnumLiteralDeclaration().getEnumLiteral().getInstance();
             			newLeafNode(enumLiteral_0, grammarAccess.getOperatorAtanAccess().getATANEnumLiteralDeclaration());
@@ -12791,7 +13909,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleOperatorAcos"
-    // InternalConceptLanguage.g:5047:1: ruleOperatorAcos returns [Enumerator current=null] : (enumLiteral_0= 'acos' ) ;
+    // InternalConceptLanguage.g:5484:1: ruleOperatorAcos returns [Enumerator current=null] : (enumLiteral_0= 'acos' ) ;
     public final Enumerator ruleOperatorAcos() throws RecognitionException {
         Enumerator current = null;
 
@@ -12801,13 +13919,13 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:5053:2: ( (enumLiteral_0= 'acos' ) )
-            // InternalConceptLanguage.g:5054:2: (enumLiteral_0= 'acos' )
+            // InternalConceptLanguage.g:5490:2: ( (enumLiteral_0= 'acos' ) )
+            // InternalConceptLanguage.g:5491:2: (enumLiteral_0= 'acos' )
             {
-            // InternalConceptLanguage.g:5054:2: (enumLiteral_0= 'acos' )
-            // InternalConceptLanguage.g:5055:3: enumLiteral_0= 'acos'
+            // InternalConceptLanguage.g:5491:2: (enumLiteral_0= 'acos' )
+            // InternalConceptLanguage.g:5492:3: enumLiteral_0= 'acos'
             {
-            enumLiteral_0=(Token)match(input,74,FOLLOW_2); 
+            enumLiteral_0=(Token)match(input,76,FOLLOW_2); 
 
             			current = grammarAccess.getOperatorAcosAccess().getACOSEnumLiteralDeclaration().getEnumLiteral().getInstance();
             			newLeafNode(enumLiteral_0, grammarAccess.getOperatorAcosAccess().getACOSEnumLiteralDeclaration());
@@ -12835,7 +13953,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleOperatorAsin"
-    // InternalConceptLanguage.g:5064:1: ruleOperatorAsin returns [Enumerator current=null] : (enumLiteral_0= 'asin' ) ;
+    // InternalConceptLanguage.g:5501:1: ruleOperatorAsin returns [Enumerator current=null] : (enumLiteral_0= 'asin' ) ;
     public final Enumerator ruleOperatorAsin() throws RecognitionException {
         Enumerator current = null;
 
@@ -12845,13 +13963,13 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:5070:2: ( (enumLiteral_0= 'asin' ) )
-            // InternalConceptLanguage.g:5071:2: (enumLiteral_0= 'asin' )
+            // InternalConceptLanguage.g:5507:2: ( (enumLiteral_0= 'asin' ) )
+            // InternalConceptLanguage.g:5508:2: (enumLiteral_0= 'asin' )
             {
-            // InternalConceptLanguage.g:5071:2: (enumLiteral_0= 'asin' )
-            // InternalConceptLanguage.g:5072:3: enumLiteral_0= 'asin'
+            // InternalConceptLanguage.g:5508:2: (enumLiteral_0= 'asin' )
+            // InternalConceptLanguage.g:5509:3: enumLiteral_0= 'asin'
             {
-            enumLiteral_0=(Token)match(input,75,FOLLOW_2); 
+            enumLiteral_0=(Token)match(input,77,FOLLOW_2); 
 
             			current = grammarAccess.getOperatorAsinAccess().getASINEnumLiteralDeclaration().getEnumLiteral().getInstance();
             			newLeafNode(enumLiteral_0, grammarAccess.getOperatorAsinAccess().getASINEnumLiteralDeclaration());
@@ -12879,7 +13997,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleOperatorSqrt"
-    // InternalConceptLanguage.g:5081:1: ruleOperatorSqrt returns [Enumerator current=null] : (enumLiteral_0= 'sqrt' ) ;
+    // InternalConceptLanguage.g:5518:1: ruleOperatorSqrt returns [Enumerator current=null] : (enumLiteral_0= 'sqrt' ) ;
     public final Enumerator ruleOperatorSqrt() throws RecognitionException {
         Enumerator current = null;
 
@@ -12889,13 +14007,13 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:5087:2: ( (enumLiteral_0= 'sqrt' ) )
-            // InternalConceptLanguage.g:5088:2: (enumLiteral_0= 'sqrt' )
+            // InternalConceptLanguage.g:5524:2: ( (enumLiteral_0= 'sqrt' ) )
+            // InternalConceptLanguage.g:5525:2: (enumLiteral_0= 'sqrt' )
             {
-            // InternalConceptLanguage.g:5088:2: (enumLiteral_0= 'sqrt' )
-            // InternalConceptLanguage.g:5089:3: enumLiteral_0= 'sqrt'
+            // InternalConceptLanguage.g:5525:2: (enumLiteral_0= 'sqrt' )
+            // InternalConceptLanguage.g:5526:3: enumLiteral_0= 'sqrt'
             {
-            enumLiteral_0=(Token)match(input,76,FOLLOW_2); 
+            enumLiteral_0=(Token)match(input,78,FOLLOW_2); 
 
             			current = grammarAccess.getOperatorSqrtAccess().getSQRTEnumLiteralDeclaration().getEnumLiteral().getInstance();
             			newLeafNode(enumLiteral_0, grammarAccess.getOperatorSqrtAccess().getSQRTEnumLiteralDeclaration());
@@ -12923,7 +14041,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleOperatorLog"
-    // InternalConceptLanguage.g:5098:1: ruleOperatorLog returns [Enumerator current=null] : (enumLiteral_0= 'log' ) ;
+    // InternalConceptLanguage.g:5535:1: ruleOperatorLog returns [Enumerator current=null] : (enumLiteral_0= 'log' ) ;
     public final Enumerator ruleOperatorLog() throws RecognitionException {
         Enumerator current = null;
 
@@ -12933,13 +14051,13 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:5104:2: ( (enumLiteral_0= 'log' ) )
-            // InternalConceptLanguage.g:5105:2: (enumLiteral_0= 'log' )
+            // InternalConceptLanguage.g:5541:2: ( (enumLiteral_0= 'log' ) )
+            // InternalConceptLanguage.g:5542:2: (enumLiteral_0= 'log' )
             {
-            // InternalConceptLanguage.g:5105:2: (enumLiteral_0= 'log' )
-            // InternalConceptLanguage.g:5106:3: enumLiteral_0= 'log'
+            // InternalConceptLanguage.g:5542:2: (enumLiteral_0= 'log' )
+            // InternalConceptLanguage.g:5543:3: enumLiteral_0= 'log'
             {
-            enumLiteral_0=(Token)match(input,77,FOLLOW_2); 
+            enumLiteral_0=(Token)match(input,79,FOLLOW_2); 
 
             			current = grammarAccess.getOperatorLogAccess().getLOGEnumLiteralDeclaration().getEnumLiteral().getInstance();
             			newLeafNode(enumLiteral_0, grammarAccess.getOperatorLogAccess().getLOGEnumLiteralDeclaration());
@@ -12967,7 +14085,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleOperatorLn"
-    // InternalConceptLanguage.g:5115:1: ruleOperatorLn returns [Enumerator current=null] : (enumLiteral_0= 'ln' ) ;
+    // InternalConceptLanguage.g:5552:1: ruleOperatorLn returns [Enumerator current=null] : (enumLiteral_0= 'ln' ) ;
     public final Enumerator ruleOperatorLn() throws RecognitionException {
         Enumerator current = null;
 
@@ -12977,13 +14095,13 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:5121:2: ( (enumLiteral_0= 'ln' ) )
-            // InternalConceptLanguage.g:5122:2: (enumLiteral_0= 'ln' )
+            // InternalConceptLanguage.g:5558:2: ( (enumLiteral_0= 'ln' ) )
+            // InternalConceptLanguage.g:5559:2: (enumLiteral_0= 'ln' )
             {
-            // InternalConceptLanguage.g:5122:2: (enumLiteral_0= 'ln' )
-            // InternalConceptLanguage.g:5123:3: enumLiteral_0= 'ln'
+            // InternalConceptLanguage.g:5559:2: (enumLiteral_0= 'ln' )
+            // InternalConceptLanguage.g:5560:3: enumLiteral_0= 'ln'
             {
-            enumLiteral_0=(Token)match(input,78,FOLLOW_2); 
+            enumLiteral_0=(Token)match(input,80,FOLLOW_2); 
 
             			current = grammarAccess.getOperatorLnAccess().getLNEnumLiteralDeclaration().getEnumLiteral().getInstance();
             			newLeafNode(enumLiteral_0, grammarAccess.getOperatorLnAccess().getLNEnumLiteralDeclaration());
@@ -13011,7 +14129,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleOperatorExp"
-    // InternalConceptLanguage.g:5132:1: ruleOperatorExp returns [Enumerator current=null] : (enumLiteral_0= 'exp' ) ;
+    // InternalConceptLanguage.g:5569:1: ruleOperatorExp returns [Enumerator current=null] : (enumLiteral_0= 'exp' ) ;
     public final Enumerator ruleOperatorExp() throws RecognitionException {
         Enumerator current = null;
 
@@ -13021,13 +14139,13 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:5138:2: ( (enumLiteral_0= 'exp' ) )
-            // InternalConceptLanguage.g:5139:2: (enumLiteral_0= 'exp' )
+            // InternalConceptLanguage.g:5575:2: ( (enumLiteral_0= 'exp' ) )
+            // InternalConceptLanguage.g:5576:2: (enumLiteral_0= 'exp' )
             {
-            // InternalConceptLanguage.g:5139:2: (enumLiteral_0= 'exp' )
-            // InternalConceptLanguage.g:5140:3: enumLiteral_0= 'exp'
+            // InternalConceptLanguage.g:5576:2: (enumLiteral_0= 'exp' )
+            // InternalConceptLanguage.g:5577:3: enumLiteral_0= 'exp'
             {
-            enumLiteral_0=(Token)match(input,79,FOLLOW_2); 
+            enumLiteral_0=(Token)match(input,81,FOLLOW_2); 
 
             			current = grammarAccess.getOperatorExpAccess().getEXPEnumLiteralDeclaration().getEnumLiteral().getInstance();
             			newLeafNode(enumLiteral_0, grammarAccess.getOperatorExpAccess().getEXPEnumLiteralDeclaration());
@@ -13055,7 +14173,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleOperatorLd"
-    // InternalConceptLanguage.g:5149:1: ruleOperatorLd returns [Enumerator current=null] : (enumLiteral_0= 'ld' ) ;
+    // InternalConceptLanguage.g:5586:1: ruleOperatorLd returns [Enumerator current=null] : (enumLiteral_0= 'ld' ) ;
     public final Enumerator ruleOperatorLd() throws RecognitionException {
         Enumerator current = null;
 
@@ -13065,13 +14183,13 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
         	enterRule();
 
         try {
-            // InternalConceptLanguage.g:5155:2: ( (enumLiteral_0= 'ld' ) )
-            // InternalConceptLanguage.g:5156:2: (enumLiteral_0= 'ld' )
+            // InternalConceptLanguage.g:5592:2: ( (enumLiteral_0= 'ld' ) )
+            // InternalConceptLanguage.g:5593:2: (enumLiteral_0= 'ld' )
             {
-            // InternalConceptLanguage.g:5156:2: (enumLiteral_0= 'ld' )
-            // InternalConceptLanguage.g:5157:3: enumLiteral_0= 'ld'
+            // InternalConceptLanguage.g:5593:2: (enumLiteral_0= 'ld' )
+            // InternalConceptLanguage.g:5594:3: enumLiteral_0= 'ld'
             {
-            enumLiteral_0=(Token)match(input,80,FOLLOW_2); 
+            enumLiteral_0=(Token)match(input,82,FOLLOW_2); 
 
             			current = grammarAccess.getOperatorLdAccess().getLDEnumLiteralDeclaration().getEnumLiteral().getInstance();
             			newLeafNode(enumLiteral_0, grammarAccess.getOperatorLdAccess().getLDEnumLiteralDeclaration());
@@ -13108,7 +14226,7 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
     public static final BitSet FOLLOW_4 = new BitSet(new long[]{0x000000000003F000L});
     public static final BitSet FOLLOW_5 = new BitSet(new long[]{0x0000000000000040L});
     public static final BitSet FOLLOW_6 = new BitSet(new long[]{0x0000000000000020L});
-    public static final BitSet FOLLOW_7 = new BitSet(new long[]{0x000000C9000C0000L});
+    public static final BitSet FOLLOW_7 = new BitSet(new long[]{0x00000189000C0000L});
     public static final BitSet FOLLOW_8 = new BitSet(new long[]{0x00000009000C0000L});
     public static final BitSet FOLLOW_9 = new BitSet(new long[]{0x0000000900040000L});
     public static final BitSet FOLLOW_10 = new BitSet(new long[]{0x0000000800040000L});
@@ -13127,40 +14245,40 @@ public class InternalConceptLanguageParser extends AbstractInternalAntlrParser {
     public static final BitSet FOLLOW_23 = new BitSet(new long[]{0x0000000080040000L});
     public static final BitSet FOLLOW_24 = new BitSet(new long[]{0x0000000000040000L});
     public static final BitSet FOLLOW_25 = new BitSet(new long[]{0x0000001000128000L});
-    public static final BitSet FOLLOW_26 = new BitSet(new long[]{0x01F3D024A0040000L});
-    public static final BitSet FOLLOW_27 = new BitSet(new long[]{0x01F3D00400040000L});
-    public static final BitSet FOLLOW_28 = new BitSet(new long[]{0x0180000000040000L});
-    public static final BitSet FOLLOW_29 = new BitSet(new long[]{0x0000010000400000L});
+    public static final BitSet FOLLOW_26 = new BitSet(new long[]{0x07CF4064A0040000L});
+    public static final BitSet FOLLOW_27 = new BitSet(new long[]{0x07CF400400040000L});
+    public static final BitSet FOLLOW_28 = new BitSet(new long[]{0x0600000000040000L});
+    public static final BitSet FOLLOW_29 = new BitSet(new long[]{0x0000020000400000L});
     public static final BitSet FOLLOW_30 = new BitSet(new long[]{0x0000000008000000L});
-    public static final BitSet FOLLOW_31 = new BitSet(new long[]{0x0000020002000000L});
-    public static final BitSet FOLLOW_32 = new BitSet(new long[]{0x0000020000000000L});
+    public static final BitSet FOLLOW_31 = new BitSet(new long[]{0x0000040002000000L});
+    public static final BitSet FOLLOW_32 = new BitSet(new long[]{0x0000040000000000L});
     public static final BitSet FOLLOW_33 = new BitSet(new long[]{0x0000000800000000L});
-    public static final BitSet FOLLOW_34 = new BitSet(new long[]{0x00000C0000408000L});
-    public static final BitSet FOLLOW_35 = new BitSet(new long[]{0x00002C0002408000L});
-    public static final BitSet FOLLOW_36 = new BitSet(new long[]{0x00002C0000408000L});
-    public static final BitSet FOLLOW_37 = new BitSet(new long[]{0x40002C0000408020L});
-    public static final BitSet FOLLOW_38 = new BitSet(new long[]{0x4000000000000020L});
-    public static final BitSet FOLLOW_39 = new BitSet(new long[]{0x0000200002408000L});
-    public static final BitSet FOLLOW_40 = new BitSet(new long[]{0x0000200000408000L});
-    public static final BitSet FOLLOW_41 = new BitSet(new long[]{0x8000000000000000L,0x0000000000000001L});
-    public static final BitSet FOLLOW_42 = new BitSet(new long[]{0x00042C0002008000L});
-    public static final BitSet FOLLOW_43 = new BitSet(new long[]{0x00042C0000008000L});
-    public static final BitSet FOLLOW_44 = new BitSet(new long[]{0x00042C0000408000L});
+    public static final BitSet FOLLOW_34 = new BitSet(new long[]{0x0000380000408000L});
+    public static final BitSet FOLLOW_35 = new BitSet(new long[]{0x0000B80002408000L});
+    public static final BitSet FOLLOW_36 = new BitSet(new long[]{0x0000B80000408000L});
+    public static final BitSet FOLLOW_37 = new BitSet(new long[]{0x0000B80000408020L,0x0000000000000001L});
+    public static final BitSet FOLLOW_38 = new BitSet(new long[]{0x0000000000000020L,0x0000000000000001L});
+    public static final BitSet FOLLOW_39 = new BitSet(new long[]{0x0000900002408000L});
+    public static final BitSet FOLLOW_40 = new BitSet(new long[]{0x0000900000408000L});
+    public static final BitSet FOLLOW_41 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000006L});
+    public static final BitSet FOLLOW_42 = new BitSet(new long[]{0x0010B80002008000L});
+    public static final BitSet FOLLOW_43 = new BitSet(new long[]{0x0010B80000008000L});
+    public static final BitSet FOLLOW_44 = new BitSet(new long[]{0x0010B80000408000L});
     public static final BitSet FOLLOW_45 = new BitSet(new long[]{0x0000000002000000L});
-    public static final BitSet FOLLOW_46 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_47 = new BitSet(new long[]{0x4000000000000060L});
-    public static final BitSet FOLLOW_48 = new BitSet(new long[]{0x0000000000408000L});
-    public static final BitSet FOLLOW_49 = new BitSet(new long[]{0x0000000002408000L});
-    public static final BitSet FOLLOW_50 = new BitSet(new long[]{0x5A00000000000030L,0x000000000001FFC0L});
-    public static final BitSet FOLLOW_51 = new BitSet(new long[]{0x4000000000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_52 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000018L});
-    public static final BitSet FOLLOW_53 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000020L});
-    public static final BitSet FOLLOW_54 = new BitSet(new long[]{0x0200000000000000L});
-    public static final BitSet FOLLOW_55 = new BitSet(new long[]{0x0400000000000000L});
-    public static final BitSet FOLLOW_56 = new BitSet(new long[]{0x0400000004000000L});
+    public static final BitSet FOLLOW_46 = new BitSet(new long[]{0x0020000000000000L});
+    public static final BitSet FOLLOW_47 = new BitSet(new long[]{0x0000000000000060L,0x0000000000000001L});
+    public static final BitSet FOLLOW_48 = new BitSet(new long[]{0x0000100000408000L});
+    public static final BitSet FOLLOW_49 = new BitSet(new long[]{0x0000100002408000L});
+    public static final BitSet FOLLOW_50 = new BitSet(new long[]{0x6800000000000030L,0x000000000007FF01L});
+    public static final BitSet FOLLOW_51 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000011L});
+    public static final BitSet FOLLOW_52 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000060L});
+    public static final BitSet FOLLOW_53 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000080L});
+    public static final BitSet FOLLOW_54 = new BitSet(new long[]{0x0800000000000000L});
+    public static final BitSet FOLLOW_55 = new BitSet(new long[]{0x1000000000000000L});
+    public static final BitSet FOLLOW_56 = new BitSet(new long[]{0x1000000004000000L});
     public static final BitSet FOLLOW_57 = new BitSet(new long[]{0x0000000004040000L});
-    public static final BitSet FOLLOW_58 = new BitSet(new long[]{0x2000000000000002L});
+    public static final BitSet FOLLOW_58 = new BitSet(new long[]{0x8000000000000002L});
     public static final BitSet FOLLOW_59 = new BitSet(new long[]{0x0000000000000022L});
-    public static final BitSet FOLLOW_60 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000002L});
+    public static final BitSet FOLLOW_60 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000008L});
 
 }

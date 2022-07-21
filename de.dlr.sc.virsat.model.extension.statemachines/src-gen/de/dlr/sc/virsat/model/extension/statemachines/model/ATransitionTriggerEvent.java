@@ -14,8 +14,10 @@ package de.dlr.sc.virsat.model.extension.statemachines.model;
 // *****************************************************************
 import javax.xml.bind.annotation.XmlAccessorType;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyEnum;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.EnumUnitPropertyInstance;
 import javax.xml.bind.annotation.XmlRootElement;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
@@ -56,8 +58,22 @@ public abstract class ATransitionTriggerEvent extends GenericCategory implements
 	}
 	
 	// property name constants
+	public static final String PROPERTY_TYPE = "type";
 	public static final String PROPERTY_DETAIL = "detail";
+	public static final String PROPERTY_SENDING = "sending";
 	
+	// Type enumeration value names
+	public static final String TYPE_asynchronous_NAME = "asynchronous";
+	public static final String TYPE_synchronous_NAME = "synchronous";
+	// Type enumeration values
+	public static final String TYPE_asynchronous_VALUE = "1";
+	public static final String TYPE_synchronous_VALUE = "2";
+	// Sending enumeration value names
+	public static final String SENDING_send_NAME = "send";
+	public static final String SENDING_receive_NAME = "receive";
+	// Sending enumeration values
+	public static final String SENDING_send_VALUE = "1";
+	public static final String SENDING_receive_VALUE = "2";
 	
 	
 	// *****************************************************************
@@ -77,6 +93,43 @@ public abstract class ATransitionTriggerEvent extends GenericCategory implements
 		setTypeInstance(categoryAssignement);
 	}
 	
+	
+	// *****************************************************************
+	// * Attribute: type
+	// *****************************************************************
+	private BeanPropertyEnum type = new BeanPropertyEnum();
+	
+	private void safeAccessType() {
+		if (type.getTypeInstance() == null) {
+			type.setTypeInstance((EnumUnitPropertyInstance) helper.getPropertyInstance("type"));
+		}
+	}
+	
+	public Command setType(EditingDomain ed, String value) {
+		safeAccessType();
+		return this.type.setValue(ed, value);
+	}
+	
+	public void setType(String value) {
+		safeAccessType();
+		this.type.setValue(value);
+	}
+	
+	public String getType() {
+		safeAccessType();
+		return type.getValue();
+	}
+	
+	public double getTypeEnum() {
+		safeAccessType();
+		return type.getEnumValue();
+	}
+	
+	@XmlElement
+	public BeanPropertyEnum getTypeBean() {
+		safeAccessType();
+		return type;
+	}
 	
 	// *****************************************************************
 	// * Attribute: detail
@@ -108,6 +161,43 @@ public abstract class ATransitionTriggerEvent extends GenericCategory implements
 	public BeanPropertyString getDetailBean() {
 		safeAccessDetail();
 		return detail;
+	}
+	
+	// *****************************************************************
+	// * Attribute: sending
+	// *****************************************************************
+	private BeanPropertyEnum sending = new BeanPropertyEnum();
+	
+	private void safeAccessSending() {
+		if (sending.getTypeInstance() == null) {
+			sending.setTypeInstance((EnumUnitPropertyInstance) helper.getPropertyInstance("sending"));
+		}
+	}
+	
+	public Command setSending(EditingDomain ed, String value) {
+		safeAccessSending();
+		return this.sending.setValue(ed, value);
+	}
+	
+	public void setSending(String value) {
+		safeAccessSending();
+		this.sending.setValue(value);
+	}
+	
+	public String getSending() {
+		safeAccessSending();
+		return sending.getValue();
+	}
+	
+	public double getSendingEnum() {
+		safeAccessSending();
+		return sending.getEnumValue();
+	}
+	
+	@XmlElement
+	public BeanPropertyEnum getSendingBean() {
+		safeAccessSending();
+		return sending;
 	}
 	
 	

@@ -1249,82 +1249,23 @@ ruleCategory returns [EObject current=null]
 					{
 						getUnorderedGroupHelper().select(grammarAccess.getCategoryAccess().getUnorderedGroup_5(), 1);
 					}
-								({true}?=>(otherlv_14='Applicable'
-								{
-									newLeafNode(otherlv_14, grammarAccess.getCategoryAccess().getApplicableKeyword_5_1_0());
-								}
-								otherlv_15='For'
-								{
-									newLeafNode(otherlv_15, grammarAccess.getCategoryAccess().getForKeyword_5_1_1());
-								}
-								(
+								({true}?=>((
 									(
-										otherlv_16='['
+										lv_isVerification_14_0='IsVerification'
 										{
-											newLeafNode(otherlv_16, grammarAccess.getCategoryAccess().getLeftSquareBracketKeyword_5_1_2_0_0());
+											newLeafNode(lv_isVerification_14_0, grammarAccess.getCategoryAccess().getIsVerificationIsVerificationKeyword_5_1_0_0());
 										}
-										(
-											(
-												{
-													if ($current==null) {
-														$current = createModelElement(grammarAccess.getCategoryRule());
-													}
-												}
-												{
-													newCompositeNode(grammarAccess.getCategoryAccess().getApplicableForStructuralElementCrossReference_5_1_2_0_1_0());
-												}
-												ruleQualifiedName
-												{
-													afterParserOrEnumRuleCall();
-												}
-											)
-										)
-										(
-											otherlv_18=','
-											{
-												newLeafNode(otherlv_18, grammarAccess.getCategoryAccess().getCommaKeyword_5_1_2_0_2_0());
-											}
-											(
-												(
-													{
-														if ($current==null) {
-															$current = createModelElement(grammarAccess.getCategoryRule());
-														}
-													}
-													{
-														newCompositeNode(grammarAccess.getCategoryAccess().getApplicableForStructuralElementCrossReference_5_1_2_0_2_1_0());
-													}
-													ruleQualifiedName
-													{
-														afterParserOrEnumRuleCall();
-													}
-												)
-											)
-										)*
-										otherlv_20=']'
 										{
-											newLeafNode(otherlv_20, grammarAccess.getCategoryAccess().getRightSquareBracketKeyword_5_1_2_0_3());
+											if ($current==null) {
+												$current = createModelElement(grammarAccess.getCategoryRule());
+											}
+											setWithLastConsumed($current, "isVerification", lv_isVerification_14_0 != null, "IsVerification");
 										}
-									)
-									    |
-									(
-										(
-											lv_isApplicableForAll_21_0='All'
-											{
-												newLeafNode(lv_isApplicableForAll_21_0, grammarAccess.getCategoryAccess().getIsApplicableForAllAllKeyword_5_1_2_1_0());
-											}
-											{
-												if ($current==null) {
-													$current = createModelElement(grammarAccess.getCategoryRule());
-												}
-												setWithLastConsumed($current, "isApplicableForAll", lv_isApplicableForAll_21_0 != null, "All");
-											}
-										)
 									)
 								)
-								otherlv_22=';'
+								otherlv_15=';'
 								{
-									newLeafNode(otherlv_22, grammarAccess.getCategoryAccess().getSemicolonKeyword_5_1_3());
+									newLeafNode(otherlv_15, grammarAccess.getCategoryAccess().getSemicolonKeyword_5_1_1());
 								}
 								))
 					{ 
@@ -1337,15 +1278,103 @@ ruleCategory returns [EObject current=null]
 					{
 						getUnorderedGroupHelper().select(grammarAccess.getCategoryAccess().getUnorderedGroup_5(), 2);
 					}
-								({true}?=>(otherlv_23='Cardinality'
+								({true}?=>(otherlv_16='Applicable'
 								{
-									newLeafNode(otherlv_23, grammarAccess.getCategoryAccess().getCardinalityKeyword_5_2_0());
+									newLeafNode(otherlv_16, grammarAccess.getCategoryAccess().getApplicableKeyword_5_2_0());
+								}
+								otherlv_17='For'
+								{
+									newLeafNode(otherlv_17, grammarAccess.getCategoryAccess().getForKeyword_5_2_1());
 								}
 								(
 									(
-										lv_cardinality_24_0=RULE_INT
+										otherlv_18='['
 										{
-											newLeafNode(lv_cardinality_24_0, grammarAccess.getCategoryAccess().getCardinalityINTTerminalRuleCall_5_2_1_0());
+											newLeafNode(otherlv_18, grammarAccess.getCategoryAccess().getLeftSquareBracketKeyword_5_2_2_0_0());
+										}
+										(
+											(
+												{
+													if ($current==null) {
+														$current = createModelElement(grammarAccess.getCategoryRule());
+													}
+												}
+												{
+													newCompositeNode(grammarAccess.getCategoryAccess().getApplicableForStructuralElementCrossReference_5_2_2_0_1_0());
+												}
+												ruleQualifiedName
+												{
+													afterParserOrEnumRuleCall();
+												}
+											)
+										)
+										(
+											otherlv_20=','
+											{
+												newLeafNode(otherlv_20, grammarAccess.getCategoryAccess().getCommaKeyword_5_2_2_0_2_0());
+											}
+											(
+												(
+													{
+														if ($current==null) {
+															$current = createModelElement(grammarAccess.getCategoryRule());
+														}
+													}
+													{
+														newCompositeNode(grammarAccess.getCategoryAccess().getApplicableForStructuralElementCrossReference_5_2_2_0_2_1_0());
+													}
+													ruleQualifiedName
+													{
+														afterParserOrEnumRuleCall();
+													}
+												)
+											)
+										)*
+										otherlv_22=']'
+										{
+											newLeafNode(otherlv_22, grammarAccess.getCategoryAccess().getRightSquareBracketKeyword_5_2_2_0_3());
+										}
+									)
+									    |
+									(
+										(
+											lv_isApplicableForAll_23_0='All'
+											{
+												newLeafNode(lv_isApplicableForAll_23_0, grammarAccess.getCategoryAccess().getIsApplicableForAllAllKeyword_5_2_2_1_0());
+											}
+											{
+												if ($current==null) {
+													$current = createModelElement(grammarAccess.getCategoryRule());
+												}
+												setWithLastConsumed($current, "isApplicableForAll", lv_isApplicableForAll_23_0 != null, "All");
+											}
+										)
+									)
+								)
+								otherlv_24=';'
+								{
+									newLeafNode(otherlv_24, grammarAccess.getCategoryAccess().getSemicolonKeyword_5_2_3());
+								}
+								))
+					{ 
+						getUnorderedGroupHelper().returnFromSelection(grammarAccess.getCategoryAccess().getUnorderedGroup_5());
+					}
+				)
+			)|
+			(
+				{getUnorderedGroupHelper().canSelect(grammarAccess.getCategoryAccess().getUnorderedGroup_5(), 3)}?=>(
+					{
+						getUnorderedGroupHelper().select(grammarAccess.getCategoryAccess().getUnorderedGroup_5(), 3);
+					}
+								({true}?=>(otherlv_25='Cardinality'
+								{
+									newLeafNode(otherlv_25, grammarAccess.getCategoryAccess().getCardinalityKeyword_5_3_0());
+								}
+								(
+									(
+										lv_cardinality_26_0=RULE_INT
+										{
+											newLeafNode(lv_cardinality_26_0, grammarAccess.getCategoryAccess().getCardinalityINTTerminalRuleCall_5_3_1_0());
 										}
 										{
 											if ($current==null) {
@@ -1354,14 +1383,14 @@ ruleCategory returns [EObject current=null]
 											setWithLastConsumed(
 												$current,
 												"cardinality",
-												lv_cardinality_24_0,
+												lv_cardinality_26_0,
 												"org.eclipse.xtext.common.Terminals.INT");
 										}
 									)
 								)
-								otherlv_25=';'
+								otherlv_27=';'
 								{
-									newLeafNode(otherlv_25, grammarAccess.getCategoryAccess().getSemicolonKeyword_5_2_2());
+									newLeafNode(otherlv_27, grammarAccess.getCategoryAccess().getSemicolonKeyword_5_3_2());
 								}
 								))
 					{ 
@@ -1381,7 +1410,7 @@ ruleCategory returns [EObject current=null]
 				{
 					newCompositeNode(grammarAccess.getCategoryAccess().getPropertiesAPropertyParserRuleCall_6_0());
 				}
-				lv_properties_26_0=ruleAProperty
+				lv_properties_28_0=ruleAProperty
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getCategoryRule());
@@ -1389,7 +1418,7 @@ ruleCategory returns [EObject current=null]
 					add(
 						$current,
 						"properties",
-						lv_properties_26_0,
+						lv_properties_28_0,
 						"de.dlr.sc.virsat.model.concept.ConceptLanguage.AProperty");
 					afterParserOrEnumRuleCall();
 				}
@@ -1400,7 +1429,7 @@ ruleCategory returns [EObject current=null]
 				{
 					newCompositeNode(grammarAccess.getCategoryAccess().getEquationDefinitionsEquationDefinitionParserRuleCall_7_0());
 				}
-				lv_equationDefinitions_27_0=ruleEquationDefinition
+				lv_equationDefinitions_29_0=ruleEquationDefinition
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getCategoryRule());
@@ -1408,15 +1437,15 @@ ruleCategory returns [EObject current=null]
 					add(
 						$current,
 						"equationDefinitions",
-						lv_equationDefinitions_27_0,
+						lv_equationDefinitions_29_0,
 						"de.dlr.sc.virsat.model.concept.ConceptLanguage.EquationDefinition");
 					afterParserOrEnumRuleCall();
 				}
 			)
 		)*
-		otherlv_28='}'
+		otherlv_30='}'
 		{
-			newLeafNode(otherlv_28, grammarAccess.getCategoryAccess().getRightCurlyBracketKeyword_8());
+			newLeafNode(otherlv_30, grammarAccess.getCategoryAccess().getRightCurlyBracketKeyword_8());
 		}
 	)
 ;
@@ -1764,6 +1793,39 @@ ruleStaticArrayModifier returns [EObject current=null]
 	)
 ;
 
+// Entry rule entryRuleVerificationTypeSpecification
+entryRuleVerificationTypeSpecification returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getVerificationTypeSpecificationRule()); }
+	iv_ruleVerificationTypeSpecification=ruleVerificationTypeSpecification
+	{ $current=$iv_ruleVerificationTypeSpecification.current; }
+	EOF;
+
+// Rule VerificationTypeSpecification
+ruleVerificationTypeSpecification returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			{
+				if ($current==null) {
+					$current = createModelElement(grammarAccess.getVerificationTypeSpecificationRule());
+				}
+			}
+			{
+				newCompositeNode(grammarAccess.getVerificationTypeSpecificationAccess().getVerificationTypeATypeDefinitionCrossReference_0());
+			}
+			ruleQualifiedName
+			{
+				afterParserOrEnumRuleCall();
+			}
+		)
+	)
+;
+
 // Entry rule entryRuleComposedProperty
 entryRuleComposedProperty returns [EObject current=null]:
 	{ newCompositeNode(grammarAccess.getComposedPropertyRule()); }
@@ -1932,16 +1994,50 @@ ruleComposedProperty returns [EObject current=null]
 					{
 						getUnorderedGroupHelper().select(grammarAccess.getComposedPropertyAccess().getUnorderedGroup_7(), 2);
 					}
-								({true}?=>(otherlv_12='unit'
+								({true}?=>(otherlv_12='verification'
 								{
-									newLeafNode(otherlv_12, grammarAccess.getComposedPropertyAccess().getUnitKeyword_7_2_0());
+									newLeafNode(otherlv_12, grammarAccess.getComposedPropertyAccess().getVerificationKeyword_7_2_0());
 								}
 								(
 									(
 										{
-											newCompositeNode(grammarAccess.getComposedPropertyAccess().getUnitNameEStringParserRuleCall_7_2_1_0());
+											newCompositeNode(grammarAccess.getComposedPropertyAccess().getVerificationVerificationTypeSpecificationParserRuleCall_7_2_1_0());
 										}
-										lv_unitName_13_0=ruleEString
+										lv_verification_13_0=ruleVerificationTypeSpecification
+										{
+											if ($current==null) {
+												$current = createModelElementForParent(grammarAccess.getComposedPropertyRule());
+											}
+											set(
+												$current,
+												"verification",
+												lv_verification_13_0,
+												"de.dlr.sc.virsat.model.concept.ConceptLanguage.VerificationTypeSpecification");
+											afterParserOrEnumRuleCall();
+										}
+									)
+								)
+								))
+					{ 
+						getUnorderedGroupHelper().returnFromSelection(grammarAccess.getComposedPropertyAccess().getUnorderedGroup_7());
+					}
+				)
+			)|
+			(
+				{getUnorderedGroupHelper().canSelect(grammarAccess.getComposedPropertyAccess().getUnorderedGroup_7(), 3)}?=>(
+					{
+						getUnorderedGroupHelper().select(grammarAccess.getComposedPropertyAccess().getUnorderedGroup_7(), 3);
+					}
+								({true}?=>(otherlv_14='unit'
+								{
+									newLeafNode(otherlv_14, grammarAccess.getComposedPropertyAccess().getUnitKeyword_7_3_0());
+								}
+								(
+									(
+										{
+											newCompositeNode(grammarAccess.getComposedPropertyAccess().getUnitNameEStringParserRuleCall_7_3_1_0());
+										}
+										lv_unitName_15_0=ruleEString
 										{
 											if ($current==null) {
 												$current = createModelElementForParent(grammarAccess.getComposedPropertyRule());
@@ -1949,7 +2045,7 @@ ruleComposedProperty returns [EObject current=null]
 											set(
 												$current,
 												"unitName",
-												lv_unitName_13_0,
+												lv_unitName_15_0,
 												"de.dlr.sc.virsat.model.concept.ConceptLanguage.EString");
 											afterParserOrEnumRuleCall();
 										}
@@ -1968,9 +2064,9 @@ ruleComposedProperty returns [EObject current=null]
 				  getUnorderedGroupHelper().leave(grammarAccess.getComposedPropertyAccess().getUnorderedGroup_7());
 				}
 		)
-		otherlv_14=';'
+		otherlv_16=';'
 		{
-			newLeafNode(otherlv_14, grammarAccess.getComposedPropertyAccess().getSemicolonKeyword_8());
+			newLeafNode(otherlv_16, grammarAccess.getComposedPropertyAccess().getSemicolonKeyword_8());
 		}
 	)
 ;
@@ -2153,16 +2249,50 @@ ruleIntProperty returns [EObject current=null]
 					{
 						getUnorderedGroupHelper().select(grammarAccess.getIntPropertyAccess().getUnorderedGroup_4(), 3);
 					}
-								({true}?=>(otherlv_11='unit'
+								({true}?=>(otherlv_11='verification'
 								{
-									newLeafNode(otherlv_11, grammarAccess.getIntPropertyAccess().getUnitKeyword_4_3_0());
+									newLeafNode(otherlv_11, grammarAccess.getIntPropertyAccess().getVerificationKeyword_4_3_0());
 								}
 								(
 									(
 										{
-											newCompositeNode(grammarAccess.getIntPropertyAccess().getUnitNameEStringParserRuleCall_4_3_1_0());
+											newCompositeNode(grammarAccess.getIntPropertyAccess().getVerificationVerificationTypeSpecificationParserRuleCall_4_3_1_0());
 										}
-										lv_unitName_12_0=ruleEString
+										lv_verification_12_0=ruleVerificationTypeSpecification
+										{
+											if ($current==null) {
+												$current = createModelElementForParent(grammarAccess.getIntPropertyRule());
+											}
+											set(
+												$current,
+												"verification",
+												lv_verification_12_0,
+												"de.dlr.sc.virsat.model.concept.ConceptLanguage.VerificationTypeSpecification");
+											afterParserOrEnumRuleCall();
+										}
+									)
+								)
+								))
+					{ 
+						getUnorderedGroupHelper().returnFromSelection(grammarAccess.getIntPropertyAccess().getUnorderedGroup_4());
+					}
+				)
+			)|
+			(
+				{getUnorderedGroupHelper().canSelect(grammarAccess.getIntPropertyAccess().getUnorderedGroup_4(), 4)}?=>(
+					{
+						getUnorderedGroupHelper().select(grammarAccess.getIntPropertyAccess().getUnorderedGroup_4(), 4);
+					}
+								({true}?=>(otherlv_13='unit'
+								{
+									newLeafNode(otherlv_13, grammarAccess.getIntPropertyAccess().getUnitKeyword_4_4_0());
+								}
+								(
+									(
+										{
+											newCompositeNode(grammarAccess.getIntPropertyAccess().getUnitNameEStringParserRuleCall_4_4_1_0());
+										}
+										lv_unitName_14_0=ruleEString
 										{
 											if ($current==null) {
 												$current = createModelElementForParent(grammarAccess.getIntPropertyRule());
@@ -2170,7 +2300,7 @@ ruleIntProperty returns [EObject current=null]
 											set(
 												$current,
 												"unitName",
-												lv_unitName_12_0,
+												lv_unitName_14_0,
 												"de.dlr.sc.virsat.model.concept.ConceptLanguage.EString");
 											afterParserOrEnumRuleCall();
 										}
@@ -2189,9 +2319,9 @@ ruleIntProperty returns [EObject current=null]
 				  getUnorderedGroupHelper().leave(grammarAccess.getIntPropertyAccess().getUnorderedGroup_4());
 				}
 		)
-		otherlv_13=';'
+		otherlv_15=';'
 		{
-			newLeafNode(otherlv_13, grammarAccess.getIntPropertyAccess().getSemicolonKeyword_5());
+			newLeafNode(otherlv_15, grammarAccess.getIntPropertyAccess().getSemicolonKeyword_5());
 		}
 	)
 ;
@@ -2374,16 +2504,50 @@ ruleFloatProperty returns [EObject current=null]
 					{
 						getUnorderedGroupHelper().select(grammarAccess.getFloatPropertyAccess().getUnorderedGroup_4(), 3);
 					}
-								({true}?=>(otherlv_11='unit'
+								({true}?=>(otherlv_11='verification'
 								{
-									newLeafNode(otherlv_11, grammarAccess.getFloatPropertyAccess().getUnitKeyword_4_3_0());
+									newLeafNode(otherlv_11, grammarAccess.getFloatPropertyAccess().getVerificationKeyword_4_3_0());
 								}
 								(
 									(
 										{
-											newCompositeNode(grammarAccess.getFloatPropertyAccess().getUnitNameEStringParserRuleCall_4_3_1_0());
+											newCompositeNode(grammarAccess.getFloatPropertyAccess().getVerificationVerificationTypeSpecificationParserRuleCall_4_3_1_0());
 										}
-										lv_unitName_12_0=ruleEString
+										lv_verification_12_0=ruleVerificationTypeSpecification
+										{
+											if ($current==null) {
+												$current = createModelElementForParent(grammarAccess.getFloatPropertyRule());
+											}
+											set(
+												$current,
+												"verification",
+												lv_verification_12_0,
+												"de.dlr.sc.virsat.model.concept.ConceptLanguage.VerificationTypeSpecification");
+											afterParserOrEnumRuleCall();
+										}
+									)
+								)
+								))
+					{ 
+						getUnorderedGroupHelper().returnFromSelection(grammarAccess.getFloatPropertyAccess().getUnorderedGroup_4());
+					}
+				)
+			)|
+			(
+				{getUnorderedGroupHelper().canSelect(grammarAccess.getFloatPropertyAccess().getUnorderedGroup_4(), 4)}?=>(
+					{
+						getUnorderedGroupHelper().select(grammarAccess.getFloatPropertyAccess().getUnorderedGroup_4(), 4);
+					}
+								({true}?=>(otherlv_13='unit'
+								{
+									newLeafNode(otherlv_13, grammarAccess.getFloatPropertyAccess().getUnitKeyword_4_4_0());
+								}
+								(
+									(
+										{
+											newCompositeNode(grammarAccess.getFloatPropertyAccess().getUnitNameEStringParserRuleCall_4_4_1_0());
+										}
+										lv_unitName_14_0=ruleEString
 										{
 											if ($current==null) {
 												$current = createModelElementForParent(grammarAccess.getFloatPropertyRule());
@@ -2391,7 +2555,7 @@ ruleFloatProperty returns [EObject current=null]
 											set(
 												$current,
 												"unitName",
-												lv_unitName_12_0,
+												lv_unitName_14_0,
 												"de.dlr.sc.virsat.model.concept.ConceptLanguage.EString");
 											afterParserOrEnumRuleCall();
 										}
@@ -2410,9 +2574,9 @@ ruleFloatProperty returns [EObject current=null]
 				  getUnorderedGroupHelper().leave(grammarAccess.getFloatPropertyAccess().getUnorderedGroup_4());
 				}
 		)
-		otherlv_13=';'
+		otherlv_15=';'
 		{
-			newLeafNode(otherlv_13, grammarAccess.getFloatPropertyAccess().getSemicolonKeyword_5());
+			newLeafNode(otherlv_15, grammarAccess.getFloatPropertyAccess().getSemicolonKeyword_5());
 		}
 	)
 ;
@@ -2527,16 +2691,50 @@ ruleStringProperty returns [EObject current=null]
 					{
 						getUnorderedGroupHelper().select(grammarAccess.getStringPropertyAccess().getUnorderedGroup_4(), 1);
 					}
-								({true}?=>(otherlv_7='default'
+								({true}?=>(otherlv_7='verification'
 								{
-									newLeafNode(otherlv_7, grammarAccess.getStringPropertyAccess().getDefaultKeyword_4_1_0());
+									newLeafNode(otherlv_7, grammarAccess.getStringPropertyAccess().getVerificationKeyword_4_1_0());
 								}
 								(
 									(
 										{
-											newCompositeNode(grammarAccess.getStringPropertyAccess().getDefaultValueEStringParserRuleCall_4_1_1_0());
+											newCompositeNode(grammarAccess.getStringPropertyAccess().getVerificationVerificationTypeSpecificationParserRuleCall_4_1_1_0());
 										}
-										lv_defaultValue_8_0=ruleEString
+										lv_verification_8_0=ruleVerificationTypeSpecification
+										{
+											if ($current==null) {
+												$current = createModelElementForParent(grammarAccess.getStringPropertyRule());
+											}
+											set(
+												$current,
+												"verification",
+												lv_verification_8_0,
+												"de.dlr.sc.virsat.model.concept.ConceptLanguage.VerificationTypeSpecification");
+											afterParserOrEnumRuleCall();
+										}
+									)
+								)
+								))
+					{ 
+						getUnorderedGroupHelper().returnFromSelection(grammarAccess.getStringPropertyAccess().getUnorderedGroup_4());
+					}
+				)
+			)|
+			(
+				{getUnorderedGroupHelper().canSelect(grammarAccess.getStringPropertyAccess().getUnorderedGroup_4(), 2)}?=>(
+					{
+						getUnorderedGroupHelper().select(grammarAccess.getStringPropertyAccess().getUnorderedGroup_4(), 2);
+					}
+								({true}?=>(otherlv_9='default'
+								{
+									newLeafNode(otherlv_9, grammarAccess.getStringPropertyAccess().getDefaultKeyword_4_2_0());
+								}
+								(
+									(
+										{
+											newCompositeNode(grammarAccess.getStringPropertyAccess().getDefaultValueEStringParserRuleCall_4_2_1_0());
+										}
+										lv_defaultValue_10_0=ruleEString
 										{
 											if ($current==null) {
 												$current = createModelElementForParent(grammarAccess.getStringPropertyRule());
@@ -2544,7 +2742,7 @@ ruleStringProperty returns [EObject current=null]
 											set(
 												$current,
 												"defaultValue",
-												lv_defaultValue_8_0,
+												lv_defaultValue_10_0,
 												"de.dlr.sc.virsat.model.concept.ConceptLanguage.EString");
 											afterParserOrEnumRuleCall();
 										}
@@ -2563,9 +2761,9 @@ ruleStringProperty returns [EObject current=null]
 				  getUnorderedGroupHelper().leave(grammarAccess.getStringPropertyAccess().getUnorderedGroup_4());
 				}
 		)
-		otherlv_9=';'
+		otherlv_11=';'
 		{
-			newLeafNode(otherlv_9, grammarAccess.getStringPropertyAccess().getSemicolonKeyword_5());
+			newLeafNode(otherlv_11, grammarAccess.getStringPropertyAccess().getSemicolonKeyword_5());
 		}
 	)
 ;
@@ -2673,16 +2871,50 @@ ruleBooleanProperty returns [EObject current=null]
 					{
 						getUnorderedGroupHelper().select(grammarAccess.getBooleanPropertyAccess().getUnorderedGroup_3(), 1);
 					}
-								({true}?=>(otherlv_6='default'
+								({true}?=>(otherlv_6='verification'
 								{
-									newLeafNode(otherlv_6, grammarAccess.getBooleanPropertyAccess().getDefaultKeyword_3_1_0());
+									newLeafNode(otherlv_6, grammarAccess.getBooleanPropertyAccess().getVerificationKeyword_3_1_0());
 								}
 								(
 									(
 										{
-											newCompositeNode(grammarAccess.getBooleanPropertyAccess().getDefaultValueBooleanLiteralStringParserRuleCall_3_1_1_0());
+											newCompositeNode(grammarAccess.getBooleanPropertyAccess().getVerificationVerificationTypeSpecificationParserRuleCall_3_1_1_0());
 										}
-										lv_defaultValue_7_0=ruleBooleanLiteralString
+										lv_verification_7_0=ruleVerificationTypeSpecification
+										{
+											if ($current==null) {
+												$current = createModelElementForParent(grammarAccess.getBooleanPropertyRule());
+											}
+											set(
+												$current,
+												"verification",
+												lv_verification_7_0,
+												"de.dlr.sc.virsat.model.concept.ConceptLanguage.VerificationTypeSpecification");
+											afterParserOrEnumRuleCall();
+										}
+									)
+								)
+								))
+					{ 
+						getUnorderedGroupHelper().returnFromSelection(grammarAccess.getBooleanPropertyAccess().getUnorderedGroup_3());
+					}
+				)
+			)|
+			(
+				{getUnorderedGroupHelper().canSelect(grammarAccess.getBooleanPropertyAccess().getUnorderedGroup_3(), 2)}?=>(
+					{
+						getUnorderedGroupHelper().select(grammarAccess.getBooleanPropertyAccess().getUnorderedGroup_3(), 2);
+					}
+								({true}?=>(otherlv_8='default'
+								{
+									newLeafNode(otherlv_8, grammarAccess.getBooleanPropertyAccess().getDefaultKeyword_3_2_0());
+								}
+								(
+									(
+										{
+											newCompositeNode(grammarAccess.getBooleanPropertyAccess().getDefaultValueBooleanLiteralStringParserRuleCall_3_2_1_0());
+										}
+										lv_defaultValue_9_0=ruleBooleanLiteralString
 										{
 											if ($current==null) {
 												$current = createModelElementForParent(grammarAccess.getBooleanPropertyRule());
@@ -2690,7 +2922,7 @@ ruleBooleanProperty returns [EObject current=null]
 											set(
 												$current,
 												"defaultValue",
-												lv_defaultValue_7_0,
+												lv_defaultValue_9_0,
 												"de.dlr.sc.virsat.model.concept.ConceptLanguage.BooleanLiteralString");
 											afterParserOrEnumRuleCall();
 										}
@@ -2709,9 +2941,9 @@ ruleBooleanProperty returns [EObject current=null]
 				  getUnorderedGroupHelper().leave(grammarAccess.getBooleanPropertyAccess().getUnorderedGroup_3());
 				}
 		)
-		otherlv_8=';'
+		otherlv_10=';'
 		{
-			newLeafNode(otherlv_8, grammarAccess.getBooleanPropertyAccess().getSemicolonKeyword_4());
+			newLeafNode(otherlv_10, grammarAccess.getBooleanPropertyAccess().getSemicolonKeyword_4());
 		}
 	)
 ;
@@ -2954,9 +3186,43 @@ ruleEnumProperty returns [EObject current=null]
 					{
 						getUnorderedGroupHelper().select(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3(), 4);
 					}
-								({true}?=>(otherlv_16='default'
+								({true}?=>(otherlv_16='verification'
 								{
-									newLeafNode(otherlv_16, grammarAccess.getEnumPropertyAccess().getDefaultKeyword_3_4_0());
+									newLeafNode(otherlv_16, grammarAccess.getEnumPropertyAccess().getVerificationKeyword_3_4_0());
+								}
+								(
+									(
+										{
+											newCompositeNode(grammarAccess.getEnumPropertyAccess().getVerificationVerificationTypeSpecificationParserRuleCall_3_4_1_0());
+										}
+										lv_verification_17_0=ruleVerificationTypeSpecification
+										{
+											if ($current==null) {
+												$current = createModelElementForParent(grammarAccess.getEnumPropertyRule());
+											}
+											set(
+												$current,
+												"verification",
+												lv_verification_17_0,
+												"de.dlr.sc.virsat.model.concept.ConceptLanguage.VerificationTypeSpecification");
+											afterParserOrEnumRuleCall();
+										}
+									)
+								)
+								))
+					{ 
+						getUnorderedGroupHelper().returnFromSelection(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3());
+					}
+				)
+			)|
+			(
+				{getUnorderedGroupHelper().canSelect(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3(), 5)}?=>(
+					{
+						getUnorderedGroupHelper().select(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3(), 5);
+					}
+								({true}?=>(otherlv_18='default'
+								{
+									newLeafNode(otherlv_18, grammarAccess.getEnumPropertyAccess().getDefaultKeyword_3_5_0());
 								}
 								(
 									(
@@ -2965,9 +3231,9 @@ ruleEnumProperty returns [EObject current=null]
 												$current = createModelElement(grammarAccess.getEnumPropertyRule());
 											}
 										}
-										otherlv_17=RULE_ID
+										otherlv_19=RULE_ID
 										{
-											newLeafNode(otherlv_17, grammarAccess.getEnumPropertyAccess().getDefaultValueEnumValueDefinitionCrossReference_3_4_1_0());
+											newLeafNode(otherlv_19, grammarAccess.getEnumPropertyAccess().getDefaultValueEnumValueDefinitionCrossReference_3_5_1_0());
 										}
 									)
 								)
@@ -2985,9 +3251,9 @@ ruleEnumProperty returns [EObject current=null]
 				  getUnorderedGroupHelper().leave(grammarAccess.getEnumPropertyAccess().getUnorderedGroup_3());
 				}
 		)
-		otherlv_18=';'
+		otherlv_20=';'
 		{
-			newLeafNode(otherlv_18, grammarAccess.getEnumPropertyAccess().getSemicolonKeyword_4());
+			newLeafNode(otherlv_20, grammarAccess.getEnumPropertyAccess().getSemicolonKeyword_4());
 		}
 	)
 ;
@@ -3152,33 +3418,90 @@ ruleReferenceProperty returns [EObject current=null]
 			)
 		)
 		(
-			otherlv_6='description'
-			{
-				newLeafNode(otherlv_6, grammarAccess.getReferencePropertyAccess().getDescriptionKeyword_6_0());
-			}
 			(
+				{ 
+				  getUnorderedGroupHelper().enter(grammarAccess.getReferencePropertyAccess().getUnorderedGroup_6());
+				}
 				(
+					(
+			(
+				{getUnorderedGroupHelper().canSelect(grammarAccess.getReferencePropertyAccess().getUnorderedGroup_6(), 0)}?=>(
 					{
-						newCompositeNode(grammarAccess.getReferencePropertyAccess().getDescriptionEStringParserRuleCall_6_1_0());
+						getUnorderedGroupHelper().select(grammarAccess.getReferencePropertyAccess().getUnorderedGroup_6(), 0);
 					}
-					lv_description_7_0=ruleEString
+								({true}?=>(otherlv_7='description'
+								{
+									newLeafNode(otherlv_7, grammarAccess.getReferencePropertyAccess().getDescriptionKeyword_6_0_0());
+								}
+								(
+									(
+										{
+											newCompositeNode(grammarAccess.getReferencePropertyAccess().getDescriptionEStringParserRuleCall_6_0_1_0());
+										}
+										lv_description_8_0=ruleEString
+										{
+											if ($current==null) {
+												$current = createModelElementForParent(grammarAccess.getReferencePropertyRule());
+											}
+											set(
+												$current,
+												"description",
+												lv_description_8_0,
+												"de.dlr.sc.virsat.model.concept.ConceptLanguage.EString");
+											afterParserOrEnumRuleCall();
+										}
+									)
+								)
+								))
+					{ 
+						getUnorderedGroupHelper().returnFromSelection(grammarAccess.getReferencePropertyAccess().getUnorderedGroup_6());
+					}
+				)
+			)|
+			(
+				{getUnorderedGroupHelper().canSelect(grammarAccess.getReferencePropertyAccess().getUnorderedGroup_6(), 1)}?=>(
 					{
-						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getReferencePropertyRule());
-						}
-						set(
-							$current,
-							"description",
-							lv_description_7_0,
-							"de.dlr.sc.virsat.model.concept.ConceptLanguage.EString");
-						afterParserOrEnumRuleCall();
+						getUnorderedGroupHelper().select(grammarAccess.getReferencePropertyAccess().getUnorderedGroup_6(), 1);
+					}
+								({true}?=>(otherlv_9='verification'
+								{
+									newLeafNode(otherlv_9, grammarAccess.getReferencePropertyAccess().getVerificationKeyword_6_1_0());
+								}
+								(
+									(
+										{
+											newCompositeNode(grammarAccess.getReferencePropertyAccess().getVerificationVerificationTypeSpecificationParserRuleCall_6_1_1_0());
+										}
+										lv_verification_10_0=ruleVerificationTypeSpecification
+										{
+											if ($current==null) {
+												$current = createModelElementForParent(grammarAccess.getReferencePropertyRule());
+											}
+											set(
+												$current,
+												"verification",
+												lv_verification_10_0,
+												"de.dlr.sc.virsat.model.concept.ConceptLanguage.VerificationTypeSpecification");
+											afterParserOrEnumRuleCall();
+										}
+									)
+								)
+								))
+					{ 
+						getUnorderedGroupHelper().returnFromSelection(grammarAccess.getReferencePropertyAccess().getUnorderedGroup_6());
 					}
 				)
 			)
-		)?
-		otherlv_8=';'
+					)*
+				)
+			)
+				{ 
+				  getUnorderedGroupHelper().leave(grammarAccess.getReferencePropertyAccess().getUnorderedGroup_6());
+				}
+		)
+		otherlv_11=';'
 		{
-			newLeafNode(otherlv_8, grammarAccess.getReferencePropertyAccess().getSemicolonKeyword_7());
+			newLeafNode(otherlv_11, grammarAccess.getReferencePropertyAccess().getSemicolonKeyword_7());
 		}
 	)
 ;
@@ -3265,33 +3588,90 @@ ruleEReferenceProperty returns [EObject current=null]
 			)
 		)
 		(
-			otherlv_6='description'
-			{
-				newLeafNode(otherlv_6, grammarAccess.getEReferencePropertyAccess().getDescriptionKeyword_6_0());
-			}
 			(
+				{ 
+				  getUnorderedGroupHelper().enter(grammarAccess.getEReferencePropertyAccess().getUnorderedGroup_6());
+				}
 				(
+					(
+			(
+				{getUnorderedGroupHelper().canSelect(grammarAccess.getEReferencePropertyAccess().getUnorderedGroup_6(), 0)}?=>(
 					{
-						newCompositeNode(grammarAccess.getEReferencePropertyAccess().getDescriptionEStringParserRuleCall_6_1_0());
+						getUnorderedGroupHelper().select(grammarAccess.getEReferencePropertyAccess().getUnorderedGroup_6(), 0);
 					}
-					lv_description_7_0=ruleEString
+								({true}?=>(otherlv_7='description'
+								{
+									newLeafNode(otherlv_7, grammarAccess.getEReferencePropertyAccess().getDescriptionKeyword_6_0_0());
+								}
+								(
+									(
+										{
+											newCompositeNode(grammarAccess.getEReferencePropertyAccess().getDescriptionEStringParserRuleCall_6_0_1_0());
+										}
+										lv_description_8_0=ruleEString
+										{
+											if ($current==null) {
+												$current = createModelElementForParent(grammarAccess.getEReferencePropertyRule());
+											}
+											set(
+												$current,
+												"description",
+												lv_description_8_0,
+												"de.dlr.sc.virsat.model.concept.ConceptLanguage.EString");
+											afterParserOrEnumRuleCall();
+										}
+									)
+								)
+								))
+					{ 
+						getUnorderedGroupHelper().returnFromSelection(grammarAccess.getEReferencePropertyAccess().getUnorderedGroup_6());
+					}
+				)
+			)|
+			(
+				{getUnorderedGroupHelper().canSelect(grammarAccess.getEReferencePropertyAccess().getUnorderedGroup_6(), 1)}?=>(
 					{
-						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getEReferencePropertyRule());
-						}
-						set(
-							$current,
-							"description",
-							lv_description_7_0,
-							"de.dlr.sc.virsat.model.concept.ConceptLanguage.EString");
-						afterParserOrEnumRuleCall();
+						getUnorderedGroupHelper().select(grammarAccess.getEReferencePropertyAccess().getUnorderedGroup_6(), 1);
+					}
+								({true}?=>(otherlv_9='verification'
+								{
+									newLeafNode(otherlv_9, grammarAccess.getEReferencePropertyAccess().getVerificationKeyword_6_1_0());
+								}
+								(
+									(
+										{
+											newCompositeNode(grammarAccess.getEReferencePropertyAccess().getVerificationVerificationTypeSpecificationParserRuleCall_6_1_1_0());
+										}
+										lv_verification_10_0=ruleVerificationTypeSpecification
+										{
+											if ($current==null) {
+												$current = createModelElementForParent(grammarAccess.getEReferencePropertyRule());
+											}
+											set(
+												$current,
+												"verification",
+												lv_verification_10_0,
+												"de.dlr.sc.virsat.model.concept.ConceptLanguage.VerificationTypeSpecification");
+											afterParserOrEnumRuleCall();
+										}
+									)
+								)
+								))
+					{ 
+						getUnorderedGroupHelper().returnFromSelection(grammarAccess.getEReferencePropertyAccess().getUnorderedGroup_6());
 					}
 				)
 			)
-		)?
-		otherlv_8=';'
+					)*
+				)
+			)
+				{ 
+				  getUnorderedGroupHelper().leave(grammarAccess.getEReferencePropertyAccess().getUnorderedGroup_6());
+				}
+		)
+		otherlv_11=';'
 		{
-			newLeafNode(otherlv_8, grammarAccess.getEReferencePropertyAccess().getSemicolonKeyword_7());
+			newLeafNode(otherlv_11, grammarAccess.getEReferencePropertyAccess().getSemicolonKeyword_7());
 		}
 	)
 ;
@@ -3354,33 +3734,90 @@ ruleResourceProperty returns [EObject current=null]
 			)
 		)?
 		(
-			otherlv_3='description'
-			{
-				newLeafNode(otherlv_3, grammarAccess.getResourcePropertyAccess().getDescriptionKeyword_3_0());
-			}
 			(
+				{ 
+				  getUnorderedGroupHelper().enter(grammarAccess.getResourcePropertyAccess().getUnorderedGroup_3());
+				}
 				(
+					(
+			(
+				{getUnorderedGroupHelper().canSelect(grammarAccess.getResourcePropertyAccess().getUnorderedGroup_3(), 0)}?=>(
 					{
-						newCompositeNode(grammarAccess.getResourcePropertyAccess().getDescriptionEStringParserRuleCall_3_1_0());
+						getUnorderedGroupHelper().select(grammarAccess.getResourcePropertyAccess().getUnorderedGroup_3(), 0);
 					}
-					lv_description_4_0=ruleEString
+								({true}?=>(otherlv_4='description'
+								{
+									newLeafNode(otherlv_4, grammarAccess.getResourcePropertyAccess().getDescriptionKeyword_3_0_0());
+								}
+								(
+									(
+										{
+											newCompositeNode(grammarAccess.getResourcePropertyAccess().getDescriptionEStringParserRuleCall_3_0_1_0());
+										}
+										lv_description_5_0=ruleEString
+										{
+											if ($current==null) {
+												$current = createModelElementForParent(grammarAccess.getResourcePropertyRule());
+											}
+											set(
+												$current,
+												"description",
+												lv_description_5_0,
+												"de.dlr.sc.virsat.model.concept.ConceptLanguage.EString");
+											afterParserOrEnumRuleCall();
+										}
+									)
+								)
+								))
+					{ 
+						getUnorderedGroupHelper().returnFromSelection(grammarAccess.getResourcePropertyAccess().getUnorderedGroup_3());
+					}
+				)
+			)|
+			(
+				{getUnorderedGroupHelper().canSelect(grammarAccess.getResourcePropertyAccess().getUnorderedGroup_3(), 1)}?=>(
 					{
-						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getResourcePropertyRule());
-						}
-						set(
-							$current,
-							"description",
-							lv_description_4_0,
-							"de.dlr.sc.virsat.model.concept.ConceptLanguage.EString");
-						afterParserOrEnumRuleCall();
+						getUnorderedGroupHelper().select(grammarAccess.getResourcePropertyAccess().getUnorderedGroup_3(), 1);
+					}
+								({true}?=>(otherlv_6='verification'
+								{
+									newLeafNode(otherlv_6, grammarAccess.getResourcePropertyAccess().getVerificationKeyword_3_1_0());
+								}
+								(
+									(
+										{
+											newCompositeNode(grammarAccess.getResourcePropertyAccess().getVerificationVerificationTypeSpecificationParserRuleCall_3_1_1_0());
+										}
+										lv_verification_7_0=ruleVerificationTypeSpecification
+										{
+											if ($current==null) {
+												$current = createModelElementForParent(grammarAccess.getResourcePropertyRule());
+											}
+											set(
+												$current,
+												"verification",
+												lv_verification_7_0,
+												"de.dlr.sc.virsat.model.concept.ConceptLanguage.VerificationTypeSpecification");
+											afterParserOrEnumRuleCall();
+										}
+									)
+								)
+								))
+					{ 
+						getUnorderedGroupHelper().returnFromSelection(grammarAccess.getResourcePropertyAccess().getUnorderedGroup_3());
 					}
 				)
 			)
-		)?
-		otherlv_5=';'
+					)*
+				)
+			)
+				{ 
+				  getUnorderedGroupHelper().leave(grammarAccess.getResourcePropertyAccess().getUnorderedGroup_3());
+				}
+		)
+		otherlv_8=';'
 		{
-			newLeafNode(otherlv_5, grammarAccess.getResourcePropertyAccess().getSemicolonKeyword_4());
+			newLeafNode(otherlv_8, grammarAccess.getResourcePropertyAccess().getSemicolonKeyword_4());
 		}
 	)
 ;

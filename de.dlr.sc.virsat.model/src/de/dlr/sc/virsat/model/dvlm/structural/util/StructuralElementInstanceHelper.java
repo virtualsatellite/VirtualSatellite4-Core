@@ -97,7 +97,8 @@ public class StructuralElementInstanceHelper {
 	}
 
 	/**
-	 * @param sei 
+	 * returns all superSeis
+	 * @param sei of which to get the superSeis
 	 * @return direct and indirect super SEIs of the passed sei
 	 */
 	public static Set<StructuralElementInstance> getAllSuperSeis(StructuralElementInstance sei) {

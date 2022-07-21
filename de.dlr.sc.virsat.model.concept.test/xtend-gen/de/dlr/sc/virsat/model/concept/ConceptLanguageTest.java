@@ -9,7 +9,6 @@
  */
 package de.dlr.sc.virsat.model.concept;
 
-import de.dlr.sc.virsat.model.concept.ConceptLanguageTestInjectorProvider;
 import de.dlr.sc.virsat.model.concept.validation.ConceptLanguageValidator;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;

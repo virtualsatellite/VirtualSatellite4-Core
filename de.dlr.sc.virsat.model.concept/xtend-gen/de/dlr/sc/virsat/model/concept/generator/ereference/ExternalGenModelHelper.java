@@ -40,8 +40,8 @@ public class ExternalGenModelHelper {
         typeClass = _plus;
       }
       String _typeClass = typeClass;
-      String _nSName = genPackage.getNSName();
-      typeClass = (_typeClass + _nSName);
+      String _packageName = genPackage.getPackageName();
+      typeClass = (_typeClass + _packageName);
       String _typeClass_1 = typeClass;
       String _name = property.getReferenceType().getName();
       String _plus_1 = ("." + _name);

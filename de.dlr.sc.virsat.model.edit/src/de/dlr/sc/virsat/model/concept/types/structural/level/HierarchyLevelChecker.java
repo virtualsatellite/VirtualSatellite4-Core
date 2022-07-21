@@ -19,13 +19,14 @@ import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementIns
 import de.dlr.sc.virsat.model.concept.types.structural.tree.BeanStructuralTreeTraverser;
 
 /**
- * <pre>
  * A class to check elements against a custom tree level structure which are
  * specified by implementations of {@link IHierarchyLevel}s
  * 
  * An example of such a tree structure is a model that consists of a SYSTEM,
  * SUBSYTEM and EQUIPMENT levels These levels are implemented with the
  * {@link IHierarchyLevel} interface
+ * 
+ * <pre>
  * 
  * System MySatellite
  *  |
@@ -34,7 +35,7 @@ import de.dlr.sc.virsat.model.concept.types.structural.tree.BeanStructuralTreeTr
  *  |	----Equipment ReactionWheel1
  *  |	----Equipment ReactionWheel2
  *  |
- *  ----NewElement    <====  This class can check what level this element might be on
+ *  ----NewElement    {@literal <====  This class can check what level this element might be on}
  *  	|
  *  	----Equipment Thruster
  * 

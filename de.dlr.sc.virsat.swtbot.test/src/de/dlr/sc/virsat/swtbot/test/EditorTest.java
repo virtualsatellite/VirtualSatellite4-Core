@@ -261,9 +261,11 @@ public class EditorTest extends ASwtBotTestCase {
 		
 		// Change the values from the table
 		maturityTable.doubleClick(0, 1);
+		waitForEditingDomainAndUiThread();
 		bot.ccomboBox().setSelection(NEW_LEVEL_2);
 		
 		maturityTable.doubleClick(0, 2);
+		waitForEditingDomainAndUiThread();
 		bot.ccomboBox().setSelection(NEW_TRL_2);
 		
 		// Test the new values

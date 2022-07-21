@@ -70,7 +70,7 @@ public abstract class ARequirement extends RequirementObject implements IBeanCat
 	public static final String PROPERTY_REQTYPE = "reqType";
 	public static final String PROPERTY_ELEMENTS = "elements";
 	public static final String PROPERTY_STATUS = "status";
-	public static final String PROPERTY_VERIFICATION = "verification";
+	public static final String PROPERTY_VERIFICATIONS = "verifications";
 	public static final String PROPERTY_TRACE = "trace";
 	public static final String PROPERTY_DESCRIPTIONTEXT = "descriptionText";
 	public static final String PROPERTY_CHILDREN = "children";
@@ -207,33 +207,33 @@ public abstract class ARequirement extends RequirementObject implements IBeanCat
 	}
 	
 	// *****************************************************************
-	// * Array Attribute: verification
+	// * Array Attribute: verifications
 	// *****************************************************************
-	private IBeanList<IVerification> verification = new TypeSafeComposedPropertyInstanceList<>(IVerification.class);
+	private IBeanList<IVerification> verifications = new TypeSafeComposedPropertyInstanceList<>(IVerification.class);
 	
-	private void safeAccessVerification() {
-		if (verification.getArrayInstance() == null) {
-			verification.setArrayInstance((ArrayInstance) helper.getPropertyInstance("verification"));
+	private void safeAccessVerifications() {
+		if (verifications.getArrayInstance() == null) {
+			verifications.setArrayInstance((ArrayInstance) helper.getPropertyInstance("verifications"));
 		}
 	}
 	
-	public IBeanList<IVerification> getVerification() {
-		safeAccessVerification();
-		return verification;
+	public IBeanList<IVerification> getVerifications() {
+		safeAccessVerifications();
+		return verifications;
 	}
 	
-	private IBeanList<BeanPropertyComposed<IVerification>> verificationBean = new TypeSafeComposedPropertyBeanList<>();
+	private IBeanList<BeanPropertyComposed<IVerification>> verificationsBean = new TypeSafeComposedPropertyBeanList<>();
 	
-	private void safeAccessVerificationBean() {
-		if (verificationBean.getArrayInstance() == null) {
-			verificationBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("verification"));
+	private void safeAccessVerificationsBean() {
+		if (verificationsBean.getArrayInstance() == null) {
+			verificationsBean.setArrayInstance((ArrayInstance) helper.getPropertyInstance("verifications"));
 		}
 	}
 	
 	@XmlElement
-	public IBeanList<BeanPropertyComposed<IVerification>> getVerificationBean() {
-		safeAccessVerificationBean();
-		return verificationBean;
+	public IBeanList<BeanPropertyComposed<IVerification>> getVerificationsBean() {
+		safeAccessVerificationsBean();
+		return verificationsBean;
 	}
 	
 	// *****************************************************************

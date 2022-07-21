@@ -28,7 +28,7 @@ import io.swagger.annotations.ApiModel;
 		BeanUnitAffineConversion.class,
 		BeanUnitLinearConversion.class,
 		BeanUnitPrefixed.class
-})
+	})
 public abstract class ABeanConversionBasedUnit<U_TYPE extends AConversionBasedUnit> extends ABeanUnit<U_TYPE> implements IBeanConversionBasedUnit {
 
 	public ABeanConversionBasedUnit() {

@@ -121,6 +121,7 @@ public class DVLMPackageImpl extends EPackageImpl implements DVLMPackage {
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
+	 * @return an initialized instance of DVLMPackage.
 	 * @generated
 	 */
 	public static DVLMPackage init() {

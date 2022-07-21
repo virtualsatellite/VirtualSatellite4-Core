@@ -1,0 +1,7 @@
+This Software is currently under development.
+
+Distribution of this Software is not allowed.
+
+This Software is intended for DLR internal use only.
+
+Copyright 2016 DLR (German Aerospace Center) - Simulation and Software Technology

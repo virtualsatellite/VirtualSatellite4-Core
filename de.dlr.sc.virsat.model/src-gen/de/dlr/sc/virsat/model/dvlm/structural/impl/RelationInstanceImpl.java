@@ -174,6 +174,7 @@ public class RelationInstanceImpl extends MinimalEObjectImpl.Container implement
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code VirSatUuid}'.
 	 * @generated
 	 */
 	public VirSatUuid getUuid() {
@@ -195,6 +196,7 @@ public class RelationInstanceImpl extends MinimalEObjectImpl.Container implement
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getDescription() {
@@ -216,6 +218,7 @@ public class RelationInstanceImpl extends MinimalEObjectImpl.Container implement
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getName() {
@@ -237,6 +240,7 @@ public class RelationInstanceImpl extends MinimalEObjectImpl.Container implement
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code GeneralRelation}'.
 	 * @generated
 	 */
 	public GeneralRelation getType() {
@@ -254,6 +258,7 @@ public class RelationInstanceImpl extends MinimalEObjectImpl.Container implement
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code GeneralRelation}'.
 	 * @generated
 	 */
 	public GeneralRelation basicGetType() {
@@ -275,6 +280,7 @@ public class RelationInstanceImpl extends MinimalEObjectImpl.Container implement
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code StructuralElementInstance}'.
 	 * @generated
 	 */
 	public StructuralElementInstance getReferences() {
@@ -292,6 +298,7 @@ public class RelationInstanceImpl extends MinimalEObjectImpl.Container implement
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code StructuralElementInstance}'.
 	 * @generated
 	 */
 	public StructuralElementInstance basicGetReferences() {

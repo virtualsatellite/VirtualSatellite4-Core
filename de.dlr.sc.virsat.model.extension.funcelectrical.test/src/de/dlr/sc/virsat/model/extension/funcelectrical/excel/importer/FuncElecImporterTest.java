@@ -27,12 +27,12 @@ import de.dlr.sc.virsat.model.concept.types.util.BeanCategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 import de.dlr.sc.virsat.model.extension.funcelectrical.Activator;
 import de.dlr.sc.virsat.model.extension.funcelectrical.model.InterfaceEnd;
-import de.dlr.sc.virsat.model.extension.funcelectrical.test.ExcelTestCase;
+import de.dlr.sc.virsat.model.extension.funcelectrical.test.AExcelTestCase;
 
 /**
  * Test Case for Importing from Excel
  */
-public class FuncElecImporterTest extends ExcelTestCase {
+public class FuncElecImporterTest extends AExcelTestCase {
 
 	@Before
 	public void setUp() throws CoreException {

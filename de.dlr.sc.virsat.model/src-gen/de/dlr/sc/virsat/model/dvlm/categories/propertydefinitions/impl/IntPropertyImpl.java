@@ -101,6 +101,7 @@ public class IntPropertyImpl extends AQudvTypePropertyImpl implements IntPropert
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getDefaultValue() {

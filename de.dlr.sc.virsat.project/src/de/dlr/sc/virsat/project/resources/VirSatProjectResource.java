@@ -56,7 +56,7 @@ public class VirSatProjectResource implements IVirsatWrappedResource {
 	 * a method to get a list of wrapped projects 
 	 * @param virSatProjects the projects to process when looking for wrapped projects
 	 * @param mapWrappedProjectResource a map of resources to virsat wrapped resources
-	 * @return List<IVirsatWrappedResource> a list of wrapped resources
+	 * @return {@code List<IVirsatWrappedResource>} a list of wrapped resources
 	 */
 	public static List<IVirsatWrappedResource> getWrappedProjects(List<IProject> virSatProjects, Map<IResource, IVirsatWrappedResource> mapWrappedProjectResource) {
 		List<IVirsatWrappedResource> virsatWrappedProjects = new ArrayList<>();

@@ -248,6 +248,19 @@ public class PropertydefinitionsSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case PropertydefinitionsPackage.IVERIFICATION_SPECIFICATION: {
+				IVerificationSpecification iVerificationSpecification = (IVerificationSpecification)theEObject;
+				T result = caseIVerificationSpecification(iVerificationSpecification);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case PropertydefinitionsPackage.VERIFICATION_TYPE_SPECIFICATION: {
+				VerificationTypeSpecification verificationTypeSpecification = (VerificationTypeSpecification)theEObject;
+				T result = caseVerificationTypeSpecification(verificationTypeSpecification);
+				if (result == null) result = caseIVerificationSpecification(verificationTypeSpecification);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -489,6 +502,36 @@ public class PropertydefinitionsSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseDynamicArrayModifier(DynamicArrayModifier object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>IVerification Specification</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>IVerification Specification</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseIVerificationSpecification(IVerificationSpecification object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Verification Type Specification</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Verification Type Specification</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseVerificationTypeSpecification(VerificationTypeSpecification object) {
 		return null;
 	}
 

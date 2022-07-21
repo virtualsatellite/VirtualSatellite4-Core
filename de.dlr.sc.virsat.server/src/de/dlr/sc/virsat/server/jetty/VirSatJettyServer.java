@@ -65,8 +65,8 @@ public class VirSatJettyServer {
 	
 	/**
 	 *  Call this method to start the Virtual Satellite specific Jetty Server.
-	 * @throws Exception
-	 * @throws InterruptedException
+	 * @return the started virsat jetty instance
+	 * @throws Exception in case server fails to start correctly
 	 */
 	public VirSatJettyServer start() throws Exception {	
 
@@ -119,7 +119,13 @@ public class VirSatJettyServer {
 		httpsConf.setSecurePort(VIRSAT_JETTY_PORT_HTTPS);
 		// Customizer that extracts the attribute from an SSLContext and sets them on the request
 		// So that servlets can see the encryption details
-		httpsConf.addCustomizer(new SecureRequestCustomizer());
+		boolean sniRequired = ServerConfiguration.getHttpsSniRequired();
+		boolean sniHostCheck = ServerConfiguration.getHttpsSniHostCheck();
+		
+		SecureRequestCustomizer srCustomizer = new SecureRequestCustomizer();
+		srCustomizer.setSniRequired(sniRequired);
+		srCustomizer.setSniHostCheck(sniHostCheck);
+		httpsConf.addCustomizer(srCustomizer);
 
 		// HTTPS connector using the HTTP protocol over an SSL connection
 		ServerConnector httpsConnector = new ServerConnector(server,
@@ -183,7 +189,7 @@ public class VirSatJettyServer {
 	
 	/**
 	 * Call this method to stop the server
-	 * @throws Exception
+	 * @throws Exception in case the server cannot be stopped correctly
 	 */
 	public void stop() throws Exception {
 		if (server != null) {

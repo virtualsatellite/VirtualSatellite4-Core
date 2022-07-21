@@ -72,6 +72,9 @@
 			<!-- Ignore this warning, since there is a case where it makes sense to have
 			switch fallthrough. -->
 			<Bug pattern="SF_SWITCH_FALLTHROUGH" />
+			
+			<!-- Suggests a modification to a pontetially deprecated API. -->
+			<Bug pattern="DP_CREATE_CLASSLOADER_INSIDE_DO_PRIVILEGED" />
 		</Or>
 	</Match>
 </FindBugsFilter>

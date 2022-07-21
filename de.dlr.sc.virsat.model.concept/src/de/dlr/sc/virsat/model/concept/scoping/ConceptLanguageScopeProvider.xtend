@@ -16,6 +16,15 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.naming.IQualifiedNameConverter
 import org.eclipse.xtext.scoping.impl.ImportNormalizer
 import org.eclipse.xtext.scoping.impl.ImportedNamespaceAwareLocalScopeProvider
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.impl.APropertyImpl
+import org.eclipse.xtext.scoping.IScope
+import de.dlr.sc.virsat.model.dvlm.categories.Category
+import org.eclipse.xtext.scoping.Scopes
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper
+import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition
+import de.dlr.sc.virsat.model.concept.resources.ConceptResourceLoader
+import org.eclipse.emf.ecore.util.EcoreUtil
 
 /**
  * Class that implements the scoping of the concept language. Base class divers from
@@ -24,6 +33,17 @@ import org.eclipse.xtext.scoping.impl.ImportedNamespaceAwareLocalScopeProvider
 class ConceptLanguageScopeProvider extends ImportedNamespaceAwareLocalScopeProvider {
 
 	override getScope(EObject context, EReference reference) {
+		if (context instanceof AProperty  && reference.name.equals("verificationType")) {
+			val scope = super.getScope(context, reference)
+			val elements = new ArrayList<EObject>
+
+			elements.addAll(scope.allElements.
+				map[t |  EcoreUtil.resolve(t.EObjectOrProxy, context.eResource().getResourceSet())]
+				.filter[t| t instanceof Category && (t as Category).isIsVerification && !(t as Category).isIsAbstract])
+
+			return Scopes.scopeFor(elements, IScope.NULLSCOPE)
+		}
+		
 		super.getScope(context, reference)
 	}
 	

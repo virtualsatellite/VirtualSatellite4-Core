@@ -35,6 +35,8 @@ public class ServerConfiguration {
 	public static final String HTTPS_KEYSTORE_MANAGER_PASSWORD = "https.keystore.manager.password";
 	public static final String HTTPS_ONLY = "https.only";
 	public static final String HTTPS_ENABLED = "https.enabled";
+	public static final String HTTPS_SNI_REQUIRED = "https.sni.required";
+	public static final String HTTPS_SNI_HOST_CHECK = "https.sni.host.check";
 	
 	private static Properties properties = new Properties();
 	
@@ -127,11 +129,28 @@ public class ServerConfiguration {
 	public static String getHttpsKeystoreManagerPassword() {
 		return properties.getProperty(HTTPS_KEYSTORE_MANAGER_PASSWORD);
 	}
-
+	
 	public static void setHttpsKeystoreManagerPassword(String httpsKeystoreManagerPassword) {
 		properties.setProperty(HTTPS_KEYSTORE_MANAGER_PASSWORD, httpsKeystoreManagerPassword);
 	}
+
+	public static void setHttpsSniRequired(boolean httpsSniRequired) {
+		properties.setProperty(HTTPS_SNI_REQUIRED, Boolean.toString(httpsSniRequired));
+	}
+
+	public static void setHttpsSniHostCheck(boolean httpsSniHostCheck) {
+		properties.setProperty(HTTPS_SNI_HOST_CHECK, Boolean.toString(httpsSniHostCheck));
+	}
 	
+	public static boolean getHttpsSniRequired() {
+		return Boolean.valueOf(properties.getProperty(HTTPS_SNI_REQUIRED));
+	}
+
+	public static boolean getHttpsSniHostCheck() {
+		return Boolean.valueOf(properties.getProperty(HTTPS_SNI_HOST_CHECK));
+	}
+
+
 	/**
 	 * Get the path of property or try to resolve it
 	 * @param key of the property

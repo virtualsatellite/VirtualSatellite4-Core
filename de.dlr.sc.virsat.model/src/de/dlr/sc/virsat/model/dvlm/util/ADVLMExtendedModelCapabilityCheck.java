@@ -30,7 +30,7 @@ public abstract class ADVLMExtendedModelCapabilityCheck {
 	protected final Set<IDVLMExtendedModelCapabilityRule> rules;
 
 	/**
-	 * @param owner 
+	 * @param owner the owning object for the rule
 	 * @param containment if it is a containment
 	 */
 	public ADVLMExtendedModelCapabilityCheck(Object owner, boolean containment) {

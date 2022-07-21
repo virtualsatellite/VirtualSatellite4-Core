@@ -28,7 +28,7 @@
             "isCalculated" : false,
             "propertyType" : "enum",
             "override" : false,
-            "unit" : "",
+            "unitBean" : null,
             "value" : null
          },
          "testFloatBean" : {
@@ -82,7 +82,7 @@
             "isCalculated" : false,
             "propertyType" : "enum",
             "override" : false,
-            "unit" : "",
+            "unitBean" : null,
             "value" : null
          },
          "testFloatBean" : {
@@ -136,7 +136,7 @@
             "isCalculated" : false,
             "propertyType" : "enum",
             "override" : false,
-            "unit" : "",
+            "unitBean" : null,
             "value" : null
          },
          "testFloatBean" : {

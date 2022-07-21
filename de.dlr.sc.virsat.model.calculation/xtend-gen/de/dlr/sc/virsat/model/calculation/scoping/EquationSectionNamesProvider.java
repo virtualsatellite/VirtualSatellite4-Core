@@ -31,6 +31,8 @@ public class EquationSectionNamesProvider extends DefaultDeclarativeQualifiedNam
    * Get the qualified name for an EquationSection. The method is
    * aware of the fact that the Equation section might be a direct content
    * of an xtext resource or that it might be an contained eObject in a VirSatResource
+   * @param equationSection of which to get the FQN
+   * @return the FQN of the equationSection
    */
   public QualifiedName qualifiedName(final EquationSection equationSection) {
     final EObject eContainer = equationSection.eContainer();

@@ -38,6 +38,8 @@ public class RoleManagementCheckCommand extends AbstractCommand implements Comma
 	 *            the command of the role management check
 	 * @param commandParameter
 	 *            the parameter of the role management check command
+	 * @param userContext
+	 *            user context in which the command is executed
 	 */
 	public RoleManagementCheckCommand(Command command, CommandParameter commandParameter, IUserContext userContext) {
 		super();

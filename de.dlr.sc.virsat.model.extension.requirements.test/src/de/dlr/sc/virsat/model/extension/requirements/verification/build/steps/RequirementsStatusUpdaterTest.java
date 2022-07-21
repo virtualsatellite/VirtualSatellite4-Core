@@ -44,7 +44,7 @@ public class RequirementsStatusUpdaterTest extends AConceptProjectTestCase {
 		specification = new RequirementsSpecification(requirementsConcept);
 		requirement = new Requirement(requirementsConcept);
 		verification = new DefaultVerification(requirementsConcept);
-		requirement.getVerification().add(verification);
+		requirement.getVerifications().add(verification);
 		specification.getRequirements().add(requirement);
 	}
 	
@@ -83,7 +83,7 @@ public class RequirementsStatusUpdaterTest extends AConceptProjectTestCase {
 	@Test
 	public void testComputeStatusMultipleMixed() {
 		DefaultVerification secondVerification = new DefaultVerification(requirementsConcept);
-		requirement.getVerification().add(secondVerification);
+		requirement.getVerifications().add(secondVerification);
 		verification.setStatus(IVerification.STATUS_NonCompliant_NAME);
 		secondVerification.setStatus(IVerification.STATUS_FullyCompliant_NAME);
 		
@@ -95,7 +95,7 @@ public class RequirementsStatusUpdaterTest extends AConceptProjectTestCase {
 	@Test
 	public void testComputeStatusMultipleMixedOpen() {
 		DefaultVerification secondVerification = new DefaultVerification(requirementsConcept);
-		requirement.getVerification().add(secondVerification);
+		requirement.getVerifications().add(secondVerification);
 		verification.setStatus(IVerification.STATUS_Open_NAME);
 		secondVerification.setStatus(IVerification.STATUS_FullyCompliant_NAME);
 		
@@ -107,7 +107,7 @@ public class RequirementsStatusUpdaterTest extends AConceptProjectTestCase {
 	@Test
 	public void testComputeStatusMultipleMixedPartlyPositive() {
 		DefaultVerification secondVerification = new DefaultVerification(requirementsConcept);
-		requirement.getVerification().add(secondVerification);
+		requirement.getVerifications().add(secondVerification);
 		verification.setStatus(IVerification.STATUS_PartialCompliant_NAME);
 		secondVerification.setStatus(IVerification.STATUS_FullyCompliant_NAME);
 		
@@ -119,7 +119,7 @@ public class RequirementsStatusUpdaterTest extends AConceptProjectTestCase {
 	@Test
 	public void testComputeStatusMultipleMixedPartlyNegative() {
 		DefaultVerification secondVerification = new DefaultVerification(requirementsConcept);
-		requirement.getVerification().add(secondVerification);
+		requirement.getVerifications().add(secondVerification);
 		verification.setStatus(IVerification.STATUS_PartialCompliant_NAME);
 		secondVerification.setStatus(IVerification.STATUS_NotApplicable_NAME);
 		
@@ -134,7 +134,7 @@ public class RequirementsStatusUpdaterTest extends AConceptProjectTestCase {
 		Requirement nestedRequirement = new Requirement(requirementsConcept);
 		IVerification nestedVerification = new DefaultVerification(requirementsConcept);
 		
-		nestedRequirement.getVerification().add(nestedVerification);
+		nestedRequirement.getVerifications().add(nestedVerification);
 		group.getChildren().add(nestedRequirement);
 		specification.getRequirements().add(group);
 		nestedVerification.setStatus(IVerification.STATUS_FullyCompliant_NAME);

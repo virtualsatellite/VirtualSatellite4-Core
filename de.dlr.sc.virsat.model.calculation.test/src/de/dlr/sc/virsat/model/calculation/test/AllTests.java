@@ -33,16 +33,16 @@ import junit.framework.JUnit4TestAdapter;
 @RunWith(Suite.class)
 
 @SuiteClasses({
-				ExpressionHelperTest.class, 
-				NumberLiteralResultHelperTest.class,
-				UnresolvedSetFunctionHelperTest.class,
-				EquationHelperTest.class,
-				IncrementalEquationBuilderTest.class,
-				VirSatEquationMarkerHelperTest.class,
-				UnitPropertyValueValidatorTest.class,
-				NumberLiteralSetterTest.class,
-				SafeEquationDSLSemanticSequencerTest.class
-			  })
+	ExpressionHelperTest.class, 
+	NumberLiteralResultHelperTest.class,
+	UnresolvedSetFunctionHelperTest.class,
+	EquationHelperTest.class,
+	IncrementalEquationBuilderTest.class,
+	VirSatEquationMarkerHelperTest.class,
+	UnitPropertyValueValidatorTest.class,
+	NumberLiteralSetterTest.class,
+	SafeEquationDSLSemanticSequencerTest.class
+	})
 
 public class AllTests {
 	

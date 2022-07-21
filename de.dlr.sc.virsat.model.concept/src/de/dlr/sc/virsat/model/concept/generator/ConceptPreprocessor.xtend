@@ -50,6 +50,8 @@ class ConceptPreprocessor {
 	
 	/**
 	 * Update the concept model content
+	 * @param originalConcept to be updated
+	 * @return the updated concept
 	 */
 	def Concept processContent(Concept originalConcept) {
 		val processedConcept = conceptLanguageHandler.addImplicitSuperType(originalConcept)
@@ -58,6 +60,8 @@ class ConceptPreprocessor {
 	
 	/**
 	 * Serialize the processed concept into their new containers
+	 * @param concept the concept to be serialized
+	 * @param xmiURI to the xmi resource
 	 */
 	def serializeContent(Concept concept, URI xmiURI) {
 		new GenerateConceptXmi().serializeModel(concept, fileSystemAcesss);
@@ -65,6 +69,8 @@ class ConceptPreprocessor {
 	
 	/**
 	 * Derive the XMI URI from the original URI
+	 * @param resource of which to get the URI
+	 * @return the URI of the resource
 	 */
 	def getXmiUriFromConcept(Resource resource) {
 		var rawUri = resource.URI

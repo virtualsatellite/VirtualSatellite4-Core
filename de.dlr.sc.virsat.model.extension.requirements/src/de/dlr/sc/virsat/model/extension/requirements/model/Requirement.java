@@ -74,6 +74,7 @@ public  class Requirement extends ARequirement {
 	/**
 	 * Update the requirement name to the name of its identifying attributes
 	 * @param ed the editing domain
+	 * @param addition the addition
 	 * @return the command
 	 */
 	public Command updateNameFromAttributes(EditingDomain ed, String addition) {

@@ -110,6 +110,7 @@ public abstract class DObjectImpl extends MinimalEObjectImpl.Container implement
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code VirSatUuid}'.
 	 * @generated
 	 */
 	public VirSatUuid getUuid() {
@@ -131,6 +132,7 @@ public abstract class DObjectImpl extends MinimalEObjectImpl.Container implement
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getName() {

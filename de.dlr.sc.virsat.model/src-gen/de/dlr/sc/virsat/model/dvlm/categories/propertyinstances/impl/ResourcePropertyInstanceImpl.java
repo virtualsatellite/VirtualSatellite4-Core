@@ -129,6 +129,7 @@ public class ResourcePropertyInstanceImpl extends APropertyInstanceImpl implemen
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code boolean}'.
 	 * @generated
 	 */
 	public boolean isOverride() {
@@ -150,6 +151,7 @@ public class ResourcePropertyInstanceImpl extends APropertyInstanceImpl implemen
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getResourceUri() {

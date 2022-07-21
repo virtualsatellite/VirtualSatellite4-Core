@@ -17,6 +17,7 @@ import org.eclipse.graphiti.features.custom.AbstractCustomFeature;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 
 import de.dlr.sc.virsat.graphiti.util.DiagramHelper;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.extension.statemachines.model.State;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
 
@@ -50,7 +51,10 @@ public class StateUnsetAsInitialStateFeature extends AbstractCustomFeature {
 		Object o = getBusinessObjectForPictogramElement(pe);
 		if (o instanceof State) {
 			State s = (State) o;
-			StateMachine stateMachine = s.getParentCaBeanOfClass(StateMachine.class);
+			// First eContainer is the composed property instance, then comes the array instance, 
+			// and finally the state machine, therefore we need to use eContainer thrice
+			CategoryAssignment caStateMachine = (CategoryAssignment) s.getATypeInstance().eContainer().eContainer().eContainer();
+			StateMachine stateMachine = new StateMachine(caStateMachine);
 			stateMachine.setInitialState(null);						
 		}
 		

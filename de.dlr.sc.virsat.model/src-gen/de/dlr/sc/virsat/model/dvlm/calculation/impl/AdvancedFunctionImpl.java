@@ -94,6 +94,7 @@ public class AdvancedFunctionImpl extends AAdvancedFunctionImpl implements Advan
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<AExpression>}'.
 	 * @generated
 	 */
 	public EList<AExpression> getInputs() {

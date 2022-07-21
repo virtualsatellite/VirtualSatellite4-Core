@@ -83,7 +83,7 @@ public class PropertyInstanceValueSwitch extends PropertyinstancesSwitch<ATypeIn
 	
 	/**
 	 * Sets a boolean flag that decides whether to append value to Enum Name string
-	 * @param showEnumValueDefinitionValue  
+	 * @param showEnumValueDefinitionValue  true in case the value should be appended
 	 */
 	public void setShowEnumValueDefinitionValues(boolean showEnumValueDefinitionValue) {
 		this.showEnumValueDefinitionValues = showEnumValueDefinitionValue;

@@ -134,6 +134,8 @@ public class VirSatJettyServerTest {
 	
 	@Test
 	public void testHttps() throws Exception {
+		System.setProperty("javax.net.debug", "");
+		
 		loadHttpsProperties();
 		initServerAndClient();
 		

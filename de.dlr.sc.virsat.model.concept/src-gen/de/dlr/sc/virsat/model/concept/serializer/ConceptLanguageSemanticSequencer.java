@@ -41,6 +41,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ReferencePrope
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ResourceProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.StaticArrayModifier;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.StringProperty;
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.VerificationTypeSpecification;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptImport;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage;
@@ -172,6 +173,9 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 			case PropertydefinitionsPackage.STRING_PROPERTY:
 				sequence_StringProperty(context, (StringProperty) semanticObject); 
 				return; 
+			case PropertydefinitionsPackage.VERIFICATION_TYPE_SPECIFICATION:
+				sequence_VerificationTypeSpecification(context, (VerificationTypeSpecification) semanticObject); 
+				return; 
 			}
 		else if (epackage == StructuralPackage.eINSTANCE)
 			switch (semanticObject.eClass().getClassifierID()) {
@@ -187,12 +191,14 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	}
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     AdditionAndSubtraction returns AdditionAndSubtraction
 	 *     AdditionAndSubtraction.AdditionAndSubtraction_1_0 returns AdditionAndSubtraction
 	 *
 	 * Constraint:
 	 *     (left=AdditionAndSubtraction_AdditionAndSubtraction_1_0 (operator=OperatorPlus | operator=OperatorMinus) right=MultiplicationAndDivision)
+	 * </pre>
 	 */
 	protected void sequence_AdditionAndSubtraction(ISerializationContext context, AdditionAndSubtraction semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -200,6 +206,7 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     AdditionAndSubtraction returns AdvancedFunction
 	 *     AdditionAndSubtraction.AdditionAndSubtraction_1_0 returns AdvancedFunction
@@ -213,6 +220,7 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	 *
 	 * Constraint:
 	 *     (operator=ID inputs+=AdditionAndSubtraction inputs+=AdditionAndSubtraction*)
+	 * </pre>
 	 */
 	protected void sequence_AdvancedFunction(ISerializationContext context, AdvancedFunction semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -220,12 +228,14 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     AProperty returns BooleanProperty
 	 *     BooleanProperty returns BooleanProperty
 	 *
 	 * Constraint:
-	 *     (name=ID arrayModifier=ArrayModifier? (description=EString | defaultValue=BooleanLiteralString)*)
+	 *     (name=ID arrayModifier=ArrayModifier? (description=EString | verification=VerificationTypeSpecification | defaultValue=BooleanLiteralString)*)
+	 * </pre>
 	 */
 	protected void sequence_BooleanProperty(ISerializationContext context, BooleanProperty semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -233,6 +243,7 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     Category returns Category
 	 *
@@ -242,12 +253,18 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	 *         (extendsCategory=[Category|QualifiedName] | shortName=ID | description=EString)* 
 	 *         isAbstract?='IsAbstract'? 
 	 *         (
-	 *             ((applicableFor+=[StructuralElement|QualifiedName] applicableFor+=[StructuralElement|QualifiedName]*) | isApplicableForAll?='All' | cardinality=INT)? 
+	 *             (
+	 *                 isVerification?='IsVerification' | 
+	 *                 (applicableFor+=[StructuralElement|QualifiedName] applicableFor+=[StructuralElement|QualifiedName]*) | 
+	 *                 isApplicableForAll?='All' | 
+	 *                 cardinality=INT
+	 *             )? 
 	 *             isAbstract?='IsAbstract'?
 	 *         )* 
 	 *         properties+=AProperty* 
 	 *         equationDefinitions+=EquationDefinition*
 	 *     )
+	 * </pre>
 	 */
 	protected void sequence_Category(ISerializationContext context, Category semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -255,12 +272,19 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     AProperty returns ComposedProperty
 	 *     ComposedProperty returns ComposedProperty
 	 *
 	 * Constraint:
-	 *     (name=ID arrayModifier=ArrayModifier? type=[Category|QualifiedName] (description=EString | quantityKindName=EString | unitName=EString)*)
+	 *     (
+	 *         name=ID 
+	 *         arrayModifier=ArrayModifier? 
+	 *         type=[Category|QualifiedName] 
+	 *         (description=EString | quantityKindName=EString | verification=VerificationTypeSpecification | unitName=EString)*
+	 *     )
+	 * </pre>
 	 */
 	protected void sequence_ComposedProperty(ISerializationContext context, ComposedProperty semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -268,11 +292,13 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     ConceptImport returns ConceptImport
 	 *
 	 * Constraint:
 	 *     importedNamespace=QualifiedNameWithWildcard
+	 * </pre>
 	 */
 	protected void sequence_ConceptImport(ISerializationContext context, ConceptImport semanticObject) {
 		if (errorAcceptor != null) {
@@ -286,6 +312,7 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     Concept returns Concept
 	 *
@@ -299,6 +326,7 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	 *         relations+=ARelation* 
 	 *         categories+=Category*
 	 *     )
+	 * </pre>
 	 */
 	protected void sequence_Concept(ISerializationContext context, Concept semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -306,12 +334,14 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     ArrayModifier returns DynamicArrayModifier
 	 *     DynmaicArrayModifier returns DynamicArrayModifier
 	 *
 	 * Constraint:
 	 *     {DynamicArrayModifier}
+	 * </pre>
 	 */
 	protected void sequence_DynmaicArrayModifier(ISerializationContext context, DynamicArrayModifier semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -319,12 +349,14 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     AProperty returns EReferenceProperty
 	 *     EReferenceProperty returns EReferenceProperty
 	 *
 	 * Constraint:
-	 *     (name=ID arrayModifier=ArrayModifier? referenceType=[EClass|QualifiedName] description=EString?)
+	 *     (name=ID arrayModifier=ArrayModifier? referenceType=[EClass|QualifiedName] (description=EString | verification=VerificationTypeSpecification)*)
+	 * </pre>
 	 */
 	protected void sequence_EReferenceProperty(ISerializationContext context, EReferenceProperty semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -332,11 +364,13 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     EcoreImport returns EcoreImport
 	 *
 	 * Constraint:
 	 *     (importedNsURI=STRING importedGenModel=STRING?)
+	 * </pre>
 	 */
 	protected void sequence_EcoreImport(ISerializationContext context, EcoreImport semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -344,6 +378,7 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     AProperty returns EnumProperty
 	 *     EnumProperty returns EnumProperty
@@ -353,10 +388,11 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	 *         name=ID 
 	 *         arrayModifier=ArrayModifier? 
 	 *         (
-	 *             (description=EString | quantityKindName=EString | unitName=EString | defaultValue=[EnumValueDefinition|ID])? 
+	 *             (description=EString | quantityKindName=EString | unitName=EString | verification=VerificationTypeSpecification | defaultValue=[EnumValueDefinition|ID])? 
 	 *             (values+=EnumValueDefinition values+=EnumValueDefinition*)?
 	 *         )+
 	 *     )
+	 * </pre>
 	 */
 	protected void sequence_EnumProperty(ISerializationContext context, EnumProperty semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -364,11 +400,13 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     EnumValueDefinition returns EnumValueDefinition
 	 *
 	 * Constraint:
 	 *     (name=ID (value=EString | value=FloatLiteralString))
+	 * </pre>
 	 */
 	protected void sequence_EnumValueDefinition(ISerializationContext context, EnumValueDefinition semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -376,11 +414,13 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     EquationDefinition returns EquationDefinition
 	 *
 	 * Constraint:
 	 *     (result=EquationDefinitionResult expression=AdditionAndSubtraction)
+	 * </pre>
 	 */
 	protected void sequence_EquationDefinition(ISerializationContext context, EquationDefinition semanticObject) {
 		if (errorAcceptor != null) {
@@ -397,12 +437,14 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     EquationDefinitionResult returns EquationIntermediateResult
 	 *     EquationIntermediateResult returns EquationIntermediateResult
 	 *
 	 * Constraint:
 	 *     name=ID
+	 * </pre>
 	 */
 	protected void sequence_EquationIntermediateResult(ISerializationContext context, EquationIntermediateResult semanticObject) {
 		if (errorAcceptor != null) {
@@ -416,12 +458,18 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     AProperty returns FloatProperty
 	 *     FloatProperty returns FloatProperty
 	 *
 	 * Constraint:
-	 *     (name=ID arrayModifier=ArrayModifier? (description=EString | defaultValue=FloatLiteralString | quantityKindName=EString | unitName=EString)*)
+	 *     (
+	 *         name=ID 
+	 *         arrayModifier=ArrayModifier? 
+	 *         (description=EString | defaultValue=FloatLiteralString | quantityKindName=EString | verification=VerificationTypeSpecification | unitName=EString)*
+	 *     )
+	 * </pre>
 	 */
 	protected void sequence_FloatProperty(ISerializationContext context, FloatProperty semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -429,6 +477,7 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     AdditionAndSubtraction returns Function
 	 *     AdditionAndSubtraction.AdditionAndSubtraction_1_0 returns Function
@@ -456,6 +505,7 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	 *         ) 
 	 *         right=AdditionAndSubtraction
 	 *     )
+	 * </pre>
 	 */
 	protected void sequence_Function(ISerializationContext context, Function semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -463,6 +513,7 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     GeneralRelation returns GeneralRelation
 	 *     ARelation returns GeneralRelation
@@ -475,6 +526,7 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	 *         ((applicableFor+=[StructuralElement|QualifiedName] applicableFor+=[StructuralElement|QualifiedName]*) | isApplicableForAll?='All')? 
 	 *         cardinality=INT?
 	 *     )
+	 * </pre>
 	 */
 	protected void sequence_GeneralRelation(ISerializationContext context, GeneralRelation semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -482,12 +534,18 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     AProperty returns IntProperty
 	 *     IntProperty returns IntProperty
 	 *
 	 * Constraint:
-	 *     (name=ID arrayModifier=ArrayModifier? (description=EString | defaultValue=IntLiteralString | quantityKindName=EString | unitName=EString)*)
+	 *     (
+	 *         name=ID 
+	 *         arrayModifier=ArrayModifier? 
+	 *         (description=EString | defaultValue=IntLiteralString | quantityKindName=EString | verification=VerificationTypeSpecification | unitName=EString)*
+	 *     )
+	 * </pre>
 	 */
 	protected void sequence_IntProperty(ISerializationContext context, IntProperty semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -495,6 +553,7 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     AdditionAndSubtraction returns MultiplicationAndDivision
 	 *     AdditionAndSubtraction.AdditionAndSubtraction_1_0 returns MultiplicationAndDivision
@@ -503,6 +562,7 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	 *
 	 * Constraint:
 	 *     (left=MultiplicationAndDivision_MultiplicationAndDivision_1_0 (operator=OperatorMultiply | operator=OperatorDivide) right=PowerFunction)
+	 * </pre>
 	 */
 	protected void sequence_MultiplicationAndDivision(ISerializationContext context, MultiplicationAndDivision semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -510,6 +570,7 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     AdditionAndSubtraction returns NumberLiteral
 	 *     AdditionAndSubtraction.AdditionAndSubtraction_1_0 returns NumberLiteral
@@ -523,6 +584,7 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	 *
 	 * Constraint:
 	 *     value=FloatLiteralString
+	 * </pre>
 	 */
 	protected void sequence_NumberLiteral(ISerializationContext context, NumberLiteral semanticObject) {
 		if (errorAcceptor != null) {
@@ -536,6 +598,7 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     AdditionAndSubtraction returns Parenthesis
 	 *     AdditionAndSubtraction.AdditionAndSubtraction_1_0 returns Parenthesis
@@ -548,6 +611,7 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	 *
 	 * Constraint:
 	 *     (operator=OperatorMinus? right=AdditionAndSubtraction)
+	 * </pre>
 	 */
 	protected void sequence_Parenthesis(ISerializationContext context, Parenthesis semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -555,6 +619,7 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     AdditionAndSubtraction returns PowerFunction
 	 *     AdditionAndSubtraction.AdditionAndSubtraction_1_0 returns PowerFunction
@@ -565,6 +630,7 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	 *
 	 * Constraint:
 	 *     (left=PowerFunction_PowerFunction_1_0 operator=OperatorPower right=AExpression)
+	 * </pre>
 	 */
 	protected void sequence_PowerFunction(ISerializationContext context, PowerFunction semanticObject) {
 		if (errorAcceptor != null) {
@@ -584,12 +650,19 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     AProperty returns ReferenceProperty
 	 *     ReferenceProperty returns ReferenceProperty
 	 *
 	 * Constraint:
-	 *     (name=ID arrayModifier=ArrayModifier? referenceType=[ATypeDefinition|QualifiedName] description=EString?)
+	 *     (
+	 *         name=ID 
+	 *         arrayModifier=ArrayModifier? 
+	 *         referenceType=[ATypeDefinition|QualifiedName] 
+	 *         (description=EString | verification=VerificationTypeSpecification)*
+	 *     )
+	 * </pre>
 	 */
 	protected void sequence_ReferenceProperty(ISerializationContext context, ReferenceProperty semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -597,6 +670,7 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     AdditionAndSubtraction returns ReferencedDefinitionInput
 	 *     AdditionAndSubtraction.AdditionAndSubtraction_1_0 returns ReferencedDefinitionInput
@@ -609,6 +683,7 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	 *
 	 * Constraint:
 	 *     reference=[IEquationDefinitionInput|QualifiedName]
+	 * </pre>
 	 */
 	protected void sequence_ReferencedDefinitionInput(ISerializationContext context, ReferencedDefinitionInput semanticObject) {
 		if (errorAcceptor != null) {
@@ -622,12 +697,14 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     AProperty returns ResourceProperty
 	 *     ResourceProperty returns ResourceProperty
 	 *
 	 * Constraint:
-	 *     (name=ID arrayModifier=ArrayModifier? description=EString?)
+	 *     (name=ID arrayModifier=ArrayModifier? (description=EString | verification=VerificationTypeSpecification)*)
+	 * </pre>
 	 */
 	protected void sequence_ResourceProperty(ISerializationContext context, ResourceProperty semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -635,6 +712,7 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     AdditionAndSubtraction returns SetFunction
 	 *     AdditionAndSubtraction.AdditionAndSubtraction_1_0 returns SetFunction
@@ -648,6 +726,7 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	 *
 	 * Constraint:
 	 *     (operator=ID typeDefinition=[ATypeDefinition|QualifiedName] depth=INT? filterName=ID?)
+	 * </pre>
 	 */
 	protected void sequence_SetFunction(ISerializationContext context, SetFunction semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -655,12 +734,14 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     ArrayModifier returns StaticArrayModifier
 	 *     StaticArrayModifier returns StaticArrayModifier
 	 *
 	 * Constraint:
 	 *     arraySize=INT
+	 * </pre>
 	 */
 	protected void sequence_StaticArrayModifier(ISerializationContext context, StaticArrayModifier semanticObject) {
 		if (errorAcceptor != null) {
@@ -674,12 +755,14 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     AProperty returns StringProperty
 	 *     StringProperty returns StringProperty
 	 *
 	 * Constraint:
-	 *     (name=ID arrayModifier=ArrayModifier? (description=EString | defaultValue=EString)*)
+	 *     (name=ID arrayModifier=ArrayModifier? (description=EString | verification=VerificationTypeSpecification | defaultValue=EString)*)
+	 * </pre>
 	 */
 	protected void sequence_StringProperty(ISerializationContext context, StringProperty semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -687,6 +770,7 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     StructuralElement returns StructuralElement
 	 *
@@ -706,6 +790,7 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	 *             isRootStructuralElement?='IsRootStructuralElement'?
 	 *         )*
 	 *     )
+	 * </pre>
 	 */
 	protected void sequence_StructuralElement(ISerializationContext context, StructuralElement semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -713,12 +798,14 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     EquationDefinitionResult returns TypeDefinitionResult
 	 *     TypeDefinitionResult returns TypeDefinitionResult
 	 *
 	 * Constraint:
 	 *     reference=[ATypeDefinition|QualifiedName]
+	 * </pre>
 	 */
 	protected void sequence_TypeDefinitionResult(ISerializationContext context, TypeDefinitionResult semanticObject) {
 		if (errorAcceptor != null) {
@@ -732,6 +819,7 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     AdditionAndSubtraction returns ValueE
 	 *     AdditionAndSubtraction.AdditionAndSubtraction_1_0 returns ValueE
@@ -745,6 +833,7 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	 *
 	 * Constraint:
 	 *     {ValueE}
+	 * </pre>
 	 */
 	protected void sequence_ValueE(ISerializationContext context, ValueE semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -752,6 +841,7 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	
 	
 	/**
+	 * <pre>
 	 * Contexts:
 	 *     AdditionAndSubtraction returns ValuePi
 	 *     AdditionAndSubtraction.AdditionAndSubtraction_1_0 returns ValuePi
@@ -765,9 +855,31 @@ public class ConceptLanguageSemanticSequencer extends AbstractDelegatingSemantic
 	 *
 	 * Constraint:
 	 *     {ValuePi}
+	 * </pre>
 	 */
 	protected void sequence_ValuePi(ISerializationContext context, ValuePi semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * <pre>
+	 * Contexts:
+	 *     VerificationSpecification returns VerificationTypeSpecification
+	 *     VerificationTypeSpecification returns VerificationTypeSpecification
+	 *
+	 * Constraint:
+	 *     verificationType=[ATypeDefinition|QualifiedName]
+	 * </pre>
+	 */
+	protected void sequence_VerificationTypeSpecification(ISerializationContext context, VerificationTypeSpecification semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, PropertydefinitionsPackage.Literals.VERIFICATION_TYPE_SPECIFICATION__VERIFICATION_TYPE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, PropertydefinitionsPackage.Literals.VERIFICATION_TYPE_SPECIFICATION__VERIFICATION_TYPE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getVerificationTypeSpecificationAccess().getVerificationTypeATypeDefinitionQualifiedNameParserRuleCall_0_1(), semanticObject.eGet(PropertydefinitionsPackage.Literals.VERIFICATION_TYPE_SPECIFICATION__VERIFICATION_TYPE, false));
+		feeder.finish();
 	}
 	
 	

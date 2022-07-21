@@ -11,7 +11,6 @@ package de.dlr.sc.virsat.model.calculation;
 
 import com.google.inject.Binder;
 import com.google.inject.name.Names;
-import de.dlr.sc.virsat.model.calculation.AbstractEquationDSLRuntimeModule;
 import de.dlr.sc.virsat.model.calculation.formatting.EquationDSLFormatter;
 import de.dlr.sc.virsat.model.calculation.parser.antlr.EquationSectionNullUnloader;
 import de.dlr.sc.virsat.model.calculation.resource.EquationSectionVirSatAwareXtextResourceSet;
@@ -64,6 +63,7 @@ public class EquationDSLRuntimeModule extends AbstractEquationDSLRuntimeModule {
    * would then need deeper considerations in cases such as other equations referencing the one that was
    * just copied. At the moment it looks like the unloading is just done for performance considerations.
    * Hence we don't need it for the moment.
+   * @return class of type IReferableElementsUnloader
    */
   public Class<? extends IReferableElementsUnloader> bindIReferableElementsUnloader() {
     return EquationSectionNullUnloader.class;

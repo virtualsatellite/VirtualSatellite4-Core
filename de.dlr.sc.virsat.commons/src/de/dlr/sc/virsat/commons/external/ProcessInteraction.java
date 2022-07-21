@@ -20,11 +20,10 @@ public class ProcessInteraction {
 	
 	/**
 	 * 
-	 * @param applicationpath path to the application
 	 * @param command command to run and application path
 	 * @return returns true if the process was successfully finished
 	 * @throws IOException cannot find exe for starting the process
-	 * @throws InterruptedException 
+	 * @throws InterruptedException if the thread is interrupted while the command is running
 	 */
 	public List<String> startCommandRunner(String command) throws IOException, InterruptedException {
 		

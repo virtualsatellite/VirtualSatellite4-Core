@@ -30,6 +30,7 @@ public class PropertydefinitionsFactoryImpl extends EFactoryImpl implements Prop
 	 * Creates the default factory implementation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return an initialized instance of 'PropertydefinitionsFactory'.
 	 * @generated
 	 */
 	public static PropertydefinitionsFactory init() {
@@ -75,6 +76,8 @@ public class PropertydefinitionsFactoryImpl extends EFactoryImpl implements Prop
 			case PropertydefinitionsPackage.RESOURCE_PROPERTY: return createResourceProperty();
 			case PropertydefinitionsPackage.STATIC_ARRAY_MODIFIER: return createStaticArrayModifier();
 			case PropertydefinitionsPackage.DYNAMIC_ARRAY_MODIFIER: return createDynamicArrayModifier();
+			case PropertydefinitionsPackage.IVERIFICATION_SPECIFICATION: return createIVerificationSpecification();
+			case PropertydefinitionsPackage.VERIFICATION_TYPE_SPECIFICATION: return createVerificationTypeSpecification();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -205,6 +208,26 @@ public class PropertydefinitionsFactoryImpl extends EFactoryImpl implements Prop
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public IVerificationSpecification createIVerificationSpecification() {
+		IVerificationSpecificationImpl iVerificationSpecification = new IVerificationSpecificationImpl();
+		return iVerificationSpecification;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public VerificationTypeSpecification createVerificationTypeSpecification() {
+		VerificationTypeSpecificationImpl verificationTypeSpecification = new VerificationTypeSpecificationImpl();
+		return verificationTypeSpecification;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public PropertydefinitionsPackage getPropertydefinitionsPackage() {
 		return (PropertydefinitionsPackage)getEPackage();
 	}
@@ -213,6 +236,7 @@ public class PropertydefinitionsFactoryImpl extends EFactoryImpl implements Prop
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @deprecated
+	 * @return an instance of PropertydefinitionsPackage.
 	 * @generated
 	 */
 	@Deprecated

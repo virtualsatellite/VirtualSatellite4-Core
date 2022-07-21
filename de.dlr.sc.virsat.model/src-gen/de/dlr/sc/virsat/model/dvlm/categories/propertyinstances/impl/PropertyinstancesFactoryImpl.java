@@ -30,6 +30,7 @@ public class PropertyinstancesFactoryImpl extends EFactoryImpl implements Proper
 	 * Creates the default factory implementation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return an initialized instance of 'PropertyinstancesFactory'.
 	 * @generated
 	 */
 	public static PropertyinstancesFactory init() {
@@ -169,6 +170,7 @@ public class PropertyinstancesFactoryImpl extends EFactoryImpl implements Proper
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @deprecated
+	 * @return an instance of PropertyinstancesPackage.
 	 * @generated
 	 */
 	@Deprecated

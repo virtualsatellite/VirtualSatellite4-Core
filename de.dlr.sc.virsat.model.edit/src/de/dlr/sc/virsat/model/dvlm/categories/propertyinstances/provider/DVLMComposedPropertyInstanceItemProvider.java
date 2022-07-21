@@ -25,7 +25,7 @@ public class DVLMComposedPropertyInstanceItemProvider extends ComposedPropertyIn
 	
 	/**
 	 * this class constructor is an instance of the factory and notifier 
-	 * @param adapterFactory 
+	 * @param adapterFactory  to be used for initialization
 	 */
 	public DVLMComposedPropertyInstanceItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);

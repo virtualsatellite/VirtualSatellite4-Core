@@ -30,6 +30,7 @@ public class DmfFactoryImpl extends EFactoryImpl implements DmfFactory {
 	 * Creates the default factory implementation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return an initialized instance of 'DmfFactory'.
 	 * @generated
 	 */
 	public static DmfFactory init() {
@@ -103,6 +104,7 @@ public class DmfFactoryImpl extends EFactoryImpl implements DmfFactory {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @deprecated
+	 * @return an instance of DmfPackage.
 	 * @generated
 	 */
 	@Deprecated

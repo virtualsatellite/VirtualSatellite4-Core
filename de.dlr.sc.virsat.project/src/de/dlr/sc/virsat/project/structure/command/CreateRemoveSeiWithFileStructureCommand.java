@@ -54,7 +54,7 @@ public class CreateRemoveSeiWithFileStructureCommand {
 	/**
 	 * Creates a command to remove a given StructuralElementInstance and its file structure
 	 * @param seiToRemove StructuralElementInstance to remove
-	 * @param deleteResourceOperation the actual abstract operation to delete the resources
+	 * @param deleteResourcesOperationFunction the actual abstract operation to delete the resources
 	 * @return Command that removes seiToRemove and its file structure
 	 */
 	public static Command create(StructuralElementInstance seiToRemove, Function<IFolder,  ? extends AbstractOperation> deleteResourcesOperationFunction) {
@@ -66,7 +66,7 @@ public class CreateRemoveSeiWithFileStructureCommand {
 	 * Creates a command to remove multiple StructuralElementInstances and their file structures.
 	 * The command makes sure that children are not deleted twice in case they are part of the selection
 	 * @param seisToRemove A list of SEIs to be removed
-	 * @param deleteResourceOperation the actual abstract operation to delete the resources
+	 * @param deleteResourcesOperationFunction the actual abstract operation to delete the resources
 	 * @return Command that will delete the selection of SEIs and their children
 	 */
 	public static Command create(Collection<StructuralElementInstance> seisToRemove, Function<IFolder, ? extends AbstractOperation> deleteResourcesOperationFunction) {

@@ -16,20 +16,20 @@ public interface IBeanConversionBasedUnit {
 	
 	/**
 	 * Returns if the unit is invertible
-	 * @return Boolean
+	 * @return flag stating if the unit is invertible
 	 */
 	Boolean getIsInvertible();
 	
 	/**
 	 * Set value of isInverible
-	 * @param isInverible
+	 * @param isInverible sets flag for unit being invertible
 	 */
 	void setIsInvertible(Boolean isInverible);
 	
 	/**
 	 * Set value of isInverible via EMF command
 	 * @param ed The EditingDomain in which the command should act.
-	 * @param isInverible
+	 * @param isInverible whether the unit is invertible
 	 * @return EMF command to set the quantityKind
 	 */
 	Command setIsInvertible(EditingDomain ed, Boolean isInverible);

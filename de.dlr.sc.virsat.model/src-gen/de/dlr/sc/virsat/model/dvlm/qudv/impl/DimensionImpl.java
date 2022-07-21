@@ -117,6 +117,7 @@ public class DimensionImpl extends MinimalEObjectImpl.Container implements Dimen
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getSymbolicExpression() {
@@ -138,6 +139,7 @@ public class DimensionImpl extends MinimalEObjectImpl.Container implements Dimen
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<DimensionFactor>}'.
 	 * @generated
 	 */
 	public EList<DimensionFactor> getFactor() {

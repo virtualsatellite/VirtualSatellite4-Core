@@ -40,6 +40,7 @@ public abstract class AVirSatTransactionalBuilder extends AVirSatBuilder {
 	
 	/**
 	 * Constructor of the abstract transactional builder
+	 * @param builderName the name of the builder
 	 * @param vpmHelper the OProblemMarkerHelper to be used with the builder
 	 * @param redirectIncrementalToAutoBuild set to true in case the incremental build should be decided in the auto_build functionality
 	 * @param dvlmOnly Only handles DVLM resources 

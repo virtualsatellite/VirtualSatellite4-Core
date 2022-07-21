@@ -101,6 +101,7 @@ public class StringPropertyImpl extends APropertyImpl implements StringProperty 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getDefaultValue() {

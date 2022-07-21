@@ -24,8 +24,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.common.command.Command;
+import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
+import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyFloat;
 import javax.xml.bind.annotation.XmlElement;
 
 
@@ -43,7 +44,7 @@ import javax.xml.bind.annotation.XmlElement;
  */	
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
-public abstract class AState extends GenericCategory implements IBeanCategoryAssignment {
+public abstract class AState extends StateMachine implements IBeanCategoryAssignment {
 
 	public static final String FULL_QUALIFIED_CATEGORY_NAME = "de.dlr.sc.virsat.model.extension.statemachines.State";
 	
@@ -57,6 +58,7 @@ public abstract class AState extends GenericCategory implements IBeanCategoryAss
 	
 	// property name constants
 	public static final String PROPERTY_DETAIL = "detail";
+	public static final String PROPERTY_MAXTIME = "maxTime";
 	
 	
 	
@@ -108,6 +110,43 @@ public abstract class AState extends GenericCategory implements IBeanCategoryAss
 	public BeanPropertyString getDetailBean() {
 		safeAccessDetail();
 		return detail;
+	}
+	
+	// *****************************************************************
+	// * Attribute: maxTime
+	// *****************************************************************
+	private BeanPropertyFloat maxTime = new BeanPropertyFloat();
+	
+	private void safeAccessMaxTime() {
+		if (maxTime.getTypeInstance() == null) {
+			maxTime.setTypeInstance((UnitValuePropertyInstance) helper.getPropertyInstance("maxTime"));
+		}
+	}
+	
+	public Command setMaxTime(EditingDomain ed, double value) {
+		safeAccessMaxTime();
+		return this.maxTime.setValue(ed, value);
+	}
+	
+	public void setMaxTime(double value) {
+		safeAccessMaxTime();
+		this.maxTime.setValue(value);
+	}
+	
+	public double getMaxTime() {
+		safeAccessMaxTime();
+		return maxTime.getValue();
+	}
+	
+	public boolean isSetMaxTime() {
+		safeAccessMaxTime();
+		return maxTime.isSet();
+	}
+	
+	@XmlElement
+	public BeanPropertyFloat getMaxTimeBean() {
+		safeAccessMaxTime();
+		return maxTime;
 	}
 	
 	

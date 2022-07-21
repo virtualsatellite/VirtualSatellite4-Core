@@ -25,7 +25,7 @@ public class DVLMStructuralElementInstanceItemProvider extends StructuralElement
 
 	/**
 	 * this class constructor is an instance of the factory and notifier 
-	 * @param adapterFactory 
+	 * @param adapterFactory to be used for inititalization
 	 */
 	public DVLMStructuralElementInstanceItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);

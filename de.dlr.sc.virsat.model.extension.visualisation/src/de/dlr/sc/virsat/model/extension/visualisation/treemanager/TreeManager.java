@@ -89,7 +89,7 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 	/**
 	 * Return the shape with the given id
 	 * 
-	 * @param id 
+	 * @param id The ID of the shape
 	 * @throws IllegalArgumentException if a shape with the given id is not found
 	 * @return matching Shape
 	 */

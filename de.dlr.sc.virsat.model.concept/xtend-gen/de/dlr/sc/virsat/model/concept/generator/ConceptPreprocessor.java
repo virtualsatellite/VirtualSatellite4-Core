@@ -49,6 +49,8 @@ public class ConceptPreprocessor {
   
   /**
    * Update the concept model content
+   * @param originalConcept to be updated
+   * @return the updated concept
    */
   public Concept processContent(final Concept originalConcept) {
     final Concept processedConcept = this.conceptLanguageHandler.addImplicitSuperType(originalConcept);
@@ -57,6 +59,8 @@ public class ConceptPreprocessor {
   
   /**
    * Serialize the processed concept into their new containers
+   * @param concept the concept to be serialized
+   * @param xmiURI to the xmi resource
    */
   public void serializeContent(final Concept concept, final URI xmiURI) {
     new GenerateConceptXmi().serializeModel(concept, this.fileSystemAcesss);
@@ -64,6 +68,8 @@ public class ConceptPreprocessor {
   
   /**
    * Derive the XMI URI from the original URI
+   * @param resource of which to get the URI
+   * @return the URI of the resource
    */
   public URI getXmiUriFromConcept(final Resource resource) {
     URI rawUri = resource.getURI();

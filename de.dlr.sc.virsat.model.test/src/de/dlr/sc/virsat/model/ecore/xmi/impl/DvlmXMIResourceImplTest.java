@@ -154,6 +154,13 @@ public class DvlmXMIResourceImplTest {
 		assertEquals("Found the correct concept", dynConcept, dynConceptById);
 		assertEquals("Found the correct category", dynCategory, dynCategoryById);
 		assertNull("No Object found", dynNothingById);
+		
+		// If we remove the object from the resource set,
+		// then it should no longer be found. Verifying this property
+		// to ensure that caching doesn't uncontained objects.
+		resource.getContents().remove(dynRepository);
+		dynNothingById = resource.getEObjectByID("de.dlr.sc.virsat.test.concept.TC");
+		assertNull("No Object found", dynNothingById);
 	}
 
 	@SuppressWarnings("unchecked")

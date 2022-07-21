@@ -40,7 +40,7 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 
 /**
- * Performs mapping Diagram elements <-> Domain Model objects
+ * Performs mapping of Diagram elements to Domain Model objects
  * @author muel_s8
  *
  */

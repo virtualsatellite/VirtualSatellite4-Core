@@ -140,9 +140,13 @@ public class ModelAccessResource {
 	
 	public ModelAccessResource() { }
 	
+	
 	/**
 	 * Get the ServerRepository corresponding to the repoName and create a new RepoModelAccessResource
 	 * @param repoName of the repository to be accessed by the request
+	 * @param synchronize if synchronization is requested
+	 * @param build if building is requested
+	 * @param sc the security context
 	 * @return RepoModelAccessResource or null if the repo is not found
 	 */
 	@Path("{repoName}")
@@ -210,7 +214,7 @@ public class ModelAccessResource {
 
 		/**
 		 * Synchronize depending on the synchronize and build query parameter
-		 * @throws Exception
+		 * @throws Exception thrown if the synchronization fails
 		 */
 		public void synchronize() throws Exception {
 			if (synchronize) {
@@ -261,7 +265,10 @@ public class ModelAccessResource {
 		}
 		
 		// Actual resources
-		/** **/
+		/**
+		 * This service forces a synchronization with the backend.
+		 * @return ok iff no exception occurred during synchronization
+		 */
 		@GET
 		@Path(FORCE_SYNC)
 		@ApiOperation(
@@ -269,12 +276,12 @@ public class ModelAccessResource {
 				httpMethod = "GET",
 				notes = "This service forces a synchronization with the backend.")
 		@ApiResponses(value = { 
-				@ApiResponse(
-						code = HttpStatus.OK_200,
-						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-				@ApiResponse(
-						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+			@ApiResponse(
+					code = HttpStatus.OK_200,
+					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 		public Response forceSynchronize() {
 			try {
 				serverRepository.syncRepository(build);
@@ -284,7 +291,11 @@ public class ModelAccessResource {
 			return Response.ok().build();
 		}
 		
-		/** **/
+		/**
+		 * This service fetches the root StructuralElementInstances.
+		 * It can be used as an entry point into the data model.
+		 * @return the fetched root structural element instances
+		 */
 		@GET
 		@Path(ROOT_SEIS)
 		@Produces(MediaType.APPLICATION_JSON)
@@ -295,14 +306,14 @@ public class ModelAccessResource {
 				notes = "This service fetches the root StructuralElementInstances. "
 						+ "It can be used as an entry point into the data model.")
 		@ApiResponses(value = { 
-				@ApiResponse(
-						code = HttpStatus.OK_200,
-						response = ABeanStructuralElementInstance.class,
-						responseContainer = "List",
-						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-				@ApiResponse(
-						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+			@ApiResponse(
+					code = HttpStatus.OK_200,
+					response = ABeanStructuralElementInstance.class,
+					responseContainer = "List",
+					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 		public Response getRootSeis() {
 			try {
 				synchronize();
@@ -323,7 +334,11 @@ public class ModelAccessResource {
 			}
 		}
 		
-		/** **/
+		/**
+		 * This service creates a new root StructuralElementInstance and returns its uuid
+		 * @param fullQualifiedName the full qualified name of the SEI type
+		 * @return the created root sei
+		 */
 		@POST
 		@Path(ROOT_SEIS)
 		@Consumes(MediaType.APPLICATION_JSON)
@@ -333,16 +348,16 @@ public class ModelAccessResource {
 				httpMethod = "POST",
 				notes = "This service creates a new root StructuralElementInstance and returns its uuid")
 		@ApiResponses(value = { 
-				@ApiResponse(
-						code = HttpStatus.OK_200,
-						response = String.class,
-						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-				@ApiResponse(
-						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = ApiErrorHelper.NOT_EXECUTEABLE),
-				@ApiResponse(
-						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+			@ApiResponse(
+					code = HttpStatus.OK_200,
+					response = String.class,
+					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.NOT_EXECUTEABLE),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 		public Response createRootSei(@QueryParam(value = ModelAccessResource.QP_FULL_QUALIFIED_NAME) 
 			@ApiParam(value = "Full qualified name of the SEI type", required = true) String fullQualifiedName) {
 			try {
@@ -357,7 +372,11 @@ public class ModelAccessResource {
 			}
 		}
 
-		/** **/
+		/**
+		 * This service fetches the active Concepts
+		 * @param onlyActiveConcepts only fetch the active concepts
+		 * @return fetched list of concepts
+		 */
 		@GET
 		@Path(CONCEPTS)
 		@Produces(MediaType.APPLICATION_JSON)
@@ -367,14 +386,14 @@ public class ModelAccessResource {
 				httpMethod = "GET",
 				notes = "This service fetches the active Concepts")
 		@ApiResponses(value = { 
-				@ApiResponse(
-						code = HttpStatus.OK_200,
-						response = ServerConcept.class,
-						responseContainer = "List",
-						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-				@ApiResponse(
-						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+			@ApiResponse(
+					code = HttpStatus.OK_200,
+					response = ServerConcept.class,
+					responseContainer = "List",
+					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 		public Response getConcepts(@DefaultValue("true") @QueryParam(QP_ONLY_ACTIVE_CONCEPTS) boolean onlyActiveConcepts) {
 			try {
 				synchronize();
@@ -412,7 +431,10 @@ public class ModelAccessResource {
 			}
 		}
 		
-		/** **/
+		/**
+		 * This service fetches the existing Disciplines
+		 * @return the fetched disciplines
+		 */
 		@GET
 		@Path(DISCIPLINES)
 		@Produces(MediaType.APPLICATION_JSON)
@@ -422,14 +444,14 @@ public class ModelAccessResource {
 				httpMethod = "GET",
 				notes = "This service fetches the existing Disciplines")
 		@ApiResponses(value = { 
-				@ApiResponse(
-						code = HttpStatus.OK_200,
-						response = BeanDiscipline.class,
-						responseContainer = "List",
-						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-				@ApiResponse(
-						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+			@ApiResponse(
+					code = HttpStatus.OK_200,
+					response = BeanDiscipline.class,
+					responseContainer = "List",
+					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 		public Response getDisciplines() {
 			try {
 				synchronize();
@@ -449,7 +471,10 @@ public class ModelAccessResource {
 			}
 		}
 		
-		/** **/
+		/**
+		 * This service fetches the discipline of the rolemanagement
+		 * @return the fetched discipline
+		 */
 		@GET
 		@Path(ROLEMANAGEMENT)
 		@Produces(MediaType.APPLICATION_JSON)
@@ -459,13 +484,13 @@ public class ModelAccessResource {
 				httpMethod = "GET",
 				notes = "This service fetches the discipline of the rolemanagement")
 		@ApiResponses(value = { 
-				@ApiResponse(
-						code = HttpStatus.OK_200,
-						response = BeanDiscipline.class,
-						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-				@ApiResponse(
-						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+			@ApiResponse(
+					code = HttpStatus.OK_200,
+					response = BeanDiscipline.class,
+					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 		public Response getRolemanagementDiscipline() {
 			try {
 				synchronize();
@@ -481,7 +506,10 @@ public class ModelAccessResource {
 			}
 		}
 		
-		/** **/
+		/**
+		 * This service fetches the discipline of the repository
+		 * @return the fetched discipline
+		 */
 		@GET
 		@Path(REPOSITORY)
 		@Produces(MediaType.APPLICATION_JSON)
@@ -491,13 +519,13 @@ public class ModelAccessResource {
 				httpMethod = "GET",
 				notes = "This service fetches the discipline of the repository")
 		@ApiResponses(value = { 
-				@ApiResponse(
-						code = HttpStatus.OK_200,
-						response = BeanDiscipline.class,
-						message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-				@ApiResponse(
-						code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-						message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+			@ApiResponse(
+					code = HttpStatus.OK_200,
+					response = BeanDiscipline.class,
+					message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+			@ApiResponse(
+					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
+					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 		public Response getRepositpryDiscipline() {
 			try {
 				synchronize();
@@ -519,8 +547,8 @@ public class ModelAccessResource {
 	 * Create a new Sei typed by the Se identified by the fullQualifiedName
 	 * @param fullQualifiedName of the sei type (se)
 	 * @param owner of the sei (either another sei or the repository for root seis)
-	 * @param editingDomain
-	 * @param iUserContext 
+	 * @param editingDomain the editing domain
+	 * @param iUserContext the user context
 	 * @return uuid of the created sei
 	 */
 	public static String createSeiFromFqn(String fullQualifiedName, EObject owner, VirSatTransactionalEditingDomain editingDomain, IUserContext iUserContext) {

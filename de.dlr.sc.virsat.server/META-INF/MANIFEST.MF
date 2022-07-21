@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core Headless Rest Jetty Server
 Bundle-SymbolicName: de.dlr.sc.virsat.server;singleton:=true
-Bundle-Version: 4.14.0.qualifier
+Bundle-Version: 4.15.0.qualifier
 Bundle-Activator: de.dlr.sc.virsat.server.Activator
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: org.eclipse.core.runtime,
@@ -16,7 +16,7 @@ Require-Bundle: org.eclipse.core.runtime,
  de.dlr.sc.virsat.model,
  de.dlr.sc.virsat.team,
  de.dlr.sc.virsat.project,
- javax.servlet,
+ jakarta.servlet-api,
  org.eclipse.jgit,
  org.slf4j.api,
  org.apache.commons.io,
@@ -26,8 +26,11 @@ Require-Bundle: org.eclipse.core.runtime,
  de.dlr.sc.virsat.commons,
  de.dlr.sc.virsat.external.lib.swagger,
  de.dlr.sc.virsat.model.edit,
- de.dlr.sc.virsat.external.lib.jersey
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+ de.dlr.sc.virsat.external.lib.jersey,
+ javax.annotation,
+ jakarta.xml.bind,
+ javax.activation
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Export-Package: de.dlr.sc.virsat.server,

@@ -53,6 +53,7 @@ public class MatExporter {
 	/**
 	 * creates a new .mat with everything inside the given sei
 	 * @param seiRoot sei to export
+	 * @return the mat file
 	 */
 	public MatFile exportSei(StructuralElementInstance seiRoot) {
 		MatFile matfile = Mat5.newMatFile();		
@@ -79,6 +80,7 @@ public class MatExporter {
 	/**
 	 * creates a new .mat with everything inside the selected CategoryAssinments
 	 * @param cas list of CategoryAssinments
+	 * @return the mat file
 	 */
 	public MatFile exportCas(EList<CategoryAssignment> cas) {
 		MatFile matfile = Mat5.newMatFile();
@@ -288,6 +290,7 @@ public class MatExporter {
 	 * Delete First and Last Character of a string.
 	 * It is needed because matlab generates '' around strings
 	 * @param str String that should be shorted
+	 * @return trimmed string
 	 */
 	public String shorter(String str) {
 		return str.substring(1, str.length() - 1);

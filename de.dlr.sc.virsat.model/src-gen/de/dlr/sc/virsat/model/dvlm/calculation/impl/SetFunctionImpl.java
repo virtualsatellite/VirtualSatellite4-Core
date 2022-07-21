@@ -131,6 +131,7 @@ public class SetFunctionImpl extends AAdvancedFunctionImpl implements SetFunctio
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code ATypeDefinition}'.
 	 * @generated
 	 */
 	public ATypeDefinition getTypeDefinition() {
@@ -148,6 +149,7 @@ public class SetFunctionImpl extends AAdvancedFunctionImpl implements SetFunctio
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code ATypeDefinition}'.
 	 * @generated
 	 */
 	public ATypeDefinition basicGetTypeDefinition() {
@@ -169,6 +171,7 @@ public class SetFunctionImpl extends AAdvancedFunctionImpl implements SetFunctio
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code String}'.
 	 * @generated
 	 */
 	public String getFilterName() {
@@ -190,6 +193,7 @@ public class SetFunctionImpl extends AAdvancedFunctionImpl implements SetFunctio
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code int}'.
 	 * @generated
 	 */
 	public int getDepth() {

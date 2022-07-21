@@ -103,6 +103,7 @@ public class EquationDefinitionImpl extends MinimalEObjectImpl.Container impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code AExpression}'.
 	 * @generated
 	 */
 	public AExpression getExpression() {
@@ -126,6 +127,7 @@ public class EquationDefinitionImpl extends MinimalEObjectImpl.Container impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code AExpression}'.
 	 * @generated
 	 */
 	public AExpression basicGetExpression() {
@@ -135,6 +137,9 @@ public class EquationDefinitionImpl extends MinimalEObjectImpl.Container impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param newExpression new value to be of type '{@code AExpression}' to be set. 
+	 * @param msgs notifications of type '{@code NotificationChain}'.
+	 * @return notification of type '{@code NotificationChain}'.
 	 * @generated
 	 */
 	public NotificationChain basicSetExpression(AExpression newExpression, NotificationChain msgs) {
@@ -169,6 +174,7 @@ public class EquationDefinitionImpl extends MinimalEObjectImpl.Container impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code IEquationDefinitionResult}'.
 	 * @generated
 	 */
 	public IEquationDefinitionResult getResult() {
@@ -192,6 +198,7 @@ public class EquationDefinitionImpl extends MinimalEObjectImpl.Container impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code IEquationDefinitionResult}'.
 	 * @generated
 	 */
 	public IEquationDefinitionResult basicGetResult() {
@@ -201,6 +208,9 @@ public class EquationDefinitionImpl extends MinimalEObjectImpl.Container impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param newResult new value to be of type '{@code IEquationDefinitionResult}' to be set. 
+	 * @param msgs notifications of type '{@code NotificationChain}'.
+	 * @return notification of type '{@code NotificationChain}'.
 	 * @generated
 	 */
 	public NotificationChain basicSetResult(IEquationDefinitionResult newResult, NotificationChain msgs) {

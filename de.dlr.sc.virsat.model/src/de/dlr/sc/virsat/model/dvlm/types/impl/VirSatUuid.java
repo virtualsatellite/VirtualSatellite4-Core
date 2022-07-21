@@ -21,13 +21,13 @@ import java.util.UUID;
 public class VirSatUuid {
 	
 	public static final String UUID_NA = "VIRSAT-UUID-NO-UUID-YET-SET";
-	private UUID uuid;
+	private final String uuid;
 	
 	/**
 	 * COnstructor generating a random UUID
 	 */
 	public VirSatUuid() {
-		this.uuid = UUID.randomUUID();
+		this.uuid = UUID.randomUUID().toString();
 	}
 	
 	/**
@@ -36,9 +36,9 @@ public class VirSatUuid {
 	 */
 	public VirSatUuid(String uuidString) {
 		if ((uuidString != null) && (!uuidString.isEmpty())) {
-			this.uuid = UUID.fromString(uuidString);
+			this.uuid = uuidString;
 		} else {
-			uuid = UUID.randomUUID();
+			uuid = UUID.randomUUID().toString();
 		}
 	}
 	

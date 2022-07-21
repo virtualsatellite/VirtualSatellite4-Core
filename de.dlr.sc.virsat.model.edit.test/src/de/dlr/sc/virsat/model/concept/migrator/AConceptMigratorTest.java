@@ -59,6 +59,7 @@ public abstract class AConceptMigratorTest {
 		// Setup some concept for the test cases
 		oldConcept = ConceptsFactory.eINSTANCE.createConcept();
 		oldConcept.setVersion("1.0");
+		oldConcept.setName("de.dlr.sc.virsat.old.concept");
 		repository.getActiveConcepts().add(oldConcept);
 		
 		structuralElementA = StructuralFactory.eINSTANCE.createStructuralElement();

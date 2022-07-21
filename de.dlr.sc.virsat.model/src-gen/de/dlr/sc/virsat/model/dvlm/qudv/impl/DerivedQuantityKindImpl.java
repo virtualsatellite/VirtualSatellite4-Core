@@ -94,6 +94,7 @@ public class DerivedQuantityKindImpl extends AQuantityKindImpl implements Derive
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<QuantityKindFactor>}'.
 	 * @generated
 	 */
 	public EList<QuantityKindFactor> getFactor() {

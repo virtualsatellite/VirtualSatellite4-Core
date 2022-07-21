@@ -9,16 +9,26 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.requirements.model;
 
+import javax.xml.bind.annotation.XmlType;
+
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.command.CompoundCommand;
+import org.eclipse.emf.edit.domain.EditingDomain;
+
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
+import de.dlr.sc.virsat.model.extension.requirements.verification.build.steps.IAutomaticVerification;
 
 // *****************************************************************
 // * Class Declaration
 // *****************************************************************
 
+@XmlType(name = ABoundedValueVerification.FULL_QUALIFIED_CATEGORY_NAME)
 /**
  * Auto Generated Class inheriting from Generator Gap Class
  * 
@@ -27,7 +37,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
  * 
  * 
  */
-public  class BoundedValueVerification extends ABoundedValueVerification {
+public  class BoundedValueVerification extends ABoundedValueVerification implements IAutomaticVerification {
 	
 	/**
 	 * Constructor of Concept Class
@@ -52,4 +62,44 @@ public  class BoundedValueVerification extends ABoundedValueVerification {
 	public BoundedValueVerification(CategoryAssignment categoryAssignment) {
 		super(categoryAssignment);
 	}
+	
+	@Override
+	public Command runCustomVerification(EditingDomain editingDomain, Requirement requirement,
+			IProgressMonitor monitor) {
+		CompoundCommand cc = new CompoundCommand();
+
+		if (requirement.getTrace().getTarget().isEmpty()) {
+			cc.append(setStatusOpen(editingDomain));
+		} else {
+			boolean isCompliantForAllTargets = true;
+			for (GenericCategory target : requirement.getTrace().getTarget()) {
+				isCompliantForAllTargets &= isCompliant(target);
+			}
+			updateStatus(editingDomain, cc, isCompliantForAllTargets);
+		}
+
+		return cc;
+	}
+	
+	@Override
+	protected boolean isCompliant(double value) {
+		return value >= getLowerLimit() && value <= getUpperLimit();
+	}
+	
+	protected double getUpperLimit() {
+		double upperLimit = Double.MAX_VALUE;
+		if (isSetUpperBound()) {
+			upperLimit = getUpperBound();
+		}
+		return upperLimit;
+	}
+	
+	protected double getLowerLimit() {
+		double lowerLimit = Double.MIN_VALUE;
+		if (isSetLowerBound()) {
+			lowerLimit = getLowerBound();
+		}
+		return lowerLimit;
+	}
+
 }

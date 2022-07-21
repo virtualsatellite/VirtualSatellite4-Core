@@ -1032,6 +1032,15 @@ public class QudvUnitHelper {
 		DerivedUnit meterKilogramPerSecondCubedPerKelvin = createAndAddDerivedUnit("Meter Kilogram Per Second Cubed Per Kelvin", "m kg s⁻³ K⁻¹", "meterKilogramPerSecondCubedPerKelvinUnit", "", thermalConductivity, unitFactorMap);
 		systemOfUnits.getUnit().add(meterKilogramPerSecondCubedPerKelvin);
 		
+		// thermal conductivity: Watt per metre squared per Kelvin
+		unitFactorMap.clear();
+		unitFactorMap.put(meter, 1.0);
+		unitFactorMap.put(kilogram, 1.0);
+		unitFactorMap.put(second, M3);
+		unitFactorMap.put(kelvin, M1);
+		DerivedUnit wattPerMeterSquaredPerKelvin = createAndAddDerivedUnit("Watt Per Metre Squared Per Kelvin", "W m⁻² K⁻¹", "wattPerMeterSquaredPerKelvin", "", thermalConductivity, unitFactorMap);
+		systemOfUnits.getUnit().add(wattPerMeterSquaredPerKelvin);
+
 		//thermal contact resistance: second cubed kelvin per meter squared per kilogram
 		unitFactorMap.clear();
 		unitFactorMap.put(meter, M2);
@@ -1310,7 +1319,7 @@ public class QudvUnitHelper {
 	 * a method to import a system of units 
 	 * @param destination the destination of the file to import
 	 * @return {@link SystemOfUnits} the imported SystemOfUnits
-	 * @throws IOException 
+	 * @throws IOException in case the file cannot be read
 	 */
 	public SystemOfUnits importModelFromFile(String destination) throws IOException {
 		Resource resource = new XMLResourceImpl();

@@ -50,7 +50,7 @@ public class MigrateConceptToLatestHandler extends AEditingDomainCommandHandler 
 	 *            the concepts to migrate
 	 * @param ed
 	 *            the editing domain
-	 * @throws CoreException
+	 * @throws CoreException in case the command cannot be executed
 	 */
 	public static void migrateToLatest(Collection<Concept> concepts, TransactionalEditingDomain ed) throws CoreException {
 		CompoundCommand cc = new CompoundCommand();
@@ -77,7 +77,7 @@ public class MigrateConceptToLatestHandler extends AEditingDomainCommandHandler 
 	 *            the concept to migrate
 	 * @param ed
 	 *            the editing domain
-	 * @throws CoreException
+	 * @throws CoreException in case the command cannot be executed
 	 */
 	public static void migrateToLatest(Concept concept, TransactionalEditingDomain ed) throws CoreException {
 		migrateToLatest(Collections.singleton(concept), ed);

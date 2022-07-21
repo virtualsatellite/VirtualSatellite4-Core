@@ -22,6 +22,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.ATypeDefinition;
  * </p>
  * <ul>
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty#getArrayModifier <em>Array Modifier</em>}</li>
+ *   <li>{@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty#getVerification <em>Verification</em>}</li>
  * </ul>
  *
  * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.PropertydefinitionsPackage#getAProperty()
@@ -54,5 +55,31 @@ public interface AProperty extends ATypeDefinition {
 	 * @generated
 	 */
 	void setArrayModifier(IArrayModifier value);
+
+	/**
+	 * Returns the value of the '<em><b>Verification</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Verification</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Verification</em>' containment reference.
+	 * @see #setVerification(IVerificationSpecification)
+	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.PropertydefinitionsPackage#getAProperty_Verification()
+	 * @model containment="true" resolveProxies="true"
+	 * @generated
+	 */
+	IVerificationSpecification getVerification();
+
+	/**
+	 * Sets the value of the '{@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty#getVerification <em>Verification</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Verification</em>' containment reference.
+	 * @see #getVerification()
+	 * @generated
+	 */
+	void setVerification(IVerificationSpecification value);
 
 } // AProperty

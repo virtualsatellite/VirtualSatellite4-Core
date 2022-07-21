@@ -2,7 +2,7 @@
    "type" : "beanQuantityKindDerived",
    "uuid" : "ad796ad1-bc2f-4ff0-932f-8bf70ad0d9c1",
    "name" : "Velocity",
-   "symbol" : "L¹ T⁻¹",
+   "symbol" : "L T^-1",
    "factorBeans" : [ {
       "uuid" : "92fd020c-8b12-4d8a-9711-8a8976cfc39b",
       "exponent" : -1.0,

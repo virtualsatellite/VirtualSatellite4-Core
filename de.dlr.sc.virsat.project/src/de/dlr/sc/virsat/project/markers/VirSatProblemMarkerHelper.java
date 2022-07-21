@@ -77,13 +77,13 @@ public class VirSatProblemMarkerHelper implements IMarkerHelper {
 	 * Method to get the correct Helper for the given marker
 	 * especially neccessary 
 	 * @param marker The marker whose registered Helper shall be created
+	 * @param configElementsMarkerHelper The configuration Elements from the platform in which to find the markers
 	 * @return The markerHelper
 	 */
-	public static IMarkerHelper createMarkerHelper(IMarker marker) {
+	public static IMarkerHelper createMarkerHelper(IMarker marker, IConfigurationElement[] configElementsMarkerHelper) {
 		try {
 			// Fill an empty marker helper map with the ones that we get from the registered concepts
 			if (registeredMarkerHelper.isEmpty()) {
-				IConfigurationElement[] configElementsMarkerHelper = Platform.getExtensionRegistry().getConfigurationElementsFor(ID_EXTENSIONPOINT_MARKERHELPER);
 				for (IConfigurationElement configElementMarkerHelper : configElementsMarkerHelper) {
 					String type = configElementMarkerHelper.getAttribute(ID_EXTENSIONPOINT_MARKERHELPER_ATTR_TYPE);
 					IMarkerHelper iMarkerHelper = (IMarkerHelper) configElementMarkerHelper.createExecutableExtension(ID_EXTENSIONPOINT_MARKERHELPER_ATTR_HELPER);
@@ -100,6 +100,16 @@ public class VirSatProblemMarkerHelper implements IMarkerHelper {
 		return new VirSatProblemMarkerHelper();
 	}
 	
+	/**
+	 * Method to get the correct Helper for the given marker
+	 * especially neccessary 
+	 * @param marker The marker whose registered Helper shall be created
+	 * @return The markerHelper
+	 */
+	public static IMarkerHelper createMarkerHelper(IMarker marker) {
+		return createMarkerHelper(marker, Platform.getExtensionRegistry().getConfigurationElementsFor(ID_EXTENSIONPOINT_MARKERHELPER));
+	}
+		
 	/**
 	 * Method to check whether there are some markers in the Set which have been deleted in the meantime and 
 	 * therefore do not exist anymore 

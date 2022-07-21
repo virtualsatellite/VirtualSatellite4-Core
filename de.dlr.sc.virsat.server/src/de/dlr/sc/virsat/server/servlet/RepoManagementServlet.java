@@ -20,6 +20,7 @@ import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.glassfish.jersey.servlet.ServletContainer;
 
 import de.dlr.sc.virsat.server.auth.filter.CorsFilter;
+import de.dlr.sc.virsat.server.classloader.BundleDependencyClassLoader;
 import de.dlr.sc.virsat.server.resources.DocumentationResource;
 import de.dlr.sc.virsat.server.resources.ProjectManagementResource;
 import de.dlr.virsat.external.lib.jersey.servlet.ApplicationServletContainer;
@@ -60,6 +61,11 @@ public class RepoManagementServlet extends ApplicationServletContainer implement
 			register(docBinder);
 			register(DocumentationResource.class);
 		}
+	}
+
+	@Override
+	protected ClassLoader onCreateClassLoader() {
+		return new BundleDependencyClassLoader(getClass());
 	}
 
 }

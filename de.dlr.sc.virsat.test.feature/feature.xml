@@ -2,7 +2,7 @@
 <feature
       id="de.dlr.sc.virsat.test.feature"
       label="VirSat Core General Tests Feature"
-      version="4.14.0.qualifier"
+      version="4.15.0.qualifier"
       provider-name="DLR (German Aerospace Center)"
       license-feature="de.dlr.sc.virsat.license.feature">
 
@@ -40,12 +40,14 @@ by German Aerospace Center (DLR e.V.)
       <import plugin="de.dlr.sc.virsat.model.extension.tests"/>
       <import plugin="de.dlr.sc.virsat.model.extension.budget.mass"/>
       <import plugin="de.dlr.sc.virsat.model.extension.budget.power"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.budget.cost"/>
       <import plugin="de.dlr.sc.virsat.model.extension.tests.edit"/>
       <import plugin="de.dlr.sc.virsat.model.extension.maturity"/>
       <import plugin="de.dlr.sc.virsat.model.extension.mechanical"/>
       <import plugin="de.dlr.sc.virsat.model.extension.statemachines"/>
       <import plugin="de.dlr.sc.virsat.model.extension.funcelectrical"/>
       <import plugin="de.dlr.sc.virsat.model.extension.requirements"/>
+      <import plugin="de.dlr.sc.virsat.model.extension.thermal"/>
       <import plugin="de.dlr.sc.virsat.excel"/>
       <import plugin="de.dlr.sc.virsat.external.lib.spotbugs"/>
       <import plugin="de.dlr.sc.virsat.model.extension.tests"/>
@@ -80,7 +82,7 @@ by German Aerospace Center (DLR e.V.)
       <import feature="de.dlr.sc.virsat.license.feature" version="0.0.0" match="greaterOrEqual"/>
       <import feature="de.dlr.sc.virsat.commons.feature" version="0.0.0" match="greaterOrEqual"/>
       <import plugin="de.dlr.sc.virsat.server"/>
-      <import feature="de.dlr.sc.virsat.server.feature" version="4.14.0.qualifier"/>
+      <import feature="de.dlr.sc.virsat.server.feature" version="4.15.0.qualifier"/>
    </requires>
 
    <plugin
@@ -214,12 +216,13 @@ by German Aerospace Center (DLR e.V.)
          version="0.0.0"
          fragment="true"
          unpack="false"/>
-
+         
    <plugin
-         id="de.dlr.sc.virsat.swtbot.test"
+         id="de.dlr.sc.virsat.model.extension.budget.cost.test"
          download-size="0"
          install-size="0"
          version="0.0.0"
+         fragment="true"
          unpack="false"/>
 
    <plugin
@@ -228,6 +231,13 @@ by German Aerospace Center (DLR e.V.)
          install-size="0"
          version="0.0.0"
          fragment="true"
+         unpack="false"/>
+  
+     <plugin
+         id="de.dlr.sc.virsat.swtbot.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
@@ -303,6 +313,14 @@ by German Aerospace Center (DLR e.V.)
          unpack="false"/>
 
    <plugin
+         id="de.dlr.sc.virsat.model.extension.thermal.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
          id="de.dlr.sc.virsat.server.test"
          download-size="0"
          install-size="0"
@@ -334,6 +352,22 @@ by German Aerospace Center (DLR e.V.)
 
    <plugin
          id="de.dlr.sc.virsat.model.ext.core.edit.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.model.extension.thermal.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.model.extension.sequencing.test"
          download-size="0"
          install-size="0"
          version="0.0.0"

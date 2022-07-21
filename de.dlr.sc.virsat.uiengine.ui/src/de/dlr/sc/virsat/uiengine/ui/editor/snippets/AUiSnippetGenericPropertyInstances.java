@@ -261,7 +261,7 @@ public abstract class AUiSnippetGenericPropertyInstances extends AUiCategorySect
 	 * @param property
 	 *            the property on which these widgets should act
 	 */
-	private void createCommonPropertyWidgets(FormToolkit toolkit, Composite sectionBody, AProperty property) {
+	protected void createCommonPropertyWidgets(FormToolkit toolkit, Composite sectionBody, AProperty property) {
 		Label labelPropertyIcon = toolkit.createLabel(sectionBody, "");
 		labelPropertyIcon.setLayoutData(new GridData());
 		Image dummyImage = mip.getOkImage();

@@ -148,6 +148,7 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//categories/Category/isAbstract"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference dvlm.ecore#//categories/Category/extendsCategory"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//categories/Category/isVerification"/>
         <genOperations ecoreOperation="dvlm.ecore#//categories/Category/getAllProperties"
             body="EList&lt;AProperty> allProperties = new org.eclipse.emf.common.util.BasicEList&lt;>();&#xD;&#xA;allProperties.addAll(getProperties());&#xD;&#xA;&#xD;&#xA;// In case this category inherits from another one (extends another category) that their properties should eb added as well&#xD;&#xA;if (extendsCategory != null) {&#xD;&#xA;&#x9;allProperties.addAll(extendsCategory.getAllProperties());&#xD;&#xA;}&#xD;&#xA;&#x9;&#xD;&#xA;return allProperties;"/>
         <genOperations ecoreOperation="dvlm.ecore#//categories/Category/isExtensionOf"
@@ -169,6 +170,7 @@
           disposableProviderFactory="true" ecorePackage="dvlm.ecore#//categories/propertydefinitions">
         <genClasses image="false" ecoreClass="dvlm.ecore#//categories/propertydefinitions/AProperty">
           <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//categories/propertydefinitions/AProperty/arrayModifier"/>
+          <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//categories/propertydefinitions/AProperty/verification"/>
         </genClasses>
         <genClasses ecoreClass="dvlm.ecore#//categories/propertydefinitions/ComposedProperty">
           <genFeatures property="Readonly" notify="false" createChild="false" propertySortChoices="true"
@@ -209,6 +211,11 @@
         </genClasses>
         <genClasses image="false" ecoreClass="dvlm.ecore#//categories/propertydefinitions/IArrayModifier"/>
         <genClasses ecoreClass="dvlm.ecore#//categories/propertydefinitions/DynamicArrayModifier"/>
+        <genClasses ecoreClass="dvlm.ecore#//categories/propertydefinitions/IVerificationSpecification"/>
+        <genClasses ecoreClass="dvlm.ecore#//categories/propertydefinitions/VerificationTypeSpecification">
+          <genFeatures notify="false" createChild="false" propertySortChoices="true"
+              ecoreFeature="ecore:EReference dvlm.ecore#//categories/propertydefinitions/VerificationTypeSpecification/verificationType"/>
+        </genClasses>
       </nestedGenPackages>
       <nestedGenPackages prefix="Propertyinstances" basePackage="de.dlr.sc.virsat.model.dvlm.categories"
           disposableProviderFactory="true" ecorePackage="dvlm.ecore#//categories/propertyinstances">

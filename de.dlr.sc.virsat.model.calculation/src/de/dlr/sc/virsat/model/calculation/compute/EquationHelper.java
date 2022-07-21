@@ -128,9 +128,9 @@ public class EquationHelper {
 	/**
 	 * Evaluates a dependency tree according to its linearization
 	 * @param tree the dependency tree to evaluate
+	 * @param userContext userContext to be used for the evaluation
 	 * @return a list of problems that have occurred during the evaluation
 	 */
-	
 	public List<EvaluationProblem> evaluate(DependencyTree<EObject> tree, IUserContext userContext) {
 		List<EObject> linear = tree.getLinearOrder();
 		List<EvaluationProblem> equationProblems = new ArrayList<>();
@@ -215,6 +215,7 @@ public class EquationHelper {
 	 * Evaluates a collection of equations using a dependency tree. Does no cycle analysis, etc.
 	 * This method is primarily intended for the use in test cases.
 	 * @param equations the equations to evaluate
+	 * @param userContext to be sued for the evaluation
 	 * @return the dependency tree created internally
 	 */
 	public DependencyTree<EObject> evaluate(List<Equation> equations, IUserContext userContext) {

@@ -137,6 +137,7 @@ public class QuantityKindFactorImpl extends MinimalEObjectImpl.Container impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code VirSatUuid}'.
 	 * @generated
 	 */
 	public VirSatUuid getUuid() {
@@ -158,6 +159,7 @@ public class QuantityKindFactorImpl extends MinimalEObjectImpl.Container impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code double}'.
 	 * @generated
 	 */
 	public double getExponent() {
@@ -179,6 +181,7 @@ public class QuantityKindFactorImpl extends MinimalEObjectImpl.Container impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code AQuantityKind}'.
 	 * @generated
 	 */
 	public AQuantityKind getQuantityKind() {
@@ -196,6 +199,7 @@ public class QuantityKindFactorImpl extends MinimalEObjectImpl.Container impleme
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code AQuantityKind}'.
 	 * @generated
 	 */
 	public AQuantityKind basicGetQuantityKind() {

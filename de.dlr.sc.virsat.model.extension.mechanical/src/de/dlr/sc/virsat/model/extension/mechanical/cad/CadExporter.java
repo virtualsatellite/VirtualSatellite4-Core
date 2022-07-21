@@ -48,7 +48,7 @@ public class CadExporter {
 	
 	/**
 	 * Sets the path where all the geometry files are supposed to be (this class doesn't copy files)
-	 * @param geometryFilesPath 
+	 * @param geometryFilesPath path to the geometry file
 	 */
 	public void setGeometryFilesPath(String geometryFilesPath) {
 		this.geometryFilesPath = geometryFilesPath;

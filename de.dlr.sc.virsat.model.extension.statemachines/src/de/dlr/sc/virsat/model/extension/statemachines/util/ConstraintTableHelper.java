@@ -43,7 +43,7 @@ public class ConstraintTableHelper {
 	 * state machines in the data model
 	 * @param mainRootSc the selected element
 	 * @param tempStateMachines list of modified state machines
-	 * @throws CoreException 
+	 * @throws CoreException in case something goes wrong
 	 */
 	public static void createAndExecuteCompaundCommandForMerge(StructuralElementInstance mainRootSc, List<StateMachine> tempStateMachines) throws CoreException {	
 		BeanStructuralElementInstanceFactory bsf = new BeanStructuralElementInstanceFactory();

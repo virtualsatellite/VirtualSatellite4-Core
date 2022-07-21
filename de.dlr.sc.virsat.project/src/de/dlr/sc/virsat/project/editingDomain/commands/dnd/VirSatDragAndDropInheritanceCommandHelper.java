@@ -39,7 +39,7 @@ public class VirSatDragAndDropInheritanceCommandHelper {
 	/**
 	 * Call this method to create a command to add or replace the SEI in the list of superSEIs
 	 * @param ed The editing domain for which the command should be created
-	 * @param dragObject the object which is dragged and shall be used for replacing
+	 * @param dragObjects the object which is dragged and shall be used for replacing
 	 * @param dropOperation the kind of operation
 	 * @param dropObject the SEI where the superSEIs should be changed
 	 * @return The command to add or replace a superSEI

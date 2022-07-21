@@ -9,8 +9,6 @@
  */
 package de.dlr.sc.virsat.model.concept.generator;
 
-import de.dlr.sc.virsat.model.concept.generator.ConceptPreprocessor;
-import de.dlr.sc.virsat.model.concept.generator.IConceptGeneratorEnablement;
 import de.dlr.sc.virsat.model.concept.generator.beans.GenerateCategoryBeans;
 import de.dlr.sc.virsat.model.concept.generator.beans.GenerateStructuralElementBeans;
 import de.dlr.sc.virsat.model.concept.generator.commands.GenerateArrayCreateAddCommand;
@@ -27,6 +25,7 @@ import de.dlr.sc.virsat.model.concept.generator.propertyTester.GenerateConceptEn
 import de.dlr.sc.virsat.model.concept.generator.snippets.GenerateCategoryUiSnippetArrayTable;
 import de.dlr.sc.virsat.model.concept.generator.snippets.GenerateCategoryUiSnippetPropertySection;
 import de.dlr.sc.virsat.model.concept.generator.snippets.GenerateCategoryUiSnippetTable;
+import de.dlr.sc.virsat.model.concept.generator.snippets.GenerateRequirementsVerificationUiSnippet;
 import de.dlr.sc.virsat.model.concept.generator.tests.GenerateAllTests;
 import de.dlr.sc.virsat.model.concept.generator.tests.GenerateCategoryTests;
 import de.dlr.sc.virsat.model.concept.generator.tests.GenerateMigratorTests;
@@ -106,6 +105,7 @@ public class ConceptLanguageGenerator implements IGenerator2 {
         new GenerateValidator().serializeModel(dataModel, fsa);
         new GenerateMigrator().serializeModel(dataModel, fsa);
         new GenerateConceptEnabledTester().serializeModel(dataModel, fsa);
+        new GenerateRequirementsVerificationUiSnippet().serializeModel(dataModel, fsa);
         new GenerateCategoryTests().serializeModel(dataModel, fsa);
         new GenerateStructuralElementTests().serializeModel(dataModel, fsa);
         new GenerateMigratorTests().serializeModel(dataModel, fsa);

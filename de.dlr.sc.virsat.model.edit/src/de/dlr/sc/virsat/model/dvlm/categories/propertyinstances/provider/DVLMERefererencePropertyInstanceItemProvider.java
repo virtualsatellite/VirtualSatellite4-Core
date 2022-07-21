@@ -23,7 +23,7 @@ public class DVLMERefererencePropertyInstanceItemProvider extends EReferenceProp
 	
 	/**
 	 * this class constructor is an instance of the factory and notifier 
-	 * @param adapterFactory 
+	 * @param adapterFactory  to be used for initialization
 	 */
 	public DVLMERefererencePropertyInstanceItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);

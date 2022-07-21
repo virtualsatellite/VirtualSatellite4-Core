@@ -38,7 +38,7 @@ public interface INativeRequirementAttributeMapping {
 	 * Specify if the attribute is an identifying attribute
 	 * 
 	 * @param reqIFAttDef the attribute under question
-	 * @return 
+	 * @return true iff the attribute is an identifier attribute
 	 */
 	boolean isIdentifierAttribute(AttributeDefinition reqIFAttDef);
 	

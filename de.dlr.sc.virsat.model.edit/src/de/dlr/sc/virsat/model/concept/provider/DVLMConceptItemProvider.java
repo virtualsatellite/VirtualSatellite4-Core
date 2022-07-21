@@ -24,7 +24,7 @@ public class DVLMConceptItemProvider extends ConceptItemProvider {
 
 	/**
 	 * this class constructor is an instance of the factory and notifier 
-	 * @param adapterFactory 
+	 * @param adapterFactory to be used for initialization
 	 */
 	public DVLMConceptItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);

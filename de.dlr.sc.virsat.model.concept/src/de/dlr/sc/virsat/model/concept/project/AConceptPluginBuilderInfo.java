@@ -37,7 +37,7 @@ public abstract class AConceptPluginBuilderInfo implements IProjectBuilderInfo {
 	@Override
 	public Set<String> getContainers() {
 		Set<String> classpathEntries = new HashSet<>();
-		classpathEntries.add("org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8");
+		classpathEntries.add("org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11");
 		classpathEntries.add("org.eclipse.pde.core.requiredPlugins");
 		return classpathEntries;
 	}

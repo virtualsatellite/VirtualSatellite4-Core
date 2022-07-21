@@ -114,14 +114,14 @@ public class ColorMap {
 	}
 	/**
 	 * Set the min value
-	 * @param min 
+	 * @param min the minimum value for the color map
 	 */
 	public void setMin(double min) {
 		this.min = min;
 	}
 	/**
 	 * Set the max value
-	 * @param max 
+	 * @param max the maximum value for the color map
 	 */
 	public void setMax(double max) {
 		this.max = max;

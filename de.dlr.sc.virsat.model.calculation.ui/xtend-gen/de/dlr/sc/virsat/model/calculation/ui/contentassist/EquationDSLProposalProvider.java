@@ -12,7 +12,6 @@ package de.dlr.sc.virsat.model.calculation.ui.contentassist;
 import de.dlr.sc.virsat.model.calculation.compute.extensions.AdvancedFunctionHelper;
 import de.dlr.sc.virsat.model.calculation.resource.EquationSectionVirSatAwareXtextResourceSet;
 import de.dlr.sc.virsat.model.calculation.resource.EquationSectionXtextResource;
-import de.dlr.sc.virsat.model.calculation.ui.contentassist.AbstractEquationDSLProposalProvider;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.general.IName;
 import de.dlr.sc.virsat.model.ecore.VirSatEcoreUtil;

@@ -415,7 +415,7 @@ public class CategoryInstantiator {
 	
 	/**
 	 * Creates a corresponding expression for a given expression of an equationDefintion, 
-	 * e.g. ReferencedDefinitionInput -> ReferencedInput
+	 * e.g. {@literal ReferencedDefinitionInput -> ReferencedInput}
 	 * @param ca the category assignment of this 
 	 * @param expressionDefinition expression from an equationDefinition
 	 * @return the created expression

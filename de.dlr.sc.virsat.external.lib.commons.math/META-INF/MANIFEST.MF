@@ -2,11 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat External Lib - Apache Commons Math
 Bundle-SymbolicName: de.dlr.sc.virsat.external.lib.commons.math;singleton:=true
-Bundle-Version: 4.14.0.qualifier
+Bundle-Version: 4.15.0.qualifier
 Bundle-Activator: de.dlr.sc.virsat.external.lib.commons.math.Activator
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: de.dlr.sc.virsat.external.lib
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Export-Package: de.dlr.sc.virsat.external.lib.commons.math;uses:="org.osgi.framework,org.eclipse.core.runtime",

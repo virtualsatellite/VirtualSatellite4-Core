@@ -23,7 +23,7 @@ import de.dlr.sc.virsat.model.concept.services.ConceptLanguageGrammarAccess
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#formatting
  * on how and when to use it.
  * 
- * Also see {@link org.eclipse.xtext.xtext.XtextFormattingTokenSerializer} as an example
+ * Also see org.eclipse.xtext.xtext.XtextFormattingTokenSerializer as an example
  */
 class ConceptLanguageFormatter extends AbstractDeclarativeFormatter {
 	

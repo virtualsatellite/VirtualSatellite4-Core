@@ -624,6 +624,7 @@ public class VtkClientView extends ViewPart {
 							.toArray();
 					VirSatProjectLabelProvider labelProvider = new VirSatProjectLabelProvider();
 
+					@SuppressWarnings("deprecation")
 					ListSelectionDialog rootSeisSelectionDialog = new ListSelectionDialog(
 							northButtonComposite.getShell(), repository, contentProvider, labelProvider,
 							"Please select root elements to visualize");

@@ -10,7 +10,7 @@
 	<parent>
 		<artifactId>de.dlr.sc.virsat.parent</artifactId>
 		<groupId>de.dlr.sc.virsat</groupId>
-		<version>4.14.0-SNAPSHOT</version>
+		<version>4.15.0-SNAPSHOT</version>
 		<relativePath>../maven/pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
@@ -50,10 +50,18 @@
 										<includes>
 											<include>de.dlr.sc.*</include>
 										</includes>
+										<excludes>
+											<exclude>de.dlr.sc.visproto</exclude>
+										</excludes>
+										
+										<ignoreError>false</ignoreError>
 										<additionalArguments>
+											<additionalArgument>-tag "generated:a:EMF tag generated:"</additionalArgument>
+											<additionalArgument>-tag "model:a:EMF tag model:"</additionalArgument>
+											<additionalArgument>-tag "ordered:a:EMF tag ordered:"</additionalArgument>
 											<additionalArgument>
 												-link
-												https://docs.oracle.com/javase/8/docs/api
+												https://docs.oracle.com/en/java/javase/11/docs/api/
 											</additionalArgument>
 											<additionalArgument>
 												-linkoffline
@@ -62,6 +70,7 @@
 											</additionalArgument>
 											<additionalArgument>-public</additionalArgument>
 										</additionalArguments>
+										
 									</javadocOptions>
 								</configuration>
 							</execution>

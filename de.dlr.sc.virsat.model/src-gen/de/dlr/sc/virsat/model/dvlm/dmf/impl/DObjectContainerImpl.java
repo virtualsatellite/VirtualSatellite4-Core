@@ -98,6 +98,7 @@ public class DObjectContainerImpl extends MinimalEObjectImpl.Container implement
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<DObject>}'.
 	 * @generated
 	 */
 	public EList<DObject> getObjects() {

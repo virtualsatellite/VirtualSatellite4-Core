@@ -86,6 +86,8 @@ public class UiSnippetSuppressedValidators extends AUiSnippetEStructuralFeatureT
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				List<String> validatorClasses = getActiveValidatorClasses((Repository) model);
+				
+				@SuppressWarnings("deprecation")
 				ListSelectionDialog dialog = new ListSelectionDialog(composite.getShell(), validatorClasses,
 						ArrayContentProvider.getInstance(), new LabelProvider(), "Select a Validator to suppress");
 

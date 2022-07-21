@@ -25,7 +25,7 @@ public class DVLMRefererencePropertyInstanceItemProvider extends ReferenceProper
 	
 	/**
 	 * this class constructor is an instance of the factory and notifier 
-	 * @param adapterFactory 
+	 * @param adapterFactory  to be used for initialization
 	 */
 	public DVLMRefererencePropertyInstanceItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);

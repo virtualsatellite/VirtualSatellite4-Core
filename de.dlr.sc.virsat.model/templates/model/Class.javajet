@@ -17,6 +17,7 @@
 <%final String INTERFACE_NAME_QUALIFIEDNAME_GETTER = "getFullQualifiedName";%>
 <%final String CLASS_NAME_STRUCTURAL_ELEMENT_INSTANCE = "StructuralElementInstance";%>
 <%final String CLASS_NAME_REFERENCE_PROPERTY_INSTANCE = "ReferencePropertyInstance";%>
+<%final String OPERATION_RETURN_VOID = "void";%>
 <%final boolean isJDK50 = genModel.getComplianceLevel().getValue() >= GenJDKLevel.JDK50;%>
 <%final boolean isInterface = Boolean.TRUE.equals(((Object[])argument)[1]); final boolean isImplementation = Boolean.TRUE.equals(((Object[])argument)[2]);%>
 <%final boolean isGWT = genModel.getRuntimePlatform() == GenRuntimePlatform.GWT;%>
@@ -790,6 +791,7 @@ if (index != -1) { head = typeName.substring(0, index); tail = typeName.substrin
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code <%=genFeature.getImportedType(genClass)%>}'.
 	 * @generated
 	 */
 <%if (isJDK50) { //Class/getGenFeature.annotations.insert.javajetinc%>
@@ -961,6 +963,7 @@ if (index != -1) { head = typeName.substring(0, index); tail = typeName.substrin
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code <%=genFeature.getImportedType(genClass)%>}'.
 	 * @generated
 	 */
 <%if (isJDK50) { //Class/basicGetGenFeature.annotations.insert.javajetinc%>
@@ -1009,6 +1012,9 @@ if (index != -1) { head = typeName.substring(0, index); tail = typeName.substrin
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param new<%=genFeature.getCapName()%> new value to be of type '{@code <%=genFeature.getImportedInternalType(genClass)%>}' to be set. 
+	 * @param msgs notifications of type '{@code <%=genModel.getImportedName("org.eclipse.emf.common.notify.NotificationChain")%>}'.
+	 * @return notification of type '{@code <%=genModel.getImportedName("org.eclipse.emf.common.notify.NotificationChain")%>}'.
 	 * @generated
 	 */
 <%if (isJDK50) { //Class/basicSetGenFeature.annotations.insert.javajetinc%>
@@ -1652,6 +1658,12 @@ if (index != -1) { head = typeName.substring(0, index); tail = typeName.substrin
       <%}%>
     <%}%>
 	 * <!-- end-model-doc -->
+    <% /************************************************
+        * VirSat specific documentation of return types 
+        ************************************************/
+    if (genOperation.getTypeParameters(genClass) != null && !OPERATION_RETURN_VOID.equalsIgnoreCase(genOperation.getImportedType(genClass))) { %>
+	 * @return the value of the '<em>{@code <%=genOperation.getName()%>}</em>' operation as '{@code <%=genOperation.getTypeParameters(genClass)%><%=genOperation.getImportedType(genClass)%>}'.
+    <%}%>
   <%}%>
   <%if (!genModel.isSuppressEMFModelTags()) { boolean first = true; for (StringTokenizer stringTokenizer = new StringTokenizer(genOperation.getModelInfo(), "\n\r"); stringTokenizer.hasMoreTokens(); ) { String modelInfo = stringTokenizer.nextToken(); if (first) { first = false;%>
 	 * @model <%=modelInfo%>

@@ -9,8 +9,6 @@
  */
 package de.dlr.sc.virsat.model.calculation;
 
-import de.dlr.sc.virsat.model.calculation.EquationDSLStandaloneSetupGenerated;
-
 /**
  * Initialization support for running Xtext languages without Equinox extension registry.
  */

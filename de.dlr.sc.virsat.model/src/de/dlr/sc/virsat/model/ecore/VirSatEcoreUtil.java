@@ -118,7 +118,7 @@ public class VirSatEcoreUtil extends EcoreUtil {
 	
 	/**
 	 * Call this method to find all objects of a given type in a collection of resources 
-	 * @param resourceSet the resourceSet in which to search for the objects
+	 * @param resources the resources in which to search for the objects
 	 * @param skipResource a resource which should be skipped when looking for the containments of the given type. Can be set to null.
 	 * @param type the class that specifies the type to look for
 	 * @param <T> the type of object that should be looked for

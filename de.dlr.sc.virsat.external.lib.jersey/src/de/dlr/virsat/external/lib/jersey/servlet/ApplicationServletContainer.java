@@ -28,12 +28,14 @@ import javax.servlet.ServletResponse;
 public abstract class ApplicationServletContainer implements Servlet {
 
 	protected Servlet servlet;
+	protected ClassLoader classLoader;
 	
 	/**
 	 * The constructor with the context path to be used
 	 */
 	public ApplicationServletContainer() {
 		this.servlet = onCreateServlet();
+		this.classLoader = onCreateClassLoader();
 	}
 
 	/**
@@ -42,6 +44,14 @@ public abstract class ApplicationServletContainer implements Servlet {
 	 */
 	protected abstract Servlet onCreateServlet();
 
+	/**
+	 * Implement this class to provide a specific class loader for
+	 * this Servlet. Can be null which will make the Servlet stick
+	 * to the context class loader.
+	 * @return a class loader or null
+	 */
+	protected abstract ClassLoader onCreateClassLoader();
+	
 	@Override
 	public void destroy() {
 		this.servlet.destroy();
@@ -64,6 +74,17 @@ public abstract class ApplicationServletContainer implements Servlet {
 
 	@Override
 	public void service(ServletRequest servletRequest, ServletResponse servletResponse) throws ServletException, IOException {
-		this.servlet.service(servletRequest, servletResponse);
+		// Store the current context class loader
+		ClassLoader originalClassLoader = Thread.currentThread().getContextClassLoader();
+		
+		// Use the specific class loader if it exists.
+		try {
+			if (classLoader != null) {
+				Thread.currentThread().setContextClassLoader(classLoader);
+			}
+			this.servlet.service(servletRequest, servletResponse);
+		} finally {
+			Thread.currentThread().setContextClassLoader(originalClassLoader);
+		}
 	}
 }

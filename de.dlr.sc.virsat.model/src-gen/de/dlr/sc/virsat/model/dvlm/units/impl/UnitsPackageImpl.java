@@ -120,6 +120,7 @@ public class UnitsPackageImpl extends EPackageImpl implements UnitsPackage {
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
+	 * @return an initialized instance of UnitsPackage.
 	 * @generated
 	 */
 	public static UnitsPackage init() {

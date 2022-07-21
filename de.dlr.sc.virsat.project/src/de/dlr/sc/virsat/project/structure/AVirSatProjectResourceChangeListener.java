@@ -47,8 +47,7 @@ public abstract class AVirSatProjectResourceChangeListener implements IResourceC
 	
 	/**
 	 * Constructor for the listener
-	 * @param ed The editingDomain that will be used for executing the handlers
-	 * @param virSatProject The virsatproject resource this listener should listen to
+	 * @param virSatProject The virsat project resource this listener should listen to
 	 */
 	public AVirSatProjectResourceChangeListener(IProject virSatProject) {
 		this.virSatProject = virSatProject;

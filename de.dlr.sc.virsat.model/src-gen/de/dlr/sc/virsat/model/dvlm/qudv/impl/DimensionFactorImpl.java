@@ -111,6 +111,7 @@ public class DimensionFactorImpl extends MinimalEObjectImpl.Container implements
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code double}'.
 	 * @generated
 	 */
 	public double getExponent() {
@@ -132,6 +133,7 @@ public class DimensionFactorImpl extends MinimalEObjectImpl.Container implements
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code AQuantityKind}'.
 	 * @generated
 	 */
 	public AQuantityKind getBaseDimension() {
@@ -149,6 +151,7 @@ public class DimensionFactorImpl extends MinimalEObjectImpl.Container implements
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code AQuantityKind}'.
 	 * @generated
 	 */
 	public AQuantityKind basicGetBaseDimension() {

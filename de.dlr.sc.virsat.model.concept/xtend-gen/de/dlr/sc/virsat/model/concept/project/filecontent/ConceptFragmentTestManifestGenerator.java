@@ -10,7 +10,6 @@
 package de.dlr.sc.virsat.model.concept.project.filecontent;
 
 import de.dlr.sc.virsat.model.concept.project.IProjectBuilderInfo;
-import de.dlr.sc.virsat.model.concept.project.filecontent.IFileContentGenerator;
 import org.eclipse.xtend2.lib.StringConcatenation;
 
 /**
@@ -51,7 +50,7 @@ public class ConceptFragmentTestManifestGenerator implements IFileContentGenerat
     _builder.newLine();
     _builder.append("Bundle-Vendor: DLR (German Aerospace Center)");
     _builder.newLine();
-    _builder.append("Bundle-RequiredExecutionEnvironment: JavaSE-1.8");
+    _builder.append("Bundle-RequiredExecutionEnvironment: JavaSE-11");
     _builder.newLine();
     _builder.append("Bundle-ActivationPolicy: lazy");
     _builder.newLine();

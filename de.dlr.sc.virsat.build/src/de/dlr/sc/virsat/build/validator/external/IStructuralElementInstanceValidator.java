@@ -13,7 +13,7 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 
 /**
  * <p>
- * Deprecated -> Use instead: {@link de.dlr.sc.virsat.model.dvlm.validator.IStructuralElementInstanceValidator}
+ * Deprecated - Use instead: {@link de.dlr.sc.virsat.model.dvlm.validator.IStructuralElementInstanceValidator}
  * 
  * </p>
  * the IStructuralElementInstanceValidator class defines the interface for our model validators

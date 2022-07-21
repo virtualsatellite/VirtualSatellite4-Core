@@ -30,6 +30,7 @@ public class CategoriesFactoryImpl extends EFactoryImpl implements CategoriesFac
 	 * Creates the default factory implementation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return an initialized instance of 'CategoriesFactory'.
 	 * @generated
 	 */
 	public static CategoriesFactory init() {
@@ -103,6 +104,7 @@ public class CategoriesFactoryImpl extends EFactoryImpl implements CategoriesFac
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @deprecated
+	 * @return an instance of CategoriesPackage.
 	 * @generated
 	 */
 	@Deprecated

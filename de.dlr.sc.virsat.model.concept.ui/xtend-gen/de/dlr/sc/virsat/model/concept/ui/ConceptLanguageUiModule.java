@@ -9,7 +9,6 @@
  */
 package de.dlr.sc.virsat.model.concept.ui;
 
-import de.dlr.sc.virsat.model.concept.ui.AbstractConceptLanguageUiModule;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor;
 

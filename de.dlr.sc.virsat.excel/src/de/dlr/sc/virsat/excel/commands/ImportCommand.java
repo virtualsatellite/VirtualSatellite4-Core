@@ -33,16 +33,6 @@ public class ImportCommand extends RecordingCommand {
 	 * @param eObject will be used as the root object for integrating the data
 	 * @param wb the excel file
 	 * @param domain transaction domain
-	 */
-	public ImportCommand(EObject eObject, XSSFWorkbook wb, TransactionalEditingDomain domain) {
-		this(eObject, wb, domain, new ExcelImporter());
-	}
-
-	/**
-	 * Create a new import command
-	 * @param eObject will be used as the root object for integrating the data
-	 * @param wb the excel file
-	 * @param domain transaction domain
 	 * @param excelImporter excel importer to use
 	 */
 	public ImportCommand(EObject eObject, XSSFWorkbook wb, TransactionalEditingDomain domain, ExcelImporter excelImporter) {

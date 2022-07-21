@@ -10,7 +10,10 @@
 package de.dlr.sc.virsat.model.extension.statemachines.propertyTester;
 
 import org.eclipse.core.expressions.PropertyTester;
+import org.eclipse.core.runtime.CoreException;
 
+import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
+import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
 
@@ -25,7 +28,14 @@ public class OpenStateMachineTester extends PropertyTester {
 	@Override
 	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
 		CategoryAssignment ca = (CategoryAssignment) receiver;
-		String caName = ca.getType().getFullQualifiedName();
-		return caName.equals(StateMachine.FULL_QUALIFIED_CATEGORY_NAME);
+		BeanCategoryAssignmentFactory beanCaFactory = new BeanCategoryAssignmentFactory();
+		try {
+			IBeanCategoryAssignment beanBa = beanCaFactory.getInstanceFor(ca);
+			return beanBa instanceof StateMachine;
+		} catch (CoreException e) {
+			// Unknown category assignment
+		}
+		
+		return false;
 	}
 }

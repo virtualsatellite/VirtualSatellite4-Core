@@ -29,7 +29,7 @@ public class DVLMValuePropertyInstanceItemProvider extends ValuePropertyInstance
 	
 	/**
 	 * this class constructor is an instance of the factory and notifier 
-	 * @param adapterFactory 
+	 * @param adapterFactory to be used for initialization
 	 */
 	public DVLMValuePropertyInstanceItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);

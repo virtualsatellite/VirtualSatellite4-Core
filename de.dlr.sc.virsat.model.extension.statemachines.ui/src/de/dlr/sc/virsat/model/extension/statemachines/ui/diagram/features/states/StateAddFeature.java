@@ -33,6 +33,7 @@ import de.dlr.sc.virsat.graphiti.ui.diagram.feature.VirSatAddShapeFeature;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.extension.statemachines.model.State;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
+import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.stateMachines.StateMachineAddFeature;
 /**
  * Feature for adding states to the state machine diagram.
  * @author bell_er
@@ -51,27 +52,30 @@ public class StateAddFeature extends VirSatAddShapeFeature {
 	
 	public static final IColorConstant ELEMENT_BACKGROUND =	new ColorConstant(232, 94, 74);
 	
+	private StateMachineAddFeature stateMachineAddFeature;
+	
 	/** 
 	 * Default constructor.
 	 * @param fp the feature provider.
 	 */
 	public StateAddFeature(IFeatureProvider fp) {
 		super(fp);
+		this.stateMachineAddFeature = new StateMachineAddFeature(fp);
 	}
 	
 	@Override
 	public boolean canAdd(IAddContext context) {
 		Object object = context.getNewObject();
-		if (object instanceof CategoryAssignment) {	
+		if (object instanceof CategoryAssignment) {
 			CategoryAssignment ca = (CategoryAssignment) object;
-			if (!ca.getType().getName().equals(State.class.getSimpleName())) {	
+			if (!ca.getType().getName().equals(State.class.getSimpleName())) {
 				return false;
 			}
-			
+
 			State addedState = new State(ca);
-			
+
 			// Check if this state is contained by the StateMachine
-			Object target = getBusinessObjectForPictogramElement(context.getTargetContainer());	
+			Object target = getBusinessObjectForPictogramElement(context.getTargetContainer());
 			if (target instanceof StateMachine) {
 				ContainerShape s = context.getTargetContainer();
 				for (Shape shape : s.getChildren()) {
@@ -82,71 +86,78 @@ public class StateAddFeature extends VirSatAddShapeFeature {
 							return false;
 						}
 					}
-				}	
-				
+				}
+
 				StateMachine sm = (StateMachine) target;
 				return sm.getStates().contains(addedState) && super.canAdd(context);
-			}		
-		}	
+			}
+		}
 
-		return false;	
+		return stateMachineAddFeature.canAdd(context);
 	}
-	
+
 	@Override
 	public PictogramElement add(IAddContext context) {
-		State state = new State((CategoryAssignment) context.getNewObject());
-		ContainerShape targetContainer = context.getTargetContainer();	
-		StateMachine stateMachine = state.getParentCaBeanOfClass(StateMachine.class);
-		State initialState = stateMachine.getInitialState();
-		
-		boolean isInitial = state.equals(initialState);
-		IPeCreateService peCreateService = Graphiti.getPeCreateService();
-        
-		ContainerShape containerShape = peCreateService.createContainerShape(targetContainer, true);
-        link(containerShape, state);
-        IGaService gaService = Graphiti.getGaService();
-        
-        
-        Rectangle invisibleRectangle = gaService.createInvisibleRectangle(containerShape);
-		gaService.setLocationAndSize(invisibleRectangle, context.getX(), context.getY(), CONTAINER_SIZE, CONTAINER_SIZE);
-        
-        ContainerShape ellipseShape = peCreateService.createContainerShape(containerShape, true);
-        
-        Ellipse ellipse = gaService.createEllipse(ellipseShape);
-        ellipse.setBackground(manageColor(ELEMENT_BACKGROUND));
-        ellipse.setLineVisible(false);
-        ellipseShape.setActive(false);
+		// Check if this state is contained by the StateMachine
+		ContainerShape targetContainer = context.getTargetContainer();
+		Object target = getBusinessObjectForPictogramElement(targetContainer);
+		if (target instanceof StateMachine) {
+			State state = new State((CategoryAssignment) context.getNewObject());
 
-        ChopboxAnchor boxAnchor = peCreateService.createChopboxAnchor(containerShape);
-        boxAnchor.setReferencedGraphicsAlgorithm(ellipse);
-    	link(boxAnchor, state);			
-    	
-    	Shape imageShape =  peCreateService.createShape(containerShape, false);	
-    	Image image  = gaService.createImage(imageShape, StateMachine.PROPERTY_INITIALSTATE);
-    	gaService.setLocationAndSize(image, 0, 0, INITIAL_ARROW_SIZE, INITIAL_ARROW_SIZE);	
-    	imageShape.setVisible(isInitial);
-    	link(imageShape, state);
-    	
-    	Shape nameShape = peCreateService.createShape(containerShape, false);	
-    	String formattedText = new MultilineLabelFormatter().getLabel(state.getName());
-    	AbstractText nameText = gaService.createMultiText(nameShape, formattedText);		
-    	nameText.setForeground(manageColor(IColorConstant.BLACK));	
-    	nameText.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);	
-    	nameText.setVerticalAlignment(Orientation.ALIGNMENT_CENTER);
-    	Font font = gaService.manageDefaultFont(getDiagram(), false, true);		
-    	nameText.setFont(font);			
-    	link(nameShape, state);
-    	
-    	IDirectEditingInfo directEditingInfo = getFeatureProvider().getDirectEditingInfo();
-    	// set container shape for direct editing after object creation
-    	directEditingInfo.setMainPictogramElement(containerShape);
-    	// set shape and graphics algorithm where the editor for
-    	// direct editing shall be opened after object creation
-    	directEditingInfo.setPictogramElement(containerShape);
-    	directEditingInfo.setGraphicsAlgorithm(nameText);
-    	
-    	layoutPictogramElement(containerShape);
-    	
-    	return containerShape;
+			StateMachine stateMachine = state.getParentCaBeanOfClass(StateMachine.class);
+			State initialState = stateMachine.getInitialState();
+
+			boolean isInitial = state.equals(initialState);
+			IPeCreateService peCreateService = Graphiti.getPeCreateService();
+
+			ContainerShape containerShape = peCreateService.createContainerShape(targetContainer, true);
+			link(containerShape, state);
+			IGaService gaService = Graphiti.getGaService();
+
+			Rectangle invisibleRectangle = gaService.createInvisibleRectangle(containerShape);
+			gaService.setLocationAndSize(invisibleRectangle, context.getX(), context.getY(), CONTAINER_SIZE,
+					CONTAINER_SIZE);
+
+			ContainerShape ellipseShape = peCreateService.createContainerShape(containerShape, true);
+
+			Ellipse ellipse = gaService.createEllipse(ellipseShape);
+			ellipse.setBackground(manageColor(ELEMENT_BACKGROUND));
+			ellipse.setLineVisible(false);
+			ellipseShape.setActive(false);
+
+			ChopboxAnchor boxAnchor = peCreateService.createChopboxAnchor(containerShape);
+			boxAnchor.setReferencedGraphicsAlgorithm(ellipse);
+			link(boxAnchor, state);
+
+			Shape imageShape = peCreateService.createShape(containerShape, false);
+			Image image = gaService.createImage(imageShape, StateMachine.PROPERTY_INITIALSTATE);
+			gaService.setLocationAndSize(image, 0, 0, INITIAL_ARROW_SIZE, INITIAL_ARROW_SIZE);
+			imageShape.setVisible(isInitial);
+			link(imageShape, state);
+
+			Shape nameShape = peCreateService.createShape(containerShape, false);
+			String formattedText = new MultilineLabelFormatter().getLabel(state.getName());
+			AbstractText nameText = gaService.createMultiText(nameShape, formattedText);
+			nameText.setForeground(manageColor(IColorConstant.BLACK));
+			nameText.setHorizontalAlignment(Orientation.ALIGNMENT_CENTER);
+			nameText.setVerticalAlignment(Orientation.ALIGNMENT_CENTER);
+			Font font = gaService.manageDefaultFont(getDiagram(), false, true);
+			nameText.setFont(font);
+			link(nameShape, state);
+
+			IDirectEditingInfo directEditingInfo = getFeatureProvider().getDirectEditingInfo();
+			// set container shape for direct editing after object creation
+			directEditingInfo.setMainPictogramElement(containerShape);
+			// set shape and graphics algorithm where the editor for
+			// direct editing shall be opened after object creation
+			directEditingInfo.setPictogramElement(containerShape);
+			directEditingInfo.setGraphicsAlgorithm(nameText);
+
+			layoutPictogramElement(containerShape);
+
+			return containerShape;
+		}
+
+		return stateMachineAddFeature.add(context);
 	}
 }

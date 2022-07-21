@@ -81,6 +81,7 @@ public class ExcelExportHelper {
 	/**
 	* Creates the header page for all
 	* @param exportSei Structural element instance to be exported
+	* @param localDateTime the current local time to be used when writing the header sheet
 	*/
 	public void writeHeaderSheet(StructuralElementInstance exportSei, LocalDateTime localDateTime) {
 		final int datacell = 1;
@@ -132,7 +133,7 @@ public class ExcelExportHelper {
 	}
 
 	/**
-	* Checks the user template, if there are some rows or cells not created by the user ( or in the template) it creates them to ppulate them with data
+	* Checks the user template, if there are some rows or cells not created by the user ( or in the template) it creates them to populate them with data
 	* @param sheet the excel data sheet
 	* @param rowCount expected rows in this sheet
 	* @param cellCount expected cell number in each row

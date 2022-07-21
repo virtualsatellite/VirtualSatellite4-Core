@@ -194,6 +194,7 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code VirSatUuid}'.
 	 * @generated
 	 */
 	public VirSatUuid getUuid() {
@@ -215,6 +216,7 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code Discipline}'.
 	 * @generated
 	 */
 	public Discipline getAssignedDiscipline() {
@@ -232,6 +234,7 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code Discipline}'.
 	 * @generated
 	 */
 	public Discipline basicGetAssignedDiscipline() {
@@ -253,6 +256,7 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<StructuralElementInstance>}'.
 	 * @generated
 	 */
 	public EList<StructuralElementInstance> getRootEntities() {
@@ -267,6 +271,7 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code RoleManagement}'.
 	 * @generated
 	 */
 	public RoleManagement getRoleManagement() {
@@ -284,6 +289,7 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code RoleManagement}'.
 	 * @generated
 	 */
 	public RoleManagement basicGetRoleManagement() {
@@ -305,6 +311,7 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code UnitManagement}'.
 	 * @generated
 	 */
 	public UnitManagement getUnitManagement() {
@@ -322,6 +329,7 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value of type '{@code UnitManagement}'.
 	 * @generated
 	 */
 	public UnitManagement basicGetUnitManagement() {
@@ -343,6 +351,7 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<Concept>}'.
 	 * @generated
 	 */
 	public EList<Concept> getActiveConcepts() {
@@ -357,6 +366,7 @@ public class RepositoryImpl extends MinimalEObjectImpl.Container implements Repo
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code EList<String>}'.
 	 * @generated
 	 */
 	public EList<String> getSuppressedValidators() {

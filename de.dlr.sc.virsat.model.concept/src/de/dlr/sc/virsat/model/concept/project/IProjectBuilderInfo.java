@@ -74,7 +74,7 @@ public interface IProjectBuilderInfo {
 	 * @author fisc_ph
 	 *
 	 */
-	public interface IFileDescription {
+	interface IFileDescription {
 		
 		/**
 		 * The name of the file to be generated

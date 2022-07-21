@@ -27,7 +27,7 @@ public class ContentManifestMf {
     _builder.newLineIfNotEmpty();
     _builder.append("Bundle-Version: 1.0.0.qualifier");
     _builder.newLine();
-    _builder.append("Bundle-RequiredExecutionEnvironment: JavaSE-1.8");
+    _builder.append("Bundle-RequiredExecutionEnvironment: JavaSE-11");
     _builder.newLine();
     _builder.append("Require-Bundle: de.dlr.sc.virsat.apps");
     _builder.newLine();

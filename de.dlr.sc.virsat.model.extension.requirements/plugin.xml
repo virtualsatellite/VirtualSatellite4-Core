@@ -4,7 +4,7 @@
 	<extension point="de.dlr.sc.virsat.model.Concept">
 		<concept
 			id="de.dlr.sc.virsat.model.extension.requirements"
-			version="0.6"
+			version="0.7"
 			xmi="concept/concept.xmi">
 		</concept>
 	</extension>
@@ -98,6 +98,14 @@
 			caBean="de.dlr.sc.virsat.model.extension.requirements.model.ExistenceVerification">
 		</CategoryAssignmentBean>
 		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.requirements.UpperLimitVerification"
+			caBean="de.dlr.sc.virsat.model.extension.requirements.model.UpperLimitVerification">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
+			id="de.dlr.sc.virsat.model.extension.requirements.LowerLimitVerification"
+			caBean="de.dlr.sc.virsat.model.extension.requirements.model.LowerLimitVerification">
+		</CategoryAssignmentBean>
+		<CategoryAssignmentBean
 			id="de.dlr.sc.virsat.model.extension.requirements.BoundedValueVerification"
 			caBean="de.dlr.sc.virsat.model.extension.requirements.model.BoundedValueVerification">
 		</CategoryAssignmentBean>
@@ -157,7 +165,23 @@
 		xmi="concept/concept_v0_6.xmi">
 	</migrator>
 </extension>
+<extension point="de.dlr.sc.virsat.model.edit.ConceptMigrator">
+	<migrator
+		id="de.dlr.sc.virsat.model.extension.requirements"
+		version="0.7"
+		class="de.dlr.sc.virsat.model.extension.requirements.migrator.Migrator0v7"
+		xmi="concept/concept_v0_7.xmi">
+	</migrator>
+</extension>
 	<!-- Plugin.XML Protected Region End -->
 	<!-- Plugin.XML Protected Region Start -->
+<extension
+         id="de.dlr.sc.virsat.model.extension.requirements.build.verification"
+         name="VirSat Requirements Verification Builder"
+         point="org.eclipse.core.resources.builders">
+      <builder hasNature="true">
+         <run class="de.dlr.sc.virsat.model.extension.requirements.verification.build.RequirementsVerificationBuilder" />
+      </builder>
+   </extension>
 	<!-- Plugin.XML Protected Region End -->
 </plugin>

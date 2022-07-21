@@ -2,11 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat External Lib - Apache Commons CSV
 Bundle-SymbolicName: de.dlr.sc.virsat.external.lib.commons.csv;singleton:=true
-Bundle-Version: 4.14.0.qualifier
+Bundle-Version: 4.15.0.qualifier
 Automatic-Module-Name: de.dlr.sc.virsat.external.lib.commons.csv
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: de.dlr.sc.virsat.external.lib
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: org.apache.commons.csv
 Eclipse-ExtensibleAPI: true
 Bundle-Activator: de.dlr.sc.virsat.external.lib.commons.csv.Activator

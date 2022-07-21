@@ -9,7 +9,6 @@
  */
 package de.dlr.sc.virsat.model.calculation.ui;
 
-import de.dlr.sc.virsat.model.calculation.ui.AbstractEquationDSLUiModule;
 import de.dlr.sc.virsat.model.calculation.ui.resource.EquationSectionResourceForEditorInputFactory;
 import org.apache.log4j.Logger;
 import org.eclipse.ui.plugin.AbstractUIPlugin;

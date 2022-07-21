@@ -37,8 +37,9 @@ public class ShapeEditObserver implements IShapeEditObserver {
 	}
 
 	/**
-	 * @param visualisationBean 
-	 * @param shape 
+	 * Method to update the visualization bean from a shape
+	 * @param visualisationBean the visualisation bean to be updated
+	 * @param shape the shape to be used for updating
 	 */
 	private void updateVisualisationBeanFromShape(Visualisation visualisationBean, Shape shape) {
 		CategoryAssignment underlyingCa = visualisationBean.getTypeInstance();
@@ -60,7 +61,7 @@ public class ShapeEditObserver implements IShapeEditObserver {
 	
 	/**
 	 * Disable VisualisationListener for the given CategoryAssignment
-	 * @param ca 
+	 * @param ca category assignment of which to disable the listener.
 	 */
 	private void disableNotificationsFromVisualisationListener(CategoryAssignment ca) {
 		for (Adapter adapter : ca.eAdapters()) {
@@ -72,7 +73,7 @@ public class ShapeEditObserver implements IShapeEditObserver {
 
 	/**
 	 * Enable VisualisationListener for the given CategoryAssignment
-	 * @param ca 
+	 * @param ca the category assignment where to activate the listener
 	 */
 	private void enableNotificationsFromVisualisationListener(CategoryAssignment ca) {
 		for (Adapter adapter : ca.eAdapters()) {
@@ -84,8 +85,8 @@ public class ShapeEditObserver implements IShapeEditObserver {
 
 	/**
 	 * Adds a bean to the map of observable beans
-	 * @param id 
-	 * @param bean 
+	 * @param id the id of the visualisation bean
+	 * @param bean the actual visualisaton bean
 	 */
 	public void startObservingBean(String id, Visualisation bean) {
 		modelBeans.put(id, bean);
@@ -93,7 +94,7 @@ public class ShapeEditObserver implements IShapeEditObserver {
 
 	/**
 	 * Removes a bean from the map of observable beans
-	 * @param id 
+	 * @param id the id of the bean to be removed
 	 */
 	public void stopObservingBeanWithId(String id) {
 		modelBeans.remove(id);

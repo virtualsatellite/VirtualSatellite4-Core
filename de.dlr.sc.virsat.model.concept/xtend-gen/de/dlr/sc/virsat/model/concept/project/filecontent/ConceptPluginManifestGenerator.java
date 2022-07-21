@@ -12,7 +12,6 @@ package de.dlr.sc.virsat.model.concept.project.filecontent;
 import de.dlr.sc.virsat.model.concept.generator.beans.GenerateCategoryBeans;
 import de.dlr.sc.virsat.model.concept.generator.validator.GenerateValidator;
 import de.dlr.sc.virsat.model.concept.project.IProjectBuilderInfo;
-import de.dlr.sc.virsat.model.concept.project.filecontent.IFileContentGenerator;
 import org.eclipse.xtend2.lib.StringConcatenation;
 
 /**
@@ -59,7 +58,7 @@ public class ConceptPluginManifestGenerator implements IFileContentGenerator {
     _builder.append(" ");
     _builder.append("de.dlr.sc.virsat.model.ext.core;visibility:=reexport");
     _builder.newLine();
-    _builder.append("Bundle-RequiredExecutionEnvironment: JavaSE-1.8");
+    _builder.append("Bundle-RequiredExecutionEnvironment: JavaSE-11");
     _builder.newLine();
     _builder.append("Bundle-ActivationPolicy: lazy");
     _builder.newLine();

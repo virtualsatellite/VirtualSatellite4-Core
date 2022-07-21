@@ -34,8 +34,8 @@ public class EsfMarkerImageProvider extends MarkerImageProvider {
 	
 	/**
 	 * Get problem image for a specific structural feature of a given eObject
-	 * @param eObject 
-	 * @param eFeature 
+	 * @param eObject the object for which to get the image for
+	 * @param eFeature the feature for which to get the image for
 	 * @return image or null if there are no resource markers for this structural feature
 	 */
 	public Image getProblemImageForStructuralFeatureInEobject(EObject eObject, EStructuralFeature eFeature) {
@@ -45,8 +45,8 @@ public class EsfMarkerImageProvider extends MarkerImageProvider {
 
 	/**
 	 * Get problem image tooltip for a specific structural feature of a given eObject
-	 * @param eObject 
-	 * @param eFeature 
+	 * @param eObject the object for which to get the image for
+	 * @param eFeature the feature for which to get the image for
 	 * @return tooltip text
 	 */
 	public String getProblemImageToolTipForStructuralFeatureInEobject(EObject eObject, EStructuralFeature eFeature) {

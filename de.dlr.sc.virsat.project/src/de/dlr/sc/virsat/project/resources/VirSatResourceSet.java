@@ -59,6 +59,7 @@ import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
 import de.dlr.sc.virsat.model.dvlm.DVLMFactory;
 import de.dlr.sc.virsat.model.dvlm.Repository;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.general.IAssignedDiscipline;
 import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
@@ -620,15 +621,13 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 		IFile fileResource = projectCommons.getStructuralElementInstanceFile(sei);
 		Resource resource = safeGetResource(fileResource, true);
 		// Since we are unloading the resource in the next step, we have to take
-		// out the EObjects first
-		// otherwise they will be put into a Proxy state, which may create
-		// problems during UNDO / REDO
-		// operations. We unload the resource as a signal for defining the dirty
-		// state of resources
-		// The dirty state is calculated by really looking to the contents of
-		// the resource. The isLoaded flag
-		// will tell us if we can read the resource or if we should skip,
-		// because it is closed and removed anyway
+		// out the EObjects first otherwise they will be put into a Proxy state,
+		// which may create problems during UNDO / REDO operations.
+		// We unload the resource as a signal for defining the dirty state of
+		// resources. The dirty state is calculated by really looking to the
+		// contents of the resource. The isLoaded flag will tell us if
+		// we can read the resource or if we should skip, because it is closed
+		// and removed anyway
 		boolean removedFolders = projectCommons.removeFolderStructure(sei, null);
 		boolean removedResource = getResources().remove(resource);
 		return removedFolders & removedResource;
@@ -905,8 +904,11 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 						"VirSatResourceSet: Failed to reload Resource " + e.getMessage()));
 			}
 		});
+		
+		int cachedConceptIDs = ActiveConceptHelper.maintainIdCache();
+		
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.INFO,
-				"VirSatResourceSet: Finished Reloading All resources)", null));
+				"VirSatResourceSet: Finished Reloading All resources (Cached " + cachedConceptIDs + " Concept IDs)", null));
 	}
 
 	/**
@@ -926,6 +928,10 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 			try {
 				resource.load(Collections.EMPTY_MAP);
 				updateDiagnostic(resource);
+				
+				int cachedConceptIDs = ActiveConceptHelper.maintainIdCache();
+				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), Status.INFO,
+						"VirSatResourceSet: Finished Reloading resource (" + resource.getURI().toPlatformString(true) + ") (" + cachedConceptIDs + " cached Concept IDs)", null));
 			} catch (IOException e) {
 				Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(),
 						"VirSatResourceSet: Failed to reload Resource " + e.getMessage()));
@@ -983,6 +989,8 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 * 
 	 * @param resource
 	 *            the resource to be saved
+	 * @param userContext
+	 *            user context under which to save the resource
 	 * @param overrideWritePermissions
 	 *            set this flag to allow for saving the resource. E.g. when
 	 *            changing the assigned discipline
@@ -1035,6 +1043,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 * resource
 	 * 
 	 * @param resource The resource which should be checked for write access
+	 * @param userContext in which to check for write permission
 	 * @return true in case write access is given otherwise false
 	 */
 	public boolean hasWritePermission(Resource resource, IUserContext userContext) {
@@ -1054,13 +1063,14 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 	 * @param pm
 	 *            the progress monitor to track the progress of the save
 	 *            operation
+	 * @param userContext in which to save all resources
 	 */
-	public void saveAllResources(IProgressMonitor pm, IUserContext userContect) {
+	public void saveAllResources(IProgressMonitor pm, IUserContext userContext) {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(),
 				"VirSatResourceSet: Started saving all resources for Project (" + project.getName() + ")"));
 		for (Resource resource : this.getResources()) {
 			if (!resource.getContents().isEmpty()) {
-				saveResource(resource, userContect);
+				saveResource(resource, userContext);
 			}
 		}
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(),

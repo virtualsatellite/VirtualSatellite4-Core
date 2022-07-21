@@ -573,6 +573,8 @@ public class ReqIfImporter {
 	 * @param editingDomain the editing domain
 	 * @param mapping the mapping from UI
 	 * @param reqIFContent the ReqIF content
+	 * @param requirementTypeList the list of requirement types
+	 * @param groupSupport flag that controls if group support is enabled
 	 * @param configurationContainer the container for the new configuration element
 	 * @return the command to be executed
 	 */

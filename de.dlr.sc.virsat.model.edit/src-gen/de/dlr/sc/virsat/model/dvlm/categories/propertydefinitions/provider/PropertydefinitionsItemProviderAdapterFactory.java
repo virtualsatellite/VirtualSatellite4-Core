@@ -357,6 +357,52 @@ public class PropertydefinitionsItemProviderAdapterFactory extends Propertydefin
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IVerificationSpecification} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected IVerificationSpecificationItemProvider iVerificationSpecificationItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IVerificationSpecification}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createIVerificationSpecificationAdapter() {
+		if (iVerificationSpecificationItemProvider == null) {
+			iVerificationSpecificationItemProvider = new IVerificationSpecificationItemProvider(this);
+		}
+
+		return iVerificationSpecificationItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.VerificationTypeSpecification} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected VerificationTypeSpecificationItemProvider verificationTypeSpecificationItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.VerificationTypeSpecification}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createVerificationTypeSpecificationAdapter() {
+		if (verificationTypeSpecificationItemProvider == null) {
+			verificationTypeSpecificationItemProvider = new VerificationTypeSpecificationItemProvider(this);
+		}
+
+		return verificationTypeSpecificationItemProvider;
+	}
+
+	/**
 	 * This returns the root adapter factory that contains this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -467,6 +513,8 @@ public class PropertydefinitionsItemProviderAdapterFactory extends Propertydefin
 		if (resourcePropertyItemProvider != null) resourcePropertyItemProvider.dispose();
 		if (staticArrayModifierItemProvider != null) staticArrayModifierItemProvider.dispose();
 		if (dynamicArrayModifierItemProvider != null) dynamicArrayModifierItemProvider.dispose();
+		if (iVerificationSpecificationItemProvider != null) iVerificationSpecificationItemProvider.dispose();
+		if (verificationTypeSpecificationItemProvider != null) verificationTypeSpecificationItemProvider.dispose();
 	}
 
 }

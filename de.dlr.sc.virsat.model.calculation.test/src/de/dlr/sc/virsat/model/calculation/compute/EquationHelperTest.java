@@ -135,7 +135,7 @@ public class EquationHelperTest extends AEquationTest {
 		ValuePropertyInstance piValue = (ValuePropertyInstance) caHelper.getPropertyInstance("value");
 		
 		final int EXPECTED_RESULT = 31;
-		assertEquals("End result correct", new Double(EXPECTED_RESULT), Double.valueOf(piValue.getValue()));
+		assertEquals("End result correct", Double.valueOf(EXPECTED_RESULT), Double.valueOf(piValue.getValue()));
 		
 		// Verify correct propagation of override flag
 		assertTrue("Override flag propagation is correct", vpiMass.isOverride());
@@ -202,7 +202,7 @@ public class EquationHelperTest extends AEquationTest {
 		ValuePropertyInstance piValue = (ValuePropertyInstance) caHelper.getPropertyInstance("value");
 		
 		final double EXPECTED_RESULT = 0.1;
-		assertEquals("Value not involed in cycle also correctly assigned.", new Double(EXPECTED_RESULT), Double.valueOf(piValue.getValue()));
+		assertEquals("Value not involed in cycle also correctly assigned.", Double.valueOf(EXPECTED_RESULT), Double.valueOf(piValue.getValue()));
 	}
 	
 	@Test

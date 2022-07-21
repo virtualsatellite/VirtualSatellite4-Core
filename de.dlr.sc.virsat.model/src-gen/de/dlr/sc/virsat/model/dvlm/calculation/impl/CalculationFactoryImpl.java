@@ -31,6 +31,7 @@ public class CalculationFactoryImpl extends EFactoryImpl implements CalculationF
 	 * Creates the default factory implementation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return an initialized instance of 'CalculationFactory'.
 	 * @generated
 	 */
 	public static CalculationFactory init() {
@@ -311,6 +312,9 @@ public class CalculationFactoryImpl extends EFactoryImpl implements CalculationF
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param eDataType describing the type of object.
+	 * @param initialValue for the creation of the object.
+	 * @return a newly created object of type '{@code MathOperator}.'
 	 * @generated
 	 */
 	public MathOperator createMathOperatorFromString(EDataType eDataType, String initialValue) {
@@ -322,6 +326,9 @@ public class CalculationFactoryImpl extends EFactoryImpl implements CalculationF
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @param eDataType describing the type of object.
+	 * @param instanceValue of the object.
+	 * @return a string representing the object.
 	 * @generated
 	 */
 	public String convertMathOperatorToString(EDataType eDataType, Object instanceValue) {
@@ -341,6 +348,7 @@ public class CalculationFactoryImpl extends EFactoryImpl implements CalculationF
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @deprecated
+	 * @return an instance of CalculationPackage.
 	 * @generated
 	 */
 	@Deprecated

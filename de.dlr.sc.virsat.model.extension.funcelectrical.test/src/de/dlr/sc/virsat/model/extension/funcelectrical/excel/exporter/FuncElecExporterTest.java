@@ -28,13 +28,13 @@ import org.junit.Test;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.funcelectrical.excel.AExcelFuncIO;
-import de.dlr.sc.virsat.model.extension.funcelectrical.test.ExcelTestCase;
+import de.dlr.sc.virsat.model.extension.funcelectrical.test.AExcelTestCase;
 import de.dlr.sc.virsat.model.extension.funcelectrical.test.TestActivator;
 
 /**
  * Test Case for Exporting to Excel
  */
-public class FuncElecExporterTest extends ExcelTestCase {
+public class FuncElecExporterTest extends AExcelTestCase {
 
 	protected LocalDateTime localDateTime;
 	

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core General Tests
 Bundle-SymbolicName: de.dlr.sc.virsat.test
-Bundle-Version: 4.14.0.qualifier
+Bundle-Version: 4.15.0.qualifier
 Bundle-Activator: de.dlr.sc.virsat.plugin.Activator
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: org.eclipse.core.runtime,
@@ -28,10 +28,13 @@ Require-Bundle: org.eclipse.core.runtime,
  de.dlr.sc.virsat.model.extension.statemachines,
  de.dlr.sc.virsat.model.extension.funcelectrical,
  de.dlr.sc.virsat.model.extension.requirements,
+ de.dlr.sc.virsat.model.extension.budget.cost,
  de.dlr.sc.virsat.excel,
  de.dlr.sc.virsat.model.ext.core,
- de.dlr.sc.virsat.model.ext.core.edit
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+ de.dlr.sc.virsat.model.ext.core.edit,
+ de.dlr.sc.virsat.model.extension.thermal,
+ de.dlr.sc.virsat.model.extension.sequencing
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Import-Package: de.dlr.sc.virsat.apps.test,
@@ -46,6 +49,7 @@ Import-Package: de.dlr.sc.virsat.apps.test,
  de.dlr.sc.virsat.model.ext.core.test,
  de.dlr.sc.virsat.model.extension.budget.mass.test,
  de.dlr.sc.virsat.model.extension.budget.power.test,
+ de.dlr.sc.virsat.model.extension.budget.cost.test,
  de.dlr.sc.virsat.model.extension.funcelectrical.test,
  de.dlr.sc.virsat.model.extension.maturity.test,
  de.dlr.sc.virsat.model.extension.mechanical.test,
@@ -55,6 +59,8 @@ Import-Package: de.dlr.sc.virsat.apps.test,
  de.dlr.sc.virsat.model.extension.tests.edit.test,
  de.dlr.sc.virsat.model.extension.tests.test,
  de.dlr.sc.virsat.model.extension.visualisation.test,
+ de.dlr.sc.virsat.model.extension.thermal.test,
+ de.dlr.sc.virsat.model.extension.sequencing.test,
  de.dlr.sc.virsat.model.test,
  de.dlr.sc.virsat.project.test,
  de.dlr.sc.virsat.server.test,

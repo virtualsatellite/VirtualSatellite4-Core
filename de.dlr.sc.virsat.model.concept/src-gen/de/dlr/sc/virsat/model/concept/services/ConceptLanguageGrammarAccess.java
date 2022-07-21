@@ -71,19 +71,41 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final RuleCall cCategoriesCategoryParserRuleCall_8_0 = (RuleCall)cCategoriesAssignment_8.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_9 = (Keyword)cGroup.eContents().get(9);
 		
-		//Concept Concepts::Concept:
-		//	{Concepts::Concept}
-		//	'Concept' name=QualifiedName (('displayname' displayName=EString)? & ('version' version=Version)? & beta?='beta'? &
-		//	('description' description=EString)? & DMF?='hasDMF'?)
-		//	'{' (imports+=ConceptImport* & ecoreImports+=EcoreImport*) structuralElements+=StructuralElement*
-		//	relations+=ARelation*
-		//	categories+=Category*
-		//	'}';
+		//Concept returns Concepts::Concept:
+		//    {Concepts::Concept}
+		//    'Concept' name=QualifiedName
+		//    (
+		//        ('displayname' displayName=EString)? &
+		//        ('version' version=Version)? &
+		//        (beta?='beta')? &
+		//        ('description' description=EString)? &
+		//        (DMF?='hasDMF')?
+		//    )
+		//    '{'
+		//        ((imports+=ConceptImport)* &
+		//        (ecoreImports+=EcoreImport)* )
+		//        (structuralElements+=StructuralElement)*
+		//        (relations+=ARelation)*
+		//        (categories+=Category)*
+		//    '}';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Concepts::Concept} 'Concept' name=QualifiedName (('displayname' displayName=EString)? & ('version' version=Version)? &
-		//beta?='beta'? & ('description' description=EString)? & DMF?='hasDMF'?) '{' (imports+=ConceptImport* &
-		//ecoreImports+=EcoreImport*) structuralElements+=StructuralElement* relations+=ARelation* categories+=Category* '}'
+		//{Concepts::Concept}
+		//'Concept' name=QualifiedName
+		//(
+		//    ('displayname' displayName=EString)? &
+		//    ('version' version=Version)? &
+		//    (beta?='beta')? &
+		//    ('description' description=EString)? &
+		//    (DMF?='hasDMF')?
+		//)
+		//'{'
+		//    ((imports+=ConceptImport)* &
+		//    (ecoreImports+=EcoreImport)* )
+		//    (structuralElements+=StructuralElement)*
+		//    (relations+=ARelation)*
+		//    (categories+=Category)*
+		//'}'
 		public Group getGroup() { return cGroup; }
 		
 		//{Concepts::Concept}
@@ -98,8 +120,13 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//QualifiedName
 		public RuleCall getNameQualifiedNameParserRuleCall_2_0() { return cNameQualifiedNameParserRuleCall_2_0; }
 		
-		//(('displayname' displayName=EString)? & ('version' version=Version)? & beta?='beta'? & ('description'
-		//description=EString)? & DMF?='hasDMF'?)
+		//(
+		//    ('displayname' displayName=EString)? &
+		//    ('version' version=Version)? &
+		//    (beta?='beta')? &
+		//    ('description' description=EString)? &
+		//    (DMF?='hasDMF')?
+		//)
 		public UnorderedGroup getUnorderedGroup_3() { return cUnorderedGroup_3; }
 		
 		//('displayname' displayName=EString)?
@@ -126,7 +153,7 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//Version
 		public RuleCall getVersionVersionParserRuleCall_3_1_1_0() { return cVersionVersionParserRuleCall_3_1_1_0; }
 		
-		//beta?='beta'?
+		//(beta?='beta')?
 		public Assignment getBetaAssignment_3_2() { return cBetaAssignment_3_2; }
 		
 		//'beta'
@@ -144,7 +171,7 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//EString
 		public RuleCall getDescriptionEStringParserRuleCall_3_3_1_0() { return cDescriptionEStringParserRuleCall_3_3_1_0; }
 		
-		//DMF?='hasDMF'?
+		//(DMF?='hasDMF')?
 		public Assignment getDMFAssignment_3_4() { return cDMFAssignment_3_4; }
 		
 		//'hasDMF'
@@ -153,34 +180,35 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//'{'
 		public Keyword getLeftCurlyBracketKeyword_4() { return cLeftCurlyBracketKeyword_4; }
 		
-		//(imports+=ConceptImport* & ecoreImports+=EcoreImport*)
+		//((imports+=ConceptImport)* &
+		//(ecoreImports+=EcoreImport)* )
 		public UnorderedGroup getUnorderedGroup_5() { return cUnorderedGroup_5; }
 		
-		//imports+=ConceptImport*
+		//(imports+=ConceptImport)*
 		public Assignment getImportsAssignment_5_0() { return cImportsAssignment_5_0; }
 		
 		//ConceptImport
 		public RuleCall getImportsConceptImportParserRuleCall_5_0_0() { return cImportsConceptImportParserRuleCall_5_0_0; }
 		
-		//ecoreImports+=EcoreImport*
+		//(ecoreImports+=EcoreImport)*
 		public Assignment getEcoreImportsAssignment_5_1() { return cEcoreImportsAssignment_5_1; }
 		
 		//EcoreImport
 		public RuleCall getEcoreImportsEcoreImportParserRuleCall_5_1_0() { return cEcoreImportsEcoreImportParserRuleCall_5_1_0; }
 		
-		//structuralElements+=StructuralElement*
+		//(structuralElements+=StructuralElement)*
 		public Assignment getStructuralElementsAssignment_6() { return cStructuralElementsAssignment_6; }
 		
 		//StructuralElement
 		public RuleCall getStructuralElementsStructuralElementParserRuleCall_6_0() { return cStructuralElementsStructuralElementParserRuleCall_6_0; }
 		
-		//relations+=ARelation*
+		//(relations+=ARelation)*
 		public Assignment getRelationsAssignment_7() { return cRelationsAssignment_7; }
 		
 		//ARelation
 		public RuleCall getRelationsARelationParserRuleCall_7_0() { return cRelationsARelationParserRuleCall_7_0; }
 		
-		//categories+=Category*
+		//(categories+=Category)*
 		public Assignment getCategoriesAssignment_8() { return cCategoriesAssignment_8; }
 		
 		//Category
@@ -257,25 +285,30 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//// ***************************************************************************************
 		//// Structural Elements and Relations
 		//// ***************************************************************************************
-		//StructuralElement Structural::StructuralElement:
-		//	{Structural::StructuralElement}
-		//	'StructuralElement' name=ID (('shortname' shortName=ID)? & ('description' description=EString)?)
-		//	'{' ((isRootStructuralElement?='IsRootStructuralElement' ';')? & ('Inherits' 'From' ('['
-		//	canInheritFrom+=[Structural::StructuralElement|QualifiedName] (","
-		//	canInheritFrom+=[Structural::StructuralElement|QualifiedName])* ']' | isCanInheritFromAll?='All') ';')? &
-		//	('Applicable' 'For' ('[' applicableFor+=[Structural::StructuralElement|QualifiedName] (","
-		//	applicableFor+=[Structural::StructuralElement|QualifiedName])* ']' | isApplicableForAll?='All') ';')? &
-		//	('Cardinality' cardinality=INT ';')?)
-		//	'}';
+		//StructuralElement returns Structural::StructuralElement:
+		//    {Structural::StructuralElement}
+		//    'StructuralElement' name=ID
+		//    (('shortname' shortName=ID)? &
+		//    ('description' description=EString)? )
+		//    '{'
+		//        ((isRootStructuralElement?='IsRootStructuralElement'';')? &
+		//        ('Inherits' 'From' (('[' canInheritFrom+=[Structural::StructuralElement|QualifiedName] ( "," canInheritFrom+=[Structural::StructuralElement|QualifiedName])* ']') | isCanInheritFromAll?='All') ';')? &
+		//        ('Applicable' 'For' (('[' applicableFor+=[Structural::StructuralElement|QualifiedName] ( "," applicableFor+=[Structural::StructuralElement|QualifiedName])* ']') | isApplicableForAll?='All') ';' )? &
+		//        ('Cardinality' cardinality=INT ';')? )
+		//    '}'
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Structural::StructuralElement} 'StructuralElement' name=ID (('shortname' shortName=ID)? & ('description'
-		//description=EString)?) '{' ((isRootStructuralElement?='IsRootStructuralElement' ';')? & ('Inherits' 'From' ('['
-		//canInheritFrom+=[Structural::StructuralElement|QualifiedName] (","
-		//canInheritFrom+=[Structural::StructuralElement|QualifiedName])* ']' | isCanInheritFromAll?='All') ';')? &
-		//('Applicable' 'For' ('[' applicableFor+=[Structural::StructuralElement|QualifiedName] (","
-		//applicableFor+=[Structural::StructuralElement|QualifiedName])* ']' | isApplicableForAll?='All') ';')? & ('Cardinality'
-		//cardinality=INT ';')?) '}'
+		//{Structural::StructuralElement}
+		//'StructuralElement' name=ID
+		//(('shortname' shortName=ID)? &
+		//('description' description=EString)? )
+		//'{'
+		//    ((isRootStructuralElement?='IsRootStructuralElement'';')? &
+		//    ('Inherits' 'From' (('[' canInheritFrom+=[Structural::StructuralElement|QualifiedName] ( "," canInheritFrom+=[Structural::StructuralElement|QualifiedName])* ']') | isCanInheritFromAll?='All') ';')? &
+		//    ('Applicable' 'For' (('[' applicableFor+=[Structural::StructuralElement|QualifiedName] ( "," applicableFor+=[Structural::StructuralElement|QualifiedName])* ']') | isApplicableForAll?='All') ';' )? &
+		//    ('Cardinality' cardinality=INT ';')? )
+		//'}'
 		public Group getGroup() { return cGroup; }
 		
 		//{Structural::StructuralElement}
@@ -290,7 +323,8 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//ID
 		public RuleCall getNameIDTerminalRuleCall_2_0() { return cNameIDTerminalRuleCall_2_0; }
 		
-		//(('shortname' shortName=ID)? & ('description' description=EString)?)
+		//(('shortname' shortName=ID)? &
+		//('description' description=EString)? )
 		public UnorderedGroup getUnorderedGroup_3() { return cUnorderedGroup_3; }
 		
 		//('shortname' shortName=ID)?
@@ -320,15 +354,13 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//'{'
 		public Keyword getLeftCurlyBracketKeyword_4() { return cLeftCurlyBracketKeyword_4; }
 		
-		//((isRootStructuralElement?='IsRootStructuralElement' ';')? & ('Inherits' 'From' ('['
-		//canInheritFrom+=[Structural::StructuralElement|QualifiedName] (","
-		//canInheritFrom+=[Structural::StructuralElement|QualifiedName])* ']' | isCanInheritFromAll?='All') ';')? &
-		//('Applicable' 'For' ('[' applicableFor+=[Structural::StructuralElement|QualifiedName] (","
-		//applicableFor+=[Structural::StructuralElement|QualifiedName])* ']' | isApplicableForAll?='All') ';')? & ('Cardinality'
-		//cardinality=INT ';')?)
+		//((isRootStructuralElement?='IsRootStructuralElement'';')? &
+		//('Inherits' 'From' (('[' canInheritFrom+=[Structural::StructuralElement|QualifiedName] ( "," canInheritFrom+=[Structural::StructuralElement|QualifiedName])* ']') | isCanInheritFromAll?='All') ';')? &
+		//('Applicable' 'For' (('[' applicableFor+=[Structural::StructuralElement|QualifiedName] ( "," applicableFor+=[Structural::StructuralElement|QualifiedName])* ']') | isApplicableForAll?='All') ';' )? &
+		//('Cardinality' cardinality=INT ';')? )
 		public UnorderedGroup getUnorderedGroup_5() { return cUnorderedGroup_5; }
 		
-		//(isRootStructuralElement?='IsRootStructuralElement' ';')?
+		//(isRootStructuralElement?='IsRootStructuralElement'';')?
 		public Group getGroup_5_0() { return cGroup_5_0; }
 		
 		//isRootStructuralElement?='IsRootStructuralElement'
@@ -340,8 +372,7 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//';'
 		public Keyword getSemicolonKeyword_5_0_1() { return cSemicolonKeyword_5_0_1; }
 		
-		//('Inherits' 'From' ('[' canInheritFrom+=[Structural::StructuralElement|QualifiedName] (","
-		//canInheritFrom+=[Structural::StructuralElement|QualifiedName])* ']' | isCanInheritFromAll?='All') ';')?
+		//('Inherits' 'From' (('[' canInheritFrom+=[Structural::StructuralElement|QualifiedName] ( "," canInheritFrom+=[Structural::StructuralElement|QualifiedName])* ']') | isCanInheritFromAll?='All') ';')?
 		public Group getGroup_5_1() { return cGroup_5_1; }
 		
 		//'Inherits'
@@ -350,12 +381,10 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//'From'
 		public Keyword getFromKeyword_5_1_1() { return cFromKeyword_5_1_1; }
 		
-		//('[' canInheritFrom+=[Structural::StructuralElement|QualifiedName] (","
-		//canInheritFrom+=[Structural::StructuralElement|QualifiedName])* ']' | isCanInheritFromAll?='All')
+		//(('[' canInheritFrom+=[Structural::StructuralElement|QualifiedName] ( "," canInheritFrom+=[Structural::StructuralElement|QualifiedName])* ']') | isCanInheritFromAll?='All')
 		public Alternatives getAlternatives_5_1_2() { return cAlternatives_5_1_2; }
 		
-		//'[' canInheritFrom+=[Structural::StructuralElement|QualifiedName] (","
-		//canInheritFrom+=[Structural::StructuralElement|QualifiedName])* ']'
+		//('[' canInheritFrom+=[Structural::StructuralElement|QualifiedName] ( "," canInheritFrom+=[Structural::StructuralElement|QualifiedName])* ']')
 		public Group getGroup_5_1_2_0() { return cGroup_5_1_2_0; }
 		
 		//'['
@@ -370,7 +399,7 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//QualifiedName
 		public RuleCall getCanInheritFromStructuralElementQualifiedNameParserRuleCall_5_1_2_0_1_0_1() { return cCanInheritFromStructuralElementQualifiedNameParserRuleCall_5_1_2_0_1_0_1; }
 		
-		//("," canInheritFrom+=[Structural::StructuralElement|QualifiedName])*
+		//( "," canInheritFrom+=[Structural::StructuralElement|QualifiedName])*
 		public Group getGroup_5_1_2_0_2() { return cGroup_5_1_2_0_2; }
 		
 		//","
@@ -397,8 +426,7 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//';'
 		public Keyword getSemicolonKeyword_5_1_3() { return cSemicolonKeyword_5_1_3; }
 		
-		//('Applicable' 'For' ('[' applicableFor+=[Structural::StructuralElement|QualifiedName] (","
-		//applicableFor+=[Structural::StructuralElement|QualifiedName])* ']' | isApplicableForAll?='All') ';')?
+		//('Applicable' 'For' (('[' applicableFor+=[Structural::StructuralElement|QualifiedName] ( "," applicableFor+=[Structural::StructuralElement|QualifiedName])* ']') | isApplicableForAll?='All') ';' )?
 		public Group getGroup_5_2() { return cGroup_5_2; }
 		
 		//'Applicable'
@@ -407,12 +435,10 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//'For'
 		public Keyword getForKeyword_5_2_1() { return cForKeyword_5_2_1; }
 		
-		//('[' applicableFor+=[Structural::StructuralElement|QualifiedName] (","
-		//applicableFor+=[Structural::StructuralElement|QualifiedName])* ']' | isApplicableForAll?='All')
+		//(('[' applicableFor+=[Structural::StructuralElement|QualifiedName] ( "," applicableFor+=[Structural::StructuralElement|QualifiedName])* ']') | isApplicableForAll?='All')
 		public Alternatives getAlternatives_5_2_2() { return cAlternatives_5_2_2; }
 		
-		//'[' applicableFor+=[Structural::StructuralElement|QualifiedName] (","
-		//applicableFor+=[Structural::StructuralElement|QualifiedName])* ']'
+		//('[' applicableFor+=[Structural::StructuralElement|QualifiedName] ( "," applicableFor+=[Structural::StructuralElement|QualifiedName])* ']')
 		public Group getGroup_5_2_2_0() { return cGroup_5_2_2_0; }
 		
 		//'['
@@ -427,7 +453,7 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//QualifiedName
 		public RuleCall getApplicableForStructuralElementQualifiedNameParserRuleCall_5_2_2_0_1_0_1() { return cApplicableForStructuralElementQualifiedNameParserRuleCall_5_2_2_0_1_0_1; }
 		
-		//("," applicableFor+=[Structural::StructuralElement|QualifiedName])*
+		//( "," applicableFor+=[Structural::StructuralElement|QualifiedName])*
 		public Group getGroup_5_2_2_0_2() { return cGroup_5_2_2_0_2; }
 		
 		//","
@@ -515,22 +541,26 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final Keyword cSemicolonKeyword_10_2 = (Keyword)cGroup_10.eContents().get(2);
 		private final Keyword cRightCurlyBracketKeyword_11 = (Keyword)cGroup.eContents().get(11);
 		
-		//GeneralRelation Structural::GeneralRelation:
-		//	{Structural::GeneralRelation}
-		//	'GeneralRelation' name=ID ('description' description=EString)?
-		//	'{'
-		//	'Referenced' 'Type' referencedType=[Structural::StructuralElement|QualifiedName] ';' ('Applicable' 'For' ('['
-		//	applicableFor+=[Structural::StructuralElement|QualifiedName] (","
-		//	applicableFor+=[Structural::StructuralElement|QualifiedName])* ']' | isApplicableForAll?='All') ';')? ('Cardinality'
-		//	cardinality=INT ';')?
-		//	'}';
+		//GeneralRelation returns Structural::GeneralRelation:
+		//    {Structural::GeneralRelation}
+		//    'GeneralRelation' name=ID
+		//    ('description' description=EString)?
+		//    '{'
+		//        'Referenced' 'Type' referencedType=[Structural::StructuralElement|QualifiedName]';'
+		//        ('Applicable' 'For' (('[' applicableFor+=[Structural::StructuralElement|QualifiedName] ( "," applicableFor+=[Structural::StructuralElement|QualifiedName])* ']') | isApplicableForAll?='All') ';' )?
+		//        ('Cardinality' cardinality=INT ';')?
+		//    '}'
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Structural::GeneralRelation} 'GeneralRelation' name=ID ('description' description=EString)? '{' 'Referenced' 'Type'
-		//referencedType=[Structural::StructuralElement|QualifiedName] ';' ('Applicable' 'For' ('['
-		//applicableFor+=[Structural::StructuralElement|QualifiedName] (","
-		//applicableFor+=[Structural::StructuralElement|QualifiedName])* ']' | isApplicableForAll?='All') ';')? ('Cardinality'
-		//cardinality=INT ';')? '}'
+		//{Structural::GeneralRelation}
+		//'GeneralRelation' name=ID
+		//('description' description=EString)?
+		//'{'
+		//    'Referenced' 'Type' referencedType=[Structural::StructuralElement|QualifiedName]';'
+		//    ('Applicable' 'For' (('[' applicableFor+=[Structural::StructuralElement|QualifiedName] ( "," applicableFor+=[Structural::StructuralElement|QualifiedName])* ']') | isApplicableForAll?='All') ';' )?
+		//    ('Cardinality' cardinality=INT ';')?
+		//'}'
 		public Group getGroup() { return cGroup; }
 		
 		//{Structural::GeneralRelation}
@@ -578,8 +608,7 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//';'
 		public Keyword getSemicolonKeyword_8() { return cSemicolonKeyword_8; }
 		
-		//('Applicable' 'For' ('[' applicableFor+=[Structural::StructuralElement|QualifiedName] (","
-		//applicableFor+=[Structural::StructuralElement|QualifiedName])* ']' | isApplicableForAll?='All') ';')?
+		//('Applicable' 'For' (('[' applicableFor+=[Structural::StructuralElement|QualifiedName] ( "," applicableFor+=[Structural::StructuralElement|QualifiedName])* ']') | isApplicableForAll?='All') ';' )?
 		public Group getGroup_9() { return cGroup_9; }
 		
 		//'Applicable'
@@ -588,12 +617,10 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//'For'
 		public Keyword getForKeyword_9_1() { return cForKeyword_9_1; }
 		
-		//('[' applicableFor+=[Structural::StructuralElement|QualifiedName] (","
-		//applicableFor+=[Structural::StructuralElement|QualifiedName])* ']' | isApplicableForAll?='All')
+		//(('[' applicableFor+=[Structural::StructuralElement|QualifiedName] ( "," applicableFor+=[Structural::StructuralElement|QualifiedName])* ']') | isApplicableForAll?='All')
 		public Alternatives getAlternatives_9_2() { return cAlternatives_9_2; }
 		
-		//'[' applicableFor+=[Structural::StructuralElement|QualifiedName] (","
-		//applicableFor+=[Structural::StructuralElement|QualifiedName])* ']'
+		//('[' applicableFor+=[Structural::StructuralElement|QualifiedName] ( "," applicableFor+=[Structural::StructuralElement|QualifiedName])* ']')
 		public Group getGroup_9_2_0() { return cGroup_9_2_0; }
 		
 		//'['
@@ -608,7 +635,7 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//QualifiedName
 		public RuleCall getApplicableForStructuralElementQualifiedNameParserRuleCall_9_2_0_1_0_1() { return cApplicableForStructuralElementQualifiedNameParserRuleCall_9_2_0_1_0_1; }
 		
-		//("," applicableFor+=[Structural::StructuralElement|QualifiedName])*
+		//( "," applicableFor+=[Structural::StructuralElement|QualifiedName])*
 		public Group getGroup_9_2_0_2() { return cGroup_9_2_0_2; }
 		
 		//","
@@ -657,8 +684,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "de.dlr.sc.virsat.model.concept.ConceptLanguage.ARelation");
 		private final RuleCall cGeneralRelationParserRuleCall = (RuleCall)rule.eContents().get(1);
 		
-		//ARelation Structural::GeneralRelation:
-		//	GeneralRelation;
+		//ARelation returns Structural::GeneralRelation:
+		//    GeneralRelation
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//GeneralRelation
@@ -692,28 +720,32 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final Keyword cIsAbstractIsAbstractKeyword_5_0_0_0 = (Keyword)cIsAbstractAssignment_5_0_0.eContents().get(0);
 		private final Keyword cSemicolonKeyword_5_0_1 = (Keyword)cGroup_5_0.eContents().get(1);
 		private final Group cGroup_5_1 = (Group)cUnorderedGroup_5.eContents().get(1);
-		private final Keyword cApplicableKeyword_5_1_0 = (Keyword)cGroup_5_1.eContents().get(0);
-		private final Keyword cForKeyword_5_1_1 = (Keyword)cGroup_5_1.eContents().get(1);
-		private final Alternatives cAlternatives_5_1_2 = (Alternatives)cGroup_5_1.eContents().get(2);
-		private final Group cGroup_5_1_2_0 = (Group)cAlternatives_5_1_2.eContents().get(0);
-		private final Keyword cLeftSquareBracketKeyword_5_1_2_0_0 = (Keyword)cGroup_5_1_2_0.eContents().get(0);
-		private final Assignment cApplicableForAssignment_5_1_2_0_1 = (Assignment)cGroup_5_1_2_0.eContents().get(1);
-		private final CrossReference cApplicableForStructuralElementCrossReference_5_1_2_0_1_0 = (CrossReference)cApplicableForAssignment_5_1_2_0_1.eContents().get(0);
-		private final RuleCall cApplicableForStructuralElementQualifiedNameParserRuleCall_5_1_2_0_1_0_1 = (RuleCall)cApplicableForStructuralElementCrossReference_5_1_2_0_1_0.eContents().get(1);
-		private final Group cGroup_5_1_2_0_2 = (Group)cGroup_5_1_2_0.eContents().get(2);
-		private final Keyword cCommaKeyword_5_1_2_0_2_0 = (Keyword)cGroup_5_1_2_0_2.eContents().get(0);
-		private final Assignment cApplicableForAssignment_5_1_2_0_2_1 = (Assignment)cGroup_5_1_2_0_2.eContents().get(1);
-		private final CrossReference cApplicableForStructuralElementCrossReference_5_1_2_0_2_1_0 = (CrossReference)cApplicableForAssignment_5_1_2_0_2_1.eContents().get(0);
-		private final RuleCall cApplicableForStructuralElementQualifiedNameParserRuleCall_5_1_2_0_2_1_0_1 = (RuleCall)cApplicableForStructuralElementCrossReference_5_1_2_0_2_1_0.eContents().get(1);
-		private final Keyword cRightSquareBracketKeyword_5_1_2_0_3 = (Keyword)cGroup_5_1_2_0.eContents().get(3);
-		private final Assignment cIsApplicableForAllAssignment_5_1_2_1 = (Assignment)cAlternatives_5_1_2.eContents().get(1);
-		private final Keyword cIsApplicableForAllAllKeyword_5_1_2_1_0 = (Keyword)cIsApplicableForAllAssignment_5_1_2_1.eContents().get(0);
-		private final Keyword cSemicolonKeyword_5_1_3 = (Keyword)cGroup_5_1.eContents().get(3);
+		private final Assignment cIsVerificationAssignment_5_1_0 = (Assignment)cGroup_5_1.eContents().get(0);
+		private final Keyword cIsVerificationIsVerificationKeyword_5_1_0_0 = (Keyword)cIsVerificationAssignment_5_1_0.eContents().get(0);
+		private final Keyword cSemicolonKeyword_5_1_1 = (Keyword)cGroup_5_1.eContents().get(1);
 		private final Group cGroup_5_2 = (Group)cUnorderedGroup_5.eContents().get(2);
-		private final Keyword cCardinalityKeyword_5_2_0 = (Keyword)cGroup_5_2.eContents().get(0);
-		private final Assignment cCardinalityAssignment_5_2_1 = (Assignment)cGroup_5_2.eContents().get(1);
-		private final RuleCall cCardinalityINTTerminalRuleCall_5_2_1_0 = (RuleCall)cCardinalityAssignment_5_2_1.eContents().get(0);
-		private final Keyword cSemicolonKeyword_5_2_2 = (Keyword)cGroup_5_2.eContents().get(2);
+		private final Keyword cApplicableKeyword_5_2_0 = (Keyword)cGroup_5_2.eContents().get(0);
+		private final Keyword cForKeyword_5_2_1 = (Keyword)cGroup_5_2.eContents().get(1);
+		private final Alternatives cAlternatives_5_2_2 = (Alternatives)cGroup_5_2.eContents().get(2);
+		private final Group cGroup_5_2_2_0 = (Group)cAlternatives_5_2_2.eContents().get(0);
+		private final Keyword cLeftSquareBracketKeyword_5_2_2_0_0 = (Keyword)cGroup_5_2_2_0.eContents().get(0);
+		private final Assignment cApplicableForAssignment_5_2_2_0_1 = (Assignment)cGroup_5_2_2_0.eContents().get(1);
+		private final CrossReference cApplicableForStructuralElementCrossReference_5_2_2_0_1_0 = (CrossReference)cApplicableForAssignment_5_2_2_0_1.eContents().get(0);
+		private final RuleCall cApplicableForStructuralElementQualifiedNameParserRuleCall_5_2_2_0_1_0_1 = (RuleCall)cApplicableForStructuralElementCrossReference_5_2_2_0_1_0.eContents().get(1);
+		private final Group cGroup_5_2_2_0_2 = (Group)cGroup_5_2_2_0.eContents().get(2);
+		private final Keyword cCommaKeyword_5_2_2_0_2_0 = (Keyword)cGroup_5_2_2_0_2.eContents().get(0);
+		private final Assignment cApplicableForAssignment_5_2_2_0_2_1 = (Assignment)cGroup_5_2_2_0_2.eContents().get(1);
+		private final CrossReference cApplicableForStructuralElementCrossReference_5_2_2_0_2_1_0 = (CrossReference)cApplicableForAssignment_5_2_2_0_2_1.eContents().get(0);
+		private final RuleCall cApplicableForStructuralElementQualifiedNameParserRuleCall_5_2_2_0_2_1_0_1 = (RuleCall)cApplicableForStructuralElementCrossReference_5_2_2_0_2_1_0.eContents().get(1);
+		private final Keyword cRightSquareBracketKeyword_5_2_2_0_3 = (Keyword)cGroup_5_2_2_0.eContents().get(3);
+		private final Assignment cIsApplicableForAllAssignment_5_2_2_1 = (Assignment)cAlternatives_5_2_2.eContents().get(1);
+		private final Keyword cIsApplicableForAllAllKeyword_5_2_2_1_0 = (Keyword)cIsApplicableForAllAssignment_5_2_2_1.eContents().get(0);
+		private final Keyword cSemicolonKeyword_5_2_3 = (Keyword)cGroup_5_2.eContents().get(3);
+		private final Group cGroup_5_3 = (Group)cUnorderedGroup_5.eContents().get(3);
+		private final Keyword cCardinalityKeyword_5_3_0 = (Keyword)cGroup_5_3.eContents().get(0);
+		private final Assignment cCardinalityAssignment_5_3_1 = (Assignment)cGroup_5_3.eContents().get(1);
+		private final RuleCall cCardinalityINTTerminalRuleCall_5_3_1_0 = (RuleCall)cCardinalityAssignment_5_3_1.eContents().get(0);
+		private final Keyword cSemicolonKeyword_5_3_2 = (Keyword)cGroup_5_3.eContents().get(2);
 		private final Assignment cPropertiesAssignment_6 = (Assignment)cGroup.eContents().get(6);
 		private final RuleCall cPropertiesAPropertyParserRuleCall_6_0 = (RuleCall)cPropertiesAssignment_6.eContents().get(0);
 		private final Assignment cEquationDefinitionsAssignment_7 = (Assignment)cGroup.eContents().get(7);
@@ -723,23 +755,35 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//// ***************************************************************************************
 		//// The Properties
 		//// ***************************************************************************************
-		//Category Categories::Category:
-		//	{Categories::Category}
-		//	'Category' name=ID (('extends' extendsCategory=[Categories::Category|QualifiedName])? & ('shortname' shortName=ID)? &
-		//	('description' description=EString)?)
-		//	'{' ((isAbstract?='IsAbstract' ';')? & ('Applicable' 'For' ('['
-		//	applicableFor+=[Structural::StructuralElement|QualifiedName] (","
-		//	applicableFor+=[Structural::StructuralElement|QualifiedName])* ']' | isApplicableForAll?='All') ';')? &
-		//	('Cardinality' cardinality=INT ';')?) properties+=AProperty*
-		//	equationDefinitions+=EquationDefinition*
-		//	'}';
+		//Category returns Categories::Category:
+		//    {Categories::Category}
+		//    'Category' name=ID
+		//    (('extends' extendsCategory=[Categories::Category|QualifiedName])? &
+		//    ('shortname' shortName=ID)? &
+		//    ('description' description=EString)? )
+		//    '{'
+		//        ((isAbstract?='IsAbstract'';')? &
+		//        (isVerification?='IsVerification'';')? &
+		//        ('Applicable' 'For' (('[' applicableFor+=[Structural::StructuralElement|QualifiedName] ( "," applicableFor+=[Structural::StructuralElement|QualifiedName])* ']') | isApplicableForAll?='All') ';' )? &
+		//        ('Cardinality' cardinality=INT ';')? )
+		//        (properties+=AProperty)*
+		//        (equationDefinitions+=EquationDefinition)*
+		//    '}';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Categories::Category} 'Category' name=ID (('extends' extendsCategory=[Categories::Category|QualifiedName])? &
-		//('shortname' shortName=ID)? & ('description' description=EString)?) '{' ((isAbstract?='IsAbstract' ';')? &
-		//('Applicable' 'For' ('[' applicableFor+=[Structural::StructuralElement|QualifiedName] (","
-		//applicableFor+=[Structural::StructuralElement|QualifiedName])* ']' | isApplicableForAll?='All') ';')? & ('Cardinality'
-		//cardinality=INT ';')?) properties+=AProperty* equationDefinitions+=EquationDefinition* '}'
+		//{Categories::Category}
+		//'Category' name=ID
+		//(('extends' extendsCategory=[Categories::Category|QualifiedName])? &
+		//('shortname' shortName=ID)? &
+		//('description' description=EString)? )
+		//'{'
+		//    ((isAbstract?='IsAbstract'';')? &
+		//    (isVerification?='IsVerification'';')? &
+		//    ('Applicable' 'For' (('[' applicableFor+=[Structural::StructuralElement|QualifiedName] ( "," applicableFor+=[Structural::StructuralElement|QualifiedName])* ']') | isApplicableForAll?='All') ';' )? &
+		//    ('Cardinality' cardinality=INT ';')? )
+		//    (properties+=AProperty)*
+		//    (equationDefinitions+=EquationDefinition)*
+		//'}'
 		public Group getGroup() { return cGroup; }
 		
 		//{Categories::Category}
@@ -754,8 +798,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//ID
 		public RuleCall getNameIDTerminalRuleCall_2_0() { return cNameIDTerminalRuleCall_2_0; }
 		
-		//(('extends' extendsCategory=[Categories::Category|QualifiedName])? & ('shortname' shortName=ID)? & ('description'
-		//description=EString)?)
+		//(('extends' extendsCategory=[Categories::Category|QualifiedName])? &
+		//('shortname' shortName=ID)? &
+		//('description' description=EString)? )
 		public UnorderedGroup getUnorderedGroup_3() { return cUnorderedGroup_3; }
 		
 		//('extends' extendsCategory=[Categories::Category|QualifiedName])?
@@ -800,12 +845,13 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//'{'
 		public Keyword getLeftCurlyBracketKeyword_4() { return cLeftCurlyBracketKeyword_4; }
 		
-		//((isAbstract?='IsAbstract' ';')? & ('Applicable' 'For' ('[' applicableFor+=[Structural::StructuralElement|QualifiedName]
-		//("," applicableFor+=[Structural::StructuralElement|QualifiedName])* ']' | isApplicableForAll?='All') ';')? &
-		//('Cardinality' cardinality=INT ';')?)
+		//((isAbstract?='IsAbstract'';')? &
+		//(isVerification?='IsVerification'';')? &
+		//('Applicable' 'For' (('[' applicableFor+=[Structural::StructuralElement|QualifiedName] ( "," applicableFor+=[Structural::StructuralElement|QualifiedName])* ']') | isApplicableForAll?='All') ';' )? &
+		//('Cardinality' cardinality=INT ';')? )
 		public UnorderedGroup getUnorderedGroup_5() { return cUnorderedGroup_5; }
 		
-		//(isAbstract?='IsAbstract' ';')?
+		//(isAbstract?='IsAbstract'';')?
 		public Group getGroup_5_0() { return cGroup_5_0; }
 		
 		//isAbstract?='IsAbstract'
@@ -817,85 +863,94 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//';'
 		public Keyword getSemicolonKeyword_5_0_1() { return cSemicolonKeyword_5_0_1; }
 		
-		//('Applicable' 'For' ('[' applicableFor+=[Structural::StructuralElement|QualifiedName] (","
-		//applicableFor+=[Structural::StructuralElement|QualifiedName])* ']' | isApplicableForAll?='All') ';')?
+		//(isVerification?='IsVerification'';')?
 		public Group getGroup_5_1() { return cGroup_5_1; }
 		
-		//'Applicable'
-		public Keyword getApplicableKeyword_5_1_0() { return cApplicableKeyword_5_1_0; }
+		//isVerification?='IsVerification'
+		public Assignment getIsVerificationAssignment_5_1_0() { return cIsVerificationAssignment_5_1_0; }
 		
-		//'For'
-		public Keyword getForKeyword_5_1_1() { return cForKeyword_5_1_1; }
-		
-		//('[' applicableFor+=[Structural::StructuralElement|QualifiedName] (","
-		//applicableFor+=[Structural::StructuralElement|QualifiedName])* ']' | isApplicableForAll?='All')
-		public Alternatives getAlternatives_5_1_2() { return cAlternatives_5_1_2; }
-		
-		//'[' applicableFor+=[Structural::StructuralElement|QualifiedName] (","
-		//applicableFor+=[Structural::StructuralElement|QualifiedName])* ']'
-		public Group getGroup_5_1_2_0() { return cGroup_5_1_2_0; }
-		
-		//'['
-		public Keyword getLeftSquareBracketKeyword_5_1_2_0_0() { return cLeftSquareBracketKeyword_5_1_2_0_0; }
-		
-		//applicableFor+=[Structural::StructuralElement|QualifiedName]
-		public Assignment getApplicableForAssignment_5_1_2_0_1() { return cApplicableForAssignment_5_1_2_0_1; }
-		
-		//[Structural::StructuralElement|QualifiedName]
-		public CrossReference getApplicableForStructuralElementCrossReference_5_1_2_0_1_0() { return cApplicableForStructuralElementCrossReference_5_1_2_0_1_0; }
-		
-		//QualifiedName
-		public RuleCall getApplicableForStructuralElementQualifiedNameParserRuleCall_5_1_2_0_1_0_1() { return cApplicableForStructuralElementQualifiedNameParserRuleCall_5_1_2_0_1_0_1; }
-		
-		//("," applicableFor+=[Structural::StructuralElement|QualifiedName])*
-		public Group getGroup_5_1_2_0_2() { return cGroup_5_1_2_0_2; }
-		
-		//","
-		public Keyword getCommaKeyword_5_1_2_0_2_0() { return cCommaKeyword_5_1_2_0_2_0; }
-		
-		//applicableFor+=[Structural::StructuralElement|QualifiedName]
-		public Assignment getApplicableForAssignment_5_1_2_0_2_1() { return cApplicableForAssignment_5_1_2_0_2_1; }
-		
-		//[Structural::StructuralElement|QualifiedName]
-		public CrossReference getApplicableForStructuralElementCrossReference_5_1_2_0_2_1_0() { return cApplicableForStructuralElementCrossReference_5_1_2_0_2_1_0; }
-		
-		//QualifiedName
-		public RuleCall getApplicableForStructuralElementQualifiedNameParserRuleCall_5_1_2_0_2_1_0_1() { return cApplicableForStructuralElementQualifiedNameParserRuleCall_5_1_2_0_2_1_0_1; }
-		
-		//']'
-		public Keyword getRightSquareBracketKeyword_5_1_2_0_3() { return cRightSquareBracketKeyword_5_1_2_0_3; }
-		
-		//isApplicableForAll?='All'
-		public Assignment getIsApplicableForAllAssignment_5_1_2_1() { return cIsApplicableForAllAssignment_5_1_2_1; }
-		
-		//'All'
-		public Keyword getIsApplicableForAllAllKeyword_5_1_2_1_0() { return cIsApplicableForAllAllKeyword_5_1_2_1_0; }
+		//'IsVerification'
+		public Keyword getIsVerificationIsVerificationKeyword_5_1_0_0() { return cIsVerificationIsVerificationKeyword_5_1_0_0; }
 		
 		//';'
-		public Keyword getSemicolonKeyword_5_1_3() { return cSemicolonKeyword_5_1_3; }
+		public Keyword getSemicolonKeyword_5_1_1() { return cSemicolonKeyword_5_1_1; }
 		
-		//('Cardinality' cardinality=INT ';')?
+		//('Applicable' 'For' (('[' applicableFor+=[Structural::StructuralElement|QualifiedName] ( "," applicableFor+=[Structural::StructuralElement|QualifiedName])* ']') | isApplicableForAll?='All') ';' )?
 		public Group getGroup_5_2() { return cGroup_5_2; }
 		
-		//'Cardinality'
-		public Keyword getCardinalityKeyword_5_2_0() { return cCardinalityKeyword_5_2_0; }
+		//'Applicable'
+		public Keyword getApplicableKeyword_5_2_0() { return cApplicableKeyword_5_2_0; }
 		
-		//cardinality=INT
-		public Assignment getCardinalityAssignment_5_2_1() { return cCardinalityAssignment_5_2_1; }
+		//'For'
+		public Keyword getForKeyword_5_2_1() { return cForKeyword_5_2_1; }
 		
-		//INT
-		public RuleCall getCardinalityINTTerminalRuleCall_5_2_1_0() { return cCardinalityINTTerminalRuleCall_5_2_1_0; }
+		//(('[' applicableFor+=[Structural::StructuralElement|QualifiedName] ( "," applicableFor+=[Structural::StructuralElement|QualifiedName])* ']') | isApplicableForAll?='All')
+		public Alternatives getAlternatives_5_2_2() { return cAlternatives_5_2_2; }
+		
+		//('[' applicableFor+=[Structural::StructuralElement|QualifiedName] ( "," applicableFor+=[Structural::StructuralElement|QualifiedName])* ']')
+		public Group getGroup_5_2_2_0() { return cGroup_5_2_2_0; }
+		
+		//'['
+		public Keyword getLeftSquareBracketKeyword_5_2_2_0_0() { return cLeftSquareBracketKeyword_5_2_2_0_0; }
+		
+		//applicableFor+=[Structural::StructuralElement|QualifiedName]
+		public Assignment getApplicableForAssignment_5_2_2_0_1() { return cApplicableForAssignment_5_2_2_0_1; }
+		
+		//[Structural::StructuralElement|QualifiedName]
+		public CrossReference getApplicableForStructuralElementCrossReference_5_2_2_0_1_0() { return cApplicableForStructuralElementCrossReference_5_2_2_0_1_0; }
+		
+		//QualifiedName
+		public RuleCall getApplicableForStructuralElementQualifiedNameParserRuleCall_5_2_2_0_1_0_1() { return cApplicableForStructuralElementQualifiedNameParserRuleCall_5_2_2_0_1_0_1; }
+		
+		//( "," applicableFor+=[Structural::StructuralElement|QualifiedName])*
+		public Group getGroup_5_2_2_0_2() { return cGroup_5_2_2_0_2; }
+		
+		//","
+		public Keyword getCommaKeyword_5_2_2_0_2_0() { return cCommaKeyword_5_2_2_0_2_0; }
+		
+		//applicableFor+=[Structural::StructuralElement|QualifiedName]
+		public Assignment getApplicableForAssignment_5_2_2_0_2_1() { return cApplicableForAssignment_5_2_2_0_2_1; }
+		
+		//[Structural::StructuralElement|QualifiedName]
+		public CrossReference getApplicableForStructuralElementCrossReference_5_2_2_0_2_1_0() { return cApplicableForStructuralElementCrossReference_5_2_2_0_2_1_0; }
+		
+		//QualifiedName
+		public RuleCall getApplicableForStructuralElementQualifiedNameParserRuleCall_5_2_2_0_2_1_0_1() { return cApplicableForStructuralElementQualifiedNameParserRuleCall_5_2_2_0_2_1_0_1; }
+		
+		//']'
+		public Keyword getRightSquareBracketKeyword_5_2_2_0_3() { return cRightSquareBracketKeyword_5_2_2_0_3; }
+		
+		//isApplicableForAll?='All'
+		public Assignment getIsApplicableForAllAssignment_5_2_2_1() { return cIsApplicableForAllAssignment_5_2_2_1; }
+		
+		//'All'
+		public Keyword getIsApplicableForAllAllKeyword_5_2_2_1_0() { return cIsApplicableForAllAllKeyword_5_2_2_1_0; }
 		
 		//';'
-		public Keyword getSemicolonKeyword_5_2_2() { return cSemicolonKeyword_5_2_2; }
+		public Keyword getSemicolonKeyword_5_2_3() { return cSemicolonKeyword_5_2_3; }
 		
-		//properties+=AProperty*
+		//('Cardinality' cardinality=INT ';')?
+		public Group getGroup_5_3() { return cGroup_5_3; }
+		
+		//'Cardinality'
+		public Keyword getCardinalityKeyword_5_3_0() { return cCardinalityKeyword_5_3_0; }
+		
+		//cardinality=INT
+		public Assignment getCardinalityAssignment_5_3_1() { return cCardinalityAssignment_5_3_1; }
+		
+		//INT
+		public RuleCall getCardinalityINTTerminalRuleCall_5_3_1_0() { return cCardinalityINTTerminalRuleCall_5_3_1_0; }
+		
+		//';'
+		public Keyword getSemicolonKeyword_5_3_2() { return cSemicolonKeyword_5_3_2; }
+		
+		//(properties+=AProperty)*
 		public Assignment getPropertiesAssignment_6() { return cPropertiesAssignment_6; }
 		
 		//AProperty
 		public RuleCall getPropertiesAPropertyParserRuleCall_6_0() { return cPropertiesAPropertyParserRuleCall_6_0; }
 		
-		//equationDefinitions+=EquationDefinition*
+		//(equationDefinitions+=EquationDefinition)*
 		public Assignment getEquationDefinitionsAssignment_7() { return cEquationDefinitionsAssignment_7; }
 		
 		//EquationDefinition
@@ -913,13 +968,16 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final RuleCall cImportedNamespaceQualifiedNameWithWildcardParserRuleCall_2_0 = (RuleCall)cImportedNamespaceAssignment_2.eContents().get(0);
 		private final Keyword cSemicolonKeyword_3 = (Keyword)cGroup.eContents().get(3);
 		
-		//ConceptImport Concepts::ConceptImport:
-		//	{Concepts::ConceptImport}
-		//	'Import' importedNamespace=QualifiedNameWithWildcard
-		//	';';
+		//ConceptImport returns Concepts::ConceptImport:
+		//    {Concepts::ConceptImport}
+		//   'Import' importedNamespace = QualifiedNameWithWildcard
+		//   ';'
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Concepts::ConceptImport} 'Import' importedNamespace=QualifiedNameWithWildcard ';'
+		// {Concepts::ConceptImport}
+		//'Import' importedNamespace = QualifiedNameWithWildcard
+		//';'
 		public Group getGroup() { return cGroup; }
 		
 		//{Concepts::ConceptImport}
@@ -928,7 +986,7 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//'Import'
 		public Keyword getImportKeyword_1() { return cImportKeyword_1; }
 		
-		//importedNamespace=QualifiedNameWithWildcard
+		//importedNamespace = QualifiedNameWithWildcard
 		public Assignment getImportedNamespaceAssignment_2() { return cImportedNamespaceAssignment_2; }
 		
 		//QualifiedNameWithWildcard
@@ -950,13 +1008,16 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final RuleCall cImportedGenModelSTRINGTerminalRuleCall_3_1_0 = (RuleCall)cImportedGenModelAssignment_3_1.eContents().get(0);
 		private final Keyword cSemicolonKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
-		//EcoreImport Concepts::EcoreImport:
-		//	{Concepts::EcoreImport}
-		//	'EImport' importedNsURI=STRING ('genModel' importedGenModel=STRING)?
-		//	';';
+		//EcoreImport returns Concepts::EcoreImport:
+		//    {Concepts::EcoreImport}
+		//   'EImport' importedNsURI = STRING ('genModel' importedGenModel=STRING)?
+		//   ';'
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Concepts::EcoreImport} 'EImport' importedNsURI=STRING ('genModel' importedGenModel=STRING)? ';'
+		// {Concepts::EcoreImport}
+		//'EImport' importedNsURI = STRING ('genModel' importedGenModel=STRING)?
+		//';'
 		public Group getGroup() { return cGroup; }
 		
 		//{Concepts::EcoreImport}
@@ -965,7 +1026,7 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//'EImport'
 		public Keyword getEImportKeyword_1() { return cEImportKeyword_1; }
 		
-		//importedNsURI=STRING
+		//importedNsURI = STRING
 		public Assignment getImportedNsURIAssignment_2() { return cImportedNsURIAssignment_2; }
 		
 		//STRING
@@ -1002,13 +1063,28 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//// ***************************************************************************************
 		//// The Properties
 		//// ***************************************************************************************
-		//AProperty PropertyDefinitions::AProperty:
-		//	ComposedProperty | IntProperty | FloatProperty | StringProperty | BooleanProperty | EnumProperty | ReferenceProperty
-		//	| EReferenceProperty | ResourceProperty;
+		//AProperty returns PropertyDefinitions::AProperty:
+		//    ComposedProperty |
+		//    IntProperty |
+		//    FloatProperty |
+		//    StringProperty |
+		//    BooleanProperty |
+		//    EnumProperty |
+		//    ReferenceProperty |
+		//    EReferenceProperty |
+		//    ResourceProperty
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//ComposedProperty | IntProperty | FloatProperty | StringProperty | BooleanProperty | EnumProperty | ReferenceProperty |
-		//EReferenceProperty | ResourceProperty
+		//ComposedProperty |
+		//IntProperty |
+		//FloatProperty |
+		//StringProperty |
+		//BooleanProperty |
+		//EnumProperty |
+		//ReferenceProperty |
+		//EReferenceProperty |
+		//ResourceProperty
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//ComposedProperty
@@ -1044,8 +1120,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final RuleCall cDynmaicArrayModifierParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
 		private final RuleCall cStaticArrayModifierParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		
-		//ArrayModifier PropertyDefinitions::IArrayModifier:
-		//	DynmaicArrayModifier | StaticArrayModifier;
+		//ArrayModifier returns PropertyDefinitions::IArrayModifier:
+		//    DynmaicArrayModifier | StaticArrayModifier
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//DynmaicArrayModifier | StaticArrayModifier
@@ -1064,12 +1141,14 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final Keyword cLeftSquareBracketKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		private final Keyword cRightSquareBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
 		
-		//DynmaicArrayModifier PropertyDefinitions::DynamicArrayModifier:
-		//	{PropertyDefinitions::DynamicArrayModifier}
-		//	'[' ']';
+		//DynmaicArrayModifier returns PropertyDefinitions::DynamicArrayModifier:
+		//    {PropertyDefinitions::DynamicArrayModifier}
+		//    '[' ']'
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{PropertyDefinitions::DynamicArrayModifier} '[' ']'
+		//{PropertyDefinitions::DynamicArrayModifier}
+		//'[' ']'
 		public Group getGroup() { return cGroup; }
 		
 		//{PropertyDefinitions::DynamicArrayModifier}
@@ -1089,8 +1168,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final RuleCall cArraySizeINTTerminalRuleCall_1_0 = (RuleCall)cArraySizeAssignment_1.eContents().get(0);
 		private final Keyword cRightSquareBracketKeyword_2 = (Keyword)cGroup.eContents().get(2);
 		
-		//StaticArrayModifier PropertyDefinitions::StaticArrayModifier:
-		//	'[' arraySize=INT ']';
+		//StaticArrayModifier returns PropertyDefinitions::StaticArrayModifier:
+		//    '[' arraySize=INT ']'
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//'[' arraySize=INT ']'
@@ -1107,6 +1187,38 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		
 		//']'
 		public Keyword getRightSquareBracketKeyword_2() { return cRightSquareBracketKeyword_2; }
+	}
+	public class VerificationSpecificationElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "de.dlr.sc.virsat.model.concept.ConceptLanguage.VerificationSpecification");
+		private final RuleCall cVerificationTypeSpecificationParserRuleCall = (RuleCall)rule.eContents().get(1);
+		
+		//VerificationSpecification returns PropertyDefinitions::IVerificationSpecification:
+		//    VerificationTypeSpecification
+		//;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//VerificationTypeSpecification
+		public RuleCall getVerificationTypeSpecificationParserRuleCall() { return cVerificationTypeSpecificationParserRuleCall; }
+	}
+	public class VerificationTypeSpecificationElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "de.dlr.sc.virsat.model.concept.ConceptLanguage.VerificationTypeSpecification");
+		private final Assignment cVerificationTypeAssignment = (Assignment)rule.eContents().get(1);
+		private final CrossReference cVerificationTypeATypeDefinitionCrossReference_0 = (CrossReference)cVerificationTypeAssignment.eContents().get(0);
+		private final RuleCall cVerificationTypeATypeDefinitionQualifiedNameParserRuleCall_0_1 = (RuleCall)cVerificationTypeATypeDefinitionCrossReference_0.eContents().get(1);
+		
+		//VerificationTypeSpecification returns PropertyDefinitions::VerificationTypeSpecification:
+		//    verificationType=[Categories::ATypeDefinition|QualifiedName]
+		//;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//verificationType=[Categories::ATypeDefinition|QualifiedName]
+		public Assignment getVerificationTypeAssignment() { return cVerificationTypeAssignment; }
+		
+		//[Categories::ATypeDefinition|QualifiedName]
+		public CrossReference getVerificationTypeATypeDefinitionCrossReference_0() { return cVerificationTypeATypeDefinitionCrossReference_0; }
+		
+		//QualifiedName
+		public RuleCall getVerificationTypeATypeDefinitionQualifiedNameParserRuleCall_0_1() { return cVerificationTypeATypeDefinitionQualifiedNameParserRuleCall_0_1; }
 	}
 	public class ComposedPropertyElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "de.dlr.sc.virsat.model.concept.ConceptLanguage.ComposedProperty");
@@ -1132,22 +1244,35 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final Assignment cQuantityKindNameAssignment_7_1_1 = (Assignment)cGroup_7_1.eContents().get(1);
 		private final RuleCall cQuantityKindNameEStringParserRuleCall_7_1_1_0 = (RuleCall)cQuantityKindNameAssignment_7_1_1.eContents().get(0);
 		private final Group cGroup_7_2 = (Group)cUnorderedGroup_7.eContents().get(2);
-		private final Keyword cUnitKeyword_7_2_0 = (Keyword)cGroup_7_2.eContents().get(0);
-		private final Assignment cUnitNameAssignment_7_2_1 = (Assignment)cGroup_7_2.eContents().get(1);
-		private final RuleCall cUnitNameEStringParserRuleCall_7_2_1_0 = (RuleCall)cUnitNameAssignment_7_2_1.eContents().get(0);
+		private final Keyword cVerificationKeyword_7_2_0 = (Keyword)cGroup_7_2.eContents().get(0);
+		private final Assignment cVerificationAssignment_7_2_1 = (Assignment)cGroup_7_2.eContents().get(1);
+		private final RuleCall cVerificationVerificationTypeSpecificationParserRuleCall_7_2_1_0 = (RuleCall)cVerificationAssignment_7_2_1.eContents().get(0);
+		private final Group cGroup_7_3 = (Group)cUnorderedGroup_7.eContents().get(3);
+		private final Keyword cUnitKeyword_7_3_0 = (Keyword)cGroup_7_3.eContents().get(0);
+		private final Assignment cUnitNameAssignment_7_3_1 = (Assignment)cGroup_7_3.eContents().get(1);
+		private final RuleCall cUnitNameEStringParserRuleCall_7_3_1_0 = (RuleCall)cUnitNameAssignment_7_3_1.eContents().get(0);
 		private final Keyword cSemicolonKeyword_8 = (Keyword)cGroup.eContents().get(8);
 		
-		//ComposedProperty PropertyDefinitions::ComposedProperty:
-		//	{PropertyDefinitions::ComposedProperty}
-		//	'Type' name=ID arrayModifier=ArrayModifier?
-		//	'of' 'Category' type=[Categories::Category|QualifiedName] (('description' description=EString)? & ('quantityKind'
-		//	quantityKindName=EString)? & ('unit' unitName=EString)?)
-		//	';';
+		//ComposedProperty returns PropertyDefinitions::ComposedProperty:
+		//    {PropertyDefinitions::ComposedProperty}
+		//    'Type' name=ID (arrayModifier=ArrayModifier)?
+		//    'of' 'Category' type=[Categories::Category|QualifiedName]
+		//    (('description' description=EString)? &
+		//    ('quantityKind' quantityKindName = EString)? &
+		//    ('verification' verification=VerificationTypeSpecification)? &
+		//    ('unit' unitName = EString)? )
+		//    ';'
+		//    ;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{PropertyDefinitions::ComposedProperty} 'Type' name=ID arrayModifier=ArrayModifier? 'of' 'Category'
-		//type=[Categories::Category|QualifiedName] (('description' description=EString)? & ('quantityKind'
-		//quantityKindName=EString)? & ('unit' unitName=EString)?) ';'
+		//{PropertyDefinitions::ComposedProperty}
+		//'Type' name=ID (arrayModifier=ArrayModifier)?
+		//'of' 'Category' type=[Categories::Category|QualifiedName]
+		//(('description' description=EString)? &
+		//('quantityKind' quantityKindName = EString)? &
+		//('verification' verification=VerificationTypeSpecification)? &
+		//('unit' unitName = EString)? )
+		//';'
 		public Group getGroup() { return cGroup; }
 		
 		//{PropertyDefinitions::ComposedProperty}
@@ -1162,7 +1287,7 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//ID
 		public RuleCall getNameIDTerminalRuleCall_2_0() { return cNameIDTerminalRuleCall_2_0; }
 		
-		//arrayModifier=ArrayModifier?
+		//(arrayModifier=ArrayModifier)?
 		public Assignment getArrayModifierAssignment_3() { return cArrayModifierAssignment_3; }
 		
 		//ArrayModifier
@@ -1183,7 +1308,10 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//QualifiedName
 		public RuleCall getTypeCategoryQualifiedNameParserRuleCall_6_0_1() { return cTypeCategoryQualifiedNameParserRuleCall_6_0_1; }
 		
-		//(('description' description=EString)? & ('quantityKind' quantityKindName=EString)? & ('unit' unitName=EString)?)
+		//(('description' description=EString)? &
+		//('quantityKind' quantityKindName = EString)? &
+		//('verification' verification=VerificationTypeSpecification)? &
+		//('unit' unitName = EString)? )
 		public UnorderedGroup getUnorderedGroup_7() { return cUnorderedGroup_7; }
 		
 		//('description' description=EString)?
@@ -1198,29 +1326,41 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//EString
 		public RuleCall getDescriptionEStringParserRuleCall_7_0_1_0() { return cDescriptionEStringParserRuleCall_7_0_1_0; }
 		
-		//('quantityKind' quantityKindName=EString)?
+		//('quantityKind' quantityKindName = EString)?
 		public Group getGroup_7_1() { return cGroup_7_1; }
 		
 		//'quantityKind'
 		public Keyword getQuantityKindKeyword_7_1_0() { return cQuantityKindKeyword_7_1_0; }
 		
-		//quantityKindName=EString
+		//quantityKindName = EString
 		public Assignment getQuantityKindNameAssignment_7_1_1() { return cQuantityKindNameAssignment_7_1_1; }
 		
 		//EString
 		public RuleCall getQuantityKindNameEStringParserRuleCall_7_1_1_0() { return cQuantityKindNameEStringParserRuleCall_7_1_1_0; }
 		
-		//('unit' unitName=EString)?
+		//('verification' verification=VerificationTypeSpecification)?
 		public Group getGroup_7_2() { return cGroup_7_2; }
 		
-		//'unit'
-		public Keyword getUnitKeyword_7_2_0() { return cUnitKeyword_7_2_0; }
+		//'verification'
+		public Keyword getVerificationKeyword_7_2_0() { return cVerificationKeyword_7_2_0; }
 		
-		//unitName=EString
-		public Assignment getUnitNameAssignment_7_2_1() { return cUnitNameAssignment_7_2_1; }
+		//verification=VerificationTypeSpecification
+		public Assignment getVerificationAssignment_7_2_1() { return cVerificationAssignment_7_2_1; }
+		
+		//VerificationTypeSpecification
+		public RuleCall getVerificationVerificationTypeSpecificationParserRuleCall_7_2_1_0() { return cVerificationVerificationTypeSpecificationParserRuleCall_7_2_1_0; }
+		
+		//('unit' unitName = EString)?
+		public Group getGroup_7_3() { return cGroup_7_3; }
+		
+		//'unit'
+		public Keyword getUnitKeyword_7_3_0() { return cUnitKeyword_7_3_0; }
+		
+		//unitName = EString
+		public Assignment getUnitNameAssignment_7_3_1() { return cUnitNameAssignment_7_3_1; }
 		
 		//EString
-		public RuleCall getUnitNameEStringParserRuleCall_7_2_1_0() { return cUnitNameEStringParserRuleCall_7_2_1_0; }
+		public RuleCall getUnitNameEStringParserRuleCall_7_3_1_0() { return cUnitNameEStringParserRuleCall_7_3_1_0; }
 		
 		//';'
 		public Keyword getSemicolonKeyword_8() { return cSemicolonKeyword_8; }
@@ -1248,21 +1388,35 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final Assignment cQuantityKindNameAssignment_4_2_1 = (Assignment)cGroup_4_2.eContents().get(1);
 		private final RuleCall cQuantityKindNameEStringParserRuleCall_4_2_1_0 = (RuleCall)cQuantityKindNameAssignment_4_2_1.eContents().get(0);
 		private final Group cGroup_4_3 = (Group)cUnorderedGroup_4.eContents().get(3);
-		private final Keyword cUnitKeyword_4_3_0 = (Keyword)cGroup_4_3.eContents().get(0);
-		private final Assignment cUnitNameAssignment_4_3_1 = (Assignment)cGroup_4_3.eContents().get(1);
-		private final RuleCall cUnitNameEStringParserRuleCall_4_3_1_0 = (RuleCall)cUnitNameAssignment_4_3_1.eContents().get(0);
+		private final Keyword cVerificationKeyword_4_3_0 = (Keyword)cGroup_4_3.eContents().get(0);
+		private final Assignment cVerificationAssignment_4_3_1 = (Assignment)cGroup_4_3.eContents().get(1);
+		private final RuleCall cVerificationVerificationTypeSpecificationParserRuleCall_4_3_1_0 = (RuleCall)cVerificationAssignment_4_3_1.eContents().get(0);
+		private final Group cGroup_4_4 = (Group)cUnorderedGroup_4.eContents().get(4);
+		private final Keyword cUnitKeyword_4_4_0 = (Keyword)cGroup_4_4.eContents().get(0);
+		private final Assignment cUnitNameAssignment_4_4_1 = (Assignment)cGroup_4_4.eContents().get(1);
+		private final RuleCall cUnitNameEStringParserRuleCall_4_4_1_0 = (RuleCall)cUnitNameAssignment_4_4_1.eContents().get(0);
 		private final Keyword cSemicolonKeyword_5 = (Keyword)cGroup.eContents().get(5);
 		
-		//IntProperty PropertyDefinitions::IntProperty:
-		//	{PropertyDefinitions::IntProperty}
-		//	'IntProperty' name=ID arrayModifier=ArrayModifier? (('description' description=EString)? & ('default'
-		//	defaultValue=IntLiteralString)? & ('quantityKind' quantityKindName=EString)? & ('unit' unitName=EString)?)
-		//	';';
+		//IntProperty returns PropertyDefinitions::IntProperty:
+		//    {PropertyDefinitions::IntProperty}
+		//    'IntProperty' name=ID (arrayModifier=ArrayModifier)?
+		//    (('description' description=EString)? &
+		//    ('default' defaultValue=IntLiteralString)? &
+		//    ('quantityKind' quantityKindName = EString)? &
+		//    ('verification' verification=VerificationTypeSpecification)? &
+		//    ('unit' unitName = EString)? )
+		//    ';'
+		//    ;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{PropertyDefinitions::IntProperty} 'IntProperty' name=ID arrayModifier=ArrayModifier? (('description'
-		//description=EString)? & ('default' defaultValue=IntLiteralString)? & ('quantityKind' quantityKindName=EString)? &
-		//('unit' unitName=EString)?) ';'
+		//{PropertyDefinitions::IntProperty}
+		//'IntProperty' name=ID (arrayModifier=ArrayModifier)?
+		//(('description' description=EString)? &
+		//('default' defaultValue=IntLiteralString)? &
+		//('quantityKind' quantityKindName = EString)? &
+		//('verification' verification=VerificationTypeSpecification)? &
+		//('unit' unitName = EString)? )
+		//';'
 		public Group getGroup() { return cGroup; }
 		
 		//{PropertyDefinitions::IntProperty}
@@ -1277,14 +1431,17 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//ID
 		public RuleCall getNameIDTerminalRuleCall_2_0() { return cNameIDTerminalRuleCall_2_0; }
 		
-		//arrayModifier=ArrayModifier?
+		//(arrayModifier=ArrayModifier)?
 		public Assignment getArrayModifierAssignment_3() { return cArrayModifierAssignment_3; }
 		
 		//ArrayModifier
 		public RuleCall getArrayModifierArrayModifierParserRuleCall_3_0() { return cArrayModifierArrayModifierParserRuleCall_3_0; }
 		
-		//(('description' description=EString)? & ('default' defaultValue=IntLiteralString)? & ('quantityKind'
-		//quantityKindName=EString)? & ('unit' unitName=EString)?)
+		//(('description' description=EString)? &
+		//('default' defaultValue=IntLiteralString)? &
+		//('quantityKind' quantityKindName = EString)? &
+		//('verification' verification=VerificationTypeSpecification)? &
+		//('unit' unitName = EString)? )
 		public UnorderedGroup getUnorderedGroup_4() { return cUnorderedGroup_4; }
 		
 		//('description' description=EString)?
@@ -1311,29 +1468,41 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//IntLiteralString
 		public RuleCall getDefaultValueIntLiteralStringParserRuleCall_4_1_1_0() { return cDefaultValueIntLiteralStringParserRuleCall_4_1_1_0; }
 		
-		//('quantityKind' quantityKindName=EString)?
+		//('quantityKind' quantityKindName = EString)?
 		public Group getGroup_4_2() { return cGroup_4_2; }
 		
 		//'quantityKind'
 		public Keyword getQuantityKindKeyword_4_2_0() { return cQuantityKindKeyword_4_2_0; }
 		
-		//quantityKindName=EString
+		//quantityKindName = EString
 		public Assignment getQuantityKindNameAssignment_4_2_1() { return cQuantityKindNameAssignment_4_2_1; }
 		
 		//EString
 		public RuleCall getQuantityKindNameEStringParserRuleCall_4_2_1_0() { return cQuantityKindNameEStringParserRuleCall_4_2_1_0; }
 		
-		//('unit' unitName=EString)?
+		//('verification' verification=VerificationTypeSpecification)?
 		public Group getGroup_4_3() { return cGroup_4_3; }
 		
-		//'unit'
-		public Keyword getUnitKeyword_4_3_0() { return cUnitKeyword_4_3_0; }
+		//'verification'
+		public Keyword getVerificationKeyword_4_3_0() { return cVerificationKeyword_4_3_0; }
 		
-		//unitName=EString
-		public Assignment getUnitNameAssignment_4_3_1() { return cUnitNameAssignment_4_3_1; }
+		//verification=VerificationTypeSpecification
+		public Assignment getVerificationAssignment_4_3_1() { return cVerificationAssignment_4_3_1; }
+		
+		//VerificationTypeSpecification
+		public RuleCall getVerificationVerificationTypeSpecificationParserRuleCall_4_3_1_0() { return cVerificationVerificationTypeSpecificationParserRuleCall_4_3_1_0; }
+		
+		//('unit' unitName = EString)?
+		public Group getGroup_4_4() { return cGroup_4_4; }
+		
+		//'unit'
+		public Keyword getUnitKeyword_4_4_0() { return cUnitKeyword_4_4_0; }
+		
+		//unitName = EString
+		public Assignment getUnitNameAssignment_4_4_1() { return cUnitNameAssignment_4_4_1; }
 		
 		//EString
-		public RuleCall getUnitNameEStringParserRuleCall_4_3_1_0() { return cUnitNameEStringParserRuleCall_4_3_1_0; }
+		public RuleCall getUnitNameEStringParserRuleCall_4_4_1_0() { return cUnitNameEStringParserRuleCall_4_4_1_0; }
 		
 		//';'
 		public Keyword getSemicolonKeyword_5() { return cSemicolonKeyword_5; }
@@ -1361,21 +1530,35 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final Assignment cQuantityKindNameAssignment_4_2_1 = (Assignment)cGroup_4_2.eContents().get(1);
 		private final RuleCall cQuantityKindNameEStringParserRuleCall_4_2_1_0 = (RuleCall)cQuantityKindNameAssignment_4_2_1.eContents().get(0);
 		private final Group cGroup_4_3 = (Group)cUnorderedGroup_4.eContents().get(3);
-		private final Keyword cUnitKeyword_4_3_0 = (Keyword)cGroup_4_3.eContents().get(0);
-		private final Assignment cUnitNameAssignment_4_3_1 = (Assignment)cGroup_4_3.eContents().get(1);
-		private final RuleCall cUnitNameEStringParserRuleCall_4_3_1_0 = (RuleCall)cUnitNameAssignment_4_3_1.eContents().get(0);
+		private final Keyword cVerificationKeyword_4_3_0 = (Keyword)cGroup_4_3.eContents().get(0);
+		private final Assignment cVerificationAssignment_4_3_1 = (Assignment)cGroup_4_3.eContents().get(1);
+		private final RuleCall cVerificationVerificationTypeSpecificationParserRuleCall_4_3_1_0 = (RuleCall)cVerificationAssignment_4_3_1.eContents().get(0);
+		private final Group cGroup_4_4 = (Group)cUnorderedGroup_4.eContents().get(4);
+		private final Keyword cUnitKeyword_4_4_0 = (Keyword)cGroup_4_4.eContents().get(0);
+		private final Assignment cUnitNameAssignment_4_4_1 = (Assignment)cGroup_4_4.eContents().get(1);
+		private final RuleCall cUnitNameEStringParserRuleCall_4_4_1_0 = (RuleCall)cUnitNameAssignment_4_4_1.eContents().get(0);
 		private final Keyword cSemicolonKeyword_5 = (Keyword)cGroup.eContents().get(5);
 		
-		//FloatProperty PropertyDefinitions::FloatProperty:
-		//	{PropertyDefinitions::FloatProperty}
-		//	'FloatProperty' name=ID arrayModifier=ArrayModifier? (('description' description=EString)? & ('default'
-		//	defaultValue=FloatLiteralString)? & ('quantityKind' quantityKindName=EString)? & ('unit' unitName=EString)?)
-		//	';';
+		//FloatProperty returns PropertyDefinitions::FloatProperty:
+		//    {PropertyDefinitions::FloatProperty}
+		//    'FloatProperty' name=ID (arrayModifier=ArrayModifier)?
+		//    (('description' description=EString)? &
+		//    ('default' defaultValue=FloatLiteralString)? &
+		//    ('quantityKind' quantityKindName = EString)? &
+		//    ('verification' verification=VerificationTypeSpecification)? &
+		//    ('unit' unitName = EString)? )
+		//    ';'
+		//    ;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{PropertyDefinitions::FloatProperty} 'FloatProperty' name=ID arrayModifier=ArrayModifier? (('description'
-		//description=EString)? & ('default' defaultValue=FloatLiteralString)? & ('quantityKind' quantityKindName=EString)? &
-		//('unit' unitName=EString)?) ';'
+		//{PropertyDefinitions::FloatProperty}
+		//'FloatProperty' name=ID (arrayModifier=ArrayModifier)?
+		//(('description' description=EString)? &
+		//('default' defaultValue=FloatLiteralString)? &
+		//('quantityKind' quantityKindName = EString)? &
+		//('verification' verification=VerificationTypeSpecification)? &
+		//('unit' unitName = EString)? )
+		//';'
 		public Group getGroup() { return cGroup; }
 		
 		//{PropertyDefinitions::FloatProperty}
@@ -1390,14 +1573,17 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//ID
 		public RuleCall getNameIDTerminalRuleCall_2_0() { return cNameIDTerminalRuleCall_2_0; }
 		
-		//arrayModifier=ArrayModifier?
+		//(arrayModifier=ArrayModifier)?
 		public Assignment getArrayModifierAssignment_3() { return cArrayModifierAssignment_3; }
 		
 		//ArrayModifier
 		public RuleCall getArrayModifierArrayModifierParserRuleCall_3_0() { return cArrayModifierArrayModifierParserRuleCall_3_0; }
 		
-		//(('description' description=EString)? & ('default' defaultValue=FloatLiteralString)? & ('quantityKind'
-		//quantityKindName=EString)? & ('unit' unitName=EString)?)
+		//(('description' description=EString)? &
+		//('default' defaultValue=FloatLiteralString)? &
+		//('quantityKind' quantityKindName = EString)? &
+		//('verification' verification=VerificationTypeSpecification)? &
+		//('unit' unitName = EString)? )
 		public UnorderedGroup getUnorderedGroup_4() { return cUnorderedGroup_4; }
 		
 		//('description' description=EString)?
@@ -1424,29 +1610,41 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//FloatLiteralString
 		public RuleCall getDefaultValueFloatLiteralStringParserRuleCall_4_1_1_0() { return cDefaultValueFloatLiteralStringParserRuleCall_4_1_1_0; }
 		
-		//('quantityKind' quantityKindName=EString)?
+		//('quantityKind' quantityKindName = EString)?
 		public Group getGroup_4_2() { return cGroup_4_2; }
 		
 		//'quantityKind'
 		public Keyword getQuantityKindKeyword_4_2_0() { return cQuantityKindKeyword_4_2_0; }
 		
-		//quantityKindName=EString
+		//quantityKindName = EString
 		public Assignment getQuantityKindNameAssignment_4_2_1() { return cQuantityKindNameAssignment_4_2_1; }
 		
 		//EString
 		public RuleCall getQuantityKindNameEStringParserRuleCall_4_2_1_0() { return cQuantityKindNameEStringParserRuleCall_4_2_1_0; }
 		
-		//('unit' unitName=EString)?
+		//('verification' verification=VerificationTypeSpecification)?
 		public Group getGroup_4_3() { return cGroup_4_3; }
 		
-		//'unit'
-		public Keyword getUnitKeyword_4_3_0() { return cUnitKeyword_4_3_0; }
+		//'verification'
+		public Keyword getVerificationKeyword_4_3_0() { return cVerificationKeyword_4_3_0; }
 		
-		//unitName=EString
-		public Assignment getUnitNameAssignment_4_3_1() { return cUnitNameAssignment_4_3_1; }
+		//verification=VerificationTypeSpecification
+		public Assignment getVerificationAssignment_4_3_1() { return cVerificationAssignment_4_3_1; }
+		
+		//VerificationTypeSpecification
+		public RuleCall getVerificationVerificationTypeSpecificationParserRuleCall_4_3_1_0() { return cVerificationVerificationTypeSpecificationParserRuleCall_4_3_1_0; }
+		
+		//('unit' unitName = EString)?
+		public Group getGroup_4_4() { return cGroup_4_4; }
+		
+		//'unit'
+		public Keyword getUnitKeyword_4_4_0() { return cUnitKeyword_4_4_0; }
+		
+		//unitName = EString
+		public Assignment getUnitNameAssignment_4_4_1() { return cUnitNameAssignment_4_4_1; }
 		
 		//EString
-		public RuleCall getUnitNameEStringParserRuleCall_4_3_1_0() { return cUnitNameEStringParserRuleCall_4_3_1_0; }
+		public RuleCall getUnitNameEStringParserRuleCall_4_4_1_0() { return cUnitNameEStringParserRuleCall_4_4_1_0; }
 		
 		//';'
 		public Keyword getSemicolonKeyword_5() { return cSemicolonKeyword_5; }
@@ -1466,20 +1664,31 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final Assignment cDescriptionAssignment_4_0_1 = (Assignment)cGroup_4_0.eContents().get(1);
 		private final RuleCall cDescriptionEStringParserRuleCall_4_0_1_0 = (RuleCall)cDescriptionAssignment_4_0_1.eContents().get(0);
 		private final Group cGroup_4_1 = (Group)cUnorderedGroup_4.eContents().get(1);
-		private final Keyword cDefaultKeyword_4_1_0 = (Keyword)cGroup_4_1.eContents().get(0);
-		private final Assignment cDefaultValueAssignment_4_1_1 = (Assignment)cGroup_4_1.eContents().get(1);
-		private final RuleCall cDefaultValueEStringParserRuleCall_4_1_1_0 = (RuleCall)cDefaultValueAssignment_4_1_1.eContents().get(0);
+		private final Keyword cVerificationKeyword_4_1_0 = (Keyword)cGroup_4_1.eContents().get(0);
+		private final Assignment cVerificationAssignment_4_1_1 = (Assignment)cGroup_4_1.eContents().get(1);
+		private final RuleCall cVerificationVerificationTypeSpecificationParserRuleCall_4_1_1_0 = (RuleCall)cVerificationAssignment_4_1_1.eContents().get(0);
+		private final Group cGroup_4_2 = (Group)cUnorderedGroup_4.eContents().get(2);
+		private final Keyword cDefaultKeyword_4_2_0 = (Keyword)cGroup_4_2.eContents().get(0);
+		private final Assignment cDefaultValueAssignment_4_2_1 = (Assignment)cGroup_4_2.eContents().get(1);
+		private final RuleCall cDefaultValueEStringParserRuleCall_4_2_1_0 = (RuleCall)cDefaultValueAssignment_4_2_1.eContents().get(0);
 		private final Keyword cSemicolonKeyword_5 = (Keyword)cGroup.eContents().get(5);
 		
-		//StringProperty PropertyDefinitions::StringProperty:
-		//	{PropertyDefinitions::StringProperty}
-		//	'StringProperty' name=ID arrayModifier=ArrayModifier? (('description' description=EString)? & ('default'
-		//	defaultValue=EString)?)
-		//	';';
+		//StringProperty returns PropertyDefinitions::StringProperty:
+		//    {PropertyDefinitions::StringProperty}
+		//    'StringProperty' name=ID (arrayModifier=ArrayModifier)?
+		//    (('description' description=EString)? &
+		//    ('verification' verification=VerificationTypeSpecification)? &
+		//    ('default' defaultValue=EString)?)
+		//    ';'
+		//    ;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{PropertyDefinitions::StringProperty} 'StringProperty' name=ID arrayModifier=ArrayModifier? (('description'
-		//description=EString)? & ('default' defaultValue=EString)?) ';'
+		//{PropertyDefinitions::StringProperty}
+		//'StringProperty' name=ID (arrayModifier=ArrayModifier)?
+		//(('description' description=EString)? &
+		//('verification' verification=VerificationTypeSpecification)? &
+		//('default' defaultValue=EString)?)
+		//';'
 		public Group getGroup() { return cGroup; }
 		
 		//{PropertyDefinitions::StringProperty}
@@ -1494,13 +1703,15 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//ID
 		public RuleCall getNameIDTerminalRuleCall_2_0() { return cNameIDTerminalRuleCall_2_0; }
 		
-		//arrayModifier=ArrayModifier?
+		//(arrayModifier=ArrayModifier)?
 		public Assignment getArrayModifierAssignment_3() { return cArrayModifierAssignment_3; }
 		
 		//ArrayModifier
 		public RuleCall getArrayModifierArrayModifierParserRuleCall_3_0() { return cArrayModifierArrayModifierParserRuleCall_3_0; }
 		
-		//(('description' description=EString)? & ('default' defaultValue=EString)?)
+		//(('description' description=EString)? &
+		//('verification' verification=VerificationTypeSpecification)? &
+		//('default' defaultValue=EString)?)
 		public UnorderedGroup getUnorderedGroup_4() { return cUnorderedGroup_4; }
 		
 		//('description' description=EString)?
@@ -1515,17 +1726,29 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//EString
 		public RuleCall getDescriptionEStringParserRuleCall_4_0_1_0() { return cDescriptionEStringParserRuleCall_4_0_1_0; }
 		
-		//('default' defaultValue=EString)?
+		//('verification' verification=VerificationTypeSpecification)?
 		public Group getGroup_4_1() { return cGroup_4_1; }
 		
+		//'verification'
+		public Keyword getVerificationKeyword_4_1_0() { return cVerificationKeyword_4_1_0; }
+		
+		//verification=VerificationTypeSpecification
+		public Assignment getVerificationAssignment_4_1_1() { return cVerificationAssignment_4_1_1; }
+		
+		//VerificationTypeSpecification
+		public RuleCall getVerificationVerificationTypeSpecificationParserRuleCall_4_1_1_0() { return cVerificationVerificationTypeSpecificationParserRuleCall_4_1_1_0; }
+		
+		//('default' defaultValue=EString)?
+		public Group getGroup_4_2() { return cGroup_4_2; }
+		
 		//'default'
-		public Keyword getDefaultKeyword_4_1_0() { return cDefaultKeyword_4_1_0; }
+		public Keyword getDefaultKeyword_4_2_0() { return cDefaultKeyword_4_2_0; }
 		
 		//defaultValue=EString
-		public Assignment getDefaultValueAssignment_4_1_1() { return cDefaultValueAssignment_4_1_1; }
+		public Assignment getDefaultValueAssignment_4_2_1() { return cDefaultValueAssignment_4_2_1; }
 		
 		//EString
-		public RuleCall getDefaultValueEStringParserRuleCall_4_1_1_0() { return cDefaultValueEStringParserRuleCall_4_1_1_0; }
+		public RuleCall getDefaultValueEStringParserRuleCall_4_2_1_0() { return cDefaultValueEStringParserRuleCall_4_2_1_0; }
 		
 		//';'
 		public Keyword getSemicolonKeyword_5() { return cSemicolonKeyword_5; }
@@ -1544,19 +1767,29 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final Assignment cDescriptionAssignment_3_0_1 = (Assignment)cGroup_3_0.eContents().get(1);
 		private final RuleCall cDescriptionEStringParserRuleCall_3_0_1_0 = (RuleCall)cDescriptionAssignment_3_0_1.eContents().get(0);
 		private final Group cGroup_3_1 = (Group)cUnorderedGroup_3.eContents().get(1);
-		private final Keyword cDefaultKeyword_3_1_0 = (Keyword)cGroup_3_1.eContents().get(0);
-		private final Assignment cDefaultValueAssignment_3_1_1 = (Assignment)cGroup_3_1.eContents().get(1);
-		private final RuleCall cDefaultValueBooleanLiteralStringParserRuleCall_3_1_1_0 = (RuleCall)cDefaultValueAssignment_3_1_1.eContents().get(0);
+		private final Keyword cVerificationKeyword_3_1_0 = (Keyword)cGroup_3_1.eContents().get(0);
+		private final Assignment cVerificationAssignment_3_1_1 = (Assignment)cGroup_3_1.eContents().get(1);
+		private final RuleCall cVerificationVerificationTypeSpecificationParserRuleCall_3_1_1_0 = (RuleCall)cVerificationAssignment_3_1_1.eContents().get(0);
+		private final Group cGroup_3_2 = (Group)cUnorderedGroup_3.eContents().get(2);
+		private final Keyword cDefaultKeyword_3_2_0 = (Keyword)cGroup_3_2.eContents().get(0);
+		private final Assignment cDefaultValueAssignment_3_2_1 = (Assignment)cGroup_3_2.eContents().get(1);
+		private final RuleCall cDefaultValueBooleanLiteralStringParserRuleCall_3_2_1_0 = (RuleCall)cDefaultValueAssignment_3_2_1.eContents().get(0);
 		private final Keyword cSemicolonKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
-		//BooleanProperty PropertyDefinitions::BooleanProperty:
-		//	'BooleanProperty' name=ID arrayModifier=ArrayModifier? (('description' description=EString)? & ('default'
-		//	defaultValue=BooleanLiteralString)?)
-		//	';';
+		//BooleanProperty returns PropertyDefinitions::BooleanProperty:
+		//    'BooleanProperty' name=ID (arrayModifier=ArrayModifier)?
+		//    (('description' description=EString)? &
+		//    ('verification' verification=VerificationTypeSpecification)? &
+		//    ('default' defaultValue=BooleanLiteralString)? )
+		//    ';'
+		//    ;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'BooleanProperty' name=ID arrayModifier=ArrayModifier? (('description' description=EString)? & ('default'
-		//defaultValue=BooleanLiteralString)?) ';'
+		//'BooleanProperty' name=ID (arrayModifier=ArrayModifier)?
+		//(('description' description=EString)? &
+		//('verification' verification=VerificationTypeSpecification)? &
+		//('default' defaultValue=BooleanLiteralString)? )
+		//';'
 		public Group getGroup() { return cGroup; }
 		
 		//'BooleanProperty'
@@ -1568,13 +1801,15 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//ID
 		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
 		
-		//arrayModifier=ArrayModifier?
+		//(arrayModifier=ArrayModifier)?
 		public Assignment getArrayModifierAssignment_2() { return cArrayModifierAssignment_2; }
 		
 		//ArrayModifier
 		public RuleCall getArrayModifierArrayModifierParserRuleCall_2_0() { return cArrayModifierArrayModifierParserRuleCall_2_0; }
 		
-		//(('description' description=EString)? & ('default' defaultValue=BooleanLiteralString)?)
+		//(('description' description=EString)? &
+		//('verification' verification=VerificationTypeSpecification)? &
+		//('default' defaultValue=BooleanLiteralString)? )
 		public UnorderedGroup getUnorderedGroup_3() { return cUnorderedGroup_3; }
 		
 		//('description' description=EString)?
@@ -1589,17 +1824,29 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//EString
 		public RuleCall getDescriptionEStringParserRuleCall_3_0_1_0() { return cDescriptionEStringParserRuleCall_3_0_1_0; }
 		
-		//('default' defaultValue=BooleanLiteralString)?
+		//('verification' verification=VerificationTypeSpecification)?
 		public Group getGroup_3_1() { return cGroup_3_1; }
 		
+		//'verification'
+		public Keyword getVerificationKeyword_3_1_0() { return cVerificationKeyword_3_1_0; }
+		
+		//verification=VerificationTypeSpecification
+		public Assignment getVerificationAssignment_3_1_1() { return cVerificationAssignment_3_1_1; }
+		
+		//VerificationTypeSpecification
+		public RuleCall getVerificationVerificationTypeSpecificationParserRuleCall_3_1_1_0() { return cVerificationVerificationTypeSpecificationParserRuleCall_3_1_1_0; }
+		
+		//('default' defaultValue=BooleanLiteralString)?
+		public Group getGroup_3_2() { return cGroup_3_2; }
+		
 		//'default'
-		public Keyword getDefaultKeyword_3_1_0() { return cDefaultKeyword_3_1_0; }
+		public Keyword getDefaultKeyword_3_2_0() { return cDefaultKeyword_3_2_0; }
 		
 		//defaultValue=BooleanLiteralString
-		public Assignment getDefaultValueAssignment_3_1_1() { return cDefaultValueAssignment_3_1_1; }
+		public Assignment getDefaultValueAssignment_3_2_1() { return cDefaultValueAssignment_3_2_1; }
 		
 		//BooleanLiteralString
-		public RuleCall getDefaultValueBooleanLiteralStringParserRuleCall_3_1_1_0() { return cDefaultValueBooleanLiteralStringParserRuleCall_3_1_1_0; }
+		public RuleCall getDefaultValueBooleanLiteralStringParserRuleCall_3_2_1_0() { return cDefaultValueBooleanLiteralStringParserRuleCall_3_2_1_0; }
 		
 		//';'
 		public Keyword getSemicolonKeyword_4() { return cSemicolonKeyword_4; }
@@ -1636,22 +1883,36 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final RuleCall cValuesEnumValueDefinitionParserRuleCall_3_3_3_1_0 = (RuleCall)cValuesAssignment_3_3_3_1.eContents().get(0);
 		private final Keyword cRightSquareBracketKeyword_3_3_4 = (Keyword)cGroup_3_3.eContents().get(4);
 		private final Group cGroup_3_4 = (Group)cUnorderedGroup_3.eContents().get(4);
-		private final Keyword cDefaultKeyword_3_4_0 = (Keyword)cGroup_3_4.eContents().get(0);
-		private final Assignment cDefaultValueAssignment_3_4_1 = (Assignment)cGroup_3_4.eContents().get(1);
-		private final CrossReference cDefaultValueEnumValueDefinitionCrossReference_3_4_1_0 = (CrossReference)cDefaultValueAssignment_3_4_1.eContents().get(0);
-		private final RuleCall cDefaultValueEnumValueDefinitionIDTerminalRuleCall_3_4_1_0_1 = (RuleCall)cDefaultValueEnumValueDefinitionCrossReference_3_4_1_0.eContents().get(1);
+		private final Keyword cVerificationKeyword_3_4_0 = (Keyword)cGroup_3_4.eContents().get(0);
+		private final Assignment cVerificationAssignment_3_4_1 = (Assignment)cGroup_3_4.eContents().get(1);
+		private final RuleCall cVerificationVerificationTypeSpecificationParserRuleCall_3_4_1_0 = (RuleCall)cVerificationAssignment_3_4_1.eContents().get(0);
+		private final Group cGroup_3_5 = (Group)cUnorderedGroup_3.eContents().get(5);
+		private final Keyword cDefaultKeyword_3_5_0 = (Keyword)cGroup_3_5.eContents().get(0);
+		private final Assignment cDefaultValueAssignment_3_5_1 = (Assignment)cGroup_3_5.eContents().get(1);
+		private final CrossReference cDefaultValueEnumValueDefinitionCrossReference_3_5_1_0 = (CrossReference)cDefaultValueAssignment_3_5_1.eContents().get(0);
+		private final RuleCall cDefaultValueEnumValueDefinitionIDTerminalRuleCall_3_5_1_0_1 = (RuleCall)cDefaultValueEnumValueDefinitionCrossReference_3_5_1_0.eContents().get(1);
 		private final Keyword cSemicolonKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
-		//EnumProperty PropertyDefinitions::EnumProperty:
-		//	'EnumProperty' name=ID arrayModifier=ArrayModifier? (('description' description=EString)? & ('quantityKind'
-		//	quantityKindName=EString)? & ('unit' unitName=EString)? & 'values' '[' values+=EnumValueDefinition (','
-		//	values+=EnumValueDefinition)* ']' & ('default' defaultValue=[PropertyDefinitions::EnumValueDefinition])?)
-		//	';';
+		//EnumProperty returns PropertyDefinitions::EnumProperty:
+		//    'EnumProperty' name=ID (arrayModifier=ArrayModifier)?
+		//    (('description' description=EString)? &
+		//    ('quantityKind' quantityKindName = EString)? &
+		//    ('unit' unitName = EString)? &
+		//    ('values' '[' values+=EnumValueDefinition (',' values+=EnumValueDefinition)* ']') &
+		//    ('verification' verification=VerificationTypeSpecification)? &
+		//    ('default' defaultValue=[PropertyDefinitions::EnumValueDefinition|ID])? )
+		//    ';'
+		//    ;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'EnumProperty' name=ID arrayModifier=ArrayModifier? (('description' description=EString)? & ('quantityKind'
-		//quantityKindName=EString)? & ('unit' unitName=EString)? & 'values' '[' values+=EnumValueDefinition (','
-		//values+=EnumValueDefinition)* ']' & ('default' defaultValue=[PropertyDefinitions::EnumValueDefinition])?) ';'
+		//'EnumProperty' name=ID (arrayModifier=ArrayModifier)?
+		//(('description' description=EString)? &
+		//('quantityKind' quantityKindName = EString)? &
+		//('unit' unitName = EString)? &
+		//('values' '[' values+=EnumValueDefinition (',' values+=EnumValueDefinition)* ']') &
+		//('verification' verification=VerificationTypeSpecification)? &
+		//('default' defaultValue=[PropertyDefinitions::EnumValueDefinition|ID])? )
+		//';'
 		public Group getGroup() { return cGroup; }
 		
 		//'EnumProperty'
@@ -1663,15 +1924,18 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//ID
 		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
 		
-		//arrayModifier=ArrayModifier?
+		//(arrayModifier=ArrayModifier)?
 		public Assignment getArrayModifierAssignment_2() { return cArrayModifierAssignment_2; }
 		
 		//ArrayModifier
 		public RuleCall getArrayModifierArrayModifierParserRuleCall_2_0() { return cArrayModifierArrayModifierParserRuleCall_2_0; }
 		
-		//(('description' description=EString)? & ('quantityKind' quantityKindName=EString)? & ('unit' unitName=EString)? &
-		//'values' '[' values+=EnumValueDefinition (',' values+=EnumValueDefinition)* ']' & ('default'
-		//defaultValue=[PropertyDefinitions::EnumValueDefinition])?)
+		//(('description' description=EString)? &
+		//('quantityKind' quantityKindName = EString)? &
+		//('unit' unitName = EString)? &
+		//('values' '[' values+=EnumValueDefinition (',' values+=EnumValueDefinition)* ']') &
+		//('verification' verification=VerificationTypeSpecification)? &
+		//('default' defaultValue=[PropertyDefinitions::EnumValueDefinition|ID])? )
 		public UnorderedGroup getUnorderedGroup_3() { return cUnorderedGroup_3; }
 		
 		//('description' description=EString)?
@@ -1686,31 +1950,31 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//EString
 		public RuleCall getDescriptionEStringParserRuleCall_3_0_1_0() { return cDescriptionEStringParserRuleCall_3_0_1_0; }
 		
-		//('quantityKind' quantityKindName=EString)?
+		//('quantityKind' quantityKindName = EString)?
 		public Group getGroup_3_1() { return cGroup_3_1; }
 		
 		//'quantityKind'
 		public Keyword getQuantityKindKeyword_3_1_0() { return cQuantityKindKeyword_3_1_0; }
 		
-		//quantityKindName=EString
+		//quantityKindName = EString
 		public Assignment getQuantityKindNameAssignment_3_1_1() { return cQuantityKindNameAssignment_3_1_1; }
 		
 		//EString
 		public RuleCall getQuantityKindNameEStringParserRuleCall_3_1_1_0() { return cQuantityKindNameEStringParserRuleCall_3_1_1_0; }
 		
-		//('unit' unitName=EString)?
+		//('unit' unitName = EString)?
 		public Group getGroup_3_2() { return cGroup_3_2; }
 		
 		//'unit'
 		public Keyword getUnitKeyword_3_2_0() { return cUnitKeyword_3_2_0; }
 		
-		//unitName=EString
+		//unitName = EString
 		public Assignment getUnitNameAssignment_3_2_1() { return cUnitNameAssignment_3_2_1; }
 		
 		//EString
 		public RuleCall getUnitNameEStringParserRuleCall_3_2_1_0() { return cUnitNameEStringParserRuleCall_3_2_1_0; }
 		
-		//'values' '[' values+=EnumValueDefinition (',' values+=EnumValueDefinition)* ']'
+		//('values' '[' values+=EnumValueDefinition (',' values+=EnumValueDefinition)* ']')
 		public Group getGroup_3_3() { return cGroup_3_3; }
 		
 		//'values'
@@ -1740,20 +2004,32 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//']'
 		public Keyword getRightSquareBracketKeyword_3_3_4() { return cRightSquareBracketKeyword_3_3_4; }
 		
-		//('default' defaultValue=[PropertyDefinitions::EnumValueDefinition])?
+		//('verification' verification=VerificationTypeSpecification)?
 		public Group getGroup_3_4() { return cGroup_3_4; }
 		
+		//'verification'
+		public Keyword getVerificationKeyword_3_4_0() { return cVerificationKeyword_3_4_0; }
+		
+		//verification=VerificationTypeSpecification
+		public Assignment getVerificationAssignment_3_4_1() { return cVerificationAssignment_3_4_1; }
+		
+		//VerificationTypeSpecification
+		public RuleCall getVerificationVerificationTypeSpecificationParserRuleCall_3_4_1_0() { return cVerificationVerificationTypeSpecificationParserRuleCall_3_4_1_0; }
+		
+		//('default' defaultValue=[PropertyDefinitions::EnumValueDefinition|ID])?
+		public Group getGroup_3_5() { return cGroup_3_5; }
+		
 		//'default'
-		public Keyword getDefaultKeyword_3_4_0() { return cDefaultKeyword_3_4_0; }
+		public Keyword getDefaultKeyword_3_5_0() { return cDefaultKeyword_3_5_0; }
 		
-		//defaultValue=[PropertyDefinitions::EnumValueDefinition]
-		public Assignment getDefaultValueAssignment_3_4_1() { return cDefaultValueAssignment_3_4_1; }
+		//defaultValue=[PropertyDefinitions::EnumValueDefinition|ID]
+		public Assignment getDefaultValueAssignment_3_5_1() { return cDefaultValueAssignment_3_5_1; }
 		
-		//[PropertyDefinitions::EnumValueDefinition]
-		public CrossReference getDefaultValueEnumValueDefinitionCrossReference_3_4_1_0() { return cDefaultValueEnumValueDefinitionCrossReference_3_4_1_0; }
+		//[PropertyDefinitions::EnumValueDefinition|ID]
+		public CrossReference getDefaultValueEnumValueDefinitionCrossReference_3_5_1_0() { return cDefaultValueEnumValueDefinitionCrossReference_3_5_1_0; }
 		
 		//ID
-		public RuleCall getDefaultValueEnumValueDefinitionIDTerminalRuleCall_3_4_1_0_1() { return cDefaultValueEnumValueDefinitionIDTerminalRuleCall_3_4_1_0_1; }
+		public RuleCall getDefaultValueEnumValueDefinitionIDTerminalRuleCall_3_5_1_0_1() { return cDefaultValueEnumValueDefinitionIDTerminalRuleCall_3_5_1_0_1; }
 		
 		//';'
 		public Keyword getSemicolonKeyword_4() { return cSemicolonKeyword_4; }
@@ -1769,11 +2045,12 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final RuleCall cValueEStringParserRuleCall_2_0_0 = (RuleCall)cValueAlternatives_2_0.eContents().get(0);
 		private final RuleCall cValueFloatLiteralStringParserRuleCall_2_0_1 = (RuleCall)cValueAlternatives_2_0.eContents().get(1);
 		
-		//EnumValueDefinition PropertyDefinitions::EnumValueDefinition:
-		//	name=ID '=' value=(EString | FloatLiteralString);
+		//EnumValueDefinition returns PropertyDefinitions::EnumValueDefinition:
+		//    name=ID '='    value=(EString | FloatLiteralString)
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//name=ID '=' value=(EString | FloatLiteralString)
+		//name=ID '='	value=(EString | FloatLiteralString)
 		public Group getGroup() { return cGroup; }
 		
 		//name=ID
@@ -1810,20 +2087,31 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final Assignment cReferenceTypeAssignment_5 = (Assignment)cGroup.eContents().get(5);
 		private final CrossReference cReferenceTypeATypeDefinitionCrossReference_5_0 = (CrossReference)cReferenceTypeAssignment_5.eContents().get(0);
 		private final RuleCall cReferenceTypeATypeDefinitionQualifiedNameParserRuleCall_5_0_1 = (RuleCall)cReferenceTypeATypeDefinitionCrossReference_5_0.eContents().get(1);
-		private final Group cGroup_6 = (Group)cGroup.eContents().get(6);
-		private final Keyword cDescriptionKeyword_6_0 = (Keyword)cGroup_6.eContents().get(0);
-		private final Assignment cDescriptionAssignment_6_1 = (Assignment)cGroup_6.eContents().get(1);
-		private final RuleCall cDescriptionEStringParserRuleCall_6_1_0 = (RuleCall)cDescriptionAssignment_6_1.eContents().get(0);
+		private final UnorderedGroup cUnorderedGroup_6 = (UnorderedGroup)cGroup.eContents().get(6);
+		private final Group cGroup_6_0 = (Group)cUnorderedGroup_6.eContents().get(0);
+		private final Keyword cDescriptionKeyword_6_0_0 = (Keyword)cGroup_6_0.eContents().get(0);
+		private final Assignment cDescriptionAssignment_6_0_1 = (Assignment)cGroup_6_0.eContents().get(1);
+		private final RuleCall cDescriptionEStringParserRuleCall_6_0_1_0 = (RuleCall)cDescriptionAssignment_6_0_1.eContents().get(0);
+		private final Group cGroup_6_1 = (Group)cUnorderedGroup_6.eContents().get(1);
+		private final Keyword cVerificationKeyword_6_1_0 = (Keyword)cGroup_6_1.eContents().get(0);
+		private final Assignment cVerificationAssignment_6_1_1 = (Assignment)cGroup_6_1.eContents().get(1);
+		private final RuleCall cVerificationVerificationTypeSpecificationParserRuleCall_6_1_1_0 = (RuleCall)cVerificationAssignment_6_1_1.eContents().get(0);
 		private final Keyword cSemicolonKeyword_7 = (Keyword)cGroup.eContents().get(7);
 		
-		//ReferenceProperty PropertyDefinitions::ReferenceProperty:
-		//	'Reference' name=ID arrayModifier=ArrayModifier?
-		//	'of' 'Type' referenceType=[Categories::ATypeDefinition|QualifiedName] ('description' description=EString)?
-		//	';';
+		//ReferenceProperty returns PropertyDefinitions::ReferenceProperty:
+		//    'Reference' name=ID (arrayModifier=ArrayModifier)?
+		//    'of' 'Type' referenceType=[Categories::ATypeDefinition|QualifiedName]
+		//    (('description' description=EString)? &
+		//    ('verification' verification=VerificationTypeSpecification)? )
+		//    ';'
+		//    ;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'Reference' name=ID arrayModifier=ArrayModifier? 'of' 'Type' referenceType=[Categories::ATypeDefinition|QualifiedName]
-		//('description' description=EString)? ';'
+		//'Reference' name=ID (arrayModifier=ArrayModifier)?
+		//'of' 'Type' referenceType=[Categories::ATypeDefinition|QualifiedName]
+		//(('description' description=EString)? &
+		//('verification' verification=VerificationTypeSpecification)? )
+		//';'
 		public Group getGroup() { return cGroup; }
 		
 		//'Reference'
@@ -1835,7 +2123,7 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//ID
 		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
 		
-		//arrayModifier=ArrayModifier?
+		//(arrayModifier=ArrayModifier)?
 		public Assignment getArrayModifierAssignment_2() { return cArrayModifierAssignment_2; }
 		
 		//ArrayModifier
@@ -1856,17 +2144,33 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//QualifiedName
 		public RuleCall getReferenceTypeATypeDefinitionQualifiedNameParserRuleCall_5_0_1() { return cReferenceTypeATypeDefinitionQualifiedNameParserRuleCall_5_0_1; }
 		
+		//(('description' description=EString)? &
+		//('verification' verification=VerificationTypeSpecification)? )
+		public UnorderedGroup getUnorderedGroup_6() { return cUnorderedGroup_6; }
+		
 		//('description' description=EString)?
-		public Group getGroup_6() { return cGroup_6; }
+		public Group getGroup_6_0() { return cGroup_6_0; }
 		
 		//'description'
-		public Keyword getDescriptionKeyword_6_0() { return cDescriptionKeyword_6_0; }
+		public Keyword getDescriptionKeyword_6_0_0() { return cDescriptionKeyword_6_0_0; }
 		
 		//description=EString
-		public Assignment getDescriptionAssignment_6_1() { return cDescriptionAssignment_6_1; }
+		public Assignment getDescriptionAssignment_6_0_1() { return cDescriptionAssignment_6_0_1; }
 		
 		//EString
-		public RuleCall getDescriptionEStringParserRuleCall_6_1_0() { return cDescriptionEStringParserRuleCall_6_1_0; }
+		public RuleCall getDescriptionEStringParserRuleCall_6_0_1_0() { return cDescriptionEStringParserRuleCall_6_0_1_0; }
+		
+		//('verification' verification=VerificationTypeSpecification)?
+		public Group getGroup_6_1() { return cGroup_6_1; }
+		
+		//'verification'
+		public Keyword getVerificationKeyword_6_1_0() { return cVerificationKeyword_6_1_0; }
+		
+		//verification=VerificationTypeSpecification
+		public Assignment getVerificationAssignment_6_1_1() { return cVerificationAssignment_6_1_1; }
+		
+		//VerificationTypeSpecification
+		public RuleCall getVerificationVerificationTypeSpecificationParserRuleCall_6_1_1_0() { return cVerificationVerificationTypeSpecificationParserRuleCall_6_1_1_0; }
 		
 		//';'
 		public Keyword getSemicolonKeyword_7() { return cSemicolonKeyword_7; }
@@ -1884,20 +2188,31 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final Assignment cReferenceTypeAssignment_5 = (Assignment)cGroup.eContents().get(5);
 		private final CrossReference cReferenceTypeEClassCrossReference_5_0 = (CrossReference)cReferenceTypeAssignment_5.eContents().get(0);
 		private final RuleCall cReferenceTypeEClassQualifiedNameParserRuleCall_5_0_1 = (RuleCall)cReferenceTypeEClassCrossReference_5_0.eContents().get(1);
-		private final Group cGroup_6 = (Group)cGroup.eContents().get(6);
-		private final Keyword cDescriptionKeyword_6_0 = (Keyword)cGroup_6.eContents().get(0);
-		private final Assignment cDescriptionAssignment_6_1 = (Assignment)cGroup_6.eContents().get(1);
-		private final RuleCall cDescriptionEStringParserRuleCall_6_1_0 = (RuleCall)cDescriptionAssignment_6_1.eContents().get(0);
+		private final UnorderedGroup cUnorderedGroup_6 = (UnorderedGroup)cGroup.eContents().get(6);
+		private final Group cGroup_6_0 = (Group)cUnorderedGroup_6.eContents().get(0);
+		private final Keyword cDescriptionKeyword_6_0_0 = (Keyword)cGroup_6_0.eContents().get(0);
+		private final Assignment cDescriptionAssignment_6_0_1 = (Assignment)cGroup_6_0.eContents().get(1);
+		private final RuleCall cDescriptionEStringParserRuleCall_6_0_1_0 = (RuleCall)cDescriptionAssignment_6_0_1.eContents().get(0);
+		private final Group cGroup_6_1 = (Group)cUnorderedGroup_6.eContents().get(1);
+		private final Keyword cVerificationKeyword_6_1_0 = (Keyword)cGroup_6_1.eContents().get(0);
+		private final Assignment cVerificationAssignment_6_1_1 = (Assignment)cGroup_6_1.eContents().get(1);
+		private final RuleCall cVerificationVerificationTypeSpecificationParserRuleCall_6_1_1_0 = (RuleCall)cVerificationAssignment_6_1_1.eContents().get(0);
 		private final Keyword cSemicolonKeyword_7 = (Keyword)cGroup.eContents().get(7);
 		
-		//EReferenceProperty PropertyDefinitions::EReferenceProperty:
-		//	'EReference' name=ID arrayModifier=ArrayModifier?
-		//	'of' 'Type' referenceType=[ecore::EClass|QualifiedName] ('description' description=EString)?
-		//	';';
+		//EReferenceProperty returns PropertyDefinitions::EReferenceProperty:
+		//    'EReference' name=ID (arrayModifier=ArrayModifier)?
+		//    'of' 'Type' referenceType=[ecore::EClass|QualifiedName]
+		//    (('description' description=EString)? &
+		//    ('verification' verification=VerificationTypeSpecification)? )
+		//    ';'
+		//    ;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'EReference' name=ID arrayModifier=ArrayModifier? 'of' 'Type' referenceType=[ecore::EClass|QualifiedName] ('description'
-		//description=EString)? ';'
+		//'EReference' name=ID (arrayModifier=ArrayModifier)?
+		//'of' 'Type' referenceType=[ecore::EClass|QualifiedName]
+		//(('description' description=EString)? &
+		//('verification' verification=VerificationTypeSpecification)? )
+		//';'
 		public Group getGroup() { return cGroup; }
 		
 		//'EReference'
@@ -1909,7 +2224,7 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//ID
 		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
 		
-		//arrayModifier=ArrayModifier?
+		//(arrayModifier=ArrayModifier)?
 		public Assignment getArrayModifierAssignment_2() { return cArrayModifierAssignment_2; }
 		
 		//ArrayModifier
@@ -1930,17 +2245,33 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//QualifiedName
 		public RuleCall getReferenceTypeEClassQualifiedNameParserRuleCall_5_0_1() { return cReferenceTypeEClassQualifiedNameParserRuleCall_5_0_1; }
 		
+		//(('description' description=EString)? &
+		//('verification' verification=VerificationTypeSpecification)? )
+		public UnorderedGroup getUnorderedGroup_6() { return cUnorderedGroup_6; }
+		
 		//('description' description=EString)?
-		public Group getGroup_6() { return cGroup_6; }
+		public Group getGroup_6_0() { return cGroup_6_0; }
 		
 		//'description'
-		public Keyword getDescriptionKeyword_6_0() { return cDescriptionKeyword_6_0; }
+		public Keyword getDescriptionKeyword_6_0_0() { return cDescriptionKeyword_6_0_0; }
 		
 		//description=EString
-		public Assignment getDescriptionAssignment_6_1() { return cDescriptionAssignment_6_1; }
+		public Assignment getDescriptionAssignment_6_0_1() { return cDescriptionAssignment_6_0_1; }
 		
 		//EString
-		public RuleCall getDescriptionEStringParserRuleCall_6_1_0() { return cDescriptionEStringParserRuleCall_6_1_0; }
+		public RuleCall getDescriptionEStringParserRuleCall_6_0_1_0() { return cDescriptionEStringParserRuleCall_6_0_1_0; }
+		
+		//('verification' verification=VerificationTypeSpecification)?
+		public Group getGroup_6_1() { return cGroup_6_1; }
+		
+		//'verification'
+		public Keyword getVerificationKeyword_6_1_0() { return cVerificationKeyword_6_1_0; }
+		
+		//verification=VerificationTypeSpecification
+		public Assignment getVerificationAssignment_6_1_1() { return cVerificationAssignment_6_1_1; }
+		
+		//VerificationTypeSpecification
+		public RuleCall getVerificationVerificationTypeSpecificationParserRuleCall_6_1_1_0() { return cVerificationVerificationTypeSpecificationParserRuleCall_6_1_1_0; }
 		
 		//';'
 		public Keyword getSemicolonKeyword_7() { return cSemicolonKeyword_7; }
@@ -1953,18 +2284,29 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final RuleCall cNameIDTerminalRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
 		private final Assignment cArrayModifierAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cArrayModifierArrayModifierParserRuleCall_2_0 = (RuleCall)cArrayModifierAssignment_2.eContents().get(0);
-		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
-		private final Keyword cDescriptionKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
-		private final Assignment cDescriptionAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
-		private final RuleCall cDescriptionEStringParserRuleCall_3_1_0 = (RuleCall)cDescriptionAssignment_3_1.eContents().get(0);
+		private final UnorderedGroup cUnorderedGroup_3 = (UnorderedGroup)cGroup.eContents().get(3);
+		private final Group cGroup_3_0 = (Group)cUnorderedGroup_3.eContents().get(0);
+		private final Keyword cDescriptionKeyword_3_0_0 = (Keyword)cGroup_3_0.eContents().get(0);
+		private final Assignment cDescriptionAssignment_3_0_1 = (Assignment)cGroup_3_0.eContents().get(1);
+		private final RuleCall cDescriptionEStringParserRuleCall_3_0_1_0 = (RuleCall)cDescriptionAssignment_3_0_1.eContents().get(0);
+		private final Group cGroup_3_1 = (Group)cUnorderedGroup_3.eContents().get(1);
+		private final Keyword cVerificationKeyword_3_1_0 = (Keyword)cGroup_3_1.eContents().get(0);
+		private final Assignment cVerificationAssignment_3_1_1 = (Assignment)cGroup_3_1.eContents().get(1);
+		private final RuleCall cVerificationVerificationTypeSpecificationParserRuleCall_3_1_1_0 = (RuleCall)cVerificationAssignment_3_1_1.eContents().get(0);
 		private final Keyword cSemicolonKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
-		//ResourceProperty PropertyDefinitions::ResourceProperty:
-		//	'Resource' name=ID arrayModifier=ArrayModifier? ('description' description=EString)?
-		//	';';
+		//ResourceProperty returns PropertyDefinitions::ResourceProperty:
+		//    'Resource' name=ID (arrayModifier=ArrayModifier)?
+		//    (('description' description=EString)? &
+		//    ('verification' verification=VerificationTypeSpecification)? )
+		//    ';'
+		//    ;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'Resource' name=ID arrayModifier=ArrayModifier? ('description' description=EString)? ';'
+		//'Resource' name=ID (arrayModifier=ArrayModifier)?
+		//(('description' description=EString)? &
+		//('verification' verification=VerificationTypeSpecification)? )
+		//';'
 		public Group getGroup() { return cGroup; }
 		
 		//'Resource'
@@ -1976,23 +2318,39 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//ID
 		public RuleCall getNameIDTerminalRuleCall_1_0() { return cNameIDTerminalRuleCall_1_0; }
 		
-		//arrayModifier=ArrayModifier?
+		//(arrayModifier=ArrayModifier)?
 		public Assignment getArrayModifierAssignment_2() { return cArrayModifierAssignment_2; }
 		
 		//ArrayModifier
 		public RuleCall getArrayModifierArrayModifierParserRuleCall_2_0() { return cArrayModifierArrayModifierParserRuleCall_2_0; }
 		
+		//(('description' description=EString)? &
+		//('verification' verification=VerificationTypeSpecification)? )
+		public UnorderedGroup getUnorderedGroup_3() { return cUnorderedGroup_3; }
+		
 		//('description' description=EString)?
-		public Group getGroup_3() { return cGroup_3; }
+		public Group getGroup_3_0() { return cGroup_3_0; }
 		
 		//'description'
-		public Keyword getDescriptionKeyword_3_0() { return cDescriptionKeyword_3_0; }
+		public Keyword getDescriptionKeyword_3_0_0() { return cDescriptionKeyword_3_0_0; }
 		
 		//description=EString
-		public Assignment getDescriptionAssignment_3_1() { return cDescriptionAssignment_3_1; }
+		public Assignment getDescriptionAssignment_3_0_1() { return cDescriptionAssignment_3_0_1; }
 		
 		//EString
-		public RuleCall getDescriptionEStringParserRuleCall_3_1_0() { return cDescriptionEStringParserRuleCall_3_1_0; }
+		public RuleCall getDescriptionEStringParserRuleCall_3_0_1_0() { return cDescriptionEStringParserRuleCall_3_0_1_0; }
+		
+		//('verification' verification=VerificationTypeSpecification)?
+		public Group getGroup_3_1() { return cGroup_3_1; }
+		
+		//'verification'
+		public Keyword getVerificationKeyword_3_1_0() { return cVerificationKeyword_3_1_0; }
+		
+		//verification=VerificationTypeSpecification
+		public Assignment getVerificationAssignment_3_1_1() { return cVerificationAssignment_3_1_1; }
+		
+		//VerificationTypeSpecification
+		public RuleCall getVerificationVerificationTypeSpecificationParserRuleCall_3_1_1_0() { return cVerificationVerificationTypeSpecificationParserRuleCall_3_1_1_0; }
 		
 		//';'
 		public Keyword getSemicolonKeyword_4() { return cSemicolonKeyword_4; }
@@ -2010,8 +2368,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//// ***************************************************************************************
 		//// Calculation
 		//// ***************************************************************************************
-		//EquationDefinition Calc::EquationDefinition:
-		//	result=EquationDefinitionResult '=' expression=AdditionAndSubtraction ';';
+		//EquationDefinition returns Calc::EquationDefinition:
+		//    result=EquationDefinitionResult '=' expression=AdditionAndSubtraction ';'
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//result=EquationDefinitionResult '=' expression=AdditionAndSubtraction ';'
@@ -2041,8 +2400,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final RuleCall cTypeDefinitionResultParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
 		private final RuleCall cEquationIntermediateResultParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		
-		//EquationDefinitionResult Calc::IEquationDefinitionResult:
-		//	TypeDefinitionResult | EquationIntermediateResult;
+		//EquationDefinitionResult returns Calc::IEquationDefinitionResult:
+		//     TypeDefinitionResult | EquationIntermediateResult
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//TypeDefinitionResult | EquationIntermediateResult
@@ -2063,12 +2423,14 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final CrossReference cReferenceATypeDefinitionCrossReference_2_0 = (CrossReference)cReferenceAssignment_2.eContents().get(0);
 		private final RuleCall cReferenceATypeDefinitionQualifiedNameParserRuleCall_2_0_1 = (RuleCall)cReferenceATypeDefinitionCrossReference_2_0.eContents().get(1);
 		
-		//TypeDefinitionResult Calc::IEquationDefinitionResult:
-		//	{Calc::TypeDefinitionResult}
-		//	'Ref:' reference=[Categories::ATypeDefinition|QualifiedName];
+		//TypeDefinitionResult returns Calc::IEquationDefinitionResult:
+		//    {Calc::TypeDefinitionResult}
+		//    'Ref:' reference=[Categories::ATypeDefinition | QualifiedName]
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Calc::TypeDefinitionResult} 'Ref:' reference=[Categories::ATypeDefinition|QualifiedName]
+		//{Calc::TypeDefinitionResult}
+		//'Ref:' reference=[Categories::ATypeDefinition | QualifiedName]
 		public Group getGroup() { return cGroup; }
 		
 		//{Calc::TypeDefinitionResult}
@@ -2077,10 +2439,10 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//'Ref:'
 		public Keyword getRefKeyword_1() { return cRefKeyword_1; }
 		
-		//reference=[Categories::ATypeDefinition|QualifiedName]
+		//reference=[Categories::ATypeDefinition | QualifiedName]
 		public Assignment getReferenceAssignment_2() { return cReferenceAssignment_2; }
 		
-		//[Categories::ATypeDefinition|QualifiedName]
+		//[Categories::ATypeDefinition | QualifiedName]
 		public CrossReference getReferenceATypeDefinitionCrossReference_2_0() { return cReferenceATypeDefinitionCrossReference_2_0; }
 		
 		//QualifiedName
@@ -2094,12 +2456,14 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final Assignment cNameAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cNameIDTerminalRuleCall_2_0 = (RuleCall)cNameAssignment_2.eContents().get(0);
 		
-		//EquationIntermediateResult Calc::IEquationDefinitionResult:
-		//	{Calc::EquationIntermediateResult}
-		//	'Calc:' name=ID;
+		//EquationIntermediateResult returns Calc::IEquationDefinitionResult:
+		//    {Calc::EquationIntermediateResult}
+		//    'Calc:' name=ID
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Calc::EquationIntermediateResult} 'Calc:' name=ID
+		//{Calc::EquationIntermediateResult}
+		//'Calc:' name=ID
 		public Group getGroup() { return cGroup; }
 		
 		//{Calc::EquationIntermediateResult}
@@ -2127,28 +2491,27 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final Assignment cRightAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
 		private final RuleCall cRightMultiplicationAndDivisionParserRuleCall_1_2_0 = (RuleCall)cRightAssignment_1_2.eContents().get(0);
 		
-		//AdditionAndSubtraction Calc::AExpression:
-		//	MultiplicationAndDivision ({Calc::AdditionAndSubtraction.left=current} operator=(OperatorPlus | OperatorMinus)
-		//	right=MultiplicationAndDivision)*;
+		//AdditionAndSubtraction returns Calc::AExpression:
+		//    MultiplicationAndDivision ({Calc::AdditionAndSubtraction.left=current} operator=(OperatorPlus|OperatorMinus) right=MultiplicationAndDivision)*
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//MultiplicationAndDivision ({Calc::AdditionAndSubtraction.left=current} operator=(OperatorPlus | OperatorMinus)
-		//right=MultiplicationAndDivision)*
+		//MultiplicationAndDivision ({Calc::AdditionAndSubtraction.left=current} operator=(OperatorPlus|OperatorMinus) right=MultiplicationAndDivision)*
 		public Group getGroup() { return cGroup; }
 		
 		//MultiplicationAndDivision
 		public RuleCall getMultiplicationAndDivisionParserRuleCall_0() { return cMultiplicationAndDivisionParserRuleCall_0; }
 		
-		//({Calc::AdditionAndSubtraction.left=current} operator=(OperatorPlus | OperatorMinus) right=MultiplicationAndDivision)*
+		//({Calc::AdditionAndSubtraction.left=current} operator=(OperatorPlus|OperatorMinus) right=MultiplicationAndDivision)*
 		public Group getGroup_1() { return cGroup_1; }
 		
 		//{Calc::AdditionAndSubtraction.left=current}
 		public Action getAdditionAndSubtractionLeftAction_1_0() { return cAdditionAndSubtractionLeftAction_1_0; }
 		
-		//operator=(OperatorPlus | OperatorMinus)
+		//operator=(OperatorPlus|OperatorMinus)
 		public Assignment getOperatorAssignment_1_1() { return cOperatorAssignment_1_1; }
 		
-		//(OperatorPlus | OperatorMinus)
+		//(OperatorPlus|OperatorMinus)
 		public Alternatives getOperatorAlternatives_1_1_0() { return cOperatorAlternatives_1_1_0; }
 		
 		//OperatorPlus
@@ -2176,13 +2539,12 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final Assignment cRightAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
 		private final RuleCall cRightPowerFunctionParserRuleCall_1_2_0 = (RuleCall)cRightAssignment_1_2.eContents().get(0);
 		
-		//MultiplicationAndDivision Calc::AExpression:
-		//	PowerFunction ({Calc::MultiplicationAndDivision.left=current} operator=(OperatorMultiply | OperatorDivide)
-		//	right=PowerFunction)*;
+		//MultiplicationAndDivision returns Calc::AExpression:
+		//     PowerFunction ({Calc::MultiplicationAndDivision.left=current} operator=(OperatorMultiply | OperatorDivide) right=PowerFunction)*
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//PowerFunction ({Calc::MultiplicationAndDivision.left=current} operator=(OperatorMultiply | OperatorDivide)
-		//right=PowerFunction)*
+		//PowerFunction ({Calc::MultiplicationAndDivision.left=current} operator=(OperatorMultiply | OperatorDivide) right=PowerFunction)*
 		public Group getGroup() { return cGroup; }
 		
 		//PowerFunction
@@ -2223,26 +2585,27 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final Assignment cRightAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
 		private final RuleCall cRightAExpressionParserRuleCall_1_2_0 = (RuleCall)cRightAssignment_1_2.eContents().get(0);
 		
-		//PowerFunction Calc::AExpression:
-		//	AExpression ({Calc::PowerFunction.left=current} operator=OperatorPower right=AExpression)*;
+		//PowerFunction returns Calc::AExpression:
+		//     AExpression ({Calc::PowerFunction.left=current} operator= (OperatorPower) right=AExpression)*
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//AExpression ({Calc::PowerFunction.left=current} operator=OperatorPower right=AExpression)*
+		//AExpression ({Calc::PowerFunction.left=current} operator= (OperatorPower) right=AExpression)*
 		public Group getGroup() { return cGroup; }
 		
 		//AExpression
 		public RuleCall getAExpressionParserRuleCall_0() { return cAExpressionParserRuleCall_0; }
 		
-		//({Calc::PowerFunction.left=current} operator=OperatorPower right=AExpression)*
+		//({Calc::PowerFunction.left=current} operator= (OperatorPower) right=AExpression)*
 		public Group getGroup_1() { return cGroup_1; }
 		
 		//{Calc::PowerFunction.left=current}
 		public Action getPowerFunctionLeftAction_1_0() { return cPowerFunctionLeftAction_1_0; }
 		
-		//operator=OperatorPower
+		//operator= (OperatorPower)
 		public Assignment getOperatorAssignment_1_1() { return cOperatorAssignment_1_1; }
 		
-		//OperatorPower
+		//(OperatorPower)
 		public RuleCall getOperatorOperatorPowerEnumRuleCall_1_1_0() { return cOperatorOperatorPowerEnumRuleCall_1_1_0; }
 		
 		//right=AExpression
@@ -2262,20 +2625,23 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final RuleCall cRightAdditionAndSubtractionParserRuleCall_3_0 = (RuleCall)cRightAssignment_3.eContents().get(0);
 		private final Keyword cRightParenthesisKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
-		//Parenthesis Calc::AOpRightExpression:
-		//	{Calc::Parenthesis} operator=OperatorMinus? '(' right=AdditionAndSubtraction ')';
+		//Parenthesis returns Calc::AOpRightExpression:
+		//    {Calc::Parenthesis}
+		//    operator =(OperatorMinus)? '(' right=AdditionAndSubtraction ')'
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Calc::Parenthesis} operator=OperatorMinus? '(' right=AdditionAndSubtraction ')'
+		//{Calc::Parenthesis}
+		//operator =(OperatorMinus)? '(' right=AdditionAndSubtraction ')'
 		public Group getGroup() { return cGroup; }
 		
 		//{Calc::Parenthesis}
 		public Action getParenthesisAction_0() { return cParenthesisAction_0; }
 		
-		//operator=OperatorMinus?
+		//operator =(OperatorMinus)?
 		public Assignment getOperatorAssignment_1() { return cOperatorAssignment_1; }
 		
-		//OperatorMinus
+		//(OperatorMinus)
 		public RuleCall getOperatorOperatorMinusEnumRuleCall_1_0() { return cOperatorOperatorMinusEnumRuleCall_1_0; }
 		
 		//'('
@@ -2299,11 +2665,20 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final RuleCall cFunctionParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
 		private final RuleCall cAAdvancedFunctionParserRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
 		
-		//AExpression Calc::AExpression:
-		//	ALiteral | ReferencedDefinitionInput | Parenthesis | Function | AAdvancedFunction;
+		//AExpression returns Calc::AExpression:
+		//    ALiteral |
+		//    ReferencedDefinitionInput  |
+		//     Parenthesis  |
+		//     Function |
+		//     AAdvancedFunction
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//ALiteral | ReferencedDefinitionInput | Parenthesis | Function | AAdvancedFunction
+		//ALiteral |
+		//ReferencedDefinitionInput  |
+		// Parenthesis  |
+		// Function |
+		// AAdvancedFunction
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//ALiteral
@@ -2327,8 +2702,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final CrossReference cReferenceIEquationDefinitionInputCrossReference_0 = (CrossReference)cReferenceAssignment.eContents().get(0);
 		private final RuleCall cReferenceIEquationDefinitionInputQualifiedNameParserRuleCall_0_1 = (RuleCall)cReferenceIEquationDefinitionInputCrossReference_0.eContents().get(1);
 		
-		//ReferencedDefinitionInput Calc::ReferencedDefinitionInput:
-		//	reference=[Calc::IEquationDefinitionInput|QualifiedName];
+		//ReferencedDefinitionInput returns Calc::ReferencedDefinitionInput:
+		//    reference=[Calc::IEquationDefinitionInput|QualifiedName]
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//reference=[Calc::IEquationDefinitionInput|QualifiedName]
@@ -2347,11 +2723,16 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final RuleCall cValueEParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		private final RuleCall cValuePiParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
 		
-		//ALiteral Calc::ALiteral:
-		//	NumberLiteral | ValueE | ValuePi;
+		//ALiteral returns Calc::ALiteral:
+		//    NumberLiteral |
+		//    ValueE |
+		//    ValuePi
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//NumberLiteral | ValueE | ValuePi
+		//NumberLiteral |
+		//ValueE |
+		//ValuePi
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//NumberLiteral
@@ -2385,24 +2766,23 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final RuleCall cRightAdditionAndSubtractionParserRuleCall_3_0 = (RuleCall)cRightAssignment_3.eContents().get(0);
 		private final Keyword cRightParenthesisKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
-		//Function Calc::AExpression:
-		//	{Calc::Function} operator=(OperatorCos | OperatorSin | OperatorTan | OperatorAtan | OperatorAcos | OperatorAsin |
-		//	OperatorSqrt | OperatorLog | OperatorLn | OperatorLd | OperatorExp) '(' right=AdditionAndSubtraction ')';
+		//Function returns Calc::AExpression:
+		//    {Calc::Function}
+		//    operator=(OperatorCos| OperatorSin | OperatorTan | OperatorAtan | OperatorAcos | OperatorAsin | OperatorSqrt | OperatorLog | OperatorLn | OperatorLd | OperatorExp) '(' right=AdditionAndSubtraction ')'
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Calc::Function} operator=(OperatorCos | OperatorSin | OperatorTan | OperatorAtan | OperatorAcos | OperatorAsin |
-		//OperatorSqrt | OperatorLog | OperatorLn | OperatorLd | OperatorExp) '(' right=AdditionAndSubtraction ')'
+		//{Calc::Function}
+		//operator=(OperatorCos| OperatorSin | OperatorTan | OperatorAtan | OperatorAcos | OperatorAsin | OperatorSqrt | OperatorLog | OperatorLn | OperatorLd | OperatorExp) '(' right=AdditionAndSubtraction ')'
 		public Group getGroup() { return cGroup; }
 		
 		//{Calc::Function}
 		public Action getFunctionAction_0() { return cFunctionAction_0; }
 		
-		//operator=(OperatorCos | OperatorSin | OperatorTan | OperatorAtan | OperatorAcos | OperatorAsin | OperatorSqrt |
-		//OperatorLog | OperatorLn | OperatorLd | OperatorExp)
+		//operator=(OperatorCos| OperatorSin | OperatorTan | OperatorAtan | OperatorAcos | OperatorAsin | OperatorSqrt | OperatorLog | OperatorLn | OperatorLd | OperatorExp)
 		public Assignment getOperatorAssignment_1() { return cOperatorAssignment_1; }
 		
-		//(OperatorCos | OperatorSin | OperatorTan | OperatorAtan | OperatorAcos | OperatorAsin | OperatorSqrt | OperatorLog |
-		//OperatorLn | OperatorLd | OperatorExp)
+		//(OperatorCos| OperatorSin | OperatorTan | OperatorAtan | OperatorAcos | OperatorAsin | OperatorSqrt | OperatorLog | OperatorLn | OperatorLd | OperatorExp)
 		public Alternatives getOperatorAlternatives_1_0() { return cOperatorAlternatives_1_0; }
 		
 		//OperatorCos
@@ -2456,8 +2836,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final RuleCall cAdvancedFunctionParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
 		private final RuleCall cSetFunctionParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
 		
-		//AAdvancedFunction Calc::AExpression:
-		//	AdvancedFunction | SetFunction;
+		//AAdvancedFunction returns Calc::AExpression:
+		//    AdvancedFunction | SetFunction
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//AdvancedFunction | SetFunction
@@ -2484,11 +2865,14 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final RuleCall cInputsAdditionAndSubtractionParserRuleCall_4_1_0 = (RuleCall)cInputsAssignment_4_1.eContents().get(0);
 		private final Keyword cRightParenthesisKeyword_5 = (Keyword)cGroup.eContents().get(5);
 		
-		//AdvancedFunction Calc::AExpression:
-		//	{Calc::AdvancedFunction} operator=ID '(' inputs+=AdditionAndSubtraction ("," inputs+=AdditionAndSubtraction)* ')';
+		//AdvancedFunction returns Calc::AExpression:
+		//    {Calc::AdvancedFunction}
+		//    operator=ID '(' inputs+=AdditionAndSubtraction ("," inputs+=AdditionAndSubtraction)* ')'
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Calc::AdvancedFunction} operator=ID '(' inputs+=AdditionAndSubtraction ("," inputs+=AdditionAndSubtraction)* ')'
+		//{Calc::AdvancedFunction}
+		//operator=ID '(' inputs+=AdditionAndSubtraction ("," inputs+=AdditionAndSubtraction)* ')'
 		public Group getGroup() { return cGroup; }
 		
 		//{Calc::AdvancedFunction}
@@ -2544,13 +2928,14 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final RuleCall cFilterNameIDTerminalRuleCall_5_1_0 = (RuleCall)cFilterNameAssignment_5_1.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_6 = (Keyword)cGroup.eContents().get(6);
 		
-		//SetFunction Calc::AExpression:
-		//	{Calc::SetFunction} operator=ID '{' typeDefinition=[Categories::ATypeDefinition|QualifiedName] (',' depth=INT)? (','
-		//	filterName=ID)? '}';
+		//SetFunction returns Calc::AExpression:
+		//    {Calc::SetFunction}
+		//    operator=ID '{' typeDefinition=[Categories::ATypeDefinition|QualifiedName] (','depth=INT)? (','filterName=ID)?'}'
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Calc::SetFunction} operator=ID '{' typeDefinition=[Categories::ATypeDefinition|QualifiedName] (',' depth=INT)? (','
-		//filterName=ID)? '}'
+		//{Calc::SetFunction}
+		//operator=ID '{' typeDefinition=[Categories::ATypeDefinition|QualifiedName] (','depth=INT)? (','filterName=ID)?'}'
 		public Group getGroup() { return cGroup; }
 		
 		//{Calc::SetFunction}
@@ -2574,7 +2959,7 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//QualifiedName
 		public RuleCall getTypeDefinitionATypeDefinitionQualifiedNameParserRuleCall_3_0_1() { return cTypeDefinitionATypeDefinitionQualifiedNameParserRuleCall_3_0_1; }
 		
-		//(',' depth=INT)?
+		//(','depth=INT)?
 		public Group getGroup_4() { return cGroup_4; }
 		
 		//','
@@ -2586,7 +2971,7 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//INT
 		public RuleCall getDepthINTTerminalRuleCall_4_1_0() { return cDepthINTTerminalRuleCall_4_1_0; }
 		
-		//(',' filterName=ID)?
+		//(','filterName=ID)?
 		public Group getGroup_5() { return cGroup_5; }
 		
 		//','
@@ -2608,17 +2993,20 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final Assignment cValueAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cValueFloatLiteralStringParserRuleCall_1_0 = (RuleCall)cValueAssignment_1.eContents().get(0);
 		
-		//NumberLiteral Calc::NumberLiteral:
-		//	{Calc::NumberLiteral} value=FloatLiteralString;
+		//NumberLiteral returns Calc::NumberLiteral:
+		//    {Calc::NumberLiteral}
+		//    value = FloatLiteralString
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Calc::NumberLiteral} value=FloatLiteralString
+		//{Calc::NumberLiteral}
+		//value = FloatLiteralString
 		public Group getGroup() { return cGroup; }
 		
 		//{Calc::NumberLiteral}
 		public Action getNumberLiteralAction_0() { return cNumberLiteralAction_0; }
 		
-		//value=FloatLiteralString
+		//value = FloatLiteralString
 		public Assignment getValueAssignment_1() { return cValueAssignment_1; }
 		
 		//FloatLiteralString
@@ -2630,12 +3018,14 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final Action cValuePiAction_0 = (Action)cGroup.eContents().get(0);
 		private final Keyword cPiKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		
-		//ValuePi Calc::ValuePi:
-		//	{Calc::ValuePi}
-		//	'pi';
+		//ValuePi returns Calc::ValuePi:
+		//    {Calc::ValuePi}
+		//    'pi'
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Calc::ValuePi} 'pi'
+		//{Calc::ValuePi}
+		//'pi'
 		public Group getGroup() { return cGroup; }
 		
 		//{Calc::ValuePi}
@@ -2650,12 +3040,14 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final Action cValueEAction_0 = (Action)cGroup.eContents().get(0);
 		private final Keyword cEKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		
-		//ValueE Calc::ValueE:
-		//	{Calc::ValueE}
-		//	'e';
+		//ValueE returns Calc::ValueE:
+		//    {Calc::ValueE}
+		//    'e'
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Calc::ValueE} 'e'
+		//{Calc::ValueE}
+		//'e'
 		public Group getGroup() { return cGroup; }
 		
 		//{Calc::ValueE}
@@ -2675,8 +3067,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		//// ***************************************************************************************
 		//// General Expressions
 		//// ***************************************************************************************
-		//Version:
-		//	INT ('.' INT)*;
+		//Version returns ecore::EString:
+		//    INT ('.' INT)*
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//INT ('.' INT)*
@@ -2700,8 +3093,8 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final Keyword cHyphenMinusKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final RuleCall cINTTerminalRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
 		
-		//EInt ecore::EInt:
-		//	'-'? INT;
+		//EInt returns ecore::EInt:
+		//    '-'? INT;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//'-'? INT
@@ -2719,8 +3112,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final Keyword cHyphenMinusKeyword_0 = (Keyword)cGroup.eContents().get(0);
 		private final RuleCall cINTTerminalRuleCall_1 = (RuleCall)cGroup.eContents().get(1);
 		
-		//IntLiteralString:
-		//	'-'? INT?;
+		//IntLiteralString returns ecore::EString:
+		//    '-'? INT?
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//'-'? INT?
@@ -2741,8 +3135,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final Keyword cFullStopKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
 		private final RuleCall cINTTerminalRuleCall_2_1 = (RuleCall)cGroup_2.eContents().get(1);
 		
-		//FloatLiteralString:
-		//	'-'? INT ('.' INT)?;
+		//FloatLiteralString returns ecore::EString:
+		//    '-'? INT ('.' INT)?
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//'-'? INT ('.' INT)?
@@ -2769,11 +3164,12 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final Keyword cTrueKeyword_0 = (Keyword)cAlternatives.eContents().get(0);
 		private final Keyword cFalseKeyword_1 = (Keyword)cAlternatives.eContents().get(1);
 		
-		//BooleanLiteralString:
-		//	'true' | 'false';
+		//BooleanLiteralString returns ecore::EString:
+		//    'true'|'false'
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'true' | 'false'
+		//'true'|'false'
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//'true'
@@ -2786,8 +3182,8 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "de.dlr.sc.virsat.model.concept.ConceptLanguage.EString");
 		private final RuleCall cSTRINGTerminalRuleCall = (RuleCall)rule.eContents().get(1);
 		
-		//EString:
-		//	STRING;
+		//EString returns ecore::EString:
+		//    STRING;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//STRING
@@ -2800,7 +3196,8 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final Keyword cFullStopAsteriskKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		
 		//QualifiedNameWithWildcard:
-		//	QualifiedName '.*'?;
+		//  QualifiedName '.*'?
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//QualifiedName '.*'?
@@ -2821,7 +3218,8 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final RuleCall cIDTerminalRuleCall_1_1 = (RuleCall)cGroup_1.eContents().get(1);
 		
 		//QualifiedName:
-		//	ID ('.' ID)*;
+		//    ID ('.' ID)*
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//ID ('.' ID)*
@@ -2845,11 +3243,12 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final EnumLiteralDeclaration cPLUSEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cPLUSPlusSignKeyword_0 = (Keyword)cPLUSEnumLiteralDeclaration.eContents().get(0);
 		
-		//enum OperatorPlus returns Calc::MathOperator:
-		//	PLUS='+';
+		//enum OperatorPlus returns Calc::MathOperator :
+		//    PLUS = '+'
+		//;
 		public EnumRule getRule() { return rule; }
 		
-		//PLUS='+'
+		//PLUS = '+'
 		public EnumLiteralDeclaration getPLUSEnumLiteralDeclaration() { return cPLUSEnumLiteralDeclaration; }
 		
 		//'+'
@@ -2860,11 +3259,12 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final EnumLiteralDeclaration cMINUSEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cMINUSHyphenMinusKeyword_0 = (Keyword)cMINUSEnumLiteralDeclaration.eContents().get(0);
 		
-		//enum OperatorMinus returns Calc::MathOperator:
-		//	MINUS='-';
+		//enum OperatorMinus returns Calc::MathOperator :
+		//    MINUS = '-'
+		//;
 		public EnumRule getRule() { return rule; }
 		
-		//MINUS='-'
+		//MINUS = '-'
 		public EnumLiteralDeclaration getMINUSEnumLiteralDeclaration() { return cMINUSEnumLiteralDeclaration; }
 		
 		//'-'
@@ -2875,11 +3275,12 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final EnumLiteralDeclaration cMULTIPLYEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cMULTIPLYAsteriskKeyword_0 = (Keyword)cMULTIPLYEnumLiteralDeclaration.eContents().get(0);
 		
-		//enum OperatorMultiply returns Calc::MathOperator:
-		//	MULTIPLY='*';
+		//enum OperatorMultiply returns Calc::MathOperator :
+		//    MULTIPLY = '*'
+		//;
 		public EnumRule getRule() { return rule; }
 		
-		//MULTIPLY='*'
+		//MULTIPLY = '*'
 		public EnumLiteralDeclaration getMULTIPLYEnumLiteralDeclaration() { return cMULTIPLYEnumLiteralDeclaration; }
 		
 		//'*'
@@ -2890,11 +3291,12 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final EnumLiteralDeclaration cDIVIDEEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cDIVIDESolidusKeyword_0 = (Keyword)cDIVIDEEnumLiteralDeclaration.eContents().get(0);
 		
-		//enum OperatorDivide returns Calc::MathOperator:
-		//	DIVIDE='/';
+		//enum OperatorDivide returns Calc::MathOperator :
+		//    DIVIDE = '/'
+		//;
 		public EnumRule getRule() { return rule; }
 		
-		//DIVIDE='/'
+		//DIVIDE = '/'
 		public EnumLiteralDeclaration getDIVIDEEnumLiteralDeclaration() { return cDIVIDEEnumLiteralDeclaration; }
 		
 		//'/'
@@ -2905,11 +3307,12 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final EnumLiteralDeclaration cPOWEREnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cPOWERCircumflexAccentKeyword_0 = (Keyword)cPOWEREnumLiteralDeclaration.eContents().get(0);
 		
-		//enum OperatorPower returns Calc::MathOperator:
-		//	POWER='^';
+		//enum OperatorPower returns Calc::MathOperator :
+		//    POWER = '^'
+		//;
 		public EnumRule getRule() { return rule; }
 		
-		//POWER='^'
+		//POWER = '^'
 		public EnumLiteralDeclaration getPOWEREnumLiteralDeclaration() { return cPOWEREnumLiteralDeclaration; }
 		
 		//'^'
@@ -2920,11 +3323,12 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final EnumLiteralDeclaration cCOSEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cCOSCosKeyword_0 = (Keyword)cCOSEnumLiteralDeclaration.eContents().get(0);
 		
-		//enum OperatorCos returns Calc::MathOperator:
-		//	COS='cos';
+		//enum OperatorCos returns Calc::MathOperator :
+		//    COS = 'cos'
+		//;
 		public EnumRule getRule() { return rule; }
 		
-		//COS='cos'
+		//COS = 'cos'
 		public EnumLiteralDeclaration getCOSEnumLiteralDeclaration() { return cCOSEnumLiteralDeclaration; }
 		
 		//'cos'
@@ -2935,11 +3339,12 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final EnumLiteralDeclaration cSINEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cSINSinKeyword_0 = (Keyword)cSINEnumLiteralDeclaration.eContents().get(0);
 		
-		//enum OperatorSin returns Calc::MathOperator:
-		//	SIN='sin';
+		//enum OperatorSin returns Calc::MathOperator :
+		//    SIN = 'sin'
+		//;
 		public EnumRule getRule() { return rule; }
 		
-		//SIN='sin'
+		//SIN = 'sin'
 		public EnumLiteralDeclaration getSINEnumLiteralDeclaration() { return cSINEnumLiteralDeclaration; }
 		
 		//'sin'
@@ -2950,11 +3355,12 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final EnumLiteralDeclaration cTANEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cTANTanKeyword_0 = (Keyword)cTANEnumLiteralDeclaration.eContents().get(0);
 		
-		//enum OperatorTan returns Calc::MathOperator:
-		//	TAN='tan';
+		//enum OperatorTan returns Calc::MathOperator :
+		//    TAN = 'tan'
+		//;
 		public EnumRule getRule() { return rule; }
 		
-		//TAN='tan'
+		//TAN = 'tan'
 		public EnumLiteralDeclaration getTANEnumLiteralDeclaration() { return cTANEnumLiteralDeclaration; }
 		
 		//'tan'
@@ -2965,11 +3371,12 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final EnumLiteralDeclaration cATANEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cATANAtanKeyword_0 = (Keyword)cATANEnumLiteralDeclaration.eContents().get(0);
 		
-		//enum OperatorAtan returns Calc::MathOperator:
-		//	ATAN='atan';
+		//enum OperatorAtan returns Calc::MathOperator :
+		//    ATAN = 'atan'
+		//;
 		public EnumRule getRule() { return rule; }
 		
-		//ATAN='atan'
+		//ATAN = 'atan'
 		public EnumLiteralDeclaration getATANEnumLiteralDeclaration() { return cATANEnumLiteralDeclaration; }
 		
 		//'atan'
@@ -2980,11 +3387,12 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final EnumLiteralDeclaration cACOSEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cACOSAcosKeyword_0 = (Keyword)cACOSEnumLiteralDeclaration.eContents().get(0);
 		
-		//enum OperatorAcos returns Calc::MathOperator:
-		//	ACOS='acos';
+		//enum OperatorAcos returns Calc::MathOperator :
+		//    ACOS = 'acos'
+		//;
 		public EnumRule getRule() { return rule; }
 		
-		//ACOS='acos'
+		//ACOS = 'acos'
 		public EnumLiteralDeclaration getACOSEnumLiteralDeclaration() { return cACOSEnumLiteralDeclaration; }
 		
 		//'acos'
@@ -2995,11 +3403,12 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final EnumLiteralDeclaration cASINEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cASINAsinKeyword_0 = (Keyword)cASINEnumLiteralDeclaration.eContents().get(0);
 		
-		//enum OperatorAsin returns Calc::MathOperator:
-		//	ASIN='asin';
+		//enum OperatorAsin returns Calc::MathOperator :
+		//    ASIN = 'asin'
+		//;
 		public EnumRule getRule() { return rule; }
 		
-		//ASIN='asin'
+		//ASIN = 'asin'
 		public EnumLiteralDeclaration getASINEnumLiteralDeclaration() { return cASINEnumLiteralDeclaration; }
 		
 		//'asin'
@@ -3010,11 +3419,12 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final EnumLiteralDeclaration cSQRTEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cSQRTSqrtKeyword_0 = (Keyword)cSQRTEnumLiteralDeclaration.eContents().get(0);
 		
-		//enum OperatorSqrt returns Calc::MathOperator:
-		//	SQRT='sqrt';
+		//enum OperatorSqrt returns Calc::MathOperator :
+		//    SQRT = 'sqrt'
+		//;
 		public EnumRule getRule() { return rule; }
 		
-		//SQRT='sqrt'
+		//SQRT = 'sqrt'
 		public EnumLiteralDeclaration getSQRTEnumLiteralDeclaration() { return cSQRTEnumLiteralDeclaration; }
 		
 		//'sqrt'
@@ -3025,11 +3435,12 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final EnumLiteralDeclaration cLOGEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cLOGLogKeyword_0 = (Keyword)cLOGEnumLiteralDeclaration.eContents().get(0);
 		
-		//enum OperatorLog returns Calc::MathOperator:
-		//	LOG='log';
+		//enum OperatorLog returns Calc::MathOperator :
+		//    LOG = 'log'
+		//;
 		public EnumRule getRule() { return rule; }
 		
-		//LOG='log'
+		//LOG = 'log'
 		public EnumLiteralDeclaration getLOGEnumLiteralDeclaration() { return cLOGEnumLiteralDeclaration; }
 		
 		//'log'
@@ -3040,11 +3451,12 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final EnumLiteralDeclaration cLNEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cLNLnKeyword_0 = (Keyword)cLNEnumLiteralDeclaration.eContents().get(0);
 		
-		//enum OperatorLn returns Calc::MathOperator:
-		//	LN='ln';
+		//enum OperatorLn returns Calc::MathOperator :
+		//    LN = 'ln'
+		//;
 		public EnumRule getRule() { return rule; }
 		
-		//LN='ln'
+		//LN = 'ln'
 		public EnumLiteralDeclaration getLNEnumLiteralDeclaration() { return cLNEnumLiteralDeclaration; }
 		
 		//'ln'
@@ -3055,11 +3467,12 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final EnumLiteralDeclaration cEXPEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cEXPExpKeyword_0 = (Keyword)cEXPEnumLiteralDeclaration.eContents().get(0);
 		
-		//enum OperatorExp returns Calc::MathOperator:
-		//	EXP='exp';
+		//enum OperatorExp returns Calc::MathOperator :
+		//    EXP = 'exp'
+		//;
 		public EnumRule getRule() { return rule; }
 		
-		//EXP='exp'
+		//EXP = 'exp'
 		public EnumLiteralDeclaration getEXPEnumLiteralDeclaration() { return cEXPEnumLiteralDeclaration; }
 		
 		//'exp'
@@ -3070,11 +3483,12 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		private final EnumLiteralDeclaration cLDEnumLiteralDeclaration = (EnumLiteralDeclaration)rule.eContents().get(1);
 		private final Keyword cLDLdKeyword_0 = (Keyword)cLDEnumLiteralDeclaration.eContents().get(0);
 		
-		//enum OperatorLd returns Calc::MathOperator:
-		//	LD='ld';
+		//enum OperatorLd returns Calc::MathOperator :
+		//    LD = 'ld'
+		//;
 		public EnumRule getRule() { return rule; }
 		
-		//LD='ld'
+		//LD = 'ld'
 		public EnumLiteralDeclaration getLDEnumLiteralDeclaration() { return cLDEnumLiteralDeclaration; }
 		
 		//'ld'
@@ -3092,6 +3506,8 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 	private final ArrayModifierElements pArrayModifier;
 	private final DynmaicArrayModifierElements pDynmaicArrayModifier;
 	private final StaticArrayModifierElements pStaticArrayModifier;
+	private final VerificationSpecificationElements pVerificationSpecification;
+	private final VerificationTypeSpecificationElements pVerificationTypeSpecification;
 	private final ComposedPropertyElements pComposedProperty;
 	private final IntPropertyElements pIntProperty;
 	private final FloatPropertyElements pFloatProperty;
@@ -3165,6 +3581,8 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		this.pArrayModifier = new ArrayModifierElements();
 		this.pDynmaicArrayModifier = new DynmaicArrayModifierElements();
 		this.pStaticArrayModifier = new StaticArrayModifierElements();
+		this.pVerificationSpecification = new VerificationSpecificationElements();
+		this.pVerificationTypeSpecification = new VerificationTypeSpecificationElements();
 		this.pComposedProperty = new ComposedPropertyElements();
 		this.pIntProperty = new IntPropertyElements();
 		this.pFloatProperty = new FloatPropertyElements();
@@ -3246,14 +3664,23 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 	}
 
 	
-	//Concept Concepts::Concept:
-	//	{Concepts::Concept}
-	//	'Concept' name=QualifiedName (('displayname' displayName=EString)? & ('version' version=Version)? & beta?='beta'? &
-	//	('description' description=EString)? & DMF?='hasDMF'?)
-	//	'{' (imports+=ConceptImport* & ecoreImports+=EcoreImport*) structuralElements+=StructuralElement*
-	//	relations+=ARelation*
-	//	categories+=Category*
-	//	'}';
+	//Concept returns Concepts::Concept:
+	//    {Concepts::Concept}
+	//    'Concept' name=QualifiedName
+	//    (
+	//        ('displayname' displayName=EString)? &
+	//        ('version' version=Version)? &
+	//        (beta?='beta')? &
+	//        ('description' description=EString)? &
+	//        (DMF?='hasDMF')?
+	//    )
+	//    '{'
+	//        ((imports+=ConceptImport)* &
+	//        (ecoreImports+=EcoreImport)* )
+	//        (structuralElements+=StructuralElement)*
+	//        (relations+=ARelation)*
+	//        (categories+=Category)*
+	//    '}';
 	public ConceptElements getConceptAccess() {
 		return pConcept;
 	}
@@ -3265,16 +3692,18 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 	//// ***************************************************************************************
 	//// Structural Elements and Relations
 	//// ***************************************************************************************
-	//StructuralElement Structural::StructuralElement:
-	//	{Structural::StructuralElement}
-	//	'StructuralElement' name=ID (('shortname' shortName=ID)? & ('description' description=EString)?)
-	//	'{' ((isRootStructuralElement?='IsRootStructuralElement' ';')? & ('Inherits' 'From' ('['
-	//	canInheritFrom+=[Structural::StructuralElement|QualifiedName] (","
-	//	canInheritFrom+=[Structural::StructuralElement|QualifiedName])* ']' | isCanInheritFromAll?='All') ';')? &
-	//	('Applicable' 'For' ('[' applicableFor+=[Structural::StructuralElement|QualifiedName] (","
-	//	applicableFor+=[Structural::StructuralElement|QualifiedName])* ']' | isApplicableForAll?='All') ';')? &
-	//	('Cardinality' cardinality=INT ';')?)
-	//	'}';
+	//StructuralElement returns Structural::StructuralElement:
+	//    {Structural::StructuralElement}
+	//    'StructuralElement' name=ID
+	//    (('shortname' shortName=ID)? &
+	//    ('description' description=EString)? )
+	//    '{'
+	//        ((isRootStructuralElement?='IsRootStructuralElement'';')? &
+	//        ('Inherits' 'From' (('[' canInheritFrom+=[Structural::StructuralElement|QualifiedName] ( "," canInheritFrom+=[Structural::StructuralElement|QualifiedName])* ']') | isCanInheritFromAll?='All') ';')? &
+	//        ('Applicable' 'For' (('[' applicableFor+=[Structural::StructuralElement|QualifiedName] ( "," applicableFor+=[Structural::StructuralElement|QualifiedName])* ']') | isApplicableForAll?='All') ';' )? &
+	//        ('Cardinality' cardinality=INT ';')? )
+	//    '}'
+	//;
 	public StructuralElementElements getStructuralElementAccess() {
 		return pStructuralElement;
 	}
@@ -3283,15 +3712,16 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getStructuralElementAccess().getRule();
 	}
 	
-	//GeneralRelation Structural::GeneralRelation:
-	//	{Structural::GeneralRelation}
-	//	'GeneralRelation' name=ID ('description' description=EString)?
-	//	'{'
-	//	'Referenced' 'Type' referencedType=[Structural::StructuralElement|QualifiedName] ';' ('Applicable' 'For' ('['
-	//	applicableFor+=[Structural::StructuralElement|QualifiedName] (","
-	//	applicableFor+=[Structural::StructuralElement|QualifiedName])* ']' | isApplicableForAll?='All') ';')? ('Cardinality'
-	//	cardinality=INT ';')?
-	//	'}';
+	//GeneralRelation returns Structural::GeneralRelation:
+	//    {Structural::GeneralRelation}
+	//    'GeneralRelation' name=ID
+	//    ('description' description=EString)?
+	//    '{'
+	//        'Referenced' 'Type' referencedType=[Structural::StructuralElement|QualifiedName]';'
+	//        ('Applicable' 'For' (('[' applicableFor+=[Structural::StructuralElement|QualifiedName] ( "," applicableFor+=[Structural::StructuralElement|QualifiedName])* ']') | isApplicableForAll?='All') ';' )?
+	//        ('Cardinality' cardinality=INT ';')?
+	//    '}'
+	//;
 	public GeneralRelationElements getGeneralRelationAccess() {
 		return pGeneralRelation;
 	}
@@ -3300,8 +3730,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getGeneralRelationAccess().getRule();
 	}
 	
-	//ARelation Structural::GeneralRelation:
-	//	GeneralRelation;
+	//ARelation returns Structural::GeneralRelation:
+	//    GeneralRelation
+	//;
 	public ARelationElements getARelationAccess() {
 		return pARelation;
 	}
@@ -3313,16 +3744,20 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 	//// ***************************************************************************************
 	//// The Properties
 	//// ***************************************************************************************
-	//Category Categories::Category:
-	//	{Categories::Category}
-	//	'Category' name=ID (('extends' extendsCategory=[Categories::Category|QualifiedName])? & ('shortname' shortName=ID)? &
-	//	('description' description=EString)?)
-	//	'{' ((isAbstract?='IsAbstract' ';')? & ('Applicable' 'For' ('['
-	//	applicableFor+=[Structural::StructuralElement|QualifiedName] (","
-	//	applicableFor+=[Structural::StructuralElement|QualifiedName])* ']' | isApplicableForAll?='All') ';')? &
-	//	('Cardinality' cardinality=INT ';')?) properties+=AProperty*
-	//	equationDefinitions+=EquationDefinition*
-	//	'}';
+	//Category returns Categories::Category:
+	//    {Categories::Category}
+	//    'Category' name=ID
+	//    (('extends' extendsCategory=[Categories::Category|QualifiedName])? &
+	//    ('shortname' shortName=ID)? &
+	//    ('description' description=EString)? )
+	//    '{'
+	//        ((isAbstract?='IsAbstract'';')? &
+	//        (isVerification?='IsVerification'';')? &
+	//        ('Applicable' 'For' (('[' applicableFor+=[Structural::StructuralElement|QualifiedName] ( "," applicableFor+=[Structural::StructuralElement|QualifiedName])* ']') | isApplicableForAll?='All') ';' )? &
+	//        ('Cardinality' cardinality=INT ';')? )
+	//        (properties+=AProperty)*
+	//        (equationDefinitions+=EquationDefinition)*
+	//    '}';
 	public CategoryElements getCategoryAccess() {
 		return pCategory;
 	}
@@ -3331,10 +3766,11 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getCategoryAccess().getRule();
 	}
 	
-	//ConceptImport Concepts::ConceptImport:
-	//	{Concepts::ConceptImport}
-	//	'Import' importedNamespace=QualifiedNameWithWildcard
-	//	';';
+	//ConceptImport returns Concepts::ConceptImport:
+	//    {Concepts::ConceptImport}
+	//   'Import' importedNamespace = QualifiedNameWithWildcard
+	//   ';'
+	//;
 	public ConceptImportElements getConceptImportAccess() {
 		return pConceptImport;
 	}
@@ -3343,10 +3779,11 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getConceptImportAccess().getRule();
 	}
 	
-	//EcoreImport Concepts::EcoreImport:
-	//	{Concepts::EcoreImport}
-	//	'EImport' importedNsURI=STRING ('genModel' importedGenModel=STRING)?
-	//	';';
+	//EcoreImport returns Concepts::EcoreImport:
+	//    {Concepts::EcoreImport}
+	//   'EImport' importedNsURI = STRING ('genModel' importedGenModel=STRING)?
+	//   ';'
+	//;
 	public EcoreImportElements getEcoreImportAccess() {
 		return pEcoreImport;
 	}
@@ -3358,9 +3795,17 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 	//// ***************************************************************************************
 	//// The Properties
 	//// ***************************************************************************************
-	//AProperty PropertyDefinitions::AProperty:
-	//	ComposedProperty | IntProperty | FloatProperty | StringProperty | BooleanProperty | EnumProperty | ReferenceProperty
-	//	| EReferenceProperty | ResourceProperty;
+	//AProperty returns PropertyDefinitions::AProperty:
+	//    ComposedProperty |
+	//    IntProperty |
+	//    FloatProperty |
+	//    StringProperty |
+	//    BooleanProperty |
+	//    EnumProperty |
+	//    ReferenceProperty |
+	//    EReferenceProperty |
+	//    ResourceProperty
+	//;
 	public APropertyElements getAPropertyAccess() {
 		return pAProperty;
 	}
@@ -3369,8 +3814,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getAPropertyAccess().getRule();
 	}
 	
-	//ArrayModifier PropertyDefinitions::IArrayModifier:
-	//	DynmaicArrayModifier | StaticArrayModifier;
+	//ArrayModifier returns PropertyDefinitions::IArrayModifier:
+	//    DynmaicArrayModifier | StaticArrayModifier
+	//;
 	public ArrayModifierElements getArrayModifierAccess() {
 		return pArrayModifier;
 	}
@@ -3379,9 +3825,10 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getArrayModifierAccess().getRule();
 	}
 	
-	//DynmaicArrayModifier PropertyDefinitions::DynamicArrayModifier:
-	//	{PropertyDefinitions::DynamicArrayModifier}
-	//	'[' ']';
+	//DynmaicArrayModifier returns PropertyDefinitions::DynamicArrayModifier:
+	//    {PropertyDefinitions::DynamicArrayModifier}
+	//    '[' ']'
+	//;
 	public DynmaicArrayModifierElements getDynmaicArrayModifierAccess() {
 		return pDynmaicArrayModifier;
 	}
@@ -3390,8 +3837,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getDynmaicArrayModifierAccess().getRule();
 	}
 	
-	//StaticArrayModifier PropertyDefinitions::StaticArrayModifier:
-	//	'[' arraySize=INT ']';
+	//StaticArrayModifier returns PropertyDefinitions::StaticArrayModifier:
+	//    '[' arraySize=INT ']'
+	//;
 	public StaticArrayModifierElements getStaticArrayModifierAccess() {
 		return pStaticArrayModifier;
 	}
@@ -3400,12 +3848,38 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getStaticArrayModifierAccess().getRule();
 	}
 	
-	//ComposedProperty PropertyDefinitions::ComposedProperty:
-	//	{PropertyDefinitions::ComposedProperty}
-	//	'Type' name=ID arrayModifier=ArrayModifier?
-	//	'of' 'Category' type=[Categories::Category|QualifiedName] (('description' description=EString)? & ('quantityKind'
-	//	quantityKindName=EString)? & ('unit' unitName=EString)?)
-	//	';';
+	//VerificationSpecification returns PropertyDefinitions::IVerificationSpecification:
+	//    VerificationTypeSpecification
+	//;
+	public VerificationSpecificationElements getVerificationSpecificationAccess() {
+		return pVerificationSpecification;
+	}
+	
+	public ParserRule getVerificationSpecificationRule() {
+		return getVerificationSpecificationAccess().getRule();
+	}
+	
+	//VerificationTypeSpecification returns PropertyDefinitions::VerificationTypeSpecification:
+	//    verificationType=[Categories::ATypeDefinition|QualifiedName]
+	//;
+	public VerificationTypeSpecificationElements getVerificationTypeSpecificationAccess() {
+		return pVerificationTypeSpecification;
+	}
+	
+	public ParserRule getVerificationTypeSpecificationRule() {
+		return getVerificationTypeSpecificationAccess().getRule();
+	}
+	
+	//ComposedProperty returns PropertyDefinitions::ComposedProperty:
+	//    {PropertyDefinitions::ComposedProperty}
+	//    'Type' name=ID (arrayModifier=ArrayModifier)?
+	//    'of' 'Category' type=[Categories::Category|QualifiedName]
+	//    (('description' description=EString)? &
+	//    ('quantityKind' quantityKindName = EString)? &
+	//    ('verification' verification=VerificationTypeSpecification)? &
+	//    ('unit' unitName = EString)? )
+	//    ';'
+	//    ;
 	public ComposedPropertyElements getComposedPropertyAccess() {
 		return pComposedProperty;
 	}
@@ -3414,11 +3888,16 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getComposedPropertyAccess().getRule();
 	}
 	
-	//IntProperty PropertyDefinitions::IntProperty:
-	//	{PropertyDefinitions::IntProperty}
-	//	'IntProperty' name=ID arrayModifier=ArrayModifier? (('description' description=EString)? & ('default'
-	//	defaultValue=IntLiteralString)? & ('quantityKind' quantityKindName=EString)? & ('unit' unitName=EString)?)
-	//	';';
+	//IntProperty returns PropertyDefinitions::IntProperty:
+	//    {PropertyDefinitions::IntProperty}
+	//    'IntProperty' name=ID (arrayModifier=ArrayModifier)?
+	//    (('description' description=EString)? &
+	//    ('default' defaultValue=IntLiteralString)? &
+	//    ('quantityKind' quantityKindName = EString)? &
+	//    ('verification' verification=VerificationTypeSpecification)? &
+	//    ('unit' unitName = EString)? )
+	//    ';'
+	//    ;
 	public IntPropertyElements getIntPropertyAccess() {
 		return pIntProperty;
 	}
@@ -3427,11 +3906,16 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getIntPropertyAccess().getRule();
 	}
 	
-	//FloatProperty PropertyDefinitions::FloatProperty:
-	//	{PropertyDefinitions::FloatProperty}
-	//	'FloatProperty' name=ID arrayModifier=ArrayModifier? (('description' description=EString)? & ('default'
-	//	defaultValue=FloatLiteralString)? & ('quantityKind' quantityKindName=EString)? & ('unit' unitName=EString)?)
-	//	';';
+	//FloatProperty returns PropertyDefinitions::FloatProperty:
+	//    {PropertyDefinitions::FloatProperty}
+	//    'FloatProperty' name=ID (arrayModifier=ArrayModifier)?
+	//    (('description' description=EString)? &
+	//    ('default' defaultValue=FloatLiteralString)? &
+	//    ('quantityKind' quantityKindName = EString)? &
+	//    ('verification' verification=VerificationTypeSpecification)? &
+	//    ('unit' unitName = EString)? )
+	//    ';'
+	//    ;
 	public FloatPropertyElements getFloatPropertyAccess() {
 		return pFloatProperty;
 	}
@@ -3440,11 +3924,14 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getFloatPropertyAccess().getRule();
 	}
 	
-	//StringProperty PropertyDefinitions::StringProperty:
-	//	{PropertyDefinitions::StringProperty}
-	//	'StringProperty' name=ID arrayModifier=ArrayModifier? (('description' description=EString)? & ('default'
-	//	defaultValue=EString)?)
-	//	';';
+	//StringProperty returns PropertyDefinitions::StringProperty:
+	//    {PropertyDefinitions::StringProperty}
+	//    'StringProperty' name=ID (arrayModifier=ArrayModifier)?
+	//    (('description' description=EString)? &
+	//    ('verification' verification=VerificationTypeSpecification)? &
+	//    ('default' defaultValue=EString)?)
+	//    ';'
+	//    ;
 	public StringPropertyElements getStringPropertyAccess() {
 		return pStringProperty;
 	}
@@ -3453,10 +3940,13 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getStringPropertyAccess().getRule();
 	}
 	
-	//BooleanProperty PropertyDefinitions::BooleanProperty:
-	//	'BooleanProperty' name=ID arrayModifier=ArrayModifier? (('description' description=EString)? & ('default'
-	//	defaultValue=BooleanLiteralString)?)
-	//	';';
+	//BooleanProperty returns PropertyDefinitions::BooleanProperty:
+	//    'BooleanProperty' name=ID (arrayModifier=ArrayModifier)?
+	//    (('description' description=EString)? &
+	//    ('verification' verification=VerificationTypeSpecification)? &
+	//    ('default' defaultValue=BooleanLiteralString)? )
+	//    ';'
+	//    ;
 	public BooleanPropertyElements getBooleanPropertyAccess() {
 		return pBooleanProperty;
 	}
@@ -3465,11 +3955,16 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getBooleanPropertyAccess().getRule();
 	}
 	
-	//EnumProperty PropertyDefinitions::EnumProperty:
-	//	'EnumProperty' name=ID arrayModifier=ArrayModifier? (('description' description=EString)? & ('quantityKind'
-	//	quantityKindName=EString)? & ('unit' unitName=EString)? & 'values' '[' values+=EnumValueDefinition (','
-	//	values+=EnumValueDefinition)* ']' & ('default' defaultValue=[PropertyDefinitions::EnumValueDefinition])?)
-	//	';';
+	//EnumProperty returns PropertyDefinitions::EnumProperty:
+	//    'EnumProperty' name=ID (arrayModifier=ArrayModifier)?
+	//    (('description' description=EString)? &
+	//    ('quantityKind' quantityKindName = EString)? &
+	//    ('unit' unitName = EString)? &
+	//    ('values' '[' values+=EnumValueDefinition (',' values+=EnumValueDefinition)* ']') &
+	//    ('verification' verification=VerificationTypeSpecification)? &
+	//    ('default' defaultValue=[PropertyDefinitions::EnumValueDefinition|ID])? )
+	//    ';'
+	//    ;
 	public EnumPropertyElements getEnumPropertyAccess() {
 		return pEnumProperty;
 	}
@@ -3478,8 +3973,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getEnumPropertyAccess().getRule();
 	}
 	
-	//EnumValueDefinition PropertyDefinitions::EnumValueDefinition:
-	//	name=ID '=' value=(EString | FloatLiteralString);
+	//EnumValueDefinition returns PropertyDefinitions::EnumValueDefinition:
+	//    name=ID '='    value=(EString | FloatLiteralString)
+	//;
 	public EnumValueDefinitionElements getEnumValueDefinitionAccess() {
 		return pEnumValueDefinition;
 	}
@@ -3488,10 +3984,13 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getEnumValueDefinitionAccess().getRule();
 	}
 	
-	//ReferenceProperty PropertyDefinitions::ReferenceProperty:
-	//	'Reference' name=ID arrayModifier=ArrayModifier?
-	//	'of' 'Type' referenceType=[Categories::ATypeDefinition|QualifiedName] ('description' description=EString)?
-	//	';';
+	//ReferenceProperty returns PropertyDefinitions::ReferenceProperty:
+	//    'Reference' name=ID (arrayModifier=ArrayModifier)?
+	//    'of' 'Type' referenceType=[Categories::ATypeDefinition|QualifiedName]
+	//    (('description' description=EString)? &
+	//    ('verification' verification=VerificationTypeSpecification)? )
+	//    ';'
+	//    ;
 	public ReferencePropertyElements getReferencePropertyAccess() {
 		return pReferenceProperty;
 	}
@@ -3500,10 +3999,13 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getReferencePropertyAccess().getRule();
 	}
 	
-	//EReferenceProperty PropertyDefinitions::EReferenceProperty:
-	//	'EReference' name=ID arrayModifier=ArrayModifier?
-	//	'of' 'Type' referenceType=[ecore::EClass|QualifiedName] ('description' description=EString)?
-	//	';';
+	//EReferenceProperty returns PropertyDefinitions::EReferenceProperty:
+	//    'EReference' name=ID (arrayModifier=ArrayModifier)?
+	//    'of' 'Type' referenceType=[ecore::EClass|QualifiedName]
+	//    (('description' description=EString)? &
+	//    ('verification' verification=VerificationTypeSpecification)? )
+	//    ';'
+	//    ;
 	public EReferencePropertyElements getEReferencePropertyAccess() {
 		return pEReferenceProperty;
 	}
@@ -3512,9 +4014,12 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getEReferencePropertyAccess().getRule();
 	}
 	
-	//ResourceProperty PropertyDefinitions::ResourceProperty:
-	//	'Resource' name=ID arrayModifier=ArrayModifier? ('description' description=EString)?
-	//	';';
+	//ResourceProperty returns PropertyDefinitions::ResourceProperty:
+	//    'Resource' name=ID (arrayModifier=ArrayModifier)?
+	//    (('description' description=EString)? &
+	//    ('verification' verification=VerificationTypeSpecification)? )
+	//    ';'
+	//    ;
 	public ResourcePropertyElements getResourcePropertyAccess() {
 		return pResourceProperty;
 	}
@@ -3526,8 +4031,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 	//// ***************************************************************************************
 	//// Calculation
 	//// ***************************************************************************************
-	//EquationDefinition Calc::EquationDefinition:
-	//	result=EquationDefinitionResult '=' expression=AdditionAndSubtraction ';';
+	//EquationDefinition returns Calc::EquationDefinition:
+	//    result=EquationDefinitionResult '=' expression=AdditionAndSubtraction ';'
+	//;
 	public EquationDefinitionElements getEquationDefinitionAccess() {
 		return pEquationDefinition;
 	}
@@ -3536,8 +4042,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getEquationDefinitionAccess().getRule();
 	}
 	
-	//EquationDefinitionResult Calc::IEquationDefinitionResult:
-	//	TypeDefinitionResult | EquationIntermediateResult;
+	//EquationDefinitionResult returns Calc::IEquationDefinitionResult:
+	//     TypeDefinitionResult | EquationIntermediateResult
+	//;
 	public EquationDefinitionResultElements getEquationDefinitionResultAccess() {
 		return pEquationDefinitionResult;
 	}
@@ -3546,9 +4053,10 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getEquationDefinitionResultAccess().getRule();
 	}
 	
-	//TypeDefinitionResult Calc::IEquationDefinitionResult:
-	//	{Calc::TypeDefinitionResult}
-	//	'Ref:' reference=[Categories::ATypeDefinition|QualifiedName];
+	//TypeDefinitionResult returns Calc::IEquationDefinitionResult:
+	//    {Calc::TypeDefinitionResult}
+	//    'Ref:' reference=[Categories::ATypeDefinition | QualifiedName]
+	//;
 	public TypeDefinitionResultElements getTypeDefinitionResultAccess() {
 		return pTypeDefinitionResult;
 	}
@@ -3557,9 +4065,10 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getTypeDefinitionResultAccess().getRule();
 	}
 	
-	//EquationIntermediateResult Calc::IEquationDefinitionResult:
-	//	{Calc::EquationIntermediateResult}
-	//	'Calc:' name=ID;
+	//EquationIntermediateResult returns Calc::IEquationDefinitionResult:
+	//    {Calc::EquationIntermediateResult}
+	//    'Calc:' name=ID
+	//;
 	public EquationIntermediateResultElements getEquationIntermediateResultAccess() {
 		return pEquationIntermediateResult;
 	}
@@ -3568,9 +4077,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getEquationIntermediateResultAccess().getRule();
 	}
 	
-	//AdditionAndSubtraction Calc::AExpression:
-	//	MultiplicationAndDivision ({Calc::AdditionAndSubtraction.left=current} operator=(OperatorPlus | OperatorMinus)
-	//	right=MultiplicationAndDivision)*;
+	//AdditionAndSubtraction returns Calc::AExpression:
+	//    MultiplicationAndDivision ({Calc::AdditionAndSubtraction.left=current} operator=(OperatorPlus|OperatorMinus) right=MultiplicationAndDivision)*
+	//;
 	public AdditionAndSubtractionElements getAdditionAndSubtractionAccess() {
 		return pAdditionAndSubtraction;
 	}
@@ -3579,9 +4088,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getAdditionAndSubtractionAccess().getRule();
 	}
 	
-	//MultiplicationAndDivision Calc::AExpression:
-	//	PowerFunction ({Calc::MultiplicationAndDivision.left=current} operator=(OperatorMultiply | OperatorDivide)
-	//	right=PowerFunction)*;
+	//MultiplicationAndDivision returns Calc::AExpression:
+	//     PowerFunction ({Calc::MultiplicationAndDivision.left=current} operator=(OperatorMultiply | OperatorDivide) right=PowerFunction)*
+	//;
 	public MultiplicationAndDivisionElements getMultiplicationAndDivisionAccess() {
 		return pMultiplicationAndDivision;
 	}
@@ -3590,8 +4099,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getMultiplicationAndDivisionAccess().getRule();
 	}
 	
-	//PowerFunction Calc::AExpression:
-	//	AExpression ({Calc::PowerFunction.left=current} operator=OperatorPower right=AExpression)*;
+	//PowerFunction returns Calc::AExpression:
+	//     AExpression ({Calc::PowerFunction.left=current} operator= (OperatorPower) right=AExpression)*
+	//;
 	public PowerFunctionElements getPowerFunctionAccess() {
 		return pPowerFunction;
 	}
@@ -3600,8 +4110,10 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getPowerFunctionAccess().getRule();
 	}
 	
-	//Parenthesis Calc::AOpRightExpression:
-	//	{Calc::Parenthesis} operator=OperatorMinus? '(' right=AdditionAndSubtraction ')';
+	//Parenthesis returns Calc::AOpRightExpression:
+	//    {Calc::Parenthesis}
+	//    operator =(OperatorMinus)? '(' right=AdditionAndSubtraction ')'
+	//;
 	public ParenthesisElements getParenthesisAccess() {
 		return pParenthesis;
 	}
@@ -3610,8 +4122,13 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getParenthesisAccess().getRule();
 	}
 	
-	//AExpression Calc::AExpression:
-	//	ALiteral | ReferencedDefinitionInput | Parenthesis | Function | AAdvancedFunction;
+	//AExpression returns Calc::AExpression:
+	//    ALiteral |
+	//    ReferencedDefinitionInput  |
+	//     Parenthesis  |
+	//     Function |
+	//     AAdvancedFunction
+	//;
 	public AExpressionElements getAExpressionAccess() {
 		return pAExpression;
 	}
@@ -3620,8 +4137,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getAExpressionAccess().getRule();
 	}
 	
-	//ReferencedDefinitionInput Calc::ReferencedDefinitionInput:
-	//	reference=[Calc::IEquationDefinitionInput|QualifiedName];
+	//ReferencedDefinitionInput returns Calc::ReferencedDefinitionInput:
+	//    reference=[Calc::IEquationDefinitionInput|QualifiedName]
+	//;
 	public ReferencedDefinitionInputElements getReferencedDefinitionInputAccess() {
 		return pReferencedDefinitionInput;
 	}
@@ -3630,8 +4148,11 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getReferencedDefinitionInputAccess().getRule();
 	}
 	
-	//ALiteral Calc::ALiteral:
-	//	NumberLiteral | ValueE | ValuePi;
+	//ALiteral returns Calc::ALiteral:
+	//    NumberLiteral |
+	//    ValueE |
+	//    ValuePi
+	//;
 	public ALiteralElements getALiteralAccess() {
 		return pALiteral;
 	}
@@ -3640,9 +4161,10 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getALiteralAccess().getRule();
 	}
 	
-	//Function Calc::AExpression:
-	//	{Calc::Function} operator=(OperatorCos | OperatorSin | OperatorTan | OperatorAtan | OperatorAcos | OperatorAsin |
-	//	OperatorSqrt | OperatorLog | OperatorLn | OperatorLd | OperatorExp) '(' right=AdditionAndSubtraction ')';
+	//Function returns Calc::AExpression:
+	//    {Calc::Function}
+	//    operator=(OperatorCos| OperatorSin | OperatorTan | OperatorAtan | OperatorAcos | OperatorAsin | OperatorSqrt | OperatorLog | OperatorLn | OperatorLd | OperatorExp) '(' right=AdditionAndSubtraction ')'
+	//;
 	public FunctionElements getFunctionAccess() {
 		return pFunction;
 	}
@@ -3651,8 +4173,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getFunctionAccess().getRule();
 	}
 	
-	//AAdvancedFunction Calc::AExpression:
-	//	AdvancedFunction | SetFunction;
+	//AAdvancedFunction returns Calc::AExpression:
+	//    AdvancedFunction | SetFunction
+	//;
 	public AAdvancedFunctionElements getAAdvancedFunctionAccess() {
 		return pAAdvancedFunction;
 	}
@@ -3661,8 +4184,10 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getAAdvancedFunctionAccess().getRule();
 	}
 	
-	//AdvancedFunction Calc::AExpression:
-	//	{Calc::AdvancedFunction} operator=ID '(' inputs+=AdditionAndSubtraction ("," inputs+=AdditionAndSubtraction)* ')';
+	//AdvancedFunction returns Calc::AExpression:
+	//    {Calc::AdvancedFunction}
+	//    operator=ID '(' inputs+=AdditionAndSubtraction ("," inputs+=AdditionAndSubtraction)* ')'
+	//;
 	public AdvancedFunctionElements getAdvancedFunctionAccess() {
 		return pAdvancedFunction;
 	}
@@ -3671,9 +4196,10 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getAdvancedFunctionAccess().getRule();
 	}
 	
-	//SetFunction Calc::AExpression:
-	//	{Calc::SetFunction} operator=ID '{' typeDefinition=[Categories::ATypeDefinition|QualifiedName] (',' depth=INT)? (','
-	//	filterName=ID)? '}';
+	//SetFunction returns Calc::AExpression:
+	//    {Calc::SetFunction}
+	//    operator=ID '{' typeDefinition=[Categories::ATypeDefinition|QualifiedName] (','depth=INT)? (','filterName=ID)?'}'
+	//;
 	public SetFunctionElements getSetFunctionAccess() {
 		return pSetFunction;
 	}
@@ -3682,8 +4208,10 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getSetFunctionAccess().getRule();
 	}
 	
-	//NumberLiteral Calc::NumberLiteral:
-	//	{Calc::NumberLiteral} value=FloatLiteralString;
+	//NumberLiteral returns Calc::NumberLiteral:
+	//    {Calc::NumberLiteral}
+	//    value = FloatLiteralString
+	//;
 	public NumberLiteralElements getNumberLiteralAccess() {
 		return pNumberLiteral;
 	}
@@ -3692,9 +4220,10 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getNumberLiteralAccess().getRule();
 	}
 	
-	//ValuePi Calc::ValuePi:
-	//	{Calc::ValuePi}
-	//	'pi';
+	//ValuePi returns Calc::ValuePi:
+	//    {Calc::ValuePi}
+	//    'pi'
+	//;
 	public ValuePiElements getValuePiAccess() {
 		return pValuePi;
 	}
@@ -3703,9 +4232,10 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getValuePiAccess().getRule();
 	}
 	
-	//ValueE Calc::ValueE:
-	//	{Calc::ValueE}
-	//	'e';
+	//ValueE returns Calc::ValueE:
+	//    {Calc::ValueE}
+	//    'e'
+	//;
 	public ValueEElements getValueEAccess() {
 		return pValueE;
 	}
@@ -3714,8 +4244,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getValueEAccess().getRule();
 	}
 	
-	//enum OperatorPlus returns Calc::MathOperator:
-	//	PLUS='+';
+	//enum OperatorPlus returns Calc::MathOperator :
+	//    PLUS = '+'
+	//;
 	public OperatorPlusElements getOperatorPlusAccess() {
 		return eOperatorPlus;
 	}
@@ -3724,8 +4255,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getOperatorPlusAccess().getRule();
 	}
 	
-	//enum OperatorMinus returns Calc::MathOperator:
-	//	MINUS='-';
+	//enum OperatorMinus returns Calc::MathOperator :
+	//    MINUS = '-'
+	//;
 	public OperatorMinusElements getOperatorMinusAccess() {
 		return eOperatorMinus;
 	}
@@ -3734,8 +4266,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getOperatorMinusAccess().getRule();
 	}
 	
-	//enum OperatorMultiply returns Calc::MathOperator:
-	//	MULTIPLY='*';
+	//enum OperatorMultiply returns Calc::MathOperator :
+	//    MULTIPLY = '*'
+	//;
 	public OperatorMultiplyElements getOperatorMultiplyAccess() {
 		return eOperatorMultiply;
 	}
@@ -3744,8 +4277,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getOperatorMultiplyAccess().getRule();
 	}
 	
-	//enum OperatorDivide returns Calc::MathOperator:
-	//	DIVIDE='/';
+	//enum OperatorDivide returns Calc::MathOperator :
+	//    DIVIDE = '/'
+	//;
 	public OperatorDivideElements getOperatorDivideAccess() {
 		return eOperatorDivide;
 	}
@@ -3754,8 +4288,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getOperatorDivideAccess().getRule();
 	}
 	
-	//enum OperatorPower returns Calc::MathOperator:
-	//	POWER='^';
+	//enum OperatorPower returns Calc::MathOperator :
+	//    POWER = '^'
+	//;
 	public OperatorPowerElements getOperatorPowerAccess() {
 		return eOperatorPower;
 	}
@@ -3764,8 +4299,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getOperatorPowerAccess().getRule();
 	}
 	
-	//enum OperatorCos returns Calc::MathOperator:
-	//	COS='cos';
+	//enum OperatorCos returns Calc::MathOperator :
+	//    COS = 'cos'
+	//;
 	public OperatorCosElements getOperatorCosAccess() {
 		return eOperatorCos;
 	}
@@ -3774,8 +4310,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getOperatorCosAccess().getRule();
 	}
 	
-	//enum OperatorSin returns Calc::MathOperator:
-	//	SIN='sin';
+	//enum OperatorSin returns Calc::MathOperator :
+	//    SIN = 'sin'
+	//;
 	public OperatorSinElements getOperatorSinAccess() {
 		return eOperatorSin;
 	}
@@ -3784,8 +4321,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getOperatorSinAccess().getRule();
 	}
 	
-	//enum OperatorTan returns Calc::MathOperator:
-	//	TAN='tan';
+	//enum OperatorTan returns Calc::MathOperator :
+	//    TAN = 'tan'
+	//;
 	public OperatorTanElements getOperatorTanAccess() {
 		return eOperatorTan;
 	}
@@ -3794,8 +4332,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getOperatorTanAccess().getRule();
 	}
 	
-	//enum OperatorAtan returns Calc::MathOperator:
-	//	ATAN='atan';
+	//enum OperatorAtan returns Calc::MathOperator :
+	//    ATAN = 'atan'
+	//;
 	public OperatorAtanElements getOperatorAtanAccess() {
 		return eOperatorAtan;
 	}
@@ -3804,8 +4343,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getOperatorAtanAccess().getRule();
 	}
 	
-	//enum OperatorAcos returns Calc::MathOperator:
-	//	ACOS='acos';
+	//enum OperatorAcos returns Calc::MathOperator :
+	//    ACOS = 'acos'
+	//;
 	public OperatorAcosElements getOperatorAcosAccess() {
 		return eOperatorAcos;
 	}
@@ -3814,8 +4354,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getOperatorAcosAccess().getRule();
 	}
 	
-	//enum OperatorAsin returns Calc::MathOperator:
-	//	ASIN='asin';
+	//enum OperatorAsin returns Calc::MathOperator :
+	//    ASIN = 'asin'
+	//;
 	public OperatorAsinElements getOperatorAsinAccess() {
 		return eOperatorAsin;
 	}
@@ -3824,8 +4365,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getOperatorAsinAccess().getRule();
 	}
 	
-	//enum OperatorSqrt returns Calc::MathOperator:
-	//	SQRT='sqrt';
+	//enum OperatorSqrt returns Calc::MathOperator :
+	//    SQRT = 'sqrt'
+	//;
 	public OperatorSqrtElements getOperatorSqrtAccess() {
 		return eOperatorSqrt;
 	}
@@ -3834,8 +4376,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getOperatorSqrtAccess().getRule();
 	}
 	
-	//enum OperatorLog returns Calc::MathOperator:
-	//	LOG='log';
+	//enum OperatorLog returns Calc::MathOperator :
+	//    LOG = 'log'
+	//;
 	public OperatorLogElements getOperatorLogAccess() {
 		return eOperatorLog;
 	}
@@ -3844,8 +4387,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getOperatorLogAccess().getRule();
 	}
 	
-	//enum OperatorLn returns Calc::MathOperator:
-	//	LN='ln';
+	//enum OperatorLn returns Calc::MathOperator :
+	//    LN = 'ln'
+	//;
 	public OperatorLnElements getOperatorLnAccess() {
 		return eOperatorLn;
 	}
@@ -3854,8 +4398,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getOperatorLnAccess().getRule();
 	}
 	
-	//enum OperatorExp returns Calc::MathOperator:
-	//	EXP='exp';
+	//enum OperatorExp returns Calc::MathOperator :
+	//    EXP = 'exp'
+	//;
 	public OperatorExpElements getOperatorExpAccess() {
 		return eOperatorExp;
 	}
@@ -3864,8 +4409,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getOperatorExpAccess().getRule();
 	}
 	
-	//enum OperatorLd returns Calc::MathOperator:
-	//	LD='ld';
+	//enum OperatorLd returns Calc::MathOperator :
+	//    LD = 'ld'
+	//;
 	public OperatorLdElements getOperatorLdAccess() {
 		return eOperatorLd;
 	}
@@ -3877,8 +4423,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 	//// ***************************************************************************************
 	//// General Expressions
 	//// ***************************************************************************************
-	//Version:
-	//	INT ('.' INT)*;
+	//Version returns ecore::EString:
+	//    INT ('.' INT)*
+	//;
 	public VersionElements getVersionAccess() {
 		return pVersion;
 	}
@@ -3887,8 +4434,8 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getVersionAccess().getRule();
 	}
 	
-	//EInt ecore::EInt:
-	//	'-'? INT;
+	//EInt returns ecore::EInt:
+	//    '-'? INT;
 	public EIntElements getEIntAccess() {
 		return pEInt;
 	}
@@ -3897,8 +4444,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getEIntAccess().getRule();
 	}
 	
-	//IntLiteralString:
-	//	'-'? INT?;
+	//IntLiteralString returns ecore::EString:
+	//    '-'? INT?
+	//;
 	public IntLiteralStringElements getIntLiteralStringAccess() {
 		return pIntLiteralString;
 	}
@@ -3907,8 +4455,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getIntLiteralStringAccess().getRule();
 	}
 	
-	//FloatLiteralString:
-	//	'-'? INT ('.' INT)?;
+	//FloatLiteralString returns ecore::EString:
+	//    '-'? INT ('.' INT)?
+	//;
 	public FloatLiteralStringElements getFloatLiteralStringAccess() {
 		return pFloatLiteralString;
 	}
@@ -3917,8 +4466,9 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getFloatLiteralStringAccess().getRule();
 	}
 	
-	//BooleanLiteralString:
-	//	'true' | 'false';
+	//BooleanLiteralString returns ecore::EString:
+	//    'true'|'false'
+	//;
 	public BooleanLiteralStringElements getBooleanLiteralStringAccess() {
 		return pBooleanLiteralString;
 	}
@@ -3927,8 +4477,8 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getBooleanLiteralStringAccess().getRule();
 	}
 	
-	//EString:
-	//	STRING;
+	//EString returns ecore::EString:
+	//    STRING;
 	public EStringElements getEStringAccess() {
 		return pEString;
 	}
@@ -3938,7 +4488,8 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 	}
 	
 	//QualifiedNameWithWildcard:
-	//	QualifiedName '.*'?;
+	//  QualifiedName '.*'?
+	//;
 	public QualifiedNameWithWildcardElements getQualifiedNameWithWildcardAccess() {
 		return pQualifiedNameWithWildcard;
 	}
@@ -3948,7 +4499,8 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 	}
 	
 	//QualifiedName:
-	//	ID ('.' ID)*;
+	//    ID ('.' ID)*
+	//;
 	public QualifiedNameElements getQualifiedNameAccess() {
 		return pQualifiedName;
 	}
@@ -3957,45 +4509,40 @@ public class ConceptLanguageGrammarAccess extends AbstractElementFinder.Abstract
 		return getQualifiedNameAccess().getRule();
 	}
 	
-	//terminal ID:
-	//	'^'? ('a'..'z' | 'A'..'Z' | '_') ('a'..'z' | 'A'..'Z' | '_' | '0'..'9')*;
+	//terminal ID: '^'?('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*;
 	public TerminalRule getIDRule() {
 		return gaTerminals.getIDRule();
 	}
 	
-	//terminal INT returns ecore::EInt:
-	//	'0'..'9'+;
+	//terminal INT returns ecore::EInt: ('0'..'9')+;
 	public TerminalRule getINTRule() {
 		return gaTerminals.getINTRule();
 	}
 	
 	//terminal STRING:
-	//	'"' ('\\' . | !('\\' | '"'))* '"' |
-	//	"'" ('\\' . | !('\\' | "'"))* "'";
+	//            '"' ( '\\' . /* 'b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\' */ | !('\\'|'"') )* '"' |
+	//            "'" ( '\\' . /* 'b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\' */ | !('\\'|"'") )* "'"
+	//        ;
 	public TerminalRule getSTRINGRule() {
 		return gaTerminals.getSTRINGRule();
 	}
 	
-	//terminal ML_COMMENT:
-	//	'/*'->'*/';
+	//terminal ML_COMMENT : '/*' -> '*/';
 	public TerminalRule getML_COMMENTRule() {
 		return gaTerminals.getML_COMMENTRule();
 	}
 	
-	//terminal SL_COMMENT:
-	//	'//' !('\n' | '\r')* ('\r'? '\n')?;
+	//terminal SL_COMMENT : '//' !('\n'|'\r')* ('\r'? '\n')?;
 	public TerminalRule getSL_COMMENTRule() {
 		return gaTerminals.getSL_COMMENTRule();
 	}
 	
-	//terminal WS:
-	//	' ' | '\t' | '\r' | '\n'+;
+	//terminal WS         : (' '|'\t'|'\r'|'\n')+;
 	public TerminalRule getWSRule() {
 		return gaTerminals.getWSRule();
 	}
 	
-	//terminal ANY_OTHER:
-	//	.;
+	//terminal ANY_OTHER: .;
 	public TerminalRule getANY_OTHERRule() {
 		return gaTerminals.getANY_OTHERRule();
 	}

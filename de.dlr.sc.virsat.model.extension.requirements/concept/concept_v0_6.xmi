@@ -56,7 +56,7 @@
       <values name="NonCompliant" value="3"/>
       <values name="NotApplicable" value="4"/>
     </properties>
-    <properties xsi:type="dvlm_cppd:ComposedProperty" name="verification" type="de.dlr.sc.virsat.model.extension.requirements.IVerification">
+    <properties xsi:type="dvlm_cppd:ComposedProperty" name="verifications" type="de.dlr.sc.virsat.model.extension.requirements.IVerification">
       <arrayModifier xsi:type="dvlm_cppd:DynamicArrayModifier"/>
     </properties>
     <properties xsi:type="dvlm_cppd:ComposedProperty" name="trace" type="de.dlr.sc.virsat.model.extension.requirements.RequirementTrace"/>
@@ -160,11 +160,18 @@
   </categories>
   <categories name="ModelVerification" isAbstract="true" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.IVerification">
     <properties xsi:type="dvlm_cppd:EReferenceProperty" name="elementToBeVerified" description="The exact element (Class / property) to be verified">
-      <referenceType href="platform:/resource/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+      <referenceType href="platform:/resource/de.dlr.sc.virsat.model/model/dvlm.ecore#//categories/ATypeDefinition"/>
     </properties>
   </categories>
   <categories name="ExistenceVerification" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.ModelVerification"/>
-  <categories name="BoundedValueVerification" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.ModelVerification">
+  <categories name="IValueVerification" isAbstract="true" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.ModelVerification"/>
+  <categories name="UpperLimitVerification" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.IValueVerification">
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="upperBound"/>
+  </categories>
+  <categories name="LowerLimitVerification" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.IValueVerification">
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="lowerBound"/>
+  </categories>
+  <categories name="BoundedValueVerification" extendsCategory="de.dlr.sc.virsat.model.extension.requirements.IValueVerification">
     <properties xsi:type="dvlm_cppd:FloatProperty" name="lowerBound"/>
     <properties xsi:type="dvlm_cppd:FloatProperty" name="upperBound"/>
   </categories>

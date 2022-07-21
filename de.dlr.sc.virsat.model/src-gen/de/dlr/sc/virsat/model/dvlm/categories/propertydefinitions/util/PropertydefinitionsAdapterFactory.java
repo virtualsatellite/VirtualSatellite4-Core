@@ -149,6 +149,14 @@ public class PropertydefinitionsAdapterFactory extends AdapterFactoryImpl {
 				return createDynamicArrayModifierAdapter();
 			}
 			@Override
+			public Adapter caseIVerificationSpecification(IVerificationSpecification object) {
+				return createIVerificationSpecificationAdapter();
+			}
+			@Override
+			public Adapter caseVerificationTypeSpecification(VerificationTypeSpecification object) {
+				return createVerificationTypeSpecificationAdapter();
+			}
+			@Override
 			public Adapter caseIQualifiedName(IQualifiedName object) {
 				return createIQualifiedNameAdapter();
 			}
@@ -413,6 +421,34 @@ public class PropertydefinitionsAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createDynamicArrayModifierAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IVerificationSpecification <em>IVerification Specification</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IVerificationSpecification
+	 * @generated
+	 */
+	public Adapter createIVerificationSpecificationAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.VerificationTypeSpecification <em>Verification Type Specification</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.VerificationTypeSpecification
+	 * @generated
+	 */
+	public Adapter createVerificationTypeSpecificationAdapter() {
 		return null;
 	}
 

@@ -32,7 +32,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.Propertyinstance
  * the abstract class for array instance lists implements the interface bean list
  * @author leps_je
  *
- * @param <TYPE>
+ * @param <TYPE> the bean type to be used for the list
  */
 public abstract class AArrayInstanceList<TYPE> implements IBeanList<TYPE> {
 
