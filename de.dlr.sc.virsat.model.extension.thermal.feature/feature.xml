@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="de.dlr.sc.virsat.model.extension.thermal.feature"
-      label="VirSat Network Model Concept Feature"
+      label="VirSat Core Thermal Concept Feature"
       version="4.15.0.qualifier"
       provider-name="DLR (German Aerospace Center)"
       plugin="de.dlr.sc.virsat.branding.ui">
 
    <description>
-      Feature for Network Model Concept
+      Feature for Thermal Model Concept
 Extension
 German Aerospace Center (DLR e.V.)
 Simulation and Software Technology
