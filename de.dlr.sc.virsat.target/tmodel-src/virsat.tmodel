@@ -37,20 +37,16 @@ TargetLibrary virsat {
 		Unit org.eclipse.swtbot.ide.feature.group version 3.1.0.202106041005; 
 		Unit org.eclipse.xtext.sdk.feature.group version 2.26.0.v20220228-0901;
 		Unit org.eclipse.gef.feature.group version 3.11.0.201606061308;  
-		Unit org.eclipse.egit.feature.group version 6.1.0.202203080745-r; 
-		
+		Unit org.eclipse.egit.feature.group version 6.1.0.202203080745-r;
 	}
 	
-	RepositoryLocation Subversion url "https://download.eclipse.org/technology/subversive/4.0/update-site/" {
-		Unit org.eclipse.team.svn.feature.group version 4.0.5.I20170425-1700;
+	RepositoryLocation Subversion url "https://download.eclipse.org/technology/subversive/4.8/release/4.8.0/" {
+		Unit org.eclipse.team.svn.feature.group version 4.8.0.v20220904-1901;
 	}
 	
-	RepositoryLocation SubversionConnector url "http://community.polarion.com/projects/subversive/download/eclipse/6.0/update-site/" {
+	RepositoryLocation SubversionConnector url "https://osspit.org/eclipse/subversive-connectors/" {
 		Unit org.polarion.eclipse.team.svn.connector.feature.group version 6.0.4.I20161211-1700;
-		Unit org.polarion.eclipse.team.svn.connector.source.feature.group version 6.0.4.I20161211-1700;
-		Unit org.polarion.eclipse.team.svn.connector.sources.feature.group version 6.0.4.I20161211-1700;
-		Unit org.polarion.eclipse.team.svn.connector.svnkit18.feature.group version 6.0.4.I20161211-1700;
-		Unit org.polarion.eclipse.team.svn.connector.svnkit18.sources.feature.group version 6.0.4.I20161211-1700;
+		Unit org.polarion.eclipse.team.svn.connector.svnkit1_10.feature.group version 6.1.0;
 	}
 	
 	RepositoryLocation Sphinx url "http://download.eclipse.org/sphinx/releases/0.11.x" {

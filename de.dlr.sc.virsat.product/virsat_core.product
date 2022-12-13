@@ -145,7 +145,7 @@ Germany
       <feature id="org.eclipse.jgit.http.apache" installMode="root"/>
       <feature id="org.eclipse.jgit.gpg.bc" installMode="root"/>
       <feature id="org.polarion.eclipse.team.svn.connector" installMode="root"/>
-      <feature id="org.polarion.eclipse.team.svn.connector.svnkit18" installMode="root"/>
+      <feature id="org.polarion.eclipse.team.svn.connector.svnkit1_10" installMode="root"/>
       <feature id="org.eclipse.xtext.ui" installMode="root"/>
       <feature id="org.eclipse.sphinx.emf.serialization" installMode="root"/>
       <feature id="org.eclipse.rmf.reqif10.feature" installMode="root"/>
