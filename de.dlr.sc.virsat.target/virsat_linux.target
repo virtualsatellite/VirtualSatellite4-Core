@@ -37,7 +37,7 @@
 		<unit id="org.eclipse.xtext.sdk.feature.group" version="2.26.0.v20220228-0901"/>
 		<unit id="org.eclipse.gef.feature.group" version="3.11.0.201606061308"/>
 		<unit id="org.eclipse.egit.feature.group" version="6.1.0.202203080745-r"/>
-		<repository location="http://download.eclipse.org/releases/2022-03"/>
+		<repository location="https://download.eclipse.org/releases/2022-03"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 		<unit id="org.eclipse.team.svn.feature.group" version="4.0.5.I20170425-1700"/>
@@ -49,19 +49,19 @@
 		<unit id="org.polarion.eclipse.team.svn.connector.sources.feature.group" version="6.0.4.I20161211-1700"/>
 		<unit id="org.polarion.eclipse.team.svn.connector.svnkit18.feature.group" version="6.0.4.I20161211-1700"/>
 		<unit id="org.polarion.eclipse.team.svn.connector.svnkit18.sources.feature.group" version="6.0.4.I20161211-1700"/>
-		<repository location="http://community.polarion.com/projects/subversive/download/eclipse/6.0/update-site/"/>
+		<repository location="https://community.polarion.com/projects/subversive/download/eclipse/6.0/update-site/"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 		<unit id="org.eclipse.sphinx.core.feature.group" version="0.11.0.201706140911"/>
 		<unit id="org.eclipse.sphinx.emf.serialization.feature.group" version="0.11.0.201706140911"/>
-		<repository location="http://download.eclipse.org/sphinx/releases/0.11.x"/>
+		<repository location="https://download.eclipse.org/sphinx/releases/0.11.x"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 		<unit id="org.eclipse.rmf.reqif10.feature.feature.group" version="0.13.0.201509161042"/>
 		<unit id="org.eclipse.rmf.reqif10.pror.feature.feature.group" version="0.13.0.201509161042"/>
 		<unit id="org.eclipse.rmf.reqif10.thirdparty.feature.feature.group" version="0.13.0.201509161042"/>
 		<unit id="org.eclipse.rmf.reqif10.sdk.feature.feature.group" version="0.13.0.201509161042"/>
-		<repository location="http://download.eclipse.org/rmf/updates/releases"/>
+		<repository location="https://download.eclipse.org/rmf/updates/releases"/>
 		</location>
 		</locations>
 		<environment>
