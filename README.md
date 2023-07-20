@@ -17,7 +17,7 @@ Virtual Satellite 4 is the new evolution of MBSE. With a customizable data model
 ## Requirements 
 
 Virtual Satellite is based on Java / Eclipse and provides an installable feature with plug-ins for your personal eclipse IDE. The following infrastructure is required:
- - Java Development Kit (JDK) 8 - 64 bit
+ - Java Development Kit (JDK) 11 - 64 bit
  - Windows 7 or Linux Computer - 64 bit
 
 ## Quickstart for users
