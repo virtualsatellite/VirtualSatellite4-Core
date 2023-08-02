@@ -47,6 +47,9 @@ jobs:
       # --------------------------------------------
       - name: Setup - Checkout code
         uses: actions/checkout@v2
+
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
         
       # --------------------------------------------
       # Run a quick sanity check if all commits are
@@ -321,10 +324,6 @@ jobs:
           ssh_key_pass: ${{ secrets.SF_SSH_KEY_PASS }}
           local_dir: VirSat4_Core_Application
           remote_dir: virtualsatellite/VirtualSatellite4-Core
-        if: ${{ steps.build_decision.outputs.deploy_type == 'deploy' }}
-
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1
       
       - name: Build - Deploy SF (IDE Tools)
         uses: virtualsatellite/ci-actions/ci-deploy-sf-product-action@v6-beta
