@@ -47,14 +47,6 @@ jobs:
       # --------------------------------------------
       - name: Setup - Checkout code
         uses: actions/checkout@v2
-
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1
-        with:
-          ## limits ssh access and adds the ssh public key for the user which triggered the workflow
-          limit-access-to-actor: true
-          ## limits ssh access and adds the ssh public keys of the listed GitHub users
-          limit-access-to-users: franzTobiasDLR
       # --------------------------------------------
       # Run a quick sanity check if all commits are
       # handed in by known users
@@ -328,6 +320,14 @@ jobs:
           ssh_key_pass: ${{ secrets.SF_SSH_KEY_PASS }}
           local_dir: VirSat4_Core_Application
           remote_dir: virtualsatellite/VirtualSatellite4-Core
+
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
+        with:
+          ## limits ssh access and adds the ssh public key for the user which triggered the workflow
+          limit-access-to-actor: true
+          ## limits ssh access and adds the ssh public keys of the listed GitHub users
+          limit-access-to-users: franzTobiasDLR
       
       - name: Build - Deploy SF (IDE Tools)
         uses: virtualsatellite/ci-actions/ci-deploy-sf-product-action@v6-beta
