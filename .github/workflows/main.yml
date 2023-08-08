@@ -313,7 +313,7 @@ jobs:
       # SF Deploy still to be done
       # ----------------------------------------------
       - name: Build - Deploy SF (Core)
-        uses: virtualsatellite/ci-actions/ci-deploy-sf-product-action@v6-beta
+        uses: virtualsatellite/ci-actions/ci-deploy-sf-product-action@v6-debug
         with:
           build_profile: ${{ steps.build_decision.outputs.build_type }}
           openssl_pass: ${{ secrets.SF_SSH_KEY_OPENSSL_PASS_N }}
@@ -332,7 +332,7 @@ jobs:
 
       
       - name: Build - Deploy SF (IDE Tools)
-        uses: virtualsatellite/ci-actions/ci-deploy-sf-product-action@v6-beta
+        uses: virtualsatellite/ci-actions/ci-deploy-sf-product-action@v6-debug
         with:
           build_profile: ${{ steps.build_decision.outputs.build_type }}
           openssl_pass: ${{ secrets.SF_SSH_KEY_OPENSSL_PASS }}
