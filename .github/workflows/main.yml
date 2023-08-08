@@ -240,7 +240,7 @@ jobs:
   # -----------------------------------------------------
   deploy:
     name: Build, Assemble and Deploy
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
     needs: [spotbugs, surefire, checkstyle]
     
     steps:
@@ -316,8 +316,8 @@ jobs:
         uses: virtualsatellite/ci-actions/ci-deploy-sf-product-action@v6-beta
         with:
           build_profile: ${{ steps.build_decision.outputs.build_type }}
-          openssl_pass: ${{ secrets.SF_SSH_KEY_OPENSSL_PASS }}
-          ssh_key_pass: ${{ secrets.SF_SSH_KEY_PASS }}
+          openssl_pass: ${{ secrets.SF_SSH_KEY_OPENSSL_PASS_N }}
+          ssh_key_pass: ${{ secrets.SF_SSH_KEY_PASS_N }}
           local_dir: VirSat4_Core_Application
           remote_dir: virtualsatellite/VirtualSatellite4-Core
 
