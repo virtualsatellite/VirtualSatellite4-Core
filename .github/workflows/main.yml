@@ -320,7 +320,7 @@ jobs:
           ssh_key_pass: ${{ secrets.SF_SSH_KEY_PASS }}
           local_dir: VirSat4_Core_Application
           remote_dir: virtualsatellite/VirtualSatellite4-Core
-        #if: ${{ steps.build_decision.outputs.deploy_type == 'deploy' }}
+        if: ${{ steps.build_decision.outputs.deploy_type == 'deploy' }}
       
       - name: Build - Deploy SF (IDE Tools)
         uses: virtualsatellite/ci-actions/ci-deploy-sf-product-action@v6
