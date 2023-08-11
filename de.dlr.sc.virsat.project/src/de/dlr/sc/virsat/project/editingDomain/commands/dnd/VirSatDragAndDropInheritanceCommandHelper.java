@@ -31,11 +31,6 @@ public class VirSatDragAndDropInheritanceCommandHelper {
 	private VirSatDragAndDropInheritanceCommandHelper() {
 	}
 	
-	public enum DndOperation {
-		REPLACE_INHERITANCE,
-		ADD_INHERITANCE
-	}
-	
 	/**
 	 * Call this method to create a command to add or replace the SEI in the list of superSEIs
 	 * @param ed The editing domain for which the command should be created
@@ -44,7 +39,7 @@ public class VirSatDragAndDropInheritanceCommandHelper {
 	 * @param dropObject the SEI where the superSEIs should be changed
 	 * @return The command to add or replace a superSEI
 	 */
-	public static Command createDropCommand(EditingDomain ed, Collection<Object> dragObjects, DndOperation dropOperation, Object dropObject) {
+	public static Command createDropCommand(EditingDomain ed, Collection<Object> dragObjects, Object dropObject) {
 		Object dragObject = dragObjects.iterator().next();
 		if (dragObject instanceof StructuralElementInstance && dropObject instanceof StructuralElementInstance) {
 			StructuralElementInstance dragSei = (StructuralElementInstance) dragObject;
@@ -53,40 +48,35 @@ public class VirSatDragAndDropInheritanceCommandHelper {
 			// Get type of drop object
 			StructuralElement dragSeType = dragSei.getType();
 
-			switch (dropOperation) {
-				case REPLACE_INHERITANCE:
-					// When replacing the rule is as follows:
-					// 1. Identify the type of the object to be dropped as new type
-					// 2. See if there is an inheritance to a SEI of the identified type.
-					// 3. If yes replace it.
-					// 4. If not than add the drop object as new inheritance.
-					
-					// try to identify Type of drop object in the given list of superSeis.
-					for (StructuralElementInstance dropSuperSei : dropSei.getSuperSeis()) {
-						if (dropSuperSei.getType().equals(dragSeType)) {
-							Command replaceCommand = ReplaceCommand.create(
-								ed,
-								dropSei,
-								InheritancePackage.eINSTANCE.getIInheritsFrom_SuperSeis(),
-								dropSuperSei,
-								Collections.singleton(dragSei)
-							);
-							return replaceCommand;
-						}
-					}
-				// if there is no SEI found that can be replaced continue with adding the dependency
-				case ADD_INHERITANCE:
-					// None found, then add it
-					Command addCommand = AddCommand.create(
+			// When replacing the rule is as follows:
+			// 1. Identify the type of the object to be dropped as new type
+			// 2. See if there is an inheritance to a SEI of the identified type.
+			// 3. If yes replace it.
+			// 4. If not than add the drop object as new inheritance.
+			
+			// try to identify Type of drop object in the given list of superSeis.
+			for (StructuralElementInstance dropSuperSei : dropSei.getSuperSeis()) {
+				if (dropSuperSei.getType().equals(dragSeType)) {
+					Command replaceCommand = ReplaceCommand.create(
 						ed,
 						dropSei,
-						InheritancePackage.Literals.IINHERITS_FROM__SUPER_SEIS,
+						InheritancePackage.eINSTANCE.getIInheritsFrom_SuperSeis(),
+						dropSuperSei,
 						Collections.singleton(dragSei)
 					);
-					return addCommand;
-				default:
-					break;
+					return replaceCommand;
+				}
 			}
+			
+			// if there is no SEI found that can be replaced continue with adding the dependency
+			// None found, then add it
+			Command addCommand = AddCommand.create(
+				ed,
+				dropSei,
+				InheritancePackage.Literals.IINHERITS_FROM__SUPER_SEIS,
+				Collections.singleton(dragSei)
+			);
+			return addCommand;
 		} 
 		return UnexecutableCommand.INSTANCE;
 	}	
