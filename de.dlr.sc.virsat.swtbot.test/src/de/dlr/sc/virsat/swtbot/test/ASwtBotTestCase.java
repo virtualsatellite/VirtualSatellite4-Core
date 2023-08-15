@@ -601,7 +601,13 @@ public class ASwtBotTestCase {
 	protected void openCorePerspective() {
 		bot.menu("Window").menu("Perspective").menu("Open Perspective").menu("Other...").click();
 		waitForEditingDomainAndUiThread();
-		bot.table().select("VirSat - Core (default)");
+
+		try {
+			bot.table().select("VirSat - Core (default)");
+		} catch (IllegalArgumentException e) {
+			bot.table().select("VirSat - Core");
+		}
+		
 		bot.button("Open").click();
 		waitForEditingDomainAndUiThread(); 
 	}
