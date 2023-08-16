@@ -29,6 +29,8 @@ import org.eclipse.emf.ecore.util.EcoreUtil.EqualityHelper;
 import org.eclipse.emf.ecore.util.EcoreUtil.UsageCrossReferencer;
 
 import de.dlr.sc.virsat.model.dvlm.Repository;
+import de.dlr.sc.virsat.model.dvlm.calculation.CalculationPackage;
+import de.dlr.sc.virsat.model.dvlm.calculation.EquationSection;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
@@ -249,7 +251,7 @@ public class InheritanceCopier implements IInheritanceCopier {
 		protected void copyReference(EReference eReference, EObject superEobject, EObject subEObject) {
 			
 			// No reliinking of the inheritance link should happen with the call to the cross referencer
-			if (InheritancePackage.Literals.IINHERITANCE_LINK__SUPER_TIS == eReference) {
+			if (InheritancePackage.Literals.IINHERITANCE_LINK__SUPER_TIS == eReference  || eReference == CalculationPackage.Literals.IEQUATION_SECTION_CONTAINER__EQUATION_SECTION) {
 				return;
 			}
 			
@@ -259,6 +261,10 @@ public class InheritanceCopier implements IInheritanceCopier {
 				if (overidableInheritanceLinkSubObject.isOverride()) {
 					return;
 				}
+			}
+			
+			if (subEObject instanceof EquationSection) {
+				return;
 			}
 			
 			super.copyReference(eReference, superEobject, subEObject);
@@ -283,7 +289,39 @@ public class InheritanceCopier implements IInheritanceCopier {
 			if (eAttribute != GeneralPackage.Literals.IUUID__UUID) {
 				super.copyAttribute(eAttribute, superEobject, subEObject);
 			}
-		}			
+		}	
+		
+		@Override
+		protected void copyContainment(EReference eReference, EObject eObject, EObject copyEObject) {
+			if (eReference == CalculationPackage.Literals.IEQUATION_SECTION_CONTAINER__EQUATION_SECTION) {
+				return;
+			}
+			super.copyContainment(eReference, eObject, copyEObject);
+		}
+		
+//		@Override
+//		protected void copyContainment(EReference eReference, EObject eObject, EObject copyEObject) {
+//			if (eObject.eIsSet(eReference))
+//		      {
+//		        EStructuralFeature.Setting setting = getTarget(eReference, eObject, copyEObject);
+//		        if (setting != null)
+//		        {
+//		          Object value = eObject.eGet(eReference);
+//		          if (eReference.isMany())
+//		          {
+//		            @SuppressWarnings("unchecked")
+//		            List<EObject> source = (List<EObject>)setting;
+//		            List<EObject> target = (List<EObject>)value;
+//		            Collection<EObject> result = copyAll(target);
+//		            setting.set(copyAll(target));
+//		          }
+//		          else
+//		          {
+//		            setting.set(copy((EObject)value));
+//		          }
+//		        }
+//		      }
+//		}
 		
 		@Override
 		protected EObject createCopy(EObject superEObject) {
