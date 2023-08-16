@@ -191,7 +191,7 @@ Well Done. You successfully created your very first model using Virtual Satellit
 
 == Collaborative work on a shared project
 
-Virtual Satellite uses SVN for collaborative work. In order to work on a project with other people, you need to store it in an SVN repository.
+Virtual Satellite uses SVN or git for collaborative work. In order to work on a project with other people, you need to store it in an SVN or git repository.
 This section describes how to set up and work with a shared project.
 
 === Workflow Overview
@@ -386,7 +386,7 @@ Now you checked out a git repository. This can be used to share your project:
 |image:chapterSettingUpInfrastructure/select-repository.png[Select Repository]
 
 |{counter:step}.
-|Next you will see a commit dialog where you can write a commit message. Press btn:[OK] to commit your project to SVN.
+|Next you will see a commit dialog where you can write a commit message. Press btn:[OK] to commit your project to git.
 |image:chapterSettingUpInfrastructure/git-commit.png[Commit Dialog]
 
 |===
@@ -564,7 +564,7 @@ They need to be considered within their engineering context,
 NOTE: For example the statement "the mass is 5" is ambiguous and not meaningful.
 However, the information "the mass is 5kg" is something that can be worked with.
 
-To establish a solid foundation for well-defined and consistent unities,
+To establish a solid foundation for well-defined and consistent units,
 Virtual Satellite provides an implementation of the Quantities, Units, Dimensions and Values (QUDV).
 In this section you will learn how to:
 
@@ -866,7 +866,7 @@ Hence the calibration curves are now adjusted in the _Product Storage_.
 It becomes clearly visible, that one calibration curve is far off and the other one is somewhat ok.
 The reaction wheel with the calibration curve which is ok, is now the one that should be used in the actual spacecraft.
 Therefore the _RW1_ in the _Assembly Tree_ has to additionally inherit from the _RW_A_ in the _Product Storage_.
-The calibration curve in the of _RW1_ now reflects the reality of the actually used reaction wheel called _RW_A_.
+The calibration curve in _RW1_ now reflects the reality of the actually used reaction wheel called _RW_A_.
 
 .Example of Extended Product Structures and Inheritance
 [#InheritanceExample]
@@ -998,7 +998,7 @@ Once the data is saved, the eclipse builder will call the inheritance builder to
 
 . Traverse the _Product Tree_ in the _Navigator_ down to the _Element Definition_ called `ST`.
 . Select the _Mass Equipment_ and double-click to open it in the _Editor_.
-. In the _Editor scroll down to the field called *mass* and set a value of `1.5kg`.
+. In the _Editor_ scroll down to the field called *mass* and set a value of `1.5kg`.
 . Save the change by pressing the button btn:[Save All] or pressing kbd:[CTRL+SHIFT+S].
 
 The mass of 1.5kg now gets propagated to all inheriting star trackers.
@@ -1162,7 +1162,7 @@ The CostTypeCollection or CostEquipments can be exported from Virtual Satellite 
 |image:chapterModeling/subsectionCost/export/00_example_tree.PNG[Example trees]
 
 |{counter:step}.
-|To export that CostTypeCollection o CostEquipment, navigate to _File->Export..._.
+|To export that CostTypeCollection or CostEquipment, navigate to _File->Export..._.
 |image:chapterModeling/subsectionCost/export/01_Export.png[Export]
 
 |{counter:step}.
@@ -1170,7 +1170,7 @@ The CostTypeCollection or CostEquipments can be exported from Virtual Satellite 
 |image:chapterModeling/subsectionCost/export/02_Export_Wizard.PNG[Export Wizard]
 
 |{counter:step}.
-|In the Wizard you have to select the -Cost Type Collection- o _Tree_ you want to export, 
+|In the Wizard you have to select the -Cost Type Collection- or _Tree_ you want to export, 
 e.g. the _ProductTreeDomain_ `_ProductTreeDomain_`.
 You also have to provide the destination of the exported file.
 |image:chapterModeling/subsectionCost/export/03_tree_and_destination_selection.PNG[Tree and destination selection]
@@ -1491,7 +1491,7 @@ To configure these basic verification methods follow these steps:
 
 Besides these basic verification methods, Virtual Satellite supports verification methods that use and link to the system model.
 System model-based verification methods are provided via the different domain concepts.
-For more information how concepts are developed check out our https://github.com/virtualsatellite/VirtualSatellite4-Core/releases/download/Release_4.12.1/VirSat_Core_Developer_Manual.pdf[developer manual]. 
+For more information how concepts are developed check out our https://github.com/virtualsatellite/VirtualSatellite4-Core/releases/download/Release_4.15.0/VirSat_Core_Developer_Manual.pdf[developer manual]. 
 
 ====== Add verification methods to requirements
 
@@ -1504,7 +1504,7 @@ For more information how concepts are developed check out our https://github.com
 |Image
 
 |{counter:step}.
-|To add verification a method to a requirement open it in the VirSat Editor.
+|To add a verification method to a requirement open it in the VirSat Editor.
 Easiest way to do so is to press the `Drill-Down` button in the _RequirementSpecification_ or by double-clicking the element in the VirSat Navigator.
 |image:chapterModeling/subsectionRequirements/OpenRequirementEditor.png[Open requirement in editor]
 
@@ -1622,7 +1622,7 @@ image:chapterModeling/subsectionFEA/VoltageSpecificationPowerInterfaceType.png[S
 
 _InterfaceEnds_ should be defined as part of an ElementDefinition in a product tree.
 This definition enables elements of the configuration tree to inherit properties defined in the product tree.
-It can be added to elements in the product tree by right-clicking the selected element definitions and using the context menu: menu:Context[Functional Electrical Architecture>Add _Interface_End].
+It can be added to elements in the product tree by right-clicking the selected element definitions and using the context menu: menu:Context[Functional Electrical Architecture>Add Interface End].
 
 
 An _Interface_ can be added manual to an *Element Configuration* in the configuration tree by using the right mouse and navigating to menu:Context[Functional Electrical Architecture>Add Interface].
@@ -1661,7 +1661,7 @@ Additionally it is possible to add an _Interface_ as described in the following 
 |
 
 |{counter:s}.
-|The _Interface_ can be used in the system diagram to connect system elements with a power supply by drag and dropping the _Interface_ to their _Interface_End.
+|The _Interface_ can be used in the system diagram to connect system elements with a power supply by drag and dropping the _Interface_ to their _Interface_End_.
 |image:chapterModeling/subsectionFEA/InterfaceInTheDiagram.PNG[InterfaceIn]
 |===
 
@@ -1819,15 +1819,13 @@ This is shown in the following image on the down right part with a button named 
 ==== Thermal Concept
 
 The thermal concept allows the user to add thermal properties to the system model. Ultimately, these properties can be used as the basis for a workflow to perform thermal analyses with the FEM tool CalculiX. 
-This is done by exporting the 3D Visualisation and the thermal properties, processing them utilizing FreeCAD as preprocessing tool. 
+This is done by exporting the 3D Visualization and the thermal properties, processing them utilizing FreeCAD as preprocessing tool. 
 CalculiX then reads the generated files, creates, and solves, the equation system. 
 Finally, the thermal concept also allows to import some aspects of the result to the system model.
 
 To model all thermal aspects required for the complete workflow follow these steps:
 
 NOTE: In the following table the word "part" refers to the lowest level instances of each branch of the configuration tree desired to model. This can be subsystem, assembly or component, depending on how detailed the model is supposed to be.
-
-Hier Bild von Thermal Concept
 
 :step2: 0
 [%header,cols=">8,62a,40a"] 
@@ -1896,7 +1894,7 @@ Each *contact* between two physical elements (check the visualization to identif
 |
 
 |{counter:step2}.
-|For each part that has a _visualisation_ and _ThermalElementParameters_, one _ThermalPort_ element must be created. A *thermal ports* is assigned to its respective part by the _reference_ property. 
+|For each part that has a _visualization_ and _ThermalElementParameters_, one _ThermalPort_ element must be created. A *thermal ports* is assigned to its respective part by the _reference_ property. 
 This links to the _ThermalElementParameter_ of the desired part. 
 
 TIP: To keep track of all *thermal ports* it is important to choose a consistent nomenclature such as `TP:<NameOfThePart>`.
@@ -2094,11 +2092,11 @@ NOTE: The result import function is relatively primitive as of now and is constr
 
 |===
 
-=== 3D Visualisation
+=== 3D Visualization
 
 In Virtual Satellite it is possible to add geometric information to the model and visualise it.
 
-image::chapterModeling/VisDemo.png[Visualisation Demo]
+image::chapterModeling/VisDemo.png[Visualization Demo]
 
 This section describes how to do it.
 
@@ -2111,33 +2109,33 @@ This section describes how to do it.
 |Image
 
 |{counter:step}.
-|Activate the _Visualisation_ concept (see <<Activating a Concept>>).
-|image:chapterModeling/AddVisConcept.png[Add Visualisation Concept]
+|Activate the _Visualization_ concept (see <<Activating a Concept>>).
+|image:chapterModeling/AddVisConcept.png[Add Visualization Concept]
 
 |{counter:step}.
-|Now you can add _Visualisation_ category to the components in the _Navigator_ with menu:Context[Visualisation > Add Visualisation].
-|image:chapterModeling/AddVis.png[Add Visualisation Category]
+|Now you can add _Visualization_ category to the components in the _Navigator_ with menu:Context[Visualization > Add Visualization].
+|image:chapterModeling/AddVis.png[Add Visualization Category]
 
 |{counter:step}.
-|Double-click this newly created _Visualisation_ to open it in the _Editor_. Here you can pick a shape (e.g. a cylinder or a box) and set various parameters related to the size, position and orientation of the node.
+|Double-click this newly created _Visualization_ to open it in the _Editor_. Here you can pick a shape (e.g. a cylinder or a box) and set various parameters related to the size, position and orientation of the node.
 
-NOTE: Position and rotation parameters are relative to the center of a parent node (if there is a parent node with Visualisation attached). Root components are positioned relative to the origin.
+NOTE: Position and rotation parameters are relative to the center of a parent node (if there is a parent node with Visualization attached). Root components are positioned relative to the origin.
 
 TIP: If you have an STL model of your component, you can choose "GEOMETRY" shape and click btn:[Select / Upload File] to use it. In this case size parameters will be ignored. Only STL is supported currently.
 
-|image:chapterModeling/VisParams.png[Visualisation Parameters]
+|image:chapterModeling/VisParams.png[Visualization Parameters]
 
 |{counter:step}.
-|To see the visualisation you need to open the _3D Viewer_ view menu:Window[Show View › Other › VirSat › 3D Viewer].
+|To see the visualization you need to open the _3D Viewer_ view menu:Window[Show View › Other › VirSat › 3D Viewer].
 
 TIP: You can use a combination kbd:[ALT+SHIFT+Q], kbd:[Q] to open a view.
 
-NOTE: Alternatively you can open the _3D Viewer_ by switching to the _VirSat - Visualisation_ perspective.
+NOTE: Alternatively you can open the _3D Viewer_ by switching to the _VirSat - Visualization_ perspective.
 
 |image:chapterModeling/VisView.png[3D View]
 
 |{counter:step}.
-|If you want to model a more complex shape (e.g. a thruster with a nozzle), you need to split a component into subcomponents and assign each one a separate _Visualisation_ category.
+|If you want to model a more complex shape (e.g. a thruster with a nozzle), you need to split a component into subcomponents and assign each one a separate _Visualization_ category.
 In this case you can add a NONE shape to the root of the component to position the whole thing.
 |image:chapterModeling/VisComposite.png[3D View]
 
@@ -2145,7 +2143,7 @@ In this case you can add a NONE shape to the root of the component to position t
 
 ==== Geometric shapes
 
-Every Visualisation node has a _shape_ property defining how the node is rendered.
+Every Visualization node has a _shape_ property defining how the node is rendered.
 Below is the description of all shape types and their relevant properties.
 
 [%header,cols="1,1,4"]
@@ -2157,8 +2155,8 @@ Below is the description of all shape types and their relevant properties.
 |None
 |-
 |_None_ shape is not rendered, but can be used for logical grouping of elements.
-Example: an equipment contains several parts that have individual _Visualisations_ attached.
-_None_ visualisation can be added on the equipment level to control the positioning of the whole equipment (by setting _positions_ and _rotations_ of the _None_ node).
+Example: an equipment contains several parts that have individual _Visualizations_ attached.
+_None_ visualization can be added on the equipment level to control the positioning of the whole equipment (by setting _positions_ and _rotations_ of the _None_ node).
 
 |Box
 |_sizeX_ +
@@ -2186,13 +2184,13 @@ _sizeY_
 The size of the STL model is taken from the file and cannot be changed in Virtual Satellite.
 |===
 
-All shapes can be translated using properties _positionX_, _positionY_, _positionZ_ and rotated using properties _rotationX_, _rotationY_, _rotationZ_ (relative to the parent _Visualisation_ node or the origin).
+All shapes can be translated using properties _positionX_, _positionY_, _positionZ_ and rotated using properties _rotationX_, _rotationY_, _rotationZ_ (relative to the parent _Visualization_ node or the origin).
 
 Properties _color_ and _transparency_ can be set for all shapes except _None_.
 
 ==== CAD Export/Import
 
-The 3D Visualisation can be exported from Virtual Satellite and imported into CAD (computer-aided design)-tools using JSON (JavaScript Object Notation) format.
+The 3D Visualization can be exported from Virtual Satellite and imported into CAD (computer-aided design)-tools using JSON (JavaScript Object Notation) format.
 This subsection describes the workflow on the Virtual Satellite side of the corresponding round-trip engineering. 
 
 :step: 0
@@ -2208,7 +2206,7 @@ This subsection describes the workflow on the Virtual Satellite side of the corr
 |image:chapterModeling/subsectionCAD/export/00_example_tree.PNG[Example trees]
 
 |{counter:step}.
-|To export that visualisation, navigate to _File->Export..._.
+|To export that visualization, navigate to _File->Export..._.
 |image:chapterModeling/subsectionCAD/export/01_Export.png[Export]
 
 |{counter:step}.
@@ -2222,8 +2220,8 @@ You also have to provide the destination of the exported file.
 |image:chapterModeling/subsectionCAD/export/03_tree_and_destination_selection.PNG[Tree and destination selection]
 
 |{counter:step}.
-|Finishing the dialog exports all elements of the selected _Tree_, that contain visualisations, into the JSON output file.
-In this example only the `ST2` got exported because `ST1` did not contain a visualisation.
+|Finishing the dialog exports all elements of the selected _Tree_, that contain visualizations, into the JSON output file.
+In this example only the `ST2` got exported because `ST1` did not contain a visualization.
 
 NOTE: The JSON contains _Parts_, exported from the _Product Tree_, and _Products_, exported from the _Configuration_ or _Assembly Tree_. So _Parts_ contain information about the elements, e.g. their shape, size and color, and _Products_ configuration information, e.g. position and rotation.
 |image:chapterModeling/subsectionCAD/export/04_output.PNG[JSON output file]
@@ -2259,7 +2257,7 @@ NOTE: For the purpose of identification, each element has a corresponding UUID (
 |image:chapterModeling/subsectionCAD/import/03_tree_and_destination_selection.PNG[Tree and destination selection]
 
 |{counter:step}.
-|Finally you can open the `ST2` 's Visualisation to check that its _positionX_ is property updated.
+|Finally you can open the `ST2` 's Visualization to check that its _positionX_ is property updated.
 
 NOTE: Because of Inheritance (see <<Extended product structures - Inheritance and Configuration Control>>) importing a _Configuration Tree_ will also change the corresponding _Assembly Tree_.
 |image:chapterModeling/subsectionCAD/import/04_model_changes.PNG[Imported Model changes]
@@ -2269,7 +2267,7 @@ NOTE: Because of Inheritance (see <<Extended product structures - Inheritance an
 
 === Advanced Modeling
 
-Most users will only required modeling techniques from the section <<General Modeling>>.
+Most users will only require modeling techniques from the section <<General Modeling>>.
 However, there may be projects where further extensions or behavior adjustments of Virtual Satellite are desired.
 This can include adjusting the default equations in concepts, writing additional small programs - Apps - that allow
 Virtual Satellite to output data for example into Excel.
@@ -2452,7 +2450,7 @@ NOTE: Technically the project will be transformed into an eclispe plugin project
 |{counter:step}.
 |Now select the newly created App "AppExample1.java" in the list and press the button btn:[Edit App]. This will open the the App in an _Editor_. This example App accesses the repository and prints all units stored in the unit management. 
 
-NOTE: The Apps provide a complete Java in the background. This means you can include any library you like, code your own user _Interface_s as you are used to in an eclipse environment.
+NOTE: The Apps provide a complete Java in the background. This means you can include any library you like, code your own user _Interfaces_ as you are used to in an eclipse environment.
 
 |image:chapterApps/AppEditor.png[The App opened in a Java Editor]
 
