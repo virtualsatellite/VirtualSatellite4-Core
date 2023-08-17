@@ -515,7 +515,7 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="equationSection" eType="#//calculation/EquationSection"
           containment="true"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="EquationSection" eSuperTypes="#//calculation/IEquationSectionContainer #//inheritance/IInheritanceLink">
+    <eClassifiers xsi:type="ecore:EClass" name="EquationSection" eSuperTypes="#//calculation/IEquationSectionContainer #//inheritance/IOverridableInheritanceLink">
       <eStructuralFeatures xsi:type="ecore:EReference" name="imports" upperBound="-1"
           eType="#//calculation/Import" containment="true"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="equations" upperBound="-1"

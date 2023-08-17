@@ -16,6 +16,7 @@ import de.dlr.sc.virsat.model.dvlm.calculation.EquationSection;
 import de.dlr.sc.virsat.model.dvlm.calculation.Import;
 
 import de.dlr.sc.virsat.model.dvlm.inheritance.IInheritanceLink;
+import de.dlr.sc.virsat.model.dvlm.inheritance.IOverridableInheritanceLink;
 import de.dlr.sc.virsat.model.dvlm.inheritance.InheritancePackage;
 import de.dlr.sc.virsat.model.dvlm.util.DVLMUnresolvedReferenceException;
 import java.util.Collection;
@@ -47,6 +48,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.calculation.impl.EquationSectionImpl#getEquationSection <em>Equation Section</em>}</li>
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.calculation.impl.EquationSectionImpl#getSuperTis <em>Super Tis</em>}</li>
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.calculation.impl.EquationSectionImpl#isIsInherited <em>Is Inherited</em>}</li>
+ *   <li>{@link de.dlr.sc.virsat.model.dvlm.calculation.impl.EquationSectionImpl#isOverride <em>Override</em>}</li>
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.calculation.impl.EquationSectionImpl#getImports <em>Imports</em>}</li>
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.calculation.impl.EquationSectionImpl#getEquations <em>Equations</em>}</li>
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.calculation.impl.EquationSectionImpl#getSerializedStatements <em>Serialized Statements</em>}</li>
@@ -94,6 +96,26 @@ public class EquationSectionImpl extends MinimalEObjectImpl.Container implements
 	 * @ordered
 	 */
 	protected boolean isInherited = IS_INHERITED_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isOverride() <em>Override</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isOverride()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean OVERRIDE_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isOverride() <em>Override</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isOverride()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean override = OVERRIDE_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getImports() <em>Imports</em>}' containment reference list.
@@ -291,6 +313,28 @@ public class EquationSectionImpl extends MinimalEObjectImpl.Container implements
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @return value or object of type '{@code boolean}'.
+	 * @generated
+	 */
+	public boolean isOverride() {
+		return override;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setOverride(boolean newOverride) {
+		boolean oldOverride = override;
+		override = newOverride;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CalculationPackage.EQUATION_SECTION__OVERRIDE, oldOverride, override));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return value or object of type '{@code EList<Import>}'.
 	 * @generated
 	 */
@@ -373,6 +417,8 @@ public class EquationSectionImpl extends MinimalEObjectImpl.Container implements
 				return getSuperTis();
 			case CalculationPackage.EQUATION_SECTION__IS_INHERITED:
 				return isIsInherited();
+			case CalculationPackage.EQUATION_SECTION__OVERRIDE:
+				return isOverride();
 			case CalculationPackage.EQUATION_SECTION__IMPORTS:
 				return getImports();
 			case CalculationPackage.EQUATION_SECTION__EQUATIONS:
@@ -401,6 +447,9 @@ public class EquationSectionImpl extends MinimalEObjectImpl.Container implements
 				return;
 			case CalculationPackage.EQUATION_SECTION__IS_INHERITED:
 				setIsInherited((Boolean)newValue);
+				return;
+			case CalculationPackage.EQUATION_SECTION__OVERRIDE:
+				setOverride((Boolean)newValue);
 				return;
 			case CalculationPackage.EQUATION_SECTION__IMPORTS:
 				getImports().clear();
@@ -434,6 +483,9 @@ public class EquationSectionImpl extends MinimalEObjectImpl.Container implements
 			case CalculationPackage.EQUATION_SECTION__IS_INHERITED:
 				setIsInherited(IS_INHERITED_EDEFAULT);
 				return;
+			case CalculationPackage.EQUATION_SECTION__OVERRIDE:
+				setOverride(OVERRIDE_EDEFAULT);
+				return;
 			case CalculationPackage.EQUATION_SECTION__IMPORTS:
 				getImports().clear();
 				return;
@@ -461,6 +513,8 @@ public class EquationSectionImpl extends MinimalEObjectImpl.Container implements
 				return superTis != null && !superTis.isEmpty();
 			case CalculationPackage.EQUATION_SECTION__IS_INHERITED:
 				return isInherited != IS_INHERITED_EDEFAULT;
+			case CalculationPackage.EQUATION_SECTION__OVERRIDE:
+				return override != OVERRIDE_EDEFAULT;
 			case CalculationPackage.EQUATION_SECTION__IMPORTS:
 				return imports != null && !imports.isEmpty();
 			case CalculationPackage.EQUATION_SECTION__EQUATIONS:
@@ -485,6 +539,12 @@ public class EquationSectionImpl extends MinimalEObjectImpl.Container implements
 				default: return -1;
 			}
 		}
+		if (baseClass == IOverridableInheritanceLink.class) {
+			switch (derivedFeatureID) {
+				case CalculationPackage.EQUATION_SECTION__OVERRIDE: return InheritancePackage.IOVERRIDABLE_INHERITANCE_LINK__OVERRIDE;
+				default: return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -499,6 +559,12 @@ public class EquationSectionImpl extends MinimalEObjectImpl.Container implements
 			switch (baseFeatureID) {
 				case InheritancePackage.IINHERITANCE_LINK__SUPER_TIS: return CalculationPackage.EQUATION_SECTION__SUPER_TIS;
 				case InheritancePackage.IINHERITANCE_LINK__IS_INHERITED: return CalculationPackage.EQUATION_SECTION__IS_INHERITED;
+				default: return -1;
+			}
+		}
+		if (baseClass == IOverridableInheritanceLink.class) {
+			switch (baseFeatureID) {
+				case InheritancePackage.IOVERRIDABLE_INHERITANCE_LINK__OVERRIDE: return CalculationPackage.EQUATION_SECTION__OVERRIDE;
 				default: return -1;
 			}
 		}
@@ -517,6 +583,8 @@ public class EquationSectionImpl extends MinimalEObjectImpl.Container implements
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (isInherited: ");
 		result.append(isInherited);
+		result.append(", override: ");
+		result.append(override);
 		result.append(", serializedStatements: ");
 		result.append(serializedStatements);
 		result.append(')');
