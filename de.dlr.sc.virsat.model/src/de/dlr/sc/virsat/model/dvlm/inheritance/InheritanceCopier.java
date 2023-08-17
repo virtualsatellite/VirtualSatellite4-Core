@@ -252,7 +252,7 @@ public class InheritanceCopier implements IInheritanceCopier {
 		protected void copyReference(EReference eReference, EObject superEobject, EObject subEObject) {
 			
 			// No reliinking of the inheritance link should happen with the call to the cross referencer
-			if (InheritancePackage.Literals.IINHERITANCE_LINK__SUPER_TIS == eReference  || eReference == CalculationPackage.Literals.IEQUATION_SECTION_CONTAINER__EQUATION_SECTION) {
+			if (InheritancePackage.Literals.IINHERITANCE_LINK__SUPER_TIS == eReference) {
 				return;
 			}
 			
@@ -294,6 +294,10 @@ public class InheritanceCopier implements IInheritanceCopier {
 		
 		@Override
 		protected void copyContainment(EReference eReference, EObject eObject, EObject copyEObject) {
+			// Do not copy the override flag :-D aaaaaaaahr
+			if (InheritancePackage.Literals.IOVERRIDABLE_INHERITANCE_LINK__OVERRIDE == eReference) {
+				return;
+			}
 			if (eReference == CalculationPackage.Literals.IEQUATION_SECTION_CONTAINER__EQUATION_SECTION 
 					&& copyEObject instanceof IEquationSectionContainer) {
 				if (((IEquationSectionContainer) copyEObject).getEquationSection() != null 
@@ -303,30 +307,7 @@ public class InheritanceCopier implements IInheritanceCopier {
 			}
 			super.copyContainment(eReference, eObject, copyEObject);
 		}
-		
-//		@Override
-//		protected void copyContainment(EReference eReference, EObject eObject, EObject copyEObject) {
-//			if (eObject.eIsSet(eReference))
-//		      {
-//		        EStructuralFeature.Setting setting = getTarget(eReference, eObject, copyEObject);
-//		        if (setting != null)
-//		        {
-//		          Object value = eObject.eGet(eReference);
-//		          if (eReference.isMany())
-//		          {
-//		            @SuppressWarnings("unchecked")
-//		            List<EObject> source = (List<EObject>)setting;
-//		            List<EObject> target = (List<EObject>)value;
-//		            Collection<EObject> result = copyAll(target);
-//		            setting.set(copyAll(target));
-//		          }
-//		          else
-//		          {
-//		            setting.set(copy((EObject)value));
-//		          }
-//		        }
-//		      }
-//		}
+
 		
 		@Override
 		protected EObject createCopy(EObject superEObject) {

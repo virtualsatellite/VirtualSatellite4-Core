@@ -14,13 +14,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.property.value.IValueProperty;
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.databinding.edit.EMFEditProperties;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.DeleteCommand;
+import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
+import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -28,8 +34,10 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 import com.google.inject.Injector;
@@ -54,7 +62,11 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.APropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
+import de.dlr.sc.virsat.model.dvlm.inheritance.IInheritanceLink;
+import de.dlr.sc.virsat.model.dvlm.inheritance.InheritancePackage;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
+import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain.IResourceEventListener;
 import de.dlr.sc.virsat.project.markers.IMarkerHelper;
 import de.dlr.sc.virsat.project.ui.contentProvider.VirSatFilteredWrappedTreeContentProvider;
 import de.dlr.sc.virsat.project.ui.labelProvider.VirSatTransactionalAdapterFactoryLabelProvider;
@@ -74,11 +86,13 @@ public class UiSnippetEquations extends AUiSnippetEStructuralFeatureTable implem
 	private Button buttonRemove;
 	private Button buttonEdit;
 	private Button buttonUpdate;
+	private Button buttonPropertyOverride;
 
 	private static final String BUTTON_ADD_TEXT = "Add Equation";
 	private static final String BUTTON_REMOVE_TEXT = "Remove Equation";
 	private static final String BUTTON_EDIT_TEXT = "Edit Equations";
 	private static final String BUTTON_UPDATE_TEXT = "Perform Update";
+	private static final String BUTTON_CHECK_OVERRIDE_TEXT = "Override";
 	
 	private static final String COLUMN_TEXT_EQUATION = "Equation";
 	private static final String COLUMN_TEXT_RESULT = "Result";
@@ -179,6 +193,13 @@ public class UiSnippetEquations extends AUiSnippetEStructuralFeatureTable implem
 	@Override
 	protected void setTableViewerInput(EditingDomain editingDomain) {
 		tableViewer.setInput(model);
+		VirSatTransactionalEditingDomain.addResourceEventListener(eventListener);
+	}
+	
+	@Override
+	public void dispose() {
+		VirSatTransactionalEditingDomain.removeResourceEventListener(eventListener);
+		super.dispose();
 	}
 	
 	@Override
@@ -189,10 +210,19 @@ public class UiSnippetEquations extends AUiSnippetEStructuralFeatureTable implem
 		buttonRemove = toolkit.createButton(compositeButtons, BUTTON_REMOVE_TEXT, SWT.PUSH);
 		buttonEdit = toolkit.createButton(compositeButtons, BUTTON_EDIT_TEXT, SWT.PUSH);
 		buttonUpdate = toolkit.createButton(compositeButtons, BUTTON_UPDATE_TEXT, SWT.PUSH);
+		
+		if (model instanceof IInheritanceLink) {
+			if (!((IInheritanceLink) model).getSuperTis().isEmpty()) {
+				buttonPropertyOverride = toolkit.createButton(compositeButtons, BUTTON_CHECK_OVERRIDE_TEXT, SWT.CHECK);
+				buttonPropertyOverride.setLayoutData(new GridData());
+				checkWriteAccess(buttonPropertyOverride);
+			}
+		}
 
 		checkWriteAccess(buttonAdd);
 		checkWriteAccess(buttonRemove);
 		checkWriteAccess(buttonUpdate);
+		checkWriteAccess(buttonEdit);
 		
 		return compositeButtons;
 	}
@@ -281,6 +311,23 @@ public class UiSnippetEquations extends AUiSnippetEStructuralFeatureTable implem
 				widgetSelected(e);
 			}
 		});
+		
+		if (buttonPropertyOverride != null) {
+			buttonPropertyOverride.addSelectionListener(new SelectionListener() {
+				
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					IEquationSectionContainer container = (IEquationSectionContainer) model;
+					Command cmd = SetCommand.create(editingDomain, container.getEquationSection(), InheritancePackage.Literals.IOVERRIDABLE_INHERITANCE_LINK__OVERRIDE, buttonPropertyOverride.getSelection());
+					editingDomain.getCommandStack().execute(cmd);
+				} 
+					
+				@Override
+				public void widgetDefaultSelected(SelectionEvent e) {
+					widgetSelected(e);
+				}
+			});
+		}
 	}
 	
 	/**
@@ -332,6 +379,34 @@ public class UiSnippetEquations extends AUiSnippetEStructuralFeatureTable implem
 		}
 		return possiblyMarkedObjects;
 	}
+	
+	@SuppressWarnings({"unchecked"})
+	@Override
+	public void setDataBinding(DataBindingContext dbCtx, EditingDomain editingDomain, EObject model) {
+		IEquationSectionContainer container = (IEquationSectionContainer) this.model;
+		if (buttonPropertyOverride != null) {
+			IValueProperty<EObject, ?> overrideProperty = EMFEditProperties.value(editingDomain,
+					InheritancePackage.Literals.IOVERRIDABLE_INHERITANCE_LINK__OVERRIDE);
+			dbCtx.bindValue(WidgetProperties.buttonSelection().observe(buttonPropertyOverride),
+					overrideProperty.observe(container.getEquationSection()));
+		}
+	}
+	
+	private void updateState() {
+		IEquationSectionContainer container = (IEquationSectionContainer) this.model;
+		if (buttonPropertyOverride != null && !buttonPropertyOverride.isDisposed()) {
+			buttonPropertyOverride.setSelection(container.getEquationSection().isOverride());
+		}
+	}
+	
+	private IResourceEventListener eventListener = (Set<Resource> newResources, int event) -> {
+		Display.getDefault().asyncExec(() -> {
+			if (event == VirSatTransactionalEditingDomain.EVENT_CHANGED) {
+				updateState();
+			}
+			
+		});
+	};
 	
 	@Override
 	protected Set<IMarkerHelper> getMarkerHelpers() {
