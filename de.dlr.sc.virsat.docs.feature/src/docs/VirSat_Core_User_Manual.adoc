@@ -1491,7 +1491,7 @@ To configure these basic verification methods follow these steps:
 
 Besides these basic verification methods, Virtual Satellite supports verification methods that use and link to the system model.
 System model-based verification methods are provided via the different domain concepts.
-For more information how concepts are developed check out our https://github.com/virtualsatellite/VirtualSatellite4-Core/releases/download/Release_4.15.0/VirSat_Core_Developer_Manual.pdf[developer manual]. 
+For more information how concepts are developed check out the Developer Manual. 
 
 ====== Add verification methods to requirements
 
