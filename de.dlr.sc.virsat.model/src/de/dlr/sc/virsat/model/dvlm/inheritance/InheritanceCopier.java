@@ -289,10 +289,10 @@ public class InheritanceCopier implements IInheritanceCopier {
 		
 		@Override
 		protected void copyContainment(EReference eReference, EObject eObject, EObject copyEObject) {
-			// Do not copy the override flag :-D aaaaaaaahr
-			if (InheritancePackage.Literals.IOVERRIDABLE_INHERITANCE_LINK__OVERRIDE == eReference) {
-				return;
-			}
+			
+			// Do not copy equation section with overwrite flag set. 
+			// Need to grap equation section from container element, because when this method is called 
+			// from the EMFCopier, the copy objects are still on CA level
 			if (eReference == CalculationPackage.Literals.IEQUATION_SECTION_CONTAINER__EQUATION_SECTION 
 					&& copyEObject instanceof IEquationSectionContainer) {
 				if (((IEquationSectionContainer) copyEObject).getEquationSection() != null 
