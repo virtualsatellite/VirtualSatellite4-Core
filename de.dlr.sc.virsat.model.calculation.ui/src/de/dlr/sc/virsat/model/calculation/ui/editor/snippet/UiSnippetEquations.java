@@ -229,9 +229,7 @@ public class UiSnippetEquations extends AUiSnippetEStructuralFeatureTable implem
 				Command addCommand = AddCommand.create(editingDomain, equationSectionContainer, CalculationPackage.eINSTANCE.getEquationSection_Equations(), newEquation);
 				editingDomain.getCommandStack().execute(addCommand);
 				setTableViewerInput(editingDomain);
-				//new WizardDialog(PlatformUI.getWorkbench().getDisplay().getActiveShell(), new QudvUnitSetupWizard((UnitManagement) model)).open();
-				// the wizard guides the user through the possible steps to add a unit
-				// at the end, on the performFinish() method it executes a cmd over the commandStack which ends the new unit in the proper way.
+				OpenEquationSectionHandler.openXtextEquationEditor(model);
 			}
 
 			@Override

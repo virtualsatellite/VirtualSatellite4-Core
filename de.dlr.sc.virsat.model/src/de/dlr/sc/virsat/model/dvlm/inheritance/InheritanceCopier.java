@@ -31,6 +31,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil.UsageCrossReferencer;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.calculation.CalculationPackage;
 import de.dlr.sc.virsat.model.dvlm.calculation.EquationSection;
+import de.dlr.sc.virsat.model.dvlm.calculation.IEquationSectionContainer;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
@@ -293,8 +294,12 @@ public class InheritanceCopier implements IInheritanceCopier {
 		
 		@Override
 		protected void copyContainment(EReference eReference, EObject eObject, EObject copyEObject) {
-			if (eReference == CalculationPackage.Literals.IEQUATION_SECTION_CONTAINER__EQUATION_SECTION) {
-				return;
+			if (eReference == CalculationPackage.Literals.IEQUATION_SECTION_CONTAINER__EQUATION_SECTION 
+					&& copyEObject instanceof IEquationSectionContainer) {
+				if (((IEquationSectionContainer) copyEObject).getEquationSection() != null 
+						&& ((IEquationSectionContainer) copyEObject).getEquationSection().isOverride()) {
+					return;
+				}
 			}
 			super.copyContainment(eReference, eObject, copyEObject);
 		}
