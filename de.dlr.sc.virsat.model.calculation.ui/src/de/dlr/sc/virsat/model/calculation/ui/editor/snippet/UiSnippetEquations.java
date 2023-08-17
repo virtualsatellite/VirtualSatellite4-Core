@@ -318,7 +318,8 @@ public class UiSnippetEquations extends AUiSnippetEStructuralFeatureTable implem
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					IEquationSectionContainer container = (IEquationSectionContainer) model;
-					Command cmd = SetCommand.create(editingDomain, container.getEquationSection(), InheritancePackage.Literals.IOVERRIDABLE_INHERITANCE_LINK__OVERRIDE, buttonPropertyOverride.getSelection());
+					Command cmd = SetCommand.create(editingDomain, container.getEquationSection(), 
+							InheritancePackage.Literals.IOVERRIDABLE_INHERITANCE_LINK__OVERRIDE, buttonPropertyOverride.getSelection());
 					editingDomain.getCommandStack().execute(cmd);
 				} 
 					
@@ -392,6 +393,9 @@ public class UiSnippetEquations extends AUiSnippetEStructuralFeatureTable implem
 		}
 	}
 	
+	/**
+	 * Update the state of the overwrite flag from any model change that might happen when equations are changed
+	 */
 	private void updateState() {
 		IEquationSectionContainer container = (IEquationSectionContainer) this.model;
 		if (buttonPropertyOverride != null && !buttonPropertyOverride.isDisposed()) {

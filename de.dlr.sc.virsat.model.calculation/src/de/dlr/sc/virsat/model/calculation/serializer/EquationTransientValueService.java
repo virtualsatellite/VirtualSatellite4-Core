@@ -50,7 +50,7 @@ public class EquationTransientValueService extends DefaultTransientValueService 
 			return true;
 		}
 		
-		// We do not serialize the superTIs reference.
+		// We do not serialize any of the inheritance related attributes
 		if (feature.equals(InheritancePackage.Literals.IINHERITANCE_LINK__SUPER_TIS) 
 				|| feature.equals(InheritancePackage.Literals.IINHERITANCE_LINK__IS_INHERITED)
 				|| feature.equals(InheritancePackage.Literals.IOVERRIDABLE_INHERITANCE_LINK__OVERRIDE)) {
