@@ -22,7 +22,7 @@ class ConceptFragmentTestManifestGenerator implements IFileContentGenerator {
 	}
 	
 	def getProjectNameForTestPlugin(IProjectBuilderInfo builderInfo) {
-		builderInfo.projectName.replace(".test", "");
+		builderInfo.projectName.substring(0, builderInfo.projectName.lastIndexOf("."))
 	}
 	
 	def manifestContent(IProjectBuilderInfo builderInfo) '''
@@ -43,5 +43,6 @@ class ConceptFragmentTestManifestGenerator implements IFileContentGenerator {
 	 de.dlr.sc.virsat.model.edit,
 	 de.dlr.sc.virsat.concept.unittest.util
 	Export-Package: «builderInfo.projectName»
+	Automatic-Module-Name: «builderInfo.projectName»
 	'''
 }
