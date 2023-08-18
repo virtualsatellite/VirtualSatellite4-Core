@@ -5493,5 +5493,14 @@
       <element href="dvlm.ecore#//dmf"/>
     </changes>
   </releases>
-  <releases xmi:id="_hIDhkPxDEey3JZ32do51VQ"/>
+  <releases xmi:id="_hIDhkPxDEey3JZ32do51VQ">
+    <changes xsi:type="history:Remove" xmi:id="_xYn24DzjEe6QffNyXiIMCA" featureName="eSuperTypes">
+      <element href="dvlm.ecore#//calculation/EquationSection"/>
+      <referenceValue href="dvlm.ecore#//inheritance/IInheritanceLink"/>
+    </changes>
+    <changes xsi:type="history:Add" xmi:id="_xYpFADzjEe6QffNyXiIMCA" featureName="eSuperTypes">
+      <element href="dvlm.ecore#//calculation/EquationSection"/>
+      <referenceValue href="dvlm.ecore#//inheritance/IOverridableInheritanceLink"/>
+    </changes>
+  </releases>
 </history:History>

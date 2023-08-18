@@ -92,6 +92,7 @@ public class CalculationSwitch<T> extends Switch<T> {
 				EquationSection equationSection = (EquationSection)theEObject;
 				T result = caseEquationSection(equationSection);
 				if (result == null) result = caseIEquationSectionContainer(equationSection);
+				if (result == null) result = caseIOverridableInheritanceLink(equationSection);
 				if (result == null) result = caseIInheritanceLink(equationSection);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
