@@ -22,7 +22,7 @@ class ConceptPluginUiManifestGenerator implements IFileContentGenerator {
 	}
 	
 	def getProjectNameForUiPlugin(IProjectBuilderInfo builderInfo) {
-		builderInfo.projectName.replace(".ui", "");
+		builderInfo.projectName.substring(0, builderInfo.projectName.lastIndexOf("."))
 	}
 	
 	def manifestContent(IProjectBuilderInfo builderInfo) '''
@@ -44,5 +44,6 @@ class ConceptPluginUiManifestGenerator implements IFileContentGenerator {
 	 de.dlr.sc.virsat.uiengine.ui
 	Bundle-RequiredExecutionEnvironment: JavaSE-11
 	Bundle-ActivationPolicy: lazy
+	Automatic-Module-Name: «builderInfo.projectName»
 	'''
 }
