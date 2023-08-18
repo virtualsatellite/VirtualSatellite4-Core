@@ -34,8 +34,12 @@ import de.dlr.sc.virsat.model.dvlm.calculation.AExpression;
 import de.dlr.sc.virsat.model.dvlm.calculation.CalculationFactory;
 import de.dlr.sc.virsat.model.dvlm.calculation.Equation;
 import de.dlr.sc.virsat.model.dvlm.calculation.EquationDefinition;
+import de.dlr.sc.virsat.model.dvlm.calculation.EquationIntermediateResult;
 import de.dlr.sc.virsat.model.dvlm.calculation.EquationSection;
 import de.dlr.sc.virsat.model.dvlm.calculation.IEquationResult;
+import de.dlr.sc.virsat.model.dvlm.calculation.MathOperator;
+import de.dlr.sc.virsat.model.dvlm.calculation.MultiplicationAndDivision;
+import de.dlr.sc.virsat.model.dvlm.calculation.NumberLiteral;
 import de.dlr.sc.virsat.model.dvlm.calculation.ReferencedDefinitionInput;
 import de.dlr.sc.virsat.model.dvlm.calculation.ReferencedInput;
 import de.dlr.sc.virsat.model.dvlm.calculation.TypeDefinitionResult;
@@ -63,6 +67,8 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
  */
 public class InheritanceCopierTest extends AInheritanceCopierTest {
 	
+	
+	private static final String EQUATION_RESULT = "Result";
 	
 	/**
 	 * This method helps to update an SEI and directly check the needs update method along the call
@@ -1436,5 +1442,81 @@ public class InheritanceCopierTest extends AInheritanceCopierTest {
 		
 		assertTrue("Configuration needs to be updated before Occurence", ordered.indexOf(seiEd1) < ordered.indexOf(seiEc1));
 		assertTrue("Configuration needs to be updated before Occurence", ordered.indexOf(seiEd2) < ordered.indexOf(seiEc2));
+	}
+	
+	@Test
+	public void testCopyEquationSection() {
+		Category cat = CategoriesFactory.eINSTANCE.createCategory();
+		cat.setIsApplicableForAll(true);
+		EquationSection es = CalculationFactory.eINSTANCE.createEquationSection();
+		es.getEquations().add(createEquation());
+		
+		CategoryAssignment caSuper = new CategoryInstantiator().generateInstance(cat, "Ca");
+		seiEcRwI.getCategoryAssignments().add(caSuper);
+		caSuper.setEquationSection(es);
+
+		
+		InheritanceCopier ic = new InheritanceCopier();
+		ic.updateAllInOrder(repo, new NullProgressMonitor());
+		
+		CategoryAssignment caCopied = seiEo1RwI.getCategoryAssignments().get(0);
+		EquationSection esCopied = caCopied.getEquationSection();
+		
+		// Propagate with new value 2
+		final int EXP_EQUATIONS = 1;
+		assertEquals("Equation was copied", esCopied.getEquations().size(), EXP_EQUATIONS);
+		assertEquals("Equation was copied with content", ((EquationIntermediateResult) esCopied.getEquations().get(0).getResult()).getName(), EQUATION_RESULT);
+	}
+	
+	@Test
+	public void testCopyEquationSectionOverride() {
+		Category cat = CategoriesFactory.eINSTANCE.createCategory();
+		cat.setIsApplicableForAll(true);
+		EquationSection es = CalculationFactory.eINSTANCE.createEquationSection();
+		es.getEquations().add(createEquation());
+		
+		CategoryAssignment caSuper = new CategoryInstantiator().generateInstance(cat, "Ca");
+		seiEcRwI.getCategoryAssignments().add(caSuper);
+		caSuper.setEquationSection(es);
+
+		
+		InheritanceCopier ic = new InheritanceCopier();
+		ic.updateAllInOrder(repo, new NullProgressMonitor());
+		
+		CategoryAssignment caCopied = seiEo1RwI.getCategoryAssignments().get(0);
+		EquationSection esCopied = caCopied.getEquationSection();
+		
+		// Now set the override flag
+		esCopied.setOverride(true);
+		esCopied.getEquations().clear();
+		
+		// Run IC again
+		ic.updateAllInOrder(repo, new NullProgressMonitor());
+		
+		
+		final int EXP_EQUATIONS = 0;
+		assertEquals("Equation was not copied because override flag was set", esCopied.getEquations().size(), EXP_EQUATIONS);
+	}
+	
+	/**
+	 * Create a really simple equation
+	 * @return the created equation
+	 */
+	private Equation createEquation() {
+		// create a new Equation with the name of the super user as default user name 
+		Equation newEquation = CalculationFactory.eINSTANCE.createEquation();
+		MultiplicationAndDivision multi = CalculationFactory.eINSTANCE.createMultiplicationAndDivision();
+		multi.setOperator(MathOperator.MULTIPLY);
+		NumberLiteral left = CalculationFactory.eINSTANCE.createNumberLiteral();
+		left.setValue("22");
+		NumberLiteral right = CalculationFactory.eINSTANCE.createNumberLiteral();
+		right.setValue("23");
+		multi.setRight(right);
+		multi.setLeft(left);
+		newEquation.setExpression(multi);
+		EquationIntermediateResult eir = CalculationFactory.eINSTANCE.createEquationIntermediateResult();
+		eir.setName(EQUATION_RESULT);
+		newEquation.setResult(eir);
+		return newEquation;
 	}
 }
