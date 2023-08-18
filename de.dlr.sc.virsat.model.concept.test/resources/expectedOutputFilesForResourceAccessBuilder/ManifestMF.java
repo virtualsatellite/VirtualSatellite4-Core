@@ -22,4 +22,6 @@ public class ManifestMf {
 	public static final String ECLIPSE_EXTENSIBLEAPI = "true";
 	public static final String BUNDLE_ACTIVATOR = "de.dlr.sc.virsat.model.extension.testResource.Activator";
 	public static final String EXPORT_PACKAGE = "de.dlr.sc.virsat.model.extension.testResource,de.dlr.sc.virsat.model.extension.testResource.html,de.dlr.sc.virsat.model.extension.testResource.model,de.dlr.sc.virsat.model.extension.testResource.model.util,de.dlr.sc.virsat.model.extension.testResource.validator";
+	public static final String AUTOMATIC_MODULE_NAME = "de.dlr.sc.virsat.model.extension.testResource";
 }
+

@@ -28,4 +28,4 @@ Export-Package: de.dlr.sc.virsat.model.extension.testResource,
  de.dlr.sc.virsat.model.extension.testResource.model,
  de.dlr.sc.virsat.model.extension.testResource.model.util,
  de.dlr.sc.virsat.model.extension.testResource.validator
-
+Automatic-Module-Name: de.dlr.sc.virsat.model.extension.testResource

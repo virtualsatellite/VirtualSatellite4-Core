@@ -31,4 +31,9 @@ public class ConceptFeatureBuildPropertiesGeneratorTest extends AFileContentGene
 		super.tearDown();
 	}
 
+	@Override
+	String getTestProjectName() {
+		return TEST_PROJECT_NAME;
+	}
+
 }
