@@ -18,10 +18,11 @@ import org.eclipse.graphiti.mm.algorithms.Polyline;
 import org.eclipse.graphiti.mm.algorithms.Text;
 import org.eclipse.graphiti.mm.algorithms.styles.LineStyle;
 import org.eclipse.graphiti.mm.pictograms.Anchor;
-import org.eclipse.graphiti.mm.pictograms.Connection;
 import org.eclipse.graphiti.mm.pictograms.ConnectionDecorator;
+import org.eclipse.graphiti.mm.pictograms.FreeFormConnection;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.services.Graphiti;
+import org.eclipse.graphiti.services.ICreateService;
 import org.eclipse.graphiti.services.IGaService;
 import org.eclipse.graphiti.services.IPeCreateService;
 import org.eclipse.graphiti.util.ColorConstant;
@@ -34,6 +35,7 @@ import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactor
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.extension.statemachines.model.State;
 import de.dlr.sc.virsat.model.extension.statemachines.ui.Activator;
+import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.StateMachineDiagramToolBehaviorProvider;
 
 /**
  * Feature for adding connections in an state machine diagram. 
@@ -44,6 +46,7 @@ public abstract class AbstractConnectionAddFeature extends VirSatAddConnectionFe
 	private static final IColorConstant CONNECTION_FOREGROUND = new ColorConstant(98, 131, 167);
 	private static final double DECORATOR_LOCATION = 0.5;
 	private static final int LABEL_X = 10;
+	
 	/**	
 	 * Default constructor.	 
 	 * @param fp the feature provider.	
@@ -95,20 +98,46 @@ public abstract class AbstractConnectionAddFeature extends VirSatAddConnectionFe
 			}
 		}
 
-		Connection connection = null;
+		FreeFormConnection connection = null;
 		if (fromAnchor != null && toAnchor != null) {
 			// Create a Polyline connection
 
 			connection = peCreateService.createFreeFormConnection(getDiagram());
 			connection.setStart(fromAnchor);
 			connection.setEnd(toAnchor);
+			
+			// if the transition is a self-loop, generate some additional bend points to make it more visible
+			if (fromAnchor.equals(toAnchor)) {
+				ICreateService createService = Graphiti.getCreateService();
+				var itbProvider = getFeatureProvider().getDiagramTypeProvider().getCurrentToolBehaviorProvider();
+				
+				if (itbProvider instanceof StateMachineDiagramToolBehaviorProvider) {
+					var stateGa = fromAnchor.getReferencedGraphicsAlgorithm();
+					var width = stateGa.getWidth();
+					var height = stateGa.getHeight();
 
+					var pNorth = createService.createPoint(width / 2, -height / 2);
+					var pNorthEast = createService.createPoint(width + width / 2, -height / 2);
+					var pEast = createService.createPoint(width + width / 2, height / 2);
+					
+					var tbProvider = (StateMachineDiagramToolBehaviorProvider) itbProvider;
+					tbProvider.placeRelativeTo(pNorth, stateGa);
+					tbProvider.placeRelativeTo(pNorthEast, stateGa);
+					tbProvider.placeRelativeTo(pEast, stateGa);
+
+					var bendPoints = connection.getBendpoints();
+					bendPoints.add(pNorth);
+					bendPoints.add(pNorthEast);
+					bendPoints.add(pEast);
+				}
+			}
+			
 			IGaService gaService = Graphiti.getGaService();
+			
 			Polyline polyline = gaService.createPolyline(connection);
 			polyline.setLineStyle(LineStyle.DASH);
 			polyline.setLineWidth(2);
 			polyline.setForeground(manageColor(getLineColor()));
-			link(connection, cc);
 
 			// Create text element containing name of interface
 			if (setTextDecorator()) {
@@ -124,6 +153,8 @@ public abstract class AbstractConnectionAddFeature extends VirSatAddConnectionFe
 			// Create arrow
 			ConnectionDecorator cd = peCreateService.createConnectionDecorator(connection, false, 1.0, true);
 			DiagramHelper.createArrow(cd, manageColor(CONNECTION_FOREGROUND));
+			
+			link(connection, cc);
 		}
 
 		return connection;
