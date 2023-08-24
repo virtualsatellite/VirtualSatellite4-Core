@@ -15,9 +15,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.ColumnViewer;
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -37,7 +37,7 @@ public class EBooleanCellEditingSupport extends EditingSupport {
 	 * @param viewer the table viewer
 	 * @param emfAttribute the emf Attribute
 	 */
-	public EBooleanCellEditingSupport(EditingDomain editingDomain, TableViewer viewer, EAttribute emfAttribute) {
+	public EBooleanCellEditingSupport(EditingDomain editingDomain, ColumnViewer viewer, EAttribute emfAttribute) {
 		super(viewer);
 		this.editor = new ComboBoxCellEditor((Composite) viewer.getControl(), BOOL_LITERALS);
 		this.editingDomain = editingDomain;
