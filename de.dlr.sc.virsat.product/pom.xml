@@ -119,11 +119,11 @@
 										<tar destfile="${build.file.server.linux.fullpath}"
 											compression="gzip" 
 											longfile="gnu" >
-											<tarfileset dir="./target/products/de.dlr.virsat.core.product/linux/gtk/x86_64" >
+											<tarfileset dir="./target/products/de.dlr.virsat.server.product/linux/gtk/x86_64" >
 												<include name="**" />
 												<exclude name="VirSat4_Server" />
 											</tarfileset>
-											<tarfileset dir="./target/products/de.dlr.virsat.core.product/linux/gtk/x86_64" filemode="755" >
+											<tarfileset dir="./target/products/de.dlr.virsat.server.product/linux/gtk/x86_64" filemode="755" >
 												<include name="VirSat4_Server" />
 											</tarfileset>
 										</tar>
