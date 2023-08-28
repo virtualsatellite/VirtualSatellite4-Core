@@ -11,9 +11,10 @@ package de.dlr.sc.virsat.model.extension.statemachines.util;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.Stack;
 
 import de.dlr.sc.virsat.model.extension.statemachines.model.AConstraint;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
@@ -34,17 +35,27 @@ public class StateMachineHelper {
 	 * An extended set of state machines that does not contain dangling constraints.
 	 */
 	public static Set<StateMachine> transitiveClosureOverConstraints(Set<StateMachine> stateMachines) {
-		var result = new HashSet<StateMachine>(stateMachines);
-
-		Set<StateMachine> extension;
-		do {
-			extension = result.stream()
-				.flatMap(sm -> sm.getConstraints().stream().flatMap(c -> referencedStateMachines(c).stream()))
-				.filter(sm -> !result.contains(sm))
-				.collect(Collectors.toSet());
+		var stack = new Stack<Iterator<StateMachine>>();
+		var result = new HashSet<StateMachine>();
+		
+		stack.push(stateMachines.iterator());
+		
+		while (!stack.isEmpty()) {
+			var it = stack.peek();
 			
-			result.addAll(extension);
-		} while (!extension.isEmpty());
+			if (!it.hasNext()) {
+				stack.pop();
+			} else {
+				var sm = it.next();
+				
+				if (result.contains(sm)) {
+					continue;
+				} else {
+					result.add(sm);
+					stack.push(sm.getConstraints().stream().flatMap(c -> referencedStateMachines(c).stream()).iterator());
+				}
+			}
+		}
 		
 		return result;
 	}
