@@ -14,17 +14,21 @@ import static java.util.stream.Collectors.joining;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.graphiti.ui.platform.GraphitiShapeEditPart;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
@@ -33,16 +37,20 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.ui.ISelectionListener;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.ViewPart;
 
+import de.dlr.sc.virsat.model.concept.types.util.BeanCategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.extension.statemachines.model.State;
 import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
 import de.dlr.sc.virsat.model.extension.statemachines.model.Transition;
 import de.dlr.sc.virsat.model.extension.statemachines.statespace.StateSpaceExplorer;
 import de.dlr.sc.virsat.model.extension.statemachines.statespace.TraceState;
 import de.dlr.sc.virsat.model.extension.statemachines.ui.Activator;
-import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
-import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
+import de.dlr.sc.virsat.model.extension.statemachines.util.StateMachineHelper;
 
 /**
  * A view for simulating state machines.
@@ -57,7 +65,7 @@ public class SimulatorView extends ViewPart {
 	private TableViewer traceViewer;
 	private TableViewer transitionViewer;
 	
-	private Action actionNewTrace;
+	private Action actionClearTrace;
 	private Action actionStepForward;
 	private Action actionStepBackward;
 	
@@ -65,8 +73,11 @@ public class SimulatorView extends ViewPart {
 	private List<TraceState> trace;
 	private List<StateSpaceExplorer.SystemTransition> transitions;
 	
-	private List<StateMachine> stateMachines;
+	private List<StateMachine> input;
 	private StateSpaceExplorer explorer;
+	
+	private ISelectionListener selectionListener;
+	private boolean isDisposed;
 	
 	
 	private class SystemStateColumnLabelProvider extends ColumnLabelProvider {
@@ -83,10 +94,20 @@ public class SimulatorView extends ViewPart {
 		}
 	}
 	
+	private static class StateMachineComparator implements Comparator<StateMachine> {
+		@Override
+		public int compare(StateMachine o1, StateMachine o2) {
+			return o1.getName().compareTo(o2.getName());
+		}
+
+	}
+	
+	private StateMachineComparator comparator = new StateMachineComparator();
 	
 	public SimulatorView() {
 		this.trace = new ArrayList<>();
 		this.transitions = new ArrayList<>();
+		this.isDisposed = false;
 	}
 
 	@Override
@@ -100,6 +121,13 @@ public class SimulatorView extends ViewPart {
 	@Override
 	public void setFocus() {
 		traceViewer.getControl().setFocus();
+	}
+	
+	@Override
+	public void dispose() {
+		isDisposed = true;
+		getSite().getPage().removeSelectionListener(selectionListener);
+		super.dispose();
 	}
 	
 	/**
@@ -178,15 +206,15 @@ public class SimulatorView extends ViewPart {
 	 * Creates the actions for this view.
 	 */
 	private void createActions() {
-		actionNewTrace = new Action() {
+		actionClearTrace = new Action() {
 			@Override
 			public void run() {
-				handleNewTrace();
+				handleClearTrace();
 			}
 		};
-		actionNewTrace.setText("New trace");
-		actionNewTrace.setToolTipText("Start a new trace");
-		actionNewTrace.setImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.getPluginId(), "resources/icons/NewTrace.png"));
+		actionClearTrace.setText("Clear trace");
+		actionClearTrace.setToolTipText("Clear the trace and start a new simulation");
+		actionClearTrace.setImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.getPluginId(), "resources/icons/ClearTrace.png"));
 		
 		actionStepForward = new Action() {
 			@Override
@@ -216,7 +244,7 @@ public class SimulatorView extends ViewPart {
 	 */
 	private void createActionBar() {
 		var toolBarManager = getViewSite().getActionBars().getToolBarManager();
-		toolBarManager.add(actionNewTrace);
+		toolBarManager.add(actionClearTrace);
 		toolBarManager.add(actionStepBackward);
 		toolBarManager.add(actionStepForward);
 	}
@@ -225,6 +253,47 @@ public class SimulatorView extends ViewPart {
 	 * Creates and adds all event listeners.
 	 */
 	private void addListeners() {
+		selectionListener = new ISelectionListener() {
+			@Override
+			public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+				if (!(selection instanceof IStructuredSelection)) {
+					return;
+				}
+				
+				var structuredSelection = (IStructuredSelection) selection;
+				var selectedStateMachines = new HashSet<StateMachine>();
+				
+				for (var sel : structuredSelection) {
+					if (sel instanceof CategoryAssignment) { // selection of a state machine CA
+						var ca = (CategoryAssignment) sel;
+						if (ca.getType().getFullQualifiedName().equals(StateMachine.FULL_QUALIFIED_CATEGORY_NAME)) {
+							selectedStateMachines.add(new StateMachine(ca));
+						}
+					} else if (sel instanceof StructuralElementInstance) { // selection of an SEI possibly containing nested state machines
+						var selectedSei = (StructuralElementInstance) sel;
+						var seis = new ArrayList<>(selectedSei.getDeepChildren());
+						seis.add(selectedSei);
+						
+						var helper = new BeanCategoryAssignmentHelper();
+						
+						seis.stream().forEach(sei -> selectedStateMachines.addAll(helper.getAllBeanCategories(sei, StateMachine.class)));
+					} else if (sel instanceof GraphitiShapeEditPart) { // selection of a state machine in a state machine diagram
+						var sep = (GraphitiShapeEditPart) sel;
+						var bo = sep.getFeatureProvider().getBusinessObjectForPictogramElement(sep.getPictogramElement());
+						if (bo instanceof StateMachine && !(bo instanceof State)) {
+							selectedStateMachines.add((StateMachine) bo);
+						}
+					}
+				}
+				
+				if (!selectedStateMachines.isEmpty()) {
+					setInput(selectedStateMachines);
+				}
+			}
+		};
+		getSite().getPage().addSelectionListener(selectionListener);
+		isDisposed = false;
+		
 		traceViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
@@ -255,25 +324,45 @@ public class SimulatorView extends ViewPart {
 	}
 	
 	/**
+	 * Set the input for the view.
+	 * @param stateMachines
+	 */
+	private void setInput(Set<StateMachine> stateMachines) {
+		if (isDisposed) {
+			return;
+		}
+		
+		input = new ArrayList<>(StateMachineHelper.transitiveClosureOverConstraints(stateMachines));
+		input.sort(comparator); // make sure the order is stable and reasonable, since the list is created from a set
+		
+		// if there already is a trace in the view, do not remove it unless explicitly requested by the user
+		if (trace.size() > 1) {
+			return;
+		}
+		
+		handleClearTrace();
+	}
+	
+	/**
 	 * Handles creating a new trace.
 	 */
-	private void handleNewTrace() {
-		stateMachines = getStateMachines();
-		explorer = new StateSpaceExplorer(stateMachines);
-		
+	private void handleClearTrace() {
 		resetTrace();
+		explorer = new StateSpaceExplorer(input);
+
+		createTraceViewerColumns(input);
+		traceViewer.refresh();
 		
 		var initialStates = explorer.getInitialStates();
 		if (initialStates.isEmpty()) {
-			MessageDialog.openInformation(traceViewer.getControl().getShell(), "State Machine Simulator", "The system has no valid initial states.");
+			actionStepForward.setEnabled(false);
 		} else {		
 			var initialState = addToTrace(initialStates.get(0));
-			
-			createTraceViewerColumns(stateMachines);
+
 			traceViewer.refresh();
 			traceViewer.setSelection(new StructuredSelection(initialState));
 		}
-
+		
 		actionStepBackward.setEnabled(false);
 	}
 	
@@ -339,32 +428,6 @@ public class SimulatorView extends ViewPart {
 			column.getColumn().setWidth(STATE_VIEWER_COLUMN_WIDTH);
 			column.setLabelProvider(new SystemStateColumnLabelProvider(sm));
 		});
-	}
-	
-	/**
-	 * Returns all state machines that should be simulated.
-	 */
-	private List<StateMachine> getStateMachines() {
-		var workspace = ResourcesPlugin.getWorkspace();
-		var projects = VirSatProjectCommons.getAllVirSatProjects(workspace);
-		
-		if (projects.isEmpty()) {
-			return Collections.emptyList();
-		}
-		
-		var repository = VirSatResourceSet.getResourceSet(projects.get(0)).getRepository();
-		var stateMachines = new ArrayList<StateMachine>();
-		
-		EcoreUtil.getAllContents(repository.getRootEntities()).forEachRemaining(o -> {
-			if (o instanceof CategoryAssignment) {
-				var ca = (CategoryAssignment) o;
-				if (ca.getType().getName().equals(StateMachine.class.getSimpleName())) {
-					stateMachines.add(new StateMachine(ca));
-				}
-			}
-		});
-		
-		return stateMachines;
 	}
 
 	/**
