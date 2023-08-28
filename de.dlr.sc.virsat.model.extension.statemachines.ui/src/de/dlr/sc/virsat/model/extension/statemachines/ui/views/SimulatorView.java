@@ -58,6 +58,8 @@ import de.dlr.sc.virsat.model.extension.statemachines.util.StateMachineHelper;
  */
 public class SimulatorView extends ViewPart {
 	
+	public static final String ID = "de.dlr.sc.virsat.model.extension.statemachines.ui.views.simulator";
+	
 	private static final int TIME_COLUMN_WIDTH = 30;
 	private static final int STATE_VIEWER_COLUMN_WIDTH = 200;
 	private static final int TRANSITION_VIEWER_COLUMN_WIDTH = 200;
@@ -116,6 +118,8 @@ public class SimulatorView extends ViewPart {
 		createActions();
 		createActionBar();
 		addListeners();
+		
+		getSite().setSelectionProvider(traceViewer);
 	}
 	
 	@Override
