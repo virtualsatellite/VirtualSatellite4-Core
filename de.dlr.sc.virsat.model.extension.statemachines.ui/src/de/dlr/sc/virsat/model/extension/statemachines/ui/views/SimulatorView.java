@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.model.extension.statemachines.ui.views;
 
 import static java.util.stream.Collectors.joining;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -156,7 +157,7 @@ public class SimulatorView extends ViewPart {
 		}
 	}
 	
-	private class SystemStateColumnLabelProvider extends ColumnLabelProvider {
+	private static class SystemStateColumnLabelProvider extends ColumnLabelProvider {
 		private StateMachine stateMachine;
 		
 		SystemStateColumnLabelProvider(StateMachine stateMachine) {
@@ -170,7 +171,9 @@ public class SimulatorView extends ViewPart {
 		}
 	}
 	
-	private static class StateMachineComparator implements Comparator<StateMachine> {
+	private static class StateMachineComparator implements Comparator<StateMachine>, Serializable {
+		private static final long serialVersionUID = -806482358312370242L;
+
 		@Override
 		public int compare(StateMachine o1, StateMachine o2) {
 			return o1.getName().compareTo(o2.getName());
