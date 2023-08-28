@@ -100,7 +100,7 @@ public class StateSpaceExplorer {
 		}
 	}
 	
-	public class SystemTransition {
+	public static class SystemTransition {
 		private final SystemState from;
 		private final SystemState to;
 		private final List<Transition> localTransitions;
@@ -127,7 +127,7 @@ public class StateSpaceExplorer {
 	/**
 	 * For the requiring state to be active, at least one of the required states must be active.
 	 */
-	private class RequiresAnyConstraint {
+	private static class RequiresAnyConstraint {
 		private final State requiring;
 		private final Set<State> required;
 		
