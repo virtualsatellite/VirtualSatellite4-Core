@@ -11,7 +11,7 @@ package de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.editor;
 
 import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IPartListener;
@@ -22,6 +22,7 @@ import org.eclipse.ui.PartInitException;
 import de.dlr.sc.virsat.graphiti.ui.diagram.editor.VirsatDiagramEditor;
 import de.dlr.sc.virsat.graphiti.util.DiagramHelper;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.extension.statemachines.statespace.StateSpaceExplorer;
 import de.dlr.sc.virsat.model.extension.statemachines.statespace.TraceState;
 import de.dlr.sc.virsat.model.extension.statemachines.ui.views.SimulatorView;
 
@@ -41,12 +42,15 @@ public class StateMachineDiagramEditor extends VirsatDiagramEditor {
 		selectionListener = new ISelectionListener() {
 			@Override
 			public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-				if (!(selection instanceof StructuredSelection)) {
+				if (!(selection instanceof IStructuredSelection)) {
 					return;
 				}
 				
-				if (((StructuredSelection) selection).getFirstElement() instanceof TraceState) {
-					getDiagramTypeProvider().getDiagramBehavior().refresh();
+				for (var selectedElement : (IStructuredSelection) selection) {
+					if (selectedElement instanceof TraceState
+							|| selectedElement instanceof StateSpaceExplorer.SystemTransition) {
+						getDiagramTypeProvider().getDiagramBehavior().refresh();
+					}
 				}
 			}
 		};

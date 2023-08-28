@@ -28,6 +28,7 @@ import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -78,9 +79,82 @@ public class SimulatorView extends ViewPart {
 	private List<StateMachine> input;
 	private StateSpaceExplorer explorer;
 	
-	private ISelectionListener selectionListener;
+	private SelectionIntermediate selectionIntermediate;
+	private ISelectionListener stateMachineSelectionListener;
+	private ISelectionListener transitionSelectionListener;
 	private boolean isDisposed;
 	
+	
+	/**
+	 * The SelectionIntermediate combines the selections of the simulator's viewers. It acts as the SelectionProvider for this view.
+	 * @author chrs_ph
+	 */
+	private class SelectionIntermediate implements ISelectionProvider, ISelectionChangedListener {
+		private final List<ISelectionChangedListener> listeners;
+		private ISelection selection;
+		
+		private TraceState selectedTraceState;
+		private StateSpaceExplorer.SystemTransition selectedTransition;
+		
+		SelectionIntermediate() {
+			listeners = new ArrayList<>();
+			selection = StructuredSelection.EMPTY;
+		}
+		
+		@Override
+		public void addSelectionChangedListener(ISelectionChangedListener listener) {
+			listeners.add(listener);
+		}
+
+		@Override
+		public ISelection getSelection() {
+			return selection;
+		}
+
+		@Override
+		public void removeSelectionChangedListener(ISelectionChangedListener listener) {
+			listeners.remove(listener);
+		}
+
+		@Override
+		public void setSelection(ISelection selection) {
+			this.selection = selection;
+		}
+
+		@Override
+		public void selectionChanged(SelectionChangedEvent event) {
+			if (event.getSelectionProvider() == traceViewer) {
+				selectedTraceState = (TraceState) event.getStructuredSelection().getFirstElement();
+			} else if (event.getSelectionProvider() == transitionViewer) {
+				selectedTransition = (StateSpaceExplorer.SystemTransition) event.getStructuredSelection().getFirstElement();
+			}
+			
+			updateSelection();
+			notifyListeners();
+		}
+		
+		private void notifyListeners() {
+			var event = new SelectionChangedEvent(this, selection);
+			listeners.stream().forEach(listener -> listener.selectionChanged(event));
+		}
+		
+		/**
+		 * Builds a new StructuredSelection combining the selections of the viewers.
+		 */
+		private void updateSelection() {
+			var selections = new ArrayList<Object>(2);
+			
+			if (selectedTraceState != null) {
+				selections.add(selectedTraceState);
+			}
+			
+			if (selectedTransition != null) {
+				selections.add(selectedTransition);
+			}
+			
+			setSelection(new StructuredSelection(selections));
+		}
+	}
 	
 	private class SystemStateColumnLabelProvider extends ColumnLabelProvider {
 		private StateMachine stateMachine;
@@ -119,7 +193,10 @@ public class SimulatorView extends ViewPart {
 		createActionBar();
 		addListeners();
 		
-		getSite().setSelectionProvider(traceViewer);
+		selectionIntermediate = new SelectionIntermediate();
+		traceViewer.addSelectionChangedListener(selectionIntermediate);
+		transitionViewer.addSelectionChangedListener(selectionIntermediate);
+		getSite().setSelectionProvider(selectionIntermediate);
 	}
 	
 	@Override
@@ -129,8 +206,13 @@ public class SimulatorView extends ViewPart {
 	
 	@Override
 	public void dispose() {
+		if (isDisposed) {
+			return;
+		}
+		
 		isDisposed = true;
-		getSite().getPage().removeSelectionListener(selectionListener);
+		getSite().getPage().removeSelectionListener(stateMachineSelectionListener);
+		getSite().getPage().removeSelectionListener(transitionSelectionListener);
 		super.dispose();
 	}
 	
@@ -152,6 +234,7 @@ public class SimulatorView extends ViewPart {
 	private TableViewer createTraceViewer(Composite parent) {
 		var tableViewer = new TableViewer(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
 		tableViewer.getTable().setHeaderVisible(true);
+		tableViewer.getTable().setLinesVisible(true);
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		tableViewer.setInput(trace);
 		
@@ -175,6 +258,7 @@ public class SimulatorView extends ViewPart {
 	private TableViewer createTransitionViewer(Composite parent) {
 		var tableViewer = new TableViewer(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
 		tableViewer.getTable().setHeaderVisible(true);
+		tableViewer.getTable().setLinesVisible(true);
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
 		tableViewer.setInput(transitions);
 		
@@ -257,7 +341,7 @@ public class SimulatorView extends ViewPart {
 	 * Creates and adds all event listeners.
 	 */
 	private void addListeners() {
-		selectionListener = new ISelectionListener() {
+		stateMachineSelectionListener = new ISelectionListener() {
 			@Override
 			public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 				if (!(selection instanceof IStructuredSelection)) {
@@ -295,8 +379,30 @@ public class SimulatorView extends ViewPart {
 				}
 			}
 		};
-		getSite().getPage().addSelectionListener(selectionListener);
-		isDisposed = false;
+		getSite().getPage().addSelectionListener(stateMachineSelectionListener);
+		
+		transitionSelectionListener = new ISelectionListener() {
+			@Override
+			public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+				if (!(selection instanceof IStructuredSelection)) {
+					return;
+				}
+				
+				var selectedElement = ((IStructuredSelection) selection).getFirstElement();
+				
+				if (selectedElement instanceof GraphitiShapeEditPart) {
+					var sep = (GraphitiShapeEditPart) selectedElement;
+					var bo = sep.getFeatureProvider().getBusinessObjectForPictogramElement(sep.getPictogramElement());
+					if (bo instanceof Transition) {
+						var localTransition = (Transition) bo;
+						transitions.stream().filter(t -> t.getLocalTransitions().contains(localTransition)).findFirst().ifPresent(t -> {
+							transitionViewer.setSelection(new StructuredSelection(t));
+						});
+					}
+				}
+			}
+		};
+		getSite().getPage().addSelectionListener(transitionSelectionListener);
 		
 		traceViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
