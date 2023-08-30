@@ -17,6 +17,7 @@ import org.eclipse.xtext.parsetree.reconstr.impl.DefaultTransientValueService;
 import de.dlr.sc.virsat.model.dvlm.calculation.CalculationPackage;
 import de.dlr.sc.virsat.model.dvlm.calculation.EquationSection;
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
+import de.dlr.sc.virsat.model.dvlm.inheritance.InheritancePackage;
 
 /**
  * This class implements the Transient Value Service. It handles for example the UUID
@@ -46,6 +47,13 @@ public class EquationTransientValueService extends DefaultTransientValueService 
 		// From the Equations Section we do not serialize the serializedEquations attribute
 		// it is only intended for backup purposes. in case the equations cannot be deserialized.
 		if (owner instanceof EquationSection && feature.equals(CalculationPackage.Literals.EQUATION_SECTION__SERIALIZED_STATEMENTS)) {
+			return true;
+		}
+		
+		// We do not serialize any of the inheritance related attributes
+		if (feature.equals(InheritancePackage.Literals.IINHERITANCE_LINK__SUPER_TIS) 
+				|| feature.equals(InheritancePackage.Literals.IINHERITANCE_LINK__IS_INHERITED)
+				|| feature.equals(InheritancePackage.Literals.IOVERRIDABLE_INHERITANCE_LINK__OVERRIDE)) {
 			return true;
 		}
 		

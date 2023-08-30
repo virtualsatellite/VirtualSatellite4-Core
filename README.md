@@ -2,6 +2,7 @@
 
 Virtual Satellite is a DLR open source software for model based systems engineering (MBSE).
 
+
 ## Project Status
 
 Status [![Build Status](https://github.com/virtualsatellite/VirtualSatellite4-Core/workflows/Build/badge.svg?branch=development)](https://github.com/virtualsatellite/VirtualSatellite4-Core/workflows/Build) [![Coverage Status](https://codecov.io/gh/virtualsatellite/VirtualSatellite4-Core/branch/development/graph/badge.svg)](https://codecov.io/gh/virtualsatellite/VirtualSatellite4-Core) [![Download virtualsatellite](https://img.shields.io/sourceforge/dt/virtualsatellite.svg)](https://sourceforge.net/projects/virtualsatellite/files/development/) for *Development* build.
@@ -17,7 +18,7 @@ Virtual Satellite 4 is the new evolution of MBSE. With a customizable data model
 ## Requirements 
 
 Virtual Satellite is based on Java / Eclipse and provides an installable feature with plug-ins for your personal eclipse IDE. The following infrastructure is required:
- - Java Development Kit (JDK) 8 - 64 bit
+ - Java Development Kit (JDK) 11 - 64 bit
  - Windows 7 or Linux Computer - 64 bit
 
 ## Quickstart for users

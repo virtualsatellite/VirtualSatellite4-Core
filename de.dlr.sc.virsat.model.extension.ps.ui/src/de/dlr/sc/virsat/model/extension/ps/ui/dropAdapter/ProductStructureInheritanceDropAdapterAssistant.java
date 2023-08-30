@@ -45,8 +45,7 @@ public class ProductStructureInheritanceDropAdapterAssistant extends DVLMDefault
 	@Override
 	protected Command createDropCommand(VirSatTransactionalEditingDomain ed, Collection<Object> dragObjects, int operation, EObject dropObject) {
 		try {
-			// Product Structure DND Operations only if ALT is pressed with drag and drop
-			if ((operation == DND.DROP_LINK) && (dropObject instanceof StructuralElementInstance)) {
+			if ((operation == DND.DROP_MOVE || operation == DND.DROP_COPY) && (dropObject instanceof StructuralElementInstance)) {
 				StructuralElementInstance dropSei = (StructuralElementInstance) dropObject;
 				IBeanStructuralElementInstance dopBeanSei = bsf.getInstanceFor(dropSei);
 				Command createSeiAndAddInheritanceCommand = psDndCommandHelper.createDropCommand(ed, dragObjects, dopBeanSei);

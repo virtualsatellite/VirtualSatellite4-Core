@@ -30,5 +30,10 @@ public class ConceptPluginUiBuildPropertiesGeneratorTest extends AFileContentGen
 	public void tearDown() throws Exception {
 		super.tearDown();
 	}
+	
+	@Override
+	String getTestProjectName() {
+		return TEST_PROJECT_NAME;
+	}
 
 }

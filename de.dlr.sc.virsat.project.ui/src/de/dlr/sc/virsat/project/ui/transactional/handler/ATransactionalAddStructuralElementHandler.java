@@ -19,6 +19,7 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.ISelectionService;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
@@ -80,8 +81,9 @@ public abstract class ATransactionalAddStructuralElementHandler extends Abstract
 	 * Expands the navigator tree to the passed object and selects it
 	 */
 	private void expandAndSelectObjectInNavigator() {
-		VirSatNavigator navigator = (VirSatNavigator) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(VirSatNavigator.VIRSAT_NAVIGATOR_ID);
-		if (navigator != null) {
+		IWorkbenchPart part = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().getActivePart();
+		if (part != null && part instanceof VirSatNavigator) {
+			VirSatNavigator navigator = (VirSatNavigator) part;
 			navigator.getCommonViewer().refresh(parentObject);
 			navigator.getCommonViewer().expandToLevel(createdSei, 0);
 			navigator.getCommonViewer().setSelection(new StructuredSelection(createdSei));

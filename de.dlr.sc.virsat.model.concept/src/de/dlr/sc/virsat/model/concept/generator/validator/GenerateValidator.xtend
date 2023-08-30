@@ -119,7 +119,7 @@ class GenerateValidator extends AGeneratorGapGenerator<EObject> {
 	 */
 	override protected declareClass(Concept concept, EObject conceptPart, ImportManager importManager) '''
 	«importManager.register(StructuralElementInstance)»
-	«importManager.register("de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValidator")»
+	«importManager.register("de.dlr.sc.virsat.model.dvlm.validator.IStructuralElementInstanceValidator")»
 	
 	// *****************************************************************
 	// * Class Declaration

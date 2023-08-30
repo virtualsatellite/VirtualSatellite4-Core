@@ -34,6 +34,9 @@ import de.dlr.sc.virsat.model.concept.generator.tests.GenerateValidatorTests;
 import de.dlr.sc.virsat.model.concept.generator.validator.GenerateDeprecatedValidator;
 import de.dlr.sc.virsat.model.concept.generator.validator.GenerateValidator;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
@@ -116,6 +119,16 @@ public class ConceptLanguageGenerator implements IGenerator2 {
           GeneratePluginXml _generatePluginXml_1 = new GeneratePluginXml();
           PluginXmlReader _pluginXmlReader_2 = new PluginXmlReader();
           _generatePluginXml_1.serializeModelDeprecatedValidator(dataModel, _pluginXmlReader_2, fsa);
+        }
+        try {
+          ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
+        } catch (final Throwable _t) {
+          if (_t instanceof CoreException) {
+            final CoreException e = (CoreException)_t;
+            e.printStackTrace();
+          } else {
+            throw Exceptions.sneakyThrow(_t);
+          }
         }
       }
     } catch (Throwable _e) {

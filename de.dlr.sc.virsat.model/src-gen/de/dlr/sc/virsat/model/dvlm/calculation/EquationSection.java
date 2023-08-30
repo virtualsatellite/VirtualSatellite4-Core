@@ -10,7 +10,7 @@
 package de.dlr.sc.virsat.model.dvlm.calculation;
 
 
-import de.dlr.sc.virsat.model.dvlm.inheritance.IInheritanceLink;
+import de.dlr.sc.virsat.model.dvlm.inheritance.IOverridableInheritanceLink;
 import org.eclipse.emf.common.util.EList;
 
 /**
@@ -31,7 +31,7 @@ import org.eclipse.emf.common.util.EList;
  * @model
  * @generated
  */
-public interface EquationSection extends IEquationSectionContainer, IInheritanceLink {
+public interface EquationSection extends IEquationSectionContainer, IOverridableInheritanceLink {
 	/**
 	 * Returns the value of the '<em><b>Imports</b></em>' containment reference list.
 	 * The list contents are of type {@link de.dlr.sc.virsat.model.dvlm.calculation.Import}.

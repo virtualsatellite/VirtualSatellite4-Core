@@ -30,12 +30,15 @@ public abstract class AFileContentGeneratorTest {
 
 	private IProjectBuilderInfo projectBuilderInfo;
 	
+	abstract String getTestProjectName();
+	public static final String TEST_PROJECT_NAME = "de.dlr.sc.virsat.concept.example";
+	
 	@Before
 	public void setUp() throws Exception {
 		projectBuilderInfo = new IProjectBuilderInfo() {
 			@Override
 			public String getProjectName() {
-				return TEST_PROJECT_NAME;
+				return getTestProjectName();
 			}
 
 			@Override
@@ -79,7 +82,6 @@ public abstract class AFileContentGeneratorTest {
 	public void tearDown() throws Exception {
 	}
 
-	public static final String TEST_PROJECT_NAME = "de.dlr.sc.virsat.concept.example";
 	protected IFileContentGenerator fileContentGenerator;
 	protected String expectedContentFilePath;
 	

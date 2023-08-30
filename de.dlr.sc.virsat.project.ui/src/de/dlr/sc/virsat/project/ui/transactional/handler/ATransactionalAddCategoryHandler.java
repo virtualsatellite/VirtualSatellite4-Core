@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 
 import de.dlr.sc.virsat.model.dvlm.Repository;
@@ -91,8 +92,9 @@ public abstract class ATransactionalAddCategoryHandler extends AAddCategoryHandl
 	 * @param ca 
 	 */
 	private void expantAndSelectObjectInNavigator(Object ca) {
-		VirSatNavigator navigator = (VirSatNavigator) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(VirSatNavigator.VIRSAT_NAVIGATOR_ID);
-		if (navigator != null) {
+		IWorkbenchPart part = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().getActivePart();
+		if (part != null && part instanceof VirSatNavigator) {
+			VirSatNavigator navigator = (VirSatNavigator) part;
 			navigator.getCommonViewer().refresh(firstSelectedObject);
 			navigator.getCommonViewer().expandToLevel(ca, 0);
 			navigator.getCommonViewer().setSelection(new StructuredSelection(ca));
