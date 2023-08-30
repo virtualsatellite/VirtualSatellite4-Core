@@ -80,7 +80,7 @@ public abstract class AbstractConnectionCreateFeature  extends AbstractCreateCon
 			return false;
 		}
 		boolean candDraw = canDraw(state1, state2);
-		if (source instanceof State && target instanceof State && source != target && candDraw) {	
+		if (source instanceof State && target instanceof State && candDraw) {	
 			State s = (State) source;
 			return DiagramHelper.hasBothWritePermission(s.getTypeInstance(), sourceAnchor);
 		}

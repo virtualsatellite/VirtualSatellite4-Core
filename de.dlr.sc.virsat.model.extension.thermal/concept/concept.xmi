@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ASCII"?>
-<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v9/c" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v9/cp/cppd" name="de.dlr.sc.virsat.model.extension.thermal" description="Concept for modeling thermal properties" displayName="Thermal" beta="true">
+<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v10/c" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v10/cp/cppd" name="de.dlr.sc.virsat.model.extension.thermal" description="Concept for modeling thermal properties" displayName="Thermal" beta="true">
   <imports importedNamespace="de.dlr.sc.virsat.model.ext.core.*"/>
   <categories name="ComponentMeshSize" description="The maximum specific size of the mesh is specified here.">
     <properties xsi:type="dvlm_cppd:ReferenceProperty" name="meshComponent" referenceType="de.dlr.sc.virsat.model.extension.thermal.ThermalElementParameters"/>

@@ -288,9 +288,9 @@ public class HierarchyLevelCheckerTest extends AConceptTestCase {
 		child1.add(child11);
 		child2.add(child21);
 
-		assertEquals(expectedApplicableLevels(an, bn), checker.getApplicableLevels(parent));
+		assertEquals(expectedApplicableLevels(an), checker.getApplicableLevels(parent));
 		assertEquals(expectedApplicableLevels(an, bn), checker.getApplicableLevels(child1));
-		assertEquals(expectedApplicableLevels(bn, cn), checker.getApplicableLevels(child2));
+		assertEquals(expectedApplicableLevels(bn), checker.getApplicableLevels(child2));
 	}
 
 	@Test
