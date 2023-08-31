@@ -18,7 +18,7 @@ This ticket captures all release related work of the VirtualSatellite4-Core rele
 - [ ] Run ant script to update version numbers (open build.xml and start the updateVersions task)
 - [ ] Check if the server APIs had changes and update the version numbers in the servlets if necessary
 - [ ] Check if there are unreleased changes on the Ecore data model (open dvlm.ecore, check if History > Release (not yet released is empty))
-  - [ ] Create a Edapt release of new changes (View "Operation Browser", click "Release" with "not yet released" selected, set the next version)
+  - [ ] Create a Edapt release of new changes (Open the DVLM-Ecore model; open the view "Operation Browser", click "Release" with "not yet released" selected, set the next version)
   - [ ] Generate model and edit code from Ecore (Open dvlm.genmodel, right click on the context menu)
   - [ ] Adjust DVLM version number in factory overwrite: in the plugin.xml of the de.dlr.sc.virsat.model project. (Extension point: org.eclipse.emf.ecore.factory_override)
   - [ ] Adjust DVLM version number in ConceptLanguage.xtext and run GenerateConceptLanguage.mwe2 
