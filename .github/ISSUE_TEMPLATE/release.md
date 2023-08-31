@@ -20,8 +20,8 @@ This ticket captures all release related work of the VirtualSatellite4-Core rele
 - [ ] Check if there are unreleased changes on the Ecore data model (open dvlm.ecore, check if History > Release (not yet released is empty))
   - [ ] Create a Edapt release of new changes (View "Operation Browser", click "Release" with "not yet released" selected, set the next version)
   - [ ] Generate model and edit code from Ecore (Open dvlm.genmodel, right click on the context menu)
-  - [ ] Adjust DVLM version number in factory overwrite: in the plugin.xml of the de.dlr.sc.virsat.model project.
-  - [ ] Adjust DVLM version number in ConceptLanguage.xtext and run GenerateConceptLanguage.mwe2 (Extension point: org.eclipse.emf.ecore.factory_override)
+  - [ ] Adjust DVLM version number in factory overwrite: in the plugin.xml of the de.dlr.sc.virsat.model project. (Extension point: org.eclipse.emf.ecore.factory_override)
+  - [ ] Adjust DVLM version number in ConceptLanguage.xtext and run GenerateConceptLanguage.mwe2 
   - [ ] Adjust DVLM version number in EquationDSL.xtext and run GenerateEquationDSL.mwe2
   - [ ] Regenerate concept.xmi of all relevant projects (launch "VirSat Core Concept IDE", import projects (with nested), build all)
 - [ ] Check that Java API Doc is working in our Concept-IDE - If not update the Java API Doc being registered in the Java doc plugin
