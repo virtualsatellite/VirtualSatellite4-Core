@@ -336,6 +336,4 @@ public class DisciplineImpl extends MinimalEObjectImpl.Container implements Disc
 		
 	}
 
-
-
 } //DisciplineImpl

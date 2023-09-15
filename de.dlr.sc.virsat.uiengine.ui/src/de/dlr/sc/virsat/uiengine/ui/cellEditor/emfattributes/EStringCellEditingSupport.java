@@ -72,23 +72,25 @@ public class EStringCellEditingSupport extends EditingSupport {
 		return cmd.canExecute();
 	}
 
-	@Override
+	/*@Override
 	protected Object getValue(Object element) {
 		EObject eObject = (EObject) avoidComposedProperty(element);
 		return eObject.eGet(emfAttribute);
-	}
-    /*@Override
+	}*/
+    @Override
     protected Object getValue(Object element) {
         EObject eObject = (EObject) avoidComposedProperty(element);
         String users = (String) eObject.eGet(emfAttribute);
         return users;
-    }*/
+    }
 	
 
 	@Override
 	protected void setValue(Object element, Object userInputValue) {
-		Command cmd = SetCommand.create(editingDomain, avoidComposedProperty(element), emfAttribute, (String) userInputValue);
+		
+		Command cmd = SetCommand.create(editingDomain, avoidComposedProperty(element), emfAttribute, (String) userInputValue);		
 		editingDomain.getCommandStack().execute(cmd);
 		getViewer().update(element, null);
+		
 	}
 }

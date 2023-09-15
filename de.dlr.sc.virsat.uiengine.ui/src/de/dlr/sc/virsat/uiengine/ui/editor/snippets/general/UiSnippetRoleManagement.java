@@ -58,7 +58,6 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 	private static final String COLUMN_TEXT_DISCIPLINE = "Discipline Name";
 	private static final String COLUMN_TEXT_USER = "User Name";
 	
-	
 	/**
 	 * Constructor for this class to instantiate a UI Snippet
 	 */
@@ -87,58 +86,22 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 		columnName.setLabelProvider(getDefaultColumnLabelProvider(editingDomain, true, GeneralPackage.Literals.INAME__NAME));
 		columnName.setEditingSupport(new EStringCellEditingSupport(editingDomain, tableViewer, GeneralPackage.Literals.INAME__NAME));
 		
-		/*// Column of the user name
+		// Column of the user name
 		TableViewerColumn columnUser = createDefaultColumn(tableViewer, COLUMN_TEXT_USER);
 		columnUser.setLabelProvider(getDefaultColumnLabelProvider(editingDomain, false, RolesPackage.Literals.DISCIPLINE__USER));
-		columnUser.setEditingSupport(new EStringCellEditingSupport(editingDomain, tableViewer, RolesPackage.Literals.DISCIPLINE__USER));*/		
-	    
-		// Column of the user names (modified for multiple users)
+		columnUser.setEditingSupport(new EStringCellEditingSupport(editingDomain, tableViewer, RolesPackage.Literals.DISCIPLINE__USER));	
+		
+		/*// Column of the user names (modified for multiple users)
 		TableViewerColumn columnUsers = createDefaultColumn(tableViewer, COLUMN_TEXT_USER);
 		columnUsers.setLabelProvider(getDefaultColumnLabelProvider(editingDomain, false, RolesPackage.Literals.DISCIPLINE__USER));
 		// Use a custom editing support for multiple users
 		columnUsers.setEditingSupport(new EListStringCellEditingSupport(editingDomain, tableViewer, RolesPackage.Literals.DISCIPLINE__USER)); 
-	
+		 */
 	}
 	
-	/**
-	 * Custom editing support for handling multiple users as a list of strings.
-	 */
-	private class EListStringCellEditingSupport extends EStringCellEditingSupport {
-
-	    private EListStringCellEditingSupport(EditingDomain editingDomain, TableViewer viewer, EAttribute feature) {
-	        super(editingDomain, viewer, feature);
-	    }
-
-	    @Override
-	    protected Object getValue(Object element) {
-	        Object value = super.getValue(element);
-	        if (value instanceof String) {
-	            return Arrays.asList(((String) value).split(", ")); // Split the string into a list of user names
-	        }
-	        return Collections.emptyList();
-	    }
-
-	    /*@Override
-	    protected void setValue(Object element, Object value) {
-	        if (value instanceof List<?>) {
-	            // Join the list of user names into a single string separated by ", "
-	        	String newValue = String.join(", ", ((List<?>) value).toArray(new String[0]));
-	            super.setValue(element, newValue);
-	        }
-	    }*/
-	    
-	    @Override
-	    protected void setValue(Object element, Object userInputValue) {
-	        if (element instanceof Discipline && userInputValue instanceof String) {
-	            Discipline discipline = (Discipline) element;
-	            String[] userArray = ((String) userInputValue).split(", ");
-	            discipline.getUser().clear(); // Clear existing users
-	            discipline.getUser().addAll(Arrays.asList(userArray));
-	            getViewer().update(element, null);
-	        }
-	    }
-
-	}
+	
+	
+	
 
 	@Override
 	protected Composite createButtons(FormToolkit toolkit, Composite sectionBody) {
@@ -153,28 +116,52 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 		return compositeButtons;
 	}
 	
-	
-	
 	@Override
 	protected void addButtonSelectionListeners(Composite composite, EditingDomain editingDomain) {
-	    buttonAdd.addSelectionListener(new SelectionListener() {
-	        @Override
-	        public void widgetSelected(SelectionEvent e) {
-	            // Create a new Discipline with the name of the super user as default user name
-	            Discipline newDiscipline = RolesFactory.eINSTANCE.createDiscipline();
-	            newDiscipline.setName("New Discipline");
-	            // Initialize the user list with at least one user (current user or default user)
-	            newDiscipline.getUser().add(UserRegistry.getInstance().getUserName());
-	            
-	            Command addCommand = AddCommand.create(editingDomain, model, RolesPackage.eINSTANCE.getRoleManagement_Disciplines(), newDiscipline);
-	            editingDomain.getCommandStack().execute(addCommand);
-	        }
+		
+		/*buttonAdd.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// create a new Discipline with the name of the super user as default user name 
+				Discipline newDiscipline = RolesFactory.eINSTANCE.createDiscipline();
+				
+				newDiscipline.setName("New Discipline");
+				// Initialize the user list with at least one user
+				//newDiscipline.setUser(UserRegistry.getInstance().getUserName());
+				newDiscipline.getUser().add(UserRegistry.getInstance().getUserName());
+				
+				Command addCommand = AddCommand.create(editingDomain, model, RolesPackage.eINSTANCE.getRoleManagement_Disciplines(), newDiscipline);
+				editingDomain.getCommandStack().execute(addCommand);
+			}
 
-	        @Override
-	        public void widgetDefaultSelected(SelectionEvent e) {
-	            widgetSelected(e);
-	        }
-	    });
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				widgetSelected(e);
+			}
+		});*/
+		
+		buttonAdd.addSelectionListener(new SelectionListener() {
+		    @Override
+		    public void widgetSelected(SelectionEvent e) {
+		        // create a new Discipline with the name of the super user as default user name 
+		        Discipline newDiscipline = RolesFactory.eINSTANCE.createDiscipline();
+		        newDiscipline.setName("New Discipline");
+		        newDiscipline.getUser().add(UserRegistry.getInstance().getUserName());
+
+		        Command addCommand = AddCommand.create(editingDomain, model, RolesPackage.eINSTANCE.getRoleManagement_Disciplines(), newDiscipline);
+		        editingDomain.getCommandStack().execute(addCommand);
+		        
+		     // Refresh the viewer to update the display
+		        tableViewer.refresh();
+		    }
+
+		    @Override
+		    public void widgetDefaultSelected(SelectionEvent e) {
+		        widgetSelected(e);
+		    }
+		});
+
+
 		buttonRemove.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -192,9 +179,43 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 		});
 	}
 	
+	
+	
 	@Override
 	protected Set<IMarkerHelper> getMarkerHelpers() {
 		return Collections.singleton(new VirSatProblemMarkerHelper());
 	}
 
+	/**
+	 * Custom editing support for handling multiple users as a list of strings.
+	 */
+	
+	/*private class EListStringCellEditingSupport extends EStringCellEditingSupport {
+
+	    public EListStringCellEditingSupport(EditingDomain editingDomain, TableViewer viewer, EAttribute feature) {
+	        super(editingDomain, viewer, feature);
+	    }
+
+	    @Override
+	    protected Object getValue(Object element) {
+	        Object value = super.getValue(element);
+	        if (value instanceof List<?>) {
+	            return String.join(", ", ((List<?>) value).toArray(new String[0]));
+	        }
+	        return "";
+	    }
+
+	    @Override
+	    protected void setValue(Object element, Object userInputValue) {
+	        if (element instanceof Discipline && userInputValue instanceof String) {
+	            Discipline discipline = (Discipline) element;
+	            String[] userArray = ((String) userInputValue).split(", ");
+	            discipline.getUser().clear(); // Clear existing users
+	            discipline.getUser().addAll(Arrays.asList(userArray));
+	            getViewer().update(element, null);
+	        }
+	    }
+	}*/
+
+	
 }

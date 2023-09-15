@@ -47,8 +47,6 @@ public interface Discipline extends IUuid, IName {
 	 */
 	EList<String> getUser();
 
-	void setUser(String string);
-
-
+	void setUser(String userName);
 
 } // Discipline
