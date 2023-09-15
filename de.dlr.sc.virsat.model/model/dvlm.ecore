@@ -155,8 +155,8 @@
       </eAnnotations>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="EcoreImport">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="importedNsURI" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="importedGenModel" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="importedNsURI" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="importedGenModel" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="IEImports">
       <eStructuralFeatures xsi:type="ecore:EReference" name="ecoreImports" upperBound="-1"
@@ -170,7 +170,7 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Discipline" eSuperTypes="#//general/IUuid #//general/IName">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="user" lowerBound="1"
-          eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+          upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
           defaultValueLiteral=""/>
     </eClassifiers>
   </eSubpackages>
@@ -238,7 +238,7 @@
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="isAbstract" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
           defaultValueLiteral="FALSE"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="extendsCategory" eType="#//categories/Category"/>
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="isVerification" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="isVerification" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="CategoryAssignment" eSuperTypes="#//categories/ATypeInstance #//general/IName #//calculation/IEquationInput #//calculation/IEquationSectionContainer">
       <eStructuralFeatures xsi:type="ecore:EReference" name="propertyInstances" upperBound="-1"
@@ -271,7 +271,7 @@
             eType="#//categories/ATypeDefinition"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="EReferenceProperty" eSuperTypes="#//categories/propertydefinitions/AProperty">
-        <eStructuralFeatures xsi:type="ecore:EReference" name="referenceType" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EClass"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="referenceType" eType="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EClass"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="IIntrinsicTypeProperty" abstract="true"
           interface="true">
@@ -364,7 +364,7 @@
         <eStructuralFeatures xsi:type="ecore:EReference" name="reference" eType="#//categories/ATypeInstance"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="EReferencePropertyInstance" eSuperTypes="#//categories/propertyinstances/APropertyInstance #//inheritance/IOverridableInheritanceLink">
-        <eStructuralFeatures xsi:type="ecore:EReference" name="reference" eType="ecore:EClass platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="reference" eType="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="ComposedPropertyInstance" eSuperTypes="#//categories/propertyinstances/APropertyInstance">
         <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">

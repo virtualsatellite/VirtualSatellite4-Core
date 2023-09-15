@@ -77,6 +77,13 @@ public class EStringCellEditingSupport extends EditingSupport {
 		EObject eObject = (EObject) avoidComposedProperty(element);
 		return eObject.eGet(emfAttribute);
 	}
+    /*@Override
+    protected Object getValue(Object element) {
+        EObject eObject = (EObject) avoidComposedProperty(element);
+        String users = (String) eObject.eGet(emfAttribute);
+        return users;
+    }*/
+	
 
 	@Override
 	protected void setValue(Object element, Object userInputValue) {

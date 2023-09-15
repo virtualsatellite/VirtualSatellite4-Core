@@ -5545,5 +5545,9 @@
       <element href="dvlm.ecore#//dmf"/>
     </changes>
   </releases>
-  <releases xmi:id="_6cc-4EAEEe6Gmt6xAI5a_g"/>
+  <releases xmi:id="_6cc-4EAEEe6Gmt6xAI5a_g">
+    <changes xsi:type="history:Set" xmi:id="_HmkIkFO1Ee6g6eH-O16HqQ" featureName="upperBound" dataValue="-1" oldDataValue="1">
+      <element href="dvlm.ecore#//roles/Discipline/user"/>
+    </changes>
+  </releases>
 </history:History>

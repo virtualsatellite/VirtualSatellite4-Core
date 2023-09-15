@@ -158,7 +158,7 @@ public interface RolesPackage extends EPackage {
 	int DISCIPLINE__NAME = GeneralPackage.IUUID_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>User</b></em>' attribute.
+	 * The feature id for the '<em><b>User</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -217,10 +217,10 @@ public interface RolesPackage extends EPackage {
 	EClass getDiscipline();
 
 	/**
-	 * Returns the meta object for the attribute '{@link de.dlr.sc.virsat.model.dvlm.roles.Discipline#getUser <em>User</em>}'.
+	 * Returns the meta object for the attribute list '{@link de.dlr.sc.virsat.model.dvlm.roles.Discipline#getUser <em>User</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>User</em>'.
+	 * @return the meta object for the attribute list '<em>User</em>'.
 	 * @see de.dlr.sc.virsat.model.dvlm.roles.Discipline#getUser()
 	 * @see #getDiscipline()
 	 * @generated
@@ -279,7 +279,7 @@ public interface RolesPackage extends EPackage {
 		EClass DISCIPLINE = eINSTANCE.getDiscipline();
 
 		/**
-		 * The meta object literal for the '<em><b>User</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>User</b></em>' attribute list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated

@@ -17,6 +17,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
@@ -80,12 +81,12 @@ public class BeanDiscipline implements IBeanName, IBeanUuid {
 	
 	@ApiModelProperty(value = "Name of the user assigned to the discipline", required = true)
 	@XmlElement(nillable = true)
-	public String getUser() {
+	public EList<String> getUser() {
 		return discipline.getUser();
 	}
 	
 	public void setUser(String user) {
-		discipline.setUser(user);
+		((BeanDiscipline) discipline).setUser(user);
 	}
 	
 	

@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.dvlm.roles;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 
@@ -84,7 +85,7 @@ public class RightsHelper {
 			// the owner of the command is our object we work on
 			Discipline disc = getDiscipline(eObject);
 			if (disc != null) {
-				String userAssignedToDispline = disc.getUser();
+				EList<String> userAssignedToDispline = disc.getUser();
 				if (!userAssignedToDispline.isEmpty()) {
 					hasWritePermission = userAssignedToDispline.equals(registeredUserInApplication);
 				}	
