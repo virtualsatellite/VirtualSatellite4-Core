@@ -33,9 +33,9 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedProperty
  */
 public class EStringCellEditingSupport extends EditingSupport {
 
-	private CellEditor editor;
-	private EditingDomain editingDomain;
-	private EAttribute emfAttribute;
+	protected CellEditor editor;
+	protected EditingDomain editingDomain;
+	protected EAttribute emfAttribute;
 
 	/**
 	 * constructor for the string cell editing support instantiate the editor, editing domain and emf attribute
@@ -55,7 +55,7 @@ public class EStringCellEditingSupport extends EditingSupport {
 		return editor;
 	}
 
-	//private static final String CHANGE_VALUE = "Change Probe Value";
+	private static final String CHANGE_VALUE = "Change Probe Value";
 
 	/**
 	 * this method avoid composed properties
@@ -72,11 +72,8 @@ public class EStringCellEditingSupport extends EditingSupport {
 	
 	@Override
 	protected boolean canEdit(Object element) {
-		/*Command cmd = SetCommand.create(editingDomain, avoidComposedProperty(element), emfAttribute, CHANGE_VALUE);
-		return cmd.canExecute();*/
-		// Allow editing for all elements in the "User Name" column
-        return true;
-		
+		Command cmd = SetCommand.create(editingDomain, avoidComposedProperty(element), emfAttribute, CHANGE_VALUE);
+		return cmd.canExecute();
 	}
 
 	@Override
@@ -85,14 +82,6 @@ public class EStringCellEditingSupport extends EditingSupport {
 		// Return the current value of the attribute
 		return eObject.eGet(emfAttribute);
 	}
-	
-	
-    /*@Override
-    protected Object getValue(Object element) {
-        EObject eObject = (EObject) avoidComposedProperty(element);
-        String users = (String) eObject.eGet(emfAttribute);
-        return users;
-    }*/
 
 
 	@Override

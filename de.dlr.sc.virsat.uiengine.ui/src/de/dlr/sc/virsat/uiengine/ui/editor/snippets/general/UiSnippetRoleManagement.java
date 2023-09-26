@@ -10,17 +10,15 @@
 package de.dlr.sc.virsat.uiengine.ui.editor.snippets.general;
 
 
-import java.util.Arrays;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.DeleteCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -36,6 +34,7 @@ import de.dlr.sc.virsat.model.dvlm.roles.RolesPackage;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.project.markers.IMarkerHelper;
 import de.dlr.sc.virsat.project.markers.VirSatProblemMarkerHelper;
+import de.dlr.sc.virsat.uiengine.ui.cellEditor.emfattributes.EListStringCellEditingSupport;
 import de.dlr.sc.virsat.uiengine.ui.cellEditor.emfattributes.EStringCellEditingSupport;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetEStructuralFeatureTable;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
@@ -82,6 +81,7 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 
 	@Override
 	protected void createTableColumns(EditingDomain editingDomain) {
+		
 		// Column Discipline Name
 		TableViewerColumn columnName = createDefaultColumn(tableViewer, COLUMN_TEXT_DISCIPLINE);
 		columnName.setLabelProvider(getDefaultColumnLabelProvider(editingDomain, true, GeneralPackage.Literals.INAME__NAME));
@@ -166,32 +166,6 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 	 * Custom editing support for handling multiple users as a list of strings.
 	 */
 	
-	private class EListStringCellEditingSupport extends EStringCellEditingSupport {
-
-	    private EListStringCellEditingSupport(EditingDomain editingDomain, TableViewer viewer, EAttribute feature) {
-	        super(editingDomain, viewer, feature);
-	    }
-
-	    @Override
-	    protected Object getValue(Object element) {
-	        Object value = super.getValue(element);
-	        if (value instanceof List<?>) {
-	            return String.join(", ", ((List<?>) value).toArray(new String[0]));
-	        }
-	        return "";
-	    }
-
-	    @Override
-	    protected void setValue(Object element, Object userInputValue) {
-	        if (element instanceof Discipline && userInputValue instanceof String) {
-	            Discipline discipline = (Discipline) element;
-	            String[] userArray = ((String) userInputValue).split(", ");
-	            discipline.getUsers().addAll(Arrays.asList(userArray));
-	            getViewer().update(element, null);
-	        }
-	    }
-	    
-	}
 
 
 	
