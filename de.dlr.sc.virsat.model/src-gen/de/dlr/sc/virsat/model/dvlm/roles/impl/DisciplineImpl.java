@@ -330,10 +330,6 @@ public class DisciplineImpl extends MinimalEObjectImpl.Container implements Disc
 		return result.toString();
 	}
 
-	@Override
-	public void setUser(String userName) {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 } //DisciplineImpl
