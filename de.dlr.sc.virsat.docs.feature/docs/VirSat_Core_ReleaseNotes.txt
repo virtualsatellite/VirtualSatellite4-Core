@@ -1,6 +1,13 @@
 VirSat Core Release Notes
 -------------------------
 
+Release 4.15.1 (26th September 2023)
+----------------------------------
+
+Fixed Bugs:
+	Fixed product to use update polarion build
+	Fix deployment of linux server build
+
 Release 4.15.0 (Xth July 2022)
 ----------------------------------
 
