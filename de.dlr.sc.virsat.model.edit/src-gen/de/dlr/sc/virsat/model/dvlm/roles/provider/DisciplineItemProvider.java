@@ -150,7 +150,7 @@ public class DisciplineItemProvider
 				 getResourceLocator(),
 				 getString("_UI_Discipline_user_feature"),
 				 getString("_UI_PropertyDescriptor_description", "_UI_Discipline_user_feature", "_UI_Discipline_type"),
-				 RolesPackage.Literals.DISCIPLINE__USER,
+				 RolesPackage.Literals.DISCIPLINE__USERS,
 				 true,
 				 false,
 				 false,
@@ -206,7 +206,7 @@ public class DisciplineItemProvider
 		switch (notification.getFeatureID(Discipline.class)) {
 			case RolesPackage.DISCIPLINE__UUID:
 			case RolesPackage.DISCIPLINE__NAME:
-			case RolesPackage.DISCIPLINE__USER:
+			case RolesPackage.DISCIPLINE__USERS:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}

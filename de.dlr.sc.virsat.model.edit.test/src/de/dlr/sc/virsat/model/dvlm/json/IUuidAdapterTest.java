@@ -55,7 +55,7 @@ public class IUuidAdapterTest extends AUuidAdapterTest {
 		};
 		
 		discipline = RolesFactory.eINSTANCE.createDiscipline();
-		discipline.setUser(USER);
+		discipline.getUsers().add(USER);
 		
 		sei.setAssignedDiscipline(discipline);
 	}

@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.uiengine.ui.cellEditor.emfattributes;
 
+
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
@@ -21,6 +22,9 @@ import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.widgets.Composite;
 
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
+
+
+
 
 /**
  * this class extends the editing support for cells from type string
@@ -51,7 +55,7 @@ public class EStringCellEditingSupport extends EditingSupport {
 		return editor;
 	}
 
-	private static final String CHANGE_VALUE = "Change Probe Value";
+	//private static final String CHANGE_VALUE = "Change Probe Value";
 
 	/**
 	 * this method avoid composed properties
@@ -68,22 +72,28 @@ public class EStringCellEditingSupport extends EditingSupport {
 	
 	@Override
 	protected boolean canEdit(Object element) {
-		Command cmd = SetCommand.create(editingDomain, avoidComposedProperty(element), emfAttribute, CHANGE_VALUE);
-		return cmd.canExecute();
+		/*Command cmd = SetCommand.create(editingDomain, avoidComposedProperty(element), emfAttribute, CHANGE_VALUE);
+		return cmd.canExecute();*/
+		// Allow editing for all elements in the "User Name" column
+        return true;
+		
 	}
 
-	/*@Override
+	@Override
 	protected Object getValue(Object element) {
 		EObject eObject = (EObject) avoidComposedProperty(element);
+		// Return the current value of the attribute
 		return eObject.eGet(emfAttribute);
-	}*/
-    @Override
+	}
+	
+	
+    /*@Override
     protected Object getValue(Object element) {
         EObject eObject = (EObject) avoidComposedProperty(element);
         String users = (String) eObject.eGet(emfAttribute);
         return users;
-    }
-	
+    }*/
+
 
 	@Override
 	protected void setValue(Object element, Object userInputValue) {
@@ -93,4 +103,5 @@ public class EStringCellEditingSupport extends EditingSupport {
 		getViewer().update(element, null);
 		
 	}
+
 }

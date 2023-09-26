@@ -44,7 +44,7 @@ import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
  * <ul>
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.roles.impl.DisciplineImpl#getUuid <em>Uuid</em>}</li>
  *   <li>{@link de.dlr.sc.virsat.model.dvlm.roles.impl.DisciplineImpl#getName <em>Name</em>}</li>
- *   <li>{@link de.dlr.sc.virsat.model.dvlm.roles.impl.DisciplineImpl#getUser <em>User</em>}</li>
+ *   <li>{@link de.dlr.sc.virsat.model.dvlm.roles.impl.DisciplineImpl#getUsers <em>Users</em>}</li>
  * </ul>
  *
  * @generated
@@ -91,14 +91,14 @@ public class DisciplineImpl extends MinimalEObjectImpl.Container implements Disc
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getUser() <em>User</em>}' attribute list.
+	 * The cached value of the '{@link #getUsers() <em>Users</em>}' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getUser()
+	 * @see #getUsers()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<String> user;
+	protected EList<String> users;
 
 	/**
 	 * *********************************
@@ -189,13 +189,13 @@ public class DisciplineImpl extends MinimalEObjectImpl.Container implements Disc
 	 * @return value or object of type '{@code EList<String>}'.
 	 * @generated
 	 */
-	public EList<String> getUser() {
-		if (user == null) {
-			user = new EDataTypeUniqueEList<String>(String.class, this, RolesPackage.DISCIPLINE__USER);
+	public EList<String> getUsers() {
+		if (users == null) {
+			users = new EDataTypeUniqueEList<String>(String.class, this, RolesPackage.DISCIPLINE__USERS);
 		 
 		
 		}
-		return user;
+		return users;
 	}
 
 	/**
@@ -210,8 +210,8 @@ public class DisciplineImpl extends MinimalEObjectImpl.Container implements Disc
 				return getUuid();
 			case RolesPackage.DISCIPLINE__NAME:
 				return getName();
-			case RolesPackage.DISCIPLINE__USER:
-				return getUser();
+			case RolesPackage.DISCIPLINE__USERS:
+				return getUsers();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -231,9 +231,9 @@ public class DisciplineImpl extends MinimalEObjectImpl.Container implements Disc
 			case RolesPackage.DISCIPLINE__NAME:
 				setName((String)newValue);
 				return;
-			case RolesPackage.DISCIPLINE__USER:
-				getUser().clear();
-				getUser().addAll((Collection<? extends String>)newValue);
+			case RolesPackage.DISCIPLINE__USERS:
+				getUsers().clear();
+				getUsers().addAll((Collection<? extends String>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -253,8 +253,8 @@ public class DisciplineImpl extends MinimalEObjectImpl.Container implements Disc
 			case RolesPackage.DISCIPLINE__NAME:
 				setName(NAME_EDEFAULT);
 				return;
-			case RolesPackage.DISCIPLINE__USER:
-				getUser().clear();
+			case RolesPackage.DISCIPLINE__USERS:
+				getUsers().clear();
 				return;
 		}
 		super.eUnset(featureID);
@@ -272,8 +272,8 @@ public class DisciplineImpl extends MinimalEObjectImpl.Container implements Disc
 				return UUID_EDEFAULT == null ? uuid != null : !UUID_EDEFAULT.equals(uuid);
 			case RolesPackage.DISCIPLINE__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case RolesPackage.DISCIPLINE__USER:
-				return user != null && !user.isEmpty();
+			case RolesPackage.DISCIPLINE__USERS:
+				return users != null && !users.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -324,8 +324,8 @@ public class DisciplineImpl extends MinimalEObjectImpl.Container implements Disc
 		result.append(uuid);
 		result.append(", name: ");
 		result.append(name);
-		result.append(", user: ");
-		result.append(user);
+		result.append(", users: ");
+		result.append(users);
 		result.append(')');
 		return result.toString();
 	}

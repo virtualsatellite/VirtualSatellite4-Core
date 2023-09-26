@@ -120,7 +120,7 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dvlm.ecore#//roles/RoleManagement/disciplines"/>
       </genClasses>
       <genClasses ecoreClass="dvlm.ecore#//roles/Discipline">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//roles/Discipline/user"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dvlm.ecore#//roles/Discipline/users"/>
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Units" basePackage="de.dlr.sc.virsat.model.dvlm" disposableProviderFactory="true"

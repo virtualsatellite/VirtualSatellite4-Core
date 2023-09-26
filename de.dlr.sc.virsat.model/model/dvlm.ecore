@@ -169,7 +169,7 @@
           upperBound="-1" eType="#//roles/Discipline" containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="Discipline" eSuperTypes="#//general/IUuid #//general/IName">
-      <eStructuralFeatures xsi:type="ecore:EAttribute" name="user" lowerBound="1"
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="users" lowerBound="1"
           upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
           defaultValueLiteral=""/>
     </eClassifiers>

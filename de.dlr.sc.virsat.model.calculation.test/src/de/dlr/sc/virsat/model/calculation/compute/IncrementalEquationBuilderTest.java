@@ -112,8 +112,7 @@ public class IncrementalEquationBuilderTest extends AEquationBuilderTest {
 		IncrementalEquationBuilder builder = new TestIncrementalEquationBuilder();
 		
 		Discipline disc = RolesFactory.eINSTANCE.createDiscipline();
-		disc.setUser("Test");
-		
+		disc.getUsers().add("Test");
 		UserRegistry.getInstance().setSuperUser(false);		
 		
 		seiEdSc.setAssignedDiscipline(disc);

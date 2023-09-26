@@ -196,11 +196,11 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 		
 		discipline = RolesFactory.eINSTANCE.createDiscipline();
 		discipline.setName(DISCIPLINE_NAME);
-		discipline.setUser(USER_WITH_REPO_NAME);
+		discipline.getUsers().add(USER_WITH_REPO_NAME);
 		qkNoReference = QudvFactory.eINSTANCE.createSimpleQuantityKind();
 		
 		anotherDiscipline = RolesFactory.eINSTANCE.createDiscipline();
-		anotherDiscipline.setUser("another user");
+		discipline.getUsers().add("another user");
 		
 		RecordingCommand recordingCommand = new RecordingCommand(ed) {
 			@Override

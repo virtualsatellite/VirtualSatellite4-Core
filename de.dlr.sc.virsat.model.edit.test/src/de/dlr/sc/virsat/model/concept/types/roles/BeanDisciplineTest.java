@@ -49,7 +49,7 @@ public class BeanDisciplineTest {
 		
 		assertEquals("", beanDiscipline.getUser());
 		beanDiscipline.setUser(USER);
-		assertEquals(USER, testDiscipline.getUser());
+		assertEquals(USER, testDiscipline.getUsers());
 		
 		assertEquals(null, beanDiscipline.getName());
 		beanDiscipline.setName(NAME);

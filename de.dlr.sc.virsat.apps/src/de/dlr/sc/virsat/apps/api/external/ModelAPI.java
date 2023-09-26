@@ -236,7 +236,7 @@ public class ModelAPI {
 
 		Discipline foundDiscipline = null;
 		for (Discipline discipline : disciplines) {
-			if (discipline.getUser().equals(userName)) {
+			if (discipline.getUsers().equals(userName)) {
 				foundDiscipline = discipline;
 				break;
 			}
@@ -245,7 +245,7 @@ public class ModelAPI {
 		if (foundDiscipline == null) {
 			foundDiscipline = RolesFactory.eINSTANCE.createDiscipline();
 			foundDiscipline.setName("APP");
-			foundDiscipline.setUser(userName);
+			foundDiscipline.getUsers().add(userName);
 			getRepository().getRoleManagement().getDisciplines().add(foundDiscipline);
 		}
 

@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.uiengine.ui.editor.snippets.general;
 
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -88,19 +89,12 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 		
 		// Column of the user name
 		TableViewerColumn columnUser = createDefaultColumn(tableViewer, COLUMN_TEXT_USER);
-		columnUser.setLabelProvider(getDefaultColumnLabelProvider(editingDomain, false, RolesPackage.Literals.DISCIPLINE__USER));
-		columnUser.setEditingSupport(new EStringCellEditingSupport(editingDomain, tableViewer, RolesPackage.Literals.DISCIPLINE__USER));	
-		
-		/*// Column of the user names (modified for multiple users)
-		TableViewerColumn columnUsers = createDefaultColumn(tableViewer, COLUMN_TEXT_USER);
-		columnUsers.setLabelProvider(getDefaultColumnLabelProvider(editingDomain, false, RolesPackage.Literals.DISCIPLINE__USER));
-		// Use a custom editing support for multiple users
-		columnUsers.setEditingSupport(new EListStringCellEditingSupport(editingDomain, tableViewer, RolesPackage.Literals.DISCIPLINE__USER)); 
-		 */
+		columnUser.setLabelProvider(getDefaultColumnLabelProvider(editingDomain, false, RolesPackage.Literals.DISCIPLINE__USERS));
+		columnUser.setEditingSupport(new EListStringCellEditingSupport(editingDomain, tableViewer, RolesPackage.Literals.DISCIPLINE__USERS));
+		 
 	}
 	
-	
-	
+
 	
 
 	@Override
@@ -119,34 +113,13 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 	@Override
 	protected void addButtonSelectionListeners(Composite composite, EditingDomain editingDomain) {
 		
-		/*buttonAdd.addSelectionListener(new SelectionListener() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				// create a new Discipline with the name of the super user as default user name 
-				Discipline newDiscipline = RolesFactory.eINSTANCE.createDiscipline();
-				
-				newDiscipline.setName("New Discipline");
-				// Initialize the user list with at least one user
-				//newDiscipline.setUser(UserRegistry.getInstance().getUserName());
-				newDiscipline.getUser().add(UserRegistry.getInstance().getUserName());
-				
-				Command addCommand = AddCommand.create(editingDomain, model, RolesPackage.eINSTANCE.getRoleManagement_Disciplines(), newDiscipline);
-				editingDomain.getCommandStack().execute(addCommand);
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				widgetSelected(e);
-			}
-		});*/
-		
 		buttonAdd.addSelectionListener(new SelectionListener() {
 		    @Override
 		    public void widgetSelected(SelectionEvent e) {
 		        // create a new Discipline with the name of the super user as default user name 
 		        Discipline newDiscipline = RolesFactory.eINSTANCE.createDiscipline();
 		        newDiscipline.setName("New Discipline");
-		        newDiscipline.getUser().add(UserRegistry.getInstance().getUserName());
+		        newDiscipline.getUsers().add(UserRegistry.getInstance().getUserName());
 
 		        Command addCommand = AddCommand.create(editingDomain, model, RolesPackage.eINSTANCE.getRoleManagement_Disciplines(), newDiscipline);
 		        editingDomain.getCommandStack().execute(addCommand);
@@ -158,6 +131,8 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 		    @Override
 		    public void widgetDefaultSelected(SelectionEvent e) {
 		        widgetSelected(e);
+			     // Refresh the viewer to update the display
+		        tableViewer.refresh();
 		    }
 		});
 
@@ -169,6 +144,7 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 				if (!selection.isEmpty()) {
 					Command cmd = DeleteCommand.create(editingDomain, selection);
 					editingDomain.getCommandStack().execute(cmd);
+			
 				}
 			}
 
@@ -190,9 +166,9 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 	 * Custom editing support for handling multiple users as a list of strings.
 	 */
 	
-	/*private class EListStringCellEditingSupport extends EStringCellEditingSupport {
+	private class EListStringCellEditingSupport extends EStringCellEditingSupport {
 
-	    public EListStringCellEditingSupport(EditingDomain editingDomain, TableViewer viewer, EAttribute feature) {
+	    private EListStringCellEditingSupport(EditingDomain editingDomain, TableViewer viewer, EAttribute feature) {
 	        super(editingDomain, viewer, feature);
 	    }
 
@@ -210,12 +186,13 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 	        if (element instanceof Discipline && userInputValue instanceof String) {
 	            Discipline discipline = (Discipline) element;
 	            String[] userArray = ((String) userInputValue).split(", ");
-	            discipline.getUser().clear(); // Clear existing users
-	            discipline.getUser().addAll(Arrays.asList(userArray));
+	            discipline.getUsers().addAll(Arrays.asList(userArray));
 	            getViewer().update(element, null);
 	        }
 	    }
-	}*/
+	    
+	}
+
 
 	
 }

@@ -71,7 +71,7 @@ public class RightsHelperTest {
 		UserRegistry.getInstance().setUser("TestUser", TWO_HUNDRED);
 		
 		Discipline discipline = RolesFactory.eINSTANCE.createDiscipline();
-		discipline.setUser("TestUser");
+		discipline.getUsers().add("TestUser");
 		
 		// Now for this test the StructuralElementInstance and the CatgeoryAssignment need to have a sort of Typeing
 		// Otherwise the new lists will refuse to allow placing objects which are not "ApplicableFor"
@@ -95,7 +95,7 @@ public class RightsHelperTest {
 		assertTrue("Yes we can write to the object", RightsHelper.hasSystemUserWritePermission(ca));
 		assertTrue("Yes we can write to the object", RightsHelper.hasSystemUserWritePermission(vpi));
 
-		discipline.setUser("TheBadGuy");
+		discipline.getUsers().add("TheBadGuy");
 
 		assertFalse("No we cannot write to the object", RightsHelper.hasSystemUserWritePermission(sei));
 		
@@ -116,7 +116,7 @@ public class RightsHelperTest {
 		UserRegistry.getInstance().setUser("TestUser", TWO_HUNDRED);
 		
 		Discipline discipline = RolesFactory.eINSTANCE.createDiscipline();
-		discipline.setUser("TestUser");
+		discipline.getUsers().add("TestUser");
 		
 		// Now for this test the StructuralElementInstance and the CatgeoryAssignment need to have a sort of Typeing
 		// Otherwise the new lists will refuse to allow placing objects which are not "ApplicableFor"

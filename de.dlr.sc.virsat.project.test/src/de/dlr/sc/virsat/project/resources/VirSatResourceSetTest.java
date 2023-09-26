@@ -474,8 +474,7 @@ public class VirSatResourceSetTest extends AProjectTestCase {
 		RoleManagement rm = rs.getRoleManagement();
 		Discipline myDiscipline = RolesFactory.eINSTANCE.createDiscipline();
 		myDiscipline.setName("MyDiscipline");
-		myDiscipline.setUser(MY_USER_NAME);
-		
+		myDiscipline.getUsers().add(MY_USER_NAME);
 		rsEd.getCommandStack().execute(AddCommand.create(rsEd, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES, myDiscipline));
 		
 		Discipline systemDiscipline = rm.getDisciplines().get(0);

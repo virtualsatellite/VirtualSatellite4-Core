@@ -23,7 +23,7 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link de.dlr.sc.virsat.model.dvlm.roles.Discipline#getUser <em>User</em>}</li>
+ *   <li>{@link de.dlr.sc.virsat.model.dvlm.roles.Discipline#getUsers <em>Users</em>}</li>
  * </ul>
  *
  * @see de.dlr.sc.virsat.model.dvlm.roles.RolesPackage#getDiscipline()
@@ -32,21 +32,21 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface Discipline extends IUuid, IName {
 	/**
-	 * Returns the value of the '<em><b>User</b></em>' attribute list.
+	 * Returns the value of the '<em><b>Users</b></em>' attribute list.
 	 * The list contents are of type {@link java.lang.String}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>User</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Users</em>' attribute list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>User</em>' attribute list.
-	 * @see de.dlr.sc.virsat.model.dvlm.roles.RolesPackage#getDiscipline_User()
+	 * @return the value of the '<em>Users</em>' attribute list.
+	 * @see de.dlr.sc.virsat.model.dvlm.roles.RolesPackage#getDiscipline_Users()
 	 * @model default="" required="true"
 	 * @generated
 	 */
-	EList<String> getUser();
+	EList<String> getUsers();
 
-	void setUser(String userName);
+
 
 } // Discipline

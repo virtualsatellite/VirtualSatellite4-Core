@@ -792,18 +792,18 @@
       </changes>
       <changes xsi:type="history:Create" xmi:id="_ofgRuW9zEeaZ6pZlWN0bPA" referenceName="eStructuralFeatures">
         <target href="dvlm.ecore#//roles/Discipline"/>
-        <element href="dvlm.ecore#//roles/Discipline/user"/>
+        <element href="dvlm.ecore#//roles/Discipline/users"/>
         <changes xsi:type="history:Set" xmi:id="_ofgRum9zEeaZ6pZlWN0bPA" featureName="name" dataValue="user">
-          <element href="dvlm.ecore#//roles/Discipline/user"/>
+          <element href="dvlm.ecore#//roles/Discipline/users"/>
         </changes>
         <changes xsi:type="history:Set" xmi:id="_ofgRu29zEeaZ6pZlWN0bPA" featureName="lowerBound" dataValue="1" oldDataValue="0">
-          <element href="dvlm.ecore#//roles/Discipline/user"/>
+          <element href="dvlm.ecore#//roles/Discipline/users"/>
         </changes>
         <changes xsi:type="history:Set" xmi:id="_ofgRvG9zEeaZ6pZlWN0bPA" featureName="defaultValueLiteral" dataValue="">
-          <element href="dvlm.ecore#//roles/Discipline/user"/>
+          <element href="dvlm.ecore#//roles/Discipline/users"/>
         </changes>
         <changes xsi:type="history:Set" xmi:id="_ofgRvW9zEeaZ6pZlWN0bPA" featureName="eType">
-          <element href="dvlm.ecore#//roles/Discipline/user"/>
+          <element href="dvlm.ecore#//roles/Discipline/users"/>
           <referenceValue href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
         </changes>
       </changes>
@@ -5547,7 +5547,10 @@
   </releases>
   <releases xmi:id="_6cc-4EAEEe6Gmt6xAI5a_g">
     <changes xsi:type="history:Set" xmi:id="_JGWhgFPPEe6yMr_--UE7vQ" featureName="upperBound" dataValue="-1" oldDataValue="1">
-      <element href="dvlm.ecore#//roles/Discipline/user"/>
+      <element href="dvlm.ecore#//roles/Discipline/users"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_K4EYwFYqEe6yMr_--UE7vQ" featureName="name" dataValue="users" oldDataValue="user">
+      <element href="dvlm.ecore#//roles/Discipline/users"/>
     </changes>
   </releases>
 </history:History>

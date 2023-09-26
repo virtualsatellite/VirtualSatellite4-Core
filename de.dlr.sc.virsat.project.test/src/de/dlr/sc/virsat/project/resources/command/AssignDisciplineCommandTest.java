@@ -115,7 +115,7 @@ public class AssignDisciplineCommandTest extends AProjectTestCase {
 		
 		// now see if the command can be executed as some random user
 		editingDomain.getCommandStack().execute(
-			SetCommand.create(editingDomain, discipline, RolesPackage.eINSTANCE.getDiscipline_User(), "RandomUser")
+			SetCommand.create(editingDomain, discipline, RolesPackage.eINSTANCE.getDiscipline_Users(), "RandomUser")
 		);
 		
 		UserRegistry.getInstance().setSuperUser(false);
@@ -124,7 +124,7 @@ public class AssignDisciplineCommandTest extends AProjectTestCase {
 		// now set the user to be the user from the registry
 		String registeredUser = UserRegistry.getInstance().getUserName();
 		editingDomain.getCommandStack().execute(
-			SetCommand.create(editingDomain, discipline, RolesPackage.eINSTANCE.getDiscipline_User(), registeredUser)
+			SetCommand.create(editingDomain, discipline, RolesPackage.eINSTANCE.getDiscipline_Users(), registeredUser)
 		);
 		assertTrue("With the correct user, the command can be executed", cmdSetOtherDiscipline.canExecute());
 		

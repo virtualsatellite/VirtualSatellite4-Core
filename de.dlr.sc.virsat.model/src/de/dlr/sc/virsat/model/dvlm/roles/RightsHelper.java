@@ -85,7 +85,7 @@ public class RightsHelper {
 			// the owner of the command is our object we work on
 			Discipline disc = getDiscipline(eObject);
 			if (disc != null) {
-				EList<String> userAssignedToDispline = disc.getUser();
+				EList<String> userAssignedToDispline = disc.getUsers();
 				if (!userAssignedToDispline.isEmpty()) {
 					hasWritePermission = userAssignedToDispline.contains(registeredUserInApplication);
 				}	
