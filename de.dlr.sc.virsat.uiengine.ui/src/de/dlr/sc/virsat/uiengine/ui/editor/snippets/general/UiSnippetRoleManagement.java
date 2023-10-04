@@ -19,12 +19,14 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.DeleteCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
@@ -91,6 +93,11 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 		TableViewerColumn columnUser = createDefaultColumn(tableViewer, COLUMN_TEXT_USER);
 		columnUser.setLabelProvider(getDefaultColumnLabelProvider(editingDomain, false, RolesPackage.Literals.DISCIPLINE__USERS));
 		columnUser.setEditingSupport(new EListStringCellEditingSupport(editingDomain, tableViewer, RolesPackage.Literals.DISCIPLINE__USERS));
+		
+		 // Add a label to display allowed characters
+	    Composite userColumnComposite = ((TableViewer) columnUser.getViewer()).getTable().getParent();
+	    Label allowedCharactersLabel = new Label(userColumnComposite, SWT.NONE);
+	    allowedCharactersLabel.setText("Allowed characters: A-Z, a-z, 0-9, _, -");
 		 
 	}
 	
@@ -161,12 +168,5 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 	protected Set<IMarkerHelper> getMarkerHelpers() {
 		return Collections.singleton(new VirSatProblemMarkerHelper());
 	}
-
-	/**
-	 * Custom editing support for handling multiple users as a list of strings.
-	 */
-	
-
-
 	
 }

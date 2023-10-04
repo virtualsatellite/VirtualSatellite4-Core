@@ -47,8 +47,8 @@ public class BeanDisciplineTest {
 		assertEquals(testDiscipline, beanDiscipline.getDiscipline());
 		assertEquals(testDiscipline.getUuid().toString(), beanDiscipline.getUuid());
 		
-		assertEquals("", beanDiscipline.getUser());
-		beanDiscipline.setUser(USER);
+		assertEquals("", beanDiscipline.getUsers());
+		beanDiscipline.addUser(USER);
 		assertEquals(USER, testDiscipline.getUsers());
 		
 		assertEquals(null, beanDiscipline.getName());

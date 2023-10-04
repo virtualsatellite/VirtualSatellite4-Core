@@ -81,12 +81,12 @@ public class BeanDiscipline implements IBeanName, IBeanUuid {
 	
 	@ApiModelProperty(value = "Name of the user assigned to the discipline", required = true)
 	@XmlElement(nillable = true)
-	public EList<String> getUser() {
+	public EList<String> getUsers() {
 		return discipline.getUsers();
 	}
 	
-	public void setUser(String user) {
-		((BeanDiscipline) discipline).setUser(user);
+	public void addUser(String user) {
+		discipline.getUsers().add(user);
 	}
 	
 	
