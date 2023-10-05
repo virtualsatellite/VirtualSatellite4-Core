@@ -17,9 +17,7 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ColumnViewer;
-import org.eclipse.swt.widgets.Display;
 
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 
@@ -54,16 +52,6 @@ public class EListStringCellEditingSupport extends EStringCellEditingSupport {
 	@Override
 	protected void setValue(Object element, Object userInputValue) {
 		if (element instanceof Discipline && userInputValue instanceof String) {
-			String userInput = (String) userInputValue;
-
-	            // Check if the userInput ends with a delimiter
-	        if (!userInput.matches(".*[" + DELIMITERS_REGEX + "]$")) {
-	            Display.getDefault().asyncExec(() -> {
-	                MessageDialog.openWarning(Display.getDefault().getActiveShell(), "Warning", 
-	                    "Please add a period, comma, semicolon, or space after existing names before adding a new user.");
-	            });
-	            return;  // Return without updating the model
-	        }
 			String[] userArray = ((String) userInputValue).split(DELIMITERS_REGEX);
 			Command cmd = SetCommand.create(editingDomain, avoidComposedProperty(element), emfAttribute, Arrays.asList(userArray));		
 			editingDomain.getCommandStack().execute(cmd);

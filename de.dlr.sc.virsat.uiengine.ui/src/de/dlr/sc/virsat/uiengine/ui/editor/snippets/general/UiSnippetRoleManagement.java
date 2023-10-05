@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.uiengine.ui.editor.snippets.general;
 
 
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -18,15 +19,20 @@ import java.util.Set;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.DeleteCommand;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.emf.transaction.RecordingCommand;
+import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
@@ -46,7 +52,7 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
  * @author leps_je
  *
  */
-public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable implements IUiSnippet {
+public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable implements IUiSnippet, FeatureUpdateCallback {
 
 	private static final String SECTION_NAME = "Disciplines";
 	private static final String SECTION_DESCRIPTION_PREFIX = "You are currently logged in as: ";
@@ -81,6 +87,27 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 		return SECTION_DESCRIPTION_PREFIX + user;
 	}
 
+	   /**
+     * openCustomDialog method
+     *
+     */
+	private void openCustomDialog() {
+	    Table table = tableViewer.getTable();
+	    int selectionIndex = table.getSelectionIndex();
+
+	    if (selectionIndex != -1) {
+	        Discipline selectedDiscipline = (Discipline) tableViewer.getElementAt(selectionIndex);
+
+	        // Extract the users for the selected discipline
+	        String[] existingUsernames = selectedDiscipline.getUsers().toArray(new String[0]);
+
+	        // Open the CustomDialog and pass the callback
+	        CustomDialog customDialog = new CustomDialog(Display.getCurrent().getActiveShell(), existingUsernames, this);
+	        customDialog.open();
+	    }
+	}
+
+
 	@Override
 	protected void createTableColumns(EditingDomain editingDomain) {
 		
@@ -93,11 +120,16 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 		TableViewerColumn columnUser = createDefaultColumn(tableViewer, COLUMN_TEXT_USER);
 		columnUser.setLabelProvider(getDefaultColumnLabelProvider(editingDomain, false, RolesPackage.Literals.DISCIPLINE__USERS));
 		columnUser.setEditingSupport(new EListStringCellEditingSupport(editingDomain, tableViewer, RolesPackage.Literals.DISCIPLINE__USERS));
-		
-		 // Add a label to display allowed characters
-	    Composite userColumnComposite = ((TableViewer) columnUser.getViewer()).getTable().getParent();
-	    Label allowedCharactersLabel = new Label(userColumnComposite, SWT.NONE);
-	    allowedCharactersLabel.setText("Allowed characters: A-Z, a-z, 0-9, _, -");
+	    
+	 // Add a mouse listener to the columnUser to invoke the custom dialog
+	    columnUser.getViewer().getControl().addMouseListener(new MouseAdapter() {
+	        @Override
+	        public void mouseDown(MouseEvent e) {
+	            if (tableViewer.getTable().getColumnCount() > 1 && e.x > tableViewer.getTable().getColumn(0).getWidth()) {
+	                openCustomDialog();
+	            }
+	        }
+	    });
 		 
 	}
 	
@@ -167,6 +199,35 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 	@Override
 	protected Set<IMarkerHelper> getMarkerHelpers() {
 		return Collections.singleton(new VirSatProblemMarkerHelper());
+	}
+
+	@Override
+	public void onFeaturesChanged(String[] updatedFeatures) {
+	    EditingDomain editingDomain = AdapterFactoryEditingDomain.getEditingDomainFor(model);
+	    if (editingDomain != null) {
+	        editingDomain.getCommandStack().execute((Command) new RecordingCommand((TransactionalEditingDomain) editingDomain) {
+	            @Override
+	            protected void doExecute() {
+	                Discipline selectedDiscipline = getSelectedDiscipline(); 
+	                if (selectedDiscipline != null) {
+	                    selectedDiscipline.getUsers().clear();
+	                    selectedDiscipline.getUsers().addAll(Arrays.asList(updatedFeatures));
+	                }
+	            }
+	        });
+	    }
+	    // Refresh the viewer to update the display
+	    tableViewer.refresh();
+	}
+
+
+
+	private Discipline getSelectedDiscipline() {
+		int selectionIndex = tableViewer.getTable().getSelectionIndex();
+        if (selectionIndex >= 0 && selectionIndex < tableViewer.getTable().getItemCount()) {
+            return (Discipline) tableViewer.getElementAt(selectionIndex);
+        }
+        return null;
 	}
 	
 }
