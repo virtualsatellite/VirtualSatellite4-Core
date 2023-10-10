@@ -236,7 +236,7 @@ public class ModelAPI {
 
 		Discipline foundDiscipline = null;
 		for (Discipline discipline : disciplines) {
-			if (discipline.getUsers().equals(userName)) {
+			if (discipline.getUsers().contains(userName)) {
 				foundDiscipline = discipline;
 				break;
 			}

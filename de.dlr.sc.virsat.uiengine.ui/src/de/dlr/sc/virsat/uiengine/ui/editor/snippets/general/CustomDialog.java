@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.uiengine.ui.editor.snippets.general;
 
+import java.util.Arrays;
+
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -51,8 +53,8 @@ public class CustomDialog extends Dialog {
 
     public CustomDialog(Shell parentShell, String[] initialFeatures, FeatureUpdateCallback callback) {
         super(parentShell);
-        features = initialFeatures;
-        featureUpdateCallback = callback; // Assign the callback
+        this.features = Arrays.copyOf(initialFeatures, initialFeatures.length);
+        this.featureUpdateCallback = callback; // Assign the callback
     }
     /**
      * Configures the shell by setting its size.
@@ -242,7 +244,7 @@ public class CustomDialog extends Dialog {
      */
     private void updateButton(Composite buttonsComposite, Text valueText) {
     	Button updateButton = new Button(buttonsComposite, SWT.PUSH);
-	    updateButton.setText("Update");
+	    updateButton.setText("Rename");
 	    GridData updateButtonGridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
 	    updateButton.setLayoutData(updateButtonGridData);
 	    
