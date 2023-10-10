@@ -10,9 +10,12 @@
 package de.dlr.sc.virsat.model.concept.types.roles;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
@@ -46,10 +49,18 @@ public class BeanDisciplineTest {
 		beanDiscipline.setDiscipline(testDiscipline);
 		assertEquals(testDiscipline, beanDiscipline.getDiscipline());
 		assertEquals(testDiscipline.getUuid().toString(), beanDiscipline.getUuid());
+
+	    // Create an expected list of users
+	    EList<String> expectedUsers = new BasicEList<>();
+	    expectedUsers.add(USER);
+		assertEquals(expectedUsers, beanDiscipline.getUsers());
 		
-		assertEquals("", beanDiscipline.getUsers());
 		beanDiscipline.addUser(USER);
-		assertEquals(USER, testDiscipline.getUsers());
+		// Check if the actualUsers list contains the added user
+		EList<String> actualUsers = beanDiscipline.getUsers();
+		assertTrue(actualUsers.contains(USER));
+		
+		assertEquals(actualUsers, testDiscipline.getUsers());
 		
 		assertEquals(null, beanDiscipline.getName());
 		beanDiscipline.setName(NAME);
