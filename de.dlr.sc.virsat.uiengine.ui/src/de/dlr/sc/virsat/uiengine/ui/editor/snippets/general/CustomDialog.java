@@ -16,6 +16,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -24,36 +25,55 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * this class extends the Dialog
+ * CustomDialog class extends the Dialog class to create a custom dialog.
+ * Allows user interaction to modify a list of users.
  * @author ngat_di
- *
  */
 public class CustomDialog extends Dialog {
 
-    private String[] features;
-    private List featuresList;
-    private FeatureUpdateCallback featureUpdateCallback; // Add this field
+    // Fields
+    private String[] features;  // Array of features
+    private List featuresList;  // SWT List for displaying features
+    private FeatureUpdateCallback featureUpdateCallback;  // Callback for updating features
+
+    /**
+     * Constructor for CustomDialog.
+     *
+     * @param parentShell           Parent shell for the dialog
+     * @param initialFeatures       Initial features to display
+     * @param callback              Callback to handle feature updates
+     */
 
     public CustomDialog(Shell parentShell, String[] initialFeatures, FeatureUpdateCallback callback) {
         super(parentShell);
         features = initialFeatures;
         featureUpdateCallback = callback; // Assign the callback
     }
-
+    /**
+     * Configures the shell by setting its size.
+     *
+     * @param newShell The shell to configure
+     */
     @Override
     protected void configureShell(Shell newShell) {
         super.configureShell(newShell);
-        final int width = 500;
+        
+        final int width = 970;
         final int height = 400;
-        newShell.setSize(width, height);  // Adjust the width and height as needed
+        // Adjust the width and height as needed
+        newShell.setSize(width, height);  
+        
+        // Center the dialog on the screen
+        centerShellOnScreen(newShell); 
     }
-
 	@Override
     protected Control createDialogArea(Composite parent) {
+		// Create the main container
 	    Composite container = (Composite) super.createDialogArea(parent);
 	    final int numColumnsinTheGrid = 3;
 	    // Set up the layout for the container
@@ -61,7 +81,8 @@ public class CustomDialog extends Dialog {
 	    container.setLayout(layout);
 	    // Label and Text for Value
 	    Label valueLabel = new Label(container, SWT.NONE);
-	    valueLabel.setText("Value:");
+	    valueLabel.setText("Value :");
+	    valueLabel.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_BLUE));  // Set the foreground color
 	    GridData valueLabelGridData = new GridData(SWT.FILL, SWT.CENTER, false, false);
 	    final int horizontalIndentForValueLabel = 10;
 	    valueLabelGridData.horizontalIndent = horizontalIndentForValueLabel;  // Adjust the indentation
@@ -77,7 +98,8 @@ public class CustomDialog extends Dialog {
 	    GridData featuresCompositeGridData = new GridData(SWT.FILL, SWT.FILL, true, true, 1, verticalSpan);
 	    featuresComposite.setLayoutData(featuresCompositeGridData);
 	    Label featuresLabel = new Label(featuresComposite, SWT.NONE);
-	    featuresLabel.setText("Features:");
+	    featuresLabel.setText("List of users :");
+	    featuresLabel.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_BLUE));  // Set the foreground color
 	    GridData featuresLabelGridData = new GridData(SWT.FILL, SWT.CENTER, false, false);
 	    final int horizontalIndentForFeatureLabel = 10;
 	    featuresLabelGridData.horizontalIndent = horizontalIndentForFeatureLabel;  // Adjust the indentation
@@ -95,12 +117,13 @@ public class CustomDialog extends Dialog {
 	    addButton.setText("Add");
 	    GridData addButtonGridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
 	    addButton.setLayoutData(addButtonGridData);
-
+	    
+	    updateButton(buttonsComposite, valueText);
+	    
 	    Button removeButton = new Button(buttonsComposite, SWT.PUSH);
 	    removeButton.setText("Remove");
 	    GridData removeButtonGridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
 	    removeButton.setLayoutData(removeButtonGridData);
-
 	    Button upButton = new Button(buttonsComposite, SWT.PUSH);
 	    upButton.setText("Up");
 	    GridData upButtonGridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
@@ -109,8 +132,7 @@ public class CustomDialog extends Dialog {
 	    Button downButton = new Button(buttonsComposite, SWT.PUSH);
 	    downButton.setText("Down");
 	    GridData downButtonGridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
-	    downButton.setLayoutData(downButtonGridData);
-        
+	    downButton.setLayoutData(downButtonGridData);  
         // Implementation of listeners
         downButton.addSelectionListener(new SelectionAdapter() {
             @Override
@@ -146,7 +168,7 @@ public class CustomDialog extends Dialog {
                     valueText.setText("");
                 }
             }	
-        });       
+        });             
         // Remove button listener
         removeButton.addSelectionListener(new SelectionAdapter() {
             @Override
@@ -156,7 +178,6 @@ public class CustomDialog extends Dialog {
                     // Remove the element from the list and the array
                     featuresList.remove(selectedIndex);
                     removeFeatureFromListAndArray(selectedIndex);
-
                     // Clear the valueText after removing a feature
                     valueText.setText("");
                 }
@@ -167,7 +188,6 @@ public class CustomDialog extends Dialog {
                     // Create a new array with a reduced size
                     String[] newFeatures = new String[features.length - 1];
                     int count = 0;
-
                     // Copy the elements except the one at the specified index
                     for (int i = 0; i < features.length; i++) {
                         if (i != index) {
@@ -175,21 +195,23 @@ public class CustomDialog extends Dialog {
                             count++;
                         }
                     }
-
                     // Update the features array
                     features = newFeatures;
                 }
             }
-
         });
         // Add a SelectionListener to the featuresList
         featuresList.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                String selectedFeature = featuresList.getSelection()[0];  // Get the selected feature
-                valueText.setText(selectedFeature);  // Set the selected feature as the text in valueText
+                String[] selectedFeatures = featuresList.getSelection();
+                if (selectedFeatures.length > 0) {
+                    String selectedFeature = selectedFeatures[0];
+                    valueText.setText(selectedFeature);
+                }
             }
-        });       
+        });
+      
         //Add modify button listener
         valueText.addModifyListener(new ModifyListener() {
             @Override
@@ -200,52 +222,7 @@ public class CustomDialog extends Dialog {
         });       
         return container;
     }
-
-    /**
-     * updateFeatures list method
-     *
-     */
-    private void updateFeaturesList(String value) {
-        // Update the features list based on the input value
-        // For simplicity, we'll just filter the features that contain the input value
-        //featuresList.removeAll();
-
-        for (String feature : features) {
-        	if (feature.contains(value) && !featureAlreadyExists(feature)) {
-                featuresList.add(feature);
-            }
-        }
-    }
-    /**
-     * featureAlreadyExists list method
-     */
-    private boolean featureAlreadyExists(String feature) {
-    	String[] items = featuresList.getItems();
-        for (String item : items) {
-            if (item.equals(feature)) {
-                return true;
-            }
-        }
-        return false;
-	}
-
-    
-	/**
-     * moveItem method
-     *
-     */
-    private void moveItem(int direction) {
-        int selectedIndex = featuresList.getSelectionIndex();
-        if (selectedIndex != -1) {
-            int newIndex = selectedIndex + direction;
-            if (newIndex >= 0 && newIndex < featuresList.getItemCount()) {
-                String selectedFeature = featuresList.getItem(selectedIndex);
-                featuresList.remove(selectedIndex);
-                featuresList.add(selectedFeature, newIndex);
-                featuresList.setSelection(newIndex);
-            }
-        }
-    }
+	
     @Override
 	protected void buttonPressed(int buttonId) {
 		if (IDialogConstants.OK_ID == buttonId) {
@@ -258,6 +235,103 @@ public class CustomDialog extends Dialog {
 		}
 	}
     /**
+     * Creates and configures the "Update" button within the specified composite.
+     *
+     * @param buttonsComposite The composite in which the button will be created.
+     * @param valueText The Text widget containing the value to be updated.
+     */
+    private void updateButton(Composite buttonsComposite, Text valueText) {
+    	Button updateButton = new Button(buttonsComposite, SWT.PUSH);
+	    updateButton.setText("Update");
+	    GridData updateButtonGridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
+	    updateButton.setLayoutData(updateButtonGridData);
+	    
+	    // Update button listener
+        updateButton.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                String selectedValue = valueText.getText().trim();
+
+                if (selectedValue.isEmpty()) {
+                    MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                    messageBox.setMessage("Please select a feature to update.");
+                    messageBox.open();
+                    return;
+                }
+
+                int selectedIndex = featuresList.getSelectionIndex();
+
+                // Check if the selectedValue already exists in the features list
+                if (featureAlreadyExists(selectedValue)) {
+                    MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                    messageBox.setMessage("Feature already exists in the list.");
+                    messageBox.open();
+                    return;
+                }
+
+                if (selectedIndex != -1) {
+                    featuresList.setItem(selectedIndex, selectedValue);
+                    features[selectedIndex] = selectedValue;
+                    valueText.setText("");
+                }
+            }
+        });
+    }
+    /**
+     * Update the features list based on the input value
+     * 
+     *@param filter the features that contain the input value
+     */
+    private void updateFeaturesList(String value) {
+        for (String feature : features) {
+        	if (feature.contains(value) && !featureAlreadyExists(feature)) {
+                featuresList.add(feature);
+            }
+        }
+    }
+    
+    /**
+     * Checks if the given feature already exists in the features list.
+     *
+     * @param feature The feature to check for existence in the list
+     * @return True if the feature already exists, false otherwise
+     */
+    private boolean featureAlreadyExists(String feature) {
+        String[] items = featuresList.getItems();
+        
+        // Iterate through the items in the features list
+        for (String item : items) {
+            if (item.equals(feature)) {
+                return true; // Feature already exists in the list
+            }
+        }
+        return false; // Feature does not exist in the list
+	}
+    
+    /**
+     * Moves the selected item in the features list up or down.
+     *
+     * @param direction The direction to move the item: 1 for down, -1 for up
+     */
+    
+    private void moveItem(int direction) {
+        int selectedIndex = featuresList.getSelectionIndex();
+
+        // Check if a feature is selected
+        if (selectedIndex != -1) {
+            int newIndex = selectedIndex + direction;
+
+            // Check if the new index is valid
+            if (newIndex >= 0 && newIndex < featuresList.getItemCount()) {
+                String selectedFeature = featuresList.getItem(selectedIndex);
+                featuresList.remove(selectedIndex);
+                featuresList.add(selectedFeature, newIndex);
+                featuresList.setSelection(newIndex);
+            }
+        }
+    }
+
+    /**
      * notifyChanges method to notify the main application about changes
      */
     private void notifyChanges(String[] updatedFeatures) {
@@ -267,5 +341,18 @@ public class CustomDialog extends Dialog {
         }
         close();
     }
-	
+    /**
+    * Center the shell on the screen.
+    *
+    * @param shell The shell to be centered
+    */
+    private void centerShellOnScreen(Shell shell) {
+    	Monitor primary = shell.getDisplay().getPrimaryMonitor();
+    	Rectangle bounds = primary.getBounds();
+    	Rectangle rect = shell.getBounds();
+    	int x = bounds.x + (bounds.width - rect.width) / 2;
+    	int y = bounds.y + (bounds.height - rect.height) / 2;
+    	shell.setLocation(x, y);
+    }
+    
 }

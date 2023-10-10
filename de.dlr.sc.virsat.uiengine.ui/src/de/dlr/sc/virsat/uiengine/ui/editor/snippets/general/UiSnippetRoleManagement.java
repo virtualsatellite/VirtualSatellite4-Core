@@ -48,8 +48,10 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetEStructuralFeature
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
 
 /**
- * class ui snippet role management implements the interface ui snippet for the role management
+ * UI Snippet for role management. Implements the IUiSnippet interface for role management.
+ * Manages disciplines and associated users.
  * @author leps_je
+ * @author ngat_di
  *
  */
 public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable implements IUiSnippet, FeatureUpdateCallback {
@@ -87,9 +89,8 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 		return SECTION_DESCRIPTION_PREFIX + user;
 	}
 
-	   /**
-     * openCustomDialog method
-     *
+    /**
+     * Open a custom dialog to manage users for a discipline.
      */
 	private void openCustomDialog() {
 	    Table table = tableViewer.getTable();
@@ -120,6 +121,8 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 		TableViewerColumn columnUser = createDefaultColumn(tableViewer, COLUMN_TEXT_USER);
 		columnUser.setLabelProvider(getDefaultColumnLabelProvider(editingDomain, false, RolesPackage.Literals.DISCIPLINE__USERS));
 		columnUser.setEditingSupport(new EListStringCellEditingSupport(editingDomain, tableViewer, RolesPackage.Literals.DISCIPLINE__USERS));
+	    // Pack the column to adjust its width based on the content
+	    columnUser.getColumn().pack();
 	    
 	 // Add a mouse listener to the columnUser to invoke the custom dialog
 	    columnUser.getViewer().getControl().addMouseListener(new MouseAdapter() {
@@ -133,9 +136,6 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 		 
 	}
 	
-
-	
-
 	@Override
 	protected Composite createButtons(FormToolkit toolkit, Composite sectionBody) {
 		Composite compositeButtons = super.createButtons(toolkit, sectionBody);
@@ -175,7 +175,6 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 		    }
 		});
 
-
 		buttonRemove.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -193,9 +192,7 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 			}
 		});
 	}
-	
-	
-	
+		
 	@Override
 	protected Set<IMarkerHelper> getMarkerHelpers() {
 		return Collections.singleton(new VirSatProblemMarkerHelper());
@@ -219,8 +216,6 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 	    // Refresh the viewer to update the display
 	    tableViewer.refresh();
 	}
-
-
 
 	private Discipline getSelectedDiscipline() {
 		int selectionIndex = tableViewer.getTable().getSelectionIndex();

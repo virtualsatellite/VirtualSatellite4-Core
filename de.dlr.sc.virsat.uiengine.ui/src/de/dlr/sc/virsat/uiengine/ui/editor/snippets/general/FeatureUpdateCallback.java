@@ -13,7 +13,6 @@ package de.dlr.sc.virsat.uiengine.ui.editor.snippets.general;
 /**
  * Interface to handle feature update callback
  * @author ngat_di
- *
  */
 public interface FeatureUpdateCallback {
 	void onFeaturesChanged(String[] updatedFeatures);
