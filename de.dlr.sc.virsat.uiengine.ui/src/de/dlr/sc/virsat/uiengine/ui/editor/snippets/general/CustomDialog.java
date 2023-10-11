@@ -32,10 +32,27 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * CustomDialog class extends the Dialog class to create a custom dialog.
- * Allows user interaction to modify a list of users.
+ * CustomDialog is a custom dialog that extends the Dialog class, allowing user interaction to modify a list of users.
+ * The dialog provides options to add, remove, update, and rearrange users in the list. It also notifies the parent application
+ * of user changes using a callback mechanism.
+ *
+ * This dialog is primarily used to interact with and manage a list of features displayed to the user, enabling them to make necessary modifications.
+ *
+ * This dialog includes the following features:
+ * - Adding a new feature to the list
+ * - Removing an existing feature from the list
+ * - Updating an existing feature in the list
+ * - Moving a feature up or down in the list
+ *
+ * The dialog is configured to have a specified size and is centered on the screen for user convenience.
+ *
+ * Usage:
+ * 1. Create an instance of CustomDialog, providing the parent shell, initial features to display, and a callback for feature updates.
+ * 2. Open the dialog using the open() method.
+ *
  * @author ngat_di
  */
+
 public class CustomDialog extends Dialog {
 
     // Fields

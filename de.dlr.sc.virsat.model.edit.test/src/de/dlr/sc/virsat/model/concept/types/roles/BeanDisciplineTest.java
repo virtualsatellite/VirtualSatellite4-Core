@@ -52,8 +52,8 @@ public class BeanDisciplineTest {
 
 	    // Create an expected list of users
 	    EList<String> expectedUsers = new BasicEList<>();
-	    expectedUsers.add(USER);
 		assertEquals(expectedUsers, beanDiscipline.getUsers());
+	    expectedUsers.add(USER);
 		
 		beanDiscipline.addUser(USER);
 		// Check if the actualUsers list contains the added user
