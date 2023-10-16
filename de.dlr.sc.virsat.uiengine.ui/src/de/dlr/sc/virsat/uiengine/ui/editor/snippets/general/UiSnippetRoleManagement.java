@@ -46,13 +46,15 @@ import de.dlr.sc.virsat.uiengine.ui.cellEditor.emfattributes.EListStringCellEdit
 import de.dlr.sc.virsat.uiengine.ui.cellEditor.emfattributes.EStringCellEditingSupport;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetEStructuralFeatureTable;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
+import de.dlr.sc.virsat.uiengine.ui.editor.snippets.dialog.UiSnippetRoleManagementHandleUsersListDialog;
+import de.dlr.sc.virsat.uiengine.ui.editor.snippets.dialog.IFeatureUpdateCallback;
 
 /**
  * UI Snippet for role management. Implements the IUiSnippet interface for role management.
  * Manages disciplines and associated users.
  *
  */
-public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable implements IUiSnippet, FeatureUpdateCallback {
+public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable implements IUiSnippet, IFeatureUpdateCallback {
 
 	private static final String SECTION_NAME = "Disciplines";
 	private static final String SECTION_DESCRIPTION_PREFIX = "You are currently logged in as: ";
@@ -100,8 +102,8 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 	        // Extract the users for the selected discipline
 	        String[] existingUsernames = selectedDiscipline.getUsers().toArray(new String[0]);
 
-	        // Open the CustomDialog and pass the callback
-	        CustomDialog customDialog = new CustomDialog(Display.getCurrent().getActiveShell(), existingUsernames, this);
+	        // Open the UiSnippetRoleManagementHandleUsersListDialog and pass the callback
+	        UiSnippetRoleManagementHandleUsersListDialog customDialog = new UiSnippetRoleManagementHandleUsersListDialog(Display.getCurrent().getActiveShell(), existingUsernames, this);
 	        customDialog.open();
 	    }
 	}

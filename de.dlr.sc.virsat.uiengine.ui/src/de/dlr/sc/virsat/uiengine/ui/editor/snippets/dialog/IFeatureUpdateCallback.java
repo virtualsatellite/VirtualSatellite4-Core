@@ -7,12 +7,12 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.uiengine.ui.editor.snippets.general;
+package de.dlr.sc.virsat.uiengine.ui.editor.snippets.dialog;
 
 
 /**
  * Interface to handle feature update callback
  */
-public interface FeatureUpdateCallback {
+public interface IFeatureUpdateCallback {
 	void onFeaturesChanged(String[] updatedFeatures);
 }

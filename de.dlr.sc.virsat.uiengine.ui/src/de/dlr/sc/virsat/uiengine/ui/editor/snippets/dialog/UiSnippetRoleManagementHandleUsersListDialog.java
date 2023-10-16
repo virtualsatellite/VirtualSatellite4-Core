@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
-package de.dlr.sc.virsat.uiengine.ui.editor.snippets.general;
+package de.dlr.sc.virsat.uiengine.ui.editor.snippets.dialog;
 
 import java.util.Arrays;
 
@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * CustomDialog is a custom dialog that extends the Dialog class, allowing user interaction to modify a list of users.
+ * UiSnippetRoleManagementHandleUsersListDialog is a custom dialog that extends the Dialog class, allowing user interaction to modify a list of users.
  * The dialog provides options to add, remove, update, and rearrange users in the list. It also notifies the parent application
  * of user changes using a callback mechanism.
  *
@@ -47,26 +47,26 @@ import org.eclipse.swt.widgets.Text;
  * The dialog is configured to have a specified size and is centered on the screen for user convenience.
  *
  * Usage:
- * 1. Create an instance of CustomDialog, providing the parent shell, initial features to display, and a callback for feature updates.
+ * 1. Create an instance of UiSnippetRoleManagementHandleUsersListDialog, providing the parent shell, initial features to display, and a callback for feature updates.
  * 2. Open the dialog using the open() method.
  */
 
-public class CustomDialog extends Dialog {
+public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 
     // Fields
     private String[] features;  // Array of features
     private List featuresList;  // SWT List for displaying features
-    private FeatureUpdateCallback featureUpdateCallback;  // Callback for updating features 
+    private IFeatureUpdateCallback featureUpdateCallback;  // Callback for updating features 
 
     /**
-     * Constructor for CustomDialog.
+     * Constructor for UiSnippetRoleManagementHandleUsersListDialog.
      *
      * @param parentShell           Parent shell for the dialog
      * @param initialFeatures       Initial features to display
      * @param callback              Callback to handle feature updates
      */
 
-    public CustomDialog(Shell parentShell, String[] initialFeatures, FeatureUpdateCallback callback) {
+    public UiSnippetRoleManagementHandleUsersListDialog(Shell parentShell, String[] initialFeatures, IFeatureUpdateCallback callback) {
         super(parentShell);
         this.features = Arrays.copyOf(initialFeatures, initialFeatures.length);
         this.featureUpdateCallback = callback; // Assign the callback
