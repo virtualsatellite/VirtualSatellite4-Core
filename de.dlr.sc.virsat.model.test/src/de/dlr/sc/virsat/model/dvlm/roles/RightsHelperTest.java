@@ -67,11 +67,12 @@ public class RightsHelperTest {
 	@Test
 	public void testHasSystemUserWritePermission() {
 		final int TWO_HUNDRED = 200;
+		final String testUser = "TestUser";  // Test user name
 		
 		UserRegistry.getInstance().setUser("TestUser", TWO_HUNDRED);
 		
 		Discipline discipline = RolesFactory.eINSTANCE.createDiscipline();
-		discipline.getUsers().add("TestUser");
+		discipline.getUsers().add(testUser);
 		
 		// Now for this test the StructuralElementInstance and the CatgeoryAssignment need to have a sort of Typeing
 		// Otherwise the new lists will refuse to allow placing objects which are not "ApplicableFor"
@@ -91,22 +92,24 @@ public class RightsHelperTest {
 		
 		sei.setAssignedDiscipline(discipline);
 		
-		assertTrue("Yes we can write to the object", RightsHelper.hasSystemUserWritePermission(sei));
-		assertTrue("Yes we can write to the object", RightsHelper.hasSystemUserWritePermission(ca));
-		assertTrue("Yes we can write to the object", RightsHelper.hasSystemUserWritePermission(vpi));
+		// Update: Pass the test user name to hasSystemUserWritePermission
+        assertTrue("Yes we can write to the object", RightsHelper.hasSystemUserWritePermission(sei, testUser));
+        assertTrue("Yes we can write to the object", RightsHelper.hasSystemUserWritePermission(ca, testUser));
+        assertTrue("Yes we can write to the object", RightsHelper.hasSystemUserWritePermission(vpi, testUser));
+        
+        // Update: Use a different user for negative test cases
+        final String badUser = "TheBadGuy";
+        discipline.getUsers().add(badUser);
 
-		discipline.getUsers().add("TheBadGuy");
-
-		assertFalse("No we cannot write to the object", RightsHelper.hasSystemUserWritePermission(sei));
+        assertFalse("No we cannot write to the object", RightsHelper.hasSystemUserWritePermission(sei, badUser));
+        assertFalse("No we cannot write to the object", RightsHelper.hasSystemUserWritePermission(ca, badUser));
+        assertFalse("No we cannot write to the object", RightsHelper.hasSystemUserWritePermission(vpi, badUser));
 		
-		assertFalse("No we cannot write to the object", RightsHelper.hasSystemUserWritePermission(ca));
-		
-		assertFalse("No we cannot write to the object", RightsHelper.hasSystemUserWritePermission(vpi));
-		
+        // Update: Remove ca from sei
 		sei.getCategoryAssignments().remove(ca);
 		// We should have write permission on ca itself since it has no longer a link to the sei to which
 		// we have no write permission
-		assertTrue("Yes we can write to the object", RightsHelper.hasSystemUserWritePermission(ca));
+		assertTrue("Yes we can write to the object", RightsHelper.hasSystemUserWritePermission(ca, testUser));
 	}
 	
 	@Test
