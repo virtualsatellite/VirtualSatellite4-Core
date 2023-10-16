@@ -71,32 +71,31 @@ public class RightsHelper {
 	 * @return true if the object allows writing, else false. Returns false in case userContext is null
 	 */
 	public static synchronized boolean hasWritePermission(EObject eObject, IUserContext userContext) {
-	    if (userContext != null) {
-	        if (!hasParentThatCanHaveDiscipline(eObject)) {
-	            // If there's no parent with assignable discipline, skip further checks for write permission.
-	            return true;
-	        }
-
-	        boolean hasWritePermission = false;
-	        String registeredUserInApplication = userContext.getUserName();
-
-	        // Get the discipline assigned to the object or its parent.
-	        Discipline disc = getDiscipline(eObject);
-	        if (disc != null) {
-	            EList<String> userAssignedToDiscipline = disc.getUsers();
-	            if (!userAssignedToDiscipline.isEmpty()) {
-	                // Check if the registered user is assigned to the discipline.
-	                hasWritePermission = userAssignedToDiscipline.contains(registeredUserInApplication);
-	            }
-	        }
-
-	        // Return true if the user has write permission or is a super user.
-	        return hasWritePermission || userContext.isSuperUser();
-	    }
-	    // Return false if there is no user context.
-	    return false;
+		if (userContext != null) {
+			if (!hasParentThatCanHaveDiscipline(eObject)) {
+				// If in the container hierarchy there exists no object with an assignable discipline
+				// We can skip any further checks to the write permission since we cannot obtain a discipline
+				// Note that this may be different than having an assignable discipline parent but no discipline assigned
+				return true;
+			}
+			
+			boolean hasWritePermission = false;
+			String registeredUserInApplication = userContext.getUserName();
+			
+			// the owner of the command is our object we work on
+			Discipline disc = getDiscipline(eObject);
+			if (disc != null) {
+				EList<String> userAssignedToDispline = disc.getUsers();
+				if (!userAssignedToDispline.isEmpty()) {
+					hasWritePermission = userAssignedToDispline.contains(registeredUserInApplication);
+				}	
+			}
+			
+			return hasWritePermission || userContext.isSuperUser();
+		}
+		// False in case there is no suer context
+		return false;
 	}
-
 
 	/**
 	 * This method is intended for checking write access in single user mode.
@@ -105,21 +104,7 @@ public class RightsHelper {
 	 * @param eObject The eObject to be tested for write access
 	 * @return true in case the user has access or is a super user.
 	 */
-	public static boolean hasSystemUserWritePermission(EObject eObject, String userName) {
-	    if (userName != null) {
-	        IUserContext userContext = new IUserContext() {
-	            @Override
-	            public boolean isSuperUser() {
-	                return false;
-	            }
-
-	            @Override
-	            public String getUserName() {
-	                return userName;
-	            }
-	        };
-	        return hasWritePermission(eObject, userContext);
-	    }
-	    return false;  // Return false if no user name provided
+	public static boolean hasSystemUserWritePermission(EObject eObject) {
+		return hasWritePermission(eObject, UserRegistry.getInstance());
 	}
 }

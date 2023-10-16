@@ -56,16 +56,8 @@ public class CustomDialog extends Dialog {
     // Fields
     private String[] features;  // Array of features
     private List featuresList;  // SWT List for displaying features
-    private FeatureUpdateCallback featureUpdateCallback;  // Callback for updating features
-    
-    
-    final int numColumnsinTheGrid = 3;
-    final int horizontalIndentForValueLabel = 10;
-    final int verticalSpan = 6;
-    final int horizontalIndentForFeatureLabel = 10;
-    final int width = 970;
-    final int height = 400;
-    
+    private FeatureUpdateCallback featureUpdateCallback;  // Callback for updating features 
+
     /**
      * Constructor for CustomDialog.
      *
@@ -88,6 +80,9 @@ public class CustomDialog extends Dialog {
     protected void configureShell(Shell newShell) {
         super.configureShell(newShell);
         
+        final int width = 970;
+        final int height = 400;
+        
         // Adjust the width and height as needed
         newShell.setSize(width, height);  
         
@@ -99,6 +94,12 @@ public class CustomDialog extends Dialog {
     }
 	@Override
     protected Control createDialogArea(Composite parent) {
+		
+	    final int numColumnsinTheGrid = 3;
+	    final int horizontalIndentForValueLabel = 10;
+	    final int verticalSpan = 6;
+	    final int horizontalIndentForFeatureLabel = 10;
+	    
 		// Create the main container
 	    Composite container = (Composite) super.createDialogArea(parent);
 
