@@ -50,8 +50,6 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
 /**
  * UI Snippet for role management. Implements the IUiSnippet interface for role management.
  * Manages disciplines and associated users.
- * @author leps_je
- * @author ngat_di
  *
  */
 public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable implements IUiSnippet, FeatureUpdateCallback {

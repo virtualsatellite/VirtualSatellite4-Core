@@ -49,8 +49,6 @@ import org.eclipse.swt.widgets.Text;
  * Usage:
  * 1. Create an instance of CustomDialog, providing the parent shell, initial features to display, and a callback for feature updates.
  * 2. Open the dialog using the open() method.
- *
- * @author ngat_di
  */
 
 public class CustomDialog extends Dialog {
@@ -59,7 +57,15 @@ public class CustomDialog extends Dialog {
     private String[] features;  // Array of features
     private List featuresList;  // SWT List for displaying features
     private FeatureUpdateCallback featureUpdateCallback;  // Callback for updating features
-
+    
+    
+    final int numColumnsinTheGrid = 3;
+    final int horizontalIndentForValueLabel = 10;
+    final int verticalSpan = 6;
+    final int horizontalIndentForFeatureLabel = 10;
+    final int width = 970;
+    final int height = 400;
+    
     /**
      * Constructor for CustomDialog.
      *
@@ -82,19 +88,20 @@ public class CustomDialog extends Dialog {
     protected void configureShell(Shell newShell) {
         super.configureShell(newShell);
         
-        final int width = 970;
-        final int height = 400;
         // Adjust the width and height as needed
         newShell.setSize(width, height);  
         
         // Center the dialog on the screen
         centerShellOnScreen(newShell); 
+        
+        // Set the title of the dialog
+        newShell.setText("User--Discipline");
     }
 	@Override
     protected Control createDialogArea(Composite parent) {
 		// Create the main container
 	    Composite container = (Composite) super.createDialogArea(parent);
-	    final int numColumnsinTheGrid = 3;
+
 	    // Set up the layout for the container
 	    GridLayout layout = new GridLayout(numColumnsinTheGrid, false);
 	    container.setLayout(layout);
@@ -103,7 +110,7 @@ public class CustomDialog extends Dialog {
 	    valueLabel.setText("Value :");
 	    valueLabel.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_BLUE));  // Set the foreground color
 	    GridData valueLabelGridData = new GridData(SWT.FILL, SWT.CENTER, false, false);
-	    final int horizontalIndentForValueLabel = 10;
+
 	    valueLabelGridData.horizontalIndent = horizontalIndentForValueLabel;  // Adjust the indentation
 	    valueLabel.setLayoutData(valueLabelGridData);
 
@@ -113,14 +120,14 @@ public class CustomDialog extends Dialog {
 	    // Features Label and List
 	    Composite featuresComposite = new Composite(container, SWT.NONE);
 	    featuresComposite.setLayout(new GridLayout());
-	    final int verticalSpan = 6;
+	    
 	    GridData featuresCompositeGridData = new GridData(SWT.FILL, SWT.FILL, true, true, 1, verticalSpan);
 	    featuresComposite.setLayoutData(featuresCompositeGridData);
 	    Label featuresLabel = new Label(featuresComposite, SWT.NONE);
 	    featuresLabel.setText("List of users :");
 	    featuresLabel.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_BLUE));  // Set the foreground color
 	    GridData featuresLabelGridData = new GridData(SWT.FILL, SWT.CENTER, false, false);
-	    final int horizontalIndentForFeatureLabel = 10;
+	    
 	    featuresLabelGridData.horizontalIndent = horizontalIndentForFeatureLabel;  // Adjust the indentation
 	    featuresLabel.setLayoutData(featuresLabelGridData);
 	    featuresList = new List(featuresComposite, SWT.BORDER | SWT.V_SCROLL);
