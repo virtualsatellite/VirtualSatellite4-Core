@@ -94,15 +94,12 @@ public class CustomDialog extends Dialog {
     }
 	@Override
     protected Control createDialogArea(Composite parent) {
-		
 	    final int numColumnsinTheGrid = 3;
 	    final int horizontalIndentForValueLabel = 10;
 	    final int verticalSpan = 6;
-	    final int horizontalIndentForFeatureLabel = 10;
-	    
+	    final int horizontalIndentForFeatureLabel = 10;    
 		// Create the main container
 	    Composite container = (Composite) super.createDialogArea(parent);
-
 	    // Set up the layout for the container
 	    GridLayout layout = new GridLayout(numColumnsinTheGrid, false);
 	    container.setLayout(layout);
@@ -111,17 +108,14 @@ public class CustomDialog extends Dialog {
 	    valueLabel.setText("Value :");
 	    valueLabel.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_BLUE));  // Set the foreground color
 	    GridData valueLabelGridData = new GridData(SWT.FILL, SWT.CENTER, false, false);
-
 	    valueLabelGridData.horizontalIndent = horizontalIndentForValueLabel;  // Adjust the indentation
 	    valueLabel.setLayoutData(valueLabelGridData);
-
 	    Text valueText = new Text(container, SWT.BORDER);
 	    GridData valueTextGridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
 	    valueText.setLayoutData(valueTextGridData);
 	    // Features Label and List
 	    Composite featuresComposite = new Composite(container, SWT.NONE);
-	    featuresComposite.setLayout(new GridLayout());
-	    
+	    featuresComposite.setLayout(new GridLayout());	    
 	    GridData featuresCompositeGridData = new GridData(SWT.FILL, SWT.FILL, true, true, 1, verticalSpan);
 	    featuresComposite.setLayoutData(featuresCompositeGridData);
 	    Label featuresLabel = new Label(featuresComposite, SWT.NONE);
