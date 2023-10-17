@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.roles;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -42,6 +44,7 @@ public class BeanDiscipline implements IBeanName, IBeanUuid {
 	
 	public BeanDiscipline(Discipline discipline) {
 		this.discipline = discipline;
+		
 	}
 	
 	@Override
@@ -78,12 +81,17 @@ public class BeanDiscipline implements IBeanName, IBeanUuid {
 	public Command setName(EditingDomain ed, String name) {
 		return SetCommand.create(ed, discipline, GeneralPackage.Literals.INAME__NAME, name);
 	}
+    // Update the annotation for setUsers
+    public void setUsers(EList<String> users) {
+        discipline.getUsers().addAll(users);
+    }
 	
-	@ApiModelProperty(value = "Name of the user assigned to the discipline", required = true)
-	@XmlElement(nillable = true)
-	public EList<String> getUsers() {
-		return discipline.getUsers();
-	}
+    // Update the annotation for getUsers
+    @XmlElement(name = "user")  // Update annotation for handling each user
+    @ApiModelProperty(value = "List of users assigned to the discipline", required = true)
+    public List<String> getUsers() {
+        return discipline.getUsers();
+    }
 	
 	public void addUser(String user) {
 		discipline.getUsers().add(user);

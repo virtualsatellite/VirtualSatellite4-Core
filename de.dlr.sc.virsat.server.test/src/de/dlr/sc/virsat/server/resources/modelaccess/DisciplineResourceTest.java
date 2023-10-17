@@ -39,17 +39,20 @@ public class DisciplineResourceTest extends AModelAccessResourceTest {
 
 	@Test
 	public void testDisciplinePut() throws Exception {
-		
-		int commits = VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath());
-		
-		Response response = getTestRequestBuilder(
-				ModelAccessResource.DISCIPLINE)
-				.put(Entity.entity(new BeanDiscipline(discipline), MediaType.APPLICATION_JSON_TYPE));
-		assertEquals(HttpStatus.OK_200, response.getStatus());
-		
-		assertEquals("No new commit on put without changes", commits, 
-				VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath()));
+	    // 'discipline' is an instance of BeanDiscipline
+	    Entity<Discipline> entity = Entity.entity(discipline, MediaType.APPLICATION_JSON_TYPE);
+
+	    int commits = VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath());
+
+	    Response response = getTestRequestBuilder(ModelAccessResource.DISCIPLINE)
+	            .put(entity);
+
+	    assertEquals(HttpStatus.OK_200, response.getStatus());
+
+	    assertEquals("No new commit on put without changes", commits,
+	            VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath()));
 	}
+
 	
 	@Test
 	public void testDisciplineCreate() throws Exception {
