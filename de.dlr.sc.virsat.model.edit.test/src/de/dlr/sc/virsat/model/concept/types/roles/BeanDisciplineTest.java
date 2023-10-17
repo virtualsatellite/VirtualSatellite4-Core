@@ -57,7 +57,7 @@ public class BeanDisciplineTest {
 		
 		beanDiscipline.addUser(USER);
 		// Check if the actualUsers list contains the added user
-		EList<String> actualUsers = beanDiscipline.getUsers();
+		EList<String> actualUsers = (EList<String>) beanDiscipline.getUsers();
 		assertTrue(actualUsers.contains(USER));
 		
 		assertEquals(actualUsers, testDiscipline.getUsers());
