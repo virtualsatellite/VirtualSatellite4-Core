@@ -13,7 +13,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
@@ -30,7 +31,7 @@ import de.dlr.sc.virsat.project.ui.perspective.CorePerspective;
 public class RoleManagementTest extends ASwtBotTestCase {
 	
 
-	
+	List<String> users = new ArrayList<>();
 	@Before
 	public void before() throws Exception {
 		super.before();
@@ -58,7 +59,8 @@ public class RoleManagementTest extends ASwtBotTestCase {
 		save();
 		
 		// Add another discipline and give it the same name, this should create a warning
-		SWTBotTableItem newDisciplineTableItem = createNewDiscipline("SubSystem", Collections.singletonList("other_user"));
+		users.add("other_user");
+		SWTBotTableItem newDisciplineTableItem = createNewDiscipline("SubSystem", users);
 		save();
 		
 		// Check for the warnings
@@ -124,7 +126,7 @@ public class RoleManagementTest extends ASwtBotTestCase {
 		
 		// Add a disciple for the Repository
 		createNewDiscipline("Repository", null);
-		createNewDiscipline("Repository2", Collections.singletonList("other_user"));
+		createNewDiscipline("Repository2", users);
 		
 		// Open the Repository editor
 		bot.viewByTitle("VirSat Navigator").show();
@@ -160,9 +162,9 @@ public class RoleManagementTest extends ASwtBotTestCase {
 		// and one for a special ED.
 		// Both are initially owned by the current user.
 		createNewDiscipline("Domain_One", null);
-		
-		createNewDiscipline("Domain_Two", Collections.singletonList("other_user"));
-		createNewDiscipline("Domain_Three", Collections.singletonList("third_user"));
+		createNewDiscipline("Domain_Two", users);
+		users.add("third_user");
+		createNewDiscipline("Domain_Three", users);
 		
 		// Create a PT and PTD
 		bot.viewByTitle("VirSat Navigator").show();		

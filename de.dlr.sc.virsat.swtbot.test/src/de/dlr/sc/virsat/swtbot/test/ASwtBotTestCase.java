@@ -44,11 +44,9 @@ import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefFigureCanvas;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefViewer;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IViewReference;
@@ -786,14 +784,14 @@ public class ASwtBotTestCase {
 
 	    if (users != null && !users.isEmpty()) {
 	        newDisciplineTableItem.click(1);
-	        SWTBotText userTextField = rmEditor.bot().text();
 
-	        // Iterate over the list of users and add them one by one
+	        // Clear any existing text
+	        rmEditor.bot().text().setText("");
+
+	        // Input the list of users one by one, separating them with a newline
 	        for (String user : users) {
-	            userTextField.setText(user);
-	            // Press a key for instance ALT to confirm adding the user (if needed)
-	            
-	            userTextField.pressShortcut(Keystrokes.ALT);
+	            rmEditor.bot().text().typeText(user);
+	            rmEditor.bot().text().typeText(","); // Users are separated by a semi colon
 	        }
 	    }
 
