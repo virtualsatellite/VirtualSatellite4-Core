@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
 
@@ -43,9 +44,11 @@ import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefFigureCanvas;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefViewer;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IViewReference;
@@ -771,24 +774,33 @@ public class ASwtBotTestCase {
 	 * @param user the suer to be set. Can be null which leaves the default user.
 	 * @return the table item which was added
 	 */
-	protected SWTBotTableItem createNewDiscipline(String discipline, String user) {
-		// Switch to the Editor and add a new Discipline
-		SWTBotEditor rmEditor = bot.editorByTitle("Role Management");
-		rmEditor.show();
-		rmEditor.bot().button("Add Discipline").click();
-		SWTBotTableItem newDisciplineTableItem = rmEditor.bot().table().getTableItem("New Discipline");
-		
-		newDisciplineTableItem.click(0);
-		rmEditor.bot().text().setText(discipline);
-		
-		if (user != null) {
-			newDisciplineTableItem.click(1);
-			rmEditor.bot().text().setText(user);
-		}
-		
-		save();
-		return newDisciplineTableItem;
+	protected SWTBotTableItem createNewDiscipline(String discipline, List<String> users) {
+	    // Switch to the Editor and add a new Discipline
+	    SWTBotEditor rmEditor = bot.editorByTitle("Role Management");
+	    rmEditor.show();
+	    rmEditor.bot().button("Add Discipline").click();
+	    SWTBotTableItem newDisciplineTableItem = rmEditor.bot().table().getTableItem("New Discipline");
+
+	    newDisciplineTableItem.click(0);
+	    rmEditor.bot().text().setText(discipline);
+
+	    if (users != null && !users.isEmpty()) {
+	        newDisciplineTableItem.click(1);
+	        SWTBotText userTextField = rmEditor.bot().text();
+
+	        // Iterate over the list of users and add them one by one
+	        for (String user : users) {
+	            userTextField.setText(user);
+	            // Press a key for instance ALT to confirm adding the user (if needed)
+	            
+	            userTextField.pressShortcut(Keystrokes.ALT);
+	        }
+	    }
+
+	    save();
+	    return newDisciplineTableItem;
 	}
+
 	
 	/**
 	 * @param item the editor page
