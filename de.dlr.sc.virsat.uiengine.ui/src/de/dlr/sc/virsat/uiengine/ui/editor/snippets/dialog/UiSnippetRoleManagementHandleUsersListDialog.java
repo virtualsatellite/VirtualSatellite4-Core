@@ -57,6 +57,12 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
     private String[] features;  // Array of features
     private List featuresList;  // SWT List for displaying features
     private IFeatureUpdateCallback featureUpdateCallback;  // Callback for updating features 
+    static final int NUM_COLUMNS_IN_THE_GRID = 3;
+    static final int HORIZONTAL_INDENT_FOR_VALUE_LABEL = 10;
+    static final int VERTICAL_SPAN = 6;
+    static final int HORIZONTAL_INDENT_FOR_FEATURE_LABEL = 10;   
+    
+    public static final String USER_ALREADY_EXIST = "User already exist";
 
     /**
      * Constructor for UiSnippetRoleManagementHandleUsersListDialog.
@@ -92,23 +98,20 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
         // Set the title of the dialog
         newShell.setText("User--Discipline");
     }
+    
 	@Override
     protected Control createDialogArea(Composite parent) {
-	    final int numColumnsinTheGrid = 3;
-	    final int horizontalIndentForValueLabel = 10;
-	    final int verticalSpan = 6;
-	    final int horizontalIndentForFeatureLabel = 10;    
 		// Create the main container
 	    Composite container = (Composite) super.createDialogArea(parent);
 	    // Set up the layout for the container
-	    GridLayout layout = new GridLayout(numColumnsinTheGrid, false);
+	    GridLayout layout = new GridLayout(NUM_COLUMNS_IN_THE_GRID, false);
 	    container.setLayout(layout);
 	    // Label and Text for Value
 	    Label valueLabel = new Label(container, SWT.NONE);
 	    valueLabel.setText("Value :");
 	    valueLabel.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_BLUE));  // Set the foreground color
 	    GridData valueLabelGridData = new GridData(SWT.FILL, SWT.CENTER, false, false);
-	    valueLabelGridData.horizontalIndent = horizontalIndentForValueLabel;  // Adjust the indentation
+	    valueLabelGridData.horizontalIndent = HORIZONTAL_INDENT_FOR_FEATURE_LABEL;  // Adjust the indentation
 	    valueLabel.setLayoutData(valueLabelGridData);
 	    Text valueText = new Text(container, SWT.BORDER);
 	    GridData valueTextGridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
@@ -116,14 +119,13 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 	    // Features Label and List
 	    Composite featuresComposite = new Composite(container, SWT.NONE);
 	    featuresComposite.setLayout(new GridLayout());	    
-	    GridData featuresCompositeGridData = new GridData(SWT.FILL, SWT.FILL, true, true, 1, verticalSpan);
+	    GridData featuresCompositeGridData = new GridData(SWT.FILL, SWT.FILL, true, true, 1, VERTICAL_SPAN);
 	    featuresComposite.setLayoutData(featuresCompositeGridData);
 	    Label featuresLabel = new Label(featuresComposite, SWT.NONE);
 	    featuresLabel.setText("List of users :");
 	    featuresLabel.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_BLUE));  // Set the foreground color
 	    GridData featuresLabelGridData = new GridData(SWT.FILL, SWT.CENTER, false, false);
-	    
-	    featuresLabelGridData.horizontalIndent = horizontalIndentForFeatureLabel;  // Adjust the indentation
+	    featuresLabelGridData.horizontalIndent = HORIZONTAL_INDENT_FOR_FEATURE_LABEL;  // Adjust the indentation
 	    featuresLabel.setLayoutData(featuresLabelGridData);
 	    featuresList = new List(featuresComposite, SWT.BORDER | SWT.V_SCROLL);
 	    GridData listGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
@@ -172,15 +174,18 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
         addButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
+            	
                 String value = valueText.getText();
                 if (value.isEmpty()) {
                     // Show a message dialog indicating that the user should enter a value
-                    MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                    MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
+                    messageBox.setText(USER_ALREADY_EXIST);
                     messageBox.setMessage("Please enter a value.");
                     messageBox.open();
                 } else if (featureAlreadyExists(value)) {
                     // Show a message dialog indicating that the feature already exists
-                    MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                    MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);                
+                    messageBox.setText(USER_ALREADY_EXIST);
                     messageBox.setMessage("User already exists in the list.");
                     messageBox.open();
                 } else {

@@ -44,9 +44,12 @@ import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefFigureCanvas;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefViewer;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IViewReference;
@@ -781,20 +784,26 @@ public class ASwtBotTestCase {
 
 	    newDisciplineTableItem.click(0);
 	    rmEditor.bot().text().setText(discipline);
+	    newDisciplineTableItem.click(1);
+	    if (users != null) {
 
-	    if (users != null && !users.isEmpty()) {
-	        newDisciplineTableItem.click(1);
+	    	for (String user : users) {
+			    // Find and interact with the elements in the dialog
+			    SWTBotText valueText = bot.text();
+			    valueText.setText(user);
+			    bot.button("Add").click();
 
-	        // Clear any existing text
-	        rmEditor.bot().text().setText("");
-
-	        // Input the list of users one by one, separating them with a newline
-	        for (String user : users) {
-	            rmEditor.bot().text().typeText(user);
-	            rmEditor.bot().text().typeText(","); // Users are separated by a semi colon
-	        }
+		    }
 	    }
-
+	    
+	    // Get the dialog shell
+	    SWTBotShell dialogShell = bot.shell("User--Discipline");
+	    
+	    // Close the user management dialog
+	    SWTBotButton userEditorOkayButton = dialogShell.bot().button("OK");
+	    userEditorOkayButton.click();
+	    
+	   
 	    save();
 	    return newDisciplineTableItem;
 	}
