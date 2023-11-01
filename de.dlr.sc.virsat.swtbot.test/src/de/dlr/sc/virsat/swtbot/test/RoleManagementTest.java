@@ -134,7 +134,7 @@ public class RoleManagementTest extends ASwtBotTestCase {
 		// Add a disciple for the Repository
 		createNewDiscipline("Repository", null);
 		
-		SWTBotTableItem newDisciplineTableItem = createNewDiscipline("Repository2", Collections.singletonList("username"));
+		createNewDiscipline("Repository2", Collections.singletonList("username"));
 		
 		// Open the Repository editor
 		bot.viewByTitle("VirSat Navigator").show();
@@ -154,10 +154,6 @@ public class RoleManagementTest extends ASwtBotTestCase {
 		
 		// Change the discipline in the Repository editor
 		bot.editorByTitle("Repository").show();
-		newDisciplineTableItem.click(1);
-		bot.list().select(0);
-		bot.button("Remove").click();
-		bot.button("OK").click();
 		
 		bot.comboBox().setSelection("Discipline: Repository2");
 		bot.button("Apply Discipline").click();
@@ -175,16 +171,10 @@ public class RoleManagementTest extends ASwtBotTestCase {
 		// and one for a special ED.
 		// Both are initially owned by the current user.
 		createNewDiscipline("Domain_One", null);
-		createNewDiscipline("Domain_Two", Collections.singletonList("user2")).click(1);
-		bot.list().select(0);
-		bot.button("Remove").click();
-		bot.button("OK").click();
+		createNewDiscipline("Domain_Two", Collections.singletonList("user2"));
 		
-		SWTBotTableItem newDisciplineTableItem = createNewDiscipline("Domain_Three", Collections.singletonList("third_user"));
-		newDisciplineTableItem.click(1);
-		bot.list().select(0);
-		bot.button("Remove").click();
-		bot.button("OK").click();
+		createNewDiscipline("Domain_Three", Collections.singletonList("third_user"));
+
 		
 		
 		// Create a PT and PTD
