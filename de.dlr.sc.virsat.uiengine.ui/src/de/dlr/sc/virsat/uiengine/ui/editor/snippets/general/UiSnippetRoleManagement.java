@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.uiengine.ui.editor.snippets.general;
 
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -99,11 +100,9 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 		if (selectionIndex != -1) {
 			Discipline selectedDiscipline = (Discipline) tableViewer.getElementAt(selectionIndex);
 
-			// Extract the users for the selected discipline
-			String[] existingUsernames = selectedDiscipline.getUsers().toArray(new String[0]);
-
+			List<String> runtimeList = new ArrayList<String>(selectedDiscipline.getUsers());
 			// Open the UiSnippetRoleManagementHandleUsersListDialog and pass the callback
-			UiSnippetRoleManagementHandleUsersListDialog customDialog = new UiSnippetRoleManagementHandleUsersListDialog(Display.getCurrent().getActiveShell(), existingUsernames, this);
+			UiSnippetRoleManagementHandleUsersListDialog customDialog = new UiSnippetRoleManagementHandleUsersListDialog(Display.getCurrent().getActiveShell(), runtimeList, this);
 			customDialog.open();
 		}
 	}

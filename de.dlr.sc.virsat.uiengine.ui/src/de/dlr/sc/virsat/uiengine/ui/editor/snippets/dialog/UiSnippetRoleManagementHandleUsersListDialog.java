@@ -9,7 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.uiengine.ui.editor.snippets.dialog;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -25,7 +26,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
@@ -54,8 +54,8 @@ import org.eclipse.swt.widgets.Text;
 public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 
 	// Fields
-	private String[] features;  // Array of features
-	private List featuresList;  // SWT List for displaying features
+	private List<String> features;  // Array of features
+	private org.eclipse.swt.widgets.List featuresList;  // SWT List for displaying features
 	private IFeatureUpdateCallback featureUpdateCallback;  // Callback for updating features 
 	static final int NUM_COLUMNS_IN_THE_GRID = 3;
 	static final int HORIZONTAL_INDENT_FOR_VALUE_LABEL = 10;
@@ -73,9 +73,9 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 	 * @param callback              Callback to handle feature updates
 	 */
 
-	public UiSnippetRoleManagementHandleUsersListDialog(Shell parentShell, String[] initialFeatures, IFeatureUpdateCallback callback) {
+	public UiSnippetRoleManagementHandleUsersListDialog(Shell parentShell, List<String> initialFeatures, IFeatureUpdateCallback callback) {
 		super(parentShell);
-		this.features = Arrays.copyOf(initialFeatures, initialFeatures.length);
+		this.features = initialFeatures;
 		this.featureUpdateCallback = callback; // Assign the callback
 	}
 	/**
@@ -133,10 +133,10 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 		featuresLabelGridData.horizontalIndent = HORIZONTAL_INDENT_FOR_FEATURE_LABEL;  // Adjust the indentation
 		featuresLabel.setLayoutData(featuresLabelGridData);
 
-		featuresList = new List(featuresComposite, SWT.BORDER | SWT.V_SCROLL);
+		featuresList = new org.eclipse.swt.widgets.List(featuresComposite, SWT.BORDER | SWT.V_SCROLL);
 		GridData listGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		featuresList.setLayoutData(listGridData);
-		featuresList.setItems(features);
+		featuresList.setItems(features.toArray(new String[features.size()]));
 
 		// Buttons
 		Composite buttonsComposite = new Composite(container, SWT.NONE);
@@ -212,7 +212,7 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 				int selectedIndex = featuresList.getSelectionIndex();
 
 				// Check if the selectedValue already exists in the features list
-				if (userAlreadyExists(selectedValue)) {
+				if (features.contains(selectedValue)) {
 					MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
 					messageBox.setMessage("Feature already exists in the list.");
 					messageBox.open();
@@ -221,7 +221,7 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 
 				if (selectedIndex != -1) {
 					featuresList.setItem(selectedIndex, selectedValue);
-					features[selectedIndex] = selectedValue;
+					features.set(selectedIndex, selectedValue);
 					valueText.setText("");
 				}
 			}
@@ -259,7 +259,7 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 					messageBox.setText(USER_ALREADY_EXIST);
 					messageBox.setMessage("Please enter a value.");
 					messageBox.open();
-				} else if (userAlreadyExists(value)) {
+				} else if (features.contains(value)) {
 					// Show a message dialog indicating that the feature already exists
 					MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
 					messageBox.setText(USER_ALREADY_EXIST);
@@ -289,14 +289,14 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 
 			private void removeFeatureFromListAndArray(int index) {
 				// Check if the index is valid
-				if (index >= 0 && index < features.length) {
+				if (index >= 0 && index < features.size()) {
 					// Create a new array with a reduced size
-					String[] newFeatures = new String[features.length - 1];
+					List<String> newFeatures = new ArrayList<String>();
 					int count = 0;
 					// Copy the elements except the one at the specified index
-					for (int i = 0; i < features.length; i++) {
+					for (int i = 0; i < features.size(); i++) {
 						if (i != index) {
-							newFeatures[count] = features[i];
+							newFeatures.set(count, features.get(i));
 							count++;
 						}
 					}
@@ -335,29 +335,12 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 	 */
 	private void updateFeaturesList(String value) {
 		for (String feature : features) {
-			if (feature.contains(value) && !userAlreadyExists(feature)) {
+			if (feature.contains(value)) {
 				featuresList.add(feature);
 			}
 		}
 	}
 
-	/**
-	 * Checks if the given feature already exists in the features list.
-	 *
-	 * @param feature The feature to check for existence in the list
-	 * @return True if the feature already exists, false otherwise
-	 */
-	private boolean userAlreadyExists(String user) {
-		String[] items = featuresList.getItems();
-
-		// Iterate through the items in the features list
-		for (String item : items) {
-			if (item.equals(user)) {
-				return true; // Feature already exists in the list
-			}
-		}
-		return false; // Feature does not exist in the list
-	}
 
 	/**
 	 * Moves the selected item in the features list up or down.
