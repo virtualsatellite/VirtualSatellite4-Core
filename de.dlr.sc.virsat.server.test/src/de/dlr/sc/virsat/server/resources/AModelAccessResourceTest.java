@@ -200,7 +200,7 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 		qkNoReference = QudvFactory.eINSTANCE.createSimpleQuantityKind();
 		
 		anotherDiscipline = RolesFactory.eINSTANCE.createDiscipline();
-		discipline.getUsers().add("another user");
+		anotherDiscipline.getUsers().add("another user");
 		
 		RecordingCommand recordingCommand = new RecordingCommand(ed) {
 			@Override

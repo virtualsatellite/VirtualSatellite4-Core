@@ -58,16 +58,16 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 
 	private static final String SECTION_NAME = "Disciplines";
 	private static final String SECTION_DESCRIPTION_PREFIX = "You are currently logged in as: ";
-	
+
 	private Button buttonAdd;
 	private Button buttonRemove;
-	
+
 	private static final String BUTTON_ADD_TEXT = "Add Discipline";
 	private static final String BUTTON_REMOVE_TEXT = "Remove Discipline";
-	
+
 	private static final String COLUMN_TEXT_DISCIPLINE = "Discipline Name";
 	private static final String COLUMN_TEXT_USER = "User Name";
-	
+
 	/**
 	 * Constructor for this class to instantiate a UI Snippet
 	 */
@@ -79,7 +79,7 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 	protected String getSectionHeading() {
 		return super.getSectionHeading() + SECTION_NAME;
 	}
-	
+
 	@Override
 	protected String getSectionDescription() {
 		String user = UserRegistry.getInstance().getUserName();
@@ -89,57 +89,58 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 		return SECTION_DESCRIPTION_PREFIX + user;
 	}
 
-    /**
-     * Open a custom dialog to manage users for a discipline.
-     */
+	/**
+	 * Open a custom dialog to manage users for a discipline.
+	 */
 	private void openCustomDialog() {
-	    Table table = tableViewer.getTable();
-	    int selectionIndex = table.getSelectionIndex();
+		Table table = tableViewer.getTable();
+		int selectionIndex = table.getSelectionIndex();
 
-	    if (selectionIndex != -1) {
-	        Discipline selectedDiscipline = (Discipline) tableViewer.getElementAt(selectionIndex);
+		if (selectionIndex != -1) {
+			Discipline selectedDiscipline = (Discipline) tableViewer.getElementAt(selectionIndex);
 
-	        // Extract the users for the selected discipline
-	        String[] existingUsernames = selectedDiscipline.getUsers().toArray(new String[0]);
+			// Extract the users for the selected discipline
+			String[] existingUsernames = selectedDiscipline.getUsers().toArray(new String[0]);
 
-	        // Open the UiSnippetRoleManagementHandleUsersListDialog and pass the callback
-	        UiSnippetRoleManagementHandleUsersListDialog customDialog = new UiSnippetRoleManagementHandleUsersListDialog(Display.getCurrent().getActiveShell(), existingUsernames, this);
-	        customDialog.open();
-	    }
+			// Open the UiSnippetRoleManagementHandleUsersListDialog and pass the callback
+			UiSnippetRoleManagementHandleUsersListDialog customDialog = new UiSnippetRoleManagementHandleUsersListDialog(Display.getCurrent().getActiveShell(), existingUsernames, this);
+			customDialog.open();
+		}
 	}
 
 
 	@Override
 	protected void createTableColumns(EditingDomain editingDomain) {
-		
+
 		// Column Discipline Name
 		TableViewerColumn columnName = createDefaultColumn(tableViewer, COLUMN_TEXT_DISCIPLINE);
 		columnName.setLabelProvider(getDefaultColumnLabelProvider(editingDomain, true, GeneralPackage.Literals.INAME__NAME));
 		columnName.setEditingSupport(new EStringCellEditingSupport(editingDomain, tableViewer, GeneralPackage.Literals.INAME__NAME));
-		
+
 		// Column of the user name
 		TableViewerColumn columnUser = createDefaultColumn(tableViewer, COLUMN_TEXT_USER);
 		columnUser.setLabelProvider(getDefaultColumnLabelProvider(editingDomain, false, RolesPackage.Literals.DISCIPLINE__USERS));
 		columnUser.setEditingSupport(new EListStringCellEditingSupport(editingDomain, tableViewer, RolesPackage.Literals.DISCIPLINE__USERS));
-	    // Pack the column to adjust its width based on the content
-	    columnUser.getColumn().pack();
-	    
-	 // Add a mouse listener to the columnUser to invoke the custom dialog
-	    columnUser.getViewer().getControl().addMouseListener(new MouseAdapter() {
-	        @Override
-	        public void mouseDown(MouseEvent e) {
-	            if (tableViewer.getTable().getColumnCount() > 1 && e.x > tableViewer.getTable().getColumn(0).getWidth()) {
-	                openCustomDialog();
-	            }
-	        }
-	    });
-		 
+		
+		// Pack the column to adjust its width based on the content
+		columnUser.getColumn().pack();
+
+		// Add a mouse listener to the columnUser to invoke the custom dialog
+		columnUser.getViewer().getControl().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				if (tableViewer.getTable().getColumnCount() > 1 && e.x > tableViewer.getTable().getColumn(0).getWidth()) {
+					openCustomDialog();
+				}
+			}
+		});
+
 	}
-	
+
 	@Override
 	protected Composite createButtons(FormToolkit toolkit, Composite sectionBody) {
 		Composite compositeButtons = super.createButtons(toolkit, sectionBody);
-		
+
 		buttonAdd = toolkit.createButton(compositeButtons, BUTTON_ADD_TEXT, SWT.PUSH);
 		buttonRemove = toolkit.createButton(compositeButtons, BUTTON_REMOVE_TEXT, SWT.PUSH);		
 
@@ -148,31 +149,31 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 
 		return compositeButtons;
 	}
-	
+
 	@Override
 	protected void addButtonSelectionListeners(Composite composite, EditingDomain editingDomain) {
-		
+
 		buttonAdd.addSelectionListener(new SelectionListener() {
-		    @Override
-		    public void widgetSelected(SelectionEvent e) {
-		        // create a new Discipline with the name of the super user as default user name 
-		        Discipline newDiscipline = RolesFactory.eINSTANCE.createDiscipline();
-		        newDiscipline.setName("New Discipline");
-		        newDiscipline.getUsers().add(UserRegistry.getInstance().getUserName());
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				// create a new Discipline with the name of the super user as default user name 
+				Discipline newDiscipline = RolesFactory.eINSTANCE.createDiscipline();
+				newDiscipline.setName("New Discipline");
+				newDiscipline.getUsers().add(UserRegistry.getInstance().getUserName());
 
-		        Command addCommand = AddCommand.create(editingDomain, model, RolesPackage.eINSTANCE.getRoleManagement_Disciplines(), newDiscipline);
-		        editingDomain.getCommandStack().execute(addCommand);
-		        
-		     // Refresh the viewer to update the display
-		        tableViewer.refresh();
-		    }
+				Command addCommand = AddCommand.create(editingDomain, model, RolesPackage.eINSTANCE.getRoleManagement_Disciplines(), newDiscipline);
+				editingDomain.getCommandStack().execute(addCommand);
 
-		    @Override
-		    public void widgetDefaultSelected(SelectionEvent e) {
-		        widgetSelected(e);
-			     // Refresh the viewer to update the display
-		        tableViewer.refresh();
-		    }
+				// Refresh the viewer to update the display
+				tableViewer.refresh();
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				widgetSelected(e);
+				// Refresh the viewer to update the display
+				tableViewer.refresh();
+			}
 		});
 
 		buttonRemove.addSelectionListener(new SelectionListener() {
@@ -182,7 +183,7 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 				if (!selection.isEmpty()) {
 					Command cmd = DeleteCommand.create(editingDomain, selection);
 					editingDomain.getCommandStack().execute(cmd);
-			
+
 				}
 			}
 
@@ -192,7 +193,7 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 			}
 		});
 	}
-		
+
 	@Override
 	protected Set<IMarkerHelper> getMarkerHelpers() {
 		return Collections.singleton(new VirSatProblemMarkerHelper());
@@ -200,29 +201,29 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 
 	@Override
 	public void onFeaturesChanged(String[] updatedFeatures) {
-	    EditingDomain editingDomain = AdapterFactoryEditingDomain.getEditingDomainFor(model);
-	    if (editingDomain != null) {
-	        editingDomain.getCommandStack().execute((Command) new RecordingCommand((TransactionalEditingDomain) editingDomain) {
-	            @Override
-	            protected void doExecute() {
-	                Discipline selectedDiscipline = getSelectedDiscipline(); 
-	                if (selectedDiscipline != null) {
-	                    selectedDiscipline.getUsers().clear();
-	                    selectedDiscipline.getUsers().addAll(Arrays.asList(updatedFeatures));
-	                }
-	            }
-	        });
-	    }
-	    // Refresh the viewer to update the display
-	    tableViewer.refresh();
+		EditingDomain editingDomain = AdapterFactoryEditingDomain.getEditingDomainFor(model);
+		if (editingDomain != null) {
+			editingDomain.getCommandStack().execute((Command) new RecordingCommand((TransactionalEditingDomain) editingDomain) {
+				@Override
+				protected void doExecute() {
+					Discipline selectedDiscipline = getSelectedDiscipline(); 
+					if (selectedDiscipline != null) {
+						selectedDiscipline.getUsers().clear();
+						selectedDiscipline.getUsers().addAll(Arrays.asList(updatedFeatures));
+					}
+				}
+			});
+		}
+		// Refresh the viewer to update the display
+		tableViewer.refresh();
 	}
 
 	private Discipline getSelectedDiscipline() {
 		int selectionIndex = tableViewer.getTable().getSelectionIndex();
-        if (selectionIndex >= 0 && selectionIndex < tableViewer.getTable().getItemCount()) {
-            return (Discipline) tableViewer.getElementAt(selectionIndex);
-        }
-        return null;
+		if (selectionIndex >= 0 && selectionIndex < tableViewer.getTable().getItemCount()) {
+			return (Discipline) tableViewer.getElementAt(selectionIndex);
+		}
+		return null;
 	}
-	
+
 }

@@ -53,203 +53,127 @@ import org.eclipse.swt.widgets.Text;
 
 public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 
-    // Fields
-    private String[] features;  // Array of features
-    private List featuresList;  // SWT List for displaying features
-    private IFeatureUpdateCallback featureUpdateCallback;  // Callback for updating features 
-    static final int NUM_COLUMNS_IN_THE_GRID = 3;
-    static final int HORIZONTAL_INDENT_FOR_VALUE_LABEL = 10;
-    static final int VERTICAL_SPAN = 6;
-    static final int HORIZONTAL_INDENT_FOR_FEATURE_LABEL = 10;   
-    
-    public static final String USER_ALREADY_EXIST = "User already exist";
+	// Fields
+	private String[] features;  // Array of features
+	private List featuresList;  // SWT List for displaying features
+	private IFeatureUpdateCallback featureUpdateCallback;  // Callback for updating features 
+	static final int NUM_COLUMNS_IN_THE_GRID = 3;
+	static final int HORIZONTAL_INDENT_FOR_VALUE_LABEL = 10;
+	static final int VERTICAL_SPAN = 6;
+	static final int HORIZONTAL_INDENT_FOR_FEATURE_LABEL = 10;   
 
-    /**
-     * Constructor for UiSnippetRoleManagementHandleUsersListDialog.
-     *
-     * @param parentShell           Parent shell for the dialog
-     * @param initialFeatures       Initial features to display
-     * @param callback              Callback to handle feature updates
-     */
+	public static final String USER_ALREADY_EXIST = "User already exist";
+	public static final String USER_NAME_LABEL = "User name";  // Define a constant for the label text
+	public static final String LIST_OF_USERS_LABEL = "List of users :";
+	/**
+	 * Constructor for UiSnippetRoleManagementHandleUsersListDialog.
+	 *
+	 * @param parentShell           Parent shell for the dialog
+	 * @param initialFeatures       Initial features to display
+	 * @param callback              Callback to handle feature updates
+	 */
 
-    public UiSnippetRoleManagementHandleUsersListDialog(Shell parentShell, String[] initialFeatures, IFeatureUpdateCallback callback) {
-        super(parentShell);
-        this.features = Arrays.copyOf(initialFeatures, initialFeatures.length);
-        this.featureUpdateCallback = callback; // Assign the callback
-    }
-    /**
-     * Configures the shell by setting its size.
-     *
-     * @param newShell The shell to configure
-     */
-    @Override
-    protected void configureShell(Shell newShell) {
-        super.configureShell(newShell);
-        
-        final int width = 970;
-        final int height = 400;
-        
-        // Adjust the width and height as needed
-        newShell.setSize(width, height);  
-        
-        // Center the dialog on the screen
-        centerShellOnScreen(newShell); 
-        
-        // Set the title of the dialog
-        newShell.setText("User--Discipline");
-    }
-    
+	public UiSnippetRoleManagementHandleUsersListDialog(Shell parentShell, String[] initialFeatures, IFeatureUpdateCallback callback) {
+		super(parentShell);
+		this.features = Arrays.copyOf(initialFeatures, initialFeatures.length);
+		this.featureUpdateCallback = callback; // Assign the callback
+	}
+	/**
+	 * Configures the shell by setting its size.
+	 *
+	 * @param newShell The shell to configure
+	 */
 	@Override
-    protected Control createDialogArea(Composite parent) {
-		// Create the main container
-	    Composite container = (Composite) super.createDialogArea(parent);
-	    // Set up the layout for the container
-	    GridLayout layout = new GridLayout(NUM_COLUMNS_IN_THE_GRID, false);
-	    container.setLayout(layout);
-	    // Label and Text for Value
-	    Label valueLabel = new Label(container, SWT.NONE);
-	    valueLabel.setText("Value :");
-	    valueLabel.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_BLUE));  // Set the foreground color
-	    GridData valueLabelGridData = new GridData(SWT.FILL, SWT.CENTER, false, false);
-	    valueLabelGridData.horizontalIndent = HORIZONTAL_INDENT_FOR_FEATURE_LABEL;  // Adjust the indentation
-	    valueLabel.setLayoutData(valueLabelGridData);
-	    Text valueText = new Text(container, SWT.BORDER);
-	    GridData valueTextGridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
-	    valueText.setLayoutData(valueTextGridData);
-	    // Features Label and List
-	    Composite featuresComposite = new Composite(container, SWT.NONE);
-	    featuresComposite.setLayout(new GridLayout());	    
-	    GridData featuresCompositeGridData = new GridData(SWT.FILL, SWT.FILL, true, true, 1, VERTICAL_SPAN);
-	    featuresComposite.setLayoutData(featuresCompositeGridData);
-	    Label featuresLabel = new Label(featuresComposite, SWT.NONE);
-	    featuresLabel.setText("List of users :");
-	    featuresLabel.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_BLUE));  // Set the foreground color
-	    GridData featuresLabelGridData = new GridData(SWT.FILL, SWT.CENTER, false, false);
-	    featuresLabelGridData.horizontalIndent = HORIZONTAL_INDENT_FOR_FEATURE_LABEL;  // Adjust the indentation
-	    featuresLabel.setLayoutData(featuresLabelGridData);
-	    featuresList = new List(featuresComposite, SWT.BORDER | SWT.V_SCROLL);
-	    GridData listGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
-	    featuresList.setLayoutData(listGridData);
-	    featuresList.setItems(features);
-	    // Buttons
-	    Composite buttonsComposite = new Composite(container, SWT.NONE);
-	    buttonsComposite.setLayout(new GridLayout());
-	    GridData buttonsCompositeGridData = new GridData(SWT.FILL, SWT.FILL, false, false);
-	    buttonsComposite.setLayoutData(buttonsCompositeGridData);
-	    Button addButton = new Button(buttonsComposite, SWT.PUSH);
-	    addButton.setText("Add");
-	    GridData addButtonGridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
-	    addButton.setLayoutData(addButtonGridData);
-	    
-	    updateButton(buttonsComposite, valueText);
-	    
-	    Button removeButton = new Button(buttonsComposite, SWT.PUSH);
-	    removeButton.setText("Remove");
-	    GridData removeButtonGridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
-	    removeButton.setLayoutData(removeButtonGridData);
-	    Button upButton = new Button(buttonsComposite, SWT.PUSH);
-	    upButton.setText("Up");
-	    GridData upButtonGridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
-	    upButton.setLayoutData(upButtonGridData);
+	protected void configureShell(Shell newShell) {
+		super.configureShell(newShell);
 
-	    Button downButton = new Button(buttonsComposite, SWT.PUSH);
-	    downButton.setText("Down");
-	    GridData downButtonGridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
-	    downButton.setLayoutData(downButtonGridData);  
-        // Implementation of listeners
-        downButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                moveItem(1);
-            }
-        });       
-        //Up button
-        upButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                moveItem(-1);
-            }
-        });       
-        // Add button
-        addButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-            	
-                String value = valueText.getText();
-                if (value.isEmpty()) {
-                    // Show a message dialog indicating that the user should enter a value
-                    MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-                    messageBox.setText(USER_ALREADY_EXIST);
-                    messageBox.setMessage("Please enter a value.");
-                    messageBox.open();
-                } else if (featureAlreadyExists(value)) {
-                    // Show a message dialog indicating that the feature already exists
-                    MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);                
-                    messageBox.setText(USER_ALREADY_EXIST);
-                    messageBox.setMessage("User already exists in the list.");
-                    messageBox.open();
-                } else {
-                    featuresList.add(value);
-                    // Clear the valueText after adding a feature
-                    valueText.setText("");
-                }
-            }	
-        });             
-        // Remove button listener
-        removeButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                int selectedIndex = featuresList.getSelectionIndex();
-                if (selectedIndex != -1) {
-                    // Remove the element from the list and the array
-                    featuresList.remove(selectedIndex);
-                    removeFeatureFromListAndArray(selectedIndex);
-                    // Clear the valueText after removing a feature
-                    valueText.setText("");
-                }
-            }
-            private void removeFeatureFromListAndArray(int index) {
-                // Check if the index is valid
-                if (index >= 0 && index < features.length) {
-                    // Create a new array with a reduced size
-                    String[] newFeatures = new String[features.length - 1];
-                    int count = 0;
-                    // Copy the elements except the one at the specified index
-                    for (int i = 0; i < features.length; i++) {
-                        if (i != index) {
-                            newFeatures[count] = features[i];
-                            count++;
-                        }
-                    }
-                    // Update the features array
-                    features = newFeatures;
-                }
-            }
-        });
-        // Add a SelectionListener to the featuresList
-        featuresList.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                String[] selectedFeatures = featuresList.getSelection();
-                if (selectedFeatures.length > 0) {
-                    String selectedFeature = selectedFeatures[0];
-                    valueText.setText(selectedFeature);
-                }
-            }
-        });
-      
-        //Add modify button listener
-        valueText.addModifyListener(new ModifyListener() {
-            @Override
-            public void modifyText(ModifyEvent e) {
-                // Update the list based on the text in valueText
-                updateFeaturesList(valueText.getText());
-            }
-        });       
-        return container;
-    }
-	
-    @Override
+		final int width = 970;
+		final int height = 400;
+
+		// Adjust the width and height as needed
+		newShell.setSize(width, height);  
+
+		// Center the dialog on the screen
+		centerShellOnScreen(newShell); 
+
+		// Set the title of the dialog
+		newShell.setText("User--Discipline");
+	}
+
+	@Override
+	protected Control createDialogArea(Composite parent) {
+		// Create the main container
+		Composite container = (Composite) super.createDialogArea(parent);
+
+		// Set up the layout for the container
+		GridLayout layout = new GridLayout(NUM_COLUMNS_IN_THE_GRID, false);
+		container.setLayout(layout);
+
+		// Label and Text for Value
+		Label valueLabel = new Label(container, SWT.NONE);
+		valueLabel.setText(USER_NAME_LABEL);
+		valueLabel.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_BLUE));  // Set the foreground color
+		GridData valueLabelGridData = new GridData(SWT.FILL, SWT.CENTER, false, false);
+		valueLabelGridData.horizontalIndent = HORIZONTAL_INDENT_FOR_FEATURE_LABEL;  // Adjust the indentation
+		valueLabel.setLayoutData(valueLabelGridData);
+		Text valueText = new Text(container, SWT.BORDER);
+		GridData valueTextGridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		valueText.setLayoutData(valueTextGridData);
+
+		// Features Label and List
+		Composite featuresComposite = new Composite(container, SWT.NONE);
+		featuresComposite.setLayout(new GridLayout());	    
+		GridData featuresCompositeGridData = new GridData(SWT.FILL, SWT.FILL, true, true, 1, VERTICAL_SPAN);
+		featuresComposite.setLayoutData(featuresCompositeGridData);
+
+		Label featuresLabel = new Label(featuresComposite, SWT.NONE);
+		featuresLabel.setText(LIST_OF_USERS_LABEL);
+		featuresLabel.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_BLUE));  // Set the foreground color
+		GridData featuresLabelGridData = new GridData(SWT.FILL, SWT.CENTER, false, false);
+		featuresLabelGridData.horizontalIndent = HORIZONTAL_INDENT_FOR_FEATURE_LABEL;  // Adjust the indentation
+		featuresLabel.setLayoutData(featuresLabelGridData);
+
+		featuresList = new List(featuresComposite, SWT.BORDER | SWT.V_SCROLL);
+		GridData listGridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+		featuresList.setLayoutData(listGridData);
+		featuresList.setItems(features);
+
+		// Buttons
+		Composite buttonsComposite = new Composite(container, SWT.NONE);
+		buttonsComposite.setLayout(new GridLayout());
+		GridData buttonsCompositeGridData = new GridData(SWT.FILL, SWT.FILL, false, false);
+		buttonsComposite.setLayoutData(buttonsCompositeGridData);
+
+		Button addButton = new Button(buttonsComposite, SWT.PUSH);
+		addButton.setText("Add");
+		GridData addButtonGridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		addButton.setLayoutData(addButtonGridData);
+
+		updateButton(buttonsComposite, valueText);
+
+		Button removeButton = new Button(buttonsComposite, SWT.PUSH);
+		removeButton.setText("Remove");
+		GridData removeButtonGridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		removeButton.setLayoutData(removeButtonGridData);
+
+		Button upButton = new Button(buttonsComposite, SWT.PUSH);
+		upButton.setText("Up");
+		GridData upButtonGridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		upButton.setLayoutData(upButtonGridData);
+
+		Button downButton = new Button(buttonsComposite, SWT.PUSH);
+		downButton.setText("Down");
+		GridData downButtonGridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		downButton.setLayoutData(downButtonGridData);
+
+		// Add event listeners to the widgets
+		addListeners(valueText, addButton, removeButton, upButton, downButton);
+
+		return container;
+	}
+
+
+	@Override
 	protected void buttonPressed(int buttonId) {
 		if (IDialogConstants.OK_ID == buttonId) {
 			String[] updatedFeatures = featuresList.getItems();
@@ -260,125 +184,226 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 			cancelPressed();
 		}
 	}
-    /**
-     * Creates and configures the "Update" button within the specified composite.
-     *
-     * @param buttonsComposite The composite in which the button will be created.
-     * @param valueText The Text widget containing the value to be updated.
-     */
-    private void updateButton(Composite buttonsComposite, Text valueText) {
-    	Button updateButton = new Button(buttonsComposite, SWT.PUSH);
-	    updateButton.setText("Rename");
-	    GridData updateButtonGridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
-	    updateButton.setLayoutData(updateButtonGridData);
-	    
-	    // Update button listener
-        updateButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                String selectedValue = valueText.getText().trim();
+	/**
+	 * Creates and configures the "Update" button within the specified composite.
+	 *
+	 * @param buttonsComposite The composite in which the button will be created.
+	 * @param valueText The Text widget containing the value to be updated.
+	 */
+	private void updateButton(Composite buttonsComposite, Text valueText) {
+		Button updateButton = new Button(buttonsComposite, SWT.PUSH);
+		updateButton.setText("Rename");
+		GridData updateButtonGridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		updateButton.setLayoutData(updateButtonGridData);
 
-                if (selectedValue.isEmpty()) {
-                    MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-                    messageBox.setMessage("Please select a feature to update.");
-                    messageBox.open();
-                    return;
-                }
+		// Update button listener
+		updateButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				String selectedValue = valueText.getText().trim();
 
-                int selectedIndex = featuresList.getSelectionIndex();
+				if (selectedValue.isEmpty()) {
+					MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
+					messageBox.setMessage("Please select a feature to update.");
+					messageBox.open();
+					return;
+				}
 
-                // Check if the selectedValue already exists in the features list
-                if (featureAlreadyExists(selectedValue)) {
-                    MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-                    messageBox.setMessage("Feature already exists in the list.");
-                    messageBox.open();
-                    return;
-                }
+				int selectedIndex = featuresList.getSelectionIndex();
 
-                if (selectedIndex != -1) {
-                    featuresList.setItem(selectedIndex, selectedValue);
-                    features[selectedIndex] = selectedValue;
-                    valueText.setText("");
-                }
-            }
-        });
-    }
-    /**
-     * Update the features list based on the input value
-     * 
-     *@param filter the features that contain the input value
-     */
-    private void updateFeaturesList(String value) {
-        for (String feature : features) {
-        	if (feature.contains(value) && !featureAlreadyExists(feature)) {
-                featuresList.add(feature);
-            }
-        }
-    }
-    
-    /**
-     * Checks if the given feature already exists in the features list.
-     *
-     * @param feature The feature to check for existence in the list
-     * @return True if the feature already exists, false otherwise
-     */
-    private boolean featureAlreadyExists(String feature) {
-        String[] items = featuresList.getItems();
-        
-        // Iterate through the items in the features list
-        for (String item : items) {
-            if (item.equals(feature)) {
-                return true; // Feature already exists in the list
-            }
-        }
-        return false; // Feature does not exist in the list
+				// Check if the selectedValue already exists in the features list
+				if (userAlreadyExists(selectedValue)) {
+					MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
+					messageBox.setMessage("Feature already exists in the list.");
+					messageBox.open();
+					return;
+				}
+
+				if (selectedIndex != -1) {
+					featuresList.setItem(selectedIndex, selectedValue);
+					features[selectedIndex] = selectedValue;
+					valueText.setText("");
+				}
+			}
+		});
 	}
-    
-    /**
-     * Moves the selected item in the features list up or down.
-     *
-     * @param direction The direction to move the item: 1 for down, -1 for up
-     */
-    
-    private void moveItem(int direction) {
-        int selectedIndex = featuresList.getSelectionIndex();
 
-        // Check if a feature is selected
-        if (selectedIndex != -1) {
-            int newIndex = selectedIndex + direction;
+	/**
+	 * Add event listeners to various widgets in the dialog.
+	 */
+	private void addListeners(Text valueText, Button addButton, Button removeButton, Button upButton, Button downButton) {
+		// Down button listener
+		downButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				moveItem(1);
+			}
+		});
 
-            // Check if the new index is valid
-            if (newIndex >= 0 && newIndex < featuresList.getItemCount()) {
-                String selectedFeature = featuresList.getItem(selectedIndex);
-                featuresList.remove(selectedIndex);
-                featuresList.add(selectedFeature, newIndex);
-                featuresList.setSelection(newIndex);
-            }
-        }
-    }
+		// Up button listener
+		upButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				moveItem(-1);
+			}
+		});
 
-    /**
-     * notifyChanges method to notify the main application about changes
-     */
-    private void notifyChanges(String[] updatedFeatures) {
-        if (featureUpdateCallback != null) {
-        	
-            featureUpdateCallback.onFeaturesChanged(updatedFeatures);
-        }
-        close();
-    }
-    /**
-    * Center the shell on the screen.
-    *
-    * @param shell The shell to be centered
-    */
-    private void centerShellOnScreen(Shell shell) {
-    	Monitor primary = shell.getDisplay().getPrimaryMonitor();
-    	Rectangle bounds = primary.getBounds();
-    	Rectangle rect = shell.getBounds();
-    	int x = bounds.x + (bounds.width - rect.width) / 2;
-    	int y = bounds.y + (bounds.height - rect.height) / 2;
-    	shell.setLocation(x, y);
-    }
-    
+		// Add button listener
+		addButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				String value = valueText.getText();
+				if (value.isEmpty()) {
+					// Show a message dialog indicating that the user should enter a value
+					MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
+					messageBox.setText(USER_ALREADY_EXIST);
+					messageBox.setMessage("Please enter a value.");
+					messageBox.open();
+				} else if (userAlreadyExists(value)) {
+					// Show a message dialog indicating that the feature already exists
+					MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
+					messageBox.setText(USER_ALREADY_EXIST);
+					messageBox.setMessage("User already exists in the list.");
+					messageBox.open();
+				} else {
+					featuresList.add(value);
+					// Clear the valueText after adding a feature
+					valueText.setText("");
+				}
+			}
+		});
+
+		// Remove button listener
+		removeButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				int selectedIndex = featuresList.getSelectionIndex();
+				if (selectedIndex != -1) {
+					// Remove the element from the list and the array
+					featuresList.remove(selectedIndex);
+					removeFeatureFromListAndArray(selectedIndex);
+					// Clear the valueText after removing a feature
+					valueText.setText("");
+				}
+			}
+
+			private void removeFeatureFromListAndArray(int index) {
+				// Check if the index is valid
+				if (index >= 0 && index < features.length) {
+					// Create a new array with a reduced size
+					String[] newFeatures = new String[features.length - 1];
+					int count = 0;
+					// Copy the elements except the one at the specified index
+					for (int i = 0; i < features.length; i++) {
+						if (i != index) {
+							newFeatures[count] = features[i];
+							count++;
+						}
+					}
+					// Update the features array
+					features = newFeatures;
+				}
+			}
+		});
+
+		// Add a SelectionListener to the featuresList
+		featuresList.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				String[] selectedFeatures = featuresList.getSelection();
+				if (selectedFeatures.length > 0) {
+					String selectedFeature = selectedFeatures[0];
+					valueText.setText(selectedFeature);
+				}
+			}
+		});
+
+		// Add modify button listener
+		valueText.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				// Update the list based on the text in valueText
+				updateFeaturesList(valueText.getText());
+			}
+		});
+	}
+
+	/**
+	 * Update the features list based on the input value
+	 * 
+	 *@param filter the features that contain the input value
+	 */
+	private void updateFeaturesList(String value) {
+		for (String feature : features) {
+			if (feature.contains(value) && !userAlreadyExists(feature)) {
+				featuresList.add(feature);
+			}
+		}
+	}
+
+	/**
+	 * Checks if the given feature already exists in the features list.
+	 *
+	 * @param feature The feature to check for existence in the list
+	 * @return True if the feature already exists, false otherwise
+	 */
+	private boolean userAlreadyExists(String user) {
+		String[] items = featuresList.getItems();
+
+		// Iterate through the items in the features list
+		for (String item : items) {
+			if (item.equals(user)) {
+				return true; // Feature already exists in the list
+			}
+		}
+		return false; // Feature does not exist in the list
+	}
+
+	/**
+	 * Moves the selected item in the features list up or down.
+	 *
+	 * @param direction The direction to move the item: 1 for down, -1 for up
+	 */
+
+	private void moveItem(int direction) {
+		int selectedIndex = featuresList.getSelectionIndex();
+
+		// Check if a feature is selected
+		if (selectedIndex != -1) {
+			int newIndex = selectedIndex + direction;
+
+			// Check if the new index is valid
+			if (newIndex >= 0 && newIndex < featuresList.getItemCount()) {
+				String selectedFeature = featuresList.getItem(selectedIndex);
+				featuresList.remove(selectedIndex);
+				featuresList.add(selectedFeature, newIndex);
+				featuresList.setSelection(newIndex);
+			}
+		}
+	}
+
+	/**
+	 * notifyChanges method to notify the main application about changes
+	 */
+	private void notifyChanges(String[] updatedFeatures) {
+		if (featureUpdateCallback != null) {
+
+			featureUpdateCallback.onFeaturesChanged(updatedFeatures);
+		}
+		close();
+	}
+	/**
+	 * Center the shell on the screen.
+	 *
+	 * @param shell The shell to be centered
+	 */
+	private void centerShellOnScreen(Shell shell) {
+		Monitor primary = shell.getDisplay().getPrimaryMonitor();
+		Rectangle bounds = primary.getBounds();
+		Rectangle rect = shell.getBounds();
+		int x = bounds.x + (bounds.width - rect.width) / 2;
+		int y = bounds.y + (bounds.height - rect.height) / 2;
+		shell.setLocation(x, y);
+	}
+
 }

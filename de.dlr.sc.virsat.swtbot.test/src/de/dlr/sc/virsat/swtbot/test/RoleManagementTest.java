@@ -94,7 +94,6 @@ public class RoleManagementTest extends ASwtBotTestCase {
 		openRoleManagementEditor();
 		
 		// Add a disciple for the Repository
-		
 		SWTBotTable userTable = bot.table();
 		final String  username = userTable.cell(0, 1).replace("[", "").replace("]", "");
 		SWTBotTableItem newDisciplineTableItem = createNewDiscipline("Repository", Collections.singletonList(username));

@@ -28,7 +28,7 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 
 /**
- * test class to test the rights management in VirSat
+ * This test class is used to verify the functionality of rights management in VirSat.
  */
 public class RightsHelperTest {
 

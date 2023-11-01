@@ -785,15 +785,15 @@ public class ASwtBotTestCase {
 	    newDisciplineTableItem.click(0);
 	    rmEditor.bot().text().setText(discipline);
 	    newDisciplineTableItem.click(1);
-	    if (users != null) {
+	    if (users != null && !users.isEmpty()) {
 
 	    	for (String user : users) {
 			    // Find and interact with the elements in the dialog
 			    SWTBotText valueText = bot.text();
 			    valueText.setText(user);
 			    bot.button("Add").click();
-
 		    }
+	    	
 	    }
 	    
 	    // Get the dialog shell

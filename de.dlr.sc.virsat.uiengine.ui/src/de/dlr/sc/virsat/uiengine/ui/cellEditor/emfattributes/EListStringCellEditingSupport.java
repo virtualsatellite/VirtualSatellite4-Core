@@ -24,7 +24,6 @@ import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 /**
  * Custom cell editing support for handling EList of strings in a table viewer.
  * Extends EStringCellEditingSupport.
- * @author ngat_di
  */
 public class EListStringCellEditingSupport extends EStringCellEditingSupport {
 

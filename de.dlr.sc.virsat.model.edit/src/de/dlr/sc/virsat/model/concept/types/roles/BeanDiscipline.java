@@ -33,7 +33,7 @@ import io.swagger.annotations.ApiModelProperty;
 //Ensure that the discipline (by uuid) gets unmarshalled first
 @XmlType(propOrder = {"discipline", "name", "users"})
 @XmlAccessorType(XmlAccessType.NONE)
-@ApiModel(description = "A discipline with an assigned user that has rights over assigned elements.")
+@ApiModel(description = "A discipline with an assigned user or multiple users that have rights over assigned elements. Note: This discipline may work with multiple users.")
 public class BeanDiscipline implements IBeanName, IBeanUuid {
 
 	private Discipline discipline;
@@ -80,7 +80,7 @@ public class BeanDiscipline implements IBeanName, IBeanUuid {
 		return SetCommand.create(ed, discipline, GeneralPackage.Literals.INAME__NAME, name);
 	}
 	
-	@ApiModelProperty(value = "Name of the user assigned to the discipline", required = true)
+	@ApiModelProperty(value = "Name of the user or multiple users assigned to the discipline", required = true)
 	@XmlElement(nillable = true)
 	public EList<String> getUsers() {
 		return discipline.getUsers();
