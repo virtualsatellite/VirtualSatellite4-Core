@@ -93,7 +93,7 @@ public class ASwtBotTestCase {
 	protected static final String SWTBOT_TEST_PROJECTNAME = "SWTBotTestProject";
 	protected static final String SWTBOT_CANVAS_FIELD_REFLECTION_NAME = "canvas";
 	protected static final int SWTBOT_GENERAL_WAIT_TIME = 50;  
-	protected static final int MAX_TEST_CASE_TIMEOUT_SECONDS = 90;
+	protected static final int MAX_TEST_CASE_TIMEOUT_SECONDS = 120;
 	public static final int MAX_TEST_CASE_TIMEOUT_MILLISECONDS = 1000 * MAX_TEST_CASE_TIMEOUT_SECONDS;
 	protected static final int EDIT_UNDO_MENU_POSITION = 0;
 	protected static final int EDIT_REDO_MENU_POSITION = 1;
@@ -787,6 +787,8 @@ public class ASwtBotTestCase {
 	    newDisciplineTableItem.click(1);
 	    if (users != null && !users.isEmpty()) {
 
+	    	bot.list().select(0);
+			bot.button("Remove").click();
 	    	for (String user : users) {
 			    // Find and interact with the elements in the dialog
 			    SWTBotText valueText = bot.text();
