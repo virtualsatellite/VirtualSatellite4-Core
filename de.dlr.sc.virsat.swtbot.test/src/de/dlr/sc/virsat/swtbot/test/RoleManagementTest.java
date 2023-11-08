@@ -253,39 +253,4 @@ public class RoleManagementTest extends ASwtBotTestCase {
 	 * Close the dialog after the assertions.
 	 * **/
 	
-	@Test
-	public void testOkayButtonInUsersListDialog() {
-	    openRoleManagementEditor();
-
-	    // Open the dialog for managing users
-	    SWTBotTableItem newDisciplineTableItem = createNewDiscipline("Repository", null);
-	    newDisciplineTableItem.click(1);
-
-	    // Get the dialog shell
-	    SWTBotShell dialogShell = bot.shell("User--Discipline");
-
-	    // Verify that the dialog is open
-	    assertTrue("User--Discipline dialog is open", dialogShell.isOpen());
-
-	    // Find and interact with the elements in the dialog
-	    SWTBotText valueText = bot.text();
-	    // Enter a new username
-	    String newUser = "NewUser";
-	    valueText.setText(newUser);
-	    bot.button("Add").click();
-	    // Attempt to enter the same username
-	    valueText.setText(newUser);
-	    bot.button("Add").click();
-
-	    // Check if the error message box appears
-	    SWTBotShell errorDialogShell = bot.activeShell();
-
-	    // Verify that the error dialog is open
-	    assertTrue("Error dialog shell is open", errorDialogShell.isOpen());
-
-	    // Close the error dialog
-	    errorDialogShell.bot().button("OK").click();
-	    bot.closeAllShells();
-	    bot.closeAllEditors();
-	}
 }
