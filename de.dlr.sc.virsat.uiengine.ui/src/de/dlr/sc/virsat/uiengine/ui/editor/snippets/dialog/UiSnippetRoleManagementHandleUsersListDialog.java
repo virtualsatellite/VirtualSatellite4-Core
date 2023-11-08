@@ -149,7 +149,10 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 		GridData addButtonGridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		addButton.setLayoutData(addButtonGridData);
 
-		updateButton(buttonsComposite, valueText);
+		Button updateButton = new Button(buttonsComposite, SWT.PUSH);
+		updateButton.setText("Rename");
+		GridData updateButtonGridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
+		updateButton.setLayoutData(updateButtonGridData);
 
 		Button removeButton = new Button(buttonsComposite, SWT.PUSH);
 		removeButton.setText("Remove");
@@ -167,12 +170,11 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 		downButton.setLayoutData(downButtonGridData);
 
 		// Add event listeners to the widgets
-		addListeners(valueText, addButton, removeButton, upButton, downButton);
+		addListeners(valueText, addButton, updateButton, removeButton, upButton, downButton);
 
 		return container;
 	}
-
-
+	
 	@Override
 	protected void buttonPressed(int buttonId) {
 		if (IDialogConstants.OK_ID == buttonId) {
@@ -184,54 +186,11 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 			cancelPressed();
 		}
 	}
-	/**
-	 * Creates and configures the "Update" button within the specified composite.
-	 *
-	 * @param buttonsComposite The composite in which the button will be created.
-	 * @param valueText The Text widget containing the value to be updated.
-	 */
-	private void updateButton(Composite buttonsComposite, Text valueText) {
-		Button updateButton = new Button(buttonsComposite, SWT.PUSH);
-		updateButton.setText("Rename");
-		GridData updateButtonGridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
-		updateButton.setLayoutData(updateButtonGridData);
-
-		// Update button listener
-		updateButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				String selectedValue = valueText.getText().trim();
-
-				if (selectedValue.isEmpty()) {
-					MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-					messageBox.setMessage("Please select a feature to update.");
-					messageBox.open();
-					return;
-				}
-
-				int selectedIndex = featuresList.getSelectionIndex();
-
-				// Check if the selectedValue already exists in the features list
-				if (features.contains(selectedValue)) {
-					MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-					messageBox.setMessage("Feature already exists in the list.");
-					messageBox.open();
-					return;
-				}
-
-				if (selectedIndex != -1) {
-					featuresList.setItem(selectedIndex, selectedValue);
-					features.set(selectedIndex, selectedValue);
-					valueText.setText("");
-				}
-			}
-		});
-	}
 
 	/**
 	 * Add event listeners to various widgets in the dialog.
 	 */
-	private void addListeners(Text valueText, Button addButton, Button removeButton, Button upButton, Button downButton) {
+	private void addListeners(Text valueText, Button addButton, Button updateButton, Button removeButton, Button upButton, Button downButton) {
 		// Down button listener
 		downButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -273,6 +232,45 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 			}
 		});
 
+		/**
+		 * Creates and configures the "Update" button within the specified composite.
+		 *
+		 * @param buttonsComposite The composite in which the button will be created.
+		 * @param valueText The Text widget containing the value to be updated.
+		 */	
+		// Update button listener
+		updateButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				String selectedValue = valueText.getText().trim();
+
+				if (selectedValue.isEmpty()) {
+					MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
+					messageBox.setMessage("Please select a feature to update.");
+					messageBox.open();
+					return;
+				}
+
+				int selectedIndex = featuresList.getSelectionIndex();
+
+				// Check if the selectedValue already exists in the features list
+				if (features.contains(selectedValue)) {
+					MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
+					messageBox.setMessage("The entered name is not different from the existing one.");
+					messageBox.open();
+					return;
+				}
+
+				if (selectedIndex >= 0 && selectedIndex < features.size()) {
+					featuresList.setItem(selectedIndex, selectedValue);
+					features.set(selectedIndex, selectedValue);
+					valueText.setText(""); // Clear the input field
+				} else {
+					System.out.println();
+				}
+			}
+		});
+		
 		// Remove button listener
 		removeButton.addSelectionListener(new SelectionAdapter() {
 			@Override
