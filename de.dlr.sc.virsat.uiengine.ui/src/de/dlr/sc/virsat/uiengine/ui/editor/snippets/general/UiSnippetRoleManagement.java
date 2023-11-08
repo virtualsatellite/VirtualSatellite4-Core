@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.AddCommand;
@@ -100,7 +101,8 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 		if (selectionIndex != -1) {
 			Discipline selectedDiscipline = (Discipline) tableViewer.getElementAt(selectionIndex);
 
-			List<String> runtimeList = new ArrayList<String>(selectedDiscipline.getUsers());
+			List<String> runtimeList = new ArrayList<String>(selectedDiscipline.getUsers().stream()
+					  .collect(Collectors.toList()));
 			// Open the UiSnippetRoleManagementHandleUsersListDialog and pass the callback
 			UiSnippetRoleManagementHandleUsersListDialog customDialog = new UiSnippetRoleManagementHandleUsersListDialog(Display.getCurrent().getActiveShell(), runtimeList, this);
 			customDialog.open();

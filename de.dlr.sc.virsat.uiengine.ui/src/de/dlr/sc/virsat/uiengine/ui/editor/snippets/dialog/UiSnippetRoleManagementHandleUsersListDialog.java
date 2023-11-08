@@ -334,14 +334,22 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 	 *@param filter the features that contain the input value
 	 */
 	private void updateFeaturesList(String value) {
-		for (String feature : features) {
-			if (feature.contains(value)) {
-				featuresList.add(feature);
-			}
-		}
+	    for (String feature : features) {
+	        if (feature.contains(value)) {
+	            // Check if the feature is already in the list
+	            boolean alreadyInList = false;
+	            for (String item : featuresList.getItems()) {
+	                if (item.equals(feature)) {
+	                    alreadyInList = true;
+	                    break;
+	                }
+	            }
+	            if (!alreadyInList) {
+	                featuresList.add(feature);
+	            }
+	        }
+	    }
 	}
-
-
 	/**
 	 * Moves the selected item in the features list up or down.
 	 *
