@@ -241,7 +241,6 @@ public class ModelAPI {
 				break;
 			}
 		}
-
 		if (foundDiscipline == null) {
 			foundDiscipline = RolesFactory.eINSTANCE.createDiscipline();
 			foundDiscipline.setName("APP");

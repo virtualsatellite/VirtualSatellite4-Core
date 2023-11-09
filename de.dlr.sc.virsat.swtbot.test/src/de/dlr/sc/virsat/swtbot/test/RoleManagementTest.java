@@ -174,9 +174,6 @@ public class RoleManagementTest extends ASwtBotTestCase {
 		createNewDiscipline("Domain_Two", Collections.singletonList("user2"));
 		
 		createNewDiscipline("Domain_Three", Collections.singletonList("third_user"));
-
-		
-		
 		// Create a PT and PTD
 		bot.viewByTitle("VirSat Navigator").show();		
 		SWTBotTreeItem repositoryNavigatorItem = bot.tree().expandNode(SWTBOT_TEST_PROJECTNAME, "Repository");
@@ -252,7 +249,6 @@ public class RoleManagementTest extends ASwtBotTestCase {
 	 * Use the assertTrue assertion to check if the user "NewUser" is present in the updated list of users.
 	 * Close the dialog after the assertions.
 	 * **/
-	
 	@Test
 	public void testOkayButtonInUsersListDialog() {
 	    openRoleManagementEditor();
