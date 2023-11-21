@@ -40,6 +40,7 @@ import de.dlr.sc.virsat.model.dvlm.calculation.CalculationPackage;
 import de.dlr.sc.virsat.model.dvlm.calculation.EquationSection;
 import de.dlr.sc.virsat.model.dvlm.calculation.IEquationSectionContainer;
 import de.dlr.sc.virsat.model.dvlm.general.IName;
+import de.dlr.sc.virsat.model.dvlm.inheritance.IInheritanceLink;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
@@ -351,6 +352,14 @@ public class EquationSectionUriEditorInput extends FileEditorInput implements IP
 		try {
 			this.equationSection = equationSection;
 			this.equationSection.setSerializedStatements(serializedEquations);
+			
+			// If the equation editor was opened & saved on a inherited CA, set the overwrite flag so that the equations are not overwritten by the inheritance builder 
+			if (equationSectionContainer instanceof IInheritanceLink) {
+				if (!((IInheritanceLink) equationSectionContainer).getSuperTis().isEmpty()) {
+					this.equationSection.setOverride(true);
+				}
+			}
+
 			Command setEquationSection = SetCommand.create(editingDomain, equationSectionContainer, CalculationPackage.Literals.IEQUATION_SECTION_CONTAINER__EQUATION_SECTION, equationSection);
 			editingDomain.getCommandStack().execute(setEquationSection);
 			

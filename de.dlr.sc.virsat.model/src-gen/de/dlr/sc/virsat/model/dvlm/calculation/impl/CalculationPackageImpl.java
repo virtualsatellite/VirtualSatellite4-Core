@@ -1146,7 +1146,7 @@ public class CalculationPackageImpl extends EPackageImpl implements CalculationP
 
 		// Add supertypes to classes
 		equationSectionEClass.getESuperTypes().add(this.getIEquationSectionContainer());
-		equationSectionEClass.getESuperTypes().add(theInheritancePackage.getIInheritanceLink());
+		equationSectionEClass.getESuperTypes().add(theInheritancePackage.getIOverridableInheritanceLink());
 		importEClass.getESuperTypes().add(theInheritancePackage.getIInheritanceLink());
 		equationEClass.getESuperTypes().add(theInheritancePackage.getIOverridableInheritanceLink());
 		equationDefinitionEClass.getESuperTypes().add(this.getIQualifiedEquationObject());

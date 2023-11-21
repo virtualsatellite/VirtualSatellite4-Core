@@ -46,7 +46,7 @@ public interface DmfPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v9/dmf";
+	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v10/dmf";
 
 	/**
 	 * The package namespace name.

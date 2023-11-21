@@ -23,7 +23,6 @@ import org.junit.Test;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
-import de.dlr.sc.virsat.project.editingDomain.commands.dnd.VirSatDragAndDropInheritanceCommandHelper.DndOperation;
 import de.dlr.sc.virsat.project.test.AProjectTestCase;
 
 public class VirSatDragAndDropInheritanceCommandHelperTest extends AProjectTestCase {
@@ -65,7 +64,6 @@ public class VirSatDragAndDropInheritanceCommandHelperTest extends AProjectTestC
 		VirSatDragAndDropInheritanceCommandHelper.createDropCommand(
 				editingDomain,
 				Collections.singleton(seiTypeA1),
-				DndOperation.REPLACE_INHERITANCE,
 				seiTypeC
 		).execute();
 		
@@ -75,7 +73,6 @@ public class VirSatDragAndDropInheritanceCommandHelperTest extends AProjectTestC
 		VirSatDragAndDropInheritanceCommandHelper.createDropCommand(
 				editingDomain,
 				Collections.singleton(seiTypeB1),
-				DndOperation.REPLACE_INHERITANCE,
 				seiTypeC
 		).execute();
 		
@@ -85,7 +82,6 @@ public class VirSatDragAndDropInheritanceCommandHelperTest extends AProjectTestC
 		VirSatDragAndDropInheritanceCommandHelper.createDropCommand(
 				editingDomain,
 				Collections.singleton(seiTypeA2),
-				DndOperation.REPLACE_INHERITANCE,
 				seiTypeC
 		).execute();
 		
@@ -95,44 +91,10 @@ public class VirSatDragAndDropInheritanceCommandHelperTest extends AProjectTestC
 		VirSatDragAndDropInheritanceCommandHelper.createDropCommand(
 				editingDomain,
 				Collections.singleton(seiTypeB2),
-				DndOperation.REPLACE_INHERITANCE,
 				seiTypeC
 		).execute();
 		
 		assertThat("List of inheritance objects is correct", seiTypeC.getSuperSeis(), contains(seiTypeA2, seiTypeB2));
-	}
-	
-	@Test
-	public void testCreateDropCommandAddInheritance() {
-		// Adding A1 as first one		
-		VirSatDragAndDropInheritanceCommandHelper.createDropCommand(
-				editingDomain,
-				Collections.singleton(seiTypeA1),
-				DndOperation.ADD_INHERITANCE,
-				seiTypeC
-		).execute();
-		
-		assertThat("List of inheritance objects is correct", seiTypeC.getSuperSeis(), contains(seiTypeA1));
-		
-		// Adding B1 as second one
-		VirSatDragAndDropInheritanceCommandHelper.createDropCommand(
-				editingDomain,
-				Collections.singleton(seiTypeB1),
-				DndOperation.ADD_INHERITANCE,
-				seiTypeC
-		).execute();
-		
-		assertThat("List of inheritance objects is correct", seiTypeC.getSuperSeis(), contains(seiTypeA1, seiTypeB1));
-		
-		// Adding A2 as third one, should not replace A1
-		VirSatDragAndDropInheritanceCommandHelper.createDropCommand(
-				editingDomain,
-				Collections.singleton(seiTypeA2),
-				DndOperation.ADD_INHERITANCE,
-				seiTypeC
-		).execute();
-	
-		assertThat("List of inheritance objects is correct", seiTypeC.getSuperSeis(), contains(seiTypeA1, seiTypeB1, seiTypeA2));
 	}
 	
 	@Test
@@ -141,7 +103,6 @@ public class VirSatDragAndDropInheritanceCommandHelperTest extends AProjectTestC
 		Command invalidInheritanceDropCommand = VirSatDragAndDropInheritanceCommandHelper.createDropCommand(
 				editingDomain,
 				Collections.singleton(seiTypeA1),
-				DndOperation.ADD_INHERITANCE,
 				seiTypeB1
 		);
 				

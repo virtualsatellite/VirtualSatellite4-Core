@@ -48,7 +48,7 @@ public interface StructuralPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v9/s";
+	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v10/s";
 
 	/**
 	 * The package namespace name.

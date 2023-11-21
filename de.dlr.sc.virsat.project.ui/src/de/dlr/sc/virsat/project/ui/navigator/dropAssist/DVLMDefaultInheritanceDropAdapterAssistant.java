@@ -21,7 +21,6 @@ import org.eclipse.swt.dnd.DND;
 
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.editingDomain.commands.dnd.VirSatDragAndDropInheritanceCommandHelper;
-import de.dlr.sc.virsat.project.editingDomain.commands.dnd.VirSatDragAndDropInheritanceCommandHelper.DndOperation;
 import de.dlr.sc.virsat.project.ui.navigator.util.VirSatSelectionHelper;
 
 /**
@@ -39,15 +38,8 @@ public class DVLMDefaultInheritanceDropAdapterAssistant extends ADVLMDropAdapate
 	
 	@Override
 	protected Command createDropCommand(VirSatTransactionalEditingDomain ed, Collection<Object> dragObjects, int operation, EObject dropObject) {
-		if (operation == DND.DROP_COPY || operation == DND.DROP_MOVE) {
-			return VirSatDragAndDropInheritanceCommandHelper.createDropCommand(
-					ed,
-					dragObjects,
-					(operation == DND.DROP_COPY)
-						? DndOperation.ADD_INHERITANCE
-						: DndOperation.REPLACE_INHERITANCE,
-					dropObject
-			);
+		if (operation == DND.DROP_LINK) {
+			return VirSatDragAndDropInheritanceCommandHelper.createDropCommand(ed, dragObjects, dropObject);
 		} else {
 			return UnexecutableCommand.INSTANCE;
 		}

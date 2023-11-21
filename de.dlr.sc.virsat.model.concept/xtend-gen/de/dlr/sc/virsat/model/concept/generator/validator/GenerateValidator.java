@@ -173,7 +173,7 @@ public class GenerateValidator extends AGeneratorGapGenerator<EObject> {
     StringConcatenation _builder = new StringConcatenation();
     importManager.register(StructuralElementInstance.class);
     _builder.newLineIfNotEmpty();
-    importManager.register("de.dlr.sc.virsat.build.validator.external.IStructuralElementInstanceValidator");
+    importManager.register("de.dlr.sc.virsat.model.dvlm.validator.IStructuralElementInstanceValidator");
     _builder.newLineIfNotEmpty();
     _builder.newLine();
     _builder.append("// *****************************************************************");
