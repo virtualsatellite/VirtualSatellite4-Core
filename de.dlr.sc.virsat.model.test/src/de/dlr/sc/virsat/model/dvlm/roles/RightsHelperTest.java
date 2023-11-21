@@ -97,9 +97,9 @@ public class RightsHelperTest {
 
 		discipline.getUsers().add("TheBadGuy");
 		
-		assertTrue("No we cannot write to the object", RightsHelper.hasSystemUserWritePermission(sei));
-		assertTrue("No we cannot write to the object", RightsHelper.hasSystemUserWritePermission(ca));
-		assertTrue("No we cannot write to the object", RightsHelper.hasSystemUserWritePermission(vpi));
+		assertTrue("Yes we cannot write to the object", RightsHelper.hasSystemUserWritePermission(sei));
+		assertTrue("Yes we cannot write to the object", RightsHelper.hasSystemUserWritePermission(ca));
+		assertTrue("Yes we cannot write to the object", RightsHelper.hasSystemUserWritePermission(vpi));
 		
 		discipline.getUsers().remove(0);
 		assertFalse("No we cannot write to the object", RightsHelper.hasSystemUserWritePermission(sei));
