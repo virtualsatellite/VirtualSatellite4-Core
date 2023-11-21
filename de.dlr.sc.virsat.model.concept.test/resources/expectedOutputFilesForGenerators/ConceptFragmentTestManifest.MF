@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Model Extension Concept Tests
-Bundle-SymbolicName: de.dlr.sc.virsat.concept.example;singleton:=true
+Bundle-SymbolicName: de.dlr.sc.virsat.concept.example.test;singleton:=true
 Bundle-Version: 0.0.1.qualifier
 Fragment-Host: de.dlr.sc.virsat.concept.example;bundle-version="0.0.1"
 Bundle-ClassPath: .
@@ -14,5 +14,5 @@ Require-Bundle: org.junit,
  de.dlr.sc.virsat.model,
  de.dlr.sc.virsat.model.edit,
  de.dlr.sc.virsat.concept.unittest.util
-Export-Package: de.dlr.sc.virsat.concept.example
-
+Export-Package: de.dlr.sc.virsat.concept.example.test
+Automatic-Module-Name: de.dlr.sc.virsat.concept.example.test

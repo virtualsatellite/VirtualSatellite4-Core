@@ -89,6 +89,7 @@ public class EquationSectionItemProvider
 
 			addSuperTisPropertyDescriptor(object);
 			addIsInheritedPropertyDescriptor(object);
+			addOverridePropertyDescriptor(object);
 			addSerializedStatementsPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
@@ -131,6 +132,28 @@ public class EquationSectionItemProvider
 				 getString("_UI_PropertyDescriptor_description", "_UI_IInheritanceLink_isInherited_feature", "_UI_IInheritanceLink_type"),
 				 InheritancePackage.Literals.IINHERITANCE_LINK__IS_INHERITED,
 				 false,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Override feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addOverridePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_IOverridableInheritanceLink_override_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_IOverridableInheritanceLink_override_feature", "_UI_IOverridableInheritanceLink_type"),
+				 InheritancePackage.Literals.IOVERRIDABLE_INHERITANCE_LINK__OVERRIDE,
+				 true,
 				 false,
 				 false,
 				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
@@ -236,6 +259,7 @@ public class EquationSectionItemProvider
 
 		switch (notification.getFeatureID(EquationSection.class)) {
 			case CalculationPackage.EQUATION_SECTION__IS_INHERITED:
+			case CalculationPackage.EQUATION_SECTION__OVERRIDE:
 			case CalculationPackage.EQUATION_SECTION__SERIALIZED_STATEMENTS:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;

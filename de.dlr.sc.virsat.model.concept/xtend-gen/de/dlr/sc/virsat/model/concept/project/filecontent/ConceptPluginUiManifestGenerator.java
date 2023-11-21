@@ -23,7 +23,7 @@ public class ConceptPluginUiManifestGenerator implements IFileContentGenerator {
   }
   
   public String getProjectNameForUiPlugin(final IProjectBuilderInfo builderInfo) {
-    return builderInfo.getProjectName().replace(".ui", "");
+    return builderInfo.getProjectName().substring(0, builderInfo.getProjectName().lastIndexOf("."));
   }
   
   public CharSequence manifestContent(final IProjectBuilderInfo builderInfo) {
@@ -80,6 +80,10 @@ public class ConceptPluginUiManifestGenerator implements IFileContentGenerator {
     _builder.newLine();
     _builder.append("Bundle-ActivationPolicy: lazy");
     _builder.newLine();
+    _builder.append("Automatic-Module-Name: ");
+    String _projectName_1 = builderInfo.getProjectName();
+    _builder.append(_projectName_1);
+    _builder.newLineIfNotEmpty();
     return _builder;
   }
 }

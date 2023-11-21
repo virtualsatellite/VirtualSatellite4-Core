@@ -56,6 +56,12 @@ public class ConceptPluginManifestGenerator implements IFileContentGenerator {
     _builder.append("de.dlr.sc.virsat.project,");
     _builder.newLine();
     _builder.append(" ");
+    _builder.append("javax.annotation,");
+    _builder.newLine();
+    _builder.append(" ");
+    _builder.append("jakarta.xml.bind,");
+    _builder.newLine();
+    _builder.append(" ");
     _builder.append("de.dlr.sc.virsat.model.ext.core;visibility:=reexport");
     _builder.newLine();
     _builder.append("Bundle-RequiredExecutionEnvironment: JavaSE-11");
@@ -76,6 +82,10 @@ public class ConceptPluginManifestGenerator implements IFileContentGenerator {
     _builder.append(_projectName_2, " ");
     _builder.append(".");
     _builder.append(GenerateValidator.PACKAGE_FOLDER, " ");
+    _builder.newLineIfNotEmpty();
+    _builder.append("Automatic-Module-Name: ");
+    String _projectName_3 = builderInfo.getProjectName();
+    _builder.append(_projectName_3);
     _builder.newLineIfNotEmpty();
     return _builder;
   }

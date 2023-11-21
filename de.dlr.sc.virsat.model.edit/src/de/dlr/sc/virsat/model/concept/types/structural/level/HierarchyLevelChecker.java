@@ -94,13 +94,12 @@ public class HierarchyLevelChecker {
 		List<IBeanStructuralElementInstance> children = getChildrenWithLevel(bean);
 
 		// Check maximum and minimum level index
+		maxLevelIndex = getMaxIndexFromTreeDistanceOfParent(parent, bean);
+		
 		if (parent != null) {
 			int minLevelFromParent = getMinIndexFromParentLevel(parent);
-			int maxLevelFromParent = getMaxIndexFromTreeDistanceOfParent(parent, bean);
-
 			minLevelIndex = Math.max(minLevelIndex, minLevelFromParent);
-			maxLevelIndex = Math.min(maxLevelIndex, maxLevelFromParent);
-		}
+		} 
 		for (IBeanStructuralElementInstance child : children) {
 			int maxLevelFromChild = getMaxIndexFromRelevantChild(child);
 			int minLevelFromChild = getMinIndexFromTreeDistanceOfChild(child, bean);
@@ -109,11 +108,13 @@ public class HierarchyLevelChecker {
 			maxLevelIndex = Math.min(maxLevelIndex, maxLevelFromChild);
 		}
 		
-		if (parent == null && children.isEmpty()) {
-			maxLevelIndex = getMaxIndexFromTreeDistanceToRoot(bean);
-		}
 
 		if (minLevelIndex <= maxLevelIndex) {
+			// Prevent IndexOutOfBoundsException when tree levels number is higher than specified level
+			// Might happen if nesting of level is allowed
+			if (maxLevelIndex >= levels.size()) {
+				maxLevelIndex = levels.size() - 1;
+			}
 			// Add applicable levels to set
 			applicableLevels.addAll(levels.subList(minLevelIndex, maxLevelIndex + 1));
 		}
@@ -237,15 +238,22 @@ public class HierarchyLevelChecker {
 	 */
 	private int getMaxIndexFromTreeDistanceOfParent(IBeanStructuralElementInstance parent,
 			IBeanStructuralElementInstance elementToCheck) {
-		IHierarchyLevel parentLevel = getLevelOfBean(parent);
-		int treeDistance = getTreeDistance(elementToCheck, parent);
+		IHierarchyLevel parentLevel;
+		int treeDistance;
+		if (parent == null) {
+			parentLevel = levels.get(0);
+			treeDistance = getTreeDistanceToRootBean(elementToCheck);
+		} else {
+			parentLevel = getLevelOfBean(parent);
+			treeDistance = getTreeDistance(elementToCheck, parent);
+		}
 		int maxLevel = levels.indexOf(parentLevel) + treeDistance;
 
 		// Go through all the levels between the parent level and the one with a
 		// distance of the tree depth and check if their optional. If so, then the
 		// maximum applicable level index increases as we can also skip the level
 		int maxLevelFromDistance = maxLevel;
-		for (int i = levels.indexOf(parentLevel) + 1; i <= maxLevelFromDistance && i < levels.size(); i++) {
+		for (int i = levels.indexOf(parentLevel); i <= maxLevelFromDistance && i < levels.size(); i++) {
 			if (levels.get(i).isOptional()) {
 				maxLevel++;
 			}
@@ -254,16 +262,6 @@ public class HierarchyLevelChecker {
 		return maxLevel;
 	}
 	
-	/**
-	 * Get the maximum level index considering the tree distance to the root element
-	 * 
-	 * @param bean the element to check
-	 * @return the maximum level index
-	 */
-	private int getMaxIndexFromTreeDistanceToRoot(IBeanStructuralElementInstance bean) {
-		return getTreeDistanceToRootBean(bean);
-	}
-
 	/**
 	 * Get the level an arbitrary bean is on
 	 * 

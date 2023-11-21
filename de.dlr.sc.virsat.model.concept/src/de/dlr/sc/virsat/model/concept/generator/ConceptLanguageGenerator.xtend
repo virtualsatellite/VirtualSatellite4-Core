@@ -43,6 +43,9 @@ import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGenerator2
 import org.eclipse.xtext.generator.IGeneratorContext
 import de.dlr.sc.virsat.model.concept.generator.snippets.GenerateRequirementsVerificationUiSnippet
+import org.eclipse.core.resources.ResourcesPlugin
+import org.eclipse.core.runtime.CoreException
+import org.eclipse.core.resources.IResource
 
 /**
  * Generates code from your model files on save.
@@ -120,6 +123,13 @@ class ConceptLanguageGenerator implements IGenerator2 {
 				new GenerateDeprecatedValidator().serializeModel(dataModel, fsa);
 				new GeneratePluginXml().serializeModelDeprecatedValidator(dataModel, new PluginXmlReader(), fsa);
 				
+			}
+			
+			// Update workspace to make sure all files are shown in the editors - Otherwise user might get warnings
+			try {
+				ResourcesPlugin.getWorkspace().getRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
+			} catch (CoreException e) {
+				e.printStackTrace();
 			}
 		}
 	}

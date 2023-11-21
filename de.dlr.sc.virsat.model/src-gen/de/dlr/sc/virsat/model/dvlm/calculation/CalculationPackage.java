@@ -49,7 +49,7 @@ public interface CalculationPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v9/calc";
+	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v10/calc";
 
 	/**
 	 * The package namespace name.
@@ -179,13 +179,22 @@ public interface CalculationPackage extends EPackage {
 	int EQUATION_SECTION__IS_INHERITED = IEQUATION_SECTION_CONTAINER_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Override</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EQUATION_SECTION__OVERRIDE = IEQUATION_SECTION_CONTAINER_FEATURE_COUNT + 2;
+
+	/**
 	 * The feature id for the '<em><b>Imports</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EQUATION_SECTION__IMPORTS = IEQUATION_SECTION_CONTAINER_FEATURE_COUNT + 2;
+	int EQUATION_SECTION__IMPORTS = IEQUATION_SECTION_CONTAINER_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Equations</b></em>' containment reference list.
@@ -194,7 +203,7 @@ public interface CalculationPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EQUATION_SECTION__EQUATIONS = IEQUATION_SECTION_CONTAINER_FEATURE_COUNT + 3;
+	int EQUATION_SECTION__EQUATIONS = IEQUATION_SECTION_CONTAINER_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Serialized Statements</b></em>' attribute.
@@ -203,7 +212,7 @@ public interface CalculationPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EQUATION_SECTION__SERIALIZED_STATEMENTS = IEQUATION_SECTION_CONTAINER_FEATURE_COUNT + 4;
+	int EQUATION_SECTION__SERIALIZED_STATEMENTS = IEQUATION_SECTION_CONTAINER_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of structural features of the '<em>Equation Section</em>' class.
@@ -212,7 +221,7 @@ public interface CalculationPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EQUATION_SECTION_FEATURE_COUNT = IEQUATION_SECTION_CONTAINER_FEATURE_COUNT + 5;
+	int EQUATION_SECTION_FEATURE_COUNT = IEQUATION_SECTION_CONTAINER_FEATURE_COUNT + 6;
 
 	/**
 	 * The number of operations of the '<em>Equation Section</em>' class.
