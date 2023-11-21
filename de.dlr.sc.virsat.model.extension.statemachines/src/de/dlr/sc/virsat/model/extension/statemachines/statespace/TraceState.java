@@ -15,7 +15,6 @@ import de.dlr.sc.virsat.model.extension.statemachines.statespace.StateSpaceExplo
 
 /**
  * A trace state is a system state with an attached time point.
- * @author chrs_ph
  */
 public class TraceState {
 	private final int timepoint;

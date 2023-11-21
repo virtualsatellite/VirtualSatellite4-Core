@@ -56,7 +56,6 @@ import de.dlr.sc.virsat.model.extension.statemachines.util.StateMachineHelper;
 
 /**
  * A view for simulating state machines.
- * @author chrs_ph
  */
 public class SimulatorView extends ViewPart {
 	
@@ -88,7 +87,6 @@ public class SimulatorView extends ViewPart {
 	
 	/**
 	 * The SelectionIntermediate combines the selections of the simulator's viewers. It acts as the SelectionProvider for this view.
-	 * @author chrs_ph
 	 */
 	private class SelectionIntermediate implements ISelectionProvider, ISelectionChangedListener {
 		private final List<ISelectionChangedListener> listeners;

@@ -37,7 +37,6 @@ import de.dlr.sc.virsat.model.extension.statemachines.model.Transition;
 
 /**
  * A state space explorer allows enumerating the system states of a system composed of multiple state machines.
- * @author chrs_ph
  */
 public class StateSpaceExplorer {
 	

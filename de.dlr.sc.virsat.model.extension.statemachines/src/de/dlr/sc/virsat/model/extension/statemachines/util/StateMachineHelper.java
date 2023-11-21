@@ -21,8 +21,6 @@ import de.dlr.sc.virsat.model.extension.statemachines.model.StateMachine;
 
 /**
  * Helpers for state machines.
- * @author chrs_ph
- *
  */
 public class StateMachineHelper {
 	private StateMachineHelper() { }
