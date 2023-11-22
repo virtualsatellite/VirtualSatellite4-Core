@@ -67,7 +67,7 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 
 	public static final String USER_ALREADY_EXIST = "User already exist";
 	public static final String USER_NAME_LABEL = "Username";  // Define a constant for the label text
-	public static final String LIST_OF_USERS_LABEL = "List of users :";
+	public static final String LIST_OF_USERS_LABEL = "List of users";
 	/**
 	 * Constructor for UiSnippetRoleManagementHandleUsersListDialog.
 	 *
@@ -90,8 +90,8 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
 
-		final int width = 970;
-		final int height = 400;
+		final int width = 700;
+		final int height = 350;
 
 		// Adjust the width and height as needed
 		newShell.setSize(width, height);  
