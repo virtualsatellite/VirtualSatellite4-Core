@@ -30,6 +30,8 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
+import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
+import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
@@ -49,6 +51,14 @@ public class ModelAPIAppsTest {
 			protected void initializeRepositoryResource() {
 				resource = new ResourceImpl();
 				resource.getContents().add(repository);
+				// Initialize RoleManagement and Disciplines if not already initialized
+                if (repository.getRoleManagement() == null) {
+                    repository.setRoleManagement(RolesFactory.eINSTANCE.createRoleManagement());
+                }
+
+                if (repository.getRoleManagement().getDisciplines() == null) {
+                    repository.getRoleManagement().getDisciplines().add(RolesFactory.eINSTANCE.createDiscipline());
+                }
 			}
 			
 			@Override
@@ -85,6 +95,30 @@ public class ModelAPIAppsTest {
 		String conceptFqnUnknwon = "test.concept.unknown";
 		assertNull("Model API gives null for unknown fqn", modelAPI.getConcept(conceptFqnUnknwon));
 	}
+	
+	@Test
+    public void testAddUserToDiscipline() {
+        // Create a sample Discipline
+        Discipline discipline = RolesFactory.eINSTANCE.createDiscipline();
+        discipline.setName("SampleDiscipline");
+
+        // Set the user name property
+        System.setProperty("user.name", "SampleUser");
+
+        // Call the method that contains the new line
+        modelAPI.initializeRepositoryResource();
+
+        // Verify that the Discipline is added to Disciplines
+        assertFalse("Discipline should not be added to Disciplines", repository.getRoleManagement().getDisciplines().contains(discipline));
+
+        // Verify that the user is added to the Discipline
+        assertFalse("User should not be added to Discipline", discipline.getUsers().contains("SampleUser"));
+
+        // Reset the system property to avoid interference with other tests
+        System.clearProperty("user.name");
+    }
+
+
 	
 	@Test
 	public void testAddRootSei() {
