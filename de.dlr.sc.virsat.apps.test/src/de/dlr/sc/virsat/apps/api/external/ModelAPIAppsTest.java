@@ -122,7 +122,7 @@ public class ModelAPIAppsTest {
         assertTrue("Discipline should be added to Disciplines", repository.getRoleManagement().getDisciplines().contains(discipline));
 
         // Verify that the user is added to the Discipline
-        assertTrue("User should not be added to Discipline", discipline.getUsers().contains("SampleUser"));
+        assertTrue("User should be added to Discipline", discipline.getUsers().contains("SampleUser"));
 
         // Reset the system property to avoid interference with other tests
         System.clearProperty("user.name");

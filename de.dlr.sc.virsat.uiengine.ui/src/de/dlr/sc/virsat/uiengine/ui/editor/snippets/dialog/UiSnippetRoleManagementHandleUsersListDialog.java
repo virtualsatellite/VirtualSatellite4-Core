@@ -68,6 +68,7 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 	public static final String USER_ALREADY_EXIST = "User already exist";
 	public static final String USER_NAME_LABEL = "Username";  // Define a constant for the label text
 	public static final String LIST_OF_USERS_LABEL = "List of users";
+	public static final String EMPTY_USER = "EMPTY USER";
 	/**
 	 * Constructor for UiSnippetRoleManagementHandleUsersListDialog.
 	 *
@@ -91,7 +92,7 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 		super.configureShell(newShell);
 
 		final int width = 700;
-		final int height = 350;
+		final int height = 450;
 
 		// Adjust the width and height as needed
 		newShell.setSize(width, height);  
@@ -100,7 +101,7 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 		centerShellOnScreen(newShell); 
 
 		// Set the title of the dialog
-		newShell.setText("User-Discipline");
+		newShell.setText("USERS-DISCIPLINE");
 	}
 
 	@Override
@@ -130,7 +131,7 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 		featuresComposite.setLayoutData(featuresCompositeGridData);
 
 		Label featuresLabel = new Label(featuresComposite, SWT.NONE);
-		featuresLabel.setText(LIST_OF_USERS_LABEL);
+		featuresLabel.setText(LIST_OF_USERS_LABEL); // Capitalize "Users"
 		featuresLabel.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_BLUE));  // Set the foreground color
 		GridData featuresLabelGridData = new GridData(SWT.FILL, SWT.CENTER, false, false);
 		featuresLabelGridData.horizontalIndent = HORIZONTAL_INDENT_FOR_FEATURE_LABEL;  // Adjust the indentation
@@ -151,7 +152,9 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 		addButton.setText("Add");
 		GridData addButtonGridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		addButton.setLayoutData(addButtonGridData);
-
+		// Set focus on the "Add" button for usability
+		addButton.setFocus();
+		
 		Button updateButton = new Button(buttonsComposite, SWT.PUSH);
 		updateButton.setText("Rename");
 		GridData updateButtonGridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
@@ -175,6 +178,9 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 		// Add event listeners to the widgets
 		addListeners(valueText, addButton, updateButton, removeButton, upButton, downButton);
 
+        // Set focus on the Add button when the dialog is opened
+        addButton.setFocus();
+        
 		return container;
 	}
 	
@@ -218,8 +224,8 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 				if (value.isEmpty()) {
 					// Show a message dialog indicating that the user should enter a value
 					MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-					messageBox.setText(USER_ALREADY_EXIST);
-					messageBox.setMessage("Please enter a value.");
+					messageBox.setText(EMPTY_USER);
+					messageBox.setMessage("Empty field! Please enter a value.");
 					messageBox.open();
 				} else if (features.contains(value)) {
 					// Show a message dialog indicating that the feature already exists
@@ -249,7 +255,7 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 
 				if (selectedValue.isEmpty()) {
 					MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-					messageBox.setMessage("Please select a feature to update.");
+					messageBox.setMessage("Please select a user to update.");
 					messageBox.open();
 					return;
 				}

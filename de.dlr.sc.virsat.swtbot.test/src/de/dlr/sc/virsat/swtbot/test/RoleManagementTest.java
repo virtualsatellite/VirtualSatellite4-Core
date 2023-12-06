@@ -258,7 +258,7 @@ public class RoleManagementTest extends ASwtBotTestCase {
 	    newDisciplineTableItem.click(1);
 
 	    // Get the dialog shell
-	    SWTBotShell dialogShell = bot.shell("User-Discipline");
+	    SWTBotShell dialogShell = bot.shell("USERS-DISCIPLINE");
 
 	    // Verify that the dialog is open
 	    assertTrue("User-Discipline dialog is open", dialogShell.isOpen());

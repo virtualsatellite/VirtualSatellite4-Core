@@ -69,6 +69,7 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 
 	private static final String COLUMN_TEXT_DISCIPLINE = "Discipline Name";
 	private static final String COLUMN_TEXT_USER = "User Name";
+	static final int USER_COLUMN_WIDTH = 300; // Adjust the width based on your preference
 
 	/**
 	 * Constructor for this class to instantiate a UI Snippet
@@ -123,8 +124,8 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 		columnUser.setLabelProvider(getDefaultColumnLabelProvider(editingDomain, false, RolesPackage.Literals.DISCIPLINE__USERS));
 		columnUser.setEditingSupport(new EListStringCellEditingSupport(editingDomain, tableViewer, RolesPackage.Literals.DISCIPLINE__USERS));
 		
-		// Pack the column to adjust its width based on the content
-		columnUser.getColumn().pack();
+		// Set a specific width for the "User Name" column
+	    columnUser.getColumn().setWidth(USER_COLUMN_WIDTH);
 
 		// Add a mouse listener to the columnUser to invoke the custom dialog
 		columnUser.getViewer().getControl().addMouseListener(new MouseAdapter() {
