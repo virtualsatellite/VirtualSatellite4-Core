@@ -92,7 +92,7 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 		super.configureShell(newShell);
 
 		final int width = 700;
-		final int height = 450;
+		final int height = 500;
 
 		// Adjust the width and height as needed
 		newShell.setSize(width, height);  

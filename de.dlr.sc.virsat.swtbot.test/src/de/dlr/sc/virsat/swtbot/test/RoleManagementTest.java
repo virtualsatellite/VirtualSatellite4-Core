@@ -206,7 +206,6 @@ public class RoleManagementTest extends ASwtBotTestCase {
 		bot.button("Apply Discipline").click();
 		
 		save();
-		
 		// Check ED1 and ED2 are editable. Three isn'T since it is discipline three
 		openEditor(elementDefinition);
 		bot.editorByTitle("ED: ED1 -> ProductTree.ProductTreeDomain.ED1").show();

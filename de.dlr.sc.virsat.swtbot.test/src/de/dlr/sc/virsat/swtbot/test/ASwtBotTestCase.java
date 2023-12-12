@@ -786,7 +786,6 @@ public class ASwtBotTestCase {
 	    rmEditor.bot().text().setText(discipline);
 	    newDisciplineTableItem.click(1);
 	    if (users != null && !users.isEmpty()) {
-
 	    	bot.list().select(0);
 			bot.button("Remove").click();
 	    	for (String user : users) {

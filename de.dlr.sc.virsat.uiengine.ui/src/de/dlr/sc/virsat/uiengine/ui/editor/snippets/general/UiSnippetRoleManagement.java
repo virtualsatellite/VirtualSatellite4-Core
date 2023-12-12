@@ -109,8 +109,6 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 			customDialog.open();
 		}
 	}
-
-
 	@Override
 	protected void createTableColumns(EditingDomain editingDomain) {
 

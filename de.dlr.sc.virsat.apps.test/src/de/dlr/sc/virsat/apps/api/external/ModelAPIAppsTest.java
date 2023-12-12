@@ -120,7 +120,6 @@ public class ModelAPIAppsTest {
 
         // Verify that the Discipline is added to Disciplines
         assertTrue("Discipline should be added to Disciplines", repository.getRoleManagement().getDisciplines().contains(discipline));
-
         // Verify that the user is added to the Discipline
         assertTrue("User should be added to Discipline", discipline.getUsers().contains("SampleUser"));
 
