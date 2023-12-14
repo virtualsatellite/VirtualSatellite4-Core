@@ -109,6 +109,23 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 			customDialog.open();
 		}
 	}
+	/**
+	 * Method to check if the user has the required permission
+	 */
+	
+	private boolean hasPermission() {
+	    String currentUser = UserRegistry.getInstance().getUserName();
+
+	    // Check if the current user is in the list of users for the selected discipline
+	    Discipline selectedDiscipline = getSelectedDiscipline();
+	    if (selectedDiscipline != null) {
+	        List<String> usersInDiscipline = selectedDiscipline.getUsers();
+	        return usersInDiscipline.contains(currentUser);
+	    }
+
+	    return false;
+	}
+
 	@Override
 	protected void createTableColumns(EditingDomain editingDomain) {
 
@@ -130,10 +147,17 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 			@Override
 			public void mouseDown(MouseEvent e) {
 				if (tableViewer.getTable().getColumnCount() > 1 && e.x > tableViewer.getTable().getColumn(0).getWidth()) {
-					openCustomDialog();
+					// Check if the user has the required permission before opening the custom dialog
+		            if (hasPermission()) {
+		                openCustomDialog();
+		            } else {
+		                // Display a message or take appropriate action for users without permission
+		                System.out.println("You don't have permission to perform this action.");
+		            }
 				}
 			}
 		});
+		
 
 	}
 
