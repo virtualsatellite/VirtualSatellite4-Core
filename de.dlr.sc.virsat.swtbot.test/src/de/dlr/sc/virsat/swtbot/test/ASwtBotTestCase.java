@@ -798,7 +798,7 @@ public class ASwtBotTestCase {
 	    }
 	    
 	    // Get the dialog shell
-	    SWTBotShell dialogShell = bot.shell("USERS-DISCIPLINE");
+	    SWTBotShell dialogShell = bot.shell("User Discipline");
 	    
 	    // Close the user management dialog
 	    SWTBotButton userEditorOkayButton = dialogShell.bot().button("OK");

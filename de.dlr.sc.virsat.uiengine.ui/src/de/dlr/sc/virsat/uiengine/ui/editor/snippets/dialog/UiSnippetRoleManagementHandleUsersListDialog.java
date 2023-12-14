@@ -65,7 +65,7 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 	static final int VERTICAL_SPAN = 6;
 	static final int HORIZONTAL_INDENT_FOR_FEATURE_LABEL = 10;   
 
-	public static final String USER_ALREADY_EXIST = "User already exist";
+	public static final String USER_ALREADY_EXIST = "User already exists";
 	public static final String USER_NAME_LABEL = "Username";  // Define a constant for the label text
 	public static final String LIST_OF_USERS_LABEL = "List of users";
 	public static final String EMPTY_USER = "EMPTY USER";
@@ -101,7 +101,7 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 		centerShellOnScreen(newShell); 
 
 		// Set the title of the dialog
-		newShell.setText("USERS-DISCIPLINE");
+		newShell.setText("User Discipline");
 	}
 
 	@Override
