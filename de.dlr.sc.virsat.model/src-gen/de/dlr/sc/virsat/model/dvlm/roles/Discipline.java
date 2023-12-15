@@ -12,6 +12,7 @@ package de.dlr.sc.virsat.model.dvlm.roles;
 
 import de.dlr.sc.virsat.model.dvlm.general.IName;
 import de.dlr.sc.virsat.model.dvlm.general.IUuid;
+import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
@@ -22,7 +23,7 @@ import de.dlr.sc.virsat.model.dvlm.general.IUuid;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link de.dlr.sc.virsat.model.dvlm.roles.Discipline#getUser <em>User</em>}</li>
+ *   <li>{@link de.dlr.sc.virsat.model.dvlm.roles.Discipline#getUsers <em>Users</em>}</li>
  * </ul>
  *
  * @see de.dlr.sc.virsat.model.dvlm.roles.RolesPackage#getDiscipline()
@@ -31,30 +32,21 @@ import de.dlr.sc.virsat.model.dvlm.general.IUuid;
  */
 public interface Discipline extends IUuid, IName {
 	/**
-	 * Returns the value of the '<em><b>User</b></em>' attribute.
-	 * The default value is <code>""</code>.
+	 * Returns the value of the '<em><b>Users</b></em>' attribute list.
+	 * The list contents are of type {@link java.lang.String}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>User</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Users</em>' attribute list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>User</em>' attribute.
-	 * @see #setUser(String)
-	 * @see de.dlr.sc.virsat.model.dvlm.roles.RolesPackage#getDiscipline_User()
+	 * @return the value of the '<em>Users</em>' attribute list.
+	 * @see de.dlr.sc.virsat.model.dvlm.roles.RolesPackage#getDiscipline_Users()
 	 * @model default="" required="true"
 	 * @generated
 	 */
-	String getUser();
+	EList<String> getUsers();
 
-	/**
-	 * Sets the value of the '{@link de.dlr.sc.virsat.model.dvlm.roles.Discipline#getUser <em>User</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>User</em>' attribute.
-	 * @see #getUser()
-	 * @generated
-	 */
-	void setUser(String value);
+
 
 } // Discipline

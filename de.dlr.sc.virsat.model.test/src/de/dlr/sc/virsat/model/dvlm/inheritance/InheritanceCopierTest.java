@@ -1059,8 +1059,9 @@ public class InheritanceCopierTest extends AInheritanceCopierTest {
 
 		dA.setName("workA");
 		dB.setName("workB");
-		dA.setUser("Alice");
-		dB.setUser("Bob");
+		dA.getUsers().add("Alice");
+		dB.getUsers().add("Bob");
+		
 		
 		rm.getDisciplines().add(dA);
 		rm.getDisciplines().add(dB);

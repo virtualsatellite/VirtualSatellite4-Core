@@ -845,7 +845,7 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 
 		IUserContext userRegistry = UserRegistry.getInstance();
 		String currentUserName = userRegistry.getUserName();
-		systemDiscipline.setUser(currentUserName);
+		systemDiscipline.getUsers().add(currentUserName);
 
 		roleManagement.getDisciplines().add(systemDiscipline);
 

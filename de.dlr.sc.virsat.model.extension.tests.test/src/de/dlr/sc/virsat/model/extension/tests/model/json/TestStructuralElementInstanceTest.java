@@ -96,7 +96,7 @@ public class TestStructuralElementInstanceTest extends AConceptTestCase {
 		
 		Discipline discipline = RolesFactory.eINSTANCE.createDiscipline();
 		discipline.setName(NAME);
-		discipline.setUser(USERNAME);
+		discipline.getUsers().add(USERNAME);
 		discipline.setUuid(new VirSatUuid("e4e175f5-88c8-474f-bb25-2cdf1d3061cb"));
 		beanDiscipline = new BeanDiscipline(discipline);
 	}

@@ -101,8 +101,9 @@ public class RoleManagmentCheckCommandTest {
 		discipline2 = RolesFactory.eINSTANCE.createDiscipline();
 		discipline1.setName("AOCS");
 
-		discipline1.setUser("UserOne");
-		discipline2.setUser("user2");
+		discipline1.getUsers().add("UserOne");
+		discipline2.getUsers().add("user2");
+	
 		
 		rm.getDisciplines().add(discipline1);
 		sei.setAssignedDiscipline(discipline1);

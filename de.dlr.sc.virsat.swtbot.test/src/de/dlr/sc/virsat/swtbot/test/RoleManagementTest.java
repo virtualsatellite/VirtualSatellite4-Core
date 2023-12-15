@@ -13,9 +13,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotEditor;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +35,7 @@ import de.dlr.sc.virsat.project.ui.perspective.CorePerspective;
 public class RoleManagementTest extends ASwtBotTestCase {
 	
 
-	
+	List<String> users = new ArrayList<>();
 	@Before
 	public void before() throws Exception {
 		super.before();
@@ -56,7 +63,8 @@ public class RoleManagementTest extends ASwtBotTestCase {
 		save();
 		
 		// Add another discipline and give it the same name, this should create a warning
-		SWTBotTableItem newDisciplineTableItem = createNewDiscipline("SubSystem", "other_user");
+		users.add("other_user");
+		SWTBotTableItem newDisciplineTableItem = createNewDiscipline("SubSystem", users);
 		save();
 		
 		// Check for the warnings
@@ -86,7 +94,9 @@ public class RoleManagementTest extends ASwtBotTestCase {
 		openRoleManagementEditor();
 		
 		// Add a disciple for the Repository
-		SWTBotTableItem newDisciplineTableItem = createNewDiscipline("Repository", null);
+		SWTBotTable userTable = bot.table();
+		final String  username = userTable.cell(0, 1).replace("[", "").replace("]", "");
+		SWTBotTableItem newDisciplineTableItem = createNewDiscipline("Repository", Collections.singletonList(username));
 		
 		// Open the Repository editor
 		bot.viewByTitle("VirSat Navigator").show();
@@ -105,10 +115,11 @@ public class RoleManagementTest extends ASwtBotTestCase {
 		// Now change the user of the Repository discipline
 		bot.editorByTitle("Role Management").show();
 		newDisciplineTableItem.click(1);
-		SWTBotEditor rmEditor = bot.editorByTitle("Role Management");
-		rmEditor.bot().text().setText("other_user");
-		rmEditor.bot().table().unselect();
-		
+
+		bot.list().select(0);
+		bot.text().setText("other_user");
+		bot.button("Rename").click();
+		bot.button("OK").click();
 		save();
 		
 		// Open the Repository editor again
@@ -122,7 +133,8 @@ public class RoleManagementTest extends ASwtBotTestCase {
 		
 		// Add a disciple for the Repository
 		createNewDiscipline("Repository", null);
-		createNewDiscipline("Repository2", "other_user");
+		
+		createNewDiscipline("Repository2", Collections.singletonList("username"));
 		
 		// Open the Repository editor
 		bot.viewByTitle("VirSat Navigator").show();
@@ -142,6 +154,7 @@ public class RoleManagementTest extends ASwtBotTestCase {
 		
 		// Change the discipline in the Repository editor
 		bot.editorByTitle("Repository").show();
+		
 		bot.comboBox().setSelection("Discipline: Repository2");
 		bot.button("Apply Discipline").click();
 		
@@ -158,9 +171,9 @@ public class RoleManagementTest extends ASwtBotTestCase {
 		// and one for a special ED.
 		// Both are initially owned by the current user.
 		createNewDiscipline("Domain_One", null);
-		createNewDiscipline("Domain_Two", "other_user");
-		createNewDiscipline("Domain_Three", "third_user");
+		createNewDiscipline("Domain_Two", Collections.singletonList("user2"));
 		
+		createNewDiscipline("Domain_Three", Collections.singletonList("third_user"));
 		// Create a PT and PTD
 		bot.viewByTitle("VirSat Navigator").show();		
 		SWTBotTreeItem repositoryNavigatorItem = bot.tree().expandNode(SWTBOT_TEST_PROJECTNAME, "Repository");
@@ -193,7 +206,6 @@ public class RoleManagementTest extends ASwtBotTestCase {
 		bot.button("Apply Discipline").click();
 		
 		save();
-		
 		// Check ED1 and ED2 are editable. Three isn'T since it is discipline three
 		openEditor(elementDefinition);
 		bot.editorByTitle("ED: ED1 -> ProductTree.ProductTreeDomain.ED1").show();
@@ -225,5 +237,50 @@ public class RoleManagementTest extends ASwtBotTestCase {
 		
 		bot.editorByTitle("ED: ED3 -> ProductTree.ProductTreeDomain.ED3").show();
 		assertEquals("Discipline of ED3 is still with third_user", "Discipline: Domain_Three", bot.comboBox().getText());
+	}
+	
+	/**
+	 *testOkayButtonInUsersListDialog()
+	 * Open the Role Management Editor and click the "Add" button to open the user management dialog. 
+	 * Set the text field with a new username, in this case, "NewUser."
+	 * Click the "OK" button to add the user.
+	 * Retrieve the updated list of users using bot.list().getListItems().
+	 * Use the assertTrue assertion to check if the user "NewUser" is present in the updated list of users.
+	 * Close the dialog after the assertions.
+	 * **/
+	@Test
+	public void testOkayButtonInUsersListDialog() {
+	    openRoleManagementEditor();
+
+	    // Open the dialog for managing users
+	    SWTBotTableItem newDisciplineTableItem = createNewDiscipline("Repository", null);
+	    newDisciplineTableItem.click(1);
+
+	    // Get the dialog shell
+	    SWTBotShell dialogShell = bot.shell("User Discipline");
+
+	    // Verify that the dialog is open
+	    assertTrue("User-Discipline dialog is open", dialogShell.isOpen());
+
+	    // Find and interact with the elements in the dialog
+	    SWTBotText valueText = bot.text();
+	    // Enter a new username
+	    String newUser = "NewUser";
+	    valueText.setText(newUser);
+	    bot.button("Add").click();
+	    // Attempt to enter the same username
+	    valueText.setText(newUser);
+	    bot.button("Add").click();
+
+	    // Check if the error message box appears
+	    SWTBotShell errorDialogShell = bot.activeShell();
+
+	    // Verify that the error dialog is open
+	    assertTrue("Error dialog shell is open", errorDialogShell.isOpen());
+
+	    // Close the error dialog
+	    errorDialogShell.bot().button("OK").click();
+	    bot.closeAllShells();
+	    bot.closeAllEditors();
 	}
 }

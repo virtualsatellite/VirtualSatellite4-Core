@@ -47,7 +47,7 @@ public class ExcelExportHelperTest {
 		StructuralElementInstance sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
 		
 		discipline.setName("Discipline");
-		discipline.setUser("user_me");
+		discipline.getUsers().add("user_me");
 		
 		se.setName("SeType");
 		sei.setName("SeiName");

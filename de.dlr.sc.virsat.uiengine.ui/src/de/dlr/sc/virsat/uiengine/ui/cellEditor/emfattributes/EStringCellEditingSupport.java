@@ -9,6 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.uiengine.ui.cellEditor.emfattributes;
 
+
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
@@ -22,6 +23,9 @@ import org.eclipse.swt.widgets.Composite;
 
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 
+
+
+
 /**
  * this class extends the editing support for cells from type string
  * @author leps_je
@@ -29,9 +33,9 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedProperty
  */
 public class EStringCellEditingSupport extends EditingSupport {
 
-	private CellEditor editor;
-	private EditingDomain editingDomain;
-	private EAttribute emfAttribute;
+	protected CellEditor editor;
+	protected EditingDomain editingDomain;
+	protected EAttribute emfAttribute;
 
 	/**
 	 * constructor for the string cell editing support instantiate the editor, editing domain and emf attribute
@@ -75,13 +79,18 @@ public class EStringCellEditingSupport extends EditingSupport {
 	@Override
 	protected Object getValue(Object element) {
 		EObject eObject = (EObject) avoidComposedProperty(element);
+		// Return the current value of the attribute
 		return eObject.eGet(emfAttribute);
 	}
 
+
 	@Override
 	protected void setValue(Object element, Object userInputValue) {
-		Command cmd = SetCommand.create(editingDomain, avoidComposedProperty(element), emfAttribute, (String) userInputValue);
+		
+		Command cmd = SetCommand.create(editingDomain, avoidComposedProperty(element), emfAttribute, (String) userInputValue);		
 		editingDomain.getCommandStack().execute(cmd);
 		getViewer().update(element, null);
+		
 	}
+
 }
