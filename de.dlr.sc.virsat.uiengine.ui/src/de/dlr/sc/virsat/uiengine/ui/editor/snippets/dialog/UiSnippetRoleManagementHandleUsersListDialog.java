@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.uiengine.ui.editor.snippets.dialog;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.jface.dialogs.Dialog;
@@ -30,6 +31,7 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+
 
 /**
  * UiSnippetRoleManagementHandleUsersListDialog is a custom dialog that extends
@@ -56,6 +58,8 @@ import org.eclipse.swt.widgets.Text;
 
 public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 
+
+
 	// Fields
 	private List<String> features;  // Array of features
 	private org.eclipse.swt.widgets.List featuresList;  // SWT List for displaying features
@@ -65,10 +69,20 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 	static final int VERTICAL_SPAN = 6;
 	static final int HORIZONTAL_INDENT_FOR_FEATURE_LABEL = 10;   
 
-	public static final String USER_ALREADY_EXIST = "User already exists";
 	public static final String USER_NAME_LABEL = "Username";  // Define a constant for the label text
 	public static final String LIST_OF_USERS_LABEL = "List of users";
-	public static final String EMPTY_USER = "EMPTY USER";
+	
+	public static final String ERROR_TITLE_USER_ALREADY_EXIST = "User already exists!";
+	public static final String ERROR_MESSAGE_USER_ALREADY_EXISTS = "User already exists in the list.";
+	
+	public static final String ERROR_TITLE_USERNAME_EMPTY = "Username Empty!";
+	public static final String ERROR_MESSAGE_EMPTY_USER = "Empty field! Please enter a value.";
+	
+	public static final String ERROR_TITLE_NO_USER_SELECTED = "No User selected!";
+	public static final String ERROR_MESSAGE_NO_USER_SELECTED = "Please select a user to update.";
+	
+	public static final String ERROR_TITLE_RENAME_SAME_NAME = "Duplicated User!";
+	public static final String ERROR_MESSAGE_RENAME_SAME_NAME = "The entered username already exists.";
 	/**
 	 * Constructor for UiSnippetRoleManagementHandleUsersListDialog.
 	 *
@@ -224,14 +238,14 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 				if (value.isEmpty()) {
 					// Show a message dialog indicating that the user should enter a value
 					MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-					messageBox.setText(EMPTY_USER);
-					messageBox.setMessage("Empty field! Please enter a value.");
+					messageBox.setText(ERROR_TITLE_USERNAME_EMPTY);
+					messageBox.setMessage(ERROR_MESSAGE_EMPTY_USER);
 					messageBox.open();
 				} else if (features.contains(value)) {
 					// Show a message dialog indicating that the feature already exists
 					MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-					messageBox.setText(USER_ALREADY_EXIST);
-					messageBox.setMessage("User already exists in the list.");
+					messageBox.setText(ERROR_TITLE_USER_ALREADY_EXIST);
+					messageBox.setMessage(ERROR_MESSAGE_USER_ALREADY_EXISTS);
 					messageBox.open();
 				} else {
 					featuresList.add(value);
@@ -240,32 +254,31 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 				}
 			}
 		});
-
+		
 		/**
 		 * Creates and configures the "Update" button within the specified composite.
 		 *
 		 * @param buttonsComposite The composite in which the button will be created.
 		 * @param valueText The Text widget containing the value to be updated.
 		 */	
-		// Update button listener
+		// Rename button listener
 		updateButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				String selectedValue = valueText.getText().trim();
 
 				if (selectedValue.isEmpty()) {
-					MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-					messageBox.setMessage("Please select a user to update.");
-					messageBox.open();
+					handleUsernameIsEmpty(selectedValue);
 					return;
 				}
-
+				
 				int selectedIndex = featuresList.getSelectionIndex();
 
 				// Check if the selectedValue already exists in the features list
 				if (features.contains(selectedValue)) {
-					MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-					messageBox.setMessage("The entered name is not different from the existing one.");
+					MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
+					messageBox.setText(ERROR_TITLE_RENAME_SAME_NAME);
+					messageBox.setMessage(ERROR_MESSAGE_RENAME_SAME_NAME);
 					messageBox.open();
 					return;
 				}
@@ -284,6 +297,13 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 		removeButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				String selectedValue = valueText.getText().trim();
+
+				if (selectedValue.isEmpty()) {
+					handleUsernameIsEmpty(selectedValue);
+					return;
+				}
+				
 				int selectedIndex = featuresList.getSelectionIndex();
 				if (selectedIndex != -1) {
 					// Remove the element from the list and the array
@@ -296,6 +316,7 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 
 			private void removeFeatureFromListAndArray(int index) {
 				// Check if the index is valid
+				features = Arrays.asList(featuresList.getSelection());
 				if (index >= 0 && index < features.size()) {
 					// Create a new array with a reduced size
 					List<String> newFeatures = new ArrayList<String>();
@@ -404,4 +425,11 @@ public class UiSnippetRoleManagementHandleUsersListDialog extends Dialog {
 		shell.setLocation(x, y);
 	}
 
+	private void handleUsernameIsEmpty(String username) {
+		MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
+		messageBox.setText(ERROR_TITLE_NO_USER_SELECTED);
+		messageBox.setMessage(ERROR_MESSAGE_NO_USER_SELECTED);
+		messageBox.open();
+	}
+	
 }
