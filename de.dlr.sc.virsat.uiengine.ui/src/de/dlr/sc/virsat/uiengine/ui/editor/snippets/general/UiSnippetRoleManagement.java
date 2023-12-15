@@ -9,8 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.uiengine.ui.editor.snippets.general;
 
-
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -18,6 +16,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.DeleteCommand;
@@ -39,12 +38,13 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
+import de.dlr.sc.virsat.model.dvlm.roles.RightsHelper;
 import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
 import de.dlr.sc.virsat.model.dvlm.roles.RolesPackage;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
+import de.dlr.sc.virsat.project.Activator;
 import de.dlr.sc.virsat.project.markers.IMarkerHelper;
 import de.dlr.sc.virsat.project.markers.VirSatProblemMarkerHelper;
-import de.dlr.sc.virsat.uiengine.ui.cellEditor.emfattributes.EListStringCellEditingSupport;
 import de.dlr.sc.virsat.uiengine.ui.cellEditor.emfattributes.EStringCellEditingSupport;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSnippetEStructuralFeatureTable;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
@@ -52,11 +52,12 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.dialog.UiSnippetRoleManageme
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.dialog.IFeatureUpdateCallback;
 
 /**
- * UI Snippet for role management. Implements the IUiSnippet interface for role management.
- * Manages disciplines and associated users.
+ * UI Snippet for role management. Implements the IUiSnippet interface for role
+ * management. Manages disciplines and associated users.
  *
  */
-public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable implements IUiSnippet, IFeatureUpdateCallback {
+public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable
+		implements IUiSnippet, IFeatureUpdateCallback {
 
 	private static final String SECTION_NAME = "Disciplines";
 	private static final String SECTION_DESCRIPTION_PREFIX = "You are currently logged in as: ";
@@ -102,28 +103,22 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 		if (selectionIndex != -1) {
 			Discipline selectedDiscipline = (Discipline) tableViewer.getElementAt(selectionIndex);
 
-			List<String> runtimeList = new ArrayList<String>(selectedDiscipline.getUsers().stream()
-					  .collect(Collectors.toList()));
+			List<String> runtimeList = new ArrayList<String>(
+					selectedDiscipline.getUsers().stream().collect(Collectors.toList()));
 			// Open the UiSnippetRoleManagementHandleUsersListDialog and pass the callback
-			UiSnippetRoleManagementHandleUsersListDialog customDialog = new UiSnippetRoleManagementHandleUsersListDialog(Display.getCurrent().getActiveShell(), runtimeList, this);
+			UiSnippetRoleManagementHandleUsersListDialog customDialog = new UiSnippetRoleManagementHandleUsersListDialog(
+					Display.getCurrent().getActiveShell(), runtimeList, this);
 			customDialog.open();
 		}
 	}
+
 	/**
-	 * Method to check if the user has the required permission
+	 * // Method to check if the user has the required permission
 	 */
-	
+
 	private boolean hasPermission() {
-	    String currentUser = UserRegistry.getInstance().getUserName();
-
-	    // Check if the current user is in the list of users for the selected discipline
-	    Discipline selectedDiscipline = getSelectedDiscipline();
-	    if (selectedDiscipline != null) {
-	        List<String> usersInDiscipline = selectedDiscipline.getUsers();
-	        return usersInDiscipline.contains(currentUser);
-	    }
-
-	    return false;
+		// Check if the current user is in the list of users for the selected discipline
+		return RightsHelper.hasWritePermission(model, UserRegistry.getInstance());
 	}
 
 	@Override
@@ -131,33 +126,35 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 
 		// Column Discipline Name
 		TableViewerColumn columnName = createDefaultColumn(tableViewer, COLUMN_TEXT_DISCIPLINE);
-		columnName.setLabelProvider(getDefaultColumnLabelProvider(editingDomain, true, GeneralPackage.Literals.INAME__NAME));
-		columnName.setEditingSupport(new EStringCellEditingSupport(editingDomain, tableViewer, GeneralPackage.Literals.INAME__NAME));
+		columnName.setLabelProvider(
+				getDefaultColumnLabelProvider(editingDomain, true, GeneralPackage.Literals.INAME__NAME));
+		columnName.setEditingSupport(
+				new EStringCellEditingSupport(editingDomain, tableViewer, GeneralPackage.Literals.INAME__NAME));
 
 		// Column of the user name
 		TableViewerColumn columnUser = createDefaultColumn(tableViewer, COLUMN_TEXT_USER);
-		columnUser.setLabelProvider(getDefaultColumnLabelProvider(editingDomain, false, RolesPackage.Literals.DISCIPLINE__USERS));
-		columnUser.setEditingSupport(new EListStringCellEditingSupport(editingDomain, tableViewer, RolesPackage.Literals.DISCIPLINE__USERS));
-		
+		columnUser.setLabelProvider(
+				getDefaultColumnLabelProvider(editingDomain, false, RolesPackage.Literals.DISCIPLINE__USERS));
 		// Set a specific width for the "User Name" column
-	    columnUser.getColumn().setWidth(USER_COLUMN_WIDTH);
+		columnUser.getColumn().setWidth(USER_COLUMN_WIDTH);
 
 		// Add a mouse listener to the columnUser to invoke the custom dialog
 		columnUser.getViewer().getControl().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				if (tableViewer.getTable().getColumnCount() > 1 && e.x > tableViewer.getTable().getColumn(0).getWidth()) {
-					// Check if the user has the required permission before opening the custom dialog
-		            if (hasPermission()) {
-		                openCustomDialog();
-		            } else {
-		                // Display a message or take appropriate action for users without permission
-		                System.out.println("You don't have permission to perform this action.");
-		            }
+				if (tableViewer.getTable().getColumnCount() > 1
+						&& e.x > tableViewer.getTable().getColumn(0).getWidth()) {
+					// Check if the user has the required permission before opening the custom
+					// dialog
+					if (hasPermission()) {
+						openCustomDialog();
+					} else {
+						// Display a message or take appropriate action for users without permission
+						Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "User doesn't have the permission to edit the role management"));
+					}
 				}
 			}
 		});
-		
 
 	}
 
@@ -166,7 +163,7 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 		Composite compositeButtons = super.createButtons(toolkit, sectionBody);
 
 		buttonAdd = toolkit.createButton(compositeButtons, BUTTON_ADD_TEXT, SWT.PUSH);
-		buttonRemove = toolkit.createButton(compositeButtons, BUTTON_REMOVE_TEXT, SWT.PUSH);		
+		buttonRemove = toolkit.createButton(compositeButtons, BUTTON_REMOVE_TEXT, SWT.PUSH);
 
 		// Mark the Controls which should be checked for write access
 		checkWriteAccess(buttonAdd, buttonRemove);
@@ -180,12 +177,13 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 		buttonAdd.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				// create a new Discipline with the name of the super user as default user name 
+				// create a new Discipline with the name of the super user as default user name
 				Discipline newDiscipline = RolesFactory.eINSTANCE.createDiscipline();
 				newDiscipline.setName("New Discipline");
 				newDiscipline.getUsers().add(UserRegistry.getInstance().getUserName());
 
-				Command addCommand = AddCommand.create(editingDomain, model, RolesPackage.eINSTANCE.getRoleManagement_Disciplines(), newDiscipline);
+				Command addCommand = AddCommand.create(editingDomain, model,
+						RolesPackage.eINSTANCE.getRoleManagement_Disciplines(), newDiscipline);
 				editingDomain.getCommandStack().execute(addCommand);
 
 				// Refresh the viewer to update the display
@@ -227,16 +225,17 @@ public class UiSnippetRoleManagement extends AUiSnippetEStructuralFeatureTable i
 	public void onFeaturesChanged(String[] updatedFeatures) {
 		EditingDomain editingDomain = AdapterFactoryEditingDomain.getEditingDomainFor(model);
 		if (editingDomain != null) {
-			editingDomain.getCommandStack().execute((Command) new RecordingCommand((TransactionalEditingDomain) editingDomain) {
-				@Override
-				protected void doExecute() {
-					Discipline selectedDiscipline = getSelectedDiscipline(); 
-					if (selectedDiscipline != null) {
-						selectedDiscipline.getUsers().clear();
-						selectedDiscipline.getUsers().addAll(Arrays.asList(updatedFeatures));
-					}
-				}
-			});
+			editingDomain.getCommandStack()
+					.execute((Command) new RecordingCommand((TransactionalEditingDomain) editingDomain) {
+						@Override
+						protected void doExecute() {
+							Discipline selectedDiscipline = getSelectedDiscipline();
+							if (selectedDiscipline != null) {
+								selectedDiscipline.getUsers().clear();
+								selectedDiscipline.getUsers().addAll(Arrays.asList(updatedFeatures));
+							}
+						}
+					});
 		}
 		// Refresh the viewer to update the display
 		tableViewer.refresh();
