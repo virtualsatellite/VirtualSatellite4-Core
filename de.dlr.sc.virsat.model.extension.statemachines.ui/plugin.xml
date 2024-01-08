@@ -580,5 +580,16 @@
           level="0">
     </LabelProvider>
  </extension>
+ <extension
+       point="org.eclipse.ui.views">
+    <view
+          category="de.dlr.sc.virsat.project.ui.view.catgeory.virsat.core"
+          class="de.dlr.sc.virsat.model.extension.statemachines.ui.views.SimulatorView"
+          icon="resources/icons/de.dlr.sc.virsat.model.extension.statemachines.gif"
+          id="de.dlr.sc.virsat.model.extension.statemachines.ui.views.simulator"
+          name="State Machine Simulator"
+          restorable="true">
+    </view>
+ </extension>
 	<!-- Plugin.XML Protected Region End -->
 </plugin>

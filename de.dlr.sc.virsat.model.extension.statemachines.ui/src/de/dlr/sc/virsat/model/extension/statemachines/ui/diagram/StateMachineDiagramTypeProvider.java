@@ -19,7 +19,6 @@ import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.StateM
 
 /**
  * The StateMachine diagram type provider delivers all feature providers for StateMachine diagrams.
- * @author muel_s8
  *
  */
 public class StateMachineDiagramTypeProvider extends AbstractDiagramTypeProvider  {
