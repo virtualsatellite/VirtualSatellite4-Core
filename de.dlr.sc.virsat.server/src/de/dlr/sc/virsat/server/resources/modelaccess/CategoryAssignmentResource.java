@@ -26,6 +26,7 @@ import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.jetty.http.HttpStatus;
 
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
+import de.dlr.sc.virsat.model.concept.types.category.BeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage;
@@ -105,6 +106,9 @@ public class CategoryAssignmentResource {
 				code = HttpStatus.OK_200,
 				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
 		@ApiResponse(
+				code = HttpStatus.FORBIDDEN_403, 
+				message = ApiErrorHelper.NOT_EXECUTEABLE),
+		@ApiResponse(
 				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response putCa(@ApiParam(value = "CA to put", required = true) ABeanCategoryAssignment bean) {
@@ -134,6 +138,9 @@ public class CategoryAssignmentResource {
 				code = HttpStatus.BAD_REQUEST_400, 
 				message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
 		@ApiResponse(
+				code = HttpStatus.FORBIDDEN_403, 
+				message = ApiErrorHelper.NOT_EXECUTEABLE),
+		@ApiResponse(
 				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 				message = ApiErrorHelper.NOT_EXECUTEABLE),
 		@ApiResponse(
@@ -159,7 +166,12 @@ public class CategoryAssignmentResource {
 			ApiErrorHelper.executeCommandIffCanExecute(createCommand, parentResource.getEd(), parentResource.getUser());
 			
 			parentResource.synchronize();
-			return Response.ok(newCa.getUuid().toString()).build();
+			
+			BeanCategoryAssignment newCaBean = new BeanCategoryAssignment();
+			newCaBean.setTypeInstance(newCa);
+			return Response.ok(newCaBean).build();
+		} catch (IllegalArgumentException e) {
+			return Response.status(Response.Status.FORBIDDEN).entity("Forbidden").build();
 		} catch (Exception e) {
 			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
@@ -181,6 +193,9 @@ public class CategoryAssignmentResource {
 		@ApiResponse(
 				code = HttpStatus.BAD_REQUEST_400,
 				message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
+		@ApiResponse(
+				code = HttpStatus.FORBIDDEN_403, 
+				message = ApiErrorHelper.NOT_EXECUTEABLE),
 		@ApiResponse(
 				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 				message = ApiErrorHelper.NOT_EXECUTEABLE),
@@ -204,6 +219,8 @@ public class CategoryAssignmentResource {
 			// Sync after delete
 			parentResource.synchronize();
 			return Response.ok().build();
+		} catch (IllegalArgumentException e) {
+			return Response.status(Response.Status.FORBIDDEN).entity("Forbidden").build();
 		} catch (Exception e) {
 			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
