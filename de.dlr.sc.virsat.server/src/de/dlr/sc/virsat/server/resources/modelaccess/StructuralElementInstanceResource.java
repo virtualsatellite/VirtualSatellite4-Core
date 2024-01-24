@@ -134,6 +134,9 @@ public class StructuralElementInstanceResource {
 				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 				message = ApiErrorHelper.NOT_EXECUTEABLE),
 		@ApiResponse(
+				code = HttpStatus.FORBIDDEN_403, 
+				message = ApiErrorHelper.NOT_EXECUTEABLE),
+		@ApiResponse(
 				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response createSei(@PathParam("seiUuid") @ApiParam(value = "parent uuid", required = true) String parentUuid,
@@ -151,6 +154,8 @@ public class StructuralElementInstanceResource {
 			
 			parentResource.synchronize();
 			return Response.ok(newSeiBean).build();
+		} catch (IllegalArgumentException e) {
+			return Response.status(Response.Status.FORBIDDEN).entity("Forbidden").build();
 		} catch (Exception e) {
 			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
@@ -176,6 +181,9 @@ public class StructuralElementInstanceResource {
 				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 				message = ApiErrorHelper.NOT_EXECUTEABLE),
 		@ApiResponse(
+				code = HttpStatus.FORBIDDEN_403, 
+				message = ApiErrorHelper.NOT_EXECUTEABLE),
+		@ApiResponse(
 				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 	public Response deleteSei(@PathParam("seiUuid") @ApiParam(value = "Uuid of the SEI", required = true)  String seiUuid) {
@@ -195,6 +203,8 @@ public class StructuralElementInstanceResource {
 			// Sync after delete
 			parentResource.synchronize();
 			return Response.ok().build();
+		} catch (IllegalArgumentException e) {
+			return Response.status(Response.Status.FORBIDDEN).entity("Forbidden").build();
 		} catch (Exception e) {
 			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
