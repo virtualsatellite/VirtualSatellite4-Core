@@ -24,6 +24,11 @@
 			<id>downloadLibs</id>
 			<!-- https://central.sonatype.com/artifact/com.rheagroup/cdp4servicesdal -->
 			<dependencies>
+	<dependency>
+      <groupId>com.rheagroup</groupId>
+      <artifactId>cdp4servicesdal</artifactId>
+      <version>3.0.0</version>
+    </dependency>
     <dependency>
       <groupId>com.rheagroup</groupId>
       <artifactId>cdp4dal</artifactId>

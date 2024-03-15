@@ -53,7 +53,8 @@ Bundle-ClassPath: externalLib/maven/animal-sniffer-annotations.jar,
  externalLib/maven/reactive-streams.jar,
  externalLib/maven/reflections.jar,
  externalLib/maven/rxjava.jar,
- externalLib/maven/slf4j-api.jar
+ externalLib/maven/slf4j-api.jar,
+ externalLib/maven/cdp4servicesdal.jar
 Export-Package: cdp4common,
  cdp4common.commondata,
  cdp4common.comparators,
@@ -79,4 +80,5 @@ Export-Package: cdp4common,
  cdp4jsonserializer,
  cdp4jsonserializer.deserializers,
  cdp4jsonserializer.modules,
- cdp4jsonserializer.serializers
+ cdp4jsonserializer.serializers,
+ cdp4servicesdal

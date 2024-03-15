@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/cdp4servicesdal.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/animal-sniffer-annotations.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/annotations.jar"/>
 	<classpathentry exported="true" kind="lib" path="externalLib/maven/apiguardian-api.jar"/>
