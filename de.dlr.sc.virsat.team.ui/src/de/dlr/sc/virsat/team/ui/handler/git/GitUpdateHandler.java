@@ -43,7 +43,7 @@ public class GitUpdateHandler extends AVersionControlUpdateHandler {
 		
 		Repository gitRepository = RepositoryMapping.getMapping(project).getRepository();
 
-		// Build the dialog in the UI thread
+		// Build the dialog in the UI threads
 		Display.getDefault().asyncExec(() -> {
 			PullResultDialog pullResultDialog = 
 					new PullResultDialog(Display.getDefault().getActiveShell(), gitRepository, pullResult);
