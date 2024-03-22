@@ -41,13 +41,14 @@ public class VirSatJettyServer {
 
 	public VirSatJettyServer() { }
 	
+	public static final int VIRSAT_JETTY_PORT = 8000;
 	public static final int VIRSAT_JETTY_PORT_HTTPS = 8443;
 	public static final String PATH = "/rest";
 	public static final String STATUS = "/status";
 	private static final String SUFFIX = "/*";
 	
 	private LoginService loginService = null;
-	private int serverPort;
+	private int serverPort = -1;
 
 	/**
 	 * Main entry point for Virtual Satellite Jetty Server
@@ -135,8 +136,12 @@ public class VirSatJettyServer {
 		ServerConnector httpsConnector = new ServerConnector(server,
 			new SslConnectionFactory(sslContextFactory, HttpVersion.HTTP_1_1.asString()),
 			new HttpConnectionFactory(httpsConf));
-		httpsConnector.setPort(VIRSAT_JETTY_PORT_HTTPS);
-
+		if (serverPort != -1) {
+			httpsConnector.setPort(serverPort);
+		} else {
+			httpsConnector.setPort(VIRSAT_JETTY_PORT_HTTPS);
+		}
+		
 		server.addConnector(httpsConnector);
 	}
 
@@ -157,7 +162,11 @@ public class VirSatJettyServer {
 		// Simple HTTP connector
 		final ServerConnector http = new ServerConnector(server,
 				new HttpConnectionFactory(httpConfiguration));
-		http.setPort(serverPort);
+		if (serverPort != -1) {
+			http.setPort(serverPort);
+		} else {
+			http.setPort(VIRSAT_JETTY_PORT);
+		}
 		server.addConnector(http);
 	}
 
