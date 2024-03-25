@@ -192,7 +192,7 @@ TIP: Instead you can also use the Management API of the running Server.
 |Start the Server executable with:
 [subs=+quotes]
 ....
-*"-configFile {path to server.properties}"*
+*"-configFile {path to server.properties}" -port {port}*
 ....
 
 The Server will start and try to load the repositories defined in 

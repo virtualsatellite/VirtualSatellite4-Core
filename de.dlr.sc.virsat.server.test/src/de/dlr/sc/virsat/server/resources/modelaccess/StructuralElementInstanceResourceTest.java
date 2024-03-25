@@ -72,12 +72,12 @@ public class StructuralElementInstanceResourceTest extends AModelAccessResourceT
 		
 		// Assert check sei discipline
 		setDiscipline(tSei.getStructuralElementInstance(), anotherDiscipline);
-		assertCommandNotExecuteableErrorResponse(getTestRequestBuilder(ModelAccessResource.SEI + "/" + tSei.getUuid()).delete());
+		assertForbiddenResponse(getTestRequestBuilder(ModelAccessResource.SEI + "/" + tSei.getUuid()).delete());
 		
 		// Assert check sei children discipline
 		setDiscipline(tSei.getStructuralElementInstance(), discipline);
 		setDiscipline(tSeiChild.getStructuralElementInstance(), anotherDiscipline);
-		assertCommandNotExecuteableErrorResponse(getTestRequestBuilder(ModelAccessResource.SEI + "/" + tSei.getUuid()).delete());
+		assertForbiddenResponse(getTestRequestBuilder(ModelAccessResource.SEI + "/" + tSei.getUuid()).delete());
 
 		// Assert implicit parent discipline rights check
 		setDiscipline(tSei.getStructuralElementInstance(), anotherDiscipline);
@@ -85,6 +85,6 @@ public class StructuralElementInstanceResourceTest extends AModelAccessResourceT
 		
 		Response response = getTestRequestBuilderWithQueryParam(ModelAccessResource.SEI + "/" + tSei.getUuid(), 
 				ModelAccessResource.QP_FULL_QUALIFIED_NAME, wantedTypeFqn).post(Entity.json(null));
-		assertCommandNotExecuteableErrorResponse(response);
+		assertForbiddenResponse(response);
 	}
 }
