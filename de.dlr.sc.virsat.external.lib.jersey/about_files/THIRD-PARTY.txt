@@ -1,10 +1,13 @@
 
-Lists of 34 third-party dependencies.
+Lists of 37 third-party dependencies.
+     (EDL 1.0) Jakarta Activation (com.sun.activation:jakarta.activation:1.2.2 - https://github.com/eclipse-ee4j/jaf/jakarta.activation)
+     (EDL 1.0) Jakarta Activation API jar (jakarta.activation:jakarta.activation-api:1.2.2 - https://github.com/eclipse-ee4j/jaf/jakarta.activation-api)
      (EPL 2.0) (GPL2 w/ CPE) Jakarta Annotations API (jakarta.annotation:jakarta.annotation-api:1.3.5 - https://projects.eclipse.org/projects/ee4j.ca)
      (EPL 2.0) (GPL2 w/ CPE) Jakarta JSON Processing API (jakarta.json:jakarta.json-api:1.1.6 - https://github.com/eclipse-ee4j/jsonp)
      (EPL 2.0) (GPL2 w/ CPE) Jakarta Servlet (jakarta.servlet:jakarta.servlet-api:4.0.3 - https://projects.eclipse.org/projects/ee4j.servlet)
      (Apache 2.0) Jakarta Bean Validation API (jakarta.validation:jakarta.validation-api:2.0.2 - https://beanvalidation.org)
      (EPL 2.0) (GPL2 w/ CPE) jakarta.ws.rs-api (jakarta.ws.rs:jakarta.ws.rs-api:2.1.6 - https://github.com/eclipse-ee4j/jaxrs-api)
+     (Eclipse Distribution License - v 1.0) Jakarta XML Binding API (jakarta.xml.bind:jakarta.xml.bind-api:2.3.3 - https://github.com/eclipse-ee4j/jaxb-api/jakarta.xml.bind-api)
      (CDDL + GPLv2 with classpath exception) Java Servlet API (javax.servlet:javax.servlet-api:3.1.0 - http://servlet-spec.java.net)
      (Apache Software License - Version 2.0) (Eclipse Public License - Version 1.0) Jetty :: Continuation (org.eclipse.jetty:jetty-continuation:9.4.27.v20200227 - http://www.eclipse.org/jetty)
      (Apache Software License - Version 2.0) (Eclipse Public License - Version 1.0) Jetty :: Http Utility (org.eclipse.jetty:jetty-http:9.4.27.v20200227 - http://www.eclipse.org/jetty)

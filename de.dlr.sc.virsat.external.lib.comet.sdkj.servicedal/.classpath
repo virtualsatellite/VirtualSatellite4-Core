@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/cdp4servicesdal.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/animal-sniffer-annotations.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/annotations.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/apiguardian-api.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/assertj-core.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/byte-buddy.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/byte-buddy-agent.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/cdp4common.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/cdp4dal.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/cdp4jsonserializer.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/checker-qual.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/commons-codec.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/commons-lang3.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/commons-logging.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/commons-math3.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/error_prone_annotations.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/failureaccess.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/guava.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/hamcrest-core.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/httpasyncclient.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/httpclient.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/httpcore.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/httpcore-nio.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/httpmime.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/j2objc-annotations.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jackson-annotations.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jackson-core.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jackson-databind.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jackson-datatype-jsr310.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/javassist.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jsr305.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/junit.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/junit-jupiter-api.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/junit-platform-commons.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/junit-platform-engine.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/junit-vintage-engine.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/listenablefuture.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/log4j-api.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/log4j-core.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/log4j-slf4j-impl.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/mockito-core.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/objenesis.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/opentest4j.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/reactive-streams.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/reflections.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/rxjava.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/slf4j-api.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="src" path="src/"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>

@@ -1,0 +1,2 @@
+commit.comment.template=Write a Heading here - (Task \#${task.key})\r\n\r\nPut your Message here.\r\n\r\n---\r\nTask \#${task.key}\: ${task.description} 
+eclipse.preferences.version=1
