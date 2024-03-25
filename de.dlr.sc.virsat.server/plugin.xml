@@ -20,7 +20,6 @@
             command="configFile">
      </clArgs>
      <clArgs
-            attribute="test"
             command="port">
      </clArgs>
    </extension>
