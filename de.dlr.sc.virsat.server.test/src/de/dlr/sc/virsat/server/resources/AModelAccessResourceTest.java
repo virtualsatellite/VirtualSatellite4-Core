@@ -471,6 +471,10 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 		assertBadRequestResponse(response, ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT);
 	}
 	
+	protected void assertForbiddenResponse(Response response) {
+		assertEquals(Status.FORBIDDEN.getStatusCode(), response.getStatus());
+	}
+	
 	protected void assertInternalErrorResponse(Response response, String expectedMessage) {
 		assertErrorResponse(response, Status.INTERNAL_SERVER_ERROR, ApiErrorHelper.INTERNAL_SERVER_ERROR + ": " + expectedMessage);
 	}

@@ -141,13 +141,13 @@ public class CategoryAssignmentResourceTest extends AModelAccessResourceTest {
 		
 		// Assert check ca discipline via sei
 		setDiscipline(tSei.getStructuralElementInstance(), anotherDiscipline);
-		assertCommandNotExecuteableErrorResponse(getTestRequestBuilder(ModelAccessResource.CA + "/" + tcAllProperty.getUuid()).delete());
+		assertForbiddenResponse(getTestRequestBuilder(ModelAccessResource.CA + "/" + tcAllProperty.getUuid()).delete());
 		
 		setDiscipline(tSei.getStructuralElementInstance(), anotherDiscipline);
 		String wantedTypeFqn = tcBeanA.getFullQualifiedCategoryName();
 		
 		Response response = getTestRequestBuilderWithQueryParam(ModelAccessResource.CA + "/" + tSei.getUuid(), 
 				ModelAccessResource.QP_FULL_QUALIFIED_NAME, wantedTypeFqn).post(Entity.json(null));
-		assertCommandNotExecuteableErrorResponse(response);
+		assertForbiddenResponse(response);
 	}
 }
