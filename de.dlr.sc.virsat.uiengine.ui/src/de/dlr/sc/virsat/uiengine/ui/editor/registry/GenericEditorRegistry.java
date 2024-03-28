@@ -27,8 +27,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.swt.widgets.Display;
-
 import de.dlr.sc.virsat.uieingine.ui.DVLMEditorPlugin;
 import de.dlr.sc.virsat.uiengine.ui.editor.GenericEditor;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
@@ -247,7 +245,12 @@ public class GenericEditorRegistry {
 		}
 		
 		if (editorInvalid) {
-			Display.getDefault().asyncExec(() -> genericEditor.close(true));
+			// This should not be executed in an async display thread here.
+			// The async execution happens in the super method of the FormEditor.
+			// Otherwise there would be two nested async jobs. The SWTBot tests
+			// may fail, since they cannot see if all jobs in the display thread are
+			// correctly executed.
+			genericEditor.close(true);
 		}
 	}
 	
