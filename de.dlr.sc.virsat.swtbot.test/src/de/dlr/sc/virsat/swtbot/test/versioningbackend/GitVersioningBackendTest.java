@@ -135,20 +135,27 @@ public class GitVersioningBackendTest extends AVersioningBackendTest {
 	 * @return The Commit message as string.
 	 */
 	protected String getCommitMessageFor(String repoName) {
-		// Assert that commit message arrived in Local Repository
-		bot.viewByTitle("Git Repositories").show();
-		getTreeNodeContaining(repoName).select();
-		
-		// Open the history view and get the entry from the commit
-		SWTBotView historyView = bot.view(WithTitle.withTitle(StringContains.containsString("History")));
-		historyView.show();
-		SWTBotTable historyTable =  historyView.bot().table();
-		SWTBotTableItem historyTableItem0 = historyTable.getTableItem(0);
-	
-		// Retrieve the commit message
-		String commitMessage = historyTableItem0.getText(1);
-		return commitMessage;
+	    // Assert that commit message arrived in Local Repository
+	    bot.viewByTitle("Git Repositories").show();
+	    getTreeNodeContaining(repoName).select();
+
+	    // Open the history view and get the entry from the commit
+	    SWTBotView historyView = bot.view(WithTitle.withTitle(StringContains.containsString("History")));
+	    historyView.show();
+	    SWTBotTable historyTable =  historyView.bot().table();
+	    SWTBotTableItem historyTableItem0 = historyTable.getTableItem(0);
+
+	    // Retrieve the commit message
+	    String commitMessage = historyTableItem0.getText(1);
+	    
+	    // If the commit message contains the phrase "Backend Local Commit Before Pull", extract the actual commit message
+	    if (commitMessage.contains("Backend Local Commit Before Pull")) {
+	        commitMessage = commitMessage.replace("Backend Local Commit Before Pull: ", "");
+	    }
+	    
+	    return commitMessage;
 	}
+
 
 	@Override
 	protected void testUpdateProjectChangeAndCommitRemote(String replace, String with) throws Exception {
