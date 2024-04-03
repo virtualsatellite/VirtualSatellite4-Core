@@ -47,8 +47,13 @@ public abstract class AVersionControlCommitHandler extends AVersionControlHandle
 				"Commit Message", "Please enter a commit message describing your changes", getProposedComment());
 	}
 	
+	
 	protected void doCommit(IProject project, String message, IProgressMonitor monitor) throws Exception {
 		backend.commit(project, message, monitor);
+	}
+	
+	protected void doUpdate(IProject project, IProgressMonitor monitor) throws Exception {
+		backend.update(project, monitor);
 	}
 	
 	@Override
