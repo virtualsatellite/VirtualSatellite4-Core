@@ -28,6 +28,7 @@ import de.dlr.sc.virsat.team.ui.util.VersionControlJob;
  */
 public abstract class AVersionControlCommitHandler extends AVersionControlHandler {
 	
+	public static final int NUMBEROFWORK = 3;
 	/**
 	 * Override this method to provide some default proposed comment in the commit message dialog.
 	 * The default implementation just gives the empty string.
@@ -52,9 +53,6 @@ public abstract class AVersionControlCommitHandler extends AVersionControlHandle
 		backend.commit(project, message, monitor);
 	}
 	
-	protected void doUpdate(IProject project, IProgressMonitor monitor) throws Exception {
-		backend.update(project, monitor);
-	}
 	
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -71,9 +69,11 @@ public abstract class AVersionControlCommitHandler extends AVersionControlHandle
 			
 			@Override
 			protected void executeBackendOperation(IProject project, IProgressMonitor monitor) throws Exception {
-				SubMonitor subMonitor = SubMonitor.convert(monitor, 2);
-				doCommit(project, commitMessageDialog.getCommitMessage(), subMonitor.split(1));
-				project.refreshLocal(IResource.DEPTH_INFINITE, subMonitor.split(1));
+				SubMonitor subMonitor = SubMonitor.convert(monitor, NUMBEROFWORK);
+			    
+			    doUpdate(project, subMonitor.split(1));
+			    doCommit(project, commitMessageDialog.getCommitMessage(), subMonitor.split(1));
+			    project.refreshLocal(IResource.DEPTH_INFINITE, subMonitor.split(1));
 			}
 		};
 		
@@ -82,4 +82,8 @@ public abstract class AVersionControlCommitHandler extends AVersionControlHandle
 		return null;
 	}
 
+	protected void doUpdate(IProject project, IProgressMonitor monitor) throws Exception {
+        backend.update(project, monitor);
+        
+    }
 }

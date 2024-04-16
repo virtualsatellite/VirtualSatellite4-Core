@@ -14,10 +14,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.egit.core.internal.credentials.EGitCredentialsProvider;
 import org.eclipse.egit.core.op.PushOperationResult;
 import org.eclipse.egit.core.project.RepositoryMapping;
-import org.eclipse.egit.ui.internal.pull.PullResultDialog;
 import org.eclipse.egit.ui.internal.push.PushMode;
 import org.eclipse.egit.ui.internal.push.ShowPushResultAction;
-import org.eclipse.jgit.api.PullResult;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.transport.PushResult;
 import org.eclipse.swt.widgets.Display;
@@ -29,58 +27,35 @@ import de.dlr.sc.virsat.team.ui.handler.AVersionControlCommitHandler;
 /**
  * This class performs a git commit
  */
+
 @SuppressWarnings("restriction")
 public class GitCommitHandler extends AVersionControlCommitHandler {
 
-	@Override
-	protected IVirSatVersionControlBackend createVersionControlBackend() {
-		return new VirSatGitVersionControlBackend(new EGitCredentialsProvider());
-	}
-	
-	@Override
-	protected void doUpdate(IProject project, IProgressMonitor monitor) throws Exception {
-		super.doUpdate(project, monitor);
-		
-		VirSatGitVersionControlBackend gitBackend = (VirSatGitVersionControlBackend) backend;
-		PullResult pullResult = gitBackend.getLastPullResult();
-		
-		Repository gitRepository = RepositoryMapping.getMapping(project).getRepository();
+    @Override
+    protected IVirSatVersionControlBackend createVersionControlBackend() {
+        return new VirSatGitVersionControlBackend(new EGitCredentialsProvider());
+    }
+    
+    @Override
+    protected void doCommit(IProject project, String message, IProgressMonitor monitor) throws Exception {
+        super.doCommit(project, message, monitor);
+        
+        VirSatGitVersionControlBackend gitBackend = (VirSatGitVersionControlBackend) backend;
 
-		// Build the dialog in the UI threads
-		Display.getDefault().asyncExec(() -> {
-			PullResultDialog pullResultDialog = 
-					new PullResultDialog(Display.getDefault().getActiveShell(), gitRepository, pullResult);
-			pullResultDialog.open();
-		});
-	}
-	
-	@Override
-	protected void doCommit(IProject project, String message, IProgressMonitor monitor) throws Exception {
-		
-        // Update before committing
-        updateBeforeCommit(project, monitor);
-		super.doCommit(project, message, monitor);
-		
-		VirSatGitVersionControlBackend gitBackend = (VirSatGitVersionControlBackend) backend;
-		
-		// Create an interim push operation result object for passing on to egit
-		PushOperationResult pushOperationResult = new PushOperationResult();
-		Iterable<PushResult> lastPushResults = gitBackend.getLastPushResults();
-		for (PushResult pushResult : lastPushResults) {
-			pushOperationResult.addOperationResult(pushResult.getURI(), pushResult);
-		}
-		
-		// Create the actual egit dialog for showing push results
-		Repository gitRepository = RepositoryMapping.getMapping(project).getRepository();
-		String destination = lastPushResults.iterator().next().getURI().toString();
-		ShowPushResultAction showPushResultAction = 
-				new ShowPushResultAction(gitRepository, pushOperationResult, destination, false, PushMode.UPSTREAM);
-		
-		// Run it in the display thread since we will be showing UI
-		Display.getDefault().asyncExec(() -> showPushResultAction.run());
-	}
-	
-	private void updateBeforeCommit(IProject project, IProgressMonitor monitor) throws Exception {
-        doUpdate(project, monitor);
+        // Create an interim push operation result object for passing on to egit
+        PushOperationResult pushOperationResult = new PushOperationResult();
+        Iterable<PushResult> lastPushResults = gitBackend.getLastPushResults();
+        for (PushResult pushResult : lastPushResults) {
+            pushOperationResult.addOperationResult(pushResult.getURI(), pushResult);
+        }
+        
+        // Create the actual egit dialog for showing push results
+        Repository gitRepository = RepositoryMapping.getMapping(project).getRepository();
+        String destination = lastPushResults.iterator().next().getURI().toString();
+        ShowPushResultAction showPushResultAction = 
+            new ShowPushResultAction(gitRepository, pushOperationResult, destination, false, PushMode.UPSTREAM);
+        
+        // Run it in the display thread since we will be showing UI
+        Display.getDefault().asyncExec(() -> showPushResultAction.run());
     }
 }
