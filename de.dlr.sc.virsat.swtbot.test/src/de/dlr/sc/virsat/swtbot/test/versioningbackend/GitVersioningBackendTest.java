@@ -34,7 +34,6 @@ public class GitVersioningBackendTest extends AVersioningBackendTest {
 	public static final String TEST_REPO_PATH_UPSTREAM = "SwtBotGitBackendUpstreamRepo";
 	public static final String TEST_REPO_PATH_LOCAL = "SwtBotGitBackendLocalRepo";
 	public static final String TEST_REPO_PATH_REMOTE = "SwtBotGitBackendRemoteRepo";
-	public static final String BACKEND_LOCAL_COMMIT_BEFORE_PULL = "Backend Local Commit Before Pull";
 	
 	protected String upstreamRepoPathName;
 	protected String localRepoPathName;
@@ -136,27 +135,20 @@ public class GitVersioningBackendTest extends AVersioningBackendTest {
 	 * @return The Commit message as string.
 	 */
 	protected String getCommitMessageFor(String repoName) {
-	    // Assert that commit message arrived in Local Repository
-	    bot.viewByTitle("Git Repositories").show();
-	    getTreeNodeContaining(repoName).select();
-
-	    // Open the history view and get the entry from the commit
-	    SWTBotView historyView = bot.view(WithTitle.withTitle(StringContains.containsString("History")));
-	    historyView.show();
-	    SWTBotTable historyTable =  historyView.bot().table();
-	    SWTBotTableItem historyTableItem0 = historyTable.getTableItem(0);
-
-	    // Retrieve the commit message
-	    String commitMessage = historyTableItem0.getText(1);
-	    
-	    // If the commit message contains the phrase "Backend Local Commit Before Pull", extract the actual commit message
-	    if (commitMessage.contains(BACKEND_LOCAL_COMMIT_BEFORE_PULL)) {
-	        commitMessage = commitMessage.replace(BACKEND_LOCAL_COMMIT_BEFORE_PULL + ": ", "");
-	    }
-	    
-	    return commitMessage;
+		// Assert that commit message arrived in Local Repository
+		bot.viewByTitle("Git Repositories").show();
+		getTreeNodeContaining(repoName).select();
+		
+		// Open the history view and get the entry from the commit
+		SWTBotView historyView = bot.view(WithTitle.withTitle(StringContains.containsString("History")));
+		historyView.show();
+		SWTBotTable historyTable =  historyView.bot().table();
+		SWTBotTableItem historyTableItem0 = historyTable.getTableItem(0);
+	
+		// Retrieve the commit message
+		String commitMessage = historyTableItem0.getText(1);
+		return commitMessage;
 	}
-
 
 	@Override
 	protected void testUpdateProjectChangeAndCommitRemote(String replace, String with) throws Exception {
