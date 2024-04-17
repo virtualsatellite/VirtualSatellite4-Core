@@ -125,8 +125,9 @@ public class GitVersioningBackendTest extends AVersioningBackendTest {
 		String commitMessageUpstream = getCommitMessageFor(TEST_REPO_PATH_UPSTREAM);
 		
 		// Now get the commit message in the remote repository
-		assertEquals("Local Commit Message as expected", SWTBOT_COMMIT_MESSAGE, commitMessageLocal);
-		assertEquals("Local Commit Message as expected", SWTBOT_COMMIT_MESSAGE, commitMessageUpstream);
+		// We expected the back-end local commit prefix, because git does a commit before to not over change it.
+		assertEquals("Local Commit Message as expected", SWTBOT_COMMIT_MESSAGE_EXPECTED_LOCAL_GIT_COMMIT, commitMessageLocal);
+		assertEquals("Local Commit Message as expected", SWTBOT_COMMIT_MESSAGE_EXPECTED_LOCAL_GIT_COMMIT, commitMessageUpstream);
 	}
 	
 	/**
