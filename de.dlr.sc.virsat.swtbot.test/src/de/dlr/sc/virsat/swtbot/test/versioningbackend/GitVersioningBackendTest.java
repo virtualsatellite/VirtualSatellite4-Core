@@ -34,6 +34,7 @@ public class GitVersioningBackendTest extends AVersioningBackendTest {
 	public static final String TEST_REPO_PATH_UPSTREAM = "SwtBotGitBackendUpstreamRepo";
 	public static final String TEST_REPO_PATH_LOCAL = "SwtBotGitBackendLocalRepo";
 	public static final String TEST_REPO_PATH_REMOTE = "SwtBotGitBackendRemoteRepo";
+	public static final String BACKEND_LOCAL_COMMIT_BEFORE_PULL = "Backend Local Commit Before Pull";
 	
 	protected String upstreamRepoPathName;
 	protected String localRepoPathName;
@@ -149,8 +150,8 @@ public class GitVersioningBackendTest extends AVersioningBackendTest {
 	    String commitMessage = historyTableItem0.getText(1);
 	    
 	    // If the commit message contains the phrase "Backend Local Commit Before Pull", extract the actual commit message
-	    if (commitMessage.contains("Backend Local Commit Before Pull")) {
-	        commitMessage = commitMessage.replace("Backend Local Commit Before Pull: ", "");
+	    if (commitMessage.contains(BACKEND_LOCAL_COMMIT_BEFORE_PULL)) {
+	        commitMessage = commitMessage.replace(BACKEND_LOCAL_COMMIT_BEFORE_PULL + ": ", "");
 	    }
 	    
 	    return commitMessage;
