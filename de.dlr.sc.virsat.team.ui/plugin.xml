@@ -138,5 +138,10 @@
             type="java.lang.Object">
       </propertyTester>
    </extension>
-
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="de.dlr.sc.virsat.team.ui.util.AutoCheckoutStartup">
+      </startup>
+   </extension>
 </plugin>
