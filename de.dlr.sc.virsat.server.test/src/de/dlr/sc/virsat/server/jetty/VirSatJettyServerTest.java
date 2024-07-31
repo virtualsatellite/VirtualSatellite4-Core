@@ -78,7 +78,7 @@ public class VirSatJettyServerTest {
 				.sslContext(ctx)
 				.build();
 		
-		URI uriHttp = UriBuilder.fromUri(HttpScheme.HTTP.asString() + "://localhost:" + VirSatJettyServer.VIRSAT_JETTY_PORT).build();
+		URI uriHttp = UriBuilder.fromUri(HttpScheme.HTTP.asString() + "://localhost:" + Activator.VIRSAT_JETTY_PORT).build();
 		httpTarget = httpClient.target(uriHttp).path("/status");
 		
 		URI uriHttps = UriBuilder.fromUri(HttpScheme.HTTPS.asString() + "://localhost:" + VirSatJettyServer.VIRSAT_JETTY_PORT_HTTPS).build();
