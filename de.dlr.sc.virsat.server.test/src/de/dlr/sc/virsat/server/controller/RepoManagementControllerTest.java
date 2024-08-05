@@ -22,7 +22,6 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.eclipse.core.runtime.CoreException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -83,7 +82,7 @@ public class RepoManagementControllerTest {
 	}
 
 	@Test
-	public void testAddNewRepository() throws URISyntaxException, IOException {
+	public void testAddNewRepository() throws Exception {
 		repoManagemantController.addNewRepository(testRepositoryConfiguration);
 		
 		ServerRepository serverRepository = RepoRegistry.getInstance().getRepository(TEST_REPOSITORY_NAME);
@@ -92,7 +91,7 @@ public class RepoManagementControllerTest {
 	}
 
 	@Test
-	public void testDeleteRepository() throws URISyntaxException, IOException {
+	public void testDeleteRepository() throws Exception {
 		repoManagemantController.addNewRepository(testRepositoryConfiguration);
 		
 		ServerRepository serverRepository = RepoRegistry.getInstance().getRepository(TEST_REPOSITORY_NAME);
@@ -107,7 +106,7 @@ public class RepoManagementControllerTest {
 	}
 	
 	@Test
-	public void testUpdateRepository() throws URISyntaxException, IOException, CoreException {
+	public void testUpdateRepository() throws Exception {
 		repoManagemantController.addNewRepository(testRepositoryConfiguration);
 		ServerRepository serverRepository = RepoRegistry.getInstance().getRepository(TEST_REPOSITORY_NAME);
 		
@@ -132,7 +131,7 @@ public class RepoManagementControllerTest {
 	}
 	
 	@Test
-	public void testGetAllProjectNames() throws URISyntaxException, IOException {
+	public void testGetAllProjectNames() throws Exception {
 		assertTrue("No projects registered initially", repoManagemantController.getAllProjectNames().isEmpty());
 
 		repoManagemantController.addNewRepository(testRepositoryConfiguration);
@@ -151,7 +150,7 @@ public class RepoManagementControllerTest {
 	}
 
 	@Test
-	public void testAddOrUpdateRepository() throws URISyntaxException, IOException, CoreException {
+	public void testAddOrUpdateRepository() throws Exception {
 		assertTrue(repoManagemantController.getAllProjectNames().isEmpty());
 		repoManagemantController.addOrUpdateRepository(testRepositoryConfiguration);
 		assertEquals("Project is added", 1, repoManagemantController.getAllProjectNames().size());

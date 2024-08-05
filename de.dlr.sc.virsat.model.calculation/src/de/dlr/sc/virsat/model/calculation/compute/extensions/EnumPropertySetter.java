@@ -77,11 +77,11 @@ public class EnumPropertySetter implements IResultSetter {
 			result = new NumberLiteralResult(numberLiteral);
 		}
 	
-		double resultValue = Double.valueOf(result.getNumberLiteral().getValue());
+		double resultValue = Double.parseDouble(result.getNumberLiteral().getValue());
 		
 		EnumProperty enumProperty = (EnumProperty) instance.getType();
 		for (EnumValueDefinition evd : enumProperty.getValues()) {
-			double value = Double.valueOf(evd.getValue());
+			double value = Double.parseDouble(evd.getValue());
 			if (Math.abs(value - resultValue) < EPSILON) {
 				instance.setValue(evd);
 				break;

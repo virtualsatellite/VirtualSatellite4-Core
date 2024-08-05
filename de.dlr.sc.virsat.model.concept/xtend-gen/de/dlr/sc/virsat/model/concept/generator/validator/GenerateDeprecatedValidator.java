@@ -28,26 +28,26 @@ public class GenerateDeprecatedValidator extends AGeneratorGapGenerator<EObject>
     String _plus = (_name + ".");
     return (_plus + GenerateDeprecatedValidator.PACKAGE_FOLDER);
   }
-  
+
   public static String getAbstractClassName(final EObject typeDefinition) {
     return "AStructuralElementInstanceValidator";
   }
-  
+
   @Override
   public String createAbstractClassFileName(final Concept concept, final EObject eObject) {
     String _packageFolder = this.getPackageFolder(concept);
     String _plus = (_packageFolder + "/");
     return (_plus + "AStructuralElementInstanceValidator.java");
   }
-  
+
   public static final String PACKAGE_FOLDER = "validator";
-  
+
   @Override
   public void serializeModel(final Concept concept, final IFileSystemAccess fsa) {
     CharSequence fileOutputAClass = this.createAbstractClass(concept, concept);
     fsa.generateFile(this.createAbstractClassFileName(concept, concept), ConceptOutputConfigurationProvider.GENERATOR_OUTPUT_ID_SOURCE, fileOutputAClass);
   }
-  
+
   /**
    * This method just creates the package declaration. The concept name needs to fit to the package name
    */
@@ -60,7 +60,7 @@ public class GenerateDeprecatedValidator extends AGeneratorGapGenerator<EObject>
     _builder.newLineIfNotEmpty();
     return _builder;
   }
-  
+
   /**
    * Handle the import statements
    */
@@ -84,7 +84,7 @@ public class GenerateDeprecatedValidator extends AGeneratorGapGenerator<EObject>
     }
     return _builder;
   }
-  
+
   /**
    * Entry method to write the class body
    */
@@ -130,12 +130,12 @@ public class GenerateDeprecatedValidator extends AGeneratorGapGenerator<EObject>
     _builder.newLine();
     return _builder;
   }
-  
+
   @Override
   protected CharSequence declareClass(final Concept concept, final EObject type, final ImportManager manager) {
     throw new UnsupportedOperationException("TODO: auto-generated method stub");
   }
-  
+
   @Override
   public String createConcreteClassFileName(final Concept concept, final EObject conceptPart) {
     throw new UnsupportedOperationException("TODO: auto-generated method stub");

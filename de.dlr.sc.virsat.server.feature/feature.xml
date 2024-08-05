@@ -24,39 +24,35 @@ by German Aerospace Center (DLR e.V.)
    </license>
 
    <requires>
-      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="bcpg"/>
+      <import feature="de.dlr.sc.virsat.branding.feature"/>
+      <import feature="de.dlr.sc.virsat.external.lib.feature"/>
       <import plugin="de.dlr.sc.virsat.external.lib.jersey"/>
-      <import feature="org.eclipse.jgit" version="5.4.0.201906121030-r"/>
-      <import feature="de.dlr.sc.virsat.project.feature" version="0.0.0" match="greaterOrEqual"/>
-      <import feature="de.dlr.sc.virsat.branding.feature" version="0.0.0" match="greaterOrEqual"/>
-      <import feature="de.dlr.sc.virsat.license.feature" version="0.0.0" match="greaterOrEqual"/>
-      <import feature="org.eclipse.jgit" version="5.4.0.201906121030-r"/>
-      <import feature="de.dlr.sc.virsat.external.lib.feature" version="4.16.0.qualifier"/>
+      <import feature="de.dlr.sc.virsat.license.feature"/>
+      <import feature="de.dlr.sc.virsat.project.feature"/>
+      <import plugin="org.apache.commons.io"/>
+      <import plugin="org.bouncycastle.bcprov"/>
+      <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.eclipse.jetty.http"/>
       <import plugin="org.eclipse.jetty.io"/>
       <import plugin="org.eclipse.jetty.security"/>
       <import plugin="org.eclipse.jetty.server"/>
-      <import plugin="org.eclipse.jetty.servlet"/>
+      <import plugin="org.eclipse.jetty.servlet-api"/>
       <import plugin="org.eclipse.jetty.util"/>
-      <import plugin="jakarta.servlet-api"/>
+      <import plugin="org.eclipse.jgit"/>
       <import plugin="org.slf4j.api"/>
-      <import plugin="org.apache.commons.io"/>
-      <import plugin="org.bouncycastle.bcpg"/>
-      <import plugin="org.bouncycastle.bcprov"/>
    </requires>
 
    <plugin
          id="de.dlr.sc.virsat.server"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
          id="de.dlr.sc.virsat.external.lib.commons.cli"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
+
+   <plugin
+         id="de.dlr.sc.virsat.server.swagger.ui"
+         version="0.0.0"/>
 
 </feature>

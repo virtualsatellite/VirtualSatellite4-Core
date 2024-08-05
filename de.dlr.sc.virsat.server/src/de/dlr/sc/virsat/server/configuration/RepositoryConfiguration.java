@@ -16,11 +16,11 @@ import java.io.OutputStream;
 import java.util.Objects;
 import java.util.Properties;
 
+import de.dlr.sc.virsat.server.Activator;
 import de.dlr.sc.virsat.team.VersionControlSystem;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-@ApiModel
+@Schema
 public class RepositoryConfiguration {
 
 	// Infrastructure
@@ -64,8 +64,12 @@ public class RepositoryConfiguration {
 		update(repositoryConfiguration);
 	}
 	
-	public RepositoryConfiguration(InputStream repoConfInputStream) throws FileNotFoundException, IOException {
-		loadProperties(repoConfInputStream);
+	public RepositoryConfiguration(InputStream repoConfInputStream) {
+		try {
+			loadProperties(repoConfInputStream);
+		} catch (IOException e) {
+			Activator.getDefault().getLog().error("Could not open Repository Configuration.", e);
+		}
 	}
 
 	/**
@@ -92,7 +96,7 @@ public class RepositoryConfiguration {
 		properties.store(configFileOutputStream, "");
 	}
 
-	@ApiModelProperty(value = "URI to the remote (can also be local on your machine)",
+	@Schema(description = "URI to the remote (can also be local on your machine)",
 			example = "some/path.git")
 	public String getRemoteUri() {
 		return properties.getProperty(REMOTE_URL_KEY);
@@ -102,7 +106,7 @@ public class RepositoryConfiguration {
 		properties.setProperty(REMOTE_URL_KEY, remoteUri);
 	}
 
-	@ApiModelProperty(value = "Backend kind",
+	@Schema(description = "Backend kind",
 			example = "GIT")
 	public VersionControlSystem getBackend() {
 		return VersionControlSystem.valueOf(properties.getProperty(BACKEND_KEY));
@@ -112,7 +116,7 @@ public class RepositoryConfiguration {
 		properties.setProperty(BACKEND_KEY, backend.name());
 	}
 
-	@ApiModelProperty(value = "Name used for the functional account,"
+	@Schema(description = "Name used for the functional account,"
 			+ " that the server uses to access the project backend.")
 	public String getFunctionalAccountName() {
 		return properties.getProperty(FUNCTIONAL_ACCOUNT_NAME_KEY);
@@ -122,7 +126,7 @@ public class RepositoryConfiguration {
 		properties.setProperty(FUNCTIONAL_ACCOUNT_NAME_KEY, functionalAccountName);
 	}
 
-	@ApiModelProperty(value = "Password used for the functional account")
+	@Schema(description = "Password used for the functional account")
 	public String getFunctionalAccountPassword() {
 		return properties.getProperty(FUNCTIONAL_ACCOUNT_PASSWORD_KEY);
 	}
@@ -131,7 +135,7 @@ public class RepositoryConfiguration {
 		properties.setProperty(FUNCTIONAL_ACCOUNT_PASSWORD_KEY, functionalAccountPassword);
 	}
 
-	@ApiModelProperty(value = "The name used via the API. Should be unique!")
+	@Schema(description = "The name used via the API. Should be unique!")
 	public String getProjectName() {
 		return properties.getProperty(PROJECT_NAME_KEY);
 	}
@@ -140,7 +144,7 @@ public class RepositoryConfiguration {
 		properties.setProperty(PROJECT_NAME_KEY, projectName);
 	}
 
-	@ApiModelProperty(value = "Local path of the project folder in the repository."
+	@Schema(description = "Local path of the project folder in the repository."
 			+ " This allows to have multiple projects in one repository.",
 			example = "projectName")
 	public String getLocalPath() {
@@ -174,7 +178,7 @@ public class RepositoryConfiguration {
 		return Objects.equals(properties, other.properties);
 	}
 	
-	@ApiModelProperty(hidden = true)
+	@Schema(hidden = true)
 	public boolean isValid() {
 		return getProjectName() != null
 				&& !getProjectName().isEmpty()

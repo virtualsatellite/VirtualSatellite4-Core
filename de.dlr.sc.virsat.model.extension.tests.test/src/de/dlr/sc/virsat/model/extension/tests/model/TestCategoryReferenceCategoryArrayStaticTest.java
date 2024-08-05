@@ -28,7 +28,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
  * @author fisc_ph
  *
  */
-public class TestCategoryReferenceCategoryArrayStaticTest extends AConceptTestCase {
+public class TestCategoryReferenceCategoryArrayStaticTest extends AExtensionConceptTestCase {
 
 	private TestCategoryReferenceArray tcIntrinsicArray;
 	private IBeanList<TestCategoryAllProperty> arrayStatic;

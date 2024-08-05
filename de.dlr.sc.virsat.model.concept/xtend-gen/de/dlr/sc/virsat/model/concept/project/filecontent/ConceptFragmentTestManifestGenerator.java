@@ -21,11 +21,11 @@ public class ConceptFragmentTestManifestGenerator implements IFileContentGenerat
   public String generateContent(final IProjectBuilderInfo projectBuilderInfo) {
     return this.manifestContent(projectBuilderInfo).toString();
   }
-  
+
   public String getProjectNameForTestPlugin(final IProjectBuilderInfo builderInfo) {
     return builderInfo.getProjectName().substring(0, builderInfo.getProjectName().lastIndexOf("."));
   }
-  
+
   public CharSequence manifestContent(final IProjectBuilderInfo builderInfo) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("Manifest-Version: 1.0");
@@ -50,7 +50,7 @@ public class ConceptFragmentTestManifestGenerator implements IFileContentGenerat
     _builder.newLine();
     _builder.append("Bundle-Vendor: DLR (German Aerospace Center)");
     _builder.newLine();
-    _builder.append("Bundle-RequiredExecutionEnvironment: JavaSE-11");
+    _builder.append("Bundle-RequiredExecutionEnvironment: JavaSE-17");
     _builder.newLine();
     _builder.append("Bundle-ActivationPolicy: lazy");
     _builder.newLine();

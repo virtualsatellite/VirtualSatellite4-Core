@@ -19,13 +19,13 @@ import org.junit.Test;
 
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
+import de.dlr.sc.virsat.model.extension.tests.model.AExtensionConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 
 /**
  * Test class for BeanStructuralTreeTraverser
  */
-public class BeanStructuralTreeTraverserTest extends AConceptTestCase {
+public class BeanStructuralTreeTraverserTest extends AExtensionConceptTestCase {
 
 	private Concept concept;
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="VirSat 4 - Core" uid="de.dlr.virsat.core.product" id="de.dlr.sc.virsat.branding.ui.VirSat_Core" application="org.eclipse.ui.ide.workbench" version="4.16.0.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="VirSat 4 - Core" uid="de.dlr.virsat.core.product" id="de.dlr.sc.virsat.branding.ui.VirSat_Core" application="org.eclipse.ui.ide.workbench" version="4.16.0.qualifier" type="features" includeLaunchers="true" autoIncludeRequirements="true">
 
    <aboutInfo>
       <image path="/de.dlr.sc.virsat.branding.ui/resources/images/Branding/Configuration.gif"/>
@@ -30,17 +30,19 @@ Germany
    <launcherArgs>
       <programArgs>-console -consoleLog
       </programArgs>
-      <vmArgs>-Dosgi.requiredJavaVersion=11
--Dsun.java.command=Eclipse
--XX:+UseG1GC
--XX:+UseStringDeduplication
+      <vmArgs>-Dosgi.requiredJavaVersion=17
+-Dosgi.instance.area.default=@user.home/eclipse-workspace
 -Dosgi.dataAreaRequiresExplicitInit=true
 -Dorg.eclipse.swt.graphics.Resource.reportNonDisposed=true
+-Declipse.e4.inject.jakarta.warning=false
+-Dsun.java.command=VirSat4_Core
 -Xms256m
 -Xmx2048m
+-XX:+UseG1GC
+-XX:+UseStringDeduplication
+--add-modules=ALL-SYSTEM
+-Djava.security.manager=allow
       </vmArgs>
-      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
-      </vmArgsMac>
    </launcherArgs>
 
    <windowImages i16="/de.dlr.sc.virsat.branding.ui/resources/images/Branding/VirSat16.gif" i32="/de.dlr.sc.virsat.branding.ui/resources/images/Branding/VirSat32.gif" i48="/de.dlr.sc.virsat.branding.ui/resources/images/Branding/VirSat48.gif" i64="/de.dlr.sc.virsat.branding.ui/resources/images/Branding/VirSat64.gif" i128="/de.dlr.sc.virsat.branding.ui/resources/images/Branding/VirSat128.gif"/>
@@ -66,7 +68,8 @@ Germany
    <intro introId="de.dlr.sc.virsat.branding.ui.intro"/>
 
    <vm>
-      <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11</windows>
+      <linux include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17</linux>
+      <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17</windows>
    </vm>
 
    <plugins>
@@ -118,13 +121,7 @@ Germany
       <feature id="org.eclipse.emf.workspace" installMode="root"/>
       <feature id="org.eclipse.emf.databinding" installMode="root"/>
       <feature id="org.eclipse.emf.validation" installMode="root"/>
-      <feature id="org.eclipse.ecf.core.feature" installMode="root"/>
-      <feature id="org.eclipse.ecf.core.ssl.feature" installMode="root"/>
-      <feature id="org.eclipse.ecf.filetransfer.feature" installMode="root"/>
-      <feature id="org.eclipse.ecf.filetransfer.ssl.feature" installMode="root"/>
-      <feature id="org.eclipse.ecf.filetransfer.httpclient5.feature" installMode="root"/>
       <feature id="org.eclipse.team.svn" installMode="root"/>
-      <feature id="org.eclipse.ocl" installMode="root"/>
       <feature id="org.eclipse.emf.compare" installMode="root"/>
       <feature id="org.eclipse.xtext.xbase.lib" installMode="root"/>
       <feature id="org.eclipse.xtext.xbase" installMode="root"/>
@@ -151,6 +148,16 @@ Germany
       <feature id="org.eclipse.rmf.reqif10.feature" installMode="root"/>
       <feature id="org.eclipse.rmf.reqif10.pror.feature" installMode="root"/>
       <feature id="org.eclipse.rmf.reqif10.thirdparty.feature" installMode="root"/>
+      <feature id="org.eclipse.justj.openjdk.hotspot.jre.full" installMode="root"/>
+      <feature id="de.dlr.sc.virsat.server.feature" installMode="root"/>
+      <feature id="org.eclipse.ecf.core.ssl.feature" installMode="root"/>
+      <feature id="org.eclipse.ecf.filetransfer.ssl.feature" installMode="root"/>
+      <feature id="org.eclipse.ecf.filetransfer.feature" installMode="root"/>
+      <feature id="org.eclipse.ecf.filetransfer.httpclientjava.feature" installMode="root"/>
+      <feature id="org.eclipse.ocl.tools" installMode="root"/>
+      <feature id="org.eclipse.ecf.filetransfer.httpclient5.feature" installMode="root"/>
+      <feature id="org.eclipse.ocl" installMode="root"/>
+      <feature id="org.eclipse.ecf.core.feature" installMode="root"/>
    </features>
 
    <configurations>
@@ -163,7 +170,7 @@ Germany
    </configurations>
 
    <repositories>
-      <repository location="http://community.polarion.com/projects/subversive/download/eclipse/6.0/update-site/" enabled="true" />
+      <repository location="http://community.polarion.com/projects/subversive/download/eclipse/6.0/update-site/" name="" enabled="true" />
    </repositories>
 
    <preferencesInfo>

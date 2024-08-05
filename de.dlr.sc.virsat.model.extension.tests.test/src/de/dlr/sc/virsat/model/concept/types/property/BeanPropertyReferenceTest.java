@@ -22,11 +22,11 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
+import de.dlr.sc.virsat.model.extension.tests.model.AExtensionConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReference;
 
-public class BeanPropertyReferenceTest extends AConceptTestCase {
+public class BeanPropertyReferenceTest extends AExtensionConceptTestCase {
 
 	private TestCategoryAllProperty testCategoryAllProperty;
 	private TestCategoryReference testCategoryReference;

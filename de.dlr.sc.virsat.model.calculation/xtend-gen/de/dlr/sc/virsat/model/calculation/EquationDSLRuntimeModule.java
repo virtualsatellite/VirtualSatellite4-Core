@@ -41,17 +41,17 @@ public class EquationDSLRuntimeModule extends AbstractEquationDSLRuntimeModule {
   public Class<? extends ITransientValueService> bindITransientValueService() {
     return EquationTransientValueService.class;
   }
-  
+
   @Override
   public Class<? extends IQualifiedNameProvider> bindIQualifiedNameProvider() {
     return EquationSectionNamesProvider.class;
   }
-  
+
   @Override
   public Class<? extends ResourceSet> bindResourceSet() {
     return EquationSectionVirSatAwareXtextResourceSet.class;
   }
-  
+
   /**
    * Binding the unloader which takes care of unloading Equations in the EquatioNSection
    * when the partial parser is called. Actually this Unloader is not doing anything. This
@@ -68,32 +68,32 @@ public class EquationDSLRuntimeModule extends AbstractEquationDSLRuntimeModule {
   public Class<? extends IReferableElementsUnloader> bindIReferableElementsUnloader() {
     return EquationSectionNullUnloader.class;
   }
-  
+
   @Override
   public Class<? extends XtextResourceSet> bindXtextResourceSet() {
     return EquationSectionVirSatAwareXtextResourceSet.class;
   }
-  
+
   @Override
   public Class<? extends XtextResource> bindXtextResource() {
     return EquationSectionXtextResource.class;
   }
-  
+
   @Override
   public Class<? extends IGlobalScopeProvider> bindIGlobalScopeProvider() {
     return EquationSectionGlobalScopeProvider.class;
   }
-  
+
   @Override
   public Class<? extends IFormatter> bindIFormatter() {
     return EquationDSLFormatter.class;
   }
-  
+
   @Override
   public Class<? extends ISemanticSequencer> bindISemanticSequencer() {
     return SafeEquationDSLSemanticSequencer.class;
   }
-  
+
   @Override
   public void configureIScopeProviderDelegate(final Binder binder) {
     binder.<IScopeProvider>bind(IScopeProvider.class).annotatedWith(Names.named(AbstractDeclarativeScopeProvider.NAMED_DELEGATE)).to(EquationSectionImportedNamespaceAwareLocalScopeProvider.class);

@@ -66,7 +66,7 @@ public class QudvUnitHelper {
 	 * public constructor returning a singleton instance of the class
 	 * @return {@link QudvUnitHelper}
 	 */
-	public static QudvUnitHelper getInstance() {  
+	public static synchronized QudvUnitHelper  getInstance() {  
 		return INSTANCE;
 	}
 	

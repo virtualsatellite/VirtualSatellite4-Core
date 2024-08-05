@@ -18,7 +18,7 @@ public interface IPausableSender {
 	 */
 	void pauseSending();
 	
-	/**
+	/** 
 	 */
 	void resumeSending();
 }

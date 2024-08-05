@@ -54,12 +54,12 @@ public class EquationSectionNamesProvider extends DefaultDeclarativeQualifiedNam
     }
     return null;
   }
-  
+
   public QualifiedName qualifiedName(final IInstance obj) {
     final IInstance dvlmInstance = ((IInstance) obj);
     return this.getConverter().toQualifiedName(dvlmInstance.getFullQualifiedInstanceName());
   }
-  
+
   public QualifiedName qualifiedName(final ATypeDefinition typeDefinition) {
     final Concept concept = ActiveConceptHelper.getConcept(typeDefinition);
     final QualifiedName qualifiedConceptName = this.getConverter().toQualifiedName(concept.getFullQualifiedName());

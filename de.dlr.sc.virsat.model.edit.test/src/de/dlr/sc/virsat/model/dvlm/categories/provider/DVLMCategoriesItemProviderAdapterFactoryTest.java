@@ -9,9 +9,9 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.dvlm.categories.provider;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-
 import org.eclipse.emf.common.notify.Adapter;
 import org.junit.Test;
 
@@ -27,7 +27,7 @@ public class DVLMCategoriesItemProviderAdapterFactoryTest {
 		DVLMCategoriesItemProviderAdapterFactory asipaf = new DVLMCategoriesItemProviderAdapterFactory();
 		Adapter createdAdapter = asipaf.createCategoryAssignmentAdapter();
 		
-		assertTrue("The received Adapter is the right one", createdAdapter instanceof DVLMCategoryAssignmentItemProvider);
+		assertThat("The received Adapter is the right one", createdAdapter, instanceOf(DVLMCategoryAssignmentItemProvider.class));
 		
 		Adapter createdAdapter2 = asipaf.createCategoryAssignmentAdapter();
 		
@@ -39,7 +39,7 @@ public class DVLMCategoriesItemProviderAdapterFactoryTest {
 		DVLMCategoriesItemProviderAdapterFactory asipaf = new DVLMCategoriesItemProviderAdapterFactory();
 		Adapter createdAdapter = asipaf.createCategoryAdapter();
 		
-		assertTrue("The received Adapter is the right one", createdAdapter instanceof DVLMCategoryItemProvider);
+		assertThat("The received Adapter is the right one", createdAdapter, instanceOf(DVLMCategoryItemProvider.class));
 		
 		Adapter createdAdapter2 = asipaf.createCategoryAdapter();
 		

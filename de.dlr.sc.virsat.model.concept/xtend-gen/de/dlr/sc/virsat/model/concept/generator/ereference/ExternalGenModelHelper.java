@@ -49,7 +49,7 @@ public class ExternalGenModelHelper {
     }
     return typeClass;
   }
-  
+
   /**
    * Try to resolve the GenPackage of a given EReferenceProperty
    */
@@ -77,7 +77,7 @@ public class ExternalGenModelHelper {
     }
     return genPackage;
   }
-  
+
   /**
    * Load a GenModel package of a specified EPackage from a GenModel URI
    */

@@ -38,17 +38,17 @@ public class GenerateRequirementsVerificationUiSnippet extends AGeneratorGapGene
     String _name = concept.getName();
     return (_name + ".ui.snippet");
   }
-  
+
   public static String getConcreteClassName(final ATypeDefinition typeDefinition) {
     String _firstUpper = StringExtensions.toFirstUpper(typeDefinition.getName());
     return ("UiSnippetTableRequirementVerifications" + _firstUpper);
   }
-  
+
   public static String getAbstractClassName(final ATypeDefinition typeDefinition) {
     String _firstUpper = StringExtensions.toFirstUpper(typeDefinition.getName());
     return ("AUiSnippetTableRequirementVerifications" + _firstUpper);
   }
-  
+
   @Override
   public String createConcreteClassFileName(final Concept concept, final Category category) {
     String _name = concept.getName();
@@ -61,7 +61,7 @@ public class GenerateRequirementsVerificationUiSnippet extends AGeneratorGapGene
     String _plus_4 = (_plus_3 + _concreteClassName);
     return (_plus_4 + ".java");
   }
-  
+
   @Override
   public String createAbstractClassFileName(final Concept concept, final Category category) {
     String _name = concept.getName();
@@ -74,7 +74,7 @@ public class GenerateRequirementsVerificationUiSnippet extends AGeneratorGapGene
     String _plus_4 = (_plus_3 + _abstractClassName);
     return (_plus_4 + ".java");
   }
-  
+
   /**
    * Handle the import statements
    */
@@ -98,7 +98,7 @@ public class GenerateRequirementsVerificationUiSnippet extends AGeneratorGapGene
     }
     return _builder;
   }
-  
+
   @Override
   protected CharSequence declarePackage(final String packageId) {
     StringConcatenation _builder = new StringConcatenation();
@@ -108,7 +108,7 @@ public class GenerateRequirementsVerificationUiSnippet extends AGeneratorGapGene
     _builder.newLineIfNotEmpty();
     return _builder;
   }
-  
+
   @Override
   protected CharSequence declareClass(final Concept concept, final Category category, final ImportManager importManager) {
     StringConcatenation _builder = new StringConcatenation();
@@ -134,7 +134,7 @@ public class GenerateRequirementsVerificationUiSnippet extends AGeneratorGapGene
     _builder.newLine();
     return _builder;
   }
-  
+
   /**
    * This method declares the standard table that is displayed on system element level
    */
@@ -193,7 +193,7 @@ public class GenerateRequirementsVerificationUiSnippet extends AGeneratorGapGene
     _builder.newLine();
     return _builder;
   }
-  
+
   @Override
   public void serializeModel(final Concept concept, final IFileSystemAccess fsa) {
     final Set<Category> verificationSet = new HashSet<Category>();

@@ -9,9 +9,9 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.qudv;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.concept.types.factory.BeanQuantityKindFactory;
@@ -29,7 +29,7 @@ public class BeanQuantityKindFactoryTest {
 		BeanQuantityKindFactory beanQuantityKindFactory = new BeanQuantityKindFactory();
 		IBeanQuantityKind<? extends AQuantityKind> beanQuantityKindSimple = beanQuantityKindFactory.getInstanceFor(simpleQuantityKind);
 		
-		assertTrue(beanQuantityKindSimple instanceof BeanQuantityKindSimple);
+		assertThat(beanQuantityKindSimple, instanceOf(BeanQuantityKindSimple.class));
 		assertEquals(simpleQuantityKind, beanQuantityKindSimple.getQuantityKind());
 	}
 	
@@ -40,7 +40,7 @@ public class BeanQuantityKindFactoryTest {
 		BeanQuantityKindFactory beanQuantityKindFactory = new BeanQuantityKindFactory();
 		IBeanQuantityKind<? extends AQuantityKind> beanQuantityKindDerived = beanQuantityKindFactory.getInstanceFor(derivedQuantityKind);
 		
-		assertTrue(beanQuantityKindDerived instanceof BeanQuantityKindDerived);
+		assertThat(beanQuantityKindDerived, instanceOf(BeanQuantityKindDerived.class));
 		assertEquals(derivedQuantityKind, beanQuantityKindDerived.getQuantityKind());
 	}
 }

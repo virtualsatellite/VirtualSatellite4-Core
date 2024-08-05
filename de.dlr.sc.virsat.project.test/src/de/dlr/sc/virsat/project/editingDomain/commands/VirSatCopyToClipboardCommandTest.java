@@ -10,6 +10,8 @@
 package de.dlr.sc.virsat.project.editingDomain.commands;
 
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -78,8 +80,8 @@ public class VirSatCopyToClipboardCommandTest extends AProjectTestCase {
 		Command one = VirSatCopyToClipboardCommand.create((VirSatTransactionalEditingDomain) editingDomain, seis);
 		Command two = VirSatCopyToClipboardCommand.create((VirSatTransactionalEditingDomain) editingDomain, disciplines);
 		
-		assertTrue("Correct Command", one instanceof VirSatCopyToClipboardCommand);
-		assertTrue("Correct Command", two instanceof UnexecutableCommand);
+		assertThat("Correct Command", one, instanceOf(VirSatCopyToClipboardCommand.class));
+		assertThat("Correct Command", two, instanceOf(UnexecutableCommand.class));
 	}
 
 	@Test

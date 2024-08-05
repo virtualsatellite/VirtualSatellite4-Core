@@ -113,9 +113,9 @@ public class CadImporterThermal {
 				analysisResult.getComponentresult().add(cr);
 
 				String[] entry = line[0].replace("**", "").split(",");
-				numberOfNodes[j] = Integer.valueOf(entry[0]);
+				numberOfNodes[j] = Integer.parseInt(entry[0]);
 				totalNumberOfNodes += numberOfNodes[j];
-				totalNumberOfElements += Integer.valueOf(entry[1]);
+				totalNumberOfElements += Integer.parseInt(entry[1]);
 				j++;
 			}
 		}
@@ -138,7 +138,7 @@ public class CadImporterThermal {
 				if ((td2 != null) && (visShape2 != null)) {
 					for (int l = 0; l < numberOfNodes[j]; l++) {
 						String nodeSimulationOutput = simulationOutput.get(timeStepStartLine + k + l);
-						double nodeTemperature = Double.valueOf(nodeSimulationOutput.trim().split("\\s+")[2]);
+						double nodeTemperature = Double.parseDouble(nodeSimulationOutput.trim().split("\\s+")[2]);
 						nodeTemperatures[i * totalNumberOfNodes + l + k] = nodeTemperature;
 					}
 

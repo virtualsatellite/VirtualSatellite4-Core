@@ -9,7 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.property;
 
-import javax.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlElement;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.SetCommand;
@@ -17,8 +17,9 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.UnitValuePropertyInstance;
-import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiModelProperty.AccessMode;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
+
 
 /**
  * Class to wrap IntPropertyInstances
@@ -56,7 +57,7 @@ public class BeanPropertyInt extends ABeanUnitValueProperty<Long> {
 	
 	@Override
 	@XmlElement(nillable = true)
-	@ApiModelProperty(value = "Long")
+	@Schema(description = "Long")
 	public Long getValue() throws NumberFormatException {
 		if (isSet()) {
 			return Long.parseLong(ti.getValue());
@@ -64,8 +65,8 @@ public class BeanPropertyInt extends ABeanUnitValueProperty<Long> {
 		return null;
 	}
 	
-	@ApiModelProperty(
-			value = "Always returns constant: \"int\"", 
+	@Schema(
+			description = "Always returns constant: \"int\"", 
 			example = "int",
 			accessMode = AccessMode.READ_ONLY)
 	@Override

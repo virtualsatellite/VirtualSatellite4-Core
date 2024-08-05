@@ -11,17 +11,18 @@ package de.dlr.sc.virsat.server.resources.modelaccess;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.xml.bind.JAXBException;
+import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.core.GenericType;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import jakarta.xml.bind.JAXBException;
 
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Before;
@@ -46,7 +47,7 @@ import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.resources.AModelAccessResourceTest;
 import de.dlr.sc.virsat.server.resources.ApiErrorHelper;
-import de.dlr.sc.virsat.server.resources.ModelAccessResource;
+import de.dlr.sc.virsat.server.resources.model.QudvResource;
 
 public class QudvResourceTest extends AModelAccessResourceTest {
 	
@@ -61,11 +62,11 @@ public class QudvResourceTest extends AModelAccessResourceTest {
 	private DerivedQuantityKind qkDerived;
 
 	static final String UNKNOWN = "unknown";
-	static final String UNIT_URI = ModelAccessResource.QUDV + "/" + QudvResource.UNIT;
-	static final String QK_URI = ModelAccessResource.QUDV + "/" + QudvResource.QUANTITY_KIND;
-	static final String PREFIX_URI = ModelAccessResource.QUDV + "/" + QudvResource.PREFIX;
-	static final String UNIT_FACTOR_URI = ModelAccessResource.QUDV + "/" + QudvResource.UNIT_FACTOR;
-	static final String QK_FACTOR_URI = ModelAccessResource.QUDV + "/" + QudvResource.QUANTITY_KIND_FACTOR;
+	static final String UNIT_URI = RepositoryAccessResource.QUDV + "/" + QudvResource.UNIT;
+	static final String QK_URI = RepositoryAccessResource.QUDV + "/" + QudvResource.QUANTITY_KIND;
+	static final String PREFIX_URI = RepositoryAccessResource.QUDV + "/" + QudvResource.PREFIX;
+	static final String UNIT_FACTOR_URI = RepositoryAccessResource.QUDV + "/" + QudvResource.UNIT_FACTOR;
+	static final String QK_FACTOR_URI = RepositoryAccessResource.QUDV + "/" + QudvResource.QUANTITY_KIND_FACTOR;
 	
 	@Before
 	public void setUpModel() throws Exception {
@@ -85,7 +86,7 @@ public class QudvResourceTest extends AModelAccessResourceTest {
 	
 	@Test
 	public void testPrefixesGet() throws Exception {
-		List<String> entity = getTestRequestBuilder(ModelAccessResource.QUDV + "/" + QudvResource.PREFIXES)
+		List<String> entity = getTestRequestBuilder(RepositoryAccessResource.QUDV + "/" + QudvResource.PREFIXES)
 				.get(new GenericType<List<String>>() { });
 		
 		assertEquals(entity.size(), prefixes.size());
@@ -94,7 +95,7 @@ public class QudvResourceTest extends AModelAccessResourceTest {
 	
 	@Test
 	public void testQuantityKindsGet() throws Exception {
-		List<String> entity = getTestRequestBuilder(ModelAccessResource.QUDV + "/" + QudvResource.QUANTITY_KINDS)
+		List<String> entity = getTestRequestBuilder(RepositoryAccessResource.QUDV + "/" + QudvResource.QUANTITY_KINDS)
 				.get(new GenericType<List<String>>() { });
 		
 		assertEquals(entity.size(), quantityKinds.size());
@@ -103,7 +104,7 @@ public class QudvResourceTest extends AModelAccessResourceTest {
 	
 	@Test
 	public void testUnitsGet() throws Exception {
-		List<String> entity = getTestRequestBuilder(ModelAccessResource.QUDV + "/" + QudvResource.UNITS)
+		List<String> entity = getTestRequestBuilder(RepositoryAccessResource.QUDV + "/" + QudvResource.UNITS)
 				.get(new GenericType<List<String>>() { });
 		
 		assertEquals(entity.size(), units.size());
@@ -130,7 +131,7 @@ public class QudvResourceTest extends AModelAccessResourceTest {
 	public void testUnitCreate() {
 		int unitCount = units.size();
 		Response response = getTestRequestBuilderWithQueryParam(
-				UNIT_URI, ModelAccessResource.QP_NAME, BeanUnitSimple.class.getSimpleName())
+				UNIT_URI, RepositoryAccessResource.QP_NAME, BeanUnitSimple.class.getSimpleName())
 				.post(Entity.json(null));
 		
 		assertEquals(HttpStatus.OK_200, response.getStatus());
@@ -140,7 +141,7 @@ public class QudvResourceTest extends AModelAccessResourceTest {
 		AUnit obj = RepositoryUtility.findUnit(uuid, resourceSet.getRepository());
 		assertNotNull(obj);
 		assertThat(units, hasItem(obj));
-		assertTrue(obj instanceof SimpleUnit);
+		assertThat(obj, instanceOf(SimpleUnit.class));
 	}
 	
 	@Test
@@ -172,7 +173,7 @@ public class QudvResourceTest extends AModelAccessResourceTest {
 	public void testQuantityKindCreate() {
 		int qkCount = quantityKinds.size();
 		Response response = getTestRequestBuilderWithQueryParam(
-				QK_URI, ModelAccessResource.QP_NAME, BeanQuantityKindSimple.class.getSimpleName())
+				QK_URI, RepositoryAccessResource.QP_NAME, BeanQuantityKindSimple.class.getSimpleName())
 				.post(Entity.json(null));
 		
 		assertEquals(HttpStatus.OK_200, response.getStatus());
@@ -182,7 +183,7 @@ public class QudvResourceTest extends AModelAccessResourceTest {
 		AQuantityKind obj = RepositoryUtility.findQuantityKind(uuid, resourceSet.getRepository());
 		assertNotNull(obj);
 		assertThat((List<AQuantityKind>) quantityKinds, hasItem(obj));
-		assertTrue(obj instanceof SimpleQuantityKind);
+		assertThat(obj, instanceOf(SimpleQuantityKind.class));
 	}
 	
 	@Test
@@ -276,13 +277,13 @@ public class QudvResourceTest extends AModelAccessResourceTest {
 	public void testErrorResponses() {
 		assertNotFoundResponse(getTestRequestBuilder(UNIT_URI + "/" + UNKNOWN).get());
 		assertBadRequestResponse(getTestRequestBuilderWithQueryParam(
-				UNIT_URI, ModelAccessResource.QP_NAME, UNKNOWN).post(Entity.json(null)),
+				UNIT_URI, RepositoryAccessResource.QP_NAME, UNKNOWN).post(Entity.json(null)),
 				ApiErrorHelper.INVALID_TYPE_ERROR + ": unknown");
 		assertNotFoundResponse(getTestRequestBuilder(UNIT_URI + "/" + UNKNOWN).delete());
 		
 		assertNotFoundResponse(getTestRequestBuilder(QK_URI + "/" + UNKNOWN).get());
 		assertBadRequestResponse(getTestRequestBuilderWithQueryParam(
-				QK_URI, ModelAccessResource.QP_NAME, UNKNOWN).post(Entity.json(null)),
+				QK_URI, RepositoryAccessResource.QP_NAME, UNKNOWN).post(Entity.json(null)),
 				ApiErrorHelper.INVALID_TYPE_ERROR + ": unknown");
 		assertNotFoundResponse(getTestRequestBuilder(QK_URI + "/unknown").delete());
 		assertCommandNotExecuteableErrorResponse(getTestRequestBuilder(QK_URI + "/" + qkNotDerived.getUuid().toString()).delete());
@@ -307,12 +308,12 @@ public class QudvResourceTest extends AModelAccessResourceTest {
 		// becomes unaccessible if the unit does not have the rights
 		setDiscipline(unitManagement, anotherDiscipline);
 		assertCommandNotExecuteableErrorResponse(getTestRequestBuilderWithQueryParam(
-				UNIT_URI, ModelAccessResource.QP_NAME, BeanUnitSimple.class.getSimpleName()).post(Entity.json(null)));
+				UNIT_URI, RepositoryAccessResource.QP_NAME, BeanUnitSimple.class.getSimpleName()).post(Entity.json(null)));
 		assertCommandNotExecuteableErrorResponse(getTestRequestBuilder(
 				UNIT_URI + "/" + unitNotDerived.getUuid().toString()).delete());
 		
 		assertCommandNotExecuteableErrorResponse(getTestRequestBuilderWithQueryParam(
-				QK_URI, ModelAccessResource.QP_NAME, BeanQuantityKindSimple.class.getSimpleName()).post(Entity.json(null)));
+				QK_URI, RepositoryAccessResource.QP_NAME, BeanQuantityKindSimple.class.getSimpleName()).post(Entity.json(null)));
 		assertCommandNotExecuteableErrorResponse(getTestRequestBuilder(
 				QK_URI + "/" + qkNoReference.getUuid().toString()).delete());
 		

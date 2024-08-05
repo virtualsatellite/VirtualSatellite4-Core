@@ -23,18 +23,40 @@
 		to update all libs and licenses from maven -->
 
 	<properties>
-		<swagger.version>1.6.2</swagger.version>
+		<swagger.version>2.2.22</swagger.version>
 	</properties>
 
 	<profiles>
 		<profile>
 			<id>downloadLibs</id>
 			<dependencies>
+				<!--
+				https://mvnreposito ry.com/artifact/io.swagger.core.v3/swagger-annotations -->
 				<dependency>
-					<groupId>io.swagger</groupId>
-					<artifactId>swagger-annotations </artifactId>
+					<groupId>io.swagger.core.v3</groupId>
+					<artifactId>swagger-annotations</artifactId>
+					<version>${swagger.version}</version>
+					<exclusions>
+						<exclusion>
+							<artifactId>org.osgi.service.prefs</artifactId>
+							<groupId>org.osgi</groupId>
+						</exclusion>
+						<exclusion>
+							<artifactId>osgi.annotation</artifactId>
+							<groupId>org.osgi</groupId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+				<dependency>
+					<groupId>io.swagger.core.v3</groupId>
+					<artifactId>swagger-jaxrs2-jakarta</artifactId>
 					<version>${swagger.version}</version>
 				</dependency>
+				<!--dependency>
+					<groupId>io.swagger.core.v3</groupId>
+					<artifactId>swagger-jaxrs2-servlet-initializer-v2-jakarta</artifactId>
+					<version>${swagger.version}</version>
+				</!dependency-->
 			</dependencies>
 		</profile>
 	</profiles>

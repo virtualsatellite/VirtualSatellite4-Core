@@ -332,8 +332,8 @@ public class ConceptMigrationHelper {
 		String[] version2Array = version2.split("\\.");
 		
 		for (int i = 0, j = 0; i < version1Array.length && j < version2Array.length; ++i, ++j) {
-			int version1Number = Integer.valueOf(version1Array[i]);
-			int version2Number = Integer.valueOf(version2Array[i]);
+			int version1Number = Integer.parseInt(version1Array[i]);
+			int version2Number = Integer.parseInt(version2Array[i]);
 			
 			int compare = Integer.compare(version1Number, version2Number);
 			if (compare != 0) {

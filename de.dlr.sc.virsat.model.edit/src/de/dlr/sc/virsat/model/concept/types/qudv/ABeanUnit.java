@@ -9,11 +9,11 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.qudv;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.SetCommand;
@@ -26,8 +26,9 @@ import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapter;
 import de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind;
 import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
 
 /**
  * General bean for a unit of the type U_TYPE
@@ -36,7 +37,7 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement
-@ApiModel(
+@Schema(
 	description = "Abstract model class for bean units."
 		+ " Resources that return this will instead return concrete bean units.",
 	subTypes = {
@@ -54,8 +55,8 @@ public abstract class ABeanUnit<U_TYPE extends AUnit> implements IBeanUnit<U_TYP
 		this.unit = unit;
 	}
 	
-	@ApiModelProperty(name = "uuid", required = true,
-			value = "Unique identifier for a bean",
+	@Schema(name = "uuid", required = true,
+			description = "Unique identifier for a bean",
 			example = "b168b0df-84b6-4b7f-bede-69298b215f40")
 	@XmlElement(name = "uuid")
 	@XmlJavaTypeAdapter(IUuidAdapter.class)
@@ -70,7 +71,7 @@ public abstract class ABeanUnit<U_TYPE extends AUnit> implements IBeanUnit<U_TYP
 		this.unit = (U_TYPE) unit;
 	}
 	
-	@ApiModelProperty(hidden = true)
+	@Schema(hidden = true)
 	@Override
 	public U_TYPE getUnit() {
 		return unit;
@@ -81,13 +82,13 @@ public abstract class ABeanUnit<U_TYPE extends AUnit> implements IBeanUnit<U_TYP
 		this.unit = unit;
 	}
 	
-	@ApiModelProperty(hidden = true)
+	@Schema(hidden = true)
 	@Override
 	public String getUuid() {
 		return unit.getUuid().toString();
 	}
 
-	@ApiModelProperty(required = true)
+	@Schema(required = true)
 	@XmlElement(nillable = true)
 	@Override
 	public String getName() {
@@ -104,7 +105,7 @@ public abstract class ABeanUnit<U_TYPE extends AUnit> implements IBeanUnit<U_TYP
 		return SetCommand.create(ed, unit, GeneralPackage.Literals.INAME__NAME, name);
 	}
 
-	@ApiModelProperty(required = true)
+	@Schema(required = true)
 	@XmlElement(nillable = true)
 	@Override
 	public String getSymbol() {
@@ -122,7 +123,7 @@ public abstract class ABeanUnit<U_TYPE extends AUnit> implements IBeanUnit<U_TYP
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@ApiModelProperty(required = true)
+	@Schema(required = true)
 	@XmlElement(nillable = true)
 	@XmlJavaTypeAdapter(ABeanQuantityKindAdapter.class)
 	@Override

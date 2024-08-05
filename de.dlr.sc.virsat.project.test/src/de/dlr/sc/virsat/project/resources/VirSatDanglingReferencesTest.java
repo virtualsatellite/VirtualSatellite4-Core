@@ -57,7 +57,6 @@ public class VirSatDanglingReferencesTest extends AProjectTestCase {
 	protected StructuralElement seDefinition;
 	protected StructuralElement seConfiguration;
 
-	protected Repository repository;
 	protected StructuralElementInstance seiConfiguration;
 	protected StructuralElementInstance seiDefinition;
 

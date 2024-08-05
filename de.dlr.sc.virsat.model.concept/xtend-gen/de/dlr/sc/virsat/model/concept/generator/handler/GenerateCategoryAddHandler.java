@@ -32,19 +32,19 @@ public class GenerateCategoryAddHandler extends AGeneratorGapGenerator<Category>
     String _name = concept.getName();
     return (_name + ".ui.handler");
   }
-  
+
   public static String getConcreteClassName(final Category category) {
     String _firstUpper = StringExtensions.toFirstUpper(category.getName());
     String _plus = ("Add" + _firstUpper);
     return (_plus + "Handler");
   }
-  
+
   public static String getAbstractClassName(final Category category) {
     String _firstUpper = StringExtensions.toFirstUpper(category.getName());
     String _plus = ("AAdd" + _firstUpper);
     return (_plus + "Handler");
   }
-  
+
   @Override
   public String createConcreteClassFileName(final Concept concept, final Category category) {
     String _name = concept.getName();
@@ -57,7 +57,7 @@ public class GenerateCategoryAddHandler extends AGeneratorGapGenerator<Category>
     String _plus_4 = (_plus_3 + _concreteClassName);
     return (_plus_4 + ".java");
   }
-  
+
   @Override
   public String createAbstractClassFileName(final Concept concept, final Category category) {
     String _name = concept.getName();
@@ -70,7 +70,7 @@ public class GenerateCategoryAddHandler extends AGeneratorGapGenerator<Category>
     String _plus_4 = (_plus_3 + _abstractClassName);
     return (_plus_4 + ".java");
   }
-  
+
   @Override
   public void serializeModel(final Concept concept, final IFileSystemAccess fsa) {
     final Consumer<Category> _function = (Category it) -> {
@@ -81,7 +81,7 @@ public class GenerateCategoryAddHandler extends AGeneratorGapGenerator<Category>
     };
     concept.getNonAbstractCategories().forEach(_function);
   }
-  
+
   /**
    * This method just creates the package declaration. The concept name needs to fit to the package name
    */
@@ -94,7 +94,7 @@ public class GenerateCategoryAddHandler extends AGeneratorGapGenerator<Category>
     _builder.newLineIfNotEmpty();
     return _builder;
   }
-  
+
   @Override
   public CharSequence declareImports(final ImportManager importManager, final Concept concept, final Category conceptPart, final String conceptPackage) {
     StringConcatenation _builder = new StringConcatenation();
@@ -115,7 +115,7 @@ public class GenerateCategoryAddHandler extends AGeneratorGapGenerator<Category>
     }
     return _builder;
   }
-  
+
   @Override
   protected CharSequence declareClass(final Concept concept, final Category category, final ImportManager manager) {
     StringConcatenation _builder = new StringConcatenation();
@@ -134,7 +134,7 @@ public class GenerateCategoryAddHandler extends AGeneratorGapGenerator<Category>
     _builder.newLine();
     return _builder;
   }
-  
+
   @Override
   public CharSequence declareAClass(final Concept concept, final Category category, final ImportManager importManager) {
     StringConcatenation _builder = new StringConcatenation();

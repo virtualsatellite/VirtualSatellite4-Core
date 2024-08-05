@@ -5,7 +5,7 @@ Bundle-SymbolicName: de.dlr.sc.virsat.apps;singleton:=true
 Bundle-Version: 4.16.0.qualifier
 Bundle-Activator: de.dlr.sc.virsat.apps.Activator
 Bundle-Vendor: DLR (German Aerospace Center)
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Export-Package: de.dlr.sc.virsat.apps.api.external;uses:="de.dlr.sc.virsat.model.DVLM.Units,de.dlr.sc.virsat.model.DVLM",

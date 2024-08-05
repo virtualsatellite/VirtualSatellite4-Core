@@ -10,7 +10,8 @@
 package de.dlr.sc.virsat.model.concept.types.factory;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 
 import org.eclipse.core.runtime.CoreException;
 import org.junit.Before;
@@ -29,10 +30,10 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.Propertyinstance
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
+import de.dlr.sc.virsat.model.extension.tests.model.AExtensionConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBeanA;
 
-public class BeanTypeInstanceFactoryTest extends AConceptTestCase {
+public class BeanTypeInstanceFactoryTest extends AExtensionConceptTestCase {
 	private BeanTypeInstanceFactory tiBeanFactory;
 	private Concept concept;
 	
@@ -49,8 +50,8 @@ public class BeanTypeInstanceFactoryTest extends AConceptTestCase {
 		property.setType(PropertydefinitionsFactory.eINSTANCE.createStringProperty());
 		
 		IBeanObject<? extends ATypeInstance> propBean = tiBeanFactory.getInstanceFor(property);
-		assertTrue("Created bean is of correct type", propBean instanceof IBeanProperty);
-		assertTrue("Created bean is of correct type", propBean instanceof BeanPropertyString);
+		assertThat("Created bean is of correct type", propBean, instanceOf(IBeanProperty.class));
+		assertThat("Created bean is of correct type", propBean, instanceOf(BeanPropertyString.class));
 	}
 	
 	@Test
@@ -59,8 +60,8 @@ public class BeanTypeInstanceFactoryTest extends AConceptTestCase {
 		CategoryAssignment ca = new CategoryInstantiator().generateInstance(category, "TestCategoryBeanA");
 		
 		IBeanObject<? extends ATypeInstance> caBean = tiBeanFactory.getInstanceFor(ca);
-		assertTrue("Created bean is of correct type", caBean instanceof IBeanCategoryAssignment);
-		assertTrue("Created bean is of correct type", caBean instanceof TestCategoryBeanA);
+		assertThat("Created bean is of correct type", caBean, instanceOf(IBeanCategoryAssignment.class));
+		assertThat("Created bean is of correct type", caBean, instanceOf(TestCategoryBeanA.class));
 		assertEquals("Bean has a type instance set", ca, caBean.getTypeInstance());
 		assertEquals("Type instance of bean is set correctly", "TestCategoryBeanA", caBean.getTypeInstance().getType().getName());
 	}

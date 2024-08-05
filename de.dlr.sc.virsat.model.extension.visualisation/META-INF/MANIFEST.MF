@@ -11,10 +11,8 @@ Require-Bundle: org.eclipse.ui,
  de.dlr.sc.virsat.project,
  de.dlr.sc.virsat.build,
  de.dlr.sc.virsat.external.lib.protobuf,
- de.dlr.sc.virsat.model.ext.core;visibility:=reexport,
- javax.annotation,
- jakarta.xml.bind
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+ de.dlr.sc.virsat.model.ext.core;visibility:=reexport
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Eclipse-ExtensibleApi: true
 Export-Package: de.dlr.sc.virsat.model.extension.visualisation,
  de.dlr.sc.virsat.model.extension.visualisation.comparison,
@@ -22,7 +20,6 @@ Export-Package: de.dlr.sc.virsat.model.extension.visualisation,
  de.dlr.sc.virsat.model.extension.visualisation.model,
  de.dlr.sc.virsat.model.extension.visualisation.shape,
  de.dlr.sc.virsat.model.extension.visualisation.treemanager,
- de.dlr.sc.virsat.model.extension.visualisation.treemanager.networking,
  de.dlr.sc.virsat.model.extension.visualisation.validator,
  de.dlr.sc.visproto,
  proto
@@ -30,5 +27,4 @@ Bundle-ClassPath: localLib/visProtocol.jar,
  .
 Bundle-Activator: de.dlr.sc.virsat.model.extension.visualisation.Activator
 Bundle-ActivationPolicy: lazy
-Import-Package: org.zeromq
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.visualisation

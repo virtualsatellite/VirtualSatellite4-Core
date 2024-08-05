@@ -35,6 +35,7 @@ import de.dlr.sc.virsat.model.extension.thermal.model.ThermalAnalysis;
 import de.dlr.sc.virsat.model.extension.thermal.model.ThermalData;
 import de.dlr.sc.virsat.model.extension.thermal.test.TestActivator;
 import de.dlr.sc.virsat.model.extension.visualisation.model.Visualisation;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 public class CadImporterThermalTest extends AConceptProjectTestCase {
 	
@@ -85,6 +86,10 @@ public class CadImporterThermalTest extends AConceptProjectTestCase {
 	}
 	
 	@Test
+	@SuppressFBWarnings(
+			justification = "final variable is not dead since it is used in assert. Maybe a problem to final, but would otheerwise collide with codnign conventions",
+			value = "DLS_DEAD_LOCAL_STORE"
+	)
 	public void importCadSimulationOutputStatic() throws IOException {
 		thermalAnalysis.getAnalysisType().setAnalysisType(AnalysisType.ANALYSISTYPE_Static_NAME);
 		
@@ -121,6 +126,10 @@ public class CadImporterThermalTest extends AConceptProjectTestCase {
 	}
 
 	@Test
+	@SuppressFBWarnings(
+			justification = "final variable is not dead since it is used in assert. Maybe a problem to final, but would otheerwise collide with codnign conventions",
+			value = "DLS_DEAD_LOCAL_STORE"
+	)
 	public void importCadSimulationOutputTransient() throws IOException {
 		thermalAnalysis.getAnalysisType().setAnalysisType(AnalysisType.ANALYSISTYPE_Transient_NAME);
 		thermalAnalysis.getAnalysisType().setTotalTime(2);

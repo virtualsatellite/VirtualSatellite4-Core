@@ -24,7 +24,7 @@ import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
  * @author fisc_ph
  *
  */
-public class TestCategoryAllPropertyTest extends AConceptTestCase {
+public class TestCategoryAllPropertyTest extends AExtensionConceptTestCase {
 
 	private TestCategoryAllProperty tcAllProperty;
 	

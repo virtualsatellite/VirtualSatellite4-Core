@@ -4,7 +4,7 @@ Bundle-Name: VirSat Core Graphiti
 Bundle-SymbolicName: de.dlr.sc.virsat.graphiti; singleton:=true
 Bundle-Version: 4.16.0.qualifier
 Bundle-Vendor: DLR (German Aerospace Center)
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: de.dlr.sc.virsat.model.edit,
  de.dlr.sc.virsat.project,
  org.eclipse.graphiti;visibility:=reexport,

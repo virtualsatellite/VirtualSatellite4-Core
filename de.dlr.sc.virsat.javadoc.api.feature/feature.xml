@@ -1,11 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<feature
-      id="de.dlr.sc.virsat.javadoc.api.feature"
-      label="VirSat Core Java Documentation for API Feature"
-      version="4.16.0.qualifier"
-      provider-name="DLR (German Aerospace Center)"
-      plugin="de.dlr.sc.virsat.branding.ui"
-      license-feature="de.dlr.sc.virsat.license.feature">
+<feature id="de.dlr.sc.virsat.javadoc.api.feature" label="VirSat Core Java Documentation for API Feature" version="4.16.0.qualifier" provider-name="DLR (German Aerospace Center)" plugin="de.dlr.sc.virsat.branding.ui" license-feature="de.dlr.sc.virsat.license.feature">
 
    <description>
       JavaDoc Feature
@@ -23,16 +16,11 @@ by German Aerospace Center (DLR e.V.)
    </license>
 
    <requires>
-      <import plugin="org.eclipse.help" version="3.6.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.pde.core"/>
-      <import feature="de.dlr.sc.virsat.license.feature" version="0.0.0" match="greaterOrEqual"/>
-   </requires>
+      <import feature="de.dlr.sc.virsat.license.feature" />
+   <import plugin="org.eclipse.help" />
+      <import plugin="org.eclipse.pde.core" />
+      </requires>
 
-   <plugin
-         id="de.dlr.sc.virsat.javadoc.api"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+   <plugin id="de.dlr.sc.virsat.javadoc.api" download-size="0" install-size="0" version="0.0.0" unpack="false" />
 
 </feature>

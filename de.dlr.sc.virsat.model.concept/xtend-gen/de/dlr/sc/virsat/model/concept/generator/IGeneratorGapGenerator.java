@@ -16,12 +16,12 @@ import org.eclipse.xtext.generator.IFileSystemAccess;
 @SuppressWarnings("all")
 public interface IGeneratorGapGenerator<TYPE extends EObject> {
   void serializeModel(final Concept concept, final IFileSystemAccess fsa);
-  
+
   String createConcreteClassFileName(final Concept concept, final TYPE conceptPart);
-  
+
   String createAbstractClassFileName(final Concept concept, final TYPE conceptPart);
-  
+
   CharSequence createConcreteClass(final Concept concept, final TYPE conceptPart);
-  
+
   CharSequence createAbstractClass(final Concept concept, final TYPE conceptPart);
 }

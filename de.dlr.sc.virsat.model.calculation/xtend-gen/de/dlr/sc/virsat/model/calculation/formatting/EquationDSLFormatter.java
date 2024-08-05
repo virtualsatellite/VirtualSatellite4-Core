@@ -31,7 +31,7 @@ public class EquationDSLFormatter extends AbstractDeclarativeFormatter {
   @Inject
   @Extension
   private EquationDSLGrammarAccess _equationDSLGrammarAccess;
-  
+
   @Override
   protected void configureFormatting(final FormattingConfig c) {
     List<Pair<Keyword, Keyword>> _findKeywordPairs = this._equationDSLGrammarAccess.findKeywordPairs("{", "}");

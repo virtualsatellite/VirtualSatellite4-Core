@@ -21,7 +21,7 @@ public class ConceptPluginUiBuildPropertiesGenerator implements IFileContentGene
   public String generateContent(final IProjectBuilderInfo projectBuilderInfo) {
     return this.buildProeprtiesContent(projectBuilderInfo).toString();
   }
-  
+
   public CharSequence buildProeprtiesContent(final IProjectBuilderInfo builderInfo) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("source.. = \tsrc/,\\");

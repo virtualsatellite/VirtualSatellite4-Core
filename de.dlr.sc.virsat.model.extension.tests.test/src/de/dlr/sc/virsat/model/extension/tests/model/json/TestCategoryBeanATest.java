@@ -14,8 +14,8 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import java.util.Arrays;
 
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 
 import org.junit.Before;
@@ -24,10 +24,10 @@ import org.junit.Test;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
-import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
+import de.dlr.sc.virsat.model.extension.tests.model.AExtensionConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBeanA;
 
-public class TestCategoryBeanATest extends AConceptTestCase {
+public class TestCategoryBeanATest extends AExtensionConceptTestCase {
 
 	private static final String UUID = "f34d30b0-80f5-4c96-864f-29ab4d3ae9f2";
 	private static final String RESOURCE = "/resources/json/TestCategoryBeanA_Marshaling.json";

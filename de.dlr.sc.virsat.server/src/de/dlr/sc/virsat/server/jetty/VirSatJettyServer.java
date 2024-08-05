@@ -9,11 +9,16 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.jetty;
 
-import static org.eclipse.jetty.servlet.ServletContextHandler.NO_SESSIONS;
+import static org.eclipse.jetty.ee10.servlet.ServletContextHandler.NO_SESSIONS;
 
+import java.io.IOException;
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.jetty.ee10.servlet.DefaultServlet;
+import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
+import org.eclipse.jetty.ee10.servlet.ServletHolder;
+import org.eclipse.jetty.ee10.servlet.security.ConstraintSecurityHandler;
 import org.eclipse.jetty.http.HttpScheme;
 import org.eclipse.jetty.http.HttpVersion;
-import org.eclipse.jetty.security.ConstraintSecurityHandler;
 import org.eclipse.jetty.security.LoginService;
 import org.eclipse.jetty.security.authentication.BasicAuthenticator;
 import org.eclipse.jetty.server.HttpConfiguration;
@@ -22,14 +27,16 @@ import org.eclipse.jetty.server.SecureRequestCustomizer;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.SslConnectionFactory;
-import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
+import org.glassfish.jersey.server.ServerProperties;
 
+import de.dlr.sc.virsat.server.Activator;
 import de.dlr.sc.virsat.server.auth.LoginServiceFactory;
 import de.dlr.sc.virsat.server.configuration.ServerConfiguration;
-import de.dlr.sc.virsat.server.servlet.RepoManagementServlet;
+import de.dlr.sc.virsat.server.servlet.RepoManagementServletContainer;
 import de.dlr.sc.virsat.server.servlet.StatusServlet;
-import de.dlr.sc.virsat.server.servlet.VirSatModelAccessServlet;
+import jakarta.servlet.GenericServlet;
+import de.dlr.sc.virsat.server.servlet.ModelAccessServletContainer;
 
 /**
  * This class represents a Jetty Instance to run Virtual Satellite
@@ -45,21 +52,10 @@ public class VirSatJettyServer {
 	public static final int VIRSAT_JETTY_PORT_HTTPS = 8443;
 	public static final String PATH = "/rest";
 	public static final String STATUS = "/status";
+	public static final String SWAGGER = "/ui";
 	private static final String SUFFIX = "/*";
 	
 	private LoginService loginService = null;
-
-	/**
-	 * Main entry point for Virtual Satellite Jetty Server
-	 * @param args Not used currently
-	 */
-	public static void main(String[] args) {
-		try {
-			new VirSatJettyServer().start().join();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
 
 	private Server server;
 	
@@ -68,8 +64,8 @@ public class VirSatJettyServer {
 	 * @return the started virsat jetty instance
 	 * @throws Exception in case server fails to start correctly
 	 */
-	public VirSatJettyServer start() throws Exception {	
-
+	public VirSatJettyServer start() throws Exception {
+		Activator.getDefault().getLog().info("About to start Virtual Satellite Server Thread");
 		server.start();
 		return this;
 	}
@@ -80,26 +76,66 @@ public class VirSatJettyServer {
 	public void init() {
 		boolean httpsOnly = ServerConfiguration.getHttpsOnly();
 		boolean httpsEnabled = ServerConfiguration.getHttpsEnabled();
-		
-		server = new Server();
-		
-		// Setup HTTP and/or HTTPS
-		if (httpsEnabled) {
-			setupHttps(server);
-			if (!httpsOnly) {
+
+		Activator.getDefault().getLog().info("Initializing server with hhtpsOnly(" + httpsOnly + ") and httpsEnabled(" + httpsEnabled + ")");
+
+		// Setup the classloader, otherwise problems may occur when running tests on maven tycho. 
+		ClassLoader equinoxClassLoader = this.getClass().getClassLoader();
+		ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+		try {
+			Thread.currentThread().setContextClassLoader(equinoxClassLoader);
+			server = new Server();
+			
+			// Setup HTTP and/or HTTPS
+			if (httpsEnabled) {
+				setupHttps(server);
+				if (!httpsOnly) {
+					setupHttp(server, httpsEnabled);
+				}
+			} else {
 				setupHttp(server, httpsEnabled);
 			}
-		} else {
-			setupHttp(server, httpsEnabled);
+	
+			Activator.getDefault().getLog().info("Setting up Servlets");
+			ServletContextHandler servletContextHandler = new ServletContextHandler(NO_SESSIONS);
+			
+			servletContextHandler.setContextPath("/");
+			
+			// Uncomment this servlet for activating the persons example
+			// it is a good example for debugging the connection between jersey and swagger and openAPI
+			//servletContextHandler.addServlet(PersonServletContainer.class, "/rest/persons/*");
+			
+			registerServlet(servletContextHandler, StatusServlet.class, "Server Status", "/status");
+			registerServlet(servletContextHandler, ModelAccessServletContainer.class, "Model API", PATH + ModelAccessServletContainer.MODEL_API + SUFFIX);
+			registerServlet(servletContextHandler, RepoManagementServletContainer.class, "Model API", PATH + RepoManagementServletContainer.MANAGEMENT_API + SUFFIX);
+			
+			// provide swagger UI at base path
+			Activator.getDefault().getLog().info("Setting up Servlet for: Swagger UI");
+			var resourceUrl = de.dlr.sc.virsat.server.swagger.ui.Activator.getDefault().getSwaggerUiResourceUrl();
+	        String resourceBasePath = "";
+			try {
+				resourceBasePath = FileLocator.toFileURL(resourceUrl).toExternalForm();
+				registerServlet(servletContextHandler, DefaultServlet.class, "Swagger UI", SWAGGER + SUFFIX);
+		        servletContextHandler.setWelcomeFiles(new String[] {"index.html"});
+		        servletContextHandler.setBaseResourceAsString(resourceBasePath);
+			} catch (IOException e) {
+				Activator.getDefault().getLog().error("Failed to provide Servlet with Swagger UI", e);
+			}
+			
+			server.setHandler(servletContextHandler);
+			
+			Activator.getDefault().getLog().info("Setting up Security");
+			setupSecurity(server, servletContextHandler);
+		} finally {
+			Thread.currentThread().setContextClassLoader(contextClassLoader);
 		}
-
-		ServletContextHandler servletContextHandler = new ServletContextHandler(NO_SESSIONS);
-		servletContextHandler.setContextPath("/");
-		servletContextHandler.addServlet(StatusServlet.class, "/status");
-		servletContextHandler.addServlet(VirSatModelAccessServlet.class, PATH + VirSatModelAccessServlet.MODEL_API + SUFFIX);
-		servletContextHandler.addServlet(RepoManagementServlet.class, PATH + RepoManagementServlet.MANAGEMENT_API + SUFFIX);
-		
-		setupSecurity(server, servletContextHandler);
+	}
+	
+	
+	private void registerServlet(ServletContextHandler contextHandler,  Class<? extends GenericServlet> servlet, String purpose, String apiEndPoint) {
+		Activator.getDefault().getLog().info("Initializing Servlet for <" + purpose + "> @ localhost:" + VIRSAT_JETTY_PORT + apiEndPoint);
+		ServletHolder holder = contextHandler.addServlet(servlet, apiEndPoint);
+		holder.setInitParameter(ServerProperties.WADL_FEATURE_DISABLE, "true");
 	}
 	
 	/**
@@ -109,7 +145,7 @@ public class VirSatJettyServer {
 	private void setupHttps(Server server) {
 		// Setup SSL keystore
 		SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
-		sslContextFactory.setKeyStorePath(ServerConfiguration.getHttpsKeystorePath());
+		sslContextFactory.setKeyStorePath(ServerConfiguration.getHttpsKeystoreFileUri());
 		sslContextFactory.setKeyStorePassword(ServerConfiguration.getHttpsKeystorePassword());
 		sslContextFactory.setKeyManagerPassword(ServerConfiguration.getHttpsKeystoreManagerPassword());
 
@@ -168,7 +204,7 @@ public class VirSatJettyServer {
 		server.addBean(loginService);
 
 		ConstraintSecurityHandler security = new ConstraintSecurityHandler();
-		server.setHandler(security);
+		servletContextHandler.setSecurityHandler(security);
 
 		/**
 		 *  For top down security constraints with roles can be created here
@@ -177,11 +213,12 @@ public class VirSatJettyServer {
 		security.setAuthenticator(new BasicAuthenticator());
 		security.setLoginService(loginService);
 
-		security.setHandler(servletContextHandler);
+		//security.setHandler(servletContextHandler);
 	}
 	
 	public VirSatJettyServer join() throws InterruptedException {
 		if (server != null) {
+			Activator.getDefault().getLog().info("Waiting for Server thread to shut down");
 			server.join();
 		}
 		return this;
@@ -193,6 +230,7 @@ public class VirSatJettyServer {
 	 */
 	public void stop() throws Exception {
 		if (server != null) {
+			Activator.getDefault().getLog().info("About to stop Server Thread");
 			server.stop();
 		}
 	}

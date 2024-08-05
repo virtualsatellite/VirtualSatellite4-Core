@@ -393,7 +393,7 @@ public class MatImporter {
 			if ("NaN".equals(struct.get(MatHelper.VALUE).toString()) || "''".equals(struct.get(MatHelper.VALUE).toString())) {
 				importCommand.append(SetCommand.create(editingDomain, element, PropertyinstancesPackage.Literals.VALUE_PROPERTY_INSTANCE__VALUE, null));
 			} else {
-				double value = Double.valueOf(struct.get(MatHelper.VALUE).toString());
+				double value = Double.parseDouble(struct.get(MatHelper.VALUE).toString());
 				importCommand.append(bpi.setValue(editingDomain, (long) value));
 			}
 		}

@@ -22,7 +22,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
  * @author fisc_ph
  *
  */
-public class TestCategoryCompositionTest extends AConceptTestCase {
+public class TestCategoryCompositionTest extends AExtensionConceptTestCase {
 
 	private TestCategoryComposition tcComposition;
 	

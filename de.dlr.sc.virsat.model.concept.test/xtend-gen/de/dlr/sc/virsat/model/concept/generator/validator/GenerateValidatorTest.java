@@ -9,11 +9,11 @@
  */
 package de.dlr.sc.virsat.model.concept.generator.validator;
 
+import com.google.inject.Inject;
 import de.dlr.sc.virsat.model.concept.ConceptLanguageTestInjectorProvider;
 import de.dlr.sc.virsat.model.concept.test.util.GeneratorJunitAssert;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage;
-import javax.inject.Inject;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.XtextRunner;
@@ -32,15 +32,15 @@ public class GenerateValidatorTest {
   @Inject
   @Extension
   private ParseHelper<Concept> _parseHelper;
-  
+
   private Concept concept;
-  
+
   private final String conceptID = "de.dlr.sc.virsat.model.extension.testConcept";
-  
+
   private final String expectedConceptShortName = "TestConcept";
-  
+
   private final GenerateValidator validatorGenerator = new GenerateValidator();
-  
+
   @Before
   public void setUp() {
     try {
@@ -55,14 +55,14 @@ public class GenerateValidatorTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testGetValidatorName() {
     final String validatorName = GenerateValidator.getValidatorName(this.concept);
     final String expectedValidatorName = (this.expectedConceptShortName + "Validator");
     Assert.assertEquals("Validator name for the generated validator is correct", expectedValidatorName, validatorName);
   }
-  
+
   @Test
   public void testCreateConcreteClassFileName() {
     final String fileName = this.validatorGenerator.createConcreteClassFileName(this.concept, this.concept);
@@ -74,7 +74,7 @@ public class GenerateValidatorTest {
     final String expectedFileName = (_plus_3 + "Validator.java");
     Assert.assertEquals("Concrete file name for the generated validator is correct", expectedFileName, fileName);
   }
-  
+
   @Test
   public void testCreateAbstractClassFileName() {
     final String fileName = this.validatorGenerator.createAbstractClassFileName(this.concept, this.concept);
@@ -86,7 +86,7 @@ public class GenerateValidatorTest {
     final String expectedFileName = (_plus_3 + "Validator.java");
     Assert.assertEquals("Abstract file name for the generated validator is correct", expectedFileName, fileName);
   }
-  
+
   @Test
   public void testCreateConcreteClass() {
     try {
@@ -96,7 +96,7 @@ public class GenerateValidatorTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCreateAbstractClass() {
     try {

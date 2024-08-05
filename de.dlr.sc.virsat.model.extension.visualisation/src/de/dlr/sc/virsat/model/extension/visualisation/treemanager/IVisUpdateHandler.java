@@ -24,5 +24,5 @@ public interface IVisUpdateHandler {
 	 * 
 	 * @param visualisationMessage	contains the SceneGraph message with the updated SceneGraph
 	 */
-	void updateVisualisationData(VisualisationMessage visualisationMessage);
+	void updateVisualisationData(VisualisationMessage visualisationMessage); 
 }

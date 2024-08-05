@@ -13,12 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CompoundCommand;
@@ -47,8 +47,10 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralPackage;
 import de.dlr.sc.virsat.model.dvlm.structural.command.DeleteStructuralElementInstanceCommand;
 import de.dlr.sc.virsat.model.ecore.VirSatEcoreUtil;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
+
+
 
 /**
  * Core functionality for a Concept Bean  that wraps SturcturalElementInstances
@@ -59,7 +61,7 @@ import io.swagger.annotations.ApiModelProperty;
 @XmlRootElement
 // Ensure that the sei (by uuid) gets unmarshalled first
 @XmlType(propOrder = {"structuralElementInstance", "name", "parent", "jaxbCategoryAssignments", "jaxbChildren", "jaxbSuperSeis", "assignedDiscipline"})
-@ApiModel(description = "Abstract model class for bean SEIs."
+@Schema(description = "Abstract model class for bean SEIs."
 		+ " Instead return a concrete bean SEI that is identified by a type field."
 		+ " Currently concrete SEIs have no additional fields.")
 public abstract class ABeanStructuralElementInstance implements IBeanStructuralElementInstance {
@@ -88,7 +90,7 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	}
 	
 	@XmlElement(nillable = true)
-	@ApiModelProperty(required = true)
+	@Schema(required = true)
 	@Override
 	public void setName(String seiName) {
 		sei.setName(seiName);
@@ -106,8 +108,8 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	
 	@XmlElement(name = "uuid")
 	@XmlJavaTypeAdapter(IUuidAdapter.class)
-	@ApiModelProperty(name = "uuid", required = true,
-		value = "Unique identifier for a bean",
+	@Schema(name = "uuid", required = true,
+		description = "Unique identifier for a bean",
 		example = "b168b0df-84b6-4b7f-bede-69298b215f40")
 	@Override
 	public	void setStructuralElementInstance(StructuralElementInstance sei) {
@@ -170,9 +172,9 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	}
 	
 	@XmlElement(name = "categoryAssignments")
-	@ApiModelProperty(required = true,
+	@Schema(required = true,
 		name = "categoryAssignments",
-		value = "List of the CA beans")
+		description = "List of the CA beans")
 	public void setJaxbCategoryAssignments(List<BeanCategoryAssignment> newCaBeans) {
 		setCategoryAssignments(newCaBeans);
 	}
@@ -256,8 +258,8 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	}
 	
 	@XmlElement(name = "children")
-	@ApiModelProperty(name = "children", required = true,
-		value = "List of the child beans")
+	@Schema(name = "children", required = true,
+			description = "List of the child beans")
 	public void setJaxbChildren(List<BeanStructuralElementInstanceReference> newBeanSeis) {
 		setReferenceList(sei.getChildren(), newBeanSeis);
 	}
@@ -329,8 +331,8 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	}
 
 	@XmlElement(name = "superSeis")
-	@ApiModelProperty(name = "superSeis", required = true,
-		value = "List of the super SEI beans")
+	@Schema(name = "superSeis", required = true,
+			description = "List of the super SEI beans")
 	public void setJaxbSuperSeis(List<BeanStructuralElementInstanceReference> newBeanSeis) {
 		setReferenceList(sei.getSuperSeis(), newBeanSeis);
 	}
@@ -354,8 +356,8 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 
 	@Override
 	@XmlElement(name = "parent", nillable = true)
-	@ApiModelProperty(required = true,
-		value = "Unique identifier for the parent bean",
+	@Schema(requiredMode = RequiredMode.REQUIRED,
+			description = "Unique identifier for the parent bean",
 		example = "b168b0df-84b6-4b7f-bede-69298b215f40")
 	@XmlJavaTypeAdapter(ABeanStructuralElementInstanceAdapter.class)
 	public BeanStructuralElementInstance getParent() {
@@ -444,7 +446,7 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	}
 	
 	@XmlElement(nillable = true)
-	@ApiModelProperty(value = "Uuid of the referenced Discipline that can edit this SEI")
+	@Schema(description = "Uuid of the referenced Discipline that can edit this SEI")
 	@XmlJavaTypeAdapter(BeanDisciplineAdapter.class)
 	@Override
 	public BeanDiscipline getAssignedDiscipline() {

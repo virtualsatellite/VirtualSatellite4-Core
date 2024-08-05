@@ -24,11 +24,11 @@ import org.eclipse.xtext.xbase.lib.Exceptions;
 @SuppressWarnings("all")
 public class GenerateConceptXmi {
   public static final String MODEL_TYPE_XMI_EXTENSION = "xmi";
-  
+
   public static final String CONCEPT_BASE_FILENAME = "concept";
-  
+
   public static final String CONCEPT_XMI_FILENAME = ((GenerateConceptXmi.CONCEPT_BASE_FILENAME + ".") + GenerateConceptXmi.MODEL_TYPE_XMI_EXTENSION);
-  
+
   /**
    * This method serialized the data model into the given format
    * @param fileNameExtension the extension of the target format to serialize to. Can be either XMI or XML for the  moment
@@ -72,7 +72,7 @@ public class GenerateConceptXmi {
       }
     }
   }
-  
+
   public static String getConceptWithVersionName(final Concept concept) {
     final String version = concept.getVersion().replace(".", "_");
     return ((((GenerateConceptXmi.CONCEPT_BASE_FILENAME + "_v") + version) + ".") + GenerateConceptXmi.MODEL_TYPE_XMI_EXTENSION);

@@ -14,12 +14,12 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-
 import java.io.IOException;
 import java.nio.file.Path;
 
 import org.eclipse.jetty.security.HashLoginService;
 import org.eclipse.jetty.security.LoginService;
+import org.eclipse.jetty.util.resource.PathResource;
 import org.eclipse.jetty.util.resource.Resource;
 import org.junit.Test;
 
@@ -40,13 +40,14 @@ public class LoginServiceFactoryTest {
 	public void testHashLoginServiceDefault() throws IOException {
 		// Test default values
 		ServerConfiguration.setLoginServiceClass("org.eclipse.jetty.security.HashLoginService");
-		ServerConfiguration.setAuthPropertiesFile("resources/auth.properties");
+		ServerConfiguration.setAuthPropertiesFileUri("resources/auth.properties");
 		LoginServiceFactory fac = new LoginServiceFactory();
 		LoginService service = fac.getLoginService();
 		
 		assertThat("HashLoginService got returned", service, instanceOf(HashLoginService.class));
-		Resource configResource = Resource.newResource(((HashLoginService) service).getConfig());
-		assertNotNull("Config file is valid", configResource.getFile() != null);
+		Resource configResource = ((HashLoginService) service).getConfig();
+		assertThat("Is URL Resource", configResource, instanceOf(PathResource.class));
+		assertNotNull("Config file is valid", configResource.getPath() != null);
 	}
 	
 	@Test
@@ -57,12 +58,14 @@ public class LoginServiceFactoryTest {
 		customFile.toFile().createNewFile();
 		
 		ServerConfiguration.setLoginServiceClass("org.eclipse.jetty.security.HashLoginService");
-		ServerConfiguration.setAuthPropertiesFile(customFile.toString());
+		ServerConfiguration.setAuthPropertiesFileUri(customFile.toString());
 		LoginServiceFactory fac = new LoginServiceFactory();
 		LoginService service = fac.getLoginService();
 		
 		assertThat("HashLoginService got returned", service, instanceOf(HashLoginService.class));
-		Resource configResource = Resource.newResource(((HashLoginService) service).getConfig());
-		assertEquals("Config file is the desired file", configResource.getFile(), customFile.toFile());
+		Resource configResource = ((HashLoginService) service).getConfig();
+		assertThat("Is URL Resource", configResource, instanceOf(PathResource.class));
+		assertNotNull("Config file is valid", configResource.getPath() != null);
+		assertEquals("Config file is the desired file", configResource.getPath().toString(), customFile.toFile().toString());
 	}
 }

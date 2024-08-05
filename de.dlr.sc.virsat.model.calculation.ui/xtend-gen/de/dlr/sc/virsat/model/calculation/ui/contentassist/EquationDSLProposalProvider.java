@@ -37,7 +37,7 @@ public class EquationDSLProposalProvider extends AbstractEquationDSLProposalProv
       acceptor.accept(this.createCompletionProposal(op, op, null, context));
     }
   }
-  
+
   @Override
   public void completeSetFunction_FilterName(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     super.completeSetFunction_FilterName(model, assignment, context, acceptor);

@@ -56,11 +56,7 @@ public class ConceptActivationHelper {
 	}
 	
 	public ConceptActivationHelper(Concept concept) {
-		if (concept.eContainer() != null && concept.eContainer() instanceof Repository) {
-			this.repository = ((Repository) concept.eContainer());
-		} else {
-			throw new IllegalArgumentException("Concept is not active! Repository for activation cannot be determined!");
-		}
+		this.repository = ((Repository) concept.eContainer());
 	}
 	
 	/**

@@ -9,9 +9,9 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.visualisation.migrator;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.Test;
@@ -113,7 +113,7 @@ public class Migrator1v1Test extends AMigrator1v1Test {
 		migrator.migrate(conceptPrevious, conceptCurrent, conceptNext);
 		
 		APropertyInstance pi = caCurrent.getPropertyInstances().get(0);
-		assertTrue("Property instance has correct type", pi instanceof EnumUnitPropertyInstance);
+		assertThat("Property instance has correct type", pi, instanceOf(EnumUnitPropertyInstance.class));
 		
 		EnumUnitPropertyInstance eupi = (EnumUnitPropertyInstance) pi;
 		assertEquals("Property has been updated correctly", none.getName(), eupi.getValue().getName());

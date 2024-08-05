@@ -26,7 +26,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
+import de.dlr.sc.virsat.model.extension.tests.model.AExtensionConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBeanA;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBeanAbstract;
@@ -42,7 +42,7 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
  * @author fisc_ph
  *
  */
-public class BeanCategoryAssignmentHelperTest extends AConceptTestCase {
+public class BeanCategoryAssignmentHelperTest extends AExtensionConceptTestCase {
 
 	private Concept concept;
 	

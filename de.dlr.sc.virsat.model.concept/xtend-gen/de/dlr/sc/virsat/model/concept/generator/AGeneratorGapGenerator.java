@@ -24,7 +24,7 @@ public abstract class AGeneratorGapGenerator<TYPE extends EObject> implements IG
   public String getPackageFolder(final Concept concept) {
     return this.getPackage(concept).replace(".", "/");
   }
-  
+
   @Override
   public CharSequence createConcreteClass(final Concept concept, final TYPE conceptPart) {
     String _package = this.getPackage(concept);
@@ -47,7 +47,7 @@ public abstract class AGeneratorGapGenerator<TYPE extends EObject> implements IG
     String fileOutputClass = _builder.toString();
     return fileOutputClass;
   }
-  
+
   @Override
   public CharSequence createAbstractClass(final Concept concept, final TYPE conceptPart) {
     String _package = this.getPackage(concept);
@@ -70,14 +70,14 @@ public abstract class AGeneratorGapGenerator<TYPE extends EObject> implements IG
     String fileOutputAClass = _builder.toString();
     return fileOutputAClass;
   }
-  
+
   protected abstract String getPackage(final Concept concept);
-  
+
   protected abstract CharSequence declareImports(final ImportManager importManager, final Concept concept, final TYPE type, final String conceptPackage);
-  
+
   protected abstract CharSequence declarePackage(final String packageId);
-  
+
   protected abstract CharSequence declareClass(final Concept concept, final TYPE type, final ImportManager manager);
-  
+
   protected abstract CharSequence declareAClass(final Concept concept, final TYPE type, final ImportManager manager);
 }

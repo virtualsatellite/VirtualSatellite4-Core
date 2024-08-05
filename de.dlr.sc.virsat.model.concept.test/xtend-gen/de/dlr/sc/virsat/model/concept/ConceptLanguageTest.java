@@ -9,6 +9,7 @@
  */
 package de.dlr.sc.virsat.model.concept;
 
+import com.google.inject.Inject;
 import de.dlr.sc.virsat.model.concept.validation.ConceptLanguageValidator;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
@@ -28,7 +29,6 @@ import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage;
 import de.dlr.sc.virsat.model.dvlm.structural.GeneralRelation;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralPackage;
-import javax.inject.Inject;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.diagnostics.Diagnostic;
 import org.eclipse.xtext.diagnostics.Severity;
@@ -50,16 +50,16 @@ public class ConceptLanguageTest {
   @Inject
   @Extension
   private ValidationTestHelper _validationTestHelper;
-  
+
   @Inject
   @Extension
   private ParseHelper<Concept> _parseHelper;
-  
+
   @Before
   public void setUp() {
     ConceptsPackage.eINSTANCE.eClass();
   }
-  
+
   @Test
   public void testInvalidConcept() {
     try {
@@ -73,7 +73,7 @@ public class ConceptLanguageTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testMinimalValidConcept() {
     try {
@@ -90,7 +90,7 @@ public class ConceptLanguageTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testConceptWithDescription() {
     try {
@@ -107,7 +107,7 @@ public class ConceptLanguageTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testValidImport() {
     try {
@@ -130,7 +130,7 @@ public class ConceptLanguageTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testWildcardImport() {
     try {
@@ -153,7 +153,7 @@ public class ConceptLanguageTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testTwoImports() {
     try {
@@ -183,7 +183,7 @@ public class ConceptLanguageTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testInvalidImport() {
     try {
@@ -204,7 +204,7 @@ public class ConceptLanguageTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testSE() {
     try {
@@ -230,7 +230,7 @@ public class ConceptLanguageTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testSEWithDescription() {
     try {
@@ -252,7 +252,7 @@ public class ConceptLanguageTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testSERoot() {
     try {
@@ -271,7 +271,7 @@ public class ConceptLanguageTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testSEApplicableFor() {
     try {
@@ -300,7 +300,7 @@ public class ConceptLanguageTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testSEInheritsFrom() {
     try {
@@ -329,7 +329,7 @@ public class ConceptLanguageTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testSEApplicableForInvalidReference() {
     try {
@@ -347,7 +347,7 @@ public class ConceptLanguageTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testSEApplicableForSeveral() {
     try {
@@ -373,7 +373,7 @@ public class ConceptLanguageTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testGeneralRelation() {
     try {
@@ -413,7 +413,7 @@ public class ConceptLanguageTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testInvalidRelation() {
     try {
@@ -435,7 +435,7 @@ public class ConceptLanguageTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCategory() {
     try {
@@ -459,7 +459,7 @@ public class ConceptLanguageTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testComposedProperty() {
     try {
@@ -494,7 +494,7 @@ public class ConceptLanguageTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testReferenceProperty() {
     try {
@@ -529,7 +529,7 @@ public class ConceptLanguageTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testIntProperty() {
     try {
@@ -563,7 +563,7 @@ public class ConceptLanguageTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testFloatProperty() {
     try {
@@ -597,7 +597,7 @@ public class ConceptLanguageTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testStringProperty() {
     try {
@@ -631,7 +631,7 @@ public class ConceptLanguageTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testBooleanProperty() {
     try {
@@ -665,11 +665,11 @@ public class ConceptLanguageTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testEnumProperty() {
   }
-  
+
   @Test
   public void testStaticArrayProperty() {
     try {
@@ -702,7 +702,7 @@ public class ConceptLanguageTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testStaticArrayInvalidSize() {
     try {
@@ -729,7 +729,7 @@ public class ConceptLanguageTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testDynamicArrayProperty() {
     try {
@@ -757,7 +757,7 @@ public class ConceptLanguageTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testTwoCategories() {
     try {
@@ -787,7 +787,7 @@ public class ConceptLanguageTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testDuplicateCategoryNames() {
     try {
@@ -813,7 +813,7 @@ public class ConceptLanguageTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCategoryWithTwoProperties() {
     try {
@@ -852,7 +852,7 @@ public class ConceptLanguageTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testDuplicatePropertyNames() {
     try {
@@ -884,7 +884,7 @@ public class ConceptLanguageTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testDefaultIntValue() {
     try {
@@ -915,7 +915,7 @@ public class ConceptLanguageTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testDefaultBoolValue() {
     try {
@@ -946,7 +946,7 @@ public class ConceptLanguageTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testDefaultValueForArrayPropertyProducesInfo() {
     try {

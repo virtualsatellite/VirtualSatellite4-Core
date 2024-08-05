@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.Status;
 import de.dlr.sc.virsat.model.extension.visualisation.Activator;
 import de.dlr.sc.virsat.model.extension.visualisation.ui.calculations.CalculateColor;
 import de.dlr.sc.visproto.VisProto.SceneGraphNode;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import vtk.vtkActor;
 import vtk.vtkAxesActor;
 import vtk.vtkCamera;
@@ -41,9 +42,12 @@ import vtk.vtkTransform;
 /**
  * VtkManager is responsible for the visualization part
  */
+@SuppressFBWarnings(
+		justification = "The serilization problem cannot eb avoided. Neverthless the interface is just inherited. The class itself does not gets erialized",
+		value = "SING_SINGLETON_IMPLEMENTS_SERIALIZABLE"
+)
 public class VtkTreeManager extends vtkPanel {
 	
-	private Activator activator = new Activator();
 	private Map<String, vtkPolyDataAlgorithm> sourceMap = new HashMap<String, vtkPolyDataAlgorithm>();
 	private Map<String, vtkPolyDataMapper> mapperMap = new HashMap<String, vtkPolyDataMapper>();
 	private Map<String, ActorVtk> actorMap = new HashMap<String, ActorVtk>();
@@ -117,7 +121,7 @@ public class VtkTreeManager extends vtkPanel {
 	 * @param parent Parent vtk node
 	 */
 	private void create(SceneGraphNode node, ActorVtk parent) {
-		activator.getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Creating " + node.getID(), null));
+		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Creating " + node.getID(), null));
 		ActorVtk newObject = new ActorVtk(node.getID());
 		if (node.hasBox()) {
 			newObject = createBox(node, parent);
@@ -593,7 +597,7 @@ public class VtkTreeManager extends vtkPanel {
 			// remove all outdates Nodes
 			if (!protoNodeMap.containsKey(entry.getKey())) {
 				String id = entry.getKey();
-				activator.getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Unregister Node " + id, null));
+				Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Unregister Node " + id, null));
 				ActorVtk actor = entry.getValue();
 				deleteNodeFromSceneGraph(actor);
 				sourceMap.remove(id);
@@ -656,7 +660,7 @@ public class VtkTreeManager extends vtkPanel {
 			}
 
 		} else { /* Node was not found */
-			activator.getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Node " + node.getID() + "not found in map. Creating...", null));
+			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "Node " + node.getID() + "not found in map. Creating...", null));
 			create(node, parent);
 		}
 	}

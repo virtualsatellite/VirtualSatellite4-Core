@@ -1,9 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<feature
-      id="de.dlr.sc.virsat.license.feature"
-      label="VirSat Core License Feature"
-      version="4.16.0.qualifier"
-      provider-name="DLR (German Aerospace Center)">
+<feature id="de.dlr.sc.virsat.license.feature" label="VirSat Core License Feature" version="4.16.0.qualifier" provider-name="DLR (German Aerospace Center)">
 
    <description>
       CORE License Feature

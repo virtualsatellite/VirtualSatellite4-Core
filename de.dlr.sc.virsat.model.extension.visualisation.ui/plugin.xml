@@ -468,14 +468,6 @@
           name="3D Viewer"
           restorable="true">
     </view>
-    <view
-          category="de.dlr.sc.virsat.project.ui.view.catgeory.virsat.core"
-          class="de.dlr.sc.virsat.model.extension.visualisation.ui.DebugClientView"
-          icon="resources/icons/3d_debug.png"
-          id="de.dlr.sc.virsat.model.extension.visualisation.ui.proto.debug.view"
-          name="3D Protocol Debug Viewer"
-          restorable="true">
-    </view>
  </extension>
  <extension
          point="org.eclipse.ui.navigator.navigatorContent">

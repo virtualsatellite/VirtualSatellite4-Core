@@ -15,7 +15,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.PropertydefinitionsPackage
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage
-import javax.inject.Inject
+import com.google.inject.Inject
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.XtextRunner
 import org.eclipse.xtext.testing.util.ParseHelper

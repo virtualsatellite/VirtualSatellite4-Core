@@ -19,6 +19,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.instanceOf;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -125,7 +127,7 @@ public class CategoryInstantiatorTest {
 		assertEquals("There is one propery instance in the generated category assignment", 1, generatedCa.getPropertyInstances().size());
 
 		APropertyInstance propertyInstance = generatedCa.getPropertyInstances().get(0);
-		assertTrue("PropertyInstance is UnitValuePropertyInstance", propertyInstance instanceof UnitValuePropertyInstance);
+		assertThat("PropertyInstance is UnitValuePropertyInstance", propertyInstance, instanceOf(UnitValuePropertyInstance.class));
 		assertEquals("PropertyInstance is correctly typed by int property", intProperty, propertyInstance.getType());
 	}
 
@@ -137,7 +139,7 @@ public class CategoryInstantiatorTest {
 		assertEquals("There is one propery instance in the generated category assignment", 1, generatedCa.getPropertyInstances().size());
 
 		APropertyInstance propertyInstance = generatedCa.getPropertyInstances().get(0);
-		assertTrue("PropertyInstance is UnitValuePropertyInstance", propertyInstance instanceof UnitValuePropertyInstance);
+		assertThat("PropertyInstance is UnitValuePropertyInstance", propertyInstance, instanceOf(UnitValuePropertyInstance.class));
 		assertEquals("PropertyInstance is correctly typed by float property", floatProperty, propertyInstance.getType());
 	}
 	
@@ -150,7 +152,7 @@ public class CategoryInstantiatorTest {
 		assertEquals("There is one propery instance in the generated category assignment", 1, generatedCa.getPropertyInstances().size());
 
 		APropertyInstance propertyInstance = generatedCa.getPropertyInstances().get(0);
-		assertTrue("PropertyInstance is UnitValuePropertyInstance", propertyInstance instanceof ResourcePropertyInstance);
+		assertThat("PropertyInstance is UnitValuePropertyInstance", propertyInstance, instanceOf(ResourcePropertyInstance.class));
 		assertEquals("PropertyInstance is correctly typed by float property", resourceProperty, propertyInstance.getType());
 	}
 
@@ -163,7 +165,7 @@ public class CategoryInstantiatorTest {
 		assertEquals("There is one propery instance in the generated category assignment", 1, generatedCa.getPropertyInstances().size());
 
 		APropertyInstance propertyInstance = generatedCa.getPropertyInstances().get(0);
-		assertTrue("PropertyInstance is ValuePropertyInstance", propertyInstance instanceof ValuePropertyInstance);
+		assertThat("PropertyInstance is ValuePropertyInstance", propertyInstance, instanceOf(ValuePropertyInstance.class));
 		assertEquals("PropertyInstance is correctly typed by string property", stringProperty, propertyInstance.getType());
 	}
 
@@ -175,7 +177,7 @@ public class CategoryInstantiatorTest {
 		assertEquals("There is one propery instance in the generated category assignment", 1, generatedCa.getPropertyInstances().size());
 
 		APropertyInstance propertyInstance = generatedCa.getPropertyInstances().get(0);
-		assertTrue("PropertyInstance is ValuePropertyInstance", propertyInstance instanceof ValuePropertyInstance);
+		assertThat("PropertyInstance is ValuePropertyInstance", propertyInstance, instanceOf(ValuePropertyInstance.class));
 		assertEquals("PropertyInstance is correctly typed by boolean property", boolProperty, propertyInstance.getType());
 	}
 
@@ -210,7 +212,7 @@ public class CategoryInstantiatorTest {
 		assertEquals("There is one propery instance in the generated category assignment", 1, generatedCa.getPropertyInstances().size());
 
 		APropertyInstance propertyInstance = generatedCa.getPropertyInstances().get(0);
-		assertTrue("PropertyInstance is ValuePropertyInstance", propertyInstance instanceof EnumUnitPropertyInstance);
+		assertThat("PropertyInstance is ValuePropertyInstance", propertyInstance, instanceOf(EnumUnitPropertyInstance.class));
 		assertEquals("PropertyInstance is correctly typed by enum property", enumProperty, propertyInstance.getType());
 		
 		EnumUnitPropertyInstance enumUnitPropertyInstance = (EnumUnitPropertyInstance) propertyInstance;
@@ -239,8 +241,8 @@ public class CategoryInstantiatorTest {
 			propertyInstanceTwo = tmp;
 		}
 
-		assertTrue("PropertyInstances have correct linguistical type", propertyInstanceOne instanceof UnitValuePropertyInstance);
-		assertTrue("PropertyInstances have correct linguistical type", propertyInstanceTwo instanceof ValuePropertyInstance);
+		assertThat("PropertyInstances have correct linguistical type", propertyInstanceOne, instanceOf(UnitValuePropertyInstance.class));
+		assertThat("PropertyInstances have correct linguistical type", propertyInstanceTwo, instanceOf(ValuePropertyInstance.class));
 		assertEquals("PropertyInstances are correctly typed by corresponding properties", intProperty, propertyInstanceOne.getType());
 		assertEquals("PropertyInstances are correctly typed by corresponding properties", stringProperty, propertyInstanceTwo.getType());
 	}
@@ -260,7 +262,7 @@ public class CategoryInstantiatorTest {
 		assertEquals("There is one propery instance in the generated category assignment", 1, generatedCa.getPropertyInstances().size());
 
 		APropertyInstance propertyInstance = generatedCa.getPropertyInstances().get(0);
-		assertTrue("PropertyInstance is ComposedPropertyInstance", propertyInstance instanceof ComposedPropertyInstance);
+		assertThat("PropertyInstance is ComposedPropertyInstance", propertyInstance, instanceOf(ComposedPropertyInstance.class));
 		assertEquals("PropertyInstance is correctly typed by composed property", composedProperty, propertyInstance.getType());
 
 		CategoryAssignment containedCA = (CategoryAssignment) ((ComposedPropertyInstance) propertyInstance).getTypeInstance();
@@ -421,7 +423,7 @@ public class CategoryInstantiatorTest {
 		
 		assertEquals("The Array contains correct amount of instances", ARRAY_SIZE_FIVE, arrayInstance.getArrayInstances().size());
 		arrayInstance.getArrayInstances().forEach((typeInstance) -> {
-			assertTrue("typeInstance is of correct Class", typeInstance instanceof UnitValuePropertyInstance);
+			assertThat("typeInstance is of correct Class", typeInstance, instanceOf(UnitValuePropertyInstance.class));
 			assertTrue("type of type Instance is correct", typeInstance.getType().equals(staticfloatArrayProperty));
 		});
 	}
@@ -464,7 +466,7 @@ public class CategoryInstantiatorTest {
 		
 		assertEquals("The Array contains correct amount of instances", ARRAY_SIZE_TWO, arrayInstance.getArrayInstances().size());
 		arrayInstance.getArrayInstances().forEach((typeInstance) -> {
-			assertTrue("typeInstance is of correct Class", typeInstance instanceof UnitValuePropertyInstance);
+			assertThat("typeInstance is of correct Class", typeInstance, instanceOf(UnitValuePropertyInstance.class));
 			assertTrue("type of type Instance is correct", typeInstance.getType().equals(dynamicFloatArrayProperty));
 			
 			UnitValuePropertyInstance uvpi = (UnitValuePropertyInstance) typeInstance;
@@ -496,7 +498,7 @@ public class CategoryInstantiatorTest {
 		
 		assertEquals("The Array contains correct amount of instances", ARRAY_SIZE_FIVE, arrayInstance.getArrayInstances().size());
 		arrayInstance.getArrayInstances().forEach((typeInstance) -> {
-			assertTrue("typeInstance is of correct Class", typeInstance instanceof ReferencePropertyInstance);
+			assertThat("typeInstance is of correct Class", typeInstance, instanceOf(ReferencePropertyInstance.class));
 			assertNull("no reference set to other instances", ((ReferencePropertyInstance) typeInstance).getReference());
 			assertTrue("type of type Instance is correct", typeInstance.getType().equals(staticRefArrayProperty));
 		});
@@ -528,7 +530,7 @@ public class CategoryInstantiatorTest {
 		
 		assertEquals("The Array contains correct amount of instances", ARRAY_SIZE_TWO, arrayInstance.getArrayInstances().size());
 		arrayInstance.getArrayInstances().forEach((typeInstance) -> {
-			assertTrue("typeInstance is of correct Class", typeInstance instanceof ReferencePropertyInstance);
+			assertThat("typeInstance is of correct Class", typeInstance, instanceOf(ReferencePropertyInstance.class));
 			assertNull("no reference set to other instances", ((ReferencePropertyInstance) typeInstance).getReference());
 			assertTrue("type of type Instance is correct", typeInstance.getType().equals(dynamicRefArrayProperty));
 		});
@@ -594,12 +596,12 @@ public class CategoryInstantiatorTest {
 		assertEquals("The Array contains correct amount of instances", ARRAY_SIZE_TWO, arrayInstance.getArrayInstances().size());
 		arrayInstance.getArrayInstances().forEach((typeInstance) -> {
 			// First make sure that the array contains composed property instances
-			assertTrue("typeInstance is of correct Class", typeInstance instanceof ComposedPropertyInstance);
+			assertThat("typeInstance is of correct Class", typeInstance, instanceOf(ComposedPropertyInstance.class));
 			assertTrue("type of typeInstance is correct", typeInstance.getType().equals(composedPropertyPoints));
 			
 			// then make sure that this Composed Property instances point to the new category assignment
 			ComposedPropertyInstance cpi = (ComposedPropertyInstance) typeInstance;
-			assertTrue("Instantiated Type of Composed Proeprty Instance is correct", cpi.getTypeInstance() instanceof CategoryAssignment);
+			assertThat("Instantiated Type of Composed Proeprty Instance is correct", cpi.getTypeInstance(), instanceOf(CategoryAssignment.class));
 			assertTrue("Category Assignment of ComposedProperty is correct", cpi.getTypeInstance().getType().equals(categoryXY));
 		});	
 	}
@@ -632,12 +634,12 @@ public class CategoryInstantiatorTest {
 		assertEquals("The Array contains correct amount of instances", ARRAY_SIZE_TWO, arrayInstance.getArrayInstances().size());
 		arrayInstance.getArrayInstances().forEach((typeInstance) -> {
 			// First make sure that the array contains composed property instances
-			assertTrue("typeInstance is of correct Class", typeInstance instanceof ComposedPropertyInstance);
+			assertThat("typeInstance is of correct Class", typeInstance, instanceOf(ComposedPropertyInstance.class));
 			assertTrue("type of typeInstance is correct", typeInstance.getType().equals(composedPropertyPoints));
 			
 			// Then make sure that this Composed Property instances point to the new category assignment
 			ComposedPropertyInstance cpi = (ComposedPropertyInstance) typeInstance;
-			assertTrue("Instantiated Type of Composed Proeprty Instance is correct", cpi.getTypeInstance() instanceof CategoryAssignment);
+			assertThat("Instantiated Type of Composed Proeprty Instance is correct", cpi.getTypeInstance(), instanceOf(CategoryAssignment.class));
 			assertTrue("Category Assignment of ComposedProperty is correct", cpi.getTypeInstance().getType().equals(categoryXY));
 		});
 	}

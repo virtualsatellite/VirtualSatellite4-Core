@@ -4,11 +4,12 @@ Bundle-Name: VirSat Core Project Resources Test
 Bundle-SymbolicName: de.dlr.sc.virsat.project.test;singleton:=true
 Bundle-Version: 4.16.0.qualifier
 Fragment-Host: de.dlr.sc.virsat.project
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: org.junit,
  org.eclipse.emf.ecore,
  org.hamcrest.library,
- org.eclipse.emf.common
+ org.eclipse.emf.common,
+ de.dlr.sc.virsat.external.lib.spotbugs
 Export-Package: de.dlr.sc.virsat.project.test
 Automatic-Module-Name: de.dlr.sc.virsat.project.test

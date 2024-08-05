@@ -9,9 +9,9 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.provider;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-
 import org.eclipse.emf.common.notify.Adapter;
 import org.junit.Test;
 
@@ -28,7 +28,7 @@ public class DVLMPropertydefinitionsItemProviderAdapterFactoryTest {
 		DVLMPropertydefinitionsItemProviderAdapterFactory dvlmPiipaf = new  DVLMPropertydefinitionsItemProviderAdapterFactory();
 		Adapter createdAdapter = dvlmPiipaf.createEnumValueDefinitionAdapter();
 		
-		assertTrue("The received Adapter is the right one", createdAdapter instanceof DVLMEnumValueDefinitionItemProvider);
+		assertThat("The received Adapter is the right one", createdAdapter, instanceOf(DVLMEnumValueDefinitionItemProvider.class));
 		
 		Adapter createdAdapter2 = dvlmPiipaf.createEnumValueDefinitionAdapter();
 		

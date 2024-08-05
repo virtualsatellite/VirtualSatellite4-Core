@@ -28,7 +28,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 public class GeneratePluginXml {
   @Accessors
   private PluginXmlReader pluginXmlReader;
-  
+
   public void serializeModel(final Concept concept, final PluginXmlReader pluginXmlReader, final IFileSystemAccess fsa) {
     this.pluginXmlReader = pluginXmlReader;
     final String fileName = "plugin.xml";
@@ -37,7 +37,7 @@ public class GeneratePluginXml {
     final String Folder = (("../../" + plugin) + "/");
     fsa.generateFile((Folder + fileName), ConceptOutputConfigurationProvider.GENERATOR_OUTPUT_ID_SOURCE, fileOutput);
   }
-  
+
   public void serializeModelDeprecatedValidator(final Concept concept, final PluginXmlReader pluginXmlReader, final IFileSystemAccess fsa) {
     this.pluginXmlReader = pluginXmlReader;
     final String fileName = "plugin.xml";
@@ -46,7 +46,7 @@ public class GeneratePluginXml {
     final String Folder = (("../../" + plugin) + "/");
     fsa.generateFile((Folder + fileName), ConceptOutputConfigurationProvider.GENERATOR_OUTPUT_ID_SOURCE, fileOutput);
   }
-  
+
   public CharSequence createXml(final Concept concept, final String plugin) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
@@ -91,7 +91,7 @@ public class GeneratePluginXml {
     _builder.newLine();
     return _builder;
   }
-  
+
   public CharSequence createXmlDeprecatedValidator(final Concept concept, final String plugin) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
@@ -140,7 +140,7 @@ public class GeneratePluginXml {
     _builder.newLine();
     return _builder;
   }
-  
+
   public CharSequence declareConceptRegistryExtension(final Concept concept) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("<extension point=\"de.dlr.sc.virsat.model.Concept\">");
@@ -170,7 +170,7 @@ public class GeneratePluginXml {
     _builder.newLine();
     return _builder;
   }
-  
+
   public CharSequence declareDvlmValidatorExtension(final Concept concept) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("<extension point=\"de.dlr.sc.virsat.model.DvlmValidator\">");
@@ -208,7 +208,7 @@ public class GeneratePluginXml {
     _builder.newLine();
     return _builder;
   }
-  
+
   public CharSequence declareDvlmDeprecatedValidatorExtension(final Concept concept) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("<extension point=\"de.dlr.sc.virsat.model.DvlmValidator\">");
@@ -243,7 +243,7 @@ public class GeneratePluginXml {
     _builder.newLine();
     return _builder;
   }
-  
+
   public CharSequence declareConceptMigratorExtensions(final Concept concept, final String plugin) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("\t");
@@ -270,7 +270,7 @@ public class GeneratePluginXml {
     _builder.newLineIfNotEmpty();
     return _builder;
   }
-  
+
   public CharSequence declareConceptMigratorExtension(final Concept concept) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("<extension point=\"de.dlr.sc.virsat.model.edit.ConceptMigrator\">");
@@ -314,7 +314,7 @@ public class GeneratePluginXml {
     _builder.newLine();
     return _builder;
   }
-  
+
   public CharSequence declareConceptCaBeanRegistration(final Concept concept) {
     StringConcatenation _builder = new StringConcatenation();
     {
@@ -357,7 +357,7 @@ public class GeneratePluginXml {
     }
     return _builder;
   }
-  
+
   public CharSequence declareConceptSeiBeanRegistration(final Concept concept) {
     StringConcatenation _builder = new StringConcatenation();
     {
@@ -400,12 +400,12 @@ public class GeneratePluginXml {
     }
     return _builder;
   }
-  
+
   @Pure
   public PluginXmlReader getPluginXmlReader() {
     return this.pluginXmlReader;
   }
-  
+
   public void setPluginXmlReader(final PluginXmlReader pluginXmlReader) {
     this.pluginXmlReader = pluginXmlReader;
   }

@@ -9,8 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.property;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.SetCommand;
@@ -24,8 +24,9 @@ import de.dlr.sc.virsat.model.dvlm.json.DoubleAdapter;
 import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.SystemOfUnits;
 import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
-import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiModelProperty.AccessMode;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
+
 
 /**
  * Class to wrap FloatPropertyInstances
@@ -63,7 +64,7 @@ public class BeanPropertyFloat extends ABeanUnitValueProperty<Double> {
 	
 	@XmlJavaTypeAdapter(DoubleAdapter.class)
 	@XmlElement(nillable = true)
-	@ApiModelProperty(value = "Double")
+	@Schema(description = "Double")
 	@Override
 	public Double getValue() {
 		try {
@@ -138,8 +139,8 @@ public class BeanPropertyFloat extends ABeanUnitValueProperty<Double> {
 		return QudvUnitHelper.getInstance().convertFromSourceToTargetUnit(sourceUnit, sourceValue, targetUnit);
 	}
 	
-	@ApiModelProperty(
-			value = "Always returns constant: \"float\"", 
+	@Schema(
+			description = "Always returns constant: \"float\"", 
 			example = "float",
 			accessMode = AccessMode.READ_ONLY)
 	@Override

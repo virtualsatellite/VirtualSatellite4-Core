@@ -1,41 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-container-jetty-http-3.1.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-test-framework-provider-jetty-3.1.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jetty-ee10-servlet-12.0.6.jar" sourcepath="externalLib/maven/jetty-ee10-servlet-12.0.6-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jakarta.servlet-api-6.0.0.jar" sourcepath="externalLib/maven/jakarta.servlet-api-6.0.0-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-test-framework-core-3.1.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/angus-mail-2.0.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/aopalliance-repackaged-3.0.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/asm-9.7.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/byte-buddy-1.14.9.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/hk2-api-3.0.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/hk2-locator-3.0.6.jar" sourcepath="externalLib/maven/hk2-locator-3.0.6-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/hk2-utils-3.0.6.jar" sourcepath="externalLib/maven/hk2-utils-3.0.6-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jackson-annotations-2.17.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jackson-core-2.17.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jackson-databind-2.17.0.jar" sourcepath="externalLib/maven/jackson-databind-2.17.0-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jackson-module-jakarta-xmlbind-annotations-2.17.0.jar" sourcepath="externalLib/maven/jackson-module-jakarta-xmlbind-annotations-2.17.0-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jakarta.activation-api-2.1.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jakarta.annotation-api-2.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jakarta.inject-api-2.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jakarta.json.bind-api-3.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jakarta.json-api-2.1.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jakarta.mail-api-2.1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jakarta.validation-api-3.0.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jakarta.ws.rs-api-3.1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jakarta.xml.bind-api-4.0.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/javassist-3.30.2-GA.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-client-3.1.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-common-3.1.6.jar" sourcepath="externalLib/maven/jersey-common-3.1.6-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-container-servlet-3.1.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-container-servlet-core-3.1.6.jar" sourcepath="externalLib/maven/jersey-container-servlet-core-3.1.6-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-entity-filtering-3.1.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-hk2-3.1.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-media-jaxb-3.1.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-media-json-jackson-3.1.6.jar" sourcepath="externalLib/maven/jersey-media-json-jackson-3.1.6-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-media-moxy-3.1.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-server-3.1.6.jar" sourcepath="externalLib/maven/jersey-server-3.1.6-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/org.eclipse.persistence.asm-9.5.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/org.eclipse.persistence.core-4.0.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/org.eclipse.persistence.moxy-4.0.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/osgi-resource-locator-1.0.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/parsson-1.1.5.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/javax.servlet-api.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-container-jetty-http.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-test-framework-provider-jetty.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/jetty-continuation.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/jetty-http.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/jetty-io.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/jetty-server.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/jetty-util.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/jakarta.servlet-api.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-test-framework-core.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/aopalliance-repackaged.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/hk2-api.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/hk2-locator.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/hk2-utils.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/jakarta.annotation-api.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/jakarta.inject.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/jakarta.json-api.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/jakarta.json.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/jakarta.validation-api.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/jakarta.ws.rs-api.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/javassist.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-client.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-common.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-container-servlet-core.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-container-servlet.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-entity-filtering.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-hk2.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-media-jaxb.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-media-moxy.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/jersey-server.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/org.eclipse.persistence.asm.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/org.eclipse.persistence.core.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/org.eclipse.persistence.moxy.jar"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/osgi-resource-locator.jar"/>
-	<classpathentry kind="src" path="src/"/>
+	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

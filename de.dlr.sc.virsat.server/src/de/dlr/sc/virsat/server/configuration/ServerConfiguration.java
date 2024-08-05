@@ -86,19 +86,19 @@ public class ServerConfiguration {
 		properties.setProperty(LOGIN_SERIVE_CLASS_KEY, loginServiceClass);
 	}
 	
-	public static String getAuthPropertiesFile() {
-		return getConfigFilePath(AUTH_PROPERTIES_FILE_KEY);
+	public static String getAuthPropertiesFileUri() {
+		return getConfigFileUri(AUTH_PROPERTIES_FILE_KEY);
 	}
 	
-	public static void setAuthPropertiesFile(String authPropertiesFile) {
+	public static void setAuthPropertiesFileUri(String authPropertiesFile) {
 		properties.setProperty(AUTH_PROPERTIES_FILE_KEY, authPropertiesFile);
 	}
 	
-	public static String getHttpsKeystorePath() {
-		return getConfigFilePath(HTTPS_KEYSTORE_PATH);
+	public static String getHttpsKeystoreFileUri() {
+		return getConfigFileUri(HTTPS_KEYSTORE_PATH);
 	}
 	
-	public static void setHttpsKeystorePath(String httpsKeystorePath) {
+	public static void setHttpsKeystoreFileUri(String httpsKeystorePath) {
 		properties.setProperty(HTTPS_KEYSTORE_PATH, httpsKeystorePath);
 	}
 	
@@ -152,22 +152,27 @@ public class ServerConfiguration {
 
 
 	/**
-	 * Get the path of property or try to resolve it
+	 * Get a config file for a given configuration key.
+	 * Tries to resolve the file first locally. If not possible,
+	 * the file will be resolved from the bundle, copied to a temporary cache
+	 * and then returned as a File Uri
 	 * @param key of the property
 	 * @return valid path to the property or null
 	 */
-	private static String getConfigFilePath(String key) {
+	private static String getConfigFileUri(String key) {
 		String filePath = null;
 		String filePathFromKey = properties.getProperty(key);
 		
 		// Only resolve if the file name is not null or empty
 		if (filePathFromKey != null && !filePathFromKey.isEmpty()) {
 			// Check if the file exists, else try to resolve it in the bundle
-			if (new File(filePathFromKey).exists()) {
-				filePath = filePathFromKey;
+			File configFile = new File(filePathFromKey);
+			boolean fileExists = configFile.exists();
+			if (fileExists) {
+				filePath = configFile.toURI().toString();
 			} else {
 				Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), Status.WARNING, "No valid " + key + " provided, trying to resolve it in the bundle", null));
-				filePath = getResolvedFile(filePathFromKey);
+				filePath = Activator.getDefault().extractResourceFromBundle(filePathFromKey);
 			}
 		} else {
 			Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), Status.WARNING, key + " is empty or null", null));
@@ -176,17 +181,4 @@ public class ServerConfiguration {
 		return filePath;
 	}
 	
-	/**
-	 * Try to resolve the file path in the bundle
-	 * @return the file path in the bundle or null
-	 */
-	private static String getResolvedFile(String path) {
-		try {
-			return Activator.getDefault().resolveBundlePath(path);
-		} catch (IOException e) {
-			Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), Status.ERROR, "Could not resolve " + path, e));
-		}
-		return null;
-	}
-
 }

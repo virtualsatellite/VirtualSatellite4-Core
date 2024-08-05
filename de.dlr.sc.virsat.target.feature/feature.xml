@@ -1,10 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<feature
-      id="de.dlr.sc.virsat.target.feature"
-      label="VirSat Core Target Feature"
-      version="4.16.0.qualifier"
-      provider-name="DLR (German Aerospace Center)"
-      license-feature="de.dlr.sc.virsat.license.feature">
+<feature id="de.dlr.sc.virsat.target.feature" label="VirSat Core Target Feature" version="4.16.0.qualifier" provider-name="DLR (German Aerospace Center)" license-feature="de.dlr.sc.virsat.license.feature">
 
    <description>
       This feature contains the target platform information to enable target platform inheritance for VirSat extensions.
@@ -19,19 +13,12 @@ by German Aerospace Center (DLR e.V.)
       %license
    </license>
 
-   <includes
-         id="de.dlr.sc.virsat.license.feature"
-         version="0.0.0"/>
+   <includes id="de.dlr.sc.virsat.license.feature" version="0.0.0" />
 
    <requires>
-      <import feature="de.dlr.sc.virsat.license.feature" version="0.0.0" match="greaterOrEqual"/>
+      <import feature="de.dlr.sc.virsat.license.feature" />
    </requires>
 
-   <plugin
-         id="de.dlr.sc.virsat.target"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+   <plugin id="de.dlr.sc.virsat.target" download-size="0" install-size="0" version="0.0.0" unpack="false" />
 
 </feature>

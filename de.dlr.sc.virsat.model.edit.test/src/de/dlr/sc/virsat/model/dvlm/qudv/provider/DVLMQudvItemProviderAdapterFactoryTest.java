@@ -9,9 +9,9 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.dvlm.qudv.provider;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-
 import org.eclipse.emf.common.notify.Adapter;
 import org.junit.Test;
 
@@ -28,7 +28,7 @@ public class DVLMQudvItemProviderAdapterFactoryTest {
 		DVLMQudvItemProviderAdapterFactory dvlmQipaf = new DVLMQudvItemProviderAdapterFactory();
 		Adapter createdAdapter = dvlmQipaf.createSystemOfQuantitiesAdapter();
 		
-		assertTrue("The received Adapter is the right one", createdAdapter instanceof DVLMSystemOfQuantitiesItemProvider);
+		assertThat("The received Adapter is the right one", createdAdapter, instanceOf(DVLMSystemOfQuantitiesItemProvider.class));
 		
 		Adapter createdAdapter2 = dvlmQipaf.createSystemOfQuantitiesAdapter();
 		

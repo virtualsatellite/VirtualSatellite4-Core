@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Virtual Satellite 4 - Headless Server" uid="de.dlr.virsat.server.product" application="de.dlr.sc.virsat.server.application" version="4.16.0.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="Virtual Satellite 4 - Headless Server" uid="de.dlr.virsat.server.product" application="de.dlr.sc.virsat.server.application" version="4.16.0.qualifier" type="features" includeLaunchers="true" autoIncludeRequirements="true">
 
    <configIni use="default">
    </configIni>
@@ -9,6 +9,19 @@
    <launcherArgs>
       <programArgs>-consoleLog -console
       </programArgs>
+      <vmArgs>-Dosgi.requiredJavaVersion=17
+-Dosgi.instance.area.default=@user.home/eclipse-workspace
+-Dosgi.dataAreaRequiresExplicitInit=true
+-Dorg.eclipse.swt.graphics.Resource.reportNonDisposed=true
+-Declipse.e4.inject.jakarta.warning=false
+-Dsun.java.command=VirSat4_Server
+-Xms256m
+-Xmx2048m
+-XX:+UseG1GC
+-XX:+UseStringDeduplication
+--add-modules=ALL-SYSTEM
+-Djava.security.manager=allow
+      </vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
       </vmArgsMac>
    </launcherArgs>
@@ -23,23 +36,23 @@
    </launcher>
 
    <vm>
-      <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11</windows>
+      <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17</windows>
    </vm>
 
    <plugins>
       <plugin id="de.dlr.sc.virsat.apps"/>
-      <plugin id="de.dlr.sc.virsat.apps.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.apps.test"/>
       <plugin id="de.dlr.sc.virsat.apps.ui"/>
       <plugin id="de.dlr.sc.virsat.branding.ui"/>
       <plugin id="de.dlr.sc.virsat.build"/>
-      <plugin id="de.dlr.sc.virsat.build.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.build.test"/>
       <plugin id="de.dlr.sc.virsat.build.ui"/>
       <plugin id="de.dlr.sc.virsat.commons"/>
-      <plugin id="de.dlr.sc.virsat.commons.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.commons.test"/>
       <plugin id="de.dlr.sc.virsat.commons.ui"/>
       <plugin id="de.dlr.sc.virsat.concept.unittest.util"/>
       <plugin id="de.dlr.sc.virsat.excel"/>
-      <plugin id="de.dlr.sc.virsat.excel.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.excel.test"/>
       <plugin id="de.dlr.sc.virsat.excel.ui"/>
       <plugin id="de.dlr.sc.virsat.external.lib"/>
       <plugin id="de.dlr.sc.virsat.external.lib.apache.poi"/>
@@ -57,68 +70,68 @@
       <plugin id="de.dlr.sc.virsat.external.lib.zmq.linux.x86_64"/>
       <plugin id="de.dlr.sc.virsat.external.lib.zmq.win32.x86_64"/>
       <plugin id="de.dlr.sc.virsat.graphiti"/>
-      <plugin id="de.dlr.sc.virsat.graphiti.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.graphiti.test"/>
       <plugin id="de.dlr.sc.virsat.graphiti.ui"/>
       <plugin id="de.dlr.sc.virsat.javadoc.api"/>
       <plugin id="de.dlr.sc.virsat.model"/>
       <plugin id="de.dlr.sc.virsat.model.calculation"/>
       <plugin id="de.dlr.sc.virsat.model.calculation.ide"/>
-      <plugin id="de.dlr.sc.virsat.model.calculation.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.model.calculation.test"/>
       <plugin id="de.dlr.sc.virsat.model.calculation.ui"/>
       <plugin id="de.dlr.sc.virsat.model.concept"/>
       <plugin id="de.dlr.sc.virsat.model.concept.ide"/>
-      <plugin id="de.dlr.sc.virsat.model.concept.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.model.concept.test"/>
       <plugin id="de.dlr.sc.virsat.model.concept.ui"/>
       <plugin id="de.dlr.sc.virsat.model.edit"/>
-      <plugin id="de.dlr.sc.virsat.model.edit.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.model.edit.test"/>
       <plugin id="de.dlr.sc.virsat.model.extension..ui"/>
       <plugin id="de.dlr.sc.virsat.model.extension.budget.mass"/>
-      <plugin id="de.dlr.sc.virsat.model.extension.budget.mass.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.budget.mass.test"/>
       <plugin id="de.dlr.sc.virsat.model.extension.budget.mass.ui"/>
       <plugin id="de.dlr.sc.virsat.model.extension.budget.power"/>
-      <plugin id="de.dlr.sc.virsat.model.extension.budget.power.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.budget.power.test"/>
       <plugin id="de.dlr.sc.virsat.model.extension.budget.power.ui"/>
       <plugin id="de.dlr.sc.virsat.model.extension.funcelectrical"/>
-      <plugin id="de.dlr.sc.virsat.model.extension.funcelectrical.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.funcelectrical.test"/>
       <plugin id="de.dlr.sc.virsat.model.extension.funcelectrical.ui"/>
       <plugin id="de.dlr.sc.virsat.model.extension.maturity"/>
-      <plugin id="de.dlr.sc.virsat.model.extension.maturity.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.maturity.test"/>
       <plugin id="de.dlr.sc.virsat.model.extension.maturity.ui"/>
       <plugin id="de.dlr.sc.virsat.model.extension.mechanical"/>
-      <plugin id="de.dlr.sc.virsat.model.extension.mechanical.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.mechanical.test"/>
       <plugin id="de.dlr.sc.virsat.model.extension.mechanical.ui"/>
       <plugin id="de.dlr.sc.virsat.model.extension.ps"/>
-      <plugin id="de.dlr.sc.virsat.model.extension.ps.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.ps.test"/>
       <plugin id="de.dlr.sc.virsat.model.extension.ps.ui"/>
       <plugin id="de.dlr.sc.virsat.model.extension.requirements"/>
-      <plugin id="de.dlr.sc.virsat.model.extension.requirements.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.requirements.test"/>
       <plugin id="de.dlr.sc.virsat.model.extension.requirements.ui"/>
       <plugin id="de.dlr.sc.virsat.model.extension.statemachines"/>
-      <plugin id="de.dlr.sc.virsat.model.extension.statemachines.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.statemachines.test"/>
       <plugin id="de.dlr.sc.virsat.model.extension.statemachines.ui"/>
       <plugin id="de.dlr.sc.virsat.model.extension.tests"/>
       <plugin id="de.dlr.sc.virsat.model.extension.tests.edit"/>
-      <plugin id="de.dlr.sc.virsat.model.extension.tests.edit.test" fragment="true"/>
-      <plugin id="de.dlr.sc.virsat.model.extension.tests.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.tests.edit.test"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.tests.test"/>
       <plugin id="de.dlr.sc.virsat.model.extension.tests.ui"/>
       <plugin id="de.dlr.sc.virsat.model.extension.thermal"/>
-      <plugin id="de.dlr.sc.virsat.model.extension.thermal.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.thermal.test"/>
       <plugin id="de.dlr.sc.virsat.model.extension.visualisation"/>
-      <plugin id="de.dlr.sc.virsat.model.extension.visualisation.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.model.extension.visualisation.test"/>
       <plugin id="de.dlr.sc.virsat.model.extension.visualisation.ui"/>
-      <plugin id="de.dlr.sc.virsat.model.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.model.test"/>
       <plugin id="de.dlr.sc.virsat.model.ui"/>
       <plugin id="de.dlr.sc.virsat.performance.test"/>
       <plugin id="de.dlr.sc.virsat.project"/>
-      <plugin id="de.dlr.sc.virsat.project.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.project.test"/>
       <plugin id="de.dlr.sc.virsat.project.ui"/>
       <plugin id="de.dlr.sc.virsat.qudv.ui"/>
       <plugin id="de.dlr.sc.virsat.server"/>
-      <plugin id="de.dlr.sc.virsat.server.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.server.test"/>
       <plugin id="de.dlr.sc.virsat.swtbot.test"/>
       <plugin id="de.dlr.sc.virsat.target"/>
       <plugin id="de.dlr.sc.virsat.team"/>
-      <plugin id="de.dlr.sc.virsat.team.test" fragment="true"/>
+      <plugin id="de.dlr.sc.virsat.team.test"/>
       <plugin id="de.dlr.sc.virsat.team.ui"/>
       <plugin id="de.dlr.sc.virsat.test"/>
       <plugin id="de.dlr.sc.virsat.uiengine.ui"/>
@@ -188,6 +201,33 @@
       <feature id="de.dlr.sc.virsat.model.extension.thermal.feature" installMode="root"/>
       <feature id="de.dlr.sc.virsat.model.extension.sequencing.feature" installMode="root"/>
       <feature id="de.dlr.sc.virsat.model.extension.budget.cost.feature" installMode="root"/>
+      <feature id="org.eclipse.justj.openjdk.hotspot.jre.full" installMode="root"/>
+      <feature id="org.eclipse.emf.mapping.ecore" installMode="root"/>
+      <feature id="org.eclipse.emf.mwe2.language.sdk" installMode="root"/>
+      <feature id="org.eclipse.emf.codegen" installMode="root"/>
+      <feature id="org.eclipse.xtext.xtext.ui.graph" installMode="root"/>
+      <feature id="org.eclipse.emf.mwe2.runtime.sdk" installMode="root"/>
+      <feature id="org.eclipse.emf.codegen.ui" installMode="root"/>
+      <feature id="org.eclipse.emf.codegen.ecore" installMode="root"/>
+      <feature id="org.eclipse.emf.converter" installMode="root"/>
+      <feature id="org.eclipse.ecf.filetransfer.httpclientjava.feature" installMode="root"/>
+      <feature id="org.eclipse.xtext.ui" installMode="root"/>
+      <feature id="org.eclipse.ocl.tools" installMode="root"/>
+      <feature id="org.eclipse.xtext.docs" installMode="root"/>
+      <feature id="org.eclipse.xtext.redist" installMode="root"/>
+      <feature id="org.eclipse.xtext.xtext.ui" installMode="root"/>
+      <feature id="org.eclipse.emf.common.ui" installMode="root"/>
+      <feature id="org.eclipse.emf.mapping.ui" installMode="root"/>
+      <feature id="org.eclipse.xtend.sdk" installMode="root"/>
+      <feature id="org.eclipse.emf.mwe2.launcher" installMode="root"/>
+      <feature id="org.eclipse.emf.mwe2.launcher.source" installMode="root"/>
+      <feature id="org.eclipse.emf.mapping" installMode="root"/>
+      <feature id="org.eclipse.xtext.examples" installMode="root"/>
+      <feature id="org.eclipse.emf.codegen.ecore.ui" installMode="root"/>
+      <feature id="org.eclipse.xtend.lib" installMode="root"/>
+      <feature id="org.eclipse.emf.ecore.editor" installMode="root"/>
+      <feature id="org.eclipse.emf.mapping.ecore.editor" installMode="root"/>
+      <feature id="org.eclipse.emf.ecore.edit" installMode="root"/>
    </features>
 
    <configurations>

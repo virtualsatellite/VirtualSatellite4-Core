@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.build.marker.util;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -47,9 +49,9 @@ public class VirSatValidationMarkerHelperTest extends ATestCase {
 		IMarkerHelper helperMarkerEmf  = VirSatProblemMarkerHelper.createMarkerHelper(markerEmf);
 		IMarkerHelper helperMarkerDvlm = VirSatProblemMarkerHelper.createMarkerHelper(markerDvlm);
 		
-		assertTrue("Helper is correct", helperMarkerInh instanceof VirSatValidationMarkerHelper);
-		assertTrue("Helper is correct", helperMarkerEmf instanceof VirSatValidationMarkerHelper);
-		assertTrue("Helper is correct", helperMarkerDvlm instanceof VirSatValidationMarkerHelper);
+		assertThat("Helper is correct", helperMarkerInh, instanceOf(VirSatValidationMarkerHelper.class));
+		assertThat("Helper is correct", helperMarkerEmf, instanceOf(VirSatValidationMarkerHelper.class));
+		assertThat("Helper is correct", helperMarkerDvlm, instanceOf(VirSatValidationMarkerHelper.class));
 	}
 
 	@Test

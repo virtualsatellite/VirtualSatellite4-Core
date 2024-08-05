@@ -11,8 +11,8 @@ package de.dlr.sc.virsat.server.resources.modelaccess;
 
 import static org.junit.Assert.assertEquals;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.core.Response;
 
 import org.junit.Test;
 
@@ -20,7 +20,6 @@ import de.dlr.sc.virsat.model.dvlm.general.IUuid;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.resources.AModelAccessResourceTest;
-import de.dlr.sc.virsat.server.resources.ModelAccessResource;
 
 public class StructuralElementInstanceResourceTest extends AModelAccessResourceTest {
 
@@ -53,8 +52,8 @@ public class StructuralElementInstanceResourceTest extends AModelAccessResourceT
 	public void testCreateSei() throws Exception {
 		String wantedTypeFqn = tSei.getFullQualifiedSturcturalElementName();
 		
-		Response response = getTestRequestBuilderWithQueryParam(ModelAccessResource.SEI + "/" + tSei.getUuid(), 
-				ModelAccessResource.QP_FULL_QUALIFIED_NAME, wantedTypeFqn).post(Entity.json(null));
+		Response response = getTestRequestBuilderWithQueryParam(RepositoryAccessResource.SEI + "/" + tSei.getUuid(), 
+				RepositoryAccessResource.QP_FULL_QUALIFIED_NAME, wantedTypeFqn).post(Entity.json(null));
 		
 		IUuid entity = assertIUuidGotCreated(response, wantedTypeFqn, ed, tSei.getStructuralElementInstance().getChildren());
 		
@@ -64,27 +63,27 @@ public class StructuralElementInstanceResourceTest extends AModelAccessResourceT
 	
 	@Test
 	public void testErrorResponses() {
-		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.SEI + "/unknown").get());
+		assertNotFoundResponse(getTestRequestBuilder(RepositoryAccessResource.SEI + "/unknown").get());
 		
-		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.SEI + "/unknown").delete());
+		assertNotFoundResponse(getTestRequestBuilder(RepositoryAccessResource.SEI + "/unknown").delete());
 		
-		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.SEI + "/unknown").post(Entity.json(null)));
+		assertNotFoundResponse(getTestRequestBuilder(RepositoryAccessResource.SEI + "/unknown").post(Entity.json(null)));
 		
 		// Assert check sei discipline
 		setDiscipline(tSei.getStructuralElementInstance(), anotherDiscipline);
-		assertCommandNotExecuteableErrorResponse(getTestRequestBuilder(ModelAccessResource.SEI + "/" + tSei.getUuid()).delete());
+		assertCommandNotExecuteableErrorResponse(getTestRequestBuilder(RepositoryAccessResource.SEI + "/" + tSei.getUuid()).delete());
 		
 		// Assert check sei children discipline
 		setDiscipline(tSei.getStructuralElementInstance(), discipline);
 		setDiscipline(tSeiChild.getStructuralElementInstance(), anotherDiscipline);
-		assertCommandNotExecuteableErrorResponse(getTestRequestBuilder(ModelAccessResource.SEI + "/" + tSei.getUuid()).delete());
+		assertCommandNotExecuteableErrorResponse(getTestRequestBuilder(RepositoryAccessResource.SEI + "/" + tSei.getUuid()).delete());
 
 		// Assert implicit parent discipline rights check
 		setDiscipline(tSei.getStructuralElementInstance(), anotherDiscipline);
 		String wantedTypeFqn = tSei.getFullQualifiedSturcturalElementName();
 		
-		Response response = getTestRequestBuilderWithQueryParam(ModelAccessResource.SEI + "/" + tSei.getUuid(), 
-				ModelAccessResource.QP_FULL_QUALIFIED_NAME, wantedTypeFqn).post(Entity.json(null));
+		Response response = getTestRequestBuilderWithQueryParam(RepositoryAccessResource.SEI + "/" + tSei.getUuid(), 
+				RepositoryAccessResource.QP_FULL_QUALIFIED_NAME, wantedTypeFqn).post(Entity.json(null));
 		assertCommandNotExecuteableErrorResponse(response);
 	}
 }

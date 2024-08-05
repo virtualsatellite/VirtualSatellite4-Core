@@ -21,7 +21,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
+import de.dlr.sc.virsat.model.extension.tests.model.AExtensionConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElementOther;
@@ -34,7 +34,7 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElementOther;
  *
  */
 
-public class BeanStructuralElementInstanceHelperTest extends AConceptTestCase {
+public class BeanStructuralElementInstanceHelperTest extends AExtensionConceptTestCase {
 
 	private Concept concept;
 	

@@ -9,9 +9,9 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.calculation.compute;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +24,6 @@ import de.dlr.sc.virsat.model.dvlm.calculation.CalculationFactory;
 
 /**
  * This class tests the UnresolvedSetFunctionHelper
- * @author muel_s8
  *
  */
 public class UnresolvedSetFunctionHelperTest {
@@ -38,7 +37,7 @@ public class UnresolvedSetFunctionHelperTest {
 		IExpressionResult resultSummary = new AdvancedFunctionHelper("summary").handleUnresolved(expressionResults);
 		
 		assertEquals("2", resultCount.getNumberLiteral().getValue());
-		assertTrue(resultSummary instanceof UnresolvedExpressionResult);
+		assertThat(resultSummary, instanceOf(UnresolvedExpressionResult.class));
 	}
 
 }

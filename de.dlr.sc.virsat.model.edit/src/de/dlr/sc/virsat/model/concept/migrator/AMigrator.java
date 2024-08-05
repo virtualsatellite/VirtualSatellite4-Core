@@ -64,6 +64,7 @@ import com.google.common.base.Function;
 
 import de.dlr.sc.virsat.model.concept.calculation.QualifiedEquationObjectHelper;
 import de.dlr.sc.virsat.model.concept.util.ConceptActivationHelper;
+import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.calculation.EquationDefinition;
 import de.dlr.sc.virsat.model.dvlm.calculation.IQualifiedEquationObject;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
@@ -277,7 +278,13 @@ public abstract class AMigrator implements IMigrator {
 	public void migrate(Concept conceptPrevious, Concept conceptCurrent, Concept conceptNext) {
 		IComparisonScope scope = new DefaultComparisonScope(conceptNext, conceptCurrent,  conceptPrevious);
 		Comparison comparison = EMFCompare.builder().setMatchEngineFactoryRegistry(matchRegistry).build().compare(scope);
-		activationHelper = new ConceptActivationHelper(conceptCurrent);
+		
+		if (conceptCurrent.eContainer() != null && conceptCurrent.eContainer() instanceof Repository) {
+			activationHelper = new ConceptActivationHelper(conceptCurrent);
+		} else {
+			throw new IllegalArgumentException("Concept is not active! Repository for activation cannot be determined!");
+		}
+
 		newNonActiveConcept = conceptNext;
 
 		List<Diff> differences = comparison.getDifferences();

@@ -77,7 +77,7 @@ public class HTMLExporter {
     _builder.newLine();
     return _builder.toString();
   }
-  
+
   public CharSequence getSubPages(final StructuralElementInstance sc, final List<InterfaceEnd> seiInterfaceEnds, final List<Interface> seiInterfaces, final List<InterfaceType> seiInterfaceTypes, final List<SEILink> seiLinks) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("<style type=\"text/css\">");
@@ -771,7 +771,7 @@ public class HTMLExporter {
     _builder.newLine();
     return _builder;
   }
-  
+
   public CharSequence getInterfaceTable(final List<Interface> interfaces) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("<table>");
@@ -909,7 +909,7 @@ public class HTMLExporter {
     _builder.append("</table>");
     return _builder;
   }
-  
+
   public CharSequence getSeiLinkHTML(final StructuralElementInstance sc, final SEILink seiLink) {
     StringConcatenation _builder = new StringConcatenation();
     {
@@ -955,7 +955,7 @@ public class HTMLExporter {
     }
     return _builder;
   }
-  
+
   public CharSequence someHTML(final StructuralElementInstance sc) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("\t");
@@ -1488,7 +1488,7 @@ public class HTMLExporter {
     _builder.newLine();
     return _builder;
   }
-  
+
   public CharSequence getTimestamp() {
     StringConcatenation _builder = new StringConcatenation();
     LocalDateTime ldt = LocalDateTime.now();

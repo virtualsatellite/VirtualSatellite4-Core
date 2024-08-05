@@ -11,7 +11,7 @@ package de.dlr.sc.virsat.model.dvlm.json;
 
 import static org.junit.Assert.assertThrows;
 
-import javax.xml.bind.annotation.adapters.XmlAdapter;
+import jakarta.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;

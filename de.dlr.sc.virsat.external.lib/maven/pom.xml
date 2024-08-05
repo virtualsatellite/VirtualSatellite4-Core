@@ -34,13 +34,18 @@
 									<goal>copy-dependencies</goal>
 								</goals>
 								<configuration>
+									<excludeScope>compile</excludeScope>
 									<excludeScope>provided</excludeScope>
-									<excludeGroupIds>p2.eclipse-plugin,${project.groupId}</excludeGroupIds>
+									<excludeGroupIds>
+									p2.eclipse.plugin,
+									org.osgi,
+									${project.groupId}
+									</excludeGroupIds>
 									<excludeTransitive>false</excludeTransitive>
 									<outputDirectory>${project.basedir}/externalLib/maven</outputDirectory>
-									<stripVersion>true</stripVersion>
-									<!-- 
+									<stripVersion>false</stripVersion>
 									<classifier>sources</classifier> 
+									<!-- 
 									!!! Uncomment this line to load all source plugins to the jars in the external lib plugins-->
 								</configuration>
 							</execution>
@@ -58,21 +63,28 @@
 									<goal>add-third-party</goal>
 								</goals>
 								<configuration>
+									<verbose>true</verbose>
+									<force>true</force>
 									<excludedScopes>provided</excludedScopes>
-									<excludedGroups>p2.eclipse-plugin,${project.groupId}</excludedGroups>
+									<excludedGroups>(^p2\.eclipse\.plugin|^org\.osgi|^${project.groupId})</excludedGroups>
 									<outputDirectory>${project.basedir}/about_files</outputDirectory>
 									<licenseMerges>
 										<licenseMerge>Apache 2.0|
+										Apache-2.0|
 										Apache License 2.0|
 										Apache License, 2.0|
 										The Apache Software License, Version 2.0|
 										Apache License, Version 2.0</licenseMerge>
 										<licenseMerge>EDL 1.0|
-										Eclipse Distribution License v. 1.0</licenseMerge>
+										Eclipse Distribution License v. 1.0|
+										Eclipse Distribution License - v 1.0</licenseMerge>
 										<licenseMerge>EPL 2.0|
+										EPL-2.0|
 										Eclipse Public License 2.0|
-										Eclipse Public License v. 2.0</licenseMerge>
+										Eclipse Public License v. 2.0|
+										Eclipse Public License - v 2.0</licenseMerge>
 										<licenseMerge>GPL2 w/ CPE|
+										GPL-2.0-with-classpath-exception|	
 										GNU General Public License, version 2 with the GNU Classpath Exception|
 										The GNU General Public License (GPL), Version 2, With Classpath Exception</licenseMerge>
 										<licenseMerge>MIT|

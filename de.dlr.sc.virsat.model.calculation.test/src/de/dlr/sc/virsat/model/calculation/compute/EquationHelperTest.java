@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.calculation.compute;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -146,7 +148,7 @@ public class EquationHelperTest extends AEquationTest {
 		// Verify correct computed evaluation problems
 		assertEquals("There is one evaluation problems", 1, evalProblems.size());
 		EvaluationProblem evalProblem = evalProblems.get(0);
-		assertTrue("Its an incompatible quantity kinds problem", evalProblem instanceof IncompatibleQuantityKindsProblem);
+		assertThat("Its an incompatible quantity kinds problem", evalProblem, instanceOf(IncompatibleQuantityKindsProblem.class));
 	}
 	
 	@Test
@@ -261,7 +263,7 @@ public class EquationHelperTest extends AEquationTest {
 		EquationHelper dtHelper = new EquationHelper();
 		dtHelper.evaluate(ca.getEquationSection().getEquations(), UserRegistry.getInstance());
 		
-		assertEquals("Instantiated equation performs correctly", EXPECTED, Double.valueOf(vpiMassWithMargin.getValue()), EPSILON);
+		assertEquals("Instantiated equation performs correctly", EXPECTED, Double.parseDouble(vpiMassWithMargin.getValue()), EPSILON);
 	}
 
 }

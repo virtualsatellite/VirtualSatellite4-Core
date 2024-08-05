@@ -20,12 +20,13 @@ import static org.junit.Assert.assertTrue;
 import java.io.StringWriter;
 import java.util.List;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.Invocation.Builder;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
+import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.client.Invocation.Builder;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
+import jakarta.xml.bind.Marshaller;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
@@ -78,7 +79,8 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
-import de.dlr.sc.virsat.server.servlet.VirSatModelAccessServlet;
+import de.dlr.sc.virsat.server.resources.modelaccess.RepositoryAccessResource;
+import de.dlr.sc.virsat.server.servlet.ModelAccessServletContainer;
 import de.dlr.sc.virsat.server.test.AServerRepositoryTest;
 import de.dlr.sc.virsat.server.test.VersionControlTestHelper;
 
@@ -122,8 +124,8 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 	public static void setUpTargetAndUser() {
 		UserRegistry.getInstance().setSuperUser(true);
 		webTarget = webTarget
-			.path(VirSatModelAccessServlet.MODEL_API)
-			.path(ModelAccessResource.PATH)
+			.path(ModelAccessServletContainer.MODEL_API)
+			.path(RepositoryAccessResource.PATH)
 			.path(projectName);
 	}
 	
@@ -248,7 +250,7 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 	
 	protected Response getRootSeisRequest(String header) {
 		return webTarget
-				.path(ModelAccessResource.ROOT_SEIS)
+				.path(RepositoryAccessResource.ROOT_SEIS)
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, header)
 				.get();
@@ -265,6 +267,14 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 	 */
 	@SuppressWarnings("rawtypes")
 	protected void testGet(IBeanUuid testSubject, String path, Class[] classes) throws Exception {
+		JAXBUtility jaxbUtility = new JAXBUtility(classes);
+		Marshaller marshaller = jaxbUtility.getJsonMarshaller();
+		// Compare with the expected
+		StringWriter sw = new StringWriter();
+		marshaller.marshal(testSubject, sw);
+		String expected = sw.toString();
+				
+		
 		int commits = VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath());
 		
 		String uuid = testSubject.getUuid();
@@ -282,11 +292,6 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 		
 		String entity = response.readEntity(String.class);
 		
-		// Compare with the expected
-		JAXBUtility jaxbUtility = new JAXBUtility(classes);
-		StringWriter sw = new StringWriter();
-		jaxbUtility.getJsonMarshaller().marshal(testSubject, sw);
-		String expected = sw.toString();
 		assertEquals("Marshalled object as expected", expected, entity);
 	}
 	
@@ -298,7 +303,7 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 	 */
 	protected Response getSeiRequest(String header, IBeanStructuralElementInstance beanSei) {
 		return webTarget
-				.path(ModelAccessResource.SEI)
+				.path(RepositoryAccessResource.SEI)
 				.path(beanSei.getUuid())
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, header)
@@ -306,27 +311,27 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 	}
 	
 	protected void testGetSei(IBeanStructuralElementInstance testSubject) throws Exception {
-		testGet(testSubject, ModelAccessResource.SEI, new Class[] {testSubject.getClass()});
+		testGet(testSubject, RepositoryAccessResource.SEI, new Class[] {testSubject.getClass()});
 	}
 	
 	@SuppressWarnings("rawtypes")
 	protected void testGetProperty(IBeanObject testSubject) throws Exception {
-		testGet(testSubject, ModelAccessResource.PROPERTY, new Class[] {testSubject.getClass()});
+		testGet(testSubject, RepositoryAccessResource.PROPERTY, new Class[] {testSubject.getClass()});
 	}
 	
 	@SuppressWarnings("rawtypes")
 	protected void testGetProperty(IBeanObject testSubject, Class[] classes) throws Exception {
-		testGet(testSubject, ModelAccessResource.PROPERTY, classes);
+		testGet(testSubject, RepositoryAccessResource.PROPERTY, classes);
 	}
 	
 	@SuppressWarnings("rawtypes")
 	protected void testGetCa(IBeanObject testSubject) throws Exception {
-		testGet(testSubject, ModelAccessResource.CA, new Class[] {testSubject.getClass()});
+		testGet(testSubject, RepositoryAccessResource.CA, new Class[] {testSubject.getClass()});
 	}
 	
 	@SuppressWarnings("rawtypes")
 	protected void testGetCa(IBeanObject testSubject, Class[] classes) throws Exception {
-		testGet(testSubject, ModelAccessResource.CA, classes);
+		testGet(testSubject, RepositoryAccessResource.CA, classes);
 	}
 	
 	/**
@@ -338,7 +343,7 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 		int commits = VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath());
 		
 		Response response = webTarget
-				.path(ModelAccessResource.SEI)
+				.path(RepositoryAccessResource.SEI)
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.put(Entity.entity(sei, MediaType.APPLICATION_JSON_TYPE));
@@ -358,7 +363,7 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 		int commits = VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath());
 		
 		Response response = webTarget
-				.path(ModelAccessResource.PROPERTY)
+				.path(RepositoryAccessResource.PROPERTY)
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.put(Entity.entity(property, MediaType.APPLICATION_JSON_TYPE));
@@ -377,7 +382,7 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 		int commits = VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath());
 		
 		Response response = webTarget
-				.path(ModelAccessResource.CA)
+				.path(RepositoryAccessResource.CA)
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.put(Entity.entity(ca, MediaType.APPLICATION_JSON_TYPE));
@@ -420,7 +425,7 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 		
 		assertTrue("Sei folder exists", seiFolder.exists());
 		
-		testDelete(beanSei, ModelAccessResource.SEI);
+		testDelete(beanSei, RepositoryAccessResource.SEI);
 		
 		assertNull("Sei has been deleted and is no longer in a resource", beanSei.getStructuralElementInstance().eResource());
 		assertFalse("Sei folder deleted", seiFolder.exists());
@@ -434,7 +439,7 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 	protected void testDeleteCa(IBeanCategoryAssignment beanCa) throws Exception {
 		int initialCas = tSei.getCategoryAssignments().size();
 		
-		testDelete(beanCa, ModelAccessResource.CA);
+		testDelete(beanCa, RepositoryAccessResource.CA);
 
 		assertEquals("Ca removed", initialCas - 1, tSei.getCategoryAssignments().size());
 	}

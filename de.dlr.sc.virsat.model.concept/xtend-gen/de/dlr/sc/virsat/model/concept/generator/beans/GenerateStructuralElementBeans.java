@@ -21,12 +21,13 @@ import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
-import java.util.Set;
-import javax.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.XmlType;
+import java.util.List;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.generator.IFileSystemAccess;
+import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.StringExtensions;
@@ -41,12 +42,12 @@ public class GenerateStructuralElementBeans extends AGeneratorGapGenerator<Struc
   public static String getConcreteClassName(final StructuralElement typeDefinition) {
     return StringExtensions.toFirstUpper(typeDefinition.getName());
   }
-  
+
   public static String getAbstractClassName(final StructuralElement typeDefinition) {
     String _firstUpper = StringExtensions.toFirstUpper(typeDefinition.getName());
     return ("A" + _firstUpper);
   }
-  
+
   @Override
   public String createConcreteClassFileName(final Concept concept, final StructuralElement conceptPart) {
     String _packageFolder = this.getPackageFolder(concept);
@@ -55,7 +56,7 @@ public class GenerateStructuralElementBeans extends AGeneratorGapGenerator<Struc
     String _plus_1 = (_plus + _concreteClassName);
     return (_plus_1 + ".java");
   }
-  
+
   @Override
   public String createAbstractClassFileName(final Concept concept, final StructuralElement conceptPart) {
     String _packageFolder = this.getPackageFolder(concept);
@@ -64,16 +65,16 @@ public class GenerateStructuralElementBeans extends AGeneratorGapGenerator<Struc
     String _plus_1 = (_plus + _abstractClassName);
     return (_plus_1 + ".java");
   }
-  
+
   @Override
   protected String getPackage(final Concept concept) {
     String _name = concept.getName();
     String _plus = (_name + ".");
     return (_plus + GenerateStructuralElementBeans.PACKAGE_FOLDER);
   }
-  
+
   public static final String PACKAGE_FOLDER = BeanRegistry.BEAN_PACKAGE_NAME;
-  
+
   @Override
   public void serializeModel(final Concept concept, final IFileSystemAccess fsa) {
     TreeIterator<Object> iterator = EcoreUtil.<Object>getAllContents(concept, true);
@@ -87,7 +88,7 @@ public class GenerateStructuralElementBeans extends AGeneratorGapGenerator<Struc
     };
     IteratorExtensions.<Object>forEach(iterator, _function);
   }
-  
+
   /**
    * Declare the package statement of the java file
    */
@@ -100,7 +101,7 @@ public class GenerateStructuralElementBeans extends AGeneratorGapGenerator<Struc
     _builder.newLineIfNotEmpty();
     return _builder;
   }
-  
+
   /**
    * Write down all the import statements needed by this java file
    */
@@ -118,8 +119,8 @@ public class GenerateStructuralElementBeans extends AGeneratorGapGenerator<Struc
       boolean _not = (!_isEmpty);
       if (_not) {
         {
-          Set<String> _importedClasses = importManager.getImportedClasses();
-          for(final String clazz : _importedClasses) {
+          List<String> _sort = IterableExtensions.<String>sort(importManager.getImportedClasses());
+          for(final String clazz : _sort) {
             _builder.append("import ");
             _builder.append(clazz);
             _builder.append(";");
@@ -130,7 +131,7 @@ public class GenerateStructuralElementBeans extends AGeneratorGapGenerator<Struc
     }
     return _builder;
   }
-  
+
   /**
    * Entry method to write the class body
    */
@@ -201,7 +202,7 @@ public class GenerateStructuralElementBeans extends AGeneratorGapGenerator<Struc
     _builder.newLine();
     return _builder;
   }
-  
+
   @Override
   public CharSequence declareClass(final Concept concept, final StructuralElement se, final ImportManager importManager) {
     StringConcatenation _builder = new StringConcatenation();
@@ -311,7 +312,7 @@ public class GenerateStructuralElementBeans extends AGeneratorGapGenerator<Struc
     _builder.newLine();
     return _builder;
   }
-  
+
   /**
    * Method to create the constructor of the java category bean
    */

@@ -32,7 +32,7 @@ import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
  * @author fisc_ph
  *
  */
-public class TestCategoryReferenceTest extends AConceptTestCase {
+public class TestCategoryReferenceTest extends AExtensionConceptTestCase {
 
 	private TestCategoryReference tcReference;
 	private Concept concept;

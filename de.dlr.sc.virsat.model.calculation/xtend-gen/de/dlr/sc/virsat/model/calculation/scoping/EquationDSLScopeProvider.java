@@ -39,7 +39,7 @@ import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider;
 public class EquationDSLScopeProvider extends AbstractDeclarativeScopeProvider {
   @Inject
   private IQualifiedNameProvider qualifiedNameProvider;
-  
+
   @Override
   public IScope getScope(final EObject context, final EReference reference) {
     if ((context instanceof Import)) {

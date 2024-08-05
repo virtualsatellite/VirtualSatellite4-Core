@@ -51,10 +51,10 @@ public class PowerConceptSummariesContentProvider extends VirSatFilteredWrappedT
 		// Crawl all children
 		while (!contentChildren.isEmpty()) {
 			Object firstObject = contentChildren.removeFirst();
-			if (pch.initBeansForObject(firstObject) && (pch.powerSummary != null)) {
+			if (pch.initBeansForObject(firstObject) && (pch.getPowerSummary() != null)) {
 				contentElements.add(firstObject);
 			} else {
-				if (pch.powerEquipment != null) {
+				if (pch.getPowerEquipment() != null) {
 					contentElements.add(firstObject);
 				}
 				contentChildren.addAll(Arrays.asList(super.getChildren(firstObject)));

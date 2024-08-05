@@ -14,10 +14,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
+import jakarta.xml.bind.Unmarshaller;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -34,10 +34,11 @@ public class JAXBUtilityTest {
 	}
 
 	private void assertIsInitialized() {
-		assertEquals("System property set", JAXBUtility.CLASSPATH_JAXB_CONTEXT_FACTORY,
-				System.getProperty(JAXBUtility.SYSTEM_PROP_CONTEXT_FACTORY));
+		assertEquals("System property set", JAXBUtility.CLASSPATH_JAXB_CONTEXT_FACTORY, System.getProperty(JAXBUtility.SYSTEM_PROP_CONTEXT_FACTORY));
 		
-		assertEquals("Two properties set", 2, jaxbUtility.getProperties().size());
+		//CHECKSTYLE:OFF
+		assertEquals("Two properties set", 3, jaxbUtility.getProperties().size());
+		//CHECKSTYLE:OFF
 	}
 	
 	@Test

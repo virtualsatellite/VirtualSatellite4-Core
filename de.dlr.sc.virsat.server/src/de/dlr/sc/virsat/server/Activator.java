@@ -13,6 +13,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
@@ -78,8 +80,27 @@ public class Activator extends Plugin {
 		return propertiesFilePath;
 	}
 	
-	public String resolveBundlePath(String path) throws IOException {
-		return FileLocator.resolve(FileLocator.find(getBundle(), new Path(path))).toString();
+	/**
+	 * This method extracts a resource from a bundle.
+	 * it tries to resolve the resource by the given path.
+	 * then it tries to copy it to a temporary cache.
+	 * The file will be handed back by its file uri as a string
+	 * @param path the path where the resource is within the bundle
+	 * @return the extracted file in the temporary cache as file uri encoded string
+	 */
+	public String extractResourceFromBundle(String path) {
+		Activator.getDefault().getLog().info("Extracting bundle resource: " + path);
+		URL url = FileLocator.find(getBundle(), new Path(path));
+		String uri;
+		try {
+			uri = FileLocator.toFileURL(url).toURI().toString();
+			Activator.getDefault().getLog().info("Created temporary file url resource at: " + path);
+			return uri;
+		} catch (IOException | URISyntaxException e) {
+			Activator.getDefault().getLog().error("Failed to extract bundle resource to temp.", e);
+		}
+		
+		return null;
 	}
 	
 }

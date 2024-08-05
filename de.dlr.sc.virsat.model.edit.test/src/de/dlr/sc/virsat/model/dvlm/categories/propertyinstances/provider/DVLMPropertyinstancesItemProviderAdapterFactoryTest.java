@@ -9,9 +9,9 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.provider;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-
 import org.eclipse.emf.common.notify.Adapter;
 import org.junit.Test;
 
@@ -28,7 +28,7 @@ public class DVLMPropertyinstancesItemProviderAdapterFactoryTest {
 		DVLMPropertyinstancesItemProviderAdapterFactory dvlmPiipaf = new  DVLMPropertyinstancesItemProviderAdapterFactory();
 		Adapter createdAdapter = dvlmPiipaf.createValuePropertyInstanceAdapter();
 		
-		assertTrue("The received Adapter is the right one", createdAdapter instanceof DVLMValuePropertyInstanceItemProvider);
+		assertThat("The received Adapter is the right one", createdAdapter, instanceOf(DVLMValuePropertyInstanceItemProvider.class));
 		
 		Adapter createdAdapter2 = dvlmPiipaf.createValuePropertyInstanceAdapter();
 		
@@ -40,7 +40,7 @@ public class DVLMPropertyinstancesItemProviderAdapterFactoryTest {
 		DVLMPropertyinstancesItemProviderAdapterFactory dvlmPiipaf = new  DVLMPropertyinstancesItemProviderAdapterFactory();
 		Adapter createdAdapter = dvlmPiipaf.createComposedPropertyInstanceAdapter();
 		
-		assertTrue("The received Adapter is the right one", createdAdapter instanceof DVLMComposedPropertyInstanceItemProvider);
+		assertThat("The received Adapter is the right one", createdAdapter, instanceOf(DVLMComposedPropertyInstanceItemProvider.class));
 		
 		Adapter createdAdapter2 = dvlmPiipaf.createComposedPropertyInstanceAdapter();
 		
@@ -52,7 +52,7 @@ public class DVLMPropertyinstancesItemProviderAdapterFactoryTest {
 		DVLMPropertyinstancesItemProviderAdapterFactory dvlmPiipaf = new  DVLMPropertyinstancesItemProviderAdapterFactory();
 		Adapter createdAdapter = dvlmPiipaf.createReferencePropertyInstanceAdapter();
 		
-		assertTrue("The received Adapter is the right one", createdAdapter instanceof DVLMRefererencePropertyInstanceItemProvider);
+		assertThat("The received Adapter is the right one", createdAdapter, instanceOf(DVLMRefererencePropertyInstanceItemProvider.class));
 		
 		Adapter createdAdapter2 = dvlmPiipaf.createReferencePropertyInstanceAdapter();
 		
@@ -64,7 +64,7 @@ public class DVLMPropertyinstancesItemProviderAdapterFactoryTest {
 		DVLMPropertyinstancesItemProviderAdapterFactory dvlmPiipaf = new  DVLMPropertyinstancesItemProviderAdapterFactory();
 		Adapter createdAdapter = dvlmPiipaf.createResourcePropertyInstanceAdapter();
 		
-		assertTrue("The received Adapter is the right one", createdAdapter instanceof DVLMResourcePropertyInstanceItemProvider);
+		assertThat("The received Adapter is the right one", createdAdapter, instanceOf(DVLMResourcePropertyInstanceItemProvider.class));
 		
 		Adapter createdAdapter2 = dvlmPiipaf.createResourcePropertyInstanceAdapter();
 		
@@ -76,7 +76,7 @@ public class DVLMPropertyinstancesItemProviderAdapterFactoryTest {
 		DVLMPropertyinstancesItemProviderAdapterFactory dvlmPiipaf = new  DVLMPropertyinstancesItemProviderAdapterFactory();
 		Adapter createdAdapter = dvlmPiipaf.createUnitValuePropertyInstanceAdapter();
 		
-		assertTrue("The received Adapter is the right one", createdAdapter instanceof DVLMUnitValuePropertyInstanceItemProvider);
+		assertThat("The received Adapter is the right one", createdAdapter, instanceOf(DVLMUnitValuePropertyInstanceItemProvider.class));
 		
 		Adapter createdAdapter2 = dvlmPiipaf.createUnitValuePropertyInstanceAdapter();
 		
@@ -88,7 +88,7 @@ public class DVLMPropertyinstancesItemProviderAdapterFactoryTest {
 		DVLMPropertyinstancesItemProviderAdapterFactory dvlmPiipaf = new  DVLMPropertyinstancesItemProviderAdapterFactory();
 		Adapter createdAdapter = dvlmPiipaf.createValuePropertyInstanceAdapter();
 		
-		assertTrue("The received Adapter is the right one", createdAdapter instanceof DVLMValuePropertyInstanceItemProvider);
+		assertThat("The received Adapter is the right one", createdAdapter, instanceOf(DVLMValuePropertyInstanceItemProvider.class));
 		
 		Adapter createdAdapter2 = dvlmPiipaf.createValuePropertyInstanceAdapter();
 		
@@ -100,7 +100,7 @@ public class DVLMPropertyinstancesItemProviderAdapterFactoryTest {
 		DVLMPropertyinstancesItemProviderAdapterFactory dvlmPiipaf = new  DVLMPropertyinstancesItemProviderAdapterFactory();
 		Adapter createdAdapter = dvlmPiipaf.createEnumUnitPropertyInstanceAdapter();
 		
-		assertTrue("The received Adapter is the right one", createdAdapter instanceof DVLMEnumUnitPropertyInstanceItemProvider);
+		assertThat("The received Adapter is the right one", createdAdapter, instanceOf(DVLMEnumUnitPropertyInstanceItemProvider.class));
 		
 		Adapter createdAdapter2 = dvlmPiipaf.createEnumUnitPropertyInstanceAdapter();
 		

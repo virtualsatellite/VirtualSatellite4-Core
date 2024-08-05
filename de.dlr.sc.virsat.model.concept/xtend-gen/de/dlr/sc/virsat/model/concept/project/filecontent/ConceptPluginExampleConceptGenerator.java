@@ -21,7 +21,7 @@ public class ConceptPluginExampleConceptGenerator implements IFileContentGenerat
   public String generateContent(final IProjectBuilderInfo projectBuilderInfo) {
     return this.conceptExampleContent(projectBuilderInfo).toString();
   }
-  
+
   public CharSequence conceptExampleContent(final IProjectBuilderInfo builderInfo) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("Concept ");

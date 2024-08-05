@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.calculation.marker;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -79,8 +81,8 @@ public class VirSatEquationMarkerHelperTest extends ATestCase {
 		IMarkerHelper markerHelperC = VirSatProblemMarkerHelper.createMarkerHelper(markerC);
 		IMarkerHelper markerHelperO = VirSatProblemMarkerHelper.createMarkerHelper(markerO);
 		
-		assertTrue("Helper is correct", markerHelperC instanceof VirSatEquationMarkerHelper);
-		assertTrue("Helper is correct", markerHelperO instanceof VirSatEquationMarkerHelper);
+		assertThat("Helper is correct", markerHelperC, instanceOf(VirSatEquationMarkerHelper.class));
+		assertThat("Helper is correct", markerHelperO, instanceOf(VirSatEquationMarkerHelper.class));
 	}
 	
 	@Test

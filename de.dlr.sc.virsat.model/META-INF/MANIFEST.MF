@@ -7,12 +7,14 @@ Bundle-ClassPath: .
 Require-Bundle: de.dlr.sc.virsat.external.lib.commons.cli,
  org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
- org.eclipse.emf.ecore.xmi;visibility:=reexport
+ org.eclipse.emf.ecore.xmi;visibility:=reexport,
+ de.dlr.sc.virsat.external.lib.jersey;bundle-version="4.16.0";visibility:=reexport,
+ de.dlr.sc.virsat.external.lib.swagger;visibility:=reexport
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Eclipse-ExtensibleAPI: true
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: de.dlr.sc.virsat.model.dvlm,
  de.dlr.sc.virsat.model.dvlm.calculation,
  de.dlr.sc.virsat.model.dvlm.calculation.impl,
@@ -61,4 +63,3 @@ Export-Package: de.dlr.sc.virsat.model.dvlm,
  de.dlr.sc.virsat.model.ecore.xmi.impl
 Automatic-Module-Name: de.dlr.sc.virsat.model
 Bundle-Activator: de.dlr.sc.virsat.model.dvlm.Activator
-Import-Package: io.swagger.annotations

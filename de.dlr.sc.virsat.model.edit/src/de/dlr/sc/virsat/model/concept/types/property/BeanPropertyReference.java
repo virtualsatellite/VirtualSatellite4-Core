@@ -9,8 +9,9 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.property;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
@@ -23,8 +24,8 @@ import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapter;
-import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiModelProperty.AccessMode;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 
 /**
  * Bean class to wrap the referenced beans of ReferencePropertyInstances
@@ -67,9 +68,9 @@ public class BeanPropertyReference<BEAN_TYPE extends IBeanObject<? extends AType
 	@Override
 	@XmlJavaTypeAdapter(ABeanObjectAdapter.class)
 	@XmlElement(nillable = true)
-	@ApiModelProperty(
-		dataType = "String",
-		value = "Uuid of the referenced bean object, that is either ABeanProperty or ABeanCategoryAssignment")
+	@Schema(
+		//dataType = "String",
+		description = "Uuid of the referenced bean object, that is either ABeanProperty or ABeanCategoryAssignment")
 	public BEAN_TYPE getValue() {
 		BEAN_TYPE referencedBean = null;
 		
@@ -97,8 +98,8 @@ public class BeanPropertyReference<BEAN_TYPE extends IBeanObject<? extends AType
 		ti.setReference(null);
 	}
 	
-	@ApiModelProperty(
-			value = "Always returns constant: \"reference\"", 
+	@Schema(
+			description = "Always returns constant: \"reference\"", 
 			example = "reference",
 			accessMode = AccessMode.READ_ONLY)
 	@Override

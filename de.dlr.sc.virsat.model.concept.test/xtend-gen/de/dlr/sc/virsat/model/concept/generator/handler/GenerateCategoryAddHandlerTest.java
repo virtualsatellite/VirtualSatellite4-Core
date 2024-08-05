@@ -9,12 +9,12 @@
  */
 package de.dlr.sc.virsat.model.concept.generator.handler;
 
+import com.google.inject.Inject;
 import de.dlr.sc.virsat.model.concept.ConceptLanguageTestInjectorProvider;
 import de.dlr.sc.virsat.model.concept.test.util.GeneratorJunitAssert;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage;
-import javax.inject.Inject;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.XtextRunner;
@@ -34,17 +34,17 @@ public class GenerateCategoryAddHandlerTest {
   @Inject
   @Extension
   private ParseHelper<Concept> _parseHelper;
-  
+
   private Concept concept;
-  
+
   private Category category;
-  
+
   private final String testConceptName = "testConcept";
-  
+
   private final String testCategoryName = "testCategory";
-  
+
   private final GenerateCategoryAddHandler categoryAddHandlerGenerator = new GenerateCategoryAddHandler();
-  
+
   @Before
   public void setUp() {
     try {
@@ -67,7 +67,7 @@ public class GenerateCategoryAddHandlerTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCreateConcreteClassFileName() {
     final String fileName = this.categoryAddHandlerGenerator.createConcreteClassFileName(this.concept, this.category);
@@ -76,7 +76,7 @@ public class GenerateCategoryAddHandlerTest {
     final String expectedFileName = (_plus + "Handler.java");
     Assert.assertEquals("Concrete file name for the generated add handler is correct", expectedFileName, fileName);
   }
-  
+
   @Test
   public void testCreateAbstractClassFileName() {
     final String fileName = this.categoryAddHandlerGenerator.createAbstractClassFileName(this.concept, this.category);
@@ -85,7 +85,7 @@ public class GenerateCategoryAddHandlerTest {
     final String expectedFileName = (_plus + "Handler.java");
     Assert.assertEquals("Abstract file name for the generated abstract add handler is correct", expectedFileName, fileName);
   }
-  
+
   @Test
   public void testCreateConcreteClass() {
     try {
@@ -95,7 +95,7 @@ public class GenerateCategoryAddHandlerTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCreateAbstractClass() {
     try {

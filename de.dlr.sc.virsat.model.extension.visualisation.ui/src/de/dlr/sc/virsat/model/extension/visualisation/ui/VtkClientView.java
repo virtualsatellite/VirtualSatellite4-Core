@@ -75,11 +75,16 @@ import de.dlr.sc.virsat.project.resources.VirSatProjectResource;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 import de.dlr.sc.virsat.project.ui.navigator.labelProvider.VirSatProjectLabelProvider;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * Creates the visualisation view
  *
  */
+@SuppressFBWarnings(
+		justification = "This class does not represent a real singleton. it should allow simple access to the one view which can be put on the desktop",
+		value = "SING_SINGLETON_HAS_NONPRIVATE_CONSTRUCTOR"
+)
 public class VtkClientView extends ViewPart {
 
 	private static final String EXT_INITIAL = "initial";
@@ -143,7 +148,7 @@ public class VtkClientView extends ViewPart {
 	 * 
 	 * @return current viewer
 	 */
-	public static VtkClientView getViewer() {
+	public static synchronized VtkClientView getViewer() {
 		return vtkViewer;
 	}
 

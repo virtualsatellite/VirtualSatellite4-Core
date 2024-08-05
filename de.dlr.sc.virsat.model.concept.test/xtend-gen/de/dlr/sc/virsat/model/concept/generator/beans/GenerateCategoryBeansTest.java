@@ -9,6 +9,7 @@
  */
 package de.dlr.sc.virsat.model.concept.generator.beans;
 
+import com.google.inject.Inject;
 import de.dlr.sc.virsat.model.concept.ConceptLanguageTestInjectorProvider;
 import de.dlr.sc.virsat.model.concept.test.util.GeneratorJunitAssert;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage;
@@ -20,7 +21,6 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ReferencePrope
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage;
 import de.dlr.sc.virsat.model.external.tests.ExternalModelTestHelper;
-import javax.inject.Inject;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.XtextRunner;
@@ -40,17 +40,17 @@ public class GenerateCategoryBeansTest {
   @Inject
   @Extension
   private ParseHelper<Concept> _parseHelper;
-  
+
   protected ExternalModelTestHelper helper = new ExternalModelTestHelper();
-  
+
   private Concept concept;
-  
+
   private final String TEST_CONCEPT_NAME = "testConcept";
-  
+
   private final String TEST_CATEGORY_NAME = "testCategory";
-  
+
   private final GenerateCategoryBeans createAddCommandGenerator = new GenerateCategoryBeans();
-  
+
   @Before
   public void setUp() {
     ConceptsPackage.eINSTANCE.eClass();
@@ -58,7 +58,7 @@ public class GenerateCategoryBeansTest {
     PropertydefinitionsPackage.eINSTANCE.eClass();
     this.helper.loadExternalPackage();
   }
-  
+
   @Test
   public void testCreateConcreteClassFileName() {
     try {
@@ -93,7 +93,7 @@ public class GenerateCategoryBeansTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCreateForIntrinsicProperties() {
     try {
@@ -140,7 +140,7 @@ public class GenerateCategoryBeansTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCreateForVerification() {
     try {
@@ -172,7 +172,7 @@ public class GenerateCategoryBeansTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCreateForIntrinsicArrayProperties() {
     try {
@@ -237,7 +237,7 @@ public class GenerateCategoryBeansTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCreateEnumPropertyValues() {
     try {
@@ -266,7 +266,7 @@ public class GenerateCategoryBeansTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCreateForTypesAndReferences() {
     try {
@@ -322,7 +322,7 @@ public class GenerateCategoryBeansTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCreateForExtension() {
     try {
@@ -357,7 +357,7 @@ public class GenerateCategoryBeansTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCreateForTypesAndReferencesArrays() {
     try {
@@ -411,7 +411,7 @@ public class GenerateCategoryBeansTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCreateForEReferenceWithoutGenmodel() {
     try {
@@ -455,7 +455,7 @@ public class GenerateCategoryBeansTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCreateForEReferenceWithRegisteredGenmodel() {
     try {

@@ -18,7 +18,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths
-import javax.inject.Inject
+import com.google.inject.Inject
 import org.eclipse.core.resources.ResourcesPlugin
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.XtextRunner

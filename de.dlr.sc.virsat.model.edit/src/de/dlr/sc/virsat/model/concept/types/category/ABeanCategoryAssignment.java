@@ -9,7 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.category;
 
-import javax.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlElement;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.common.command.Command;
@@ -32,15 +32,14 @@ import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.command.DeleteStructuralElementInstanceCommand;
 import de.dlr.sc.virsat.model.ecore.VirSatEcoreUtil;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Core functionality for a Concept Bean and abstract implementation to the interface
  * @author fisc_ph
  *
  */
-@ApiModel(description = "Abstract model class with properties that every bean CA has."
+@Schema(description = "Abstract model class with properties that every bean CA has."
 		+ " Instead return a concrete bean CA that is identified by a type field."
 		+ " A concrete bean CA can additionally have properties (see ABeanProperty).")
 public abstract class ABeanCategoryAssignment extends ABeanObject<CategoryAssignment> implements IBeanCategoryAssignment {
@@ -88,7 +87,7 @@ public abstract class ABeanCategoryAssignment extends ABeanObject<CategoryAssign
 	 * Call this method the get the direct parent SEI of this CA 
 	 * @return the parent SEI or null if there is no parent or the corresponding bean could not be instantiated
 	 */
-	@ApiModelProperty(hidden = true)
+	@Schema(hidden = true)
 	public IBeanStructuralElementInstance getParent() {
 		StructuralElementInstance sei = VirSatEcoreUtil.getEContainerOfClass(ti, StructuralElementInstance.class);
 		if (sei != null) {
@@ -143,7 +142,7 @@ public abstract class ABeanCategoryAssignment extends ABeanObject<CategoryAssign
 	 * Gets the concept associated for this bean
 	 * @return the concept associatd for this bean
 	 */
-	@ApiModelProperty(hidden = true)
+	@Schema(hidden = true)
 	public Concept getConcept() {
 		if (concept == null && ti != null) {
 			ATypeDefinition td = ti.getType();
@@ -159,7 +158,7 @@ public abstract class ABeanCategoryAssignment extends ABeanObject<CategoryAssign
 	}
 	
 	@Override
-	@ApiModelProperty(required = true)
+	@Schema(required = true)
 	@XmlElement(nillable = true)
 	public String getName() {
 		return ti.getName();
