@@ -5502,55 +5502,98 @@
       <element href="dvlm.ecore#//calculation/EquationSection"/>
       <referenceValue href="dvlm.ecore#//inheritance/IOverridableInheritanceLink"/>
     </changes>
-    <changes xsi:type="history:Set" xmi:id="_6cZ7kEAEEe6Gmt6xAI5a_g" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v10" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v9">
+    <changes xsi:type="history:Set" xmi:id="_6cZ7kEAEEe6Gmt6xAI5a_g" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v11" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v9">
       <element href="dvlm.ecore#/"/>
     </changes>
-    <changes xsi:type="history:Set" xmi:id="_6cZ7kUAEEe6Gmt6xAI5a_g" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v10/s" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v9/s">
+    <changes xsi:type="history:Set" xmi:id="_6cZ7kUAEEe6Gmt6xAI5a_g" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v11/s" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v9/s">
       <element href="dvlm.ecore#//structural"/>
     </changes>
-    <changes xsi:type="history:Set" xmi:id="_6cZ7kkAEEe6Gmt6xAI5a_g" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v10/g" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v9/g">
+    <changes xsi:type="history:Set" xmi:id="_6cZ7kkAEEe6Gmt6xAI5a_g" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v11/g" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v9/g">
       <element href="dvlm.ecore#//general"/>
     </changes>
-    <changes xsi:type="history:Set" xmi:id="_6cZ7k0AEEe6Gmt6xAI5a_g" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v10/c" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v9/c">
+    <changes xsi:type="history:Set" xmi:id="_6cZ7k0AEEe6Gmt6xAI5a_g" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v11/c" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v9/c">
       <element href="dvlm.ecore#//concepts"/>
     </changes>
-    <changes xsi:type="history:Set" xmi:id="_6cZ7lEAEEe6Gmt6xAI5a_g" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v10/r" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v9/r">
+    <changes xsi:type="history:Set" xmi:id="_6cZ7lEAEEe6Gmt6xAI5a_g" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v11/r" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v9/r">
       <element href="dvlm.ecore#//roles"/>
     </changes>
-    <changes xsi:type="history:Set" xmi:id="_6cZ7lUAEEe6Gmt6xAI5a_g" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v10/u" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v9/u">
+    <changes xsi:type="history:Set" xmi:id="_6cZ7lUAEEe6Gmt6xAI5a_g" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v11/u" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v9/u">
       <element href="dvlm.ecore#//units"/>
     </changes>
-    <changes xsi:type="history:Set" xmi:id="_6cZ7lkAEEe6Gmt6xAI5a_g" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v10/t" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v9/t">
+    <changes xsi:type="history:Set" xmi:id="_6cZ7lkAEEe6Gmt6xAI5a_g" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v11/t" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v9/t">
       <element href="dvlm.ecore#//types"/>
     </changes>
-    <changes xsi:type="history:Set" xmi:id="_6cZ7l0AEEe6Gmt6xAI5a_g" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v10/cp" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v9/cp">
+    <changes xsi:type="history:Set" xmi:id="_6cZ7l0AEEe6Gmt6xAI5a_g" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v11/cp" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v9/cp">
       <element href="dvlm.ecore#//categories"/>
     </changes>
-    <changes xsi:type="history:Set" xmi:id="_6cZ7mEAEEe6Gmt6xAI5a_g" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v10/cp/cppd" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v9/cp/cppd">
+    <changes xsi:type="history:Set" xmi:id="_6cZ7mEAEEe6Gmt6xAI5a_g" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v11/cp/cppd" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v9/cp/cppd">
       <element href="dvlm.ecore#//categories/propertydefinitions"/>
     </changes>
-    <changes xsi:type="history:Set" xmi:id="_6cZ7mUAEEe6Gmt6xAI5a_g" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v10/cp/cppi" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v9/cp/cppi">
+    <changes xsi:type="history:Set" xmi:id="_6cZ7mUAEEe6Gmt6xAI5a_g" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v11/cp/cppi" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v9/cp/cppi">
       <element href="dvlm.ecore#//categories/propertyinstances"/>
     </changes>
-    <changes xsi:type="history:Set" xmi:id="_6cZ7mkAEEe6Gmt6xAI5a_g" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v10/qudv" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v9/qudv">
+    <changes xsi:type="history:Set" xmi:id="_6cZ7mkAEEe6Gmt6xAI5a_g" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v11/qudv" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v9/qudv">
       <element href="dvlm.ecore#//qudv"/>
     </changes>
-    <changes xsi:type="history:Set" xmi:id="_6cZ7m0AEEe6Gmt6xAI5a_g" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v10/calc" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v9/calc">
+    <changes xsi:type="history:Set" xmi:id="_6cZ7m0AEEe6Gmt6xAI5a_g" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v11/calc" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v9/calc">
       <element href="dvlm.ecore#//calculation"/>
     </changes>
-    <changes xsi:type="history:Set" xmi:id="_6cZ7nEAEEe6Gmt6xAI5a_g" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v10/i" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v9/i">
+    <changes xsi:type="history:Set" xmi:id="_6cZ7nEAEEe6Gmt6xAI5a_g" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v11/i" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v9/i">
       <element href="dvlm.ecore#//inheritance"/>
     </changes>
-    <changes xsi:type="history:Set" xmi:id="_6cZ7nUAEEe6Gmt6xAI5a_g" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v10/dmf" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v9/dmf">
+    <changes xsi:type="history:Set" xmi:id="_6cZ7nUAEEe6Gmt6xAI5a_g" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v11/dmf" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v9/dmf">
       <element href="dvlm.ecore#//dmf"/>
     </changes>
   </releases>
-  <releases xmi:id="_6cc-4EAEEe6Gmt6xAI5a_g">
+  <releases xmi:id="_6cc-4EAEEe6Gmt6xAI5a_g" date="2024-08-05T15:59:09.626+0200">
     <changes xsi:type="history:Set" xmi:id="_JGWhgFPPEe6yMr_--UE7vQ" featureName="upperBound" dataValue="-1" oldDataValue="1">
       <element href="dvlm.ecore#//roles/Discipline/users"/>
     </changes>
     <changes xsi:type="history:Set" xmi:id="_K4EYwFYqEe6yMr_--UE7vQ" featureName="name" dataValue="users" oldDataValue="user">
       <element href="dvlm.ecore#//roles/Discipline/users"/>
     </changes>
+    <changes xsi:type="history:Set" xmi:id="_4ycrgFMyEe-thdBivTd56w" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v11" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v11">
+      <element href="dvlm.ecore#/"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_4ycrgVMyEe-thdBivTd56w" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v11/s" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v11/s">
+      <element href="dvlm.ecore#//structural"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_4ycrglMyEe-thdBivTd56w" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v11/g" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v11/g">
+      <element href="dvlm.ecore#//general"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_4ycrg1MyEe-thdBivTd56w" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v11/c" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v11/c">
+      <element href="dvlm.ecore#//concepts"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_4ycrhFMyEe-thdBivTd56w" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v11/r" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v11/r">
+      <element href="dvlm.ecore#//roles"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_4ycrhVMyEe-thdBivTd56w" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v11/u" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v11/u">
+      <element href="dvlm.ecore#//units"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_4ycrhlMyEe-thdBivTd56w" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v11/t" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v11/t">
+      <element href="dvlm.ecore#//types"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_4ycrh1MyEe-thdBivTd56w" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v11/cp" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v11/cp">
+      <element href="dvlm.ecore#//categories"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_4ycriFMyEe-thdBivTd56w" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v11/cp/cppd" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v11/cp/cppd">
+      <element href="dvlm.ecore#//categories/propertydefinitions"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_4ycriVMyEe-thdBivTd56w" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v11/cp/cppi" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v11/cp/cppi">
+      <element href="dvlm.ecore#//categories/propertyinstances"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_4ycrilMyEe-thdBivTd56w" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v11/qudv" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v11/qudv">
+      <element href="dvlm.ecore#//qudv"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_4ycri1MyEe-thdBivTd56w" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v11/calc" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v11/calc">
+      <element href="dvlm.ecore#//calculation"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_4ycrjFMyEe-thdBivTd56w" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v11/i" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v11/i">
+      <element href="dvlm.ecore#//inheritance"/>
+    </changes>
+    <changes xsi:type="history:Set" xmi:id="_4ycrjVMyEe-thdBivTd56w" featureName="nsURI" dataValue="http://www.virsat.sc.dlr.de/dvlm/v11/dmf" oldDataValue="http://www.virsat.sc.dlr.de/dvlm/v11/dmf">
+      <element href="dvlm.ecore#//dmf"/>
+    </changes>
   </releases>
+  <releases xmi:id="_4yd5oFMyEe-thdBivTd56w"/>
 </history:History>

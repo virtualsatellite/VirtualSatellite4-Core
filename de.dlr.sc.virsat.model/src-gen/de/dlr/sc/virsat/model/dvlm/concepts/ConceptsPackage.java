@@ -48,7 +48,7 @@ public interface ConceptsPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v10/c";
+	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v11/c";
 
 	/**
 	 * The package namespace name.
