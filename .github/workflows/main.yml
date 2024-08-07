@@ -58,7 +58,7 @@ jobs:
       # handed in by known users
       #---------------------------------------------
       - name: Verify - Authors Sanity Check
-        uses: virtualsatellite/ci-actions/ci-verify-authors-action@v7-beta2
+        uses: virtualsatellite/ci-actions/ci-verify-authors-action@v7
       # Actions can also be accessed by other refs such as the latest from branch when using @master such as: 
       # uses: virtualsatellite/ci-actions/ci-verify-authors-action@master   
   
@@ -84,7 +84,7 @@ jobs:
           distribution: "temurin"
           
       - name: Setup - Maven 3.9.6
-        uses: virtualsatellite/ci-actions/ci-maven-setup@v7-beta2
+        uses: virtualsatellite/ci-actions/ci-maven-setup@v7
         with:
            maven-version: "3.9.6"
       # --------------------------------------------
@@ -106,7 +106,7 @@ jobs:
       # Perform various setup operations
       # --------------------------------------------      
       - name: Setup - Prepare OS
-        uses: virtualsatellite/ci-actions/ci-setup-action@v7-beta2
+        uses: virtualsatellite/ci-actions/ci-setup-action@v7
         with:
            pkgs_file: apt_vtk_zmq_packages
            jdk: no
@@ -116,13 +116,13 @@ jobs:
       # --------------------------------------------
       - name: Build - Build and Deploy Decision
         id: build_decision
-        uses: virtualsatellite/ci-actions/ci-build-decision-action@v7-beta2
+        uses: virtualsatellite/ci-actions/ci-build-decision-action@v7
 
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
       - name: Build and Test - Spotbugs
-        uses: virtualsatellite/ci-actions/ci-maven-build-action@v7-beta2
+        uses: virtualsatellite/ci-actions/ci-maven-build-action@v7
         with:
           build_job: spotbugs
           build_profile: ${{ steps.build_decision.outputs.build_type }}
@@ -146,7 +146,7 @@ jobs:
           distribution: "temurin"
           
       - name: Setup - Maven 3.9.6
-        uses: virtualsatellite/ci-actions/ci-maven-setup@v7-beta2
+        uses: virtualsatellite/ci-actions/ci-maven-setup@v7
         with:
            maven-version: "3.9.6"
       # --------------------------------------------
@@ -168,7 +168,7 @@ jobs:
       # Perform various setup operations
       # --------------------------------------------      
       - name: Setup - Prepare OS
-        uses: virtualsatellite/ci-actions/ci-setup-action@v7-beta2
+        uses: virtualsatellite/ci-actions/ci-setup-action@v7
         with:
            jdk: no
            xvfb: -x
@@ -179,13 +179,13 @@ jobs:
       # --------------------------------------------
       - name: Build - Build and Deploy Decision
         id: build_decision
-        uses: virtualsatellite/ci-actions/ci-build-decision-action@v7-beta2
+        uses: virtualsatellite/ci-actions/ci-build-decision-action@v7
 
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
       - name: Build and Test - Surefire
-        uses: virtualsatellite/ci-actions/ci-maven-build-action@v7-beta2
+        uses: virtualsatellite/ci-actions/ci-maven-build-action@v7
         with:
           build_job: sureheadless
           build_profile: ${{ steps.build_decision.outputs.build_type }}
@@ -231,7 +231,7 @@ jobs:
           distribution: "temurin"
           
       - name: Setup - Maven 3.9.6
-        uses: virtualsatellite/ci-actions/ci-maven-setup@v7-beta2
+        uses: virtualsatellite/ci-actions/ci-maven-setup@v7
         with:
            maven-version: "3.9.6"
       # --------------------------------------------
@@ -254,7 +254,7 @@ jobs:
       # Perform various setup operations
       # --------------------------------------------      
       - name: Setup - Prepare OS
-        uses: virtualsatellite/ci-actions/ci-setup-action@v7-beta2
+        uses: virtualsatellite/ci-actions/ci-setup-action@v7
         with:
            pkgs_file: apt_vtk_zmq_packages
            jdk: no
@@ -264,13 +264,13 @@ jobs:
       # --------------------------------------------
       - name: Build - Build and Deploy Decision
         id: build_decision
-        uses: virtualsatellite/ci-actions/ci-build-decision-action@v7-beta2
+        uses: virtualsatellite/ci-actions/ci-build-decision-action@v7
 
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
       - name: Build and Test - Checkstyle
-        uses: virtualsatellite/ci-actions/ci-maven-build-action@v7-beta2
+        uses: virtualsatellite/ci-actions/ci-maven-build-action@v7
         with:
           build_job: checkstyle
           build_profile: ${{ steps.build_decision.outputs.build_type }}
@@ -294,7 +294,7 @@ jobs:
           distribution: "temurin"
           
       - name: Setup - Maven 3.9.6
-        uses: virtualsatellite/ci-actions/ci-maven-setup@v7-beta2
+        uses: virtualsatellite/ci-actions/ci-maven-setup@v7
         with:
            maven-version: "3.9.6"
       # --------------------------------------------
@@ -316,7 +316,7 @@ jobs:
       # Perform various setup operations
       # --------------------------------------------
       - name: Setup - Prepare OS
-        uses: virtualsatellite/ci-actions/ci-setup-action@v7-beta2
+        uses: virtualsatellite/ci-actions/ci-setup-action@v7
         with:
            pkgs_file: apt_vtk_zmq_packages
            jdk: no
@@ -326,13 +326,13 @@ jobs:
       # --------------------------------------------
       - name: Build - Build and Deploy Decision
         id: build_decision
-        uses: virtualsatellite/ci-actions/ci-build-decision-action@v7-beta2
+        uses: virtualsatellite/ci-actions/ci-build-decision-action@v7
 
       # --------------------------------------------
       # Development and Feature branches
       # --------------------------------------------
       - name: Build - Assemble
-        uses: virtualsatellite/ci-actions/ci-maven-build-action@v7-beta2
+        uses: virtualsatellite/ci-actions/ci-maven-build-action@v7
         with:
           build_job: assemble
           build_profile: ${{ steps.build_decision.outputs.build_type }}
@@ -353,7 +353,7 @@ jobs:
       # Deploying to github releases
       # --------------------------------------------
       - name: Build - Deploy GH
-        uses: virtualsatellite/ci-actions/ci-deploy-gh-product-action@v7-beta2
+        uses: virtualsatellite/ci-actions/ci-deploy-gh-product-action@v7
         with:
           build_profile: ${{ steps.build_decision.outputs.build_type }}
           gh_token: ${{ secrets.GITHUB_TOKEN }}
@@ -363,7 +363,7 @@ jobs:
       # SF Deploy still to be done
       # ----------------------------------------------
       - name: Build - Deploy SF (Core)
-        uses: virtualsatellite/ci-actions/ci-deploy-sf-product-action@v7-beta2
+        uses: virtualsatellite/ci-actions/ci-deploy-sf-product-action@v7
         with:
           build_profile: ${{ steps.build_decision.outputs.build_type }}
           openssl_pass: ${{ secrets.SF_SSH_KEY_OPENSSL_PASS }}
@@ -373,7 +373,7 @@ jobs:
         if: ${{ steps.build_decision.outputs.deploy_type == 'deploy' }}
       
       - name: Build - Deploy SF (IDE Tools)
-        uses: virtualsatellite/ci-actions/ci-deploy-sf-product-action@v7-beta2
+        uses: virtualsatellite/ci-actions/ci-deploy-sf-product-action@v7
         with:
           build_profile: ${{ steps.build_decision.outputs.build_type }}
           openssl_pass: ${{ secrets.SF_SSH_KEY_OPENSSL_PASS }}
