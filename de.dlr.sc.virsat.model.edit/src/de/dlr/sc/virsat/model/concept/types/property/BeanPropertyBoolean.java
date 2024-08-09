@@ -9,7 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.property;
 
-import javax.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlElement;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.SetCommand;
@@ -17,8 +17,9 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.PropertyinstancesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
-import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiModelProperty.AccessMode;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
+
 
 /**
  * Class to wrap BooleanPropertyInstances
@@ -52,13 +53,13 @@ public class BeanPropertyBoolean extends ABeanValueProperty<ValuePropertyInstanc
 	
 	@Override
 	@XmlElement(nillable = true)
-	@ApiModelProperty(value = "Boolean")
+	@Schema(description = "Boolean")
 	public Boolean getValue() {
 		return Boolean.parseBoolean(ti.getValue());
 	}
 	
-	@ApiModelProperty(
-			value = "Always returns constant: \"boolean\"", 
+	@Schema(
+			description = "Always returns constant: \"boolean\"", 
 			example = "boolean",
 			accessMode = AccessMode.READ_ONLY)
 	@Override

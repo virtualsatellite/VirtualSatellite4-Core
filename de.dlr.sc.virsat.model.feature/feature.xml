@@ -2,7 +2,7 @@
 <feature
       id="de.dlr.sc.virsat.model.feature"
       label="VirSat Core Data Model Feature"
-      version="4.16.0.qualifier"
+      version="4.17.0.qualifier"
       provider-name="DLR (German Aerospace Center)"
       plugin="de.dlr.sc.virsat.branding.ui"
       license-feature="de.dlr.sc.virsat.license.feature">
@@ -24,107 +24,68 @@ by German Aerospace Center (DLR e.V.)
    </license>
 
    <requires>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.emf.ecore"/>
-      <import plugin="org.eclipse.emf.ecore.xmi"/>
-      <import plugin="org.eclipse.osgi"/>
-      <import plugin="org.eclipse.core.commands"/>
-      <import plugin="org.eclipse.emf.edit"/>
-      <import plugin="org.eclipse.emf.ecore.edit"/>
-      <import plugin="org.eclipse.emf.transaction"/>
-      <import plugin="org.eclipse.emf.edapt.migration"/>
-      <import plugin="org.eclipse.emf.edapt.history"/>
-      <import plugin="org.eclipse.emf.compare"/>
       <import plugin="com.google.guava"/>
+      <import feature="de.dlr.sc.virsat.branding.feature"/>
+      <import feature="de.dlr.sc.virsat.license.feature"/>
+      <import plugin="org.apache.commons.io"/>
+      <import plugin="org.eclipse.core.commands"/>
+      <import plugin="org.eclipse.core.expressions"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.e4.ui.css.swt.theme"/>
+      <import feature="org.eclipse.emf.common"/>
+      <import plugin="org.eclipse.emf.common.ui"/>
+      <import feature="org.eclipse.emf.compare"/>
+      <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="org.eclipse.emf.ecore.edit"/>
+      <import plugin="org.eclipse.emf.ecore.xmi"/>
+      <import plugin="org.eclipse.emf.edapt.history"/>
+      <import plugin="org.eclipse.emf.edapt.migration"/>
+      <import feature="org.eclipse.emf.edapt.runtime.feature"/>
+      <import feature="org.eclipse.emf.edit"/>
+      <import feature="org.eclipse.emf.edit.ui"/>
+      <import plugin="org.eclipse.emf.transaction"/>
+      <import feature="org.eclipse.emf.validation"/>
+      <import feature="org.eclipse.ocl"/>
+      <import plugin="org.eclipse.osgi"/>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.ui.ide"/>
-      <import plugin="org.eclipse.core.expressions"/>
-      <import plugin="org.eclipse.emf.common.ui"/>
-      <import plugin="org.eclipse.e4.ui.css.swt.theme"/>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.apache.commons.io"/>
-      <import plugin="jakarta.servlet-api"/>
-      <import feature="org.eclipse.emf.common" version="2.12.0.v20160420-0247"/>
-      <import feature="org.eclipse.emf.common" version="2.12.0.v20160420-0247"/>
-      <import feature="org.eclipse.emf.transaction" version="1.9.0.201506010221"/>
-      <import feature="org.eclipse.emf.edit" version="2.11.1.v20160208-0841"/>
-      <import feature="org.eclipse.emf.edit.ui" version="2.11.1.v20160208-0841"/>
-      <import feature="de.dlr.sc.virsat.branding.feature" version="0.0.0" match="greaterOrEqual"/>
-      <import feature="de.dlr.sc.virsat.license.feature" version="0.0.0" match="greaterOrEqual"/>
-      <import feature="org.eclipse.emf.edapt.runtime.feature" version="1.2.0.201606020942"/>
-      <import feature="org.eclipse.emf.common" version="2.12.0.v20160420-0247"/>
-      <import feature="org.eclipse.ocl" version="3.6.0.v20160523-1914"/>
-      <import feature="org.eclipse.emf.compare" version="3.2.1.201608311750"/>
-      <import feature="org.eclipse.emf.validation" version="1.10.0.201606071713"/>
    </requires>
 
    <plugin
          id="de.dlr.sc.virsat.model"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
          id="de.dlr.sc.virsat.external.lib.commons.cli"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
          id="de.dlr.sc.virsat.model.edit"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
          id="de.dlr.sc.virsat.model.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
          id="de.dlr.sc.virsat.external.lib"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
          id="de.dlr.sc.virsat.external.lib.matlabfile"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
          id="de.dlr.sc.virsat.commons"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
          id="de.dlr.sc.virsat.external.lib.swagger"
-         download-size="0"
-         install-size="0"
          version="0.0.0"/>
 
    <plugin
          id="de.dlr.sc.virsat.external.lib.jersey"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="jakarta.activation"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
 </feature>

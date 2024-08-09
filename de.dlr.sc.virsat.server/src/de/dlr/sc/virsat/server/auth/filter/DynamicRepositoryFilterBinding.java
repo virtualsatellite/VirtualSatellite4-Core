@@ -9,11 +9,10 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.auth.filter;
 
-import javax.ws.rs.container.DynamicFeature;
-import javax.ws.rs.container.ResourceInfo;
-import javax.ws.rs.core.FeatureContext;
-
-import de.dlr.sc.virsat.server.resources.ModelAccessResource;
+import de.dlr.sc.virsat.server.resources.modelaccess.RepositoryAccessResource;
+import jakarta.ws.rs.container.DynamicFeature;
+import jakarta.ws.rs.container.ResourceInfo;
+import jakarta.ws.rs.core.FeatureContext;
 
 /**
  * Binds the RepositoryFilter to specified classes and functions,
@@ -23,7 +22,7 @@ public class DynamicRepositoryFilterBinding implements DynamicFeature {
 
 	@Override
 	public void configure(ResourceInfo resourceInfo, FeatureContext context) {
-		if (ModelAccessResource.RESOURCE_CLASSES.contains(resourceInfo.getResourceClass())) {
+		if (RepositoryAccessResource.RESOURCE_CLASSES.contains(resourceInfo.getResourceClass())) {
 			context.register(RepositoryFilter.class);
 		}
 	}

@@ -18,7 +18,7 @@ SPDX-License-Identifier: EPL-2.0
 	<parent>
 		<artifactId>de.dlr.sc.virsat.parent</artifactId>
 		<groupId>de.dlr.sc.virsat</groupId>
-		<version>4.16.0-SNAPSHOT</version>
+		<version>4.17.0-SNAPSHOT</version>
 		<relativePath>../maven/pom.xml</relativePath>
 	</parent>
 
@@ -31,7 +31,7 @@ SPDX-License-Identifier: EPL-2.0
 					<plugin>
 						<groupId>org.eclipse.xtext</groupId>
 						<artifactId>xtext-maven-plugin</artifactId>
-						<version>2.18.0</version>
+						<version>2.35.0</version>
 						<executions>
 							<execution>
 								<goals>
@@ -40,18 +40,29 @@ SPDX-License-Identifier: EPL-2.0
 							</execution>
 						</executions>
 						<configuration>
+							<!--
+							The sourceRoots need to be mentioned. Otherwise the maven xtext plugin around version 2.35
+							will have the wrong source dirs when searching for the tmodel files. On Linux systems a "/"
+							root folder seneeks into the configuration leading to an infinte search in alld irectories of the system.
+							This root folder is not introduced on windows systems though.
+							-->
+							<sourceRoots>tmodel-src/</sourceRoots>
 							<languages>
+								
 								<language>
 									<setup>de.dlr.sc.overtarget.language.OvertargetStandaloneSetup</setup>
 									<outputConfigurations>
 										<outputConfiguration>
+											
 											<overrideExistingResources>true</overrideExistingResources>
 											<outputDirectory>/</outputDirectory>
 										</outputConfiguration>
 									</outputConfigurations>
 								</language>
 							</languages>
+							
 						</configuration>
+						
 						<dependencies>
 							<dependency>
 								<groupId>de.dlr.sc.overtarget</groupId>

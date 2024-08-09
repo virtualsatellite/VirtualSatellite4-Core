@@ -169,7 +169,8 @@ public class VirSatWorkspaceCommandStackTest extends AProjectTestCase {
 		// Create a user
 		Discipline discipline = RolesFactory.eINSTANCE.createDiscipline();
 		discipline.setName("Me");
-		discipline.setUser("Me_user");
+		
+		discipline.getUsers().add("Me_user");
 		Command cmd = AddCommand.create(editingDomain, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES, discipline);
 		editingDomain.getCommandStack().execute(cmd);
 		
@@ -229,7 +230,7 @@ public class VirSatWorkspaceCommandStackTest extends AProjectTestCase {
 		// Create a user
 		Discipline discipline = RolesFactory.eINSTANCE.createDiscipline();
 		discipline.setName("Me");
-		discipline.setUser("Me_user");
+		discipline.getUsers().add("Me_user");
 		Command cmd = AddCommand.create(editingDomain, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES, discipline);
 		editingDomain.getCommandStack().execute(cmd);
 		

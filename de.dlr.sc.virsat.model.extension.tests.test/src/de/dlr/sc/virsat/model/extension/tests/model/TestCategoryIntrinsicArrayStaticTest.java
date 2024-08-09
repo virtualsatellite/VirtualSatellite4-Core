@@ -33,7 +33,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 /**
  * test case for the array capabilities on intrinsic properties in the beans model
  */
-public class TestCategoryIntrinsicArrayStaticTest extends AConceptTestCase {
+public class TestCategoryIntrinsicArrayStaticTest extends AExtensionConceptTestCase {
 
 	private TestCategoryIntrinsicArray tcIntrinsicArray;
 	private IBeanList<BeanPropertyString> arrayStatic;

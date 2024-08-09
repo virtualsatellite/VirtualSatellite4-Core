@@ -13,8 +13,8 @@ import com.google.inject.Binder
 import de.dlr.sc.virsat.model.concept.generator.ConceptOutputConfigurationProvider
 import de.dlr.sc.virsat.model.concept.naming.ConceptLanguageQualifiedNameProvider
 import de.dlr.sc.virsat.model.concept.validation.ConceptLanguageExtendedValidator
-import javax.inject.Singleton
 import org.eclipse.xtext.generator.IOutputConfigurationProvider
+import com.google.inject.Singleton
 
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.

@@ -9,9 +9,9 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.ext.core.core.util;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.XMIResource;
@@ -28,7 +28,7 @@ public class CoreResourceFactoryImplTest {
 		CoreResourceFactoryImpl resourceFactory = new CoreResourceFactoryImpl();
 		Resource coreResource = resourceFactory.createResource(URI.createFileURI("test.test"));
 		assertNotNull("new resource should not be null", coreResource);
-		assertTrue("Should be a XMI resource", coreResource instanceof XMIResource);
+		assertThat("Should be a XMI resource", coreResource, instanceOf(XMIResource.class));
 	}
 
 }

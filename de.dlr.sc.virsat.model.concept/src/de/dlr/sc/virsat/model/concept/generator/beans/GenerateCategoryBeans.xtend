@@ -60,12 +60,12 @@ import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper
 import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapter
-import javax.xml.bind.annotation.XmlAccessType
-import javax.xml.bind.annotation.XmlAccessorType
-import javax.xml.bind.annotation.XmlElement
-import javax.xml.bind.annotation.XmlRootElement
-import javax.xml.bind.annotation.XmlType
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter
+import jakarta.xml.bind.annotation.XmlAccessType
+import jakarta.xml.bind.annotation.XmlAccessorType
+import jakarta.xml.bind.annotation.XmlElement
+import jakarta.xml.bind.annotation.XmlRootElement
+import jakarta.xml.bind.annotation.XmlType
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter
 import org.eclipse.core.runtime.IProgressMonitor
 import org.eclipse.emf.common.command.Command
 import org.eclipse.emf.common.util.URI
@@ -139,7 +139,7 @@ class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
 	// * Import Statements
 	// *****************************************************************
 	«IF !importManager.importedClasses.empty»
-		«FOR clazz : importManager.importedClasses»
+		«FOR clazz : importManager.importedClasses.sort»
 			import «clazz»;
 		«ENDFOR»
   	«ENDIF»

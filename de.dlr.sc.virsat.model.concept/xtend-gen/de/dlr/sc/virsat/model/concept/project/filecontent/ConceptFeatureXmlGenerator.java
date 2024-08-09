@@ -22,7 +22,7 @@ public class ConceptFeatureXmlGenerator implements IFileContentGenerator {
   public String generateContent(final IProjectBuilderInfo projectBuilderInfo) {
     return this.manifestContent(projectBuilderInfo).toString();
   }
-  
+
   public CharSequence manifestContent(final IProjectBuilderInfo builderInfo) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");

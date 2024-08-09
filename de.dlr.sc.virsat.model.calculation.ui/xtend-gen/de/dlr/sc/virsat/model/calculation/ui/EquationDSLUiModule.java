@@ -25,9 +25,9 @@ public class EquationDSLUiModule extends AbstractEquationDSLUiModule {
   public Class<? extends IResourceForEditorInputFactory> bindIResourceForEditorInputFactory() {
     return EquationSectionResourceForEditorInputFactory.class;
   }
-  
+
   public static final Logger LOGGER = Logger.getLogger(EquationDSLUiModule.class);
-  
+
   public EquationDSLUiModule(final AbstractUIPlugin plugin) {
     super(plugin);
   }

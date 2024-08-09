@@ -9,17 +9,18 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapter;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
 
 /**
  * Core functionality for a Concept Bean and abstract implementation to the interface
@@ -31,7 +32,7 @@ import io.swagger.annotations.ApiModelProperty;
 @XmlRootElement
 // This class does not appear in the API documentation
 // because there is no concrete resource using it
-@ApiModel
+@Schema
 public abstract class ABeanObject<CP_TYPE extends ATypeInstance> implements IBeanObject<CP_TYPE> {
 
 	protected CP_TYPE ti;
@@ -58,8 +59,8 @@ public abstract class ABeanObject<CP_TYPE extends ATypeInstance> implements IBea
 		this.ti = (CP_TYPE) ti;
 	}
 	
-	@ApiModelProperty(name = "uuid", required = true,
-			value = "Unique identifier for a bean",
+	@Schema(name = "uuid", required = true,
+			description = "Unique identifier for a bean",
 			example = "b168b0df-84b6-4b7f-bede-69298b215f40")
 	@XmlElement(name = "uuid")
 	@XmlJavaTypeAdapter(IUuidAdapter.class)
@@ -73,13 +74,13 @@ public abstract class ABeanObject<CP_TYPE extends ATypeInstance> implements IBea
 		this.ti = ti;
 	}
 
-	@ApiModelProperty(hidden = true)
+	@Schema(hidden = true)
 	@Override
 	public CP_TYPE getTypeInstance() {
 		return ti;
 	}
 
-	@ApiModelProperty(hidden = true)
+	@Schema(hidden = true)
 	@Override
 	public String getUuid() {
 		return ti.getUuid().toString();

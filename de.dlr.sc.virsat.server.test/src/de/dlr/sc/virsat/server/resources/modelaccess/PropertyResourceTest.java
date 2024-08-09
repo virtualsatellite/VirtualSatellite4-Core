@@ -15,10 +15,10 @@ import static org.junit.Assert.assertEquals;
 import java.io.ByteArrayInputStream;
 import java.io.StringWriter;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Response;
-import javax.xml.bind.JAXBException;
+import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.Response;
+import jakarta.xml.bind.JAXBException;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -32,7 +32,7 @@ import de.dlr.sc.virsat.model.concept.types.property.BeanPropertyComposed;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.server.resources.AModelAccessResourceTest;
-import de.dlr.sc.virsat.server.resources.ModelAccessResource;
+import de.dlr.sc.virsat.server.resources.model.PropertyResource;
 
 public class PropertyResourceTest extends AModelAccessResourceTest {
 	
@@ -124,7 +124,7 @@ public class PropertyResourceTest extends AModelAccessResourceTest {
 		String jsonIn = sw.toString();
 		
 		Response response = webTarget
-				.path(ModelAccessResource.PROPERTY)
+				.path(RepositoryAccessResource.PROPERTY)
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.put(Entity.json(jsonIn));
@@ -133,12 +133,12 @@ public class PropertyResourceTest extends AModelAccessResourceTest {
 	
 	@Test
 	public void testErrorResponses() {
-		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.PROPERTY + "/unknown").get());
+		assertNotFoundResponse(getTestRequestBuilder(RepositoryAccessResource.PROPERTY + "/unknown").get());
 		
-		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.PROPERTY + "/unknown/" + PropertyResource.RESOURCE).get());
+		assertNotFoundResponse(getTestRequestBuilder(RepositoryAccessResource.PROPERTY + "/unknown/" + PropertyResource.RESOURCE).get());
 		// A boolean property doesn't have a resource
 		assertBadRequestResponse(
-				getTestRequestBuilder(ModelAccessResource.PROPERTY + "/" + beanBool.getUuid().toString() + "/" + PropertyResource.RESOURCE).get(),
+				getTestRequestBuilder(RepositoryAccessResource.PROPERTY + "/" + beanBool.getUuid().toString() + "/" + PropertyResource.RESOURCE).get(),
 				PropertyResource.PROPERTY_DOES_NOT_CONTAIN_A_SERVEABLE_RESOURCE);
 	}
 	
@@ -146,7 +146,7 @@ public class PropertyResourceTest extends AModelAccessResourceTest {
 	public void testResourceGet() throws CoreException {
 		// Initially the bean does not contain a valid resource
 		assertBadRequestResponse(
-				getTestRequestBuilder(ModelAccessResource.PROPERTY + "/" + beanResource.getUuid().toString() + "/" + PropertyResource.RESOURCE).get(),
+				getTestRequestBuilder(RepositoryAccessResource.PROPERTY + "/" + beanResource.getUuid().toString() + "/" + PropertyResource.RESOURCE).get(),
 				PropertyResource.PROPERTY_DOES_NOT_CONTAIN_A_SERVEABLE_RESOURCE);
 		
 		// Now create a valid file
@@ -159,7 +159,7 @@ public class PropertyResourceTest extends AModelAccessResourceTest {
 		ed.getCommandStack().execute(setCommand);
 		
 		// Check that we can access the contents via the API
-		Response response = getTestRequestBuilder(ModelAccessResource.PROPERTY + "/" + beanResource.getUuid().toString() + "/" + PropertyResource.RESOURCE).get();
+		Response response = getTestRequestBuilder(RepositoryAccessResource.PROPERTY + "/" + beanResource.getUuid().toString() + "/" + PropertyResource.RESOURCE).get();
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 		
 		byte[] entity = response.readEntity(byte[].class);

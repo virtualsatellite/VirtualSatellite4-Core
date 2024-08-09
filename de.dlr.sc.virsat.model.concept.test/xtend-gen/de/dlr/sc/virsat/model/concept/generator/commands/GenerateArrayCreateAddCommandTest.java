@@ -9,13 +9,13 @@
  */
 package de.dlr.sc.virsat.model.concept.generator.commands;
 
+import com.google.inject.Inject;
 import de.dlr.sc.virsat.model.concept.ConceptLanguageTestInjectorProvider;
 import de.dlr.sc.virsat.model.concept.test.util.GeneratorJunitAssert;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage;
-import javax.inject.Inject;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.XtextRunner;
@@ -35,19 +35,19 @@ public class GenerateArrayCreateAddCommandTest {
   @Inject
   @Extension
   private ParseHelper<Concept> _parseHelper;
-  
+
   private Concept concept;
-  
+
   private AProperty property;
-  
+
   private final String testConceptName = "testConcept";
-  
+
   private final String testCategoryName = "testCategory";
-  
+
   private final String testArrayPropertyName = "testStringArray";
-  
+
   private final GenerateArrayCreateAddCommand createAddCommandGenerator = new GenerateArrayCreateAddCommand();
-  
+
   @Before
   public void setUp() {
     try {
@@ -79,7 +79,7 @@ public class GenerateArrayCreateAddCommandTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCreateConcreteClassFileName() {
     final String fileName = this.createAddCommandGenerator.createConcreteClassFileName(this.concept, this.property);
@@ -88,7 +88,7 @@ public class GenerateArrayCreateAddCommandTest {
     final String expectedFileName = (_plus + "Command.java");
     Assert.assertEquals("Concrete file name for the generated create add command is correct", expectedFileName, fileName);
   }
-  
+
   @Test
   public void testCreateAbstractClassFileName() {
     final String fileName = this.createAddCommandGenerator.createAbstractClassFileName(this.concept, this.property);
@@ -97,7 +97,7 @@ public class GenerateArrayCreateAddCommandTest {
     final String expectedFileName = (_plus + "Command.java");
     Assert.assertEquals("Abstract file name for the generated abstract create add command is correct", expectedFileName, fileName);
   }
-  
+
   @Test
   public void testCreateConcreteClass() {
     try {
@@ -107,7 +107,7 @@ public class GenerateArrayCreateAddCommandTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCreateAbstractClass() {
     try {

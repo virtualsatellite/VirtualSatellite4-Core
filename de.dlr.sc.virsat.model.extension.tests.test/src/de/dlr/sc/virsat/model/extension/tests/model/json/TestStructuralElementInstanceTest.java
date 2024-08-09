@@ -16,8 +16,8 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.util.Arrays;
 
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 
 import org.junit.Before;
@@ -30,12 +30,12 @@ import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
-import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
+import de.dlr.sc.virsat.model.extension.tests.model.AExtensionConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryBeanA;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 
-public class TestStructuralElementInstanceTest extends AConceptTestCase {
+public class TestStructuralElementInstanceTest extends AExtensionConceptTestCase {
 
 	private JAXBUtility jaxbUtility;
 	private Concept concept;
@@ -96,7 +96,7 @@ public class TestStructuralElementInstanceTest extends AConceptTestCase {
 		
 		Discipline discipline = RolesFactory.eINSTANCE.createDiscipline();
 		discipline.setName(NAME);
-		discipline.setUser(USERNAME);
+		discipline.getUsers().add(USERNAME);
 		discipline.setUuid(new VirSatUuid("e4e175f5-88c8-474f-bb25-2cdf1d3061cb"));
 		beanDiscipline = new BeanDiscipline(discipline);
 	}

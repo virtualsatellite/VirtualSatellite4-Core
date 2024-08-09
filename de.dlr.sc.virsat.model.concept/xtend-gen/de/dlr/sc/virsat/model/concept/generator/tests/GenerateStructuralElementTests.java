@@ -36,13 +36,13 @@ public class GenerateStructuralElementTests extends AGeneratorGapGenerator<Struc
     String _firstUpper = StringExtensions.toFirstUpper(typeDefinition.getName());
     return (_firstUpper + "Test");
   }
-  
+
   public static String getAbstractClassName(final StructuralElement typeDefinition) {
     String _firstUpper = StringExtensions.toFirstUpper(typeDefinition.getName());
     String _plus = ("A" + _firstUpper);
     return (_plus + "Test");
   }
-  
+
   @Override
   public String createConcreteClassFileName(final Concept concept, final StructuralElement conceptPart) {
     String _name = concept.getName();
@@ -55,7 +55,7 @@ public class GenerateStructuralElementTests extends AGeneratorGapGenerator<Struc
     String _plus_4 = (_plus_3 + _concreteClassName);
     return (_plus_4 + ".java");
   }
-  
+
   @Override
   public String createAbstractClassFileName(final Concept concept, final StructuralElement conceptPart) {
     String _name = concept.getName();
@@ -68,16 +68,16 @@ public class GenerateStructuralElementTests extends AGeneratorGapGenerator<Struc
     String _plus_4 = (_plus_3 + _abstractClassName);
     return (_plus_4 + ".java");
   }
-  
+
   @Override
   protected String getPackage(final Concept concept) {
     String _name = concept.getName();
     String _plus = (_name + ".");
     return (_plus + GenerateStructuralElementTests.PACKAGE_FOLDER);
   }
-  
+
   public static final String PACKAGE_FOLDER = BeanRegistry.BEAN_PACKAGE_NAME;
-  
+
   @Override
   public void serializeModel(final Concept concept, final IFileSystemAccess fsa) {
     TreeIterator<Object> iterator = EcoreUtil.<Object>getAllContents(concept, true);
@@ -91,7 +91,7 @@ public class GenerateStructuralElementTests extends AGeneratorGapGenerator<Struc
     };
     IteratorExtensions.<Object>forEach(iterator, _function);
   }
-  
+
   /**
    * Declare the package statement of the java file
    */
@@ -104,7 +104,7 @@ public class GenerateStructuralElementTests extends AGeneratorGapGenerator<Struc
     _builder.newLineIfNotEmpty();
     return _builder;
   }
-  
+
   /**
    * Write down all the import statements needed by this java file
    */
@@ -134,7 +134,7 @@ public class GenerateStructuralElementTests extends AGeneratorGapGenerator<Struc
     }
     return _builder;
   }
-  
+
   /**
    * Entry method to write the class body
    */
@@ -219,7 +219,7 @@ public class GenerateStructuralElementTests extends AGeneratorGapGenerator<Struc
     _builder.newLine();
     return _builder;
   }
-  
+
   @Override
   public CharSequence declareClass(final Concept concept, final StructuralElement se, final ImportManager importManager) {
     StringConcatenation _builder = new StringConcatenation();
@@ -247,7 +247,7 @@ public class GenerateStructuralElementTests extends AGeneratorGapGenerator<Struc
     _builder.newLine();
     return _builder;
   }
-  
+
   /**
    * Method to create the constructor of the java category bean
    */

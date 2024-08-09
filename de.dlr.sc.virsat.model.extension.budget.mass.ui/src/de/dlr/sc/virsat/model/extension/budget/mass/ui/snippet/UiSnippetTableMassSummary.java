@@ -199,9 +199,9 @@ public class UiSnippetTableMassSummary extends AUiSnippetTableMassSummary {
 	 */
 	private void setChartInputsAndTitles(Object inputObject) {
 		MassConceptHelper mch = new MassConceptHelper();
-		if (mch.initBeansForObject(inputObject) && (mch.massSummary != null)) {
-			subTitleMassDistribution.setText("Mass distribution of equipment and summaries in: " + mch.bSei.getName());
-			subTitleMassMargins.setText("Amount of mass and margin of equipment and summaries in: " + mch.bSei.getName());
+		if (mch.initBeansForObject(inputObject) && (mch.getMassSummary() != null)) {
+			subTitleMassDistribution.setText("Mass distribution of equipment and summaries in: " + mch.getbSei().getName());
+			subTitleMassMargins.setText("Amount of mass and margin of equipment and summaries in: " + mch.getbSei().getName());
 			barChartViewerMassMargins.setInput(inputObject);
 			pieChartViewerMassDistribution.setInput(inputObject);
 		}
@@ -303,7 +303,7 @@ public class UiSnippetTableMassSummary extends AUiSnippetTableMassSummary {
 		@Override
 		public Font getFont(Object object) {
 			if (mch.initBeansForObject(object)) {
-				if (mch.massSummary != null) {
+				if (mch.getMassSummary() != null) {
 					return boldFont;
 				} 
 			}
@@ -316,7 +316,7 @@ public class UiSnippetTableMassSummary extends AUiSnippetTableMassSummary {
 		@Override
 		public Color getBackground(Object object) {
 			if (mch.initBeansForObject(object)) {
-				if (mch.massSummary != null) {
+				if (mch.getMassSummary() != null) {
 					return colorGrey;
 				} 
 			}
@@ -332,10 +332,10 @@ public class UiSnippetTableMassSummary extends AUiSnippetTableMassSummary {
 			}
 			
 			if (mch.initBeansForObject(object)) {
-				if (mch.massSummary != null) {
-					return super.getColumnImage(mch.massSummary.getTypeInstance(), columnIndex);
-				} else if (mch.massEquipment != null) {
-					return super.getColumnImage(mch.massEquipment.getTypeInstance(), columnIndex);
+				if (mch.getMassSummary() != null) {
+					return super.getColumnImage(mch.getMassSummary().getTypeInstance(), columnIndex);
+				} else if (mch.getMassEquipment() != null) {
+					return super.getColumnImage(mch.getMassEquipment().getTypeInstance(), columnIndex);
 				} else {
 					return super.getColumnImage(object, columnIndex);
 				}
@@ -350,28 +350,28 @@ public class UiSnippetTableMassSummary extends AUiSnippetTableMassSummary {
 
 			if (mch.initBeansForObject(object)) {
 				if (column == colName.getColumn()) {
-					return mch.bSei.getName();
+					return mch.getbSei().getName();
 				} 
 				
-				if (mch.massSummary != null) {
-					redirectNotification(mch.massSummary, object, true);
+				if (mch.getMassSummary() != null) {
+					redirectNotification(mch.getMassSummary(), object, true);
 					if (column == colMass.getColumn()) {
-						return mch.massSummary.getMassBean().getValueWithUnit();
+						return mch.getMassSummary().getMassBean().getValueWithUnit();
 					} else if (column == colMargin.getColumn()) {
-						return mch.massSummary.getMarginBean().getValueWithUnit();
+						return mch.getMassSummary().getMarginBean().getValueWithUnit();
 					} else if (column == colMassWithMargin.getColumn()) {
-						return mch.massSummary.getMassWithMarginBean().getValueWithUnit();
+						return mch.getMassSummary().getMassWithMarginBean().getValueWithUnit();
 					} 
 				}
 				
-				if (mch.massEquipment != null) {
-					redirectNotification(mch.massEquipment, object, true);
+				if (mch.getMassEquipment() != null) {
+					redirectNotification(mch.getMassEquipment(), object, true);
 					if (column == colMass.getColumn()) {
-						return mch.massEquipment.getMassBean().getValueWithUnit();
+						return mch.getMassEquipment().getMassBean().getValueWithUnit();
 					} else if (column == colMargin.getColumn()) {
-						return mch.massEquipment.getMarginBean().getValueWithUnit();
+						return mch.getMassEquipment().getMarginBean().getValueWithUnit();
 					} else if (column == colMassWithMargin.getColumn()) {
-						return mch.massEquipment.getMassWithMarginBean().getValueWithUnit();
+						return mch.getMassEquipment().getMassWithMarginBean().getValueWithUnit();
 					} 
 				}
 			}
@@ -380,29 +380,29 @@ public class UiSnippetTableMassSummary extends AUiSnippetTableMassSummary {
 
 		@Override
 		public String getKey(Object object) {
-			return mch.initBeansForObject(object) ? mch.bSei.getName() : null;
+			return mch.initBeansForObject(object) ? mch.getbSei().getName() : null;
 		}
 
 		@Override
 		public double getValue(String row, Object object) {
 			if (mch.initBeansForObject(object)) {
-				if (mch.massSummary != null) {
-					redirectNotification(mch.massSummary, object, true);
+				if (mch.getMassSummary() != null) {
+					redirectNotification(mch.getMassSummary(), object, true);
 					if (ROW_MASS.equals(row)) {
-						return mch.massSummary.getMassBean().getValueToBaseUnit();
+						return mch.getMassSummary().getMassBean().getValueToBaseUnit();
 					} else 	if (ROW_MASS_MARGIN.equals(row)) {
-						return mch.massSummary.getMassMarginBean().getValueToBaseUnit();
+						return mch.getMassSummary().getMassMarginBean().getValueToBaseUnit();
 					}
-					return mch.massSummary.getMassWithMarginBean().getValueToBaseUnit();
+					return mch.getMassSummary().getMassWithMarginBean().getValueToBaseUnit();
 				}
-				if (mch.massEquipment != null) {
-					redirectNotification(mch.massEquipment, object, true);
+				if (mch.getMassEquipment() != null) {
+					redirectNotification(mch.getMassEquipment(), object, true);
 					if (ROW_MASS.equals(row)) {
-						return mch.massEquipment.getMassBean().getValueToBaseUnit();
+						return mch.getMassEquipment().getMassBean().getValueToBaseUnit();
 					} else 	if (ROW_MASS_MARGIN.equals(row)) {
-						return mch.massEquipment.getMassMarginBean().getValueToBaseUnit();
+						return mch.getMassEquipment().getMassMarginBean().getValueToBaseUnit();
 					}
-					return mch.massEquipment.getMassWithMarginBean().getValueToBaseUnit();
+					return mch.getMassEquipment().getMassWithMarginBean().getValueToBaseUnit();
 				}
 			}
 			return 0;

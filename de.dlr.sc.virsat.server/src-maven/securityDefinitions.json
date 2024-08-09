@@ -1,6 +1,0 @@
-{
-  "basic": {
-    "type": "basic",
-    "description": "HTTP Basic Authentication"
-  }
-}

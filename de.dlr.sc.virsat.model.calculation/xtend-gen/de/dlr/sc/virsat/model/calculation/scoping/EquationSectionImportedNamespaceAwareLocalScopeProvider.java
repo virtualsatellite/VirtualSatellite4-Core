@@ -41,7 +41,7 @@ public class EquationSectionImportedNamespaceAwareLocalScopeProvider extends Imp
   protected IScope getLocalElementsScope(final IScope parent, final EObject context, final EReference reference) {
     return super.getLocalElementsScope(parent, context, reference);
   }
-  
+
   @Override
   public ISelectable internalGetAllDescriptions(final Resource resource) {
     Iterable<EObject> combinedContents = null;
@@ -66,7 +66,7 @@ public class EquationSectionImportedNamespaceAwareLocalScopeProvider extends Imp
     final Iterable<IEObjectDescription> allDescriptions = Scopes.<EObject>scopedElementsFor(combinedContents, this.getQualifiedNameProvider());
     return new MultimapBasedSelectable(allDescriptions);
   }
-  
+
   @Override
   public String getImportedNamespace(final EObject object) {
     if ((object instanceof Import)) {

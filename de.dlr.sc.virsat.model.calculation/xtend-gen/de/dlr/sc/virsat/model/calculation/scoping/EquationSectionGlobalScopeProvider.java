@@ -32,7 +32,7 @@ import org.eclipse.xtext.scoping.impl.DefaultGlobalScopeProvider;
 public class EquationSectionGlobalScopeProvider extends DefaultGlobalScopeProvider {
   @Inject
   private IQualifiedNameProvider qualifiedNameProvider;
-  
+
   @Override
   public IScope getScope(final Resource resource, final EReference reference, final Predicate<IEObjectDescription> filter) {
     final EClass referenceType = reference.getEReferenceType();

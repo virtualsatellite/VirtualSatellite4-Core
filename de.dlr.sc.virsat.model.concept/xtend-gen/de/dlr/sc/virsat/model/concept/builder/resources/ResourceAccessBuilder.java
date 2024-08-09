@@ -63,15 +63,15 @@ import org.w3c.dom.Node;
 @SuppressWarnings("all")
 public class ResourceAccessBuilder extends IncrementalProjectBuilder {
   public static final String MANIFEST_MF = "MANIFEST.MF";
-  
+
   public static final String PLUGIN_XML = "plugin.xml";
-  
+
   public static final String MANIFEST_MF_JAVA = "ManifestMf.java";
-  
+
   public static final String PLUGIN_XML_JAVA = "PluginXml.java";
-  
+
   public static final String BUILDER_ID = "de.dlr.sc.virsat.model.concept.resourceAccessBuilder";
-  
+
   @Override
   protected IProject[] build(final int kind, final Map<String, String> args, final IProgressMonitor monitor) throws CoreException {
     ILog _log = Activator.getDefault().getLog();
@@ -104,7 +104,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
     _log_1.log(_status_1);
     return null;
   }
-  
+
   /**
    * Do the incremental build
    * @param delta describing the changes in the resource
@@ -137,7 +137,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   /**
    * do the full build
    * @param monitor to follow the progress
@@ -146,7 +146,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
     this.writeAccessClass(this.buildManifestAccessClass(), ResourceAccessBuilder.MANIFEST_MF_JAVA);
     this.writeAccessClass(this.buildPluginXmlAccessClass(), ResourceAccessBuilder.PLUGIN_XML_JAVA);
   }
-  
+
   /**
    * This method builds the manifest access java file
    * from the default manifest file in the project.
@@ -169,7 +169,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   /**
    * This method builds the manifest access java file
    * from a given input stream.
@@ -187,7 +187,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   /**
    * This method creates the string that should be written into the
    * @param packageName of the access class
@@ -265,7 +265,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
     _builder.newLine();
     return _builder;
   }
-  
+
   /**
    * This method is called to build the plugin.xml access class
    * from the default plugin.xml in the project.
@@ -284,7 +284,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   /**
    * This method is called to build the plugin.xml access class
    * from a given input stream.
@@ -306,7 +306,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   /**
    * Method to write the actual access class
    * @param classSourceStream the stream to write
@@ -358,7 +358,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   /**
    * This method creates the string that should be written into the
    * @param packageName to be used for access class
@@ -475,7 +475,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
     _builder.newLine();
     return _builder;
   }
-  
+
   public Object createPluginXmlAccessClass(final Node node, final String extensionType, final String group) {
     StringConcatenation _builder = new StringConcatenation();
     final Node extenionPointNode = this.getExtensionPointNode(node, group);
@@ -489,7 +489,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
     }
     return _builder;
   }
-  
+
   public CharSequence createPluginXmlInternalClasses(final Node node, final String extensionType) {
     StringConcatenation _builder = new StringConcatenation();
     {
@@ -520,7 +520,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
     }
     return _builder;
   }
-  
+
   /**
    * Gets all children of a node, including nested nodes.
    * @param node the node of which to get the children
@@ -537,7 +537,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
     allChildren.addAll(deepChildren);
     return allChildren;
   }
-  
+
   /**
    * Gets all child nodes that define a class in the java file.
    * Note that it is possible for an element with the same ID to reappear due to the user
@@ -569,7 +569,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
     final List<Node> elementChildrenWithLastClassNames = IterableExtensions.<Node>toList(IterableExtensions.<Node>filter(elementChildren, _function_2));
     return elementChildrenWithLastClassNames;
   }
-  
+
   /**
    * Gets an iterateable list of child nodes from a node.
    * @param node for which to get the children
@@ -584,7 +584,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
     }
     return arraylist;
   }
-  
+
   /**
    * Gets an iterateable list of attributes nodes from a node
    * @param node for which to get the attributes
@@ -601,7 +601,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
     }
     return arraylist;
   }
-  
+
   /**
    * Tries to constructs a unique, versioned class name for a given extension.
    * @param node for which to construcht the class name
@@ -612,7 +612,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
     String _classSuffixFromVersion = this.getClassSuffixFromVersion(node);
     return (_classNameFromIdentifier + _classSuffixFromVersion);
   }
-  
+
   /**
    * Remap the name of an attribute in case that it conflicts with a java keyword
    * @param node for which to get the attribute name
@@ -626,7 +626,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
       return node.getNodeName().toUpperCase();
     }
   }
-  
+
   /**
    * Gets the name of the class for a given node.
    * @param node for which to get the class name
@@ -639,7 +639,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
     final String lastIDFragement = IterableExtensions.join(IterableExtensions.<String>drop(((Iterable<String>)Conversions.doWrapArray(tokens)), Math.max(_minus, 0)));
     return StringExtensions.toFirstUpper(lastIDFragement);
   }
-  
+
   /**
    * Gets the identifier attribute for constructing class name from a node
    * @param node for which to get the identifier attribute
@@ -658,7 +658,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
     }
     return identifierAttribute;
   }
-  
+
   /**
    * Gets a version attribute from the extension, if one is defined.
    * @param node for which to get the class suffix
@@ -672,7 +672,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
       return "";
     }
   }
-  
+
   /**
    * Checks if a given node defines an extension point of the passed group.
    * @param node to check for the extension point
@@ -695,7 +695,7 @@ public class ResourceAccessBuilder extends IncrementalProjectBuilder {
     }
     return null;
   }
-  
+
   public IProject getTheProject() {
     return this.getProject();
   }

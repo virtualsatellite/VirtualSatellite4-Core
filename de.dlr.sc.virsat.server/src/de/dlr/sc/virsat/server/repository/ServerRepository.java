@@ -70,8 +70,11 @@ public class ServerRepository {
 		this.repositoryConfiguration = repositoryConfiguration;
 		this.localRepository = new File(localRepositoryHome, PREFIX_LOCAL_REPO_NAME + repositoryConfiguration.getProjectName());
 		
+		String absolutePath = this.localRepository.getAbsolutePath();
+		Activator.getDefault().getLog().info("Trying to instantiate Server Repository for location: " + absolutePath);
 		if (!localRepository.exists()) {
-			localRepository.mkdir();
+			Activator.getDefault().getLog().info("path does not yet exist. Creating it now: " + absolutePath);
+			localRepository.mkdirs();
 		}
 		
 		//checkout the project to workspace
@@ -219,7 +222,8 @@ public class ServerRepository {
 				VersionControlUpdateResult result = versionControlBackEnd.update(project, new NullProgressMonitor());
 				
 				// Only reload if we detected changes in the update step
-				if (result.hasChanges()) {
+				boolean needsReload = result.hasChanges();
+				if (needsReload) {
 					Activator.getDefault().getLog().info(PREFIX_LOG_MESSAGE + "Reload all resources");
 					// Maybe we could reload only the changed resources here
 					ed.reloadAll();
@@ -279,7 +283,10 @@ public class ServerRepository {
 	public void updateOrCheckoutProject() throws Exception {
 		retrieveProjectFromConfiguration();
 		
-		if (!project.exists()) {
+		boolean projectDoesNotExist =  !project.exists();
+		boolean projectDirectoryIsEmpty = Files.list(getLocalRepositoryPath().toPath()).count() == 0;
+		
+		if (projectDoesNotExist || projectDirectoryIsEmpty) {
 			checkoutRepository();
 		} else {
 			retrieveEdAndResurceSetFromConfiguration();

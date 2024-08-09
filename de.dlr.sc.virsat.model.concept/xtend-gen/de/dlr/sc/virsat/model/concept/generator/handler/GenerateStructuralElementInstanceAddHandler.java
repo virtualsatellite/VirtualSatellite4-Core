@@ -32,19 +32,19 @@ public class GenerateStructuralElementInstanceAddHandler extends AGeneratorGapGe
     String _name = concept.getName();
     return (_name + ".ui.handler");
   }
-  
+
   public static String getConcreteClassName(final StructuralElement structuralElement) {
     String _firstUpper = StringExtensions.toFirstUpper(structuralElement.getName());
     String _plus = ("AddStructuralElementInstance" + _firstUpper);
     return (_plus + "Handler");
   }
-  
+
   public static String getAbstractClassName(final StructuralElement structuralElement) {
     String _firstUpper = StringExtensions.toFirstUpper(structuralElement.getName());
     String _plus = ("AAddStructuralElementInstance" + _firstUpper);
     return (_plus + "Handler");
   }
-  
+
   @Override
   public String createConcreteClassFileName(final Concept concept, final StructuralElement structuralElement) {
     String _name = concept.getName();
@@ -57,7 +57,7 @@ public class GenerateStructuralElementInstanceAddHandler extends AGeneratorGapGe
     String _plus_4 = (_plus_3 + _concreteClassName);
     return (_plus_4 + ".java");
   }
-  
+
   @Override
   public String createAbstractClassFileName(final Concept concept, final StructuralElement structuralElement) {
     String _name = concept.getName();
@@ -70,7 +70,7 @@ public class GenerateStructuralElementInstanceAddHandler extends AGeneratorGapGe
     String _plus_4 = (_plus_3 + _abstractClassName);
     return (_plus_4 + ".java");
   }
-  
+
   @Override
   public void serializeModel(final Concept concept, final IFileSystemAccess fsa) {
     TreeIterator<Object> iterator = EcoreUtil.<Object>getAllContents(concept, true);
@@ -84,7 +84,7 @@ public class GenerateStructuralElementInstanceAddHandler extends AGeneratorGapGe
     };
     IteratorExtensions.<Object>forEach(iterator, _function);
   }
-  
+
   /**
    * This method just creates the package declaration. The concept name needs to fit to the package name
    */
@@ -97,7 +97,7 @@ public class GenerateStructuralElementInstanceAddHandler extends AGeneratorGapGe
     _builder.newLineIfNotEmpty();
     return _builder;
   }
-  
+
   @Override
   public CharSequence declareImports(final ImportManager importManager, final Concept concept, final StructuralElement conceptPart, final String conceptPackage) {
     StringConcatenation _builder = new StringConcatenation();
@@ -118,7 +118,7 @@ public class GenerateStructuralElementInstanceAddHandler extends AGeneratorGapGe
     }
     return _builder;
   }
-  
+
   @Override
   protected CharSequence declareClass(final Concept concept, final StructuralElement structuralElement, final ImportManager manager) {
     StringConcatenation _builder = new StringConcatenation();
@@ -137,7 +137,7 @@ public class GenerateStructuralElementInstanceAddHandler extends AGeneratorGapGe
     _builder.newLine();
     return _builder;
   }
-  
+
   @Override
   public CharSequence declareAClass(final Concept concept, final StructuralElement structuralElement, final ImportManager importManager) {
     StringConcatenation _builder = new StringConcatenation();

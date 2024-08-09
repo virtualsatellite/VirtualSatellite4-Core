@@ -16,7 +16,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ReferencePrope
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.StaticArrayModifier
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage
-import javax.inject.Inject
+import com.google.inject.Inject
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EReference
@@ -96,7 +96,7 @@ class GenerateDmfCategoriesTest {
 		val category = concept.categories.get(0);
 		Assert.assertEquals("EClass name is set correctly", category.name, eClass.name);
 	}	
-	
+	 
 	@Test
     def void testCreateIntrinsicEAttributes() {
       	val concept = '''

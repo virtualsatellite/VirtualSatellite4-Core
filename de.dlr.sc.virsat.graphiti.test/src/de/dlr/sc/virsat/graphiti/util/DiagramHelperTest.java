@@ -126,7 +126,7 @@ public class DiagramHelperTest extends AConceptProjectTestCase {
 		UserRegistry.getInstance().setSuperUser(false);
 		UserRegistry.getInstance().setUser(USER_NAME, VALIDITY_DAY);
 		Discipline discipline = RolesFactory.eINSTANCE.createDiscipline();
-		discipline.setUser(USER_NAME);
+		discipline.getUsers().add(USER_NAME);
 		
 		StructuralElementInstance owningSei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
 		owningSei.setUuid(new VirSatUuid(UUID));

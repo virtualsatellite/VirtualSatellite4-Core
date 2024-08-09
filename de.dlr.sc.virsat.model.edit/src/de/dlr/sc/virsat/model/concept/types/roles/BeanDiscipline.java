@@ -9,14 +9,15 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.roles;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 
@@ -25,14 +26,15 @@ import de.dlr.sc.virsat.model.concept.types.IBeanUuid;
 import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapter;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
 
 @XmlRootElement
 //Ensure that the discipline (by uuid) gets unmarshalled first
-@XmlType(propOrder = {"discipline", "name", "user"})
+@XmlType(propOrder = {"discipline", "name", "users"})
 @XmlAccessorType(XmlAccessType.NONE)
-@ApiModel(description = "A discipline with an assigned user that has rights over assigned elements.")
+@Schema(description = "A discipline with an assigned user or multiple users that have rights over assigned elements. Note: This discipline may work with multiple users.")
 public class BeanDiscipline implements IBeanName, IBeanUuid {
 
 	private Discipline discipline;
@@ -41,6 +43,7 @@ public class BeanDiscipline implements IBeanName, IBeanUuid {
 	
 	public BeanDiscipline(Discipline discipline) {
 		this.discipline = discipline;
+		
 	}
 	
 	@Override
@@ -49,8 +52,8 @@ public class BeanDiscipline implements IBeanName, IBeanUuid {
 	}
 	
 	@XmlJavaTypeAdapter(IUuidAdapter.class)
-	@ApiModelProperty(name = "uuid", required = true,
-			value = "Unique identifier for a bean",
+	@Schema(name = "uuid", required = true,
+			description = "Unique identifier for a bean",
 			example = "b168b0df-84b6-4b7f-bede-69298b215f40")
 	@XmlElement(name = "uuid")
 	public void setDiscipline(Discipline discipline) {
@@ -61,7 +64,7 @@ public class BeanDiscipline implements IBeanName, IBeanUuid {
 		return discipline;
 	}
 	
-	@ApiModelProperty(value = "Name of the discipline", required = true)
+	@Schema(description = "Name of the discipline", required = true)
 	@XmlElement(nillable = true)
 	@Override
 	public String getName() {
@@ -78,14 +81,14 @@ public class BeanDiscipline implements IBeanName, IBeanUuid {
 		return SetCommand.create(ed, discipline, GeneralPackage.Literals.INAME__NAME, name);
 	}
 	
-	@ApiModelProperty(value = "Name of the user assigned to the discipline", required = true)
+	@Schema(description = "Name of the user or multiple users assigned to the discipline", required = true)
 	@XmlElement(nillable = true)
-	public String getUser() {
-		return discipline.getUser();
+	public EList<String> getUsers() {
+		return discipline.getUsers();
 	}
 	
-	public void setUser(String user) {
-		discipline.setUser(user);
+	public void addUser(String user) {
+		discipline.getUsers().add(user);
 	}
 	
 	

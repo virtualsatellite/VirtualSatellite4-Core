@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.migrator;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -64,15 +66,15 @@ public class ConceptMigrationHelperTest extends AConceptMigratorTest {
 		cmHelper.removeEquationDefinition(eqDefinition);
 		assertTrue("Equation correctly added to categoryAssignments", caA.getEquationSection().getEquations().isEmpty());
 	}
-	
+	 
 	@Test
 	public void changeEquationDefinitionTest() {
 		Equation eq = caA.getEquationSection().getEquations().get(0);
-		assertTrue("Originally the expression is set to constant e", eq.getExpression() instanceof ValueE);
+		assertThat("Originally the expression is set to constant e", eq.getExpression(), instanceOf(ValueE.class));
 		eqDefinition.setExpression(CalculationFactory.eINSTANCE.createValuePi());
 		cmHelper.changeEquationDefinition(eqDefinition, eqDefinition);
 		eq = caA.getEquationSection().getEquations().get(0);
-		assertTrue("Now the expression has been updated to constant pi", eq.getExpression() instanceof ValuePi);
+		assertThat("Now the expression has been updated to constant pi", eq.getExpression(), instanceOf(ValuePi.class));
 	}
 	
 	@Test
@@ -112,7 +114,7 @@ public class ConceptMigrationHelperTest extends AConceptMigratorTest {
 		assertNull("Property 'a' properly gone", ActiveConceptHelper.getProperty(categoryA, "a"));
 		assertNotNull("Property name correctly changed", ActiveConceptHelper.getProperty(categoryA, "c"));
 		APropertyInstance pi = caA.getPropertyInstances().get(0);
-		assertTrue("Property type changed correctly", pi.getType() instanceof FloatProperty);
+		assertThat("Property type changed correctly", pi.getType(), instanceOf(FloatProperty.class));
 	}
 	
 	@Test

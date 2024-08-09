@@ -9,11 +9,11 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.team;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -42,7 +42,7 @@ public class VersionControlBackendProviderTest {
 				"abc", "123");
 		
 		IVirSatVersionControlBackend backend = backendProvider.createBackendImplementation();
-		assertTrue("A git backend was instantiated", backend instanceof VirSatGitVersionControlBackend);
+		assertThat("A git backend was instantiated", backend, instanceOf(VirSatGitVersionControlBackend.class));
 	}
 
 	@Test
@@ -68,7 +68,7 @@ public class VersionControlBackendProviderTest {
 				USERNAME, PASSWORD);
 		
 		IVirSatVersionControlBackend backend = backendProvider.createBackendImplementation();
-		assertTrue("A svn backend was instantiated", backend instanceof VirSatSvnVersionControlBackend);
+		assertThat("A svn backend was instantiated", backend, instanceOf(VirSatSvnVersionControlBackend.class));
 		
 		// Rebuild the repository resource, it should now have the credentials associated with it
 		remoteRepo = SVNUtility.asRepositoryResource(uriToRemoteRepoPath.toString(), true);

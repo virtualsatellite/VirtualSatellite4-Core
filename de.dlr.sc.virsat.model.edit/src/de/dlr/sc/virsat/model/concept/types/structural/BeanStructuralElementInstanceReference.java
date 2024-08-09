@@ -9,21 +9,22 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.structural;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapterNoRoleManagement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiModelProperty.AccessMode;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
+import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
+
 
 /**
  * Lightweight POJO class that represents a reference to a SEI on the bean level
  * used to avoid deep nested element
  */
-@ApiModel(description = "Reference to a bean SEI that can be used for every concrete SEI."
+@Schema(description = "Reference to a bean SEI that can be used for every concrete SEI."
 		+ " Instances of this only contain the fields uuid and name.")
 @XmlType(propOrder = { "structuralElementInstance", "name" })
 public class BeanStructuralElementInstanceReference {
@@ -50,7 +51,9 @@ public class BeanStructuralElementInstanceReference {
 	}
 
 	@XmlElement(nillable = true)
-	@ApiModelProperty(required = true, accessMode = AccessMode.READ_ONLY)
+	@Schema(
+		requiredMode = RequiredMode.REQUIRED,
+		accessMode = AccessMode.READ_ONLY)
 	public void setName(String seiName) {
 		// As this bean has no role management, we can't set the name here
 	}
@@ -60,8 +63,8 @@ public class BeanStructuralElementInstanceReference {
 	}
 
 	@XmlElement(name = "uuid")
-	@ApiModelProperty(name = "uuid", required = true,
-		value = "Unique identifier for a bean",
+	@Schema(name = "uuid", required = true,
+		description = "Unique identifier for a bean",
 		example = "b168b0df-84b6-4b7f-bede-69298b215f40")
 	@XmlJavaTypeAdapter(IUuidAdapterNoRoleManagement.class)
 	public void setStructuralElementInstance(StructuralElementInstance sei) {

@@ -1,8 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/swagger-models-jakarta-2.2.22.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/classgraph-4.8.165.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/commons-lang3-3.14.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jackson-annotations-2.16.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jackson-core-2.16.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jackson-databind-2.16.2.jar" sourcepath="externalLib/maven/jackson-databind-2.16.2-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jackson-dataformat-yaml-2.16.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jackson-datatype-jsr310-2.16.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jackson-jakarta-rs-base-2.16.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jackson-jakarta-rs-json-provider-2.16.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jackson-module-jakarta-xmlbind-annotations-2.16.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jakarta.activation-2.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jakarta.validation-api-3.0.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/jakarta.xml.bind-api-3.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/javassist-3.30.2-GA.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/slf4j-api-2.0.9.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/snakeyaml-2.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/swagger-annotations-jakarta-2.2.22.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/swagger-core-jakarta-2.2.22.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/swagger-integration-jakarta-2.2.22.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/swagger-jaxrs2-jakarta-2.2.22.jar"/>
+	<classpathentry exported="true" kind="lib" path="externalLib/maven/swagger-annotations-2.2.22.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry exported="true" kind="lib" path="externalLib/maven/swagger-annotations.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

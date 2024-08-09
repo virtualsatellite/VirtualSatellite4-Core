@@ -9,8 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.qudv;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.SetCommand;
@@ -19,7 +19,8 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import de.dlr.sc.virsat.model.dvlm.json.BeanPrefixAdapter;
 import de.dlr.sc.virsat.model.dvlm.qudv.PrefixedUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 
 public class BeanUnitPrefixed extends ABeanConversionBasedUnit<PrefixedUnit> {
 	
@@ -31,7 +32,7 @@ public class BeanUnitPrefixed extends ABeanConversionBasedUnit<PrefixedUnit> {
 		super(unit);
 	}
 	
-	@ApiModelProperty(required = true)
+	@Schema(required = true)
 	@XmlElement(nillable = true)
 	@XmlJavaTypeAdapter(BeanPrefixAdapter.class)
 	public BeanPrefix getPrefixBean() {

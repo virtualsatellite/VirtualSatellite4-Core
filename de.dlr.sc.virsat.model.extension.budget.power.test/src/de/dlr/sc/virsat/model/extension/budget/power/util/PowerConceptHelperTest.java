@@ -55,8 +55,8 @@ public class PowerConceptHelperTest {
 		
 		PowerConceptHelper pcHelper = new PowerConceptHelper();
 		assertTrue("Found a Bean Sei", pcHelper.initBeansForObject(beanSei));
-		assertNull("But there is no Power Equipment", pcHelper.powerEquipment);
-		assertNull("But there is no Power Summary", pcHelper.powerSummary);
+		assertNull("But there is no Power Equipment", pcHelper.getPowerEquipment());
+		assertNull("But there is no Power Summary", pcHelper.getPowerSummary());
 		
 		PowerEquipment pwrEqp = new PowerEquipment(concept);
 		PowerSummary pwrSum = new PowerSummary(concept);
@@ -65,16 +65,16 @@ public class PowerConceptHelperTest {
 		beanSei.add(pwrEqp);
 		
 		assertTrue("Found a Bean Sei", pcHelper.initBeansForObject(beanSei));
-		assertEquals("Found correct Bean", pwrSum, pcHelper.powerSummary);
-		assertEquals("Found correct Bean", pwrEqp, pcHelper.powerEquipment);
+		assertEquals("Found correct Bean", pwrSum, pcHelper.getPowerSummary());
+		assertEquals("Found correct Bean", pwrEqp, pcHelper.getPowerEquipment());
 
 		assertFalse("This is not a Bean Sei", pcHelper.initBeansForObject(new Object()));
-		assertNull("But there is no Power Equipment", pcHelper.powerEquipment);
-		assertNull("But there is no Power Summary", pcHelper.powerSummary);
+		assertNull("But there is no Power Equipment", pcHelper.getPowerEquipment());
+		assertNull("But there is no Power Summary", pcHelper.getPowerSummary());
 
 		assertTrue("Also works with the inner instance", pcHelper.initBeansForObject(beanSei.getStructuralElementInstance()));
-		assertEquals("Found correct Bean", pwrSum, pcHelper.powerSummary);
-		assertEquals("Found correct Bean", pwrEqp, pcHelper.powerEquipment);
+		assertEquals("Found correct Bean", pwrSum, pcHelper.getPowerSummary());
+		assertEquals("Found correct Bean", pwrEqp, pcHelper.getPowerEquipment());
 	}
 
 	@Test
@@ -87,8 +87,8 @@ public class PowerConceptHelperTest {
 		
 		PowerConceptHelper pcHelper = new PowerConceptHelper();
 		assertTrue("Found a Bean Sei", pcHelper.initBeansForObject(beanSei));
-		assertNull("But there is no Power Equipment", pcHelper.powerEquipment);
-		assertNull("But there is no Power Summary", pcHelper.powerSummary);
+		assertNull("But there is no Power Equipment", pcHelper.getPowerEquipment());
+		assertNull("But there is no Power Summary", pcHelper.getPowerSummary());
 		
 		PowerEquipment pwrEqp = new PowerEquipment(concept);
 		PowerSummary pwrSum = new PowerSummary(concept);

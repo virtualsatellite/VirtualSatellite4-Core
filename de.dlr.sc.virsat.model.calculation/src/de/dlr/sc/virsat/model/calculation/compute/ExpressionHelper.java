@@ -97,8 +97,8 @@ public class ExpressionHelper {
 			Collections.sort(setterProviders, new Comparator<IConfigurationElement>() {
 				@Override
 				public int compare(IConfigurationElement c1, IConfigurationElement c2) {
-					int intValue1 = Integer.valueOf(c1.getAttribute("priority"));
-					int intValue2 = Integer.valueOf(c2.getAttribute("priority"));
+					int intValue1 = Integer.parseInt(c1.getAttribute("priority"));
+					int intValue2 = Integer.parseInt(c2.getAttribute("priority"));
 					return Integer.compare(intValue1, intValue2);
 				}
 			});

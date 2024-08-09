@@ -9,32 +9,31 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept
 
+import com.google.inject.Inject
+import de.dlr.sc.virsat.model.concept.validation.ConceptLanguageValidator
+import de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.BooleanProperty
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ComposedProperty
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.DynamicArrayModifier
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.FloatProperty
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IntProperty
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.PropertydefinitionsPackage
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ReferenceProperty
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.StaticArrayModifier
+import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.StringProperty
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage
-import javax.inject.Inject
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralPackage
 import org.eclipse.xtext.diagnostics.Diagnostic
+import org.eclipse.xtext.diagnostics.Severity
+import org.eclipse.xtext.testing.InjectWith
+import org.eclipse.xtext.testing.XtextRunner
+import org.eclipse.xtext.testing.util.ParseHelper
+import org.eclipse.xtext.testing.validation.ValidationTestHelper
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralPackage
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ComposedProperty
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.ReferenceProperty
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.IntProperty
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.FloatProperty
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.StringProperty
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.BooleanProperty
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.StaticArrayModifier
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.DynamicArrayModifier
-import de.dlr.sc.virsat.model.concept.ConceptLanguageTestInjectorProvider
-import de.dlr.sc.virsat.model.concept.validation.ConceptLanguageValidator
-import de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage
-import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.PropertydefinitionsPackage
-import org.eclipse.xtext.diagnostics.Severity
-import org.eclipse.xtext.testing.validation.ValidationTestHelper;
-import org.eclipse.xtext.testing.XtextRunner
-import org.eclipse.xtext.testing.InjectWith
-import org.eclipse.xtext.testing.util.ParseHelper
 
 @RunWith(XtextRunner)
 @InjectWith(ConceptLanguageTestInjectorProvider)

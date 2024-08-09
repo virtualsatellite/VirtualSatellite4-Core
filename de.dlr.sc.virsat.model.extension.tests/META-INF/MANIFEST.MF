@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.tests;singleton:=true
-Bundle-Version: 4.16.0.qualifier
+Bundle-Version: 4.17.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
@@ -15,10 +15,8 @@ Require-Bundle: org.eclipse.ui,
  de.dlr.sc.virsat.model.edit,
  de.dlr.sc.virsat.project,
  de.dlr.sc.virsat.model.external.tests;visibility:=reexport,
- de.dlr.sc.virsat.model.extension.maturity,
- javax.annotation,
- jakarta.xml.bind
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+ de.dlr.sc.virsat.model.extension.maturity
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Eclipse-ExtensibleAPI: true
 Export-Package: de.dlr.sc.virsat.model.extension.tests,

@@ -43,7 +43,7 @@ public interface TypesPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v10/t";
+	String eNS_URI = "http://www.virsat.sc.dlr.de/dvlm/v11/t";
 
 	/**
 	 * The package namespace name.

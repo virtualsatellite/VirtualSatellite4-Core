@@ -168,7 +168,7 @@ public class MatExporter {
 		if (element.getType() instanceof FloatProperty) {
 			BeanPropertyFloat bpf = new BeanPropertyFloat(element);
 			struct.set(MatHelper.UNIT, Mat5.newString(bpf.getUnit()));
-			struct.set(MatHelper.VALUE, (bpf.getValue() == Double.NaN) ? Mat5.newString("") : Mat5.newScalar(bpf.getValue()));
+			struct.set(MatHelper.VALUE, (Double.isNaN(bpf.getValue())) ? Mat5.newString("") : Mat5.newScalar(bpf.getValue()));
 		} else if (element.getType() instanceof IntProperty) {
 			BeanPropertyInt bpi = new BeanPropertyInt(element);
 			struct.set(MatHelper.UNIT, Mat5.newString(bpi.getUnit()));

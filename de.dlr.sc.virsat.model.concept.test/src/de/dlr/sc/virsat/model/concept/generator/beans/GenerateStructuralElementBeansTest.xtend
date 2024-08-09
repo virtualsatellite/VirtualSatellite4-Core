@@ -13,7 +13,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage
 import de.dlr.sc.virsat.model.concept.ConceptLanguageTestInjectorProvider
 import de.dlr.sc.virsat.model.concept.test.util.GeneratorJunitAssert
-import javax.inject.Inject
+import com.google.inject.Inject
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.XtextRunner
 import org.eclipse.xtext.testing.util.ParseHelper

@@ -28,7 +28,7 @@
 	} 
 	
 	Category MassSummary extends AMassParameters description "Summary of all nested equipment masses" {
-		Applicable For All;
+		Applicable For All; 
 		Cardinality 1;
 		
 		Ref:AMassParameters.mass = summary{AMassParameters.mass};

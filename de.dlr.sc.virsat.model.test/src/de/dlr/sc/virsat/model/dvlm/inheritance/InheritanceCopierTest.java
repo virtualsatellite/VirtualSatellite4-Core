@@ -14,6 +14,7 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -1059,8 +1060,9 @@ public class InheritanceCopierTest extends AInheritanceCopierTest {
 
 		dA.setName("workA");
 		dB.setName("workB");
-		dA.setUser("Alice");
-		dB.setUser("Bob");
+		dA.getUsers().add("Alice");
+		dB.getUsers().add("Bob");
+		
 		
 		rm.getDisciplines().add(dA);
 		rm.getDisciplines().add(dB);
@@ -1330,13 +1332,13 @@ public class InheritanceCopierTest extends AInheritanceCopierTest {
 		Equation eq = eqSection.getEquations().get(0);
 		
 		IEquationResult eqResult = eq.getResult();
-		assertTrue("Referenced result of equation of copied CA has correct type", eqResult instanceof TypeInstanceResult);
+		assertThat("Referenced result of equation of copied CA has correct type", eqResult, instanceOf(TypeInstanceResult.class));
 		
 		TypeInstanceResult tir = (TypeInstanceResult) eqResult;
 		assertEquals("Equation of copied CA has correct result instance", vpi1, tir.getReference());
 		
 		AExpression expression = eq.getExpression();
-		assertTrue("Input expression of equation of copied CA has correct type", expression instanceof ReferencedInput);
+		assertThat("Input expression of equation of copied CA has correct type", expression, instanceOf(ReferencedInput.class));
 		
 		ReferencedInput refInput = (ReferencedInput) expression;
 		assertEquals("Equation of copied CA has correct result instance", refDefInput, refInput.getDefinition());

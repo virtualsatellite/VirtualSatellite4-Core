@@ -20,7 +20,6 @@ import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.junit.Test;
 
-
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.model.dvlm.roles.RoleManagement;
 import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
@@ -115,7 +114,7 @@ public class AssignDisciplineCommandTest extends AProjectTestCase {
 		
 		// now see if the command can be executed as some random user
 		editingDomain.getCommandStack().execute(
-			SetCommand.create(editingDomain, discipline, RolesPackage.eINSTANCE.getDiscipline_User(), "RandomUser")
+			SetCommand.create(editingDomain, discipline, RolesPackage.eINSTANCE.getDiscipline_Users(), "RandomUser")
 		);
 		
 		UserRegistry.getInstance().setSuperUser(false);
@@ -124,7 +123,7 @@ public class AssignDisciplineCommandTest extends AProjectTestCase {
 		// now set the user to be the user from the registry
 		String registeredUser = UserRegistry.getInstance().getUserName();
 		editingDomain.getCommandStack().execute(
-			SetCommand.create(editingDomain, discipline, RolesPackage.eINSTANCE.getDiscipline_User(), registeredUser)
+			AddCommand.create(editingDomain, discipline, RolesPackage.eINSTANCE.getDiscipline_Users(), registeredUser)
 		);
 		assertTrue("With the correct user, the command can be executed", cmdSetOtherDiscipline.canExecute());
 		

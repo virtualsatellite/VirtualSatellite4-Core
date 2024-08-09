@@ -27,17 +27,17 @@ public class GenerateMigrator extends AGeneratorGapGenerator<EObject> {
     String _plus = (_name + ".");
     return (_plus + GenerateMigrator.PACKAGE_FOLDER);
   }
-  
+
   public static String getConcreteClassName(final Concept concept) {
     String _replace = concept.getVersion().replace(".", "v");
     return ("Migrator" + _replace);
   }
-  
+
   public static String getAbstractClassName(final Concept concept) {
     String _replace = concept.getVersion().replace(".", "v");
     return ("AMigrator" + _replace);
   }
-  
+
   @Override
   public String createConcreteClassFileName(final Concept concept, final EObject eObject) {
     String _packageFolder = this.getPackageFolder(concept);
@@ -46,7 +46,7 @@ public class GenerateMigrator extends AGeneratorGapGenerator<EObject> {
     String _plus_1 = (_plus + _concreteClassName);
     return (_plus_1 + ".java");
   }
-  
+
   @Override
   public String createAbstractClassFileName(final Concept concept, final EObject eObject) {
     String _packageFolder = this.getPackageFolder(concept);
@@ -55,9 +55,9 @@ public class GenerateMigrator extends AGeneratorGapGenerator<EObject> {
     String _plus_1 = (_plus + _abstractClassName);
     return (_plus_1 + ".java");
   }
-  
+
   public static final String PACKAGE_FOLDER = "migrator";
-  
+
   @Override
   public void serializeModel(final Concept concept, final IFileSystemAccess fsa) {
     CharSequence fileOutputAClass = this.createAbstractClass(concept, concept);
@@ -65,7 +65,7 @@ public class GenerateMigrator extends AGeneratorGapGenerator<EObject> {
     CharSequence fileOutputClass = this.createConcreteClass(concept, concept);
     fsa.generateFile(this.createConcreteClassFileName(concept, concept), ConceptOutputConfigurationProvider.GENERATOR_OUTPUT_ID_GENERATE_ONCE, fileOutputClass);
   }
-  
+
   /**
    * This method just creates the package declaration. The concept name needs to fit to the package name
    */
@@ -78,7 +78,7 @@ public class GenerateMigrator extends AGeneratorGapGenerator<EObject> {
     _builder.newLineIfNotEmpty();
     return _builder;
   }
-  
+
   /**
    * Handle the import statements
    */
@@ -102,7 +102,7 @@ public class GenerateMigrator extends AGeneratorGapGenerator<EObject> {
     }
     return _builder;
   }
-  
+
   /**
    * Entry method to write the class body
    */
@@ -132,7 +132,7 @@ public class GenerateMigrator extends AGeneratorGapGenerator<EObject> {
     _builder.newLine();
     return _builder;
   }
-  
+
   /**
    * Entry method to write the class body
    */

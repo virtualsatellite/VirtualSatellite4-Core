@@ -51,10 +51,10 @@ public class MassConceptSummariesContentProvider extends VirSatFilteredWrappedTr
 		// Crawl all children
 		while (!contentChildren.isEmpty()) {
 			Object firstObject = contentChildren.removeFirst();
-			if (mch.initBeansForObject(firstObject) && (mch.massSummary != null)) {
+			if (mch.initBeansForObject(firstObject) && (mch.getMassSummary() != null)) {
 				contentElements.add(firstObject);
 			} else {
-				if (mch.massEquipment != null) {
+				if (mch.getMassEquipment() != null) {
 					contentElements.add(firstObject);
 				}
 				contentChildren.addAll(Arrays.asList(super.getChildren(firstObject)));

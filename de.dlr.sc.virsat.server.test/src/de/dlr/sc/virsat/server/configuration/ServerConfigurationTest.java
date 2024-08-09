@@ -38,9 +38,9 @@ public class ServerConfigurationTest {
 		assertFalse("There are some configurations in the default configuration file", ServerConfiguration.getProperties().isEmpty());
 		assertFalse(ServerConfiguration.getRepositoryConfigurationsDir().isEmpty());
 		assertFalse(ServerConfiguration.getLoginServiceClass().isEmpty());
-		assertFalse(ServerConfiguration.getAuthPropertiesFile().isEmpty());
+		assertFalse(ServerConfiguration.getAuthPropertiesFileUri().isEmpty());
 		assertFalse(ServerConfiguration.getHttpsEnabled());
-		assertTrue(ServerConfiguration.getHttpsKeystorePath().isEmpty());
+		assertTrue(ServerConfiguration.getHttpsKeystoreFileUri().isEmpty());
 		assertTrue(ServerConfiguration.getHttpsKeystorePassword().isEmpty());
 		assertTrue(ServerConfiguration.getHttpsKeystoreManagerPassword().isEmpty());
 		assertFalse(ServerConfiguration.getHttpsOnly());

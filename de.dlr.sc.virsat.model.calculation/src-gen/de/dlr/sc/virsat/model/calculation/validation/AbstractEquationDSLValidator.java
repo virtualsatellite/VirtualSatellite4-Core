@@ -19,7 +19,7 @@ public abstract class AbstractEquationDSLValidator extends AbstractDeclarativeVa
 	@Override
 	protected List<EPackage> getEPackages() {
 		List<EPackage> result = new ArrayList<EPackage>();
-		result.add(EPackage.Registry.INSTANCE.getEPackage("http://www.virsat.sc.dlr.de/dvlm/v10/calc"));
+		result.add(EPackage.Registry.INSTANCE.getEPackage("http://www.virsat.sc.dlr.de/dvlm/v11/calc"));
 		return result;
 	}
 }

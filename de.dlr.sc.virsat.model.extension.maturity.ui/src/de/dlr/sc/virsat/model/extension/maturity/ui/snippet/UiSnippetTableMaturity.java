@@ -164,8 +164,8 @@ public class UiSnippetTableMaturity extends AUiSnippetTableMaturity {
 			}
 			
 			if (mch.initBeansForObject(object)) {
-				if (mch.maturity != null) {
-					return super.getColumnImage(mch.maturity.getTypeInstance(), columnIndex);
+				if (mch.getMaturity() != null) {
+					return super.getColumnImage(mch.getMaturity().getTypeInstance(), columnIndex);
 				} 
 			}
 			
@@ -178,15 +178,15 @@ public class UiSnippetTableMaturity extends AUiSnippetTableMaturity {
 
 			if (mch.initBeansForObject(object)) {
 				if (column == colName.getColumn()) {
-					return mch.bSei.getName();
+					return mch.getbSei().getName();
 				} 
 				
-				if (mch.maturity != null) {
-					redirectNotification(mch.maturity, object, true);
+				if (mch.getMaturity() != null) {
+					redirectNotification(mch.getMaturity(), object, true);
 					if (column == colTRL.getColumn()) {
-						return mch.maturity.getTrl();
+						return mch.getMaturity().getTrl();
 					} else if (column == colLevel.getColumn()) {
-						return mch.maturity.getLevel();
+						return mch.getMaturity().getLevel();
 					} 
 				}				
 			}

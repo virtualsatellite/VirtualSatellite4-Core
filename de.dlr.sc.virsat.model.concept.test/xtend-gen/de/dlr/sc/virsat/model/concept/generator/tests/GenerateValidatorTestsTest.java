@@ -9,13 +9,13 @@
  */
 package de.dlr.sc.virsat.model.concept.generator.tests;
 
+import com.google.inject.Inject;
 import de.dlr.sc.virsat.model.concept.ConceptLanguageTestInjectorProvider;
 import de.dlr.sc.virsat.model.concept.test.util.GeneratorJunitAssert;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.PropertydefinitionsPackage;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage;
-import javax.inject.Inject;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.XtextRunner;
@@ -34,22 +34,22 @@ public class GenerateValidatorTestsTest {
   @Inject
   @Extension
   private ParseHelper<Concept> _parseHelper;
-  
+
   private Concept concept;
-  
+
   private final String TEST_CONCEPT_NAME = "de.dlr.sc.virsat.model.extension.testConcept";
-  
+
   private final String TEST_CONCEPT_SHORT_NAME = "TestConcept";
-  
+
   private final GenerateValidatorTests generateValidatorTests = new GenerateValidatorTests();
-  
+
   @Before
   public void setUp() {
     ConceptsPackage.eINSTANCE.eClass();
     CategoriesPackage.eINSTANCE.eClass();
     PropertydefinitionsPackage.eINSTANCE.eClass();
   }
-  
+
   @Test
   public void testCreateConcreteClassFileName() {
     try {
@@ -77,7 +77,7 @@ public class GenerateValidatorTestsTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCreateClass() {
     try {

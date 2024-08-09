@@ -27,7 +27,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
+import de.dlr.sc.virsat.model.extension.tests.model.AExtensionConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryIntrinsicArray;
 
 /**
@@ -35,7 +35,7 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryIntrinsicArray;
  * @author fisc_ph
  *
  */
-public class ArrayInstanceListIteratorTest extends AConceptTestCase {
+public class ArrayInstanceListIteratorTest extends AExtensionConceptTestCase {
 
 	private TestCategoryIntrinsicArray tcIntrinsicArray;
 	private IBeanList<BeanPropertyString> arrayDynamic;

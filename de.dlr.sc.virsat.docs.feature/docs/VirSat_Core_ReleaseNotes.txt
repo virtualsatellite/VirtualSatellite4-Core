@@ -1,6 +1,47 @@
 VirSat Core Release Notes
 -------------------------
 
+Release 4.17.0 (6th August 2024)
+----------------------------------
+
+New Features:
+	Server is now hsoting the swagger UI by itself and is exploring the API at runtime
+	Multiple Users can now eb assigend to one modeling ovbjet at the same time
+	
+Useability:
+	
+Maintenance:
+	Updated Virtual Satellite target plattform
+		Updated to Eclipse 2024-03
+	Updated Virtual Satellite target plattform
+	Updated server with jersey dependency to 3.1.6
+	Updated server to jetty 12.0.6
+	Updated server with jakarta ee10
+	Updated server with swagger 2.2.22
+	Updated code to switch from javax to jakarta namespace
+	Updated GitHub Workflow and Actions
+		Siwtched to Ubuntu 22.04 for workflow
+		Updated Checkout Action to 4.1.1
+		Updated Setup java Action to 4.2.1
+		Now using java 17 for workflow builds
+		Using new virtual Satellite v7 actions
+		Using new virtual Satellite action to setup maven 3.9.6 in workflows
+		Updated Cache Action to 4.0.2
+		Updated Upload Artifact Action to 4.3.4
+	Removed ZeroMQ from Visualization Code
+	Added a new python based script to clean up version dependencies in features
+	Updated jacoco in ant script and maven build to version 0.8.12
+	Updated build process to tycho 4.0.8
+	Updated maven license plugin to 2.4.0
+	Updated spotbugs maven plugin to 4.8.6.1
+		Updated spotbugs to 4.8.4
+		Updated code to fix new spotbugs warnings
+	Updated Release Issue Template
+	
+Fixed Bugs:
+	Fixed Bug with closing the generic editor whcih has a major impact to swtbot test stability #1182
+
+
 
 Release 4.16.0 (30th August 2023)
 ----------------------------------

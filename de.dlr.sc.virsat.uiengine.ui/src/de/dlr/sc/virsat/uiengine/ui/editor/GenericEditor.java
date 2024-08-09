@@ -116,6 +116,7 @@ import de.dlr.sc.virsat.uiengine.ui.editor.registry.GenericEditorRegistry;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.AUiSectionSnippet;
 import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
 import de.dlr.sc.virsat.uiengine.ui.swt.forms.VirSatFormToolKit;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * Implements our generic editor which is building the UI
@@ -531,6 +532,10 @@ public class GenericEditor extends FormEditor implements IEditingDomainProvider,
 	/**
 	 * This is the method called to load a resource into the editing domain's resource set based on the editor's input.
 	 */
+	@SuppressFBWarnings(
+			justification = "Dead Store on the reosurce diagnostics. This should be investigated. See Ticket https://github.com/virtualsatellite/VirtualSatellite4-Core/issues/1190",
+			value = "DLS_DEAD_LOCAL_STORE"
+	)
 	public void createModel() {
 		URI resourceURI = EditUIUtil.getURI(getEditorInput(), editingDomain.getResourceSet().getURIConverter());
 		Exception exception = null;

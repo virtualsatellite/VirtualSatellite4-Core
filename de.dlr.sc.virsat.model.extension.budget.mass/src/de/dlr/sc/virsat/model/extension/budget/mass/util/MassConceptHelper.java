@@ -22,11 +22,23 @@ import de.dlr.sc.virsat.model.extension.budget.mass.model.MassSummary;
 public class MassConceptHelper {
 	
 	//CHECKSTYLE:OFF
-	public BeanStructuralElementInstance bSei = new BeanStructuralElementInstance();
-	public MassSummary massSummary;
-	public MassEquipment massEquipment;
+	private BeanStructuralElementInstance bSei = new BeanStructuralElementInstance();
+	private MassSummary massSummary;
+	private MassEquipment massEquipment;
 	//CHECKSTYLE:ON
 	
+	public BeanStructuralElementInstance getbSei() {
+		return bSei;
+	}
+
+	public MassSummary getMassSummary() {
+		return massSummary;
+	}
+
+	public MassEquipment getMassEquipment() {
+		return massEquipment;
+	}
+
 	/**
 	 * This method extracts all important objects from a given object, which means
 	 * this method tries to create A BeanSEI and tries to find a MassSummary Bean and

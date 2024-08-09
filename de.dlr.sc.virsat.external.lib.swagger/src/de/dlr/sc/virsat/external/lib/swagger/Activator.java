@@ -9,11 +9,33 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.external.lib.swagger;
 
+import org.osgi.framework.BundleContext;
+
 import de.dlr.sc.virsat.external.lib.LibPlugin;
 
 /**
  * The plugin root class which is the entry point for the OSGi bundle activation
- *
  */
 public class Activator extends LibPlugin {
+	private static String pluginId;
+	private static Activator plugin;
+	
+	@Override
+	public void start(BundleContext context) throws Exception {
+		plugin = this;
+		pluginId = context.getBundle().getSymbolicName();
+	}
+
+	@Override
+	public void stop(BundleContext context) throws Exception {
+		plugin = null;
+	}
+
+	public static Activator getDefault() {
+		return plugin;
+	}
+
+	public static String getPluginId() {
+		return pluginId;
+	}
 }

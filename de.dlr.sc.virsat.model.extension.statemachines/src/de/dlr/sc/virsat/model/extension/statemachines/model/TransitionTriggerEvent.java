@@ -14,7 +14,7 @@ package de.dlr.sc.virsat.model.extension.statemachines.model;
 // *****************************************************************
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 
-import javax.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.XmlType;
 
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 

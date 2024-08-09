@@ -36,13 +36,13 @@ public class GenerateCategoryTests extends AGeneratorGapGenerator<Category> {
     String _firstUpper = StringExtensions.toFirstUpper(typeDefinition.getName());
     return (_firstUpper + "Test");
   }
-  
+
   public static String getAbstractClassName(final ATypeDefinition typeDefinition) {
     String _firstUpper = StringExtensions.toFirstUpper(typeDefinition.getName());
     String _plus = ("A" + _firstUpper);
     return (_plus + "Test");
   }
-  
+
   @Override
   public String createConcreteClassFileName(final Concept concept, final Category conceptPart) {
     String _name = concept.getName();
@@ -55,7 +55,7 @@ public class GenerateCategoryTests extends AGeneratorGapGenerator<Category> {
     String _plus_4 = (_plus_3 + _concreteClassName);
     return (_plus_4 + ".java");
   }
-  
+
   @Override
   public String createAbstractClassFileName(final Concept concept, final Category conceptPart) {
     String _name = concept.getName();
@@ -68,16 +68,16 @@ public class GenerateCategoryTests extends AGeneratorGapGenerator<Category> {
     String _plus_4 = (_plus_3 + _abstractClassName);
     return (_plus_4 + ".java");
   }
-  
+
   @Override
   protected String getPackage(final Concept concept) {
     String _name = concept.getName();
     String _plus = (_name + ".");
     return (_plus + GenerateCategoryTests.PACKAGE_FOLDER);
   }
-  
+
   public static final String PACKAGE_FOLDER = BeanRegistry.BEAN_PACKAGE_NAME;
-  
+
   @Override
   public void serializeModel(final Concept concept, final IFileSystemAccess fsa) {
     final Consumer<Category> _function = (Category it) -> {
@@ -88,7 +88,7 @@ public class GenerateCategoryTests extends AGeneratorGapGenerator<Category> {
     };
     concept.getNonAbstractCategories().forEach(_function);
   }
-  
+
   /**
    * Declare the package statement of the java file
    */
@@ -101,7 +101,7 @@ public class GenerateCategoryTests extends AGeneratorGapGenerator<Category> {
     _builder.newLineIfNotEmpty();
     return _builder;
   }
-  
+
   /**
    * Write down all the import statements needed by this java file
    */
@@ -133,7 +133,7 @@ public class GenerateCategoryTests extends AGeneratorGapGenerator<Category> {
     }
     return _builder;
   }
-  
+
   /**
    * Entry method to write the class body
    */
@@ -218,7 +218,7 @@ public class GenerateCategoryTests extends AGeneratorGapGenerator<Category> {
     _builder.newLine();
     return _builder;
   }
-  
+
   @Override
   public CharSequence declareClass(final Concept concept, final Category category, final ImportManager importManager) {
     StringConcatenation _builder = new StringConcatenation();
@@ -245,7 +245,7 @@ public class GenerateCategoryTests extends AGeneratorGapGenerator<Category> {
     _builder.newLine();
     return _builder;
   }
-  
+
   /**
    * Method to create the constructor of the java category bean
    */

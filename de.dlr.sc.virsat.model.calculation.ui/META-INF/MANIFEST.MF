@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core Model Calculation UI
 Bundle-Vendor: DLR (German Aerospace Center)
-Bundle-Version: 4.16.0.qualifier
+Bundle-Version: 4.17.0.qualifier
 Bundle-SymbolicName: de.dlr.sc.virsat.model.calculation.ui; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: de.dlr.sc.virsat.model,
@@ -28,7 +28,7 @@ Require-Bundle: de.dlr.sc.virsat.model,
  org.eclipse.core.databinding.property,
  org.eclipse.jface.databinding
 Import-Package: org.apache.log4j
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: de.dlr.sc.virsat.model.calculation.ui.contentassist,
  de.dlr.sc.virsat.model.calculation.ui.internal,
  de.dlr.sc.virsat.model.calculation.ui.labeling,

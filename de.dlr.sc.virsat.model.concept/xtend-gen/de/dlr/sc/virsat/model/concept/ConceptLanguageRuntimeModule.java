@@ -10,11 +10,11 @@
 package de.dlr.sc.virsat.model.concept;
 
 import com.google.inject.Binder;
+import com.google.inject.Singleton;
 import de.dlr.sc.virsat.model.concept.generator.ConceptOutputConfigurationProvider;
 import de.dlr.sc.virsat.model.concept.naming.ConceptLanguageQualifiedNameProvider;
 import de.dlr.sc.virsat.model.concept.validation.ConceptLanguageExtendedValidator;
 import de.dlr.sc.virsat.model.concept.validation.ConceptLanguageValidator;
-import javax.inject.Singleton;
 import org.eclipse.xtext.generator.IOutputConfigurationProvider;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
 
@@ -28,12 +28,12 @@ public class ConceptLanguageRuntimeModule extends AbstractConceptLanguageRuntime
     super.configure(binder);
     binder.<IOutputConfigurationProvider>bind(IOutputConfigurationProvider.class).to(ConceptOutputConfigurationProvider.class).in(Singleton.class);
   }
-  
+
   @Override
   public Class<? extends ConceptLanguageValidator> bindConceptLanguageValidator() {
     return ConceptLanguageExtendedValidator.class;
   }
-  
+
   @Override
   public Class<? extends IQualifiedNameProvider> bindIQualifiedNameProvider() {
     return ConceptLanguageQualifiedNameProvider.class;

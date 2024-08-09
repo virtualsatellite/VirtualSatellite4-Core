@@ -32,25 +32,25 @@ public class ConceptLanguageProposalProvider extends AbstractConceptLanguageProp
     super.completeFloatProperty_QuantityKindName(model, assignment, context, acceptor);
     this.addQuantityKindNamesToAutoCompletion(context, acceptor);
   }
-  
+
   @Override
   public void completeIntProperty_QuantityKindName(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     super.completeIntProperty_QuantityKindName(model, assignment, context, acceptor);
     this.addQuantityKindNamesToAutoCompletion(context, acceptor);
   }
-  
+
   @Override
   public void completeEnumProperty_QuantityKindName(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     super.completeEnumProperty_QuantityKindName(model, assignment, context, acceptor);
     this.addQuantityKindNamesToAutoCompletion(context, acceptor);
   }
-  
+
   @Override
   public void completeComposedProperty_QuantityKindName(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     super.completeComposedProperty_QuantityKindName(model, assignment, context, acceptor);
     this.addQuantityKindNamesToAutoCompletion(context, acceptor);
   }
-  
+
   private void addQuantityKindNamesToAutoCompletion(final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     QudvUnitHelper helper = QudvUnitHelper.getInstance();
     SystemOfUnits sou = helper.initializeSystemOfUnits("SystemOfUnits", "SoU", "the system of Units", "http://the.system.of.units.de");
@@ -64,31 +64,31 @@ public class ConceptLanguageProposalProvider extends AbstractConceptLanguageProp
       }
     }
   }
-  
+
   @Override
   public void completeFloatProperty_UnitName(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     super.completeFloatProperty_UnitName(model, assignment, context, acceptor);
     this.addQudvToAutoCompletion(model, context, acceptor);
   }
-  
+
   @Override
   public void completeIntProperty_UnitName(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     super.completeIntProperty_UnitName(model, assignment, context, acceptor);
     this.addQudvToAutoCompletion(model, context, acceptor);
   }
-  
+
   @Override
   public void completeComposedProperty_UnitName(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     super.completeComposedProperty_UnitName(model, assignment, context, acceptor);
     this.addQudvToAutoCompletion(model, context, acceptor);
   }
-  
+
   @Override
   public void completeEnumProperty_UnitName(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     super.completeEnumProperty_UnitName(model, assignment, context, acceptor);
     this.addQudvToAutoCompletion(model, context, acceptor);
   }
-  
+
   private void addQudvToAutoCompletion(final EObject model, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     QudvUnitHelper helper = QudvUnitHelper.getInstance();
     SystemOfUnits sou = helper.initializeSystemOfUnits("SystemOfUnits", "SoU", "the system of Units", "http://the.system.of.units.de");
@@ -103,7 +103,7 @@ public class ConceptLanguageProposalProvider extends AbstractConceptLanguageProp
       }
     }
   }
-  
+
   private String getQuantityKind(final EObject model) {
     if ((model instanceof AQudvTypeProperty)) {
       return ((AQudvTypeProperty) model).getQuantityKindName();

@@ -16,8 +16,8 @@ import static org.junit.Assert.assertNull;
 import java.io.IOException;
 import java.util.Arrays;
 
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 
 import org.junit.Before;
@@ -31,11 +31,11 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ReferencePropert
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
-import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
+import de.dlr.sc.virsat.model.extension.tests.model.AExtensionConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryReferenceArray;
 
-public class TestCategoryReferenceArrayTest extends AConceptTestCase {
+public class TestCategoryReferenceArrayTest extends AExtensionConceptTestCase {
 
 	private TestCategoryReferenceArray tcReferenceArray;
 	private JAXBUtility jaxbUtility;

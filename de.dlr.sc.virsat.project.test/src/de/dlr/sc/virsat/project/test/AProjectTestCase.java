@@ -40,6 +40,7 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.editingDomain.commands.VirSatEditingDomainClipBoard;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * Abstract test case which creates a project for further testing
@@ -50,6 +51,10 @@ public abstract class AProjectTestCase {
 	protected static final int MAX_TEST_CASE_WAIT_TIME_MILLI_SECONDS = 1000;
 	
 	@Rule
+	@SuppressFBWarnings(
+			justification = "This is not a problem, public field is required by JUnit",
+			value = "PA_PUBLIC_PRIMITIVE_ATTRIBUTE"
+	)
 	public TestRule globalTimeout;
 	
 	protected static final String TEST_PROJECT_NAME = "testProject";
@@ -306,6 +311,10 @@ public abstract class AProjectTestCase {
 		}
 	}
 	
+	@SuppressFBWarnings(
+			justification = "This is not a problem, it is needed for creating a timeout rule for junit",
+			value = "URF_UNREAD_FIELD"
+	)
 	public void initializeTimeOutRule() {
 		globalTimeout  = new DisableOnDebug(Timeout.seconds(MAX_TEST_CASE_TIMEOUT_SECONDS));
 	}

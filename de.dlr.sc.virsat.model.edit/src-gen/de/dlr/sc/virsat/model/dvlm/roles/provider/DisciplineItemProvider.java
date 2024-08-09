@@ -88,7 +88,7 @@ public class DisciplineItemProvider
 
 			addUuidPropertyDescriptor(object);
 			addNamePropertyDescriptor(object);
-			addUserPropertyDescriptor(object);
+			addUsersPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -138,19 +138,19 @@ public class DisciplineItemProvider
 	}
 
 	/**
-	 * This adds a property descriptor for the User feature.
+	 * This adds a property descriptor for the Users feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addUserPropertyDescriptor(Object object) {
+	protected void addUsersPropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_Discipline_user_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Discipline_user_feature", "_UI_Discipline_type"),
-				 RolesPackage.Literals.DISCIPLINE__USER,
+				 getString("_UI_Discipline_users_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Discipline_users_feature", "_UI_Discipline_type"),
+				 RolesPackage.Literals.DISCIPLINE__USERS,
 				 true,
 				 false,
 				 false,
@@ -206,7 +206,7 @@ public class DisciplineItemProvider
 		switch (notification.getFeatureID(Discipline.class)) {
 			case RolesPackage.DISCIPLINE__UUID:
 			case RolesPackage.DISCIPLINE__NAME:
-			case RolesPackage.DISCIPLINE__USER:
+			case RolesPackage.DISCIPLINE__USERS:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 		}

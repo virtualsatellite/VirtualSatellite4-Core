@@ -10,10 +10,10 @@
 package de.dlr.sc.virsat.model.ecore.xmi.impl;
 
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.List;
 
 import org.eclipse.emf.common.util.TreeIterator;
@@ -95,7 +95,7 @@ public class DvlmXMIResourceImplTest {
 		URI testUri = URI.createFileURI("Blabla");
 		DvlmXMIResourceImpl resource = new DvlmXMIResourceImpl(testUri);
 		
-		assertTrue("Correct subtype", resource instanceof XMIResourceImpl);
+		assertThat("Correct subtype", resource, instanceOf(XMIResourceImpl.class));
 		assertEquals("Correct URI", testUri, resource.getURI());
 	}
 	

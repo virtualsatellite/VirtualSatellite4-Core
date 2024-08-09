@@ -9,6 +9,7 @@
  */
 package de.dlr.sc.virsat.model.concept.generator.dmf;
 
+import com.google.inject.Inject;
 import de.dlr.sc.virsat.model.concept.ConceptLanguageTestInjectorProvider;
 import de.dlr.sc.virsat.model.concept.resources.ConceptResourceLoader;
 import de.dlr.sc.virsat.model.concept.test.MockupConceptResourceLoader;
@@ -24,7 +25,6 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.external.tests.ExternalModelTestHelper;
-import javax.inject.Inject;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -52,21 +52,21 @@ public class GenerateDmfCategoriesTest {
   @Inject
   @Extension
   private ParseHelper<Concept> _parseHelper;
-  
+
   protected ExternalModelTestHelper helper = new ExternalModelTestHelper();
-  
+
   private static final String TEST_CONCEPT_NAME = "testConcept";
-  
+
   private static final String TEST_FQN_NAME = (("de.dlr.sc.virsat.model.extension" + ".") + GenerateDmfCategoriesTest.TEST_CONCEPT_NAME);
-  
+
   private static final String TEST_CONCEPT_XMI_PATH = (GenerateDmfCategoriesTest.TEST_FQN_NAME + "/concept/concept.xmi");
-  
+
   private static final String TEST_CATEGORY_NAME = "testCategory";
-  
+
   private static final String TEST_CONCEPT_VERSION = "2";
-  
+
   private final GenerateDmfCategories dmfCategoriesGenerator = new GenerateDmfCategories();
-  
+
   @Before
   public void setUp() {
     ConceptsPackage.eINSTANCE.eClass();
@@ -74,7 +74,7 @@ public class GenerateDmfCategoriesTest {
     PropertydefinitionsPackage.eINSTANCE.eClass();
     this.helper.loadExternalPackage();
   }
-  
+
   @Test
   public void testCreateEPackage() {
     try {
@@ -111,7 +111,7 @@ public class GenerateDmfCategoriesTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCreateEClass() {
     try {
@@ -147,7 +147,7 @@ public class GenerateDmfCategoriesTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCreateIntrinsicEAttributes() {
     try {
@@ -223,7 +223,7 @@ public class GenerateDmfCategoriesTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCreateArrayEAttributes() {
     try {
@@ -266,7 +266,7 @@ public class GenerateDmfCategoriesTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCreateEReference() {
     try {
@@ -329,7 +329,7 @@ public class GenerateDmfCategoriesTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCreateExtendingEClass() {
     try {
@@ -385,7 +385,7 @@ public class GenerateDmfCategoriesTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCreateEClassWithConceptEReference() {
     try {

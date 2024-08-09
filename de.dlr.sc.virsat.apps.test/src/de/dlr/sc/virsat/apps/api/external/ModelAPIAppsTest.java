@@ -11,11 +11,15 @@ package de.dlr.sc.virsat.apps.api.external;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
 import org.junit.Before;
@@ -30,10 +34,13 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsFactory;
+import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
+import de.dlr.sc.virsat.model.dvlm.roles.RolesFactory;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory;
 import de.dlr.sc.virsat.model.dvlm.structural.util.StructuralInstantiator;
+import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
 
 public class ModelAPIAppsTest {
 
@@ -49,6 +56,14 @@ public class ModelAPIAppsTest {
 			protected void initializeRepositoryResource() {
 				resource = new ResourceImpl();
 				resource.getContents().add(repository);
+				// Initialize RoleManagement and Disciplines if not already initialized
+                if (repository.getRoleManagement() == null) {
+                    repository.setRoleManagement(RolesFactory.eINSTANCE.createRoleManagement());
+                }
+
+                if (repository.getRoleManagement().getDisciplines() == null) {
+                    repository.getRoleManagement().getDisciplines().add(RolesFactory.eINSTANCE.createDiscipline());
+                }
 			}
 			
 			@Override
@@ -85,6 +100,69 @@ public class ModelAPIAppsTest {
 		String conceptFqnUnknwon = "test.concept.unknown";
 		assertNull("Model API gives null for unknown fqn", modelAPI.getConcept(conceptFqnUnknwon));
 	}
+	
+	@Test
+    public void testAddUserToDiscipline() {
+        // Create a sample Discipline
+        Discipline discipline = RolesFactory.eINSTANCE.createDiscipline();
+        discipline.setName("System");
+
+        //Add the created discipline in the discipline list
+        repository.getRoleManagement().getDisciplines().add(discipline);
+        
+        // Set the user name property
+        System.setProperty("user.name", "SampleUser");
+
+        //Add the user to the user's list
+        discipline.getUsers().add("SampleUser");
+        // Call the method that contains the new line
+        modelAPI.initializeRepositoryResource();
+
+        // Verify that the Discipline is added to Disciplines
+        assertTrue("Discipline should be added to Disciplines", repository.getRoleManagement().getDisciplines().contains(discipline));
+        // Verify that the user is added to the Discipline
+        assertTrue("User should be added to Discipline", discipline.getUsers().contains("SampleUser"));
+
+        // Reset the system property to avoid interference with other tests
+        System.clearProperty("user.name");
+    }
+
+	@Test
+	public void testCreateSeiStorage() {
+		try {
+			// Set the user name property
+			System.setProperty("user.name", "SampleUser");
+
+			// Create a sample BeanStructuralElementInstance
+			StructuralElementInstance sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+			BeanStructuralElementInstance beanSei = new BeanStructuralElementInstance(sei);
+
+			// Call the method to create storage
+			modelAPI.createSeiStorage(beanSei);
+
+			// Verify that the folder and file are created
+			String pathFolderSei = VirSatProjectCommons.getStructuralElementInstancePath(sei);
+			String pathFolderSeiDocument = VirSatProjectCommons.getStructuralElementInstanceDocumentPath(sei);
+			String pathFileSei = VirSatProjectCommons.getStructuralElementInstanceFullPath(sei);
+
+			Path folderPathSei = Paths.get(modelAPI.getCurrentProjectAbsolutePath(), pathFolderSei);
+			Path folderPathSeiDocument = Paths.get(modelAPI.getCurrentProjectAbsolutePath(), pathFolderSeiDocument);
+			Path filePathSei = Paths.get(modelAPI.getCurrentProjectAbsolutePath(), pathFileSei);
+
+			assertTrue("Folder for SEI is created", Files.exists(folderPathSei) && Files.isDirectory(folderPathSei));
+			assertTrue("Document folder for SEI is created", Files.exists(folderPathSeiDocument) && Files.isDirectory(folderPathSeiDocument));
+			assertFalse("File for SEI is not created", Files.exists(filePathSei) && Files.isRegularFile(filePathSei));
+
+			// Verify that the assigned discipline is set
+			assertNotNull("Assigned discipline is set", sei.getAssignedDiscipline());
+
+			// Reset the system property to avoid interference with other tests
+			System.clearProperty("user.name");
+		} catch (IOException e) {
+			fail("Exception should not be thrown: " + e.getMessage());
+		}
+	}
+
 	
 	@Test
 	public void testAddRootSei() {

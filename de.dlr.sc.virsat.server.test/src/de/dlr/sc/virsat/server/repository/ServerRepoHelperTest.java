@@ -81,7 +81,7 @@ public class ServerRepoHelperTest {
 		String svnProjectName = "SvnProject1";
 		String gitProjectName = "GitProject2";
 		createTempRepoConfigFile(configsDir, svnProjectName, VersionControlSystem.SVN);
-		createTempRepoConfigFile(configsDir, gitProjectName, VersionControlSystem.GIT);
+		createTempRepoConfigFile(configsDir, gitProjectName, VersionControlSystem.SVN);
 
 		RepoRegistry repoRegistry = RepoRegistry.getInstance();
 		assertTrue("Repo registry is empty initially", repoRegistry.getRepositories().isEmpty());
@@ -90,7 +90,7 @@ public class ServerRepoHelperTest {
 		
 		assertEquals(2, repoRegistry.getRepositories().size());
 		assertEquals(VersionControlSystem.SVN, repoRegistry.getRepository(svnProjectName).getRepositoryConfiguration().getBackend());
-		assertEquals(VersionControlSystem.GIT, repoRegistry.getRepository(gitProjectName).getRepositoryConfiguration().getBackend());
+		assertEquals(VersionControlSystem.SVN, repoRegistry.getRepository(gitProjectName).getRepositoryConfiguration().getBackend());
 	}
 	
 	@Test
@@ -128,7 +128,7 @@ public class ServerRepoHelperTest {
 	}
 	
 	@Test
-	public void testUpdateRepositoryConfiguration() throws IOException, URISyntaxException, CoreException {		
+	public void testUpdateRepositoryConfiguration() throws Exception {		
 		ServerRepoHelper.registerRepositoryConfiguration(config);
 		
 		ServerRepository repo = RepoRegistry.getInstance().getRepository(PROJECT_NAME);
@@ -147,7 +147,9 @@ public class ServerRepoHelperTest {
 	private void createTempRepoConfigFile(Path parentDir, String projectName, VersionControlSystem backend) throws IOException {
 		String fileContents = RepositoryConfiguration.PROJECT_NAME_KEY + ":" + projectName + System.lineSeparator()
 				+ RepositoryConfiguration.BACKEND_KEY + ":" + backend + System.lineSeparator()
-				+ RepositoryConfiguration.REMOTE_URL_KEY + ":" + svnUriToRemoteRepoPath.toString();
+				+ RepositoryConfiguration.REMOTE_URL_KEY + ":" + svnUriToRemoteRepoPath.toString() + System.lineSeparator()
+				+ RepositoryConfiguration.LOCAL_PATH_KEY + ":" + projectName;
+		
 		Path tempFile = Files.createTempFile(parentDir, projectName, ".properties");
 		Files.write(tempFile, fileContents.getBytes());
 	}

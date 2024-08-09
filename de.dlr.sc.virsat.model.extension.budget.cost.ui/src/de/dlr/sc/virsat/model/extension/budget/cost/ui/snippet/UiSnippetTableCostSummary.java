@@ -207,10 +207,10 @@ public class UiSnippetTableCostSummary extends AUiSnippetTableCostSummary {
 	 */
 	private void setChartInputsAndTitles(Object inputObject) {
 		CostConceptHelper cch = new CostConceptHelper();
-		if (cch.initBeansForObject(inputObject) && (cch.costSummary != null)) {
-			subTitleCostDistribution.setText("Cost distribution of equipment and summaries in: " + cch.bSei.getName());
+		if (cch.initBeansForObject(inputObject) && (cch.getCostSummary() != null)) {
+			subTitleCostDistribution.setText("Cost distribution of equipment and summaries in: " + cch.getbSei().getName());
 			subTitleCostMargins
-					.setText("Amount of cost and margin of equipment and summaries in: " + cch.bSei.getName());
+					.setText("Amount of cost and margin of equipment and summaries in: " + cch.getbSei().getName());
 			barChartViewerCostMargins.setInput(inputObject);
 			pieChartViewerCostDistribution.setInput(inputObject);
 		}
@@ -313,7 +313,7 @@ public class UiSnippetTableCostSummary extends AUiSnippetTableCostSummary {
 		@Override
 		public Font getFont(Object object) {
 			if (cch.initBeansForObject(object)) {
-				if (cch.costSummary != null) {
+				if (cch.getCostSummary() != null) {
 					return boldFont;
 				}
 			}
@@ -326,7 +326,7 @@ public class UiSnippetTableCostSummary extends AUiSnippetTableCostSummary {
 		@Override
 		public Color getBackground(Object object) {
 			if (cch.initBeansForObject(object)) {
-				if (cch.costSummary != null) {
+				if (cch.getCostSummary() != null) {
 					return colorGrey;
 				}
 			}
@@ -342,10 +342,10 @@ public class UiSnippetTableCostSummary extends AUiSnippetTableCostSummary {
 			}
 
 			if (cch.initBeansForObject(object)) {
-				if (cch.costSummary != null) {
-					return super.getColumnImage(cch.costSummary.getTypeInstance(), columnIndex);
-				} else if (cch.costEquipment != null) {
-					return super.getColumnImage(cch.costEquipment.getTypeInstance(), columnIndex);
+				if (cch.getCostSummary() != null) {
+					return super.getColumnImage(cch.getCostSummary().getTypeInstance(), columnIndex);
+				} else if (cch.getCostEquipment() != null) {
+					return super.getColumnImage(cch.getCostEquipment().getTypeInstance(), columnIndex);
 				} else {
 					return super.getColumnImage(object, columnIndex);
 				}
@@ -360,28 +360,28 @@ public class UiSnippetTableCostSummary extends AUiSnippetTableCostSummary {
 
 			if (cch.initBeansForObject(object)) {
 				if (column == colName.getColumn()) {
-					return cch.bSei.getName();
+					return cch.getbSei().getName();
 				}
 
-				if (cch.costSummary != null) {
-					redirectNotification(cch.costSummary, object, true);
+				if (cch.getCostSummary() != null) {
+					redirectNotification(cch.getCostSummary(), object, true);
 					if (column == colCost.getColumn()) {
-						return cch.costSummary.getCostBean().getValueWithUnit();
+						return cch.getCostSummary().getCostBean().getValueWithUnit();
 					} else if (column == colMargin.getColumn()) {
-						return cch.costSummary.getMarginBean().getValueWithUnit();
+						return cch.getCostSummary().getMarginBean().getValueWithUnit();
 					} else if (column == colCostWithMargin.getColumn()) {
-						return cch.costSummary.getCostWithMarginBean().getValueWithUnit();
+						return cch.getCostSummary().getCostWithMarginBean().getValueWithUnit();
 					}
 				}
 
-				if (cch.costEquipment != null) {
-					redirectNotification(cch.costEquipment, object, true);
+				if (cch.getCostEquipment() != null) {
+					redirectNotification(cch.getCostEquipment(), object, true);
 					if (column == colCost.getColumn()) {
-						return cch.costEquipment.getCostBean().getValueWithUnit();
+						return cch.getCostEquipment().getCostBean().getValueWithUnit();
 					} else if (column == colMargin.getColumn()) {
-						return cch.costEquipment.getMarginBean().getValueWithUnit();
+						return cch.getCostEquipment().getMarginBean().getValueWithUnit();
 					} else if (column == colCostWithMargin.getColumn()) {
-						return cch.costEquipment.getCostWithMarginBean().getValueWithUnit();
+						return cch.getCostEquipment().getCostWithMarginBean().getValueWithUnit();
 					}
 				}
 			}
@@ -390,29 +390,29 @@ public class UiSnippetTableCostSummary extends AUiSnippetTableCostSummary {
 
 		@Override
 		public String getKey(Object object) {
-			return cch.initBeansForObject(object) ? cch.bSei.getName() : null;
+			return cch.initBeansForObject(object) ? cch.getbSei().getName() : null;
 		}
 
 		@Override
 		public double getValue(String row, Object object) {
 			if (cch.initBeansForObject(object)) {
-				if (cch.costSummary != null) {
-					redirectNotification(cch.costSummary, object, true);
+				if (cch.getCostSummary() != null) {
+					redirectNotification(cch.getCostSummary(), object, true);
 					if (ROW_COST.equals(row)) {
-						return cch.costSummary.getCostBean().getValueToBaseUnit();
+						return cch.getCostSummary().getCostBean().getValueToBaseUnit();
 					} else if (ROW_COST_MARGIN.equals(row)) {
-						return cch.costSummary.getCostMarginBean().getValueToBaseUnit();
+						return cch.getCostSummary().getCostMarginBean().getValueToBaseUnit();
 					}
-					return cch.costSummary.getCostWithMarginBean().getValueToBaseUnit();
+					return cch.getCostSummary().getCostWithMarginBean().getValueToBaseUnit();
 				}
-				if (cch.costEquipment != null) {
-					redirectNotification(cch.costEquipment, object, true);
+				if (cch.getCostEquipment() != null) {
+					redirectNotification(cch.getCostEquipment(), object, true);
 					if (ROW_COST.equals(row)) {
-						return cch.costEquipment.getCostBean().getValueToBaseUnit();
+						return cch.getCostEquipment().getCostBean().getValueToBaseUnit();
 					} else if (ROW_COST_MARGIN.equals(row)) {
-						return cch.costEquipment.getCostMarginBean().getValueToBaseUnit();
+						return cch.getCostEquipment().getCostMarginBean().getValueToBaseUnit();
 					}
-					return cch.costEquipment.getCostWithMarginBean().getValueToBaseUnit();
+					return cch.getCostEquipment().getCostWithMarginBean().getValueToBaseUnit();
 				}
 			}
 			return 0;

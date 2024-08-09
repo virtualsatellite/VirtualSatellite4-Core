@@ -11,7 +11,8 @@ package de.dlr.sc.virsat.model.concept.types.factory;
 
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 
 import org.eclipse.core.runtime.CoreException;
 import org.junit.Before;
@@ -23,7 +24,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.util.StructuralInstantiator;
-import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
+import de.dlr.sc.virsat.model.extension.tests.model.AExtensionConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 
 /**
@@ -32,7 +33,7 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
  *
  */
 
-public class BeanStructuralElementInstanceFactoryTest extends AConceptTestCase {
+public class BeanStructuralElementInstanceFactoryTest extends AExtensionConceptTestCase {
 
 	private BeanStructuralElementInstanceFactory seBeanFactory;
 	private Concept concept;
@@ -47,7 +48,7 @@ public class BeanStructuralElementInstanceFactoryTest extends AConceptTestCase {
 	@Test
 	public void testGetInstanceForFullQualifiedName() throws CoreException {
 		IBeanStructuralElementInstance seiBean = seBeanFactory.getInstanceFor("de.dlr.sc.virsat.model.extension.tests.TestStructuralElement");
-		assertTrue("Created bean is of correct type", seiBean instanceof TestStructuralElement);
+		assertThat("Created bean is of correct type", seiBean, instanceOf(TestStructuralElement.class));
 	}
 
 	@Test
@@ -55,7 +56,7 @@ public class BeanStructuralElementInstanceFactoryTest extends AConceptTestCase {
 		StructuralElement se = ActiveConceptHelper.getStructuralElement(concept, "TestStructuralElement");
 		
 		IBeanStructuralElementInstance seiBean = seBeanFactory.getInstanceFor(se);
-		assertTrue("Created bean is of correct type", seiBean instanceof TestStructuralElement);
+		assertThat("Created bean is of correct type", seiBean, instanceOf(TestStructuralElement.class));
 	}
 
 	@Test
@@ -64,7 +65,7 @@ public class BeanStructuralElementInstanceFactoryTest extends AConceptTestCase {
 		StructuralElementInstance sei = new StructuralInstantiator().generateInstance(se, "TestStructuralElement");
 		
 		IBeanStructuralElementInstance seiBean = seBeanFactory.getInstanceFor(sei);
-		assertTrue("Created bean is of correct type", seiBean instanceof TestStructuralElement);
+		assertThat("Created bean is of correct type", seiBean, instanceOf(TestStructuralElement.class));
 		assertEquals("Bean has a type instance set", sei, seiBean.getStructuralElementInstance());
 		assertEquals("Type instance of bean is set correctly", "TestStructuralElement", seiBean.getStructuralElementInstance().getType().getName());
 	}

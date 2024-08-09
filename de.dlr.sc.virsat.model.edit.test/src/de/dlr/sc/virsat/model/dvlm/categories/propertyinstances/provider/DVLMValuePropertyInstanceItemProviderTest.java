@@ -9,9 +9,9 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.provider;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.util.HashMap;
 
 import org.eclipse.emf.common.command.BasicCommandStack;
@@ -122,6 +122,6 @@ public class DVLMValuePropertyInstanceItemProviderTest {
 		RoleManagementCheckCommand checkCommand2 = (RoleManagementCheckCommand) objects[1];
 		SetCommand setCommand = (SetCommand) checkCommand2.getWrappedCommand();
 		
-		assertTrue("Command is of correct Type", setCommand instanceof SetValuePropertyInstanceCommand);
+		assertThat("Command is of correct Type", setCommand, instanceOf(SetValuePropertyInstanceCommand.class));
 	}
 }

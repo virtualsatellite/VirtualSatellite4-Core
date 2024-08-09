@@ -9,6 +9,7 @@
  */
 package de.dlr.sc.virsat.model.concept.generator.snippets;
 
+import com.google.inject.Inject;
 import de.dlr.sc.virsat.model.concept.ConceptLanguageTestInjectorProvider;
 import de.dlr.sc.virsat.model.concept.test.util.GeneratorJunitAssert;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage;
@@ -17,7 +18,6 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.AProperty;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.PropertydefinitionsPackage;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage;
-import javax.inject.Inject;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.XtextRunner;
@@ -37,26 +37,26 @@ public class GenerateCategoryUiSnippetArrayTableTest {
   @Inject
   @Extension
   private ParseHelper<Concept> _parseHelper;
-  
+
   private Concept concept;
-  
+
   private final String TEST_CONCEPT_NAME = "testConcept";
-  
+
   private final String TEST_CATEGORY_NAME = "testCategory";
-  
+
   private final String TEST_EXTENDING_CATEGORY_NAME = "testExtendingCategory";
-  
+
   private final String TEST_PROPERTY_NAME = "testStringArray";
-  
+
   private final GenerateCategoryUiSnippetArrayTable createAddCommandGenerator = new GenerateCategoryUiSnippetArrayTable();
-  
+
   @Before
   public void setUp() {
     ConceptsPackage.eINSTANCE.eClass();
     CategoriesPackage.eINSTANCE.eClass();
     PropertydefinitionsPackage.eINSTANCE.eClass();
   }
-  
+
   @Test
   public void testCreateConcreteClassFileName() {
     try {
@@ -134,7 +134,7 @@ public class GenerateCategoryUiSnippetArrayTableTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCreateForUiSnippetIntrinsicPropertyArray() {
     try {
@@ -171,7 +171,7 @@ public class GenerateCategoryUiSnippetArrayTableTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCreateForUiSnippetComposedPropertyArray() {
     try {
@@ -219,7 +219,7 @@ public class GenerateCategoryUiSnippetArrayTableTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCreateForUiSnippetReferencesPropertyArray() {
     try {
@@ -267,7 +267,7 @@ public class GenerateCategoryUiSnippetArrayTableTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCreateForUiSnippetReferencesPropertyToPropertyArray() {
     try {
@@ -315,7 +315,7 @@ public class GenerateCategoryUiSnippetArrayTableTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCreateForUiSnippetInheritedIntrinsicPropertyArray() {
     try {
@@ -353,7 +353,7 @@ public class GenerateCategoryUiSnippetArrayTableTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCreateForUiSnippetComposedPropertyWithExtenedTypeArray() {
     try {

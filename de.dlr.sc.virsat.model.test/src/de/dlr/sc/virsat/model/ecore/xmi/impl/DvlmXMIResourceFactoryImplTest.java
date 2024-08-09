@@ -9,8 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.ecore.xmi.impl;
 
-import static org.junit.Assert.assertTrue;
-
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.After;
 import org.junit.Before;
@@ -37,7 +37,7 @@ public class DvlmXMIResourceFactoryImplTest {
 		
 		Resource resource = dvlmXmiResourceFactory.createResource(null);
 		
-		assertTrue("Is ocrrect instance", resource instanceof DvlmXMIResourceImpl);
+		assertThat("Is ocrrect instance", resource, instanceOf(DvlmXMIResourceImpl.class));
 	}
 
 }

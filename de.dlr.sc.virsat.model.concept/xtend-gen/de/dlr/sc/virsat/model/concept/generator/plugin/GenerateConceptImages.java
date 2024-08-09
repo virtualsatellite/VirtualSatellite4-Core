@@ -49,7 +49,7 @@ public class GenerateConceptImages {
     };
     IteratorExtensions.<Object>forEach(iterator, _function);
   }
-  
+
   public Long createDefaultImage(final Concept concept, final String pathTo, final String fileName, final String fileNameDisabled) {
     try {
       long _xblockexpression = (long) 0;
@@ -104,12 +104,12 @@ public class GenerateConceptImages {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   public static String getFileNameStandard(final IQualifiedName qualifiedNameObject) {
     String _name = qualifiedNameObject.getName();
     return (_name + ".gif");
   }
-  
+
   public static String getFileNameDisabled(final IQualifiedName qualifiedNameObject) {
     String _name = qualifiedNameObject.getName();
     return (_name + "_disabled.gif");

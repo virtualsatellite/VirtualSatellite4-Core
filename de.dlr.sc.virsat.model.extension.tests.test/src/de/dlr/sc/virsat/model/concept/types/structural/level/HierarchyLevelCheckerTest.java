@@ -22,7 +22,7 @@ import org.junit.Test;
 
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
+import de.dlr.sc.virsat.model.extension.tests.model.AExtensionConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 
 /**
@@ -40,7 +40,7 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
  * We assert that HierarchyLevelChecker correctly deduces that the child can be only on level b
  * 
  */
-public class HierarchyLevelCheckerTest extends AConceptTestCase {
+public class HierarchyLevelCheckerTest extends AExtensionConceptTestCase {
 
 	private Concept concept;
 

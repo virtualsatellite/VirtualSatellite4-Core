@@ -15,14 +15,15 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.dvlm.qudv.AConversionBasedUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 
 /**
  * General bean for a conversion based unit of the type U_TYPE
  * 
  * @param <U_TYPE> type of the wrapped conversion based unit
  */
-@ApiModel(
+@Schema(
 	description = "Abstract model class for conversion based bean units.",
 	subTypes = {
 		BeanUnitAffineConversion.class,

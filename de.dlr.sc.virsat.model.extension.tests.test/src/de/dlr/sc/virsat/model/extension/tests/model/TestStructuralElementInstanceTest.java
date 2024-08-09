@@ -41,7 +41,7 @@ import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
  * @author fisc_ph
  *
  */
-public class TestStructuralElementInstanceTest extends AConceptTestCase {
+public class TestStructuralElementInstanceTest extends AExtensionConceptTestCase {
 
 	private TestCategoryBeanA tcA1;
 	private TestCategoryBeanA tcA2;

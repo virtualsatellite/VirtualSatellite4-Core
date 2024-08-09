@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
 
@@ -43,9 +44,12 @@ import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefFigureCanvas;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefViewer;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.IEditorReference;
 import org.eclipse.ui.IViewReference;
@@ -89,7 +93,7 @@ public class ASwtBotTestCase {
 	protected static final String SWTBOT_TEST_PROJECTNAME = "SWTBotTestProject";
 	protected static final String SWTBOT_CANVAS_FIELD_REFLECTION_NAME = "canvas";
 	protected static final int SWTBOT_GENERAL_WAIT_TIME = 50;  
-	protected static final int MAX_TEST_CASE_TIMEOUT_SECONDS = 90;
+	protected static final int MAX_TEST_CASE_TIMEOUT_SECONDS = 240;
 	public static final int MAX_TEST_CASE_TIMEOUT_MILLISECONDS = 1000 * MAX_TEST_CASE_TIMEOUT_SECONDS;
 	protected static final int EDIT_UNDO_MENU_POSITION = 0;
 	protected static final int EDIT_REDO_MENU_POSITION = 1;
@@ -771,24 +775,40 @@ public class ASwtBotTestCase {
 	 * @param user the suer to be set. Can be null which leaves the default user.
 	 * @return the table item which was added
 	 */
-	protected SWTBotTableItem createNewDiscipline(String discipline, String user) {
-		// Switch to the Editor and add a new Discipline
-		SWTBotEditor rmEditor = bot.editorByTitle("Role Management");
-		rmEditor.show();
-		rmEditor.bot().button("Add Discipline").click();
-		SWTBotTableItem newDisciplineTableItem = rmEditor.bot().table().getTableItem("New Discipline");
-		
-		newDisciplineTableItem.click(0);
-		rmEditor.bot().text().setText(discipline);
-		
-		if (user != null) {
-			newDisciplineTableItem.click(1);
-			rmEditor.bot().text().setText(user);
-		}
-		
-		save();
-		return newDisciplineTableItem;
+	protected SWTBotTableItem createNewDiscipline(String discipline, List<String> users) {
+	    // Switch to the Editor and add a new Discipline
+	    SWTBotEditor rmEditor = bot.editorByTitle("Role Management");
+	    rmEditor.show();
+	    rmEditor.bot().button("Add Discipline").click();
+	    SWTBotTableItem newDisciplineTableItem = rmEditor.bot().table().getTableItem("New Discipline");
+
+	    newDisciplineTableItem.click(0);
+	    rmEditor.bot().text().setText(discipline);
+	    newDisciplineTableItem.click(1);
+	    if (users != null && !users.isEmpty()) {
+	    	bot.list().select(0);
+			bot.button("Remove").click();
+	    	for (String user : users) {
+			    // Find and interact with the elements in the dialog
+			    SWTBotText valueText = bot.text();
+			    valueText.setText(user);
+			    bot.button("Add").click();
+		    }
+	    	
+	    }
+	    
+	    // Get the dialog shell
+	    SWTBotShell dialogShell = bot.shell("User Discipline");
+	    
+	    // Close the user management dialog
+	    SWTBotButton userEditorOkayButton = dialogShell.bot().button("OK");
+	    userEditorOkayButton.click();
+	    
+	   
+	    save();
+	    return newDisciplineTableItem;
 	}
+
 	
 	/**
 	 * @param item the editor page

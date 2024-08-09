@@ -231,7 +231,7 @@ public class RolesPackageImpl extends EPackageImpl implements RolesPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getDiscipline_User() {
+	public EAttribute getDiscipline_Users() {
 		return (EAttribute)disciplineEClass.getEStructuralFeatures().get(0);
 	}
 
@@ -267,7 +267,7 @@ public class RolesPackageImpl extends EPackageImpl implements RolesPackage {
 		createEReference(roleManagementEClass, ROLE_MANAGEMENT__DISCIPLINES);
 
 		disciplineEClass = createEClass(DISCIPLINE);
-		createEAttribute(disciplineEClass, DISCIPLINE__USER);
+		createEAttribute(disciplineEClass, DISCIPLINE__USERS);
 	}
 
 	/**
@@ -311,7 +311,7 @@ public class RolesPackageImpl extends EPackageImpl implements RolesPackage {
 		initEReference(getRoleManagement_Disciplines(), this.getDiscipline(), null, "disciplines", null, 1, -1, RoleManagement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(disciplineEClass, Discipline.class, "Discipline", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getDiscipline_User(), ecorePackage.getEString(), "user", "", 1, 1, Discipline.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDiscipline_Users(), ecorePackage.getEString(), "users", "", 1, -1, Discipline.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 	}
 
 } //RolesPackageImpl

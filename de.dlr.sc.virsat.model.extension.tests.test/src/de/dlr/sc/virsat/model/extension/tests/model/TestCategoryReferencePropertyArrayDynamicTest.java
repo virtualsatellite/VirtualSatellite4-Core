@@ -41,7 +41,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
  * @author fisc_ph
  *
  */
-public class TestCategoryReferencePropertyArrayDynamicTest extends AConceptTestCase {
+public class TestCategoryReferencePropertyArrayDynamicTest extends AExtensionConceptTestCase {
 
 	private TestCategoryReferenceArray tcIntrinsicArray;
 	private IBeanList<BeanPropertyString> arrayDynamic;

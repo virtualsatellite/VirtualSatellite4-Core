@@ -20,11 +20,17 @@ import de.dlr.sc.virsat.model.extension.maturity.model.Maturity;
  */
 public class MaturityConceptHelper {
 	
-	//CHECKSTYLE:OFF
-	public BeanStructuralElementInstance bSei = new BeanStructuralElementInstance();
-	public Maturity maturity;
-	//CHECKSTYLE:ON
+	private BeanStructuralElementInstance bSei = new BeanStructuralElementInstance();
+	private Maturity maturity;
 	
+	public BeanStructuralElementInstance getbSei() {
+		return bSei;
+	}
+
+	public Maturity getMaturity() {
+		return maturity;
+	}
+
 	/**
 	 * This method extracts all important objects from a given object, which means
 	 * this method tries to create A BeanSEI and tries to find a Maturity which is

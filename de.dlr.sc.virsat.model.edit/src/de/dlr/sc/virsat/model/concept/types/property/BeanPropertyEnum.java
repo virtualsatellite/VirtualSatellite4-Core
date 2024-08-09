@@ -9,8 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.property;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.UnexecutableCommand;
@@ -28,8 +28,9 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyIns
 import de.dlr.sc.virsat.model.dvlm.json.ABeanUnitAdapter;
 import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
-import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiModelProperty.AccessMode;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
+
 
 /**
  * Class to wrap EnumPropertyInstances
@@ -67,7 +68,7 @@ public class BeanPropertyEnum extends ABeanProperty<EnumUnitPropertyInstance, St
 
 	@Override
 	@XmlElement(nillable = true)
-	@ApiModelProperty(value = "Name of an enum")
+	@Schema(description = "Name of an enum")
 	public String getValue() {
 		if (isSet()) {
 			return getTypeInstance().getValue().getName();
@@ -109,7 +110,7 @@ public class BeanPropertyEnum extends ABeanProperty<EnumUnitPropertyInstance, St
 
 	@Override
 	@XmlElement(nillable = true)
-	@ApiModelProperty(value = "Unit of the enum")
+	@Schema(description = "Unit of the enum")
 	@XmlJavaTypeAdapter(ABeanUnitAdapter.class)
 	public ABeanUnit<? extends AUnit> getUnitBean() {
 		if (ti.getUnit() == null) {
@@ -139,7 +140,7 @@ public class BeanPropertyEnum extends ABeanProperty<EnumUnitPropertyInstance, St
 	}
 	
 	@Override
-	@ApiModelProperty(hidden = true)
+	@Schema(hidden = true)
 	public boolean setUnit(String unitName) {
 		return new PropertyInstanceHelper().setUnit(ti, unitName);
 	}
@@ -149,8 +150,8 @@ public class BeanPropertyEnum extends ABeanProperty<EnumUnitPropertyInstance, St
 		return new PropertyInstanceHelper().setUnit(ed, ti, unitName);
 	}
 	
-	@ApiModelProperty(
-			value = "Always returns constant: \"enum\"", 
+	@Schema(
+			description = "Always returns constant: \"enum\"", 
 			example = "enum",
 			accessMode = AccessMode.READ_ONLY)
 	@Override

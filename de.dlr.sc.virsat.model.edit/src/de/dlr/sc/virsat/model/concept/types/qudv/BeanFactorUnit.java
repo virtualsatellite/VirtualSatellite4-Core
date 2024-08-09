@@ -9,11 +9,11 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.qudv;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.SetCommand;
@@ -26,13 +26,14 @@ import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapter;
 import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
 import de.dlr.sc.virsat.model.dvlm.qudv.UnitFactor;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
 
 @XmlAccessorType(XmlAccessType.NONE)
 //Ensure that the factor (by uuid) gets unmarshalled first
 @XmlType(propOrder = {"factor", "exponent", "unitBean"})
-@ApiModel(description = "Model class for bean unit factor.")
+@Schema(description = "Model class for bean unit factor.")
 public class BeanFactorUnit implements IBeanUuid {
 
 	private UnitFactor factor;
@@ -43,14 +44,14 @@ public class BeanFactorUnit implements IBeanUuid {
 		this.factor = factor;
 	}
 	
-	@ApiModelProperty(hidden = true)
+	@Schema(hidden = true)
 	@Override
 	public String getUuid() {
 		return factor.getUuid().toString();
 	}
 	
-	@ApiModelProperty(name = "uuid", required = true,
-			value = "Unique identifier for a bean",
+	@Schema(name = "uuid", required = true,
+			description = "Unique identifier for a bean",
 			example = "b168b0df-84b6-4b7f-bede-69298b215f40")
 	@XmlElement(name = "uuid")
 	@XmlJavaTypeAdapter(IUuidAdapter.class)
@@ -62,7 +63,7 @@ public class BeanFactorUnit implements IBeanUuid {
 		this.factor = factor;
 	}
 	
-	@ApiModelProperty(required = true)
+	@Schema(required = true)
 	@XmlElement
 	public double getExponent() {
 		return factor.getExponent();
@@ -77,7 +78,7 @@ public class BeanFactorUnit implements IBeanUuid {
 	}
 
 	@SuppressWarnings("rawtypes")
-	@ApiModelProperty(required = true)
+	@Schema(required = true)
 	@XmlElement(nillable = true)
 	@XmlJavaTypeAdapter(ABeanUnitAdapter.class)
 	public ABeanUnit getUnitBean() {

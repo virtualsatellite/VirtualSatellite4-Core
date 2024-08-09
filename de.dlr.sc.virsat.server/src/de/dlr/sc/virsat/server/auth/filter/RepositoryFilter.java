@@ -11,15 +11,15 @@ package de.dlr.sc.virsat.server.auth.filter;
 
 import java.io.IOException;
 
-import javax.annotation.Priority;
-import javax.ws.rs.Priorities;
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.container.ContainerRequestFilter;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
+import jakarta.annotation.Priority;
+import jakarta.ws.rs.Priorities;
+import jakarta.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.container.ContainerRequestFilter;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.SecurityContext;
 
 import de.dlr.sc.virsat.server.auth.ServerRoles;
-import de.dlr.sc.virsat.server.resources.ModelAccessResource;
+import de.dlr.sc.virsat.server.resources.modelaccess.RepositoryAccessResource;
 
 /**
  * This filter checks if a user has access to the wanted repository resource.
@@ -55,7 +55,7 @@ public class RepositoryFilter implements ContainerRequestFilter {
 	 */
 	private String getRepositoryName(ContainerRequestContext context) {
 		String path = context.getUriInfo().getPath();
-		String substring = path.substring(path.indexOf(ModelAccessResource.PATH) + ModelAccessResource.PATH.length() + 1);
+		String substring = path.substring(path.indexOf(RepositoryAccessResource.PATH) + RepositoryAccessResource.PATH.length() + 1);
 		
 		String repositoryName = substring;
 		if (substring.indexOf("/") > 0) {

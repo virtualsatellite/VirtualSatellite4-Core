@@ -12,20 +12,23 @@ package de.dlr.sc.virsat.server.test;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Base64;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.UriBuilder;
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.WebTarget;
+import jakarta.ws.rs.core.UriBuilder;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jetty.http.HttpScheme;
 import org.eclipse.jetty.security.HashLoginService;
+import org.eclipse.jetty.util.resource.Resource;
+import org.eclipse.jetty.util.resource.ResourceFactory;
 import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.client.JerseyClientBuilder;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -75,18 +78,33 @@ public abstract class AJettyServerTest extends AConceptTestCase {
 		server.start();
 		
 		ClientConfig config = new ClientConfig();
-		Client client = ClientBuilder.newClient(config);
+		Client client = JerseyClientBuilder.newClient(config);
 		
 		URI uri = UriBuilder.fromUri(HttpScheme.HTTP.asString() + "://localhost:" + VirSatJettyServer.VIRSAT_JETTY_PORT).build();
 		webTarget = client.target(uri).path("/rest");
 	}
 
-	private static void setUpTestUsers() throws IOException {
+	/**
+	 * Setting up the test user from the test users properties file
+	 * Setting it up means creating a PathResource from the TesourceFactory and
+	 * Handing it over to the login service.
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 */
+	private static void setUpTestUsers() throws IOException, URISyntaxException {
 		HashLoginService loginService = (HashLoginService) server.getLoginService();
 		
 		String realmResourceName = "resources/test_users.properties";
-		URL realmProps = FileLocator.resolve(FileLocator.find(Activator.getDefault().getBundle(), new Path(realmResourceName)));
-		loginService.setConfig(realmProps.toString());
+		
+		URL url = FileLocator.find(Activator.getDefault().getBundle(), new Path(realmResourceName));
+		String uri = FileLocator.toFileURL(url).toURI().toString();
+		
+		try (ResourceFactory.Closeable resourceFactory = ResourceFactory.closeable()) {
+			Resource authPropertiesFileResource = resourceFactory.newResource(uri);
+			loginService.setConfig(authPropertiesFileResource);
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 	
 	@After

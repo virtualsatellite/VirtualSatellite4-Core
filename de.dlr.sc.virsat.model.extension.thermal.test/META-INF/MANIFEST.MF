@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Coral Thermal Concept Test
 Bundle-SymbolicName: de.dlr.sc.virsat.model.extension.thermal.test
-Bundle-Version: 4.16.0.qualifier
+Bundle-Version: 4.17.0.qualifier
 Bundle-Vendor: DLR (German Aerospace Center)
 Fragment-Host: de.dlr.sc.virsat.model.extension.thermal
 Export-Package: de.dlr.sc.virsat.model.extension.thermal.migrator,
@@ -13,6 +13,7 @@ Require-Bundle: org.junit,
  de.dlr.sc.virsat.model,
  de.dlr.sc.virsat.project,
  de.dlr.sc.virsat.concept.unittest.util,
- de.dlr.sc.virsat.commons
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+ de.dlr.sc.virsat.commons,
+ de.dlr.sc.virsat.external.lib.spotbugs
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Automatic-Module-Name: de.dlr.sc.virsat.model.extension.thermal.test
