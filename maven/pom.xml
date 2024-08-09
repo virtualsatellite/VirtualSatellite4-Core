@@ -62,10 +62,8 @@
 				<build.qualifier>'d'yyyyMMddHHmm</build.qualifier>
 				<maven.build.timestamp.format>'d'yyyyMMddHHmm</maven.build.timestamp.format>
 				<build.folder.type>development</build.folder.type>
-				<build.file.core.win32>VirSat_Core_Development_Win32.zip</build.file.core.win32>
-				<build.file.core.linux>VirSat_Core_Development_Linux.tar.gz</build.file.core.linux>
-				<build.file.server.win32>VirSat_Server_Development_Win32.zip</build.file.server.win32>
-				<build.file.server.linux>VirSat_Server_Development_Linux.tar.gz</build.file.server.linux>
+				<build.file.core>VirSat_Core_Development</build.file.core>
+				<build.file.server>VirSat_Server_Development</build.file.server>
 			</properties>
 		</profile>
 		<profile>
@@ -74,10 +72,8 @@
 				<build.qualifier>'i'yyyyMMddHHmm</build.qualifier>
 				<maven.build.timestamp.format>'i'yyyyMMddHHmm</maven.build.timestamp.format>
 				<build.folder.type>integration/${build.version}</build.folder.type>
-				<build.file.core.win32>VirSat_Core_Integration_${build.version}_Win32.zip</build.file.core.win32>
-				<build.file.core.linux>VirSat_Core_Integration_${build.version}_Linux.tar.gz</build.file.core.linux>
-				<build.file.server.win32>VirSat_Server_Integration_${build.version}_Win32.zip</build.file.server.win32>
-				<build.file.server.linux>VirSat_Server_Integration_${build.version}_Linux.tar.gz</build.file.server.linux>
+				<build.file.core>VirSat_Core_Development_${build.version}</build.file.core>
+				<build.file.server>VirSat_Server_Development_${build.version}</build.file.server>
 			</properties>
 		</profile>
 		<profile>
@@ -87,10 +83,8 @@
 				<build.qualifier>'r'yyyyMMddHHmm</build.qualifier>
 				<maven.build.timestamp.format>'r'yyyyMMddHHmm</maven.build.timestamp.format>
 				<build.folder.type>release/${build.version}/${env.GITHUB_SHA}</build.folder.type>
-				<build.file.core.win32>VirSat_Core_Release_${build.version}_${env.GITHUB_SHA}_Win32.zip</build.file.core.win32>
-				<build.file.core.linux>VirSat_Core_Release_${build.version}_${env.GITHUB_SHA}_Linux.tar.gz</build.file.core.linux>
-				<build.file.server.win32>VirSat_Server_Release_${build.version}_${env.GITHUB_SHA}_Win32.zip</build.file.server.win32>
-				<build.file.server.linux>VirSat_Server_Release_${build.version}_${env.GITHUB_SHA}_Linux.tar.gz</build.file.server.linux>
+				<build.file.core>VirSat_Core_Development_${build.version}_${env.GITHUB_SHA}</build.file.core>
+				<build.file.server>VirSat_Server_Development_${build.version}_${env.GITHUB_SHA}</build.file.server>
 			</properties>
 		</profile>
 		<profile>
@@ -183,7 +177,6 @@
 						<configuration>
 							<!-- Let the tests run for 6 minutes max. If time is exceeded kill 
 								the process. Apparently something is wrong -->
-							<forkedProcessTimeoutInSeconds>360</forkedProcessTimeoutInSeconds>
 							<redirectTestOutputToFile>true</redirectTestOutputToFile>
 							<showEclipseLog>false</showEclipseLog>
 							
@@ -194,6 +187,7 @@
 							<!-- Enable this line for remote debugging into surefire test executtion
 							<argLine>-Xdebug -Xrunjdwp:transport=dt_socket,address=8123,server=y,suspend=y</argLine>
 							 -->
+							<argLine>-Xdebug -Xrunjdwp:transport=dt_socket,address=8123,server=y,suspend=y</argLine>
 							<useUIHarness>false</useUIHarness>
 							<!--  Setup the osgi data and workspace directory. Otherwise the workspace will be placed
 								in the plugins target directory, thus creating a repository within a repository (git from
@@ -201,6 +195,7 @@
 								to a VCS but in fact isn't. -->
 							<osgiDataDirectory>${basedir}/../../surefire-work/${project.artifactId}/data</osgiDataDirectory>
 							<work>${basedir}/../../surefire-work/${project.artifactId}/work</work>
+							
 							<excludes>
 								<exclude>**/AllTests</exclude>
 								<exclude>**/AllTestsGen</exclude>
