@@ -211,7 +211,6 @@
             <topic href="help/api-docs/javadoc/de/dlr/sc/virsat/model/extension/visualisation/model/package-summary.html" label="de.dlr.sc.virsat.model.extension.visualisation.model"/>
             <topic href="help/api-docs/javadoc/de/dlr/sc/virsat/model/extension/visualisation/shape/package-summary.html" label="de.dlr.sc.virsat.model.extension.visualisation.shape"/>
             <topic href="help/api-docs/javadoc/de/dlr/sc/virsat/model/extension/visualisation/treemanager/package-summary.html" label="de.dlr.sc.virsat.model.extension.visualisation.treemanager"/>
-            <topic href="help/api-docs/javadoc/de/dlr/sc/virsat/model/extension/visualisation/treemanager/networking/package-summary.html" label="de.dlr.sc.virsat.model.extension.visualisation.treemanager.networking"/>
             <topic href="help/api-docs/javadoc/de/dlr/sc/virsat/model/extension/visualisation/ui/calculations/package-summary.html" label="de.dlr.sc.virsat.model.extension.visualisation.ui.calculations"/>
             <topic href="help/api-docs/javadoc/de/dlr/sc/virsat/model/extension/visualisation/validator/package-summary.html" label="de.dlr.sc.virsat.model.extension.visualisation.validator"/>
             <topic href="help/api-docs/javadoc/de/dlr/sc/virsat/model/ui/editor/input/package-summary.html" label="de.dlr.sc.virsat.model.ui.editor.input"/>
