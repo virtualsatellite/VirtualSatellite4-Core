@@ -26,7 +26,6 @@ import org.eclipse.jetty.http.HttpStatus;
 
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
 import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
-import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.project.structure.command.CreateRemoveSeiWithFileStructureCommand;
@@ -57,9 +56,9 @@ public class StructuralElementInstanceResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(produces = "application/json", value = "Fetch SEI", httpMethod = "GET", notes = "This service fetches a StructuralElementInstance.")
 	@ApiResponses(value = {
-			@ApiResponse(code = HttpStatus.OK_200, response = ABeanStructuralElementInstance.class, message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(code = HttpStatus.BAD_REQUEST_400, message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
-			@ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = ApiErrorHelper.INTERNAL_SERVER_ERROR) })
+		@ApiResponse(code = HttpStatus.OK_200, response = ABeanStructuralElementInstance.class, message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+		@ApiResponse(code = HttpStatus.BAD_REQUEST_400, message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
+		@ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = ApiErrorHelper.INTERNAL_SERVER_ERROR) })
 	public Response getSei(@PathParam("seiUuid") @ApiParam(value = "Uuid of the SEI", required = true) String seiUuid) {
 		try {
 			parentResource.synchronize();
@@ -83,7 +82,7 @@ public class StructuralElementInstanceResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@ApiOperation(consumes = "application/json", value = "Put SEI", httpMethod = "PUT", notes = "This service updates an existing StructuralElementInstance")
 	@ApiResponses(value = { @ApiResponse(code = HttpStatus.OK_200, message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = ApiErrorHelper.INTERNAL_SERVER_ERROR) })
+		@ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = ApiErrorHelper.INTERNAL_SERVER_ERROR) })
 	public Response putSei(@ApiParam(value = "SEI to put", required = true) ABeanStructuralElementInstance bean) {
 		try {
 			parentResource.synchronize();
@@ -135,10 +134,10 @@ public class StructuralElementInstanceResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(produces = "application/json", value = "Delete SEI", httpMethod = "DELETE", notes = "This service deletes a StructuralElementInstance.")
 	@ApiResponses(value = { @ApiResponse(code = HttpStatus.OK_200, message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-			@ApiResponse(code = HttpStatus.BAD_REQUEST_400, message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
-			@ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = ApiErrorHelper.NOT_EXECUTEABLE),
-			@ApiResponse(code = HttpStatus.FORBIDDEN_403, message = ApiErrorHelper.NOT_EXECUTEABLE),
-			@ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = ApiErrorHelper.INTERNAL_SERVER_ERROR) })
+		@ApiResponse(code = HttpStatus.BAD_REQUEST_400, message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
+		@ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = ApiErrorHelper.NOT_EXECUTEABLE),
+		@ApiResponse(code = HttpStatus.FORBIDDEN_403, message = ApiErrorHelper.NOT_EXECUTEABLE),
+		@ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = ApiErrorHelper.INTERNAL_SERVER_ERROR) })
 	public Response deleteSei(
 			@PathParam("seiUuid") @ApiParam(value = "Uuid of the SEI", required = true) String seiUuid) {
 		try {
