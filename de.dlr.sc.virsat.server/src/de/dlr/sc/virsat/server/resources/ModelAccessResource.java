@@ -30,6 +30,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
@@ -41,6 +42,7 @@ import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanc
 import de.dlr.sc.virsat.model.concept.types.roles.BeanDiscipline;
 import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
+import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
@@ -360,11 +362,12 @@ public class ModelAccessResource {
 					code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
 					message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
 		public Response createRootSei(@QueryParam(value = ModelAccessResource.QP_FULL_QUALIFIED_NAME) 
-			@ApiParam(value = "Full qualified name of the SEI type", required = true) String fullQualifiedName) {
+			@ApiParam(value = "Full qualified name of the SEI type", required = true) String fullQualifiedName,
+			@QueryParam(value = ModelAccessResource.QP_NAME) @ApiParam(value = "name of the new SEI", required = false) String name) {
 			try {
 				serverRepository.syncRepository();
 				
-				BeanStructuralElementInstance newSeiBean = createSeiFromFqn(fullQualifiedName, repository, ed, userContext);
+				IBeanStructuralElementInstance newSeiBean = createSeiFromFqn(fullQualifiedName, repository, ed, userContext, name);
 				
 				serverRepository.syncRepository();
 				return Response.ok(newSeiBean).build();
@@ -551,12 +554,13 @@ public class ModelAccessResource {
 	 * @param editingDomain the editing domain
 	 * @param iUserContext the user context
 	 * @return uuid of the created sei
+	 * @throws CoreException 
 	 */
-	public static BeanStructuralElementInstance createSeiFromFqn(String fullQualifiedName, EObject owner, VirSatTransactionalEditingDomain editingDomain, IUserContext iUserContext) {
+	public static IBeanStructuralElementInstance createSeiFromFqn(String fullQualifiedName, EObject owner, VirSatTransactionalEditingDomain editingDomain, IUserContext iUserContext, String name) throws CoreException {
 		ActiveConceptHelper helper = new ActiveConceptHelper(editingDomain.getResourceSet().getRepository());
 		StructuralElement se = helper.getStructuralElement(fullQualifiedName);
-		StructuralElementInstance newSei = new StructuralInstantiator().generateInstance(se, null);
-		
+		StructuralElementInstance newSei = new StructuralInstantiator().generateInstance(se, name);
+				
 		if (owner instanceof IAssignedDiscipline) {
 			Discipline parentDiscipline = ((IAssignedDiscipline) owner).getAssignedDiscipline();
 			newSei.setAssignedDiscipline(parentDiscipline);
@@ -565,6 +569,6 @@ public class ModelAccessResource {
 		Command createCommand = CreateAddSeiWithFileStructureCommand.create(editingDomain, owner, newSei);
 		ApiErrorHelper.executeCommandIffCanExecute(createCommand, editingDomain, iUserContext);
 		
-		return new BeanStructuralElementInstance(newSei);
+		return new BeanStructuralElementInstanceFactory().getInstanceFor(newSei);
 	}
 }

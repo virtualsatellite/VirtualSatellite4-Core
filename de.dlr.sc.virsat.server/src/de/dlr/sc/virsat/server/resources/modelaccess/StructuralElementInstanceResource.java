@@ -42,11 +42,11 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
 
-@Api(hidden = true, authorizations = {@Authorization(value = "basic")}, tags = {ModelAccessResource.TAG_SEI})
+@Api(hidden = true, authorizations = { @Authorization(value = "basic") }, tags = { ModelAccessResource.TAG_SEI })
 public class StructuralElementInstanceResource {
-	
+
 	private RepoModelAccessResource parentResource;
-	
+
 	public StructuralElementInstanceResource(RepoModelAccessResource parentResource) {
 		this.parentResource = parentResource;
 	}
@@ -55,32 +55,21 @@ public class StructuralElementInstanceResource {
 	@GET
 	@Path("/{seiUuid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(
-			produces = "application/json",
-			value = "Fetch SEI",
-			httpMethod = "GET",
-			notes = "This service fetches a StructuralElementInstance.")
-	@ApiResponses(value = { 
-		@ApiResponse(
-				code = HttpStatus.OK_200,
-				response = ABeanStructuralElementInstance.class,
-				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-		@ApiResponse(
-				code = HttpStatus.BAD_REQUEST_400, 
-				message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
-		@ApiResponse(
-				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+	@ApiOperation(produces = "application/json", value = "Fetch SEI", httpMethod = "GET", notes = "This service fetches a StructuralElementInstance.")
+	@ApiResponses(value = {
+			@ApiResponse(code = HttpStatus.OK_200, response = ABeanStructuralElementInstance.class, message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+			@ApiResponse(code = HttpStatus.BAD_REQUEST_400, message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
+			@ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = ApiErrorHelper.INTERNAL_SERVER_ERROR) })
 	public Response getSei(@PathParam("seiUuid") @ApiParam(value = "Uuid of the SEI", required = true) String seiUuid) {
 		try {
 			parentResource.synchronize();
-			
+
 			StructuralElementInstance sei = RepositoryUtility.findSei(seiUuid, parentResource.getRepository());
-			
+
 			if (sei == null) {
 				return ApiErrorHelper.createNotFoundErrorResponse();
 			}
-			
+
 			IBeanStructuralElementInstance beanSei = new BeanStructuralElementInstanceFactory().getInstanceFor(sei);
 			return Response.ok(beanSei).build();
 		} catch (Exception e) {
@@ -92,18 +81,9 @@ public class StructuralElementInstanceResource {
 	@PUT
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
-	@ApiOperation(
-			consumes = "application/json",
-			value = "Put SEI",
-			httpMethod = "PUT",
-			notes = "This service updates an existing StructuralElementInstance")
-	@ApiResponses(value = { 
-		@ApiResponse(
-				code = HttpStatus.OK_200,
-				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-		@ApiResponse(
-				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+	@ApiOperation(consumes = "application/json", value = "Put SEI", httpMethod = "PUT", notes = "This service updates an existing StructuralElementInstance")
+	@ApiResponses(value = { @ApiResponse(code = HttpStatus.OK_200, message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+			@ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = ApiErrorHelper.INTERNAL_SERVER_ERROR) })
 	public Response putSei(@ApiParam(value = "SEI to put", required = true) ABeanStructuralElementInstance bean) {
 		try {
 			parentResource.synchronize();
@@ -112,46 +92,34 @@ public class StructuralElementInstanceResource {
 			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
-	
+
 	/** **/
 	@POST
 	@Path("/{seiUuid}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	@ApiOperation(
-			consumes = "application/json",
-			value = "Create SEI",
-			httpMethod = "POST",
-			notes = "This service creates a new StructuralElementInstance and returns it")
-	@ApiResponses(value = { 
-		@ApiResponse(
-				code = HttpStatus.OK_200,
-				response = String.class,
-				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-		@ApiResponse(
-				code = HttpStatus.BAD_REQUEST_400, 
-				message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
-		@ApiResponse(
-				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-				message = ApiErrorHelper.NOT_EXECUTEABLE),
-		@ApiResponse(
-				code = HttpStatus.FORBIDDEN_403, 
-				message = ApiErrorHelper.NOT_EXECUTEABLE),
-		@ApiResponse(
-				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
+	@ApiOperation(consumes = "application/json", value = "Create SEI", httpMethod = "POST", notes = "This service creates a new StructuralElementInstance and returns it")
+	@ApiResponses(value = {
+		@ApiResponse(code = HttpStatus.OK_200, response = String.class, message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+		@ApiResponse(code = HttpStatus.BAD_REQUEST_400, message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
+		@ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = ApiErrorHelper.NOT_EXECUTEABLE),
+		@ApiResponse(code = HttpStatus.FORBIDDEN_403, message = ApiErrorHelper.NOT_EXECUTEABLE),
+		@ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = ApiErrorHelper.INTERNAL_SERVER_ERROR) })
 	public Response createSei(@PathParam("seiUuid") @ApiParam(value = "parent uuid", required = true) String parentUuid,
-			@QueryParam(value = ModelAccessResource.QP_FULL_QUALIFIED_NAME)
-			@ApiParam(value = "Full qualified name of the SEI type", required = true) String fullQualifiedName) {
+
+			@QueryParam(value = ModelAccessResource.QP_FULL_QUALIFIED_NAME) @ApiParam(value = "Full qualified name of the SEI type", required = true) String fullQualifiedName,
+
+			@QueryParam(value = ModelAccessResource.QP_NAME) @ApiParam(value = "name of the new SEI", required = false) String name) {
 		try {
 			parentResource.synchronize();
-			
+
 			StructuralElementInstance parentSei = RepositoryUtility.findSei(parentUuid, parentResource.getRepository());
-			
+
 			if (parentSei == null) {
 				return ApiErrorHelper.createNotFoundErrorResponse();
 			}
-			BeanStructuralElementInstance newSeiBean = ModelAccessResource.createSeiFromFqn(fullQualifiedName, parentSei, parentResource.getEd(), parentResource.getUser());
-			
+			IBeanStructuralElementInstance newSeiBean = ModelAccessResource.createSeiFromFqn(fullQualifiedName,
+					parentSei, parentResource.getEd(), parentResource.getUser(), name);
+
 			parentResource.synchronize();
 			return Response.ok(newSeiBean).build();
 		} catch (IllegalArgumentException e) {
@@ -160,46 +128,31 @@ public class StructuralElementInstanceResource {
 			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
-	
+
 	/** **/
 	@DELETE
 	@Path("/{seiUuid}")
 	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(
-			produces = "application/json",
-			value = "Delete SEI",
-			httpMethod = "DELETE",
-			notes = "This service deletes a StructuralElementInstance.")
-	@ApiResponses(value = { 
-		@ApiResponse(
-				code = HttpStatus.OK_200,
-				message = ApiErrorHelper.SUCCESSFUL_OPERATION),
-		@ApiResponse(
-				code = HttpStatus.BAD_REQUEST_400,
-				message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
-		@ApiResponse(
-				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-				message = ApiErrorHelper.NOT_EXECUTEABLE),
-		@ApiResponse(
-				code = HttpStatus.FORBIDDEN_403, 
-				message = ApiErrorHelper.NOT_EXECUTEABLE),
-		@ApiResponse(
-				code = HttpStatus.INTERNAL_SERVER_ERROR_500, 
-				message = ApiErrorHelper.INTERNAL_SERVER_ERROR)})
-	public Response deleteSei(@PathParam("seiUuid") @ApiParam(value = "Uuid of the SEI", required = true)  String seiUuid) {
+	@ApiOperation(produces = "application/json", value = "Delete SEI", httpMethod = "DELETE", notes = "This service deletes a StructuralElementInstance.")
+	@ApiResponses(value = { @ApiResponse(code = HttpStatus.OK_200, message = ApiErrorHelper.SUCCESSFUL_OPERATION),
+			@ApiResponse(code = HttpStatus.BAD_REQUEST_400, message = ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT),
+			@ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = ApiErrorHelper.NOT_EXECUTEABLE),
+			@ApiResponse(code = HttpStatus.FORBIDDEN_403, message = ApiErrorHelper.NOT_EXECUTEABLE),
+			@ApiResponse(code = HttpStatus.INTERNAL_SERVER_ERROR_500, message = ApiErrorHelper.INTERNAL_SERVER_ERROR) })
+	public Response deleteSei(
+			@PathParam("seiUuid") @ApiParam(value = "Uuid of the SEI", required = true) String seiUuid) {
 		try {
 			// Sync before delete
 			parentResource.synchronize();
-			
+
 			// Delete Sei
 			StructuralElementInstance sei = RepositoryUtility.findSei(seiUuid, parentResource.getRepository());
 			if (sei == null) {
 				return ApiErrorHelper.createNotFoundErrorResponse();
 			}
-			
-			Command deleteCommand = CreateRemoveSeiWithFileStructureCommand.create(sei, RemoveFileStructureCommand.DELETE_RESOURCE_OPERATION_FUNCTION);
+			Command deleteCommand = CreateRemoveSeiWithFileStructureCommand.create(sei,
+					RemoveFileStructureCommand.DELETE_RESOURCE_OPERATION_FUNCTION);
 			ApiErrorHelper.executeCommandIffCanExecute(deleteCommand, parentResource.getEd(), parentResource.getUser());
-			
 			// Sync after delete
 			parentResource.synchronize();
 			return Response.ok().build();
@@ -209,5 +162,4 @@ public class StructuralElementInstanceResource {
 			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
 	}
-	
 }
