@@ -9,11 +9,11 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.qudv;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.SetCommand;
@@ -25,13 +25,14 @@ import de.dlr.sc.virsat.model.dvlm.general.GeneralPackage;
 import de.dlr.sc.virsat.model.dvlm.json.IUuidAdapter;
 import de.dlr.sc.virsat.model.dvlm.qudv.Prefix;
 import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
 
 @XmlAccessorType(XmlAccessType.NONE)
 //Ensure that the prefix (by uuid) gets unmarshalled first
 @XmlType(propOrder = {"prefix", "factor", "name", "symbol"})
-@ApiModel(description = "Model class for bean prefix.")
+@Schema(description = "Model class for bean prefix.")
 public class BeanPrefix implements IBeanUuid, IBeanName {
 
 	private Prefix prefix;
@@ -42,13 +43,13 @@ public class BeanPrefix implements IBeanUuid, IBeanName {
 		this.prefix = prefix;
 	}
 	
-	@ApiModelProperty(hidden = true)
+	@Schema(hidden = true)
 	@Override
 	public String getUuid() {
 		return prefix.getUuid().toString();
 	}
 	
-	@ApiModelProperty(required = true)
+	@Schema(required = true)
 	@XmlElement(nillable = true)
 	@Override
 	public String getName() {
@@ -65,8 +66,8 @@ public class BeanPrefix implements IBeanUuid, IBeanName {
 		return SetCommand.create(ed, prefix, GeneralPackage.Literals.INAME__NAME, name);
 	}
 	
-	@ApiModelProperty(name = "uuid", required = true,
-			value = "Unique identifier for a bean",
+	@Schema(name = "uuid", required = true,
+			description = "Unique identifier for a bean",
 			example = "b168b0df-84b6-4b7f-bede-69298b215f40")
 	@XmlElement(name = "uuid")
 	@XmlJavaTypeAdapter(IUuidAdapter.class)
@@ -78,7 +79,7 @@ public class BeanPrefix implements IBeanUuid, IBeanName {
 		this.prefix = prefix;
 	}
 	
-	@ApiModelProperty(required = true)
+	@Schema(required = true)
 	@XmlElement(nillable = true)
 	public String getSymbol() {
 		return prefix.getSymbol();
@@ -92,7 +93,7 @@ public class BeanPrefix implements IBeanUuid, IBeanName {
 		return SetCommand.create(ed, prefix, QudvPackage.Literals.PREFIX__SYMBOL, symbol);
 	}
 	
-	@ApiModelProperty(required = true)
+	@Schema(required = true)
 	@XmlElement
 	public double getFactor() {
 		return prefix.getFactor();

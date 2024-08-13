@@ -16,7 +16,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.extension.visualisation.shape.Shape;
 import de.dlr.sc.virsat.model.extension.visualisation.shape.VisualisationShape;
 
-import javax.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.XmlType;
 
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 

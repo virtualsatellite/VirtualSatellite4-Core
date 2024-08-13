@@ -31,7 +31,7 @@ public class ConceptLanguageFormatter extends AbstractDeclarativeFormatter {
   @Inject
   @Extension
   private ConceptLanguageGrammarAccess _conceptLanguageGrammarAccess;
-  
+
   @Override
   protected void configureFormatting(final FormattingConfig c) {
     List<Pair<Keyword, Keyword>> _findKeywordPairs = this._conceptLanguageGrammarAccess.findKeywordPairs("{", "}");

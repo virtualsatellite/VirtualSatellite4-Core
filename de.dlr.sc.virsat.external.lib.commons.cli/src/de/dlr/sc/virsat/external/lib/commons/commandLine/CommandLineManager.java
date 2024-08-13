@@ -47,7 +47,7 @@ public class CommandLineManager {
 	 * Get the singleton instance of the command line manager
 	 * @return the singleton instance of the commandline manager
 	 */
-	public static CommandLineManager getInstance() {
+	public static synchronized CommandLineManager getInstance() {
 		return COMMANDLINEMANGER;
 	}
 

@@ -406,18 +406,18 @@ public class VirSatTransactionalEditingDomainTest extends AProjectTestCase {
 		
 		// First Check for the CutCommand
 		Command command = CutToClipboardCommand.create(editingDomain, rm.getDisciplines());
-		assertTrue("Got correct VirSat Command", command instanceof VirSatCutToClipboardCommand);
+		assertThat("Got correct VirSat Command", command, instanceOf(VirSatCutToClipboardCommand.class));
 
 		command = CopyToClipboardCommand.create(editingDomain, rm.getDisciplines());
-		assertTrue("Got correct VirSat Command", command instanceof VirSatCopyToClipboardCommand);
+		assertThat("Got correct VirSat Command", command, instanceOf(VirSatCopyToClipboardCommand.class));
 		
 		editingDomain.getCommandStack().execute(command);
 		
 		command = PasteFromClipboardCommand.create(editingDomain, rm, RolesPackage.Literals.ROLE_MANAGEMENT__DISCIPLINES);
-		assertTrue("Got correct VirSat Command", command instanceof VirSatPasteFromClipboardCommand);
+		assertThat("Got correct VirSat Command", command, instanceOf(VirSatPasteFromClipboardCommand.class));
 		
 		command = DeleteCommand.create(editingDomain, rm.getDisciplines());
-		assertTrue("Got correct VirSat Command", command instanceof DeleteStructuralElementInstanceCommand);
+		assertThat("Got correct VirSat Command", command, instanceOf(DeleteStructuralElementInstanceCommand.class));
 	}
 	
 	class ResourceEventTypeCounter extends ResourceEventCounter {

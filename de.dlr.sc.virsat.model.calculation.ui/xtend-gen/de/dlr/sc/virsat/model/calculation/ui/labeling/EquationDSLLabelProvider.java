@@ -41,12 +41,12 @@ public class EquationDSLLabelProvider extends DefaultEObjectLabelProvider {
   public EquationDSLLabelProvider(final AdapterFactoryLabelProvider delegate) {
     super(delegate);
   }
-  
+
   public EquationDSLLabelProvider() {
   }
-  
+
   private final ExpressionHelper expressionHelper = new ExpressionHelper();
-  
+
   public String text(final AdditionAndSubtraction ele) {
     String _literal = ele.getOperator().getLiteral();
     String _plus = (_literal + " (= ");
@@ -54,7 +54,7 @@ public class EquationDSLLabelProvider extends DefaultEObjectLabelProvider {
     String _plus_1 = (_plus + _evaluate);
     return (_plus_1 + ")");
   }
-  
+
   public String text(final MultiplicationAndDivision ele) {
     String _literal = ele.getOperator().getLiteral();
     String _plus = (_literal + " (= ");
@@ -62,27 +62,27 @@ public class EquationDSLLabelProvider extends DefaultEObjectLabelProvider {
     String _plus_1 = (_plus + _evaluate);
     return (_plus_1 + ")");
   }
-  
+
   public String text(final PowerFunction ele) {
     return ele.getOperator().getLiteral();
   }
-  
+
   public String text(final NumberLiteral ele) {
     return ele.getValue();
   }
-  
+
   public String text(final ValuePi ele) {
     return "pi";
   }
-  
+
   public String text(final ValueE ele) {
     return "e";
   }
-  
+
   public String text(final ReferencedInput ele) {
     return this.expressionHelper.getCompleteExpression(ele);
   }
-  
+
   public String text(final SetFunction ele) {
     String _completeExpression = this.expressionHelper.getCompleteExpression(ele);
     String _plus = (_completeExpression + "(=");
@@ -90,11 +90,11 @@ public class EquationDSLLabelProvider extends DefaultEObjectLabelProvider {
     String _plus_1 = (_plus + _evaluate);
     return (_plus_1 + ")");
   }
-  
+
   public String text(final Parenthesis ele) {
     return "(...)";
   }
-  
+
   public String text(final IEquationResult ele) {
     if ((ele instanceof EquationIntermediateResult)) {
       return ((EquationIntermediateResult)ele).getName();
@@ -110,7 +110,7 @@ public class EquationDSLLabelProvider extends DefaultEObjectLabelProvider {
     }
     return null;
   }
-  
+
   public String text(final Equation ele) {
     return this.text(ele.getResult()).concat(" = ").concat(this.expressionHelper.getCompleteExpression(ele.getExpression()));
   }

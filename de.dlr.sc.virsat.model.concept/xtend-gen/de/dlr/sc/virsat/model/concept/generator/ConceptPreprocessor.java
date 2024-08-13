@@ -27,15 +27,15 @@ import org.eclipse.xtext.generator.IFileSystemAccess;
 @SuppressWarnings("all")
 public class ConceptPreprocessor {
   public static final String MODEL_TYPE_XMI_EXTENSION = "xmi";
-  
+
   private final ConceptLanguageImplicitSuperTypeHandler conceptLanguageHandler = new ConceptLanguageImplicitSuperTypeHandler();
-  
+
   private final IFileSystemAccess fileSystemAcesss;
-  
+
   public ConceptPreprocessor(final IFileSystemAccess fsa) {
     this.fileSystemAcesss = fsa;
   }
-  
+
   public Concept process(final Resource resource) {
     EObject _get = resource.getContents().get(0);
     final Concept originalConcept = ((Concept) _get);
@@ -46,7 +46,7 @@ public class ConceptPreprocessor {
     EObject _get_1 = newContainer.getContents().get(0);
     return ((Concept) _get_1);
   }
-  
+
   /**
    * Update the concept model content
    * @param originalConcept to be updated
@@ -56,7 +56,7 @@ public class ConceptPreprocessor {
     final Concept processedConcept = this.conceptLanguageHandler.addImplicitSuperType(originalConcept);
     return processedConcept;
   }
-  
+
   /**
    * Serialize the processed concept into their new containers
    * @param concept the concept to be serialized
@@ -65,7 +65,7 @@ public class ConceptPreprocessor {
   public void serializeContent(final Concept concept, final URI xmiURI) {
     new GenerateConceptXmi().serializeModel(concept, this.fileSystemAcesss);
   }
-  
+
   /**
    * Derive the XMI URI from the original URI
    * @param resource of which to get the URI

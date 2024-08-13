@@ -9,9 +9,9 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.property;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.concept.types.IBeanObject;
@@ -43,7 +43,7 @@ public class BeanPropertyFactoryTest {
 		BeanPropertyFactory bpf = new BeanPropertyFactory();
 		IBeanObject<? extends APropertyInstance> beanPropertyFloat = bpf.getInstanceFor(vpi);
 
-		assertTrue(beanPropertyFloat instanceof BeanPropertyFloat);
+		assertThat(beanPropertyFloat, instanceOf(BeanPropertyFloat.class));
 		assertEquals(vpi, beanPropertyFloat.getTypeInstance());
 	}
 
@@ -55,7 +55,7 @@ public class BeanPropertyFactoryTest {
 
 		BeanPropertyFactory bpf = new BeanPropertyFactory();
 		IBeanObject<? extends APropertyInstance> beanPropertyInt = bpf.getInstanceFor(vpi);
-		assertTrue(beanPropertyInt instanceof BeanPropertyInt);
+		assertThat(beanPropertyInt, instanceOf(BeanPropertyInt.class));
 		assertEquals(vpi, beanPropertyInt.getTypeInstance());
 	}
 
@@ -67,7 +67,7 @@ public class BeanPropertyFactoryTest {
 
 		BeanPropertyFactory bpf = new BeanPropertyFactory();
 		IBeanObject<? extends APropertyInstance> beanPropertyBoolean = bpf.getInstanceFor(vpi);
-		assertTrue(beanPropertyBoolean instanceof BeanPropertyBoolean);
+		assertThat(beanPropertyBoolean, instanceOf(BeanPropertyBoolean.class));
 		assertEquals(vpi, beanPropertyBoolean.getTypeInstance());
 	}
 
@@ -80,7 +80,7 @@ public class BeanPropertyFactoryTest {
 		BeanPropertyFactory bpf = new BeanPropertyFactory();
 		IBeanObject<? extends APropertyInstance> beanPropertyEnum = bpf.getInstanceFor(eupi);
 
-		assertTrue(beanPropertyEnum instanceof BeanPropertyEnum);
+		assertThat(beanPropertyEnum, instanceOf(BeanPropertyEnum.class));
 		assertEquals(eupi, beanPropertyEnum.getTypeInstance());
 	}
 
@@ -93,7 +93,7 @@ public class BeanPropertyFactoryTest {
 		BeanPropertyFactory bpf = new BeanPropertyFactory();
 		IBeanObject<? extends APropertyInstance> beanPropertyRessource = bpf.getInstanceFor(rpi);
 
-		assertTrue(beanPropertyRessource instanceof BeanPropertyResource);
+		assertThat(beanPropertyRessource, instanceOf(BeanPropertyResource.class));
 		assertEquals(rpi, beanPropertyRessource.getTypeInstance());
 	}
 
@@ -106,7 +106,7 @@ public class BeanPropertyFactoryTest {
 		BeanPropertyFactory bpf = new BeanPropertyFactory();
 		IBeanObject<? extends APropertyInstance> beanPropertyString = bpf.getInstanceFor(vpi);
 
-		assertTrue(beanPropertyString instanceof BeanPropertyString);
+		assertThat(beanPropertyString, instanceOf(BeanPropertyString.class));
 		assertEquals(vpi, beanPropertyString.getTypeInstance());
 	}
 
@@ -119,7 +119,7 @@ public class BeanPropertyFactoryTest {
 		BeanPropertyFactory bpf = new BeanPropertyFactory();
 		IBeanObject<? extends APropertyInstance> beanPropertyEreference = bpf.getInstanceFor(erpi);
 
-		assertTrue(beanPropertyEreference instanceof BeanPropertyEReference);
+		assertThat(beanPropertyEreference, instanceOf(BeanPropertyEReference.class));
 		assertEquals(erpi, beanPropertyEreference.getTypeInstance());
 	}
 }

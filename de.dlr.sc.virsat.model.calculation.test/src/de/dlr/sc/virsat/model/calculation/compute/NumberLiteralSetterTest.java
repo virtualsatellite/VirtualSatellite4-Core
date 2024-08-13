@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.calculation.compute;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -88,6 +90,6 @@ public class NumberLiteralSetterTest {
 		
 		EvaluationProblem eep = problems.get(0);
 		
-		assertTrue("The problem was that the setter cannot handle the given expression result", eep instanceof UnknownExpressionProblem);
+		assertThat("The problem was that the setter cannot handle the given expression result", eep, instanceOf(UnknownExpressionProblem.class));
 	}
 }

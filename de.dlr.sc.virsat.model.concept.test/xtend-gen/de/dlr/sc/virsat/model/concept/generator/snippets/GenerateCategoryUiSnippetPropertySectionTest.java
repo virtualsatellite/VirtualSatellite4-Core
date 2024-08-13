@@ -9,12 +9,12 @@
  */
 package de.dlr.sc.virsat.model.concept.generator.snippets;
 
+import com.google.inject.Inject;
 import de.dlr.sc.virsat.model.concept.ConceptLanguageTestInjectorProvider;
 import de.dlr.sc.virsat.model.concept.test.util.GeneratorJunitAssert;
 import de.dlr.sc.virsat.model.dvlm.categories.Category;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage;
-import javax.inject.Inject;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.XtextRunner;
@@ -34,17 +34,17 @@ public class GenerateCategoryUiSnippetPropertySectionTest {
   @Inject
   @Extension
   private ParseHelper<Concept> _parseHelper;
-  
+
   private Concept concept;
-  
+
   private Category category;
-  
+
   private final String testConceptName = "testConcept";
-  
+
   private final String testCategoryName = "testCategory";
-  
+
   private final GenerateCategoryUiSnippetPropertySection generator = new GenerateCategoryUiSnippetPropertySection();
-  
+
   @Before
   public void setUp() {
     try {
@@ -67,7 +67,7 @@ public class GenerateCategoryUiSnippetPropertySectionTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCreateConcreteClassFileName() {
     final String fileName = this.generator.createConcreteClassFileName(this.concept, this.category);
@@ -76,7 +76,7 @@ public class GenerateCategoryUiSnippetPropertySectionTest {
     final String expectedFileName = (_plus + ".java");
     Assert.assertEquals("Concrete file name for the generated snippet is correct", expectedFileName, fileName);
   }
-  
+
   @Test
   public void testCreateAbstractClassFileName() {
     final String fileName = this.generator.createAbstractClassFileName(this.concept, this.category);
@@ -85,7 +85,7 @@ public class GenerateCategoryUiSnippetPropertySectionTest {
     final String expectedFileName = (_plus + ".java");
     Assert.assertEquals("Abstract file name for the generated abstract snippet is correct", expectedFileName, fileName);
   }
-  
+
   @Test
   public void testCreateConcreteClass() {
     try {
@@ -95,7 +95,7 @@ public class GenerateCategoryUiSnippetPropertySectionTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCreateAbstractClass() {
     try {

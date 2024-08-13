@@ -61,24 +61,24 @@ public class MassConceptHelperTest {
 		
 		boolean result = mch.initBeansForObject(new Object());
 		assertFalse("Not a SEI object", result);
-		assertNotNull("There is always a bean", mch.bSei);
-		assertNull("But it may be empty", mch.bSei.getStructuralElementInstance());
+		assertNotNull("There is always a bean", mch.getbSei());
+		assertNull("But it may be empty", mch.getbSei().getStructuralElementInstance());
 		
 		result = mch.initBeansForObject(sei);
 		assertTrue("Found Sei Object", result);
-		assertNotNull("bean Detected", mch.bSei);
-		assertEquals("The bSei has the correct TI", sei, mch.bSei.getStructuralElementInstance());
-		assertNotNull("Found Mass Summary CA", mch.massSummary);
-		assertNull("No bean detected", mch.massEquipment);
+		assertNotNull("bean Detected", mch.getbSei());
+		assertEquals("The bSei has the correct TI", sei, mch.getbSei().getStructuralElementInstance());
+		assertNotNull("Found Mass Summary CA", mch.getMassSummary());
+		assertNull("No bean detected", mch.getMassEquipment());
 		
 		MassEquipment massEquipment = new MassEquipment(concept);
 		beanSei.add(massEquipment);
 		
 		result = mch.initBeansForObject(sei);
 		assertTrue("Found Sei Object", result);
-		assertNotNull("bean Detected", mch.bSei);
-		assertEquals("The bSei has the correct TI", sei, mch.bSei.getStructuralElementInstance());
-		assertNotNull("Found Mass Summary CA", mch.massSummary);
-		assertNotNull("Found Mass Equipment CA", mch.massEquipment);
+		assertNotNull("bean Detected", mch.getbSei());
+		assertEquals("The bSei has the correct TI", sei, mch.getbSei().getStructuralElementInstance());
+		assertNotNull("Found Mass Summary CA", mch.getMassSummary());
+		assertNotNull("Found Mass Equipment CA", mch.getMassEquipment());
 	}
 }

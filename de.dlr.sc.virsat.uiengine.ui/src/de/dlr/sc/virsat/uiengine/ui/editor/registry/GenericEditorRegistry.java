@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.InvalidRegistryObjectException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
@@ -57,8 +58,12 @@ public class GenericEditorRegistry {
 		 * @param regElement 
 		 */
 		private RegisteredUiSection(IConfigurationElement regElement) {
-			this.id = regElement.getAttribute("id").trim();
-			this.ranking = Integer.parseInt(regElement.getAttribute("topRanking"));
+			try {
+				this.id = regElement.getAttribute("id").trim();
+				this.ranking = Integer.parseInt(regElement.getAttribute("topRanking"));
+			} catch (InvalidRegistryObjectException | NumberFormatException e) {
+				DVLMEditorPlugin.getPlugin().getLog().error("Failed to set up ui section. Could not retrieve registry information", e);
+			}
 		}
 		
 		/**
@@ -120,9 +125,13 @@ public class GenericEditorRegistry {
 		 * @throws CoreException Throws an exception in case the specified class for the snippet cannot be initialized
 		 */
 		RegisteredUiSnippet(IConfigurationElement regElement) throws CoreException {
-			this.id = regElement.getAttribute("id");
-			this.referencedSectionId = regElement.getAttribute("section");
-			this.uiSnippet = (IUiSnippet) regElement.createExecutableExtension("snippet");
+			try {
+				this.id = regElement.getAttribute("id");
+				this.referencedSectionId = regElement.getAttribute("section");
+				this.uiSnippet = (IUiSnippet) regElement.createExecutableExtension("snippet");
+			} catch (InvalidRegistryObjectException | CoreException e) {
+				DVLMEditorPlugin.getPlugin().getLog().error("Failed to set up ui snippet. Could not retrieve registry information", e);
+			}
 		}
 		
 		@Override

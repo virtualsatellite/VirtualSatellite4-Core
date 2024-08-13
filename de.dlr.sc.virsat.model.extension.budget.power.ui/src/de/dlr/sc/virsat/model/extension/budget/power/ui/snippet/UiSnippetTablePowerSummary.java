@@ -214,9 +214,9 @@ public class UiSnippetTablePowerSummary extends AUiSnippetTablePowerSummary {
 	 */
 	private void setChartInputsAndTitles(Object inputObject) {
 		PowerConceptHelper pch = new PowerConceptHelper();
-		if (pch.initBeansForObject(inputObject) && (pch.powerSummary != null)) {
-			subTitlePowerDistribution.setText("Power distribution of equipment and summaries in: " + pch.bSei.getName());
-			subTitlePowerMargins.setText("Amount of power of equipment and summaries in: " + pch.bSei.getName());
+		if (pch.initBeansForObject(inputObject) && (pch.getPowerSummary() != null)) {
+			subTitlePowerDistribution.setText("Power distribution of equipment and summaries in: " + pch.getbSei().getName());
+			subTitlePowerMargins.setText("Amount of power of equipment and summaries in: " + pch.getbSei().getName());
 			barChartViewerPowerMargins.setInput(inputObject);
 			pieChartViewerPowerDistribution.setInput(inputObject);
 		}
@@ -302,7 +302,7 @@ public class UiSnippetTablePowerSummary extends AUiSnippetTablePowerSummary {
 		@Override
 		public Font getFont(Object object) {
 			if (pch.initBeansForObject(object)) {
-				if (pch.powerSummary != null) {
+				if (pch.getPowerSummary() != null) {
 					return boldFont;
 				} 
 			}
@@ -312,7 +312,7 @@ public class UiSnippetTablePowerSummary extends AUiSnippetTablePowerSummary {
 		@Override
 		public Color getBackground(Object object) {
 			if (pch.initBeansForObject(object)) {
-				if (pch.powerSummary != null) {
+				if (pch.getPowerSummary() != null) {
 					return COLOR_GREY;
 				} 
 			}
@@ -345,7 +345,7 @@ public class UiSnippetTablePowerSummary extends AUiSnippetTablePowerSummary {
 
 			if (pch.initBeansForObject(object)) {
 				if (column == colName.getColumn()) {
-					return pch.bSei.getName();
+					return pch.getbSei().getName();
 				} 
 				
 				APowerParameters powerParameters = pch.getPowerParameters();
@@ -369,7 +369,7 @@ public class UiSnippetTablePowerSummary extends AUiSnippetTablePowerSummary {
 
 		@Override
 		public String getKey(Object object) {
-			return pch.initBeansForObject(object) ? pch.bSei.getName() : null;
+			return pch.initBeansForObject(object) ? pch.getbSei().getName() : null;
 		}
 
 		@Override

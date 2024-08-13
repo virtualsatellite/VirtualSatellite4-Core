@@ -12,3 +12,6 @@
 /commit_authors.txt
 /id_ed25519
 /.metadata/
+**/*-sources.jar
+/apache-maven-3.9.6/
+/.overtarget/

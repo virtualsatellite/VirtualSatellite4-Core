@@ -63,14 +63,14 @@ import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanObjectAdapter;
-import java.util.Set;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.List;
 import java.util.function.Consumer;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.util.EList;
@@ -91,18 +91,18 @@ import org.eclipse.xtext.xbase.lib.StringExtensions;
 @SuppressWarnings("all")
 public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
   private static final String IAUTOMATIC_VERIFICATION_FQN = "de.dlr.sc.virsat.model.extension.requirements.verification.build.steps.IAutomaticVerification";
-  
+
   private static final String REQUIREMENT_FQN = "de.dlr.sc.virsat.model.extension.requirements.model.Requirement";
-  
+
   public static String getConcreteClassName(final ATypeDefinition typeDefinition) {
     return StringExtensions.toFirstUpper(typeDefinition.getName());
   }
-  
+
   public static String getAbstractClassName(final ATypeDefinition typeDefinition) {
     String _firstUpper = StringExtensions.toFirstUpper(typeDefinition.getName());
     return ("A" + _firstUpper);
   }
-  
+
   @Override
   public String createConcreteClassFileName(final Concept concept, final Category conceptPart) {
     String _packageFolder = this.getPackageFolder(concept);
@@ -111,7 +111,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
     String _plus_1 = (_plus + _concreteClassName);
     return (_plus_1 + ".java");
   }
-  
+
   @Override
   public String createAbstractClassFileName(final Concept concept, final Category conceptPart) {
     String _packageFolder = this.getPackageFolder(concept);
@@ -120,16 +120,16 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
     String _plus_1 = (_plus + _abstractClassName);
     return (_plus_1 + ".java");
   }
-  
+
   @Override
   protected String getPackage(final Concept concept) {
     String _name = concept.getName();
     String _plus = (_name + ".");
     return (_plus + GenerateCategoryBeans.PACKAGE_FOLDER);
   }
-  
+
   public static final String PACKAGE_FOLDER = BeanRegistry.BEAN_PACKAGE_NAME;
-  
+
   @Override
   public void serializeModel(final Concept concept, final IFileSystemAccess fsa) {
     final Consumer<Category> _function = (Category it) -> {
@@ -140,7 +140,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
     };
     concept.getCategories().forEach(_function);
   }
-  
+
   /**
    * Declare the package statement of the java file
    */
@@ -153,7 +153,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
     _builder.newLineIfNotEmpty();
     return _builder;
   }
-  
+
   /**
    * Write down all the import statements needed by this java file
    */
@@ -171,8 +171,8 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
       boolean _not = (!_isEmpty);
       if (_not) {
         {
-          Set<String> _importedClasses = importManager.getImportedClasses();
-          for(final String clazz : _importedClasses) {
+          List<String> _sort = IterableExtensions.<String>sort(importManager.getImportedClasses());
+          for(final String clazz : _sort) {
             _builder.append("import ");
             _builder.append(clazz);
             _builder.append(";");
@@ -183,7 +183,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
     }
     return _builder;
   }
-  
+
   /**
    * Entry method to write the class body
    */
@@ -296,7 +296,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
     _builder.newLine();
     return _builder;
   }
-  
+
   protected String declareExtendedClass(final Category category) {
     Category _extendsCategory = category.getExtendsCategory();
     boolean _tripleNotEquals = (_extendsCategory != null);
@@ -306,7 +306,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
       return "ABeanCategoryAssignment";
     }
   }
-  
+
   protected CharSequence declarePropertyNameConstants(final Category category) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("// property name constants");
@@ -326,7 +326,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
     }
     return _builder;
   }
-  
+
   protected CharSequence declareEnumValues(final Category category) {
     StringConcatenation _builder = new StringConcatenation();
     {
@@ -386,7 +386,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
     }
     return _builder;
   }
-  
+
   @Override
   public CharSequence declareClass(final Concept concept, final Category category, final ImportManager importManager) {
     StringConcatenation _builder = new StringConcatenation();
@@ -551,7 +551,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
     _builder.newLine();
     return _builder;
   }
-  
+
   protected String declareIfAbstract(final Category category) {
     boolean _isIsAbstract = category.isIsAbstract();
     if (_isIsAbstract) {
@@ -559,7 +559,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
     }
     return "";
   }
-  
+
   /**
    * Method to create the constructor of the java category bean
    */
@@ -625,7 +625,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
     _builder.newLine();
     return _builder;
   }
-  
+
   protected CharSequence declareAttributes(final Category category, final ImportManager importManager) {
     StringConcatenation _builder = new StringConcatenation();
     {
@@ -638,7 +638,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
     }
     return _builder;
   }
-  
+
   protected CharSequence declareSingleAttributesOrArray(final AProperty property, final ImportManager importManager) {
     StringConcatenation _builder = new StringConcatenation();
     {
@@ -674,7 +674,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
     }
     return _builder;
   }
-  
+
   protected CharSequence declareSafeAccessArrayMethod(final AProperty property, final ImportManager importManager) {
     StringConcatenation _builder = new StringConcatenation();
     importManager.register(ArrayInstance.class);
@@ -705,7 +705,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
     _builder.newLine();
     return _builder;
   }
-  
+
   protected CharSequence declareSafeAccessArrayBeanMethod(final AProperty property, final ImportManager importManager) {
     StringConcatenation _builder = new StringConcatenation();
     importManager.register(ArrayInstance.class);
@@ -736,7 +736,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
     _builder.newLine();
     return _builder;
   }
-  
+
   protected CharSequence declareArrayAttributesSetterAndGetter(final AProperty property, final ImportManager importManager) {
     return new PropertydefinitionsSwitch<CharSequence>() {
       @Override
@@ -778,7 +778,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         _builder.newLine();
         return _builder;
       }
-      
+
       @Override
       public CharSequence caseIntProperty(final IntProperty property) {
         importManager.register(BeanPropertyInt.class);
@@ -818,7 +818,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         _builder.newLine();
         return _builder;
       }
-      
+
       @Override
       public CharSequence caseBooleanProperty(final BooleanProperty property) {
         importManager.register(BeanPropertyBoolean.class);
@@ -858,7 +858,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         _builder.newLine();
         return _builder;
       }
-      
+
       @Override
       public CharSequence caseStringProperty(final StringProperty property) {
         importManager.register(BeanPropertyString.class);
@@ -898,7 +898,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         _builder.newLine();
         return _builder;
       }
-      
+
       @Override
       public CharSequence caseResourceProperty(final ResourceProperty object) {
         importManager.register(BeanPropertyResource.class);
@@ -938,7 +938,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         _builder.newLine();
         return _builder;
       }
-      
+
       @Override
       public CharSequence caseEnumProperty(final EnumProperty property) {
         importManager.register(BeanPropertyEnum.class);
@@ -978,7 +978,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         _builder.newLine();
         return _builder;
       }
-      
+
       @Override
       public CharSequence caseComposedProperty(final ComposedProperty property) {
         importManager.register(property.getType());
@@ -1064,7 +1064,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         _builder.newLine();
         return _builder;
       }
-      
+
       @Override
       public CharSequence caseReferenceProperty(final ReferenceProperty property) {
         importManager.register(IBeanList.class);
@@ -1258,7 +1258,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
           return _builder_1;
         }
       }
-      
+
       @Override
       public CharSequence caseEReferenceProperty(final EReferenceProperty property) {
         importManager.register(BeanPropertyEReference.class);
@@ -1318,7 +1318,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
       }
     }.doSwitch(property);
   }
-  
+
   protected CharSequence declareSafeAccessAttributeMethod(final AProperty property, final Class<? extends APropertyInstance> castTypeClass) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("private void ");
@@ -1350,7 +1350,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
     _builder.newLine();
     return _builder;
   }
-  
+
   /**
    * Entry method to write the needed getters and setters
    * This method actually dispatches due to the type of property that is used
@@ -1473,7 +1473,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         _builder.newLine();
         return _builder;
       }
-      
+
       @Override
       public CharSequence caseIntProperty(final IntProperty property) {
         importManager.register(BeanPropertyInt.class);
@@ -1590,7 +1590,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         _builder.newLine();
         return _builder;
       }
-      
+
       @Override
       public CharSequence caseBooleanProperty(final BooleanProperty property) {
         importManager.register(BeanPropertyBoolean.class);
@@ -1688,7 +1688,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         _builder.newLine();
         return _builder;
       }
-      
+
       @Override
       public CharSequence caseStringProperty(final StringProperty property) {
         importManager.register(BeanPropertyString.class);
@@ -1786,7 +1786,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         _builder.newLine();
         return _builder;
       }
-      
+
       @Override
       public CharSequence caseResourceProperty(final ResourceProperty object) {
         importManager.register(BeanPropertyResource.class);
@@ -1885,7 +1885,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         _builder.newLine();
         return _builder;
       }
-      
+
       @Override
       public CharSequence caseEnumProperty(final EnumProperty property) {
         importManager.register(BeanPropertyEnum.class);
@@ -2002,7 +2002,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         _builder.newLine();
         return _builder;
       }
-      
+
       @Override
       public CharSequence caseComposedProperty(final ComposedProperty property) {
         importManager.register(ComposedPropertyInstance.class);
@@ -2094,7 +2094,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
         _builder.newLine();
         return _builder;
       }
-      
+
       @Override
       public CharSequence caseReferenceProperty(final ReferenceProperty property) {
         importManager.register(ReferencePropertyInstance.class);
@@ -2355,7 +2355,7 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
           return _builder_1;
         }
       }
-      
+
       @Override
       public CharSequence caseEReferenceProperty(final EReferenceProperty property) {
         importManager.register(CategoryAssignment.class);
@@ -2462,45 +2462,45 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
       }
     }.doSwitch(property);
   }
-  
+
   protected String propertyMethodGet(final AProperty property) {
     String _firstUpper = StringExtensions.toFirstUpper(property.getName());
     return ("get" + _firstUpper);
   }
-  
+
   protected String propertyMethodGetBean(final AProperty property) {
     String _firstUpper = StringExtensions.toFirstUpper(property.getName());
     String _plus = ("get" + _firstUpper);
     return (_plus + "Bean");
   }
-  
+
   protected String propertyMethodSet(final AProperty property) {
     String _firstUpper = StringExtensions.toFirstUpper(property.getName());
     return ("set" + _firstUpper);
   }
-  
+
   protected String propertyMethodCreate(final AProperty property) {
     String _firstUpper = StringExtensions.toFirstUpper(property.getName());
     return ("create" + _firstUpper);
   }
-  
+
   protected String propertyMethodIsSet(final AProperty property) {
     String _firstUpper = StringExtensions.toFirstUpper(property.getName());
     return ("isSet" + _firstUpper);
   }
-  
+
   protected String propertyMethodSafeAccess(final AProperty property) {
     String _firstUpper = StringExtensions.toFirstUpper(property.getName());
     String _plus = ("safeAccess" + _firstUpper);
     return (_plus + "()");
   }
-  
+
   protected String propertyMethodSafeAccessBean(final AProperty property) {
     String _firstUpper = StringExtensions.toFirstUpper(property.getName());
     String _plus = ("safeAccess" + _firstUpper);
     return (_plus + "Bean()");
   }
-  
+
   /**
    * This method hands back the class type
    */
@@ -2510,27 +2510,27 @@ public class GenerateCategoryBeans extends AGeneratorGapGenerator<Category> {
       public Class<?> caseFloatProperty(final FloatProperty object) {
         return BeanPropertyFloat.class;
       }
-      
+
       @Override
       public Class<?> caseBooleanProperty(final BooleanProperty object) {
         return BeanPropertyBoolean.class;
       }
-      
+
       @Override
       public Class<?> caseIntProperty(final IntProperty object) {
         return BeanPropertyInt.class;
       }
-      
+
       @Override
       public Class<?> caseEnumProperty(final EnumProperty object) {
         return BeanPropertyEnum.class;
       }
-      
+
       @Override
       public Class<?> caseStringProperty(final StringProperty object) {
         return BeanPropertyString.class;
       }
-      
+
       @Override
       public Class<?> caseResourceProperty(final ResourceProperty object) {
         return BeanPropertyResource.class;

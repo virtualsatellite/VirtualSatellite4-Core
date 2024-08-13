@@ -40,6 +40,7 @@ import de.dlr.sc.virsat.model.extension.mechanical.cad.util.CadHelper;
 import de.dlr.sc.virsat.model.extension.visualisation.model.Visualisation;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * This class imports a JSON representation of system model
@@ -165,6 +166,10 @@ public class CadImporter {
 	 * 
 	 * @return returns if all required properties for the import could be found
 	 */
+	@SuppressFBWarnings(
+			justification = "NPE cannot handled in a better way, since the NPE is thrown internally from the Json library.",
+			value = "DCN_NULLPOINTER_EXCEPTION"
+	)
 	protected boolean updateSeiFromPart(CompoundCommand importCommand, StructuralElementInstance sei, JsonObject part) {
 		BeanStructuralElementInstance beanSEI = new BeanStructuralElementInstance(sei);
 		Visualisation visualisation = getVisualisation(beanSEI, importCommand);
@@ -228,6 +233,10 @@ public class CadImporter {
 	 * 
 	 * @return returns if all required properties for the import could be found
 	 */
+	@SuppressFBWarnings(
+			justification = "NPE cannot handled in a better way, since the NPE is thrown internally from the Json library.",
+			value = "DCN_NULLPOINTER_EXCEPTION"
+	)
 	protected boolean updateSeiFromProduct(CompoundCommand importCommand, StructuralElementInstance sei,
 			JsonObject product) {
 

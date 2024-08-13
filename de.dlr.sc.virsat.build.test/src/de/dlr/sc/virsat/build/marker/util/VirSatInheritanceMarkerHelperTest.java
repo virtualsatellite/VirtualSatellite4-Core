@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.build.marker.util;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -40,7 +42,7 @@ public class VirSatInheritanceMarkerHelperTest extends ATestCase {
 	public void testCreateMarkerHelper() {
 		IMarker marker = vimHelper.createInheritanceMarker(IMarker.SEVERITY_WARNING, "This is a marker on the Repository Resource", repo);
 		IMarkerHelper helperMarker = VirSatProblemMarkerHelper.createMarkerHelper(marker);
-		assertTrue("Helper is correct", helperMarker instanceof VirSatInheritanceMarkerHelper);
+		assertThat("Helper is correct", helperMarker, instanceOf(VirSatInheritanceMarkerHelper.class));
 	}
 	
 	@Test
@@ -53,7 +55,7 @@ public class VirSatInheritanceMarkerHelperTest extends ATestCase {
 		};
 
 		IMarkerHelper helperMarker = VirSatProblemMarkerHelper.createMarkerHelper(marker, new IConfigurationElement[]{ce});
-		assertTrue("Helper is correct", helperMarker instanceof VirSatInheritanceMarkerHelper);
+		assertThat("Helper is correct", helperMarker, instanceOf(VirSatInheritanceMarkerHelper.class));
 	}
 	
 	@Test

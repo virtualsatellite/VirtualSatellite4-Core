@@ -43,7 +43,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
  * @author fisc_ph
  *
  */
-public class TestCategoryIntrinsicArrayDynamicTest extends AConceptTestCase {
+public class TestCategoryIntrinsicArrayDynamicTest extends AExtensionConceptTestCase {
 
 	private TestCategoryIntrinsicArray tcIntrinsicArray;
 	private IBeanList<BeanPropertyString> arrayDynamic;

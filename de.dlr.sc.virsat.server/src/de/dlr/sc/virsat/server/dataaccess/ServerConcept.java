@@ -12,22 +12,23 @@ package de.dlr.sc.virsat.server.dataaccess;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
 
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.general.IQualifiedName;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiModelProperty.AccessMode;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
+
+
 
 @XmlRootElement
 @XmlType(name = "Concept")
 @XmlAccessorType(XmlAccessType.NONE)
-@ApiModel(value = "Concept",
+@Schema(name = "Concept",
 		description = "A concept that can be activated on the current repository. "
 		+ "It is identified by it's full qualified name and contains it's categories and structural elements. "
 		+ "Which can be instantiated as CategoryAssignments and StructurelElementInstances.")
@@ -56,56 +57,56 @@ public class ServerConcept {
 		return fqns;
 	}
 	
-	@ApiModelProperty(
-			value = "List of available categories",
+	@Schema(
+			description = "List of available categories",
 			accessMode = AccessMode.READ_ONLY)
 	@XmlElement
 	public List<String> getCategories() {
 		return getFqns(concept.getCategories());
 	}
 	
-	@ApiModelProperty(
-			value = "List of available categories that are not abstract (can be instantiated)",
+	@Schema(
+			description = "List of available categories that are not abstract (can be instantiated)",
 			accessMode = AccessMode.READ_ONLY)
 	@XmlElement
 	public List<String> getNonAbstractCategories() {
 		return getFqns(concept.getNonAbstractCategories());
 	}
 	
-	@ApiModelProperty(
-			value = "List of available structural elements",
+	@Schema(
+			description = "List of available structural elements",
 			accessMode = AccessMode.READ_ONLY)
 	@XmlElement
 	public List<String> getStructuralElements() {
 		return getFqns(concept.getStructuralElements());
 	}
 	
-	@ApiModelProperty(
-			value = "Version of the concept",
+	@Schema(
+			description = "Version of the concept",
 			accessMode = AccessMode.READ_ONLY)
 	@XmlElement
 	public String getVersion() {
 		return concept.getVersion();
 	}
 	
-	@ApiModelProperty(
-			value = "If the concept is still in a beta version",
+	@Schema(
+			description = "If the concept is still in a beta version",
 			accessMode = AccessMode.READ_ONLY)
 	@XmlElement
 	public boolean getIsBeta() {
 		return concept.isBeta();
 	}
 	
-	@ApiModelProperty(
-			value = "Description of the concept",
+	@Schema(
+			description = "Description of the concept",
 			accessMode = AccessMode.READ_ONLY)
 	@XmlElement
 	public String getDescription() {
 		return concept.getDescription();
 	}
 	
-	@ApiModelProperty(
-			value = "Full qualified name of the concept",
+	@Schema(
+			description = "Full qualified name of the concept",
 			accessMode = AccessMode.READ_ONLY)
 	@XmlElement
 	public String getFullQualifiedName() {

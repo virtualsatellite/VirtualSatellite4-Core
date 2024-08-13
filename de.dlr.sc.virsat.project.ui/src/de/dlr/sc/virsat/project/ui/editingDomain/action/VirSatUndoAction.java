@@ -9,14 +9,12 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.project.ui.editingDomain.action;
 
-import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.ui.action.UndoAction;
 import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
-import de.dlr.sc.virsat.project.ui.Activator;
 import de.dlr.sc.virsat.project.ui.navigator.util.VirSatSelectionHelper;
 
 /**
@@ -57,15 +55,9 @@ public class VirSatUndoAction extends UndoAction {
 		
 		ISelectionService selectionService = workbenchWindow.getActivePage();
 		
-		try {
-			// if selectionService is null, there will be a NullpointerException otherwise
-			// this probably happens when closing the application hence we can disable undo
-			if (selectionService == null || selectionService.getSelection() == null) {
-				setEnabled(false);
-				return;
-			}
-		} catch (NullPointerException npe) {
-			Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "Failed to update VirSat Undo Actions due to NPE in Selection service: " + npe.getMessage()));
+		// if selectionService is null, there will be a NullpointerException otherwise
+		// this probably happens when closing the application hence we can disable undo
+		if (selectionService == null || selectionService.getSelection() == null) {
 			setEnabled(false);
 			return;
 		}

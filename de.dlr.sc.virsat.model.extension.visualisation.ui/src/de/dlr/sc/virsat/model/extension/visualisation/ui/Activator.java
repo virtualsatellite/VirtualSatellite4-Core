@@ -20,10 +20,6 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 import de.dlr.sc.virsat.model.extension.visualisation.treemanager.StartManagers;
-import de.dlr.sc.virsat.model.extension.visualisation.treemanager.networking.CommunicationServer;
-import de.dlr.sc.virsat.model.extension.visualisation.treemanager.networking.GeometryFileServer;
-import de.dlr.sc.virsat.model.extension.visualisation.treemanager.networking.SceneGraphServer;
-import de.dlr.sc.virsat.model.extension.visualisation.ui.vtkClient.VtkClientVisUpdateHandler;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 
 /**
@@ -39,8 +35,6 @@ public class Activator extends AbstractUIPlugin {
 	// The shared instance
 	private static Activator plugin;
 	
-	private CommunicationServer sceneGraphServer;
-	private CommunicationServer geometryFileServer;
 	private ResourceReloadListener resourceReloadListener;
 
 	private boolean serverStarted = false;
@@ -75,12 +69,8 @@ public class Activator extends AbstractUIPlugin {
 		// initialize the communication servers
 		try {
 		
-			sceneGraphServer = new SceneGraphServer(StartManagers.getTreeManager(), VtkClientVisUpdateHandler.getInstance());
-			geometryFileServer = new GeometryFileServer(StartManagers.getTreeManager(), VtkClientVisUpdateHandler.getInstance());
-			
 			resourceReloadListener = new ResourceReloadListener();
 			VirSatTransactionalEditingDomain.addResourceEventListener(resourceReloadListener);
-			
 			serverStarted = true;
 		} catch (Exception | UnsatisfiedLinkError | NoClassDefFoundError e) {
 			getLog().log(new Status(Status.WARNING, pluginId, "Failed to start SceneGraphServer. Probably due to missing VTK and ZeroMQ libraries. Error: " + e.getMessage()));
@@ -90,8 +80,6 @@ public class Activator extends AbstractUIPlugin {
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		if (serverStarted) {
-			sceneGraphServer.close();
-			geometryFileServer.close();
 			VirSatTransactionalEditingDomain.removeResourceEventListener(resourceReloadListener);
 		}
 		plugin = null;

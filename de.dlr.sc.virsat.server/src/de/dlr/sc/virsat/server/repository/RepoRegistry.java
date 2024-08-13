@@ -37,7 +37,7 @@ public class RepoRegistry {
 	 * Get the singelton instance of this registry
 	 * @return the instance
 	 */
-	public static RepoRegistry getInstance() {
+	public static synchronized RepoRegistry getInstance() {
 		if (instance == null) {
 			instance = new RepoRegistry();
 		}

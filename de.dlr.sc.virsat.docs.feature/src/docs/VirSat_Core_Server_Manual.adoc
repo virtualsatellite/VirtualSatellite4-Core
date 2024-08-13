@@ -92,11 +92,20 @@ The following documentation of the REST endpoints is automatically generated usi
 For each API the swagger documentation also is provided via the REST API at:
 [subs=+quotes]
 ....
-{*server adress*}:{*http/https port*}/rest/{*name*}/{*version number*}/swagger.json or /swagger.yaml
+{*server adress*}:{*http/https port*}/rest/{*name*}/{*version number*}/openapi.json.
 ....
 
 It can help you, if you want to connect Virtual Satellite to your own application.
 E.g. it can be used to automatically generate your client, using Swaggers Codegen capabilities.
+
+A swagger User Interface is hosted under the following endpoint.
+It can be used to explore the Server API.
+It is very useful to try out and understand the API, as well as constructing API calls for third party developments.
+[subs=+quotes]
+....
+{*server adress*}:{*http/https port*}/ui
+....
+
 
 === Important concept: Inheritance
 
@@ -121,21 +130,6 @@ fields in the form of Properties.
 WARNING: A good understanding of Modeling in Virtual Satellite is required to use the the APIs.
 If you are new to Virtual Satellite, please refer to the User Manual before continuing.
 
-NOTE: Now follows the generated documentation
-
-:serverdocdir: ../../../de.dlr.sc.virsat.server/doc-gen
-:modeldocdir: {serverdocdir}/model
-:managementdocdir: {serverdocdir}/management
-
-include::{modeldocdir}/overview.adoc[leveloffset=2]
-include::{modeldocdir}/paths.adoc[leveloffset=2]
-include::{modeldocdir}/definitions.adoc[leveloffset=2]
-include::{modeldocdir}/security.adoc[leveloffset=2]
-
-include::{managementdocdir}/overview.adoc[leveloffset=2]
-include::{managementdocdir}/paths.adoc[leveloffset=2]
-include::{managementdocdir}/definitions.adoc[leveloffset=2]
-include::{managementdocdir}/security.adoc[leveloffset=2]
 
 == How to run your own Headless Virtual Satellite Server
 

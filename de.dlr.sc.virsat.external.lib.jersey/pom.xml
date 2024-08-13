@@ -10,7 +10,7 @@
 	<parent>
 		<artifactId>de.dlr.sc.virsat.external.lib.maven.parent</artifactId>
 		<groupId>de.dlr.sc.virsat</groupId>
-		<version>4.16.0-SNAPSHOT</version>
+		<version>4.17.0-SNAPSHOT</version>
 		<relativePath>../de.dlr.sc.virsat.external.lib/maven/pom.xml</relativePath>
 	</parent>
 
@@ -22,108 +22,144 @@
 	<profiles>
 		<profile>
 			<id>downloadLibs</id>
-			<!-- Execute with profile downloadLib which is defined in the parent pom 
-				to update all libs and licenses from maven -->
+			<!--
+			Execute with profile downloadLib which is defined in the parent
+			pom to update all libs and licenses from maven
+			-->
 
 			<properties>
-				<jersey.version>2.31</jersey.version>
+				<jersey.version>3.1.6</jersey.version>
 			</properties>
 
 			<dependencies>
+				<!--
+				https://mvnrepository.com/artifact/org.eclipse.jetty.ee10/jetty-ee10-servlet -->
+				<dependency>
+					<groupId>org.eclipse.jetty.ee10</groupId>
+					<artifactId>jetty-ee10-servlet</artifactId>
+					<version>12.0.6</version>
+					<exclusions>
+						<!--
+						The following dependencies are injectced via the targetplatform of Eclipse 2024-03,
+						which delivers the jetty 12.0.6. But only with an ee8 servlet and not an ee10.
+						-->						
+						<exclusion>
+							<groupId>org.eclipse.jetty</groupId>
+							<artifactId>jetty-http</artifactId>
+						</exclusion>
+						<exclusion>
+							<groupId>org.eclipse.jetty</groupId>
+							<artifactId>jetty-io</artifactId>
+						</exclusion>
+						<exclusion>
+							<groupId>org.eclipse.jetty</groupId>
+							<artifactId>jetty-session</artifactId>
+						</exclusion>
+						<exclusion>
+							<groupId>org.eclipse.jetty</groupId>
+							<artifactId>jetty-security</artifactId>
+						</exclusion>
+						<exclusion>
+							<groupId>org.eclipse.jetty</groupId>
+							<artifactId>jetty-server</artifactId>
+						</exclusion>
+						<exclusion>
+							<groupId>org.eclipse.jetty</groupId>
+							<artifactId>jetty-util</artifactId>
+						</exclusion>
+						<exclusion>
+							<groupId>org.slf4j</groupId>
+							<artifactId>slf4j-api</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+
 				<dependency>
 					<groupId>org.glassfish.jersey.inject</groupId>
 					<artifactId>jersey-hk2</artifactId>
 					<version>${jersey.version}</version>
-					<exclusions>
-						<exclusion>
-							<groupId>junit</groupId>
-    						<artifactId>junit</artifactId>
-						</exclusion>
-						<exclusion>
-							<groupId>org.hamcrest</groupId>
-    						<artifactId>hamcrest-library</artifactId>
-						</exclusion>
-					</exclusions>
 				</dependency>
-				
+
+				<dependency>
+					<groupId>org.glassfish.jersey.media</groupId>
+					<artifactId>jersey-media-json-jackson</artifactId>
+					<version>${jersey.version}</version>
+				</dependency>
+
+				<dependency>
+					<groupId>org.glassfish.jersey.media</groupId>
+					<artifactId>jersey-media-jaxb</artifactId>
+					<version>${jersey.version}</version>
+				</dependency>
+
 				<dependency>
 					<groupId>org.glassfish.jersey.media</groupId>
 					<artifactId>jersey-media-moxy</artifactId>
 					<version>${jersey.version}</version>
-					<exclusions>
-						<exclusion>
-							<groupId>junit</groupId>
-    						<artifactId>junit</artifactId>
-						</exclusion>
-					</exclusions>
 				</dependency>
-				
+
 				<dependency>
 					<groupId>org.glassfish.jersey.containers</groupId>
 					<artifactId>jersey-container-servlet</artifactId>
 					<version>${jersey.version}</version>
 				</dependency>
-				
+
 				<dependency>
-					<groupId>org.glassfish.jersey.core</groupId>
-					<artifactId>jersey-server</artifactId>
+					<groupId>org.glassfish.jersey.test-framework</groupId>
+					<artifactId>jersey-test-framework-core</artifactId>
 					<version>${jersey.version}</version>
 					<exclusions>
 						<exclusion>
-							<groupId>junit</groupId>
-    						<artifactId>junit</artifactId>
+							<groupId>org.junit.jupiter</groupId>
+							<artifactId>junit-jupiter</artifactId>
 						</exclusion>
 						<exclusion>
 							<groupId>org.hamcrest</groupId>
-    						<artifactId>hamcrest-library</artifactId>
+							<artifactId>hamcrest</artifactId>
 						</exclusion>
 					</exclusions>
 				</dependency>
-				
+
 				<dependency>
-					<groupId>org.glassfish.jersey.core</groupId>
-					<artifactId>jersey-client</artifactId>
+					<groupId>org.glassfish.jersey.test-framework.providers</groupId>
+					<artifactId>jersey-test-framework-provider-jetty</artifactId>
 					<version>${jersey.version}</version>
 					<exclusions>
 						<exclusion>
-							<groupId>junit</groupId>
-    						<artifactId>junit</artifactId>
+							<groupId>org.junit.jupiter</groupId>
+							<artifactId>junit-jupiter</artifactId>
 						</exclusion>
 						<exclusion>
 							<groupId>org.hamcrest</groupId>
-    						<artifactId>hamcrest-library</artifactId>
-						</exclusion>
-					</exclusions>
-				</dependency>
-				
-				<dependency>
-				    <groupId>org.glassfish.jersey.test-framework</groupId>
-				    <artifactId>jersey-test-framework-core</artifactId>
-				    <version>${jersey.version}</version>
-					<exclusions>
-						<exclusion>
-							<groupId>junit</groupId>
-    						<artifactId>junit</artifactId>
+							<artifactId>hamcrest</artifactId>
 						</exclusion>
 						<exclusion>
-							<groupId>org.hamcrest</groupId>
-    						<artifactId>hamcrest-library</artifactId>
-						</exclusion>
-					</exclusions>
-				</dependency>
-				
-				<dependency>
-				    <groupId>org.glassfish.jersey.test-framework.providers</groupId>
-				    <artifactId>jersey-test-framework-provider-jetty</artifactId>
-				    <version>${jersey.version}</version>
-					<exclusions>
-						<exclusion>
-							<groupId>junit</groupId>
-    						<artifactId>junit</artifactId>
+							<groupId>org.eclipse.jetty</groupId>
+							<artifactId>jetty-http</artifactId>
 						</exclusion>
 						<exclusion>
-							<groupId>org.hamcrest</groupId>
-    						<artifactId>hamcrest-library</artifactId>
+							<groupId>org.eclipse.jetty</groupId>
+							<artifactId>jetty-io</artifactId>
+						</exclusion>
+						<exclusion>
+							<groupId>org.eclipse.jetty</groupId>
+							<artifactId>jetty-session</artifactId>
+						</exclusion>
+						<exclusion>
+							<groupId>org.eclipse.jetty</groupId>
+							<artifactId>jetty-security</artifactId>
+						</exclusion>
+						<exclusion>
+							<groupId>org.eclipse.jetty</groupId>
+							<artifactId>jetty-server</artifactId>
+						</exclusion>
+						<exclusion>
+							<groupId>org.eclipse.jetty</groupId>
+							<artifactId>jetty-util</artifactId>
+						</exclusion>
+						<exclusion>
+							<groupId>org.slf4j</groupId>
+							<artifactId>slf4j-api</artifactId>
 						</exclusion>
 					</exclusions>
 				</dependency>

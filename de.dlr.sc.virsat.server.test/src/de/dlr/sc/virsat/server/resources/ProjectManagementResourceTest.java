@@ -17,11 +17,11 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.core.GenericType;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Before;
@@ -31,7 +31,8 @@ import de.dlr.sc.virsat.commons.file.VirSatFileUtils;
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
 import de.dlr.sc.virsat.server.configuration.ServerConfiguration;
 import de.dlr.sc.virsat.server.repository.RepoRegistry;
-import de.dlr.sc.virsat.server.servlet.RepoManagementServlet;
+import de.dlr.sc.virsat.server.resources.project.ProjectManagementResource;
+import de.dlr.sc.virsat.server.servlet.RepoManagementServletContainer;
 import de.dlr.sc.virsat.server.test.AJettyServerTest;
 import de.dlr.sc.virsat.team.VersionControlSystem;
 
@@ -111,7 +112,7 @@ public class ProjectManagementResourceTest extends AJettyServerTest {
 	@Test
 	public void testGetNonExistingProject() {
 		Response response = webTarget
-				.path(RepoManagementServlet.MANAGEMENT_API)
+				.path(RepoManagementServletContainer.MANAGEMENT_API)
 				.path(ProjectManagementResource.PATH)
 				.path("/nonExistingProject")
 				.request()
@@ -125,7 +126,7 @@ public class ProjectManagementResourceTest extends AJettyServerTest {
 	@Test
 	public void testAddInvalidProject() {
 		Response response = webTarget
-				.path(RepoManagementServlet.MANAGEMENT_API)
+				.path(RepoManagementServletContainer.MANAGEMENT_API)
 				.path(ProjectManagementResource.PATH)
 				.path("/someProject")
 				.request()
@@ -159,7 +160,7 @@ public class ProjectManagementResourceTest extends AJettyServerTest {
 	 * @return Response
 	 */
 	private Response putRequest(String projectName, RepositoryConfiguration configuration) {
-		return webTarget.path(RepoManagementServlet.MANAGEMENT_API)
+		return webTarget.path(RepoManagementServletContainer.MANAGEMENT_API)
 				.path(ProjectManagementResource.PATH)
 				.path("/" + projectName)
 				.request()
@@ -173,7 +174,7 @@ public class ProjectManagementResourceTest extends AJettyServerTest {
 	 * @return RepositoryConfiguration
 	 */
 	private RepositoryConfiguration getRequest(String projectName) {
-		return webTarget.path(RepoManagementServlet.MANAGEMENT_API)
+		return webTarget.path(RepoManagementServletContainer.MANAGEMENT_API)
 				.path(ProjectManagementResource.PATH)
 				.path("/" + projectName)
 				.request()
@@ -188,7 +189,7 @@ public class ProjectManagementResourceTest extends AJettyServerTest {
 	 * @return Response
 	 */
 	private Response deleteRequest(String projectName) {
-		return webTarget.path(RepoManagementServlet.MANAGEMENT_API)
+		return webTarget.path(RepoManagementServletContainer.MANAGEMENT_API)
 				.path(ProjectManagementResource.PATH)
 				.path("/" + projectName)
 				.request()
@@ -201,7 +202,7 @@ public class ProjectManagementResourceTest extends AJettyServerTest {
 	 * @return List<String> containing the names
 	 */
 	private List<String> getAllProjectsRequest() {
-		return webTarget.path(RepoManagementServlet.MANAGEMENT_API)
+		return webTarget.path(RepoManagementServletContainer.MANAGEMENT_API)
 				.path(ProjectManagementResource.PATH)
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, ADMIN_HEADER)
@@ -215,7 +216,7 @@ public class ProjectManagementResourceTest extends AJettyServerTest {
 	 * @return Response
 	 */
 	private Response getAllProjectsRequestResponse(String header) {
-		return webTarget.path(RepoManagementServlet.MANAGEMENT_API)
+		return webTarget.path(RepoManagementServletContainer.MANAGEMENT_API)
 				.path(ProjectManagementResource.PATH)
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, header)

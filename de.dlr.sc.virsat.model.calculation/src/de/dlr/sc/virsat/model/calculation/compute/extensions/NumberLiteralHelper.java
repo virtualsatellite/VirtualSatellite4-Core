@@ -10,6 +10,7 @@
 package de.dlr.sc.virsat.model.calculation.compute.extensions;
 
 import de.dlr.sc.virsat.model.dvlm.calculation.NumberLiteral;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * Helper class for applying operations to number literals
@@ -34,6 +35,10 @@ public class NumberLiteralHelper {
 	 * Get the value of the literal, while respecting the case of being not a number
 	 * @return value of the literal
 	 */
+	@SuppressFBWarnings(
+			justification = "This is not a problem since it is the more easy way of coding",
+			value = "DCN_NULLPOINTER_EXCEPTION"
+	)
 	public double getValue() {
 		try {
 			double doubleValue = Double.parseDouble(getNumberLiteral().getValue());

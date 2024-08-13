@@ -51,10 +51,10 @@ public class CostConceptSummariesContentProvider extends VirSatFilteredWrappedTr
 		// Crawl all children
 		while (!contentChildren.isEmpty()) {
 			Object firstObject = contentChildren.removeFirst();
-			if (cch.initBeansForObject(firstObject) && (cch.costSummary != null)) {
+			if (cch.initBeansForObject(firstObject) && (cch.getCostSummary() != null)) {
 				contentElements.add(firstObject);
 			} else {
-				if (cch.costEquipment != null) {
+				if (cch.getCostEquipment() != null) {
 					contentElements.add(firstObject);
 				}
 				contentChildren.addAll(Arrays.asList(super.getChildren(firstObject)));

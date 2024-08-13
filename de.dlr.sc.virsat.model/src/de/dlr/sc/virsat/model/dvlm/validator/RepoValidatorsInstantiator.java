@@ -38,9 +38,17 @@ public class RepoValidatorsInstantiator {
 	private List<IStructuralElementInstanceValidator> seiValidators;
 	private List<IRepositoryValidator> repoValidators;
 
+	/**
+	 * Constructor for the repo validatior
+	 * @param repository the repository to which to attach the validator
+	 */
 	public RepoValidatorsInstantiator(Repository repository) {
 		this.repository = repository;
-		createValidators();
+		try {
+			createValidators();
+		} catch (Exception e) {
+			Activator.getDefault().getLog().error("Faield to instantiate Repo Validator for " + repository.getUuid(), e);
+		}
 	}
 	
 	public List<IRepositoryValidator> getRepoValidators() {

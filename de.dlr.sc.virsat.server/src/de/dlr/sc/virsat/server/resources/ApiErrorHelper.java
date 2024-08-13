@@ -9,7 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.resources;
 
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
 
 import org.eclipse.emf.common.command.Command;
 
@@ -19,10 +19,15 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 public class ApiErrorHelper {
 
 	public static final String SUCCESSFUL_OPERATION = "Successful operation";
+	public static final String SUCCESSFUL_OPERATION_CODE = "200";
 	public static final String INTERNAL_SERVER_ERROR = "Internal server error";
+	public static final String INTERNAL_SERVER_ERROR_CODE = "500";
 	public static final String COULD_NOT_FIND_REQUESTED_ELEMENT = "Could not find requested element";
+	public static final String COULD_NOT_FIND_REQUESTED_ELEMENT_CODE = "400";
 	public static final String INVALID_TYPE_ERROR = "Is not a valid type";
 	public static final String NOT_EXECUTEABLE = "Command was not executeable";
+	public static final String NOT_EXECUTEABLE_CODE = "500";
+	public static final String INVALID_TYPE_ERROR_CODE = "500";
 	
 	private ApiErrorHelper() { };
 	

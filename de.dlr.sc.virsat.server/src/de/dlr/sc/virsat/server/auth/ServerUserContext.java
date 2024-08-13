@@ -11,7 +11,7 @@ package de.dlr.sc.virsat.server.auth;
 
 import java.security.Principal;
 
-import javax.ws.rs.core.SecurityContext;
+import jakarta.ws.rs.core.SecurityContext;
 
 import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
 

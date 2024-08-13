@@ -2,9 +2,9 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VirSat Core Commons Tests
 Bundle-SymbolicName: de.dlr.sc.virsat.commons.test
-Bundle-Version: 4.16.0.qualifier
+Bundle-Version: 4.17.0.qualifier
 Fragment-Host: de.dlr.sc.virsat.commons
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Vendor: DLR (German Aerospace Center)
 Require-Bundle: org.junit
 Export-Package: de.dlr.sc.virsat.commons.test

@@ -1,11 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<feature
-      id="de.dlr.sc.virsat.graphiti.feature"
-      label="VirSat Core Graphiti feature"
-      version="4.16.0.qualifier"
-      provider-name="DLR (German Aerospace Center)"
-      plugin="de.dlr.sc.virsat.branding.ui"
-      license-feature="de.dlr.sc.virsat.license.feature">
+<feature id="de.dlr.sc.virsat.graphiti.feature" label="VirSat Core Graphiti feature" version="4.17.0.qualifier" provider-name="DLR (German Aerospace Center)" plugin="de.dlr.sc.virsat.branding.ui" license-feature="de.dlr.sc.virsat.license.feature">
 
    <description>
       Virsat Project Feature
@@ -22,61 +15,40 @@ by German Aerospace Center (DLR e.V.)
       %license
    </license>
 
-   <includes
-         id="org.eclipse.graphiti.feature"
-         version="0.0.0"/>
+   <includes id="org.eclipse.graphiti.feature" version="0.0.0" />
 
    <requires>
-      <import plugin="de.dlr.sc.virsat.model.edit"/>
-      <import plugin="de.dlr.sc.virsat.project"/>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.equinox.registry"/>
-      <import plugin="org.eclipse.ui.workbench"/>
-      <import plugin="de.dlr.sc.virsat.uiengine.ui"/>
-      <import plugin="de.dlr.sc.virsat.project.ui"/>
-      <import plugin="org.eclipse.ui"/>
-      <import plugin="org.eclipse.ui.views.properties.tabbed"/>
-      <import plugin="org.eclipse.graphiti.mm"/>
-      <import plugin="org.eclipse.emf.workspace"/>
-      <import plugin="org.eclipse.graphiti.mm" version="0.14.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.emf.transaction" version="1.8.0" match="compatible"/>
-      <import feature="org.eclipse.graphiti.feature" version="0.13.2.v20161129-0820"/>
-      <import feature="de.dlr.sc.virsat.branding.feature" version="4.16.0.qualifier"/>
-      <import feature="de.dlr.sc.virsat.project.feature" version="4.16.0.qualifier"/>
-      <import feature="de.dlr.sc.virsat.uiengine.feature" version="4.16.0.qualifier"/>
-      <import feature="de.dlr.sc.virsat.license.feature" version="4.16.0.qualifier"/>
-      <import plugin="org.eclipse.draw2d" version="3.7.0" match="compatible"/>
-      <import plugin="org.eclipse.core.runtime" version="3.5.0" match="compatible"/>
-      <import plugin="org.eclipse.ui.workbench" version="3.2.0" match="compatible"/>
-      <import plugin="org.eclipse.jface" version="3.2.0" match="compatible"/>
-      <import plugin="org.eclipse.graphiti" version="0.14.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.emf.edit.ui" version="2.10.0" match="compatible"/>
-      <import plugin="org.eclipse.emf.workspace" version="1.5.1" match="compatible"/>
-      <import plugin="org.eclipse.gef" version="3.9.100" match="compatible"/>
-      <import plugin="org.eclipse.ui.navigator" version="3.5.400" match="compatible"/>
-      <import plugin="org.eclipse.ui.views.properties.tabbed" version="3.6.0" match="compatible"/>
-      <import plugin="org.eclipse.core.expressions" version="3.4.600" match="compatible"/>
-   </requires>
+      <import feature="de.dlr.sc.virsat.branding.feature" />
+      <import feature="de.dlr.sc.virsat.license.feature" />
+      <import plugin="de.dlr.sc.virsat.model.edit" />
+      <import plugin="de.dlr.sc.virsat.project" />
+      <import feature="de.dlr.sc.virsat.project.feature" />
+      <import plugin="de.dlr.sc.virsat.project.ui" />
+      <import feature="de.dlr.sc.virsat.uiengine.feature" />
+      <import plugin="de.dlr.sc.virsat.uiengine.ui" />
+      <import plugin="org.eclipse.core.expressions" />
+   <import plugin="org.eclipse.core.resources" />
+      <import plugin="org.eclipse.core.runtime" />
+      <import plugin="org.eclipse.draw2d" />
+      <import plugin="org.eclipse.emf.edit.ui" />
+      <import plugin="org.eclipse.emf.transaction" />
+      <import plugin="org.eclipse.emf.workspace" />
+      <import plugin="org.eclipse.equinox.registry" />
+      <import plugin="org.eclipse.gef" />
+      <import plugin="org.eclipse.graphiti" />
+      <import feature="org.eclipse.graphiti.feature" />
+      <import plugin="org.eclipse.graphiti.mm" />
+      <import plugin="org.eclipse.jface" />
+      <import plugin="org.eclipse.ui" />
+      <import plugin="org.eclipse.ui.navigator" />
+      <import plugin="org.eclipse.ui.views.properties.tabbed" />
+      <import plugin="org.eclipse.ui.workbench" />
+      </requires>
 
-   <plugin
-         id="de.dlr.sc.virsat.graphiti"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+   <plugin id="de.dlr.sc.virsat.graphiti" version="0.0.0" />
 
-   <plugin
-         id="de.dlr.sc.virsat.graphiti.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+   <plugin id="de.dlr.sc.virsat.graphiti.ui" version="0.0.0" />
 
-   <plugin
-         id="org.eclipse.gef"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+   <plugin id="org.eclipse.gef" version="0.0.0" />
 
 </feature>

@@ -55,7 +55,7 @@ public class ConceptLanguageScopeProvider extends ImportedNamespaceAwareLocalSco
     }
     return _xblockexpression;
   }
-  
+
   /**
    * Method that adds a reference to the concept language core concept as implicit import
    */

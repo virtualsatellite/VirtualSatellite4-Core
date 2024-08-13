@@ -36,12 +36,12 @@ public class GenerateAllTests extends AGeneratorGapGenerator<EObject> {
   public static String getConcreteClassName(final StructuralElement typeDefinition) {
     return StringExtensions.toFirstUpper(typeDefinition.getName());
   }
-  
+
   public static String getAbstractClassName(final StructuralElement typeDefinition) {
     String _firstUpper = StringExtensions.toFirstUpper(typeDefinition.getName());
     return ("A" + _firstUpper);
   }
-  
+
   @Override
   public String createConcreteClassFileName(final Concept concept, final EObject conceptPart) {
     String _name = concept.getName();
@@ -52,7 +52,7 @@ public class GenerateAllTests extends AGeneratorGapGenerator<EObject> {
     String _plus_3 = (_plus_2 + "/");
     return (_plus_3 + "AllTests.java");
   }
-  
+
   @Override
   public String createAbstractClassFileName(final Concept concept, final EObject conceptPart) {
     String _name = concept.getName();
@@ -63,16 +63,16 @@ public class GenerateAllTests extends AGeneratorGapGenerator<EObject> {
     String _plus_3 = (_plus_2 + "/");
     return (_plus_3 + "AllTestsGen.java");
   }
-  
+
   @Override
   protected String getPackage(final Concept concept) {
     String _name = concept.getName();
     String _plus = (_name + ".");
     return (_plus + GenerateAllTests.PACKAGE_FOLDER);
   }
-  
+
   public static final String PACKAGE_FOLDER = "test";
-  
+
   @Override
   public void serializeModel(final Concept concept, final IFileSystemAccess fsa) {
     CharSequence fileOutputAClass = this.createAbstractClass(concept, null);
@@ -80,7 +80,7 @@ public class GenerateAllTests extends AGeneratorGapGenerator<EObject> {
     CharSequence fileOutputClass = this.createConcreteClass(concept, null);
     fsa.generateFile(this.createConcreteClassFileName(concept, null), ConceptOutputConfigurationProvider.GENERATOR_OUTPUT_ID_GENERATE_ONCE, fileOutputClass);
   }
-  
+
   /**
    * Declare the package statement of the java file
    */
@@ -93,7 +93,7 @@ public class GenerateAllTests extends AGeneratorGapGenerator<EObject> {
     _builder.newLineIfNotEmpty();
     return _builder;
   }
-  
+
   /**
    * Write down all the import statements needed by this java file
    */
@@ -134,7 +134,7 @@ public class GenerateAllTests extends AGeneratorGapGenerator<EObject> {
     }
     return _builder;
   }
-  
+
   /**
    * Entry method to write the class body
    */
@@ -221,7 +221,7 @@ public class GenerateAllTests extends AGeneratorGapGenerator<EObject> {
     _builder.newLine();
     return _builder;
   }
-  
+
   @Override
   public CharSequence declareClass(final Concept concept, final EObject se, final ImportManager importManager) {
     StringConcatenation _builder = new StringConcatenation();
@@ -301,7 +301,7 @@ public class GenerateAllTests extends AGeneratorGapGenerator<EObject> {
     _builder.newLine();
     return _builder;
   }
-  
+
   public String listAllGeneratedTests(final Concept concept, final ImportManager importManager) {
     TreeIterator<Object> iterator = EcoreUtil.<Object>getAllContents(concept, true);
     final ArrayList<String> listOfTests = new ArrayList<String>();

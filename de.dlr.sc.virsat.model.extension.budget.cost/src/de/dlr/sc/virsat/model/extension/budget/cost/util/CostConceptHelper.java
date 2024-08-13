@@ -21,11 +21,23 @@ import de.dlr.sc.virsat.model.extension.budget.cost.model.CostSummary;
 public class CostConceptHelper {
 	
 	//CHECKSTYLE:OFF
-	public BeanStructuralElementInstance bSei = new BeanStructuralElementInstance();
-	public CostSummary costSummary;
-	public CostEquipment costEquipment;
+	private BeanStructuralElementInstance bSei = new BeanStructuralElementInstance();
+	private CostSummary costSummary;
+	private CostEquipment costEquipment;
 	//CHECKSTYLE:ON
 	
+	public BeanStructuralElementInstance getbSei() {
+		return bSei;
+	}
+
+	public CostSummary getCostSummary() {
+		return costSummary;
+	}
+
+	public CostEquipment getCostEquipment() {
+		return costEquipment;
+	}
+
 	/**
 	 * This method extracts all important objects from a given object, which means
 	 * this method tries to create A BeanSEI and tries to find a CostSummary Bean and

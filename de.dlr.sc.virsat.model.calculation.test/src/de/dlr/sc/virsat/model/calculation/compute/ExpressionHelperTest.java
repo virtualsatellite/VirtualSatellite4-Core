@@ -9,11 +9,11 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.calculation.compute;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
@@ -695,7 +695,7 @@ public class ExpressionHelperTest extends AEquationTest {
 		//---------------------------------------------------------------------------------------------------------------------------
 		List<Equation> equations1 = ExpressionUtil.getAllEquationsFrom(esResourceSet, esResource, CALC_STRING + "unresolved = dimension;");
 		IExpressionResult resultExpression1 = exprHelper.evaluate(equations1.get(0).getExpression());
-		assertTrue("Result is unresolved as expected", resultExpression1 instanceof UnresolvedExpressionResult);
+		assertThat("Result is unresolved as expected", resultExpression1, instanceOf(UnresolvedExpressionResult.class));
 	}
 	
 	@Test
@@ -723,7 +723,7 @@ public class ExpressionHelperTest extends AEquationTest {
 		Equation equation = equations1.get(0);
 		caCount.getEquationSection().getEquations().add(equation);
 		NumberLiteralResult resultExpression1 = (NumberLiteralResult) exprHelper.evaluate(equation.getExpression());
-		assertEquals("Count on 1 element is correct", 1, Double.valueOf(resultExpression1.getNumberLiteral().getValue()), EPSILON);
+		assertEquals("Count on 1 element is correct", 1, Double.parseDouble(resultExpression1.getNumberLiteral().getValue()), EPSILON);
 		
 		// Now create a second sei2 and add sei2 to sei1
 		// Also create a ca and attach it to sei 2
@@ -734,7 +734,7 @@ public class ExpressionHelperTest extends AEquationTest {
 		createResources();
 		
 		NumberLiteralResult resultExpression2 = (NumberLiteralResult) exprHelper.evaluate(equation.getExpression());
-		assertEquals("Count on element with child is correct", 2, Double.valueOf(resultExpression2.getNumberLiteral().getValue()), EPSILON);
+		assertEquals("Count on element with child is correct", 2, Double.parseDouble(resultExpression2.getNumberLiteral().getValue()), EPSILON);
 	}
 
 	@Test
@@ -775,7 +775,7 @@ public class ExpressionHelperTest extends AEquationTest {
 		Equation equation = equations.get(0);
 		caCount.getEquationSection().getEquations().add(equation);
 		NumberLiteralResult resultExpression = (NumberLiteralResult) exprHelper.evaluate(equation.getExpression());
-		assertEquals("Count on semantic level zero expects 1", 1, Double.valueOf(resultExpression.getNumberLiteral().getValue()), EPSILON);
+		assertEquals("Count on semantic level zero expects 1", 1, Double.parseDouble(resultExpression.getNumberLiteral().getValue()), EPSILON);
 
 		// --------------------------------------------------------------------------------------------------------------------------
 		// Count on semantic level 1 which should be 2
@@ -785,7 +785,7 @@ public class ExpressionHelperTest extends AEquationTest {
 		caCount.getEquationSection().getEquations().clear();
 		caCount.getEquationSection().getEquations().add(equation);
 		resultExpression = (NumberLiteralResult) exprHelper.evaluate(equation.getExpression());
-		assertEquals("Count on semantic level 1 is correct", 2, Double.valueOf(resultExpression.getNumberLiteral().getValue()), EPSILON);
+		assertEquals("Count on semantic level 1 is correct", 2, Double.parseDouble(resultExpression.getNumberLiteral().getValue()), EPSILON);
 
 		// --------------------------------------------------------------------------------------------------------------------------
 		// Count on semantic level 2 which should be 3
@@ -795,7 +795,7 @@ public class ExpressionHelperTest extends AEquationTest {
 		caCount.getEquationSection().getEquations().clear();
 		caCount.getEquationSection().getEquations().add(equation);
 		resultExpression = (NumberLiteralResult) exprHelper.evaluate(equation.getExpression());
-		assertEquals("Count on semantic level 2 is correct", 3, Double.valueOf(resultExpression.getNumberLiteral().getValue()), EPSILON);
+		assertEquals("Count on semantic level 2 is correct", 3, Double.parseDouble(resultExpression.getNumberLiteral().getValue()), EPSILON);
 
 		// --------------------------------------------------------------------------------------------------------------------------
 		// Count on semantic level with infinite depth which should be 3 as well
@@ -805,7 +805,7 @@ public class ExpressionHelperTest extends AEquationTest {
 		caCount.getEquationSection().getEquations().clear();
 		caCount.getEquationSection().getEquations().add(equation);
 		resultExpression = (NumberLiteralResult) exprHelper.evaluate(equation.getExpression());
-		assertEquals("Count on 1 element is correct", 3, Double.valueOf(resultExpression.getNumberLiteral().getValue()), EPSILON);
+		assertEquals("Count on 1 element is correct", 3, Double.parseDouble(resultExpression.getNumberLiteral().getValue()), EPSILON);
 	}
 	
 	@Test
@@ -846,7 +846,7 @@ public class ExpressionHelperTest extends AEquationTest {
 		Equation equation1 = equations1.get(0);
 		ca1.getEquationSection().getEquations().add(equation1);
 		NumberLiteralResult resultExpression1 = (NumberLiteralResult) exprHelper.evaluate(equation1.getExpression());
-		assertEquals("Summary correct", 40, Double.valueOf(resultExpression1.getNumberLiteral().getValue()), EPSILON);
+		assertEquals("Summary correct", 40, Double.parseDouble(resultExpression1.getNumberLiteral().getValue()), EPSILON);
 		
 		createResources();
 		
@@ -854,7 +854,7 @@ public class ExpressionHelperTest extends AEquationTest {
 		Equation equation2 = equations2.get(0);
 		ca1.getEquationSection().getEquations().add(equation2);
 		NumberLiteralResult resultExpression2 = (NumberLiteralResult) exprHelper.evaluate(equation2.getExpression());
-		assertEquals("Mean correct", 20, Double.valueOf(resultExpression2.getNumberLiteral().getValue()), EPSILON);
+		assertEquals("Mean correct", 20, Double.parseDouble(resultExpression2.getNumberLiteral().getValue()), EPSILON);
 		
 		createResources();
 		
@@ -862,7 +862,7 @@ public class ExpressionHelperTest extends AEquationTest {
 		Equation equation3 = equations3.get(0);
 		ca1.getEquationSection().getEquations().add(equation3);
 		NumberLiteralResult resultExpression3 = (NumberLiteralResult) exprHelper.evaluate(equation3.getExpression());
-		assertEquals("Max correct", 30, Double.valueOf(resultExpression3.getNumberLiteral().getValue()), EPSILON);
+		assertEquals("Max correct", 30, Double.parseDouble(resultExpression3.getNumberLiteral().getValue()), EPSILON);
 		
 		createResources();
 		
@@ -870,7 +870,7 @@ public class ExpressionHelperTest extends AEquationTest {
 		Equation equation4 = equations4.get(0);
 		ca1.getEquationSection().getEquations().add(equation4);
 		NumberLiteralResult resultExpression4 = (NumberLiteralResult) exprHelper.evaluate(equation4.getExpression());
-		assertEquals("Min correct", 10, Double.valueOf(resultExpression4.getNumberLiteral().getValue()), EPSILON);
+		assertEquals("Min correct", 10, Double.parseDouble(resultExpression4.getNumberLiteral().getValue()), EPSILON);
 	}
 	
 	@Test
@@ -933,7 +933,7 @@ public class ExpressionHelperTest extends AEquationTest {
 		resLeaf.getContents().add(seiLeaf);
 		
 		NumberLiteralResult resultExpression1 = (NumberLiteralResult) exprHelper.evaluate(caRoot.getEquationSection().getEquations().get(0).getExpression());
-		assertEquals("Summary correct", 1, Double.valueOf(resultExpression1.getNumberLiteral().getValue()), EPSILON);
+		assertEquals("Summary correct", 1, Double.parseDouble(resultExpression1.getNumberLiteral().getValue()), EPSILON);
 	}
 	
 	@Test
@@ -981,7 +981,7 @@ public class ExpressionHelperTest extends AEquationTest {
 		createResources();
 		
 		NumberLiteralResult resultExpression = (NumberLiteralResult) exprHelper.evaluate(caRoot.getEquationSection().getEquations().get(0).getExpression());
-		assertEquals("Summary correct", 1, Double.valueOf(resultExpression.getNumberLiteral().getValue()), EPSILON);
+		assertEquals("Summary correct", 1, Double.parseDouble(resultExpression.getNumberLiteral().getValue()), EPSILON);
 	}
 	
 	@Test
@@ -1043,7 +1043,7 @@ public class ExpressionHelperTest extends AEquationTest {
 		
 		IExpressionResult result = exprHelper.evaluate(expression);
 		
-		assertTrue("Result is a number literal", result instanceof NumberLiteralResult);
+		assertThat("Result is a number literal", result, instanceOf(NumberLiteralResult.class));
 		
 		NumberLiteralResult nlr = (NumberLiteralResult) result;
 		
@@ -1091,7 +1091,7 @@ public class ExpressionHelperTest extends AEquationTest {
 		Equation equation1 = equations1.get(0);
 		ca1.getEquationSection().getEquations().add(equation1);
 		NumberLiteralResult resultExpression1 = (NumberLiteralResult) exprHelper.evaluate(equation1.getExpression());
-		assertEquals("Summary correct", 40, Double.valueOf(resultExpression1.getNumberLiteral().getValue()), EPSILON);
+		assertEquals("Summary correct", 40, Double.parseDouble(resultExpression1.getNumberLiteral().getValue()), EPSILON);
 		
 		createResources();
 		
@@ -1099,7 +1099,7 @@ public class ExpressionHelperTest extends AEquationTest {
 		Equation equation2 = equations2.get(0);
 		ca1.getEquationSection().getEquations().add(equation2);
 		NumberLiteralResult resultExpression2 = (NumberLiteralResult) exprHelper.evaluate(equation2.getExpression());
-		assertEquals("Mean correct", 20, Double.valueOf(resultExpression2.getNumberLiteral().getValue()), EPSILON);
+		assertEquals("Mean correct", 20, Double.parseDouble(resultExpression2.getNumberLiteral().getValue()), EPSILON);
 		
 		createResources();
 		
@@ -1107,7 +1107,7 @@ public class ExpressionHelperTest extends AEquationTest {
 		Equation equation3 = equations3.get(0);
 		ca1.getEquationSection().getEquations().add(equation3);
 		NumberLiteralResult resultExpression3 = (NumberLiteralResult) exprHelper.evaluate(equation3.getExpression());
-		assertEquals("Max correct", 30, Double.valueOf(resultExpression3.getNumberLiteral().getValue()), EPSILON);
+		assertEquals("Max correct", 30, Double.parseDouble(resultExpression3.getNumberLiteral().getValue()), EPSILON);
 		
 		createResources();
 		
@@ -1115,7 +1115,7 @@ public class ExpressionHelperTest extends AEquationTest {
 		Equation equation4 = equations4.get(0);
 		ca1.getEquationSection().getEquations().add(equation4);
 		NumberLiteralResult resultExpression4 = (NumberLiteralResult) exprHelper.evaluate(equation4.getExpression());
-		assertEquals("Min correct", 10, Double.valueOf(resultExpression4.getNumberLiteral().getValue()), EPSILON);
+		assertEquals("Min correct", 10, Double.parseDouble(resultExpression4.getNumberLiteral().getValue()), EPSILON);
 	}
 
 	@Test

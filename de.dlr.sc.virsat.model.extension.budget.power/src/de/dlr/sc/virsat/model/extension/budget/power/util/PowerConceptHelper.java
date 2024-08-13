@@ -26,11 +26,23 @@ import de.dlr.sc.virsat.model.extension.budget.power.model.PowerSummary;
 public class PowerConceptHelper {
 	
 	//CHECKSTYLE:OFF
-	public BeanStructuralElementInstance bSei = new BeanStructuralElementInstance();
-	public PowerSummary powerSummary;
-	public PowerEquipment powerEquipment;
+	private BeanStructuralElementInstance bSei = new BeanStructuralElementInstance();
+	private PowerSummary powerSummary;
+	private PowerEquipment powerEquipment;
 	//CHECKSTYLE:ON
 	
+	public BeanStructuralElementInstance getbSei() {
+		return bSei;
+	}
+
+	public PowerSummary getPowerSummary() {
+		return powerSummary;
+	}
+
+	public PowerEquipment getPowerEquipment() {
+		return powerEquipment;
+	}
+
 	/**
 	 * This method extracts all important objects from a given object, which means
 	 * this method tries to create A BeanSEI and tries to find a MassSummary Bean and

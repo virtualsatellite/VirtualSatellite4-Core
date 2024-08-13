@@ -27,11 +27,11 @@ import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ComposedPropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryAssignmentHelper;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
+import de.dlr.sc.virsat.model.extension.tests.model.AExtensionConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryComposition;
 
-public class BeanPropertyComposedTest extends AConceptTestCase {
+public class BeanPropertyComposedTest extends AExtensionConceptTestCase {
 
 	private TestCategoryAllProperty testCategoryAllProperty;
 	private TestCategoryComposition testCategoryComposition;

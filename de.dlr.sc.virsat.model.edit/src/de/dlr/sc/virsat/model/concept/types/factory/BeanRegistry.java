@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 
 import de.dlr.sc.virsat.model.dvlm.provider.DVLMEditPlugin;
+import de.dlr.sc.virsat.model.edit.Activator;
 
 /**
  * Bean registry, that scans all Configuration Elements in the plugin.xml
@@ -65,19 +66,23 @@ public class BeanRegistry {
 	 * and Configuration Elements respectively
 	 */
 	protected void init() {
-		IExtensionRegistry registry = Platform.getExtensionRegistry();
-		extensionRegistryAvailable = registry != null;
-		if (extensionRegistryAvailable) {
-			IConfigurationElement[] elements = registry.getConfigurationElementsFor(extensionPointID);
-
-			for (IConfigurationElement configurationElement : elements) {
-				if (configurationElement.getName().equals(extensionPointElementID)) {
-					String id = configurationElement.getAttribute(extensionPointElementBeanAttributeID);
-					if (id != null) {
-						mapIdToBean.put(id, configurationElement);
+		try {
+			IExtensionRegistry registry = Platform.getExtensionRegistry();
+			extensionRegistryAvailable = registry != null;
+			if (extensionRegistryAvailable) {
+				IConfigurationElement[] elements = registry.getConfigurationElementsFor(extensionPointID);
+	
+				for (IConfigurationElement configurationElement : elements) {
+					if (configurationElement.getName().equals(extensionPointElementID)) {
+						String id = configurationElement.getAttribute(extensionPointElementBeanAttributeID);
+						if (id != null) {
+							mapIdToBean.put(id, configurationElement);
+						}
 					}
 				}
 			}
+		} catch (Exception e) {
+			Activator.getDefault().getLog().error("Failed to init Bean Registry. Problems when reading Platform configurations.", e);
 		}
 	}
 

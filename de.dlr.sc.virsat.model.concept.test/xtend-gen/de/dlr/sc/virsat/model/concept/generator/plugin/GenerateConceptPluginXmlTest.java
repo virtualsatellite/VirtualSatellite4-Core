@@ -9,13 +9,13 @@
  */
 package de.dlr.sc.virsat.model.concept.generator.plugin;
 
+import com.google.inject.Inject;
 import de.dlr.sc.virsat.model.concept.ConceptLanguageTestInjectorProvider;
 import de.dlr.sc.virsat.model.concept.test.util.GeneratorJunitAssert;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage;
 import de.dlr.sc.virsat.model.dvlm.categories.propertydefinitions.PropertydefinitionsPackage;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage;
-import javax.inject.Inject;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.XtextRunner;
@@ -33,23 +33,23 @@ public class GenerateConceptPluginXmlTest {
   @Inject
   @Extension
   private ParseHelper<Concept> _parseHelper;
-  
+
   private Concept concept;
-  
+
   private final String TEST_CONCEPT_NAME = "testConcept";
-  
+
   private final String TEST_CATEGORY_NAME = "testCategory";
-  
+
   private final String TEST_STRUCTURAL_1_NAME = "testStructural1";
-  
+
   private final String TEST_STRUCTURAL_2_NAME = "testStructural2";
-  
+
   private final String TEST_EXTRACT_PROTECTED_REGION = "testExtractProtectedRegion";
-  
+
   private final String TEST_VERSION = "1.1";
-  
+
   private final GeneratePluginXml pluginGenerator = new GeneratePluginXml();
-  
+
   @Before
   public void setUp() {
     ConceptsPackage.eINSTANCE.eClass();
@@ -60,14 +60,14 @@ public class GenerateConceptPluginXmlTest {
       public PluginXmlReader init(final String pluginId) {
         return this;
       }
-      
+
       @Override
       public String extractProtectedRegion(final int regionID) {
         return GenerateConceptPluginXmlTest.this.TEST_EXTRACT_PROTECTED_REGION;
       }
     });
   }
-  
+
   @Test
   public void testCreateXml() {
     try {
@@ -158,7 +158,7 @@ public class GenerateConceptPluginXmlTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void createXmlDeprecatedValidator() {
     try {

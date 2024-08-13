@@ -29,15 +29,15 @@ public class GenerateConceptEnabledTester extends AGeneratorGapGenerator<EObject
     String _plus = (_name + ".");
     return (_plus + GenerateConceptEnabledTester.PACKAGE_FOLDER);
   }
-  
+
   public static String getConcreteClassName(final EObject typeDefinition) {
     return "ConceptEnabledTester";
   }
-  
+
   public static String getAbstractClassName(final EObject typeDefinition) {
     return "AConceptEnabledTester";
   }
-  
+
   @Override
   public String createConcreteClassFileName(final Concept concept, final EObject eObject) {
     String _name = concept.getName();
@@ -50,7 +50,7 @@ public class GenerateConceptEnabledTester extends AGeneratorGapGenerator<EObject
     String _plus_4 = (_plus_3 + _concreteClassName);
     return (_plus_4 + ".java");
   }
-  
+
   @Override
   public String createAbstractClassFileName(final Concept concept, final EObject eObject) {
     String _name = concept.getName();
@@ -63,9 +63,9 @@ public class GenerateConceptEnabledTester extends AGeneratorGapGenerator<EObject
     String _plus_4 = (_plus_3 + _abstractClassName);
     return (_plus_4 + ".java");
   }
-  
+
   public static final String PACKAGE_FOLDER = "propertyTester";
-  
+
   @Override
   public void serializeModel(final Concept concept, final IFileSystemAccess fsa) {
     CharSequence fileOutputAClass = this.createAbstractClass(concept, concept);
@@ -73,7 +73,7 @@ public class GenerateConceptEnabledTester extends AGeneratorGapGenerator<EObject
     CharSequence fileOutputClass = this.createConcreteClass(concept, concept);
     fsa.generateFile(this.createConcreteClassFileName(concept, concept), ConceptOutputConfigurationProvider.GENERATOR_OUTPUT_ID_GENERATE_ONCE, fileOutputClass);
   }
-  
+
   /**
    * This method just creates the package declaration. The concept name needs to fit to the package name
    */
@@ -86,7 +86,7 @@ public class GenerateConceptEnabledTester extends AGeneratorGapGenerator<EObject
     _builder.newLineIfNotEmpty();
     return _builder;
   }
-  
+
   /**
    * Handle the import statements
    */
@@ -110,7 +110,7 @@ public class GenerateConceptEnabledTester extends AGeneratorGapGenerator<EObject
     }
     return _builder;
   }
-  
+
   /**
    * Entry method to write the class body
    */
@@ -139,7 +139,7 @@ public class GenerateConceptEnabledTester extends AGeneratorGapGenerator<EObject
     _builder.newLine();
     return _builder;
   }
-  
+
   /**
    * Entry method to write the class body
    */

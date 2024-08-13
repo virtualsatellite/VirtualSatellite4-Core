@@ -31,7 +31,7 @@ public class GenerateValidator extends AGeneratorGapGenerator<EObject> {
     String _plus = (_name + ".");
     return (_plus + GenerateValidator.PACKAGE_FOLDER);
   }
-  
+
   /**
    * This method gets the concept name which is usually in a form like this "de.dlr.sc.virsat.model.extension.conceptName".
    * It splits the name after every dot and only takes the last element as the name.
@@ -46,16 +46,16 @@ public class GenerateValidator extends AGeneratorGapGenerator<EObject> {
     final String validatorName = (_upperCase + _substring);
     return (validatorName + "Validator");
   }
-  
+
   public static String getConcreteClassName(final Concept concept) {
     return GenerateValidator.getValidatorName(concept);
   }
-  
+
   public static String getAbstractClassName(final Concept concept) {
     String _validatorName = GenerateValidator.getValidatorName(concept);
     return ("A" + _validatorName);
   }
-  
+
   @Override
   public String createConcreteClassFileName(final Concept concept, final EObject eObject) {
     String _packageFolder = this.getPackageFolder(concept);
@@ -64,7 +64,7 @@ public class GenerateValidator extends AGeneratorGapGenerator<EObject> {
     String _plus_1 = (_plus + _concreteClassName);
     return (_plus_1 + ".java");
   }
-  
+
   @Override
   public String createAbstractClassFileName(final Concept concept, final EObject eObject) {
     String _packageFolder = this.getPackageFolder(concept);
@@ -73,9 +73,9 @@ public class GenerateValidator extends AGeneratorGapGenerator<EObject> {
     String _plus_1 = (_plus + _abstractClassName);
     return (_plus_1 + ".java");
   }
-  
+
   public static final String PACKAGE_FOLDER = "validator";
-  
+
   @Override
   public void serializeModel(final Concept concept, final IFileSystemAccess fsa) {
     CharSequence fileOutputAClass = this.createAbstractClass(concept, concept);
@@ -83,7 +83,7 @@ public class GenerateValidator extends AGeneratorGapGenerator<EObject> {
     CharSequence fileOutputClass = this.createConcreteClass(concept, concept);
     fsa.generateFile(this.createConcreteClassFileName(concept, concept), ConceptOutputConfigurationProvider.GENERATOR_OUTPUT_ID_GENERATE_ONCE, fileOutputClass);
   }
-  
+
   /**
    * This method just creates the package declaration. The concept name needs to fit to the package name
    */
@@ -96,7 +96,7 @@ public class GenerateValidator extends AGeneratorGapGenerator<EObject> {
     _builder.newLineIfNotEmpty();
     return _builder;
   }
-  
+
   /**
    * Handle the import statements
    */
@@ -120,7 +120,7 @@ public class GenerateValidator extends AGeneratorGapGenerator<EObject> {
     }
     return _builder;
   }
-  
+
   /**
    * Entry method to write the class body
    */
@@ -164,7 +164,7 @@ public class GenerateValidator extends AGeneratorGapGenerator<EObject> {
     _builder.newLine();
     return _builder;
   }
-  
+
   /**
    * Entry method to write the class body
    */

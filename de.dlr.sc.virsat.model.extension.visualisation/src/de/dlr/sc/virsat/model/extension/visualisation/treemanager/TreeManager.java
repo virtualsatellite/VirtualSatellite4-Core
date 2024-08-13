@@ -28,8 +28,6 @@ import de.dlr.sc.virsat.model.extension.visualisation.IVisualisationTreeManager;
 import de.dlr.sc.virsat.model.extension.visualisation.shape.IShapeEditObserver;
 import de.dlr.sc.virsat.model.extension.visualisation.shape.Shape;
 import de.dlr.sc.virsat.model.extension.visualisation.shape.VisualisationShape;
-import de.dlr.sc.virsat.model.extension.visualisation.treemanager.networking.CommunicationHandler;
-import de.dlr.sc.virsat.model.extension.visualisation.treemanager.networking.CommunicationServer;
 import de.dlr.sc.visproto.VisProto.Geometry;
 import de.dlr.sc.visproto.VisProto.GeometryFile;
 import de.dlr.sc.visproto.VisProto.VisualisationMessage;
@@ -54,11 +52,7 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 	private Map<String, GeometryFile> protoGeometryFileMap = new HashMap<String, GeometryFile>();
 	private Map<String, Integer> hashNodeMap = new HashMap<String, Integer>();
 	private IShapeEditObserver observer;
-	private CommunicationHandler sceneGraphCommunicationHandler;
-	private CommunicationHandler geometryFileCommunicationHandler;
 
-	private boolean sendingPaused = false;
-	
 	/**
 	 * Log root node
 	 */
@@ -111,7 +105,6 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 				if (geometryFilePathHasChanged(shape.id, shape.geometryFile)) {
 					editGeometry(shape.id, shape.geometryFile);
 					createGeometryFileBuilder(shape.id);
-					geometryFileCommunicationHandler.sendGeometryFile(protoGeometryFileMap.get(shape.id));
 				}
 				break;
 			case BOX:
@@ -137,9 +130,6 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 				shape.rotationX, shape.rotationY, shape.rotationZ, shape.color, shape.transparency);
 		if (!protoNodeMap.get(shape.id).hasGeometry() && protoGeometryFileMap.containsKey(shape.id)) {
 			protoGeometryFileMap.remove(shape.id);
-		}
-		if (sendingPossible()) {
-			sceneGraphCommunicationHandler.sendSceneGraph(mSceneGraph.build());
 		}
 	}
 
@@ -301,7 +291,6 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 					createGeometry(shape.id, shape.geometryFile);
 					if (!protoNodeMap.get(shape.id).getGeometry().getOriginFilepath().equals("")) {
 						createGeometryFileBuilder(shape.id);
-						geometryFileCommunicationHandler.sendGeometryFile(protoGeometryFileMap.get(shape.id));
 					}
 					break;
 				case BOX:
@@ -328,9 +317,6 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 					shape.rotationX, shape.rotationY, shape.rotationZ,
 					shape.color, shape.transparency);
 			addChildNode(VISUALISATION_GLOBAL_ROOT_ID, shape.id);
-			if (sendingPossible()) {
-				sceneGraphCommunicationHandler.sendSceneGraph(mSceneGraph.build());
-			}
 		} else {
 			activator.getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "ID already exists", null));
 			throw new RuntimeException("Error at creating new shape. ID already exist");
@@ -484,9 +470,6 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 	public void setParent(String idChild, String idParent) {
 		removeFromCurrentParent(idChild);
 		addChildNode(idParent, idChild);
-		if (sendingPossible()) {
-			sceneGraphCommunicationHandler.sendSceneGraph(mSceneGraph.build());
-		}
 	}
 
 	/**
@@ -533,9 +516,6 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 			addChildNode(mSceneGraph.getNodeBuilder(), child);
 		}
 		
-		if (sendingPossible()) {
-			sceneGraphCommunicationHandler.sendSceneGraph(mSceneGraph.build());
-		}
 	}
 
 	/**
@@ -558,9 +538,6 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 	public void removeShapeWithSubtree(String id) {
 		removeFromCurrentParent(id);
 		removeNodeRecursively(id);
-		if (sendingPossible()) {
-			sceneGraphCommunicationHandler.sendSceneGraph(mSceneGraph.build());
-		}
 	}
 
 	/**
@@ -574,23 +551,6 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 		}
 	}
 
-	/**
-	 * Sets the SceneGraph Communication Handler
-	 * 
-	 * @param sceneGraphCommunicationHandler 	Handler for SceneGraph messaging.
-	 */
-	public void setSceneGraphCommunicationHandler(CommunicationHandler sceneGraphCommunicationHandler) {
-		this.sceneGraphCommunicationHandler = sceneGraphCommunicationHandler;
-	}
-
-	/**
-	 * Sets the Geometry Communication Handler
-	 * 
-	 * @param geometryFileCommunicationHandler	Handler for GeometryFile messaging.
-	 */
-	public void setGeometryFileCommunicationHandler(CommunicationHandler geometryFileCommunicationHandler) {
-		this.geometryFileCommunicationHandler = geometryFileCommunicationHandler;
-	}
 
 	/**
 	 * Checks if there is a registered node with the ide
@@ -647,9 +607,6 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 				}
 				protoNodeMap.clear();
 				this.refreshMapFrom(mSceneGraph.getNodeBuilder());
-				if (sceneGraphCommunicationHandler instanceof CommunicationServer) {
-					sceneGraphCommunicationHandler.sendSceneGraph(mSceneGraph.build());
-				}
 			} else {
 				activator.getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "Received SceneGraph is equal to the current one", null));
 			}	
@@ -728,28 +685,14 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 
 	@Override
 	public void pauseSending() {
-		sendingPaused = true;
 	}
 
 	@Override
 	public void resumeSending() {
-		sendingPaused = false;
-		if (sceneGraphCommunicationHandler != null) {
-			sceneGraphCommunicationHandler.sendSceneGraph(mSceneGraph.build());
-		}
-	}
-	
-	/**
-	 * Checks if communicationServer is set and sending is not paused
-	 * @return true or false
-	 */
-	private boolean sendingPossible() {
-		return (sceneGraphCommunicationHandler != null) && !sendingPaused;
 	}
 
 	@Override
 	public void reloadGeometryFile(String shapeId) {
 		createGeometryFileBuilder(shapeId);
-		geometryFileCommunicationHandler.sendGeometryFile(protoGeometryFileMap.get(shapeId));
 	}
 }

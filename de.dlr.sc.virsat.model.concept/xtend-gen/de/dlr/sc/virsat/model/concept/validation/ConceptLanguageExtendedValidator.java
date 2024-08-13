@@ -24,7 +24,7 @@ import org.eclipse.xtext.validation.Check;
 @SuppressWarnings("all")
 public class ConceptLanguageExtendedValidator extends ConceptLanguageValidator {
   public static final String CONCEPT_NAME_PLUGIN_NAME_MISMATCH = "conceptNamePluginNameMismatch";
-  
+
   @Check
   public void CheckConceptNameEqualsToPluginName(final Concept concept) {
     final String platformString = concept.eResource().getURI().toPlatformString(true);

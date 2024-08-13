@@ -9,8 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.property;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CompoundCommand;
@@ -26,15 +26,16 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyIns
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.util.PropertyInstanceValueSwitch;
 import de.dlr.sc.virsat.model.dvlm.json.ABeanUnitAdapter;
 import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
 
 /**
  * Abstract implementation to the interface dealing with Attributes with QUDV unit
  *
  * @param <V_TYPE> The value type of this bean
  */
-@ApiModel(
+@Schema(
 	description = "Abstract model class for bean unit value properties."
 		+ "Those properties have an additional unit field.",
 	subTypes = {
@@ -81,7 +82,7 @@ public abstract class ABeanUnitValueProperty<V_TYPE> extends ABeanValueProperty<
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@XmlElement(nillable = true)
-	@ApiModelProperty(value = "Unit of the bean")
+	@Schema(description = "Unit of the bean")
 	@XmlJavaTypeAdapter(ABeanUnitAdapter.class)
 	@Override
 	public ABeanUnit getUnitBean() {
@@ -108,7 +109,7 @@ public abstract class ABeanUnitValueProperty<V_TYPE> extends ABeanValueProperty<
 	}
 	
 	@Override
-	@ApiModelProperty(hidden = true)
+	@Schema(hidden = true)
 	public String getUnit() {
 		return new PropertyInstanceHelper().getUnit(ti);
 	}

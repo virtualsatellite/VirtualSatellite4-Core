@@ -23,7 +23,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.xtext.generator.IFileSystemAccess
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralFactory
 import de.dlr.sc.virsat.model.concept.types.factory.BeanRegistry
-import javax.xml.bind.annotation.XmlType
+import jakarta.xml.bind.annotation.XmlType
 
 /**
  * This class is the generator for the StructuralElement beans of our model extension.
@@ -96,7 +96,7 @@ class GenerateStructuralElementBeans extends AGeneratorGapGenerator<StructuralEl
 	// * Import Statements
 	// *****************************************************************
 	«IF !importManager.importedClasses.empty»
-		«FOR clazz : importManager.importedClasses»
+		«FOR clazz : importManager.importedClasses.sort»
 			import «clazz»;
 		«ENDFOR»
   	«ENDIF»

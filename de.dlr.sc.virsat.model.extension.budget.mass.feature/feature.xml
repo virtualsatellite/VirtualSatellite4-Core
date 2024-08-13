@@ -1,10 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<feature
-      id="de.dlr.sc.virsat.model.extension.budget.mass.feature"
-      label="VirSat Core Model Extension Mass Budgets Feature"
-      version="4.16.0.qualifier"
-      plugin="de.dlr.sc.virsat.branding.ui"
-      license-feature="de.dlr.sc.virsat.license.feature">
+<feature id="de.dlr.sc.virsat.model.extension.budget.mass.feature" label="VirSat Core Model Extension Mass Budgets Feature" version="4.17.0.qualifier" plugin="de.dlr.sc.virsat.branding.ui" license-feature="de.dlr.sc.virsat.license.feature">
 
    <description>
       Feature for documentation and release notes.
@@ -21,18 +15,8 @@
       %license
    </license>
 
-   <plugin
-         id="de.dlr.sc.virsat.model.extension.budget.mass"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+   <plugin id="de.dlr.sc.virsat.model.extension.budget.mass" download-size="0" install-size="0" version="0.0.0" unpack="false" />
 
-   <plugin
-         id="de.dlr.sc.virsat.model.extension.budget.mass.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+   <plugin id="de.dlr.sc.virsat.model.extension.budget.mass.ui" download-size="0" install-size="0" version="0.0.0" unpack="false" />
 
 </feature>

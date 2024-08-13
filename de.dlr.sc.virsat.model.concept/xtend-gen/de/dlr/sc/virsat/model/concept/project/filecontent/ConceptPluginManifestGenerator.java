@@ -23,7 +23,7 @@ public class ConceptPluginManifestGenerator implements IFileContentGenerator {
   public String generateContent(final IProjectBuilderInfo projectBuilderInfo) {
     return this.manifestContent(projectBuilderInfo).toString();
   }
-  
+
   public CharSequence manifestContent(final IProjectBuilderInfo builderInfo) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("Manifest-Version: 1.0");
@@ -56,7 +56,7 @@ public class ConceptPluginManifestGenerator implements IFileContentGenerator {
     _builder.append("de.dlr.sc.virsat.project,");
     _builder.newLine();
     _builder.append(" ");
-    _builder.append("javax.annotation,");
+    _builder.append("jakarta.annotation,");
     _builder.newLine();
     _builder.append(" ");
     _builder.append("jakarta.xml.bind,");
@@ -64,7 +64,7 @@ public class ConceptPluginManifestGenerator implements IFileContentGenerator {
     _builder.append(" ");
     _builder.append("de.dlr.sc.virsat.model.ext.core;visibility:=reexport");
     _builder.newLine();
-    _builder.append("Bundle-RequiredExecutionEnvironment: JavaSE-11");
+    _builder.append("Bundle-RequiredExecutionEnvironment: JavaSE-17");
     _builder.newLine();
     _builder.append("Bundle-ActivationPolicy: lazy");
     _builder.newLine();

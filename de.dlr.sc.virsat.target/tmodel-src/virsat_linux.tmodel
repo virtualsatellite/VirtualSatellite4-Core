@@ -4,6 +4,6 @@ Target virsat_linux {
 	OperatingSystem linux
 	WindowingSystem gtk
 	Architecture x86_64
-	Locale de_DE
-	TargetJRE JavaSE-11
+	Locale de_DE 
+	TargetJRE JavaSE-17
 } 

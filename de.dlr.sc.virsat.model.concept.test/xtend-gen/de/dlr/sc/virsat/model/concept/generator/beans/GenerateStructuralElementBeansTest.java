@@ -9,12 +9,12 @@
  */
 package de.dlr.sc.virsat.model.concept.generator.beans;
 
+import com.google.inject.Inject;
 import de.dlr.sc.virsat.model.concept.ConceptLanguageTestInjectorProvider;
 import de.dlr.sc.virsat.model.concept.test.util.GeneratorJunitAssert;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElement;
-import javax.inject.Inject;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.XtextRunner;
@@ -34,20 +34,20 @@ public class GenerateStructuralElementBeansTest {
   @Inject
   @Extension
   private ParseHelper<Concept> _parseHelper;
-  
+
   private Concept concept;
-  
+
   private static final String TEST_CONCEPT_NAME = "testConcept";
-  
+
   private static final String TEST_STRUCTURAL_ELEMENT_NAME = "testStructuralElement";
-  
+
   private final GenerateStructuralElementBeans createAddCommandGenerator = new GenerateStructuralElementBeans();
-  
+
   @Before
   public void setUp() {
     ConceptsPackage.eINSTANCE.eClass();
   }
-  
+
   @Test
   public void testCreateConcreteClassFileName() {
     try {
@@ -82,7 +82,7 @@ public class GenerateStructuralElementBeansTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCreateStructuralElementClasses() {
     try {

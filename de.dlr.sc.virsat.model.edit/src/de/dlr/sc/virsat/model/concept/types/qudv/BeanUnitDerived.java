@@ -13,7 +13,7 @@ package de.dlr.sc.virsat.model.concept.types.qudv;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlElement;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.AddCommand;
@@ -23,7 +23,8 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import de.dlr.sc.virsat.model.dvlm.qudv.DerivedUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
 import de.dlr.sc.virsat.model.dvlm.qudv.UnitFactor;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 
 public class BeanUnitDerived extends ABeanUnit<DerivedUnit> {
 
@@ -39,7 +40,7 @@ public class BeanUnitDerived extends ABeanUnit<DerivedUnit> {
 	 * Get all factors
 	 * @return List of factors
 	 */
-	@ApiModelProperty(required = true)
+	@Schema(required = true)
 	@XmlElement
 	public List<BeanFactorUnit> getFactorBeans() {
 		List<BeanFactorUnit> factors = new ArrayList<BeanFactorUnit>();

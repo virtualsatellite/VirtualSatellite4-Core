@@ -9,6 +9,8 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.funcelectrical.marker;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -44,8 +46,8 @@ public class VirSatFuncelectricalMarkerHelperTest extends ATestCase {
 		IMarkerHelper markerHelperS = VirSatProblemMarkerHelper.createMarkerHelper(markerS);
 		IMarkerHelper markerHelperD = VirSatProblemMarkerHelper.createMarkerHelper(markerD);
 		
-		assertTrue("Helper is correct", markerHelperS instanceof VirSatFuncelectricalMarkerHelper);
-		assertTrue("Helper is correct", markerHelperD instanceof VirSatFuncelectricalMarkerHelper);
+		assertThat("Helper is correct", markerHelperS, instanceOf(VirSatFuncelectricalMarkerHelper.class));
+		assertThat("Helper is correct", markerHelperD, instanceOf(VirSatFuncelectricalMarkerHelper.class));
 	}
 	
 	@Test

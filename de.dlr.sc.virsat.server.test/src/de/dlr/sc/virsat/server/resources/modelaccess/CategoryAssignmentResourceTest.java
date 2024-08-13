@@ -12,21 +12,18 @@ package de.dlr.sc.virsat.server.resources.modelaccess;
 import static org.junit.Assert.assertEquals;
 
 import java.io.StringWriter;
-
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.Response;
 
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Test;
-
 import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryCompositionArray;
 import de.dlr.sc.virsat.server.resources.AModelAccessResourceTest;
-import de.dlr.sc.virsat.server.resources.ModelAccessResource;
 import de.dlr.sc.virsat.server.test.VersionControlTestHelper;
-
+ 
 public class CategoryAssignmentResourceTest extends AModelAccessResourceTest {
 	
 	@Test
@@ -101,7 +98,7 @@ public class CategoryAssignmentResourceTest extends AModelAccessResourceTest {
 		String jsonIn = sw.toString();
 		
 		Response response = webTarget
-				.path(ModelAccessResource.CA)
+				.path(RepositoryAccessResource.CA)
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.put(Entity.json(jsonIn));
@@ -125,29 +122,32 @@ public class CategoryAssignmentResourceTest extends AModelAccessResourceTest {
 	public void testCreateCa() throws Exception {
 		String wantedTypeFqn = tcBeanA.getFullQualifiedCategoryName();
 		
-		Response response = getTestRequestBuilderWithQueryParam(ModelAccessResource.CA + "/" + tSei.getUuid(), 
-				ModelAccessResource.QP_FULL_QUALIFIED_NAME, wantedTypeFqn).post(Entity.json(null));
+		// Bundle[] bundles = FrameworkUtil.getBundle(getClass()).getBundleContext().getBundles();
+		// Arrays.asList(bundles).stream().map(bundle -> bundle.getSymbolicName()).sorted().forEach(bundle -> System.out.println(bundle));
+				
+		Response response = getTestRequestBuilderWithQueryParam(RepositoryAccessResource.CA + "/" + tSei.getUuid(), 
+				RepositoryAccessResource.QP_FULL_QUALIFIED_NAME, wantedTypeFqn).post(Entity.json(null));
 		
 		assertIUuidGotCreated(response, wantedTypeFqn, ed, tSei.getStructuralElementInstance().getCategoryAssignments());
 	}
 	
 	@Test
 	public void testErrorResponses() {
-		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.CA + "/unknown").get());
+		assertNotFoundResponse(getTestRequestBuilder(RepositoryAccessResource.CA + "/unknown").get());
 		
-		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.CA + "/unknown").delete());
+		assertNotFoundResponse(getTestRequestBuilder(RepositoryAccessResource.CA + "/unknown").delete());
 		
-		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.CA + "/unknown").post(Entity.json(null)));
+		assertNotFoundResponse(getTestRequestBuilder(RepositoryAccessResource.CA + "/unknown").post(Entity.json(null)));
 		
 		// Assert check ca discipline via sei
 		setDiscipline(tSei.getStructuralElementInstance(), anotherDiscipline);
-		assertForbiddenResponse(getTestRequestBuilder(ModelAccessResource.CA + "/" + tcAllProperty.getUuid()).delete());
+		assertForbiddenResponse(getTestRequestBuilder(RepositoryAccessResource.CA + "/" + tcAllProperty.getUuid()).delete());
 		
 		setDiscipline(tSei.getStructuralElementInstance(), anotherDiscipline);
 		String wantedTypeFqn = tcBeanA.getFullQualifiedCategoryName();
 		
-		Response response = getTestRequestBuilderWithQueryParam(ModelAccessResource.CA + "/" + tSei.getUuid(), 
-				ModelAccessResource.QP_FULL_QUALIFIED_NAME, wantedTypeFqn).post(Entity.json(null));
+		Response response = getTestRequestBuilderWithQueryParam(RepositoryAccessResource.CA + "/" + tSei.getUuid(), 
+				RepositoryAccessResource.QP_FULL_QUALIFIED_NAME, wantedTypeFqn).post(Entity.json(null));
 		assertForbiddenResponse(response);
 	}
 }

@@ -24,7 +24,6 @@ import de.dlr.sc.virsat.server.dataaccess.TransactionalJsonProviderTest;
 import de.dlr.sc.virsat.server.jetty.VirSatJettyServerTest;
 import de.dlr.sc.virsat.server.repository.ServerRepoHelperTest;
 import de.dlr.sc.virsat.server.repository.ServerRepositoryTest;
-import de.dlr.sc.virsat.server.resources.DocumentationResourceTest;
 import de.dlr.sc.virsat.server.resources.ModelAccessResourceTest;
 import de.dlr.sc.virsat.server.resources.ProjectManagementResourceTest;
 import de.dlr.sc.virsat.server.resources.modelaccess.CategoryAssignmentResourceTest;
@@ -54,7 +53,6 @@ import junit.framework.JUnit4TestAdapter;
 	StructuralElementInstanceResourceTest.class,
 	TransactionalJsonProviderTest.class,
 	RepositoryUtilityTest.class,
-	DocumentationResourceTest.class,
 	VirSatJettyServerTest.class,
 	CorsFilterTest.class,
 	ServerConceptTest.class,

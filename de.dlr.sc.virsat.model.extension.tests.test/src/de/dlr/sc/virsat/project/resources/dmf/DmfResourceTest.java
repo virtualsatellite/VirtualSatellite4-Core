@@ -9,11 +9,11 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.project.resources.dmf;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
@@ -55,7 +55,7 @@ import de.dlr.sc.virsat.model.dvlm.dmf.DObjectContainer;
 import de.dlr.sc.virsat.model.dvlm.dmf.UnresolveableDObject;
 import de.dlr.sc.virsat.model.dvlm.roles.UserRegistry;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
+import de.dlr.sc.virsat.model.extension.tests.model.AExtensionConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.model.EReferenceTest;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryComposition;
@@ -76,7 +76,7 @@ import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
  *
  */
 
-public class DmfResourceTest extends AConceptTestCase {
+public class DmfResourceTest extends AExtensionConceptTestCase {
 
 	public static final int TEST_CASE_TIMEOUT = 5000;
 	
@@ -181,11 +181,11 @@ public class DmfResourceTest extends AConceptTestCase {
 		
 		// DMF Resource has a containment object as root content and it only has exactly one obejct as contents
 		assertEquals("Make sure there is only one object", 1, dmfResource.getContents().size());
-		assertTrue("The first obejct in the resource is correct", dmfResource.getContents().get(0) instanceof DObjectContainer);
+		assertThat("The first obejct in the resource is correct", dmfResource.getContents().get(0), instanceOf(DObjectContainer.class));
 
 		DObjectContainer dObjectContainer = (DObjectContainer) dmfResource.getContents().get(0);
 		assertEquals("There is one DObject inside of dObjectContainer", 1, dObjectContainer.getObjects().size());
-		assertTrue("Category inside of dObjectContainer", dObjectContainer.getObjects().get(0) instanceof de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryAllProperty);
+		assertThat("Category inside of dObjectContainer", dObjectContainer.getObjects().get(0), instanceOf(de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryAllProperty.class));
 		
 		de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryAllProperty dmfCategoryAssignment = (de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryAllProperty) dObjectContainer.getObjects().get(0);
 		final double EPSILON = 0.0000001d;
@@ -252,11 +252,11 @@ public class DmfResourceTest extends AConceptTestCase {
 		
 		// DMF Resource has a containment object as root content and it only has exactly one obejct as contents
 		assertEquals("Make sure there is only one object", 1, dmfResource.getContents().size());
-		assertTrue("The first obejct in the resource is correct", dmfResource.getContents().get(0) instanceof DObjectContainer);
+		assertThat("The first obejct in the resource is correct", dmfResource.getContents().get(0), instanceOf(DObjectContainer.class));
 
 		DObjectContainer dObjectContainer = (DObjectContainer) dmfResource.getContents().get(0);
 		assertEquals("There is one DObject inside of dObjectContainer", 1, dObjectContainer.getObjects().size());
-		assertTrue("Category inside of dObjectContainer", dObjectContainer.getObjects().get(0) instanceof de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryIntrinsicArray);
+		assertThat("Category inside of dObjectContainer", dObjectContainer.getObjects().get(0), instanceOf(de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryIntrinsicArray.class));
 		
 		de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryIntrinsicArray dmfCategoryAssignment = (de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryIntrinsicArray) dObjectContainer.getObjects().get(0);
 		assertEquals("DMF property same as Bean property", TEST_VALUE_STRING_0, dmfCategoryAssignment.getTestStringArrayDynamic().get(0));
@@ -301,12 +301,12 @@ public class DmfResourceTest extends AConceptTestCase {
 		
 		// DMF Resource has a containment object as root content and it only has exactly one obejct as contents
 		assertEquals("Make sure there is only one object", 1, dmfResource.getContents().size());
-		assertTrue("The first obejct in the resource is correct", dmfResource.getContents().get(0) instanceof DObjectContainer);
+		assertThat("The first obejct in the resource is correct", dmfResource.getContents().get(0), instanceOf(DObjectContainer.class));
 
 		DObjectContainer dObjectContainer = (DObjectContainer) dmfResource.getContents().get(0);
 		assertEquals("There are two DObjects inside of dObjectContainer", 2, dObjectContainer.getObjects().size());
-		assertTrue("Category inside of dObjectContainer", dObjectContainer.getObjects().get(0) instanceof de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryReferenceArray);
-		assertTrue("Category inside of dObjectContainer", dObjectContainer.getObjects().get(1) instanceof de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryAllProperty);
+		assertThat("Category inside of dObjectContainer", dObjectContainer.getObjects().get(0), instanceOf(de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryReferenceArray.class));
+		assertThat("Category inside of dObjectContainer", dObjectContainer.getObjects().get(1), instanceOf(de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryAllProperty.class));
 		
 		de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryReferenceArray dmfCategoryAssignmentArray = (de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryReferenceArray) dObjectContainer.getObjects().get(0);
 		de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryAllProperty dmfCategoryAssignmentReferenced = (de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryAllProperty) dObjectContainer.getObjects().get(1);
@@ -348,11 +348,11 @@ public class DmfResourceTest extends AConceptTestCase {
 		
 		// DMF Resource has a containment object as root content and it only has exactly one obejct as contents
 		assertEquals("Make sure there is only one object", 1, dmfResource.getContents().size());
-		assertTrue("The first obejct in the resource is correct", dmfResource.getContents().get(0) instanceof DObjectContainer);
+		assertThat("The first obejct in the resource is correct", dmfResource.getContents().get(0), instanceOf(DObjectContainer.class));
 
 		DObjectContainer dObjectContainer = (DObjectContainer) dmfResource.getContents().get(0);
 		assertEquals("There is one DObject inside of dObjectContainer", 1, dObjectContainer.getObjects().size());
-		assertTrue("Category inside of dObjectContainer", dObjectContainer.getObjects().get(0) instanceof de.dlr.sc.virsat.model.extension.tests.tests.EReferenceTest);
+		assertThat("Category inside of dObjectContainer", dObjectContainer.getObjects().get(0), instanceOf(de.dlr.sc.virsat.model.extension.tests.tests.EReferenceTest.class));
 		
 		de.dlr.sc.virsat.model.extension.tests.tests.EReferenceTest dmfCategoryAssignment = (de.dlr.sc.virsat.model.extension.tests.tests.EReferenceTest) dObjectContainer.getObjects().get(0);
 		assertNotNull("The EReference value should be transfered to the DMF object", dmfCategoryAssignment.getEReferenceTest());
@@ -394,7 +394,7 @@ public class DmfResourceTest extends AConceptTestCase {
 		
 		// DMF Resource has a containment object as root content and it only has exactly one obejct as contents
 		assertEquals("Make sure there is only one object", 1, dmfResource.getContents().size());
-		assertTrue("The first obejct in the resource is correct", dmfResource.getContents().get(0) instanceof DObjectContainer);
+		assertThat("The first obejct in the resource is correct", dmfResource.getContents().get(0), instanceOf(DObjectContainer.class));
 
 		DObjectContainer dObjectContainer = (DObjectContainer) dmfResource.getContents().get(0);
 		assertEquals("There are two DObject inside of dObjectContainer", 2, dObjectContainer.getObjects().size());
@@ -444,7 +444,7 @@ public class DmfResourceTest extends AConceptTestCase {
 		
 		// DMF Resource has a containment object as root content and it only has exactly one obejct as contents
 		assertEquals("Make sure there is only one object", 1, dmfResource.getContents().size());
-		assertTrue("The first obejct in the resource is correct", dmfResource.getContents().get(0) instanceof DObjectContainer);
+		assertThat("The first obejct in the resource is correct", dmfResource.getContents().get(0), instanceOf(DObjectContainer.class));
 
 		DObjectContainer dObjectContainer = (DObjectContainer) dmfResource.getContents().get(0);
 		assertEquals("There is one DObject inside of dObjectContainer", 1, dObjectContainer.getObjects().size());
@@ -489,7 +489,7 @@ public class DmfResourceTest extends AConceptTestCase {
 		
 		// DMF Resource has a containment object as root content and it only has exactly one obejct as contents
 		assertEquals("Make sure there is only one object", 1, dmfResource.getContents().size());
-		assertTrue("The first object in the resource is correct", dmfResource.getContents().get(0) instanceof DObjectContainer);
+		assertThat("The first object in the resource is correct", dmfResource.getContents().get(0), instanceOf(DObjectContainer.class));
 
 		DObjectContainer dObjectContainer = (DObjectContainer) dmfResource.getContents().get(0);
 		assertEquals("There is one DObject inside of dObjectContainer", 1, dObjectContainer.getObjects().size());
@@ -537,7 +537,7 @@ public class DmfResourceTest extends AConceptTestCase {
 		
 		// DMF Resource has a containment object as root content and it only has exactly one obejct as contents
 		assertEquals("Make sure there is only one object", 1, dmfResource.getContents().size());
-		assertTrue("The first object in the resource is correct", dmfResource.getContents().get(0) instanceof DObjectContainer);
+		assertThat("The first object in the resource is correct", dmfResource.getContents().get(0), instanceOf(DObjectContainer.class));
 
 		DObjectContainer dObjectContainer = (DObjectContainer) dmfResource.getContents().get(0);
 		assertEquals("There is one DObject inside of dObjectContainer", 1, dObjectContainer.getObjects().size());
@@ -545,7 +545,7 @@ public class DmfResourceTest extends AConceptTestCase {
 		DObject dObject = dObjectContainer.getObjects().get(0);
 		assertEquals("Name of unresolvable dObject is set correctly", noDmfCa.getName(), dObject.getName());
 		assertEquals("Uuid of unresolvable dObject is set correctly", noDmfCa.getUuid(), dObject.getUuid());
-		assertTrue("The dObject is an unresolvable dObject",  dObject instanceof UnresolveableDObject);
+		assertThat("The dObject is an unresolvable dObject",  dObject, instanceOf(UnresolveableDObject.class));
 	}
 	
 	@Test
@@ -1097,11 +1097,11 @@ public class DmfResourceTest extends AConceptTestCase {
 		
 		// DMF Resource has a containment object as root content and it only has exactly one obejct as contents
 		assertEquals("Make sure there is only one object", 1, dmfResource.getContents().size());
-		assertTrue("The first obejct in the resource is correct", dmfResource.getContents().get(0) instanceof DObjectContainer);
+		assertThat("The first obejct in the resource is correct", dmfResource.getContents().get(0), instanceOf(DObjectContainer.class));
 
 		DObjectContainer dObjectContainer = (DObjectContainer) dmfResource.getContents().get(0);
 		assertEquals("There is one DObject inside of dObjectContainer", 1, dObjectContainer.getObjects().size());
-		assertTrue("Category inside of dObjectContainer", dObjectContainer.getObjects().get(0) instanceof de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryAllProperty);
+		assertThat("Category inside of dObjectContainer", dObjectContainer.getObjects().get(0), instanceOf(de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryAllProperty.class));
 		
 		de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryAllProperty dmfCategoryAssignment = (de.dlr.sc.virsat.model.extension.tests.tests.TestCategoryAllProperty) dObjectContainer.getObjects().get(0);
 		final double EPSILON = 0.0000001d;

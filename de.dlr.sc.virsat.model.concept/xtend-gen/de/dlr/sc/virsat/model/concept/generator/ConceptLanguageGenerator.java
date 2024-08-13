@@ -54,17 +54,17 @@ import org.eclipse.xtext.xbase.lib.Exceptions;
 @SuppressWarnings("all")
 public class ConceptLanguageGenerator implements IGenerator2 {
   private final String ID_EXTENSION_POINT_GENERATOR = "de.dlr.sc.virsat.model.concept.generator";
-  
+
   private final String ID_EXTENSION_POINT_GENERATOR_ENABLEMENT_CLASS = "class";
-  
+
   @Override
   public void afterGenerate(final Resource input, final IFileSystemAccess2 fsa, final IGeneratorContext context) {
   }
-  
+
   @Override
   public void beforeGenerate(final Resource input, final IFileSystemAccess2 fsa, final IGeneratorContext context) {
   }
-  
+
   /**
    * Entry method from the xtend generator fragment
    */

@@ -16,7 +16,7 @@ import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.ext.core.model.GenericCategory;
 import de.dlr.sc.virsat.model.extension.requirements.verification.build.steps.IAutomaticVerification;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import javax.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.XmlType;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.CompoundCommand;
 

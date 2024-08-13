@@ -14,9 +14,9 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Test;
@@ -25,7 +25,6 @@ import de.dlr.sc.virsat.model.concept.types.roles.BeanDiscipline;
 import de.dlr.sc.virsat.model.dvlm.roles.Discipline;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
 import de.dlr.sc.virsat.server.resources.AModelAccessResourceTest;
-import de.dlr.sc.virsat.server.resources.ModelAccessResource;
 import de.dlr.sc.virsat.server.test.VersionControlTestHelper;
 
 public class DisciplineResourceTest extends AModelAccessResourceTest {
@@ -33,7 +32,7 @@ public class DisciplineResourceTest extends AModelAccessResourceTest {
 	@Test
 	public void testDisciplineGet() throws Exception {
 		testGet(new BeanDiscipline(discipline),
-				ModelAccessResource.DISCIPLINE,
+				RepositoryAccessResource.DISCIPLINE,
 				new Class[] {BeanDiscipline.class});
 	}
 
@@ -43,7 +42,7 @@ public class DisciplineResourceTest extends AModelAccessResourceTest {
 		int commits = VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath());
 		
 		Response response = getTestRequestBuilder(
-				ModelAccessResource.DISCIPLINE)
+				RepositoryAccessResource.DISCIPLINE)
 				.put(Entity.entity(new BeanDiscipline(discipline), MediaType.APPLICATION_JSON_TYPE));
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 		
@@ -54,7 +53,7 @@ public class DisciplineResourceTest extends AModelAccessResourceTest {
 	@Test
 	public void testDisciplineCreate() throws Exception {
 		String uuid = getTestRequestBuilder(
-				ModelAccessResource.DISCIPLINE)
+				RepositoryAccessResource.DISCIPLINE)
 				.post(Entity.json(null))
 				.readEntity(String.class);
 		
@@ -67,7 +66,7 @@ public class DisciplineResourceTest extends AModelAccessResourceTest {
 	public void testDisciplineDelete() throws Exception {
 		String uuid = discipline.getUuid().toString();
 		getTestRequestBuilder(
-				ModelAccessResource.DISCIPLINE + "/" + uuid)
+				RepositoryAccessResource.DISCIPLINE + "/" + uuid)
 				.delete();
 		
 		assertThat(ed.getResourceSet().getRoleManagement().getDisciplines(), not(hasItem(discipline)));
@@ -75,14 +74,14 @@ public class DisciplineResourceTest extends AModelAccessResourceTest {
 	
 	@Test
 	public void testErrorResponses() {
-		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.DISCIPLINE + "/unknown").get());
+		assertNotFoundResponse(getTestRequestBuilder(RepositoryAccessResource.DISCIPLINE + "/unknown").get());
 		
-		assertNotFoundResponse(getTestRequestBuilder(ModelAccessResource.DISCIPLINE + "/unknown").delete());
+		assertNotFoundResponse(getTestRequestBuilder(RepositoryAccessResource.DISCIPLINE + "/unknown").delete());
 		
 		// Assert check discipline
 		setDiscipline(ed.getResourceSet().getRoleManagement(), anotherDiscipline);
-		assertCommandNotExecuteableErrorResponse(getTestRequestBuilder(ModelAccessResource.DISCIPLINE + "/" + discipline.getUuid()).delete());
+		assertCommandNotExecuteableErrorResponse(getTestRequestBuilder(RepositoryAccessResource.DISCIPLINE + "/" + discipline.getUuid()).delete());
 		
-		assertCommandNotExecuteableErrorResponse(getTestRequestBuilder(ModelAccessResource.DISCIPLINE).post(Entity.json(null)));
+		assertCommandNotExecuteableErrorResponse(getTestRequestBuilder(RepositoryAccessResource.DISCIPLINE).post(Entity.json(null)));
 	}
 }

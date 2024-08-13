@@ -12,14 +12,14 @@ package testConcept.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.extension.requirements.verification.build.steps.IAutomaticVerification;
-import org.eclipse.emf.edit.domain.EditingDomain;
-import javax.xml.bind.annotation.XmlType;
-import org.eclipse.emf.common.command.Command;
-import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import de.dlr.sc.virsat.model.extension.requirements.model.Requirement;
+import de.dlr.sc.virsat.model.extension.requirements.verification.build.steps.IAutomaticVerification;
+import jakarta.xml.bind.annotation.XmlType;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.edit.domain.EditingDomain;
 
 // *****************************************************************
 // * Class Declaration
@@ -67,3 +67,4 @@ public  class TestCategory extends ATestCategory implements IAutomaticVerificati
 		return null;
 	}
 }
+

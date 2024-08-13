@@ -37,17 +37,17 @@ public class GenerateCategoryUiSnippetPropertySection extends AGeneratorGapGener
     String _name = concept.getName();
     return (_name + ".ui.snippet");
   }
-  
+
   public static String getConcreteClassName(final Category typeDefinition) {
     String _firstUpper = StringExtensions.toFirstUpper(typeDefinition.getName());
     return ("UiSnippetSection" + _firstUpper);
   }
-  
+
   public static String getAbstractClassName(final Category typeDefinition) {
     String _firstUpper = StringExtensions.toFirstUpper(typeDefinition.getName());
     return ("AUiSnippetSection" + _firstUpper);
   }
-  
+
   @Override
   public String createConcreteClassFileName(final Concept concept, final Category category) {
     String _name = concept.getName();
@@ -60,7 +60,7 @@ public class GenerateCategoryUiSnippetPropertySection extends AGeneratorGapGener
     String _plus_4 = (_plus_3 + _concreteClassName);
     return (_plus_4 + ".java");
   }
-  
+
   @Override
   public String createAbstractClassFileName(final Concept concept, final Category category) {
     String _name = concept.getName();
@@ -73,7 +73,7 @@ public class GenerateCategoryUiSnippetPropertySection extends AGeneratorGapGener
     String _plus_4 = (_plus_3 + _abstractClassName);
     return (_plus_4 + ".java");
   }
-  
+
   @Override
   public void serializeModel(final Concept concept, final IFileSystemAccess fsa) {
     final Consumer<Category> _function = (Category it) -> {
@@ -84,7 +84,7 @@ public class GenerateCategoryUiSnippetPropertySection extends AGeneratorGapGener
     };
     concept.getNonAbstractCategories().forEach(_function);
   }
-  
+
   /**
    * This method just creates the package declaration. The concept name needs to fit to the package name
    */
@@ -97,7 +97,7 @@ public class GenerateCategoryUiSnippetPropertySection extends AGeneratorGapGener
     _builder.newLineIfNotEmpty();
     return _builder;
   }
-  
+
   /**
    * Handle the import statements
    */
@@ -121,7 +121,7 @@ public class GenerateCategoryUiSnippetPropertySection extends AGeneratorGapGener
     }
     return _builder;
   }
-  
+
   @Override
   protected CharSequence declareClass(final Concept concept, final Category category, final ImportManager importManager) {
     StringConcatenation _builder = new StringConcatenation();
@@ -143,7 +143,7 @@ public class GenerateCategoryUiSnippetPropertySection extends AGeneratorGapGener
     _builder.newLine();
     return _builder;
   }
-  
+
   /**
    * This method declares the non Table UI Snippet with the Section for all properties
    */
@@ -185,7 +185,7 @@ public class GenerateCategoryUiSnippetPropertySection extends AGeneratorGapGener
     _builder.newLine();
     return _builder;
   }
-  
+
   /**
    * This method hands back the correct reference depending
    * on if it is a composed or reference property.
@@ -202,7 +202,7 @@ public class GenerateCategoryUiSnippetPropertySection extends AGeneratorGapGener
     }
     return null;
   }
-  
+
   public static String createUiSnippetSectionName(final ATypeDefinition typeDefinition) {
     String _firstUpper = StringExtensions.toFirstUpper(typeDefinition.getName());
     return ("UiSnippetSection" + _firstUpper);

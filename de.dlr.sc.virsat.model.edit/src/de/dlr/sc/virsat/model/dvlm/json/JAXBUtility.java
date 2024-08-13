@@ -12,17 +12,17 @@ package de.dlr.sc.virsat.model.dvlm.json;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.helpers.DefaultValidationEventHandler;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
+import jakarta.xml.bind.Unmarshaller;
+import jakarta.xml.bind.helpers.DefaultValidationEventHandler;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.persistence.jaxb.JAXBContextFactory;
 import org.eclipse.persistence.jaxb.JAXBContextProperties;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
+
+import de.dlr.sc.virsat.model.edit.Activator;
+
 
 
 
@@ -36,7 +36,7 @@ public class JAXBUtility {
 	private Map<String, Object> properties = new HashMap<>();
 	private JAXBContext jaxbCtx;
 	
-	public static final String SYSTEM_PROP_CONTEXT_FACTORY = "javax.xml.bind.context.factory";
+	public static final String SYSTEM_PROP_CONTEXT_FACTORY = "jakarta.xml.bind.context.factory";
 	public static final String CLASSPATH_JAXB_CONTEXT_FACTORY = "org.eclipse.persistence.jaxb.JAXBContextFactory";
 	
 	/**
@@ -49,39 +49,13 @@ public class JAXBUtility {
 	/**
 	 * Create a instance with JSON properties and a context from the registerClasses
 	 * @param registerClasses classes to be recognized by the context
-	 * @throws JAXBException in case init fails
 	 */
-	public JAXBUtility(@SuppressWarnings("rawtypes") Class[] registerClasses) throws JAXBException {
+	public JAXBUtility(@SuppressWarnings("rawtypes") Class[] registerClasses) {
 		init();
-		createContext(registerClasses);
-	}
-	
-	/**
-	 * Universal Classloader which searches overall plugins in the
-	 * current plattform to resolve a class.
-	 *
-	 */
-	static class UniversalClassLoader extends ClassLoader {
-		
-		@Override
-		public Class<?> loadClass(String name) throws ClassNotFoundException {
-			
-			Class<?> foundClass = null;
-			Bundle thisBundle = FrameworkUtil.getBundle(JAXBContextFactory.class);
-			
-			foundClass = thisBundle.loadClass(name);
-			if (foundClass != null) {
-				return foundClass;
-			}
-
-			for (Bundle bundle : thisBundle.getBundleContext().getBundles()) {
-				foundClass = bundle.loadClass(name);
-				if (foundClass != null) {
-					break;
-				}
-			}
-			
-			return super.loadClass(name);
+		try {
+			createContext(registerClasses);
+		} catch (JAXBException e) {
+			Activator.getDefault().getLog().error("Failed to construct Jaxb Utility.", e);
 		}
 	}
 	
@@ -89,6 +63,7 @@ public class JAXBUtility {
 		System.setProperty(SYSTEM_PROP_CONTEXT_FACTORY, CLASSPATH_JAXB_CONTEXT_FACTORY);
 		properties.put(JAXBContextProperties.MEDIA_TYPE, "application/json");
 		properties.put(JAXBContextProperties.JSON_INCLUDE_ROOT, false);
+		properties.put(JAXBContext.JAXB_CONTEXT_FACTORY, CLASSPATH_JAXB_CONTEXT_FACTORY);
 	}
 	
 	/**
@@ -98,16 +73,10 @@ public class JAXBUtility {
 	 * @throws JAXBException
 	 */
 	public JAXBContext createContext(@SuppressWarnings("rawtypes") Class[] registerClasses) throws JAXBException {
-		ClassLoader orig = Thread.currentThread().getContextClassLoader();
-		
-		// Try setting the universal class loader
-		try {
-			Thread.currentThread().setContextClassLoader(new UniversalClassLoader());
-			jaxbCtx = JAXBContext.newInstance(registerClasses, properties);
-		} finally {
-			Thread.currentThread().setContextClassLoader(orig);
-		}
-
+		// Removed code for changing the class loader.
+		// but adjusted the properties to refer to the correct ContextFactory
+		// which is now correctly resolved by the classloader behind the next lines of code.
+		jaxbCtx = JAXBContext.newInstance(registerClasses, properties);
 		return jaxbCtx;
 	}
 	

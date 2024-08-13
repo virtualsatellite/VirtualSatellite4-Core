@@ -10,7 +10,6 @@
 package de.dlr.sc.virsat.server.controller;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Set;
 
 import de.dlr.sc.virsat.server.configuration.RepositoryConfiguration;
@@ -24,7 +23,7 @@ public class RepoManagementController {
 		return RepoRegistry.getInstance().getRepository(repoName);
 	}
 	
-	public void addNewRepository(RepositoryConfiguration repoConfiguration) throws URISyntaxException, IOException {
+	public void addNewRepository(RepositoryConfiguration repoConfiguration) throws Exception {
 		ServerRepoHelper.registerRepositoryConfiguration(repoConfiguration);
 	}
 	
@@ -42,9 +41,9 @@ public class RepoManagementController {
 	
 	/**
 	 * If a project with the name from configuration exists, it is updated, otherwise it is created.
-	 * @throws IOException 
+	 * @throws Exception 
 	 */
-	public void addOrUpdateRepository(RepositoryConfiguration repoConfiguration) throws URISyntaxException, IOException {
+	public void addOrUpdateRepository(RepositoryConfiguration repoConfiguration) throws Exception {
 		if (getAllProjectNames().contains(repoConfiguration.getProjectName())) {
 			updateRepository(repoConfiguration);
 		} else {

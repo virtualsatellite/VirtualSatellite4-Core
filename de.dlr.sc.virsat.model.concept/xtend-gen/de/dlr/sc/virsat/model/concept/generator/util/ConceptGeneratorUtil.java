@@ -33,7 +33,7 @@ public class ConceptGeneratorUtil {
     String _firstUpper = StringExtensions.toFirstUpper(property.getName());
     return (_name + _firstUpper);
   }
-  
+
   /**
    * This method provides the general DLR file header used in java files
    */
@@ -67,7 +67,7 @@ public class ConceptGeneratorUtil {
     _builder.newLine();
     return _builder;
   }
-  
+
   public static CharSequence generateAClassHeader(final IDescription descriptiveObject) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("/**");
@@ -97,7 +97,7 @@ public class ConceptGeneratorUtil {
     _builder.newLine();
     return _builder;
   }
-  
+
   public static CharSequence generateClassHeader(final IDescription descriptiveObject) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("/**");

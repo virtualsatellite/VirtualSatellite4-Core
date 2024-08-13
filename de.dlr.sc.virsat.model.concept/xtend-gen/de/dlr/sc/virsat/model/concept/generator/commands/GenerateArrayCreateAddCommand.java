@@ -38,19 +38,19 @@ public class GenerateArrayCreateAddCommand extends AGeneratorGapGenerator<APrope
     String _name = concept.getName();
     return (_name + ".ui.command");
   }
-  
+
   public static String getConcreteClassName(final ATypeDefinition typeDefinition) {
     String _firstUpper = StringExtensions.toFirstUpper(typeDefinition.getName());
     String _plus = ("CreateAddArrayElement" + _firstUpper);
     return (_plus + "Command");
   }
-  
+
   public static String getAbstractClassName(final ATypeDefinition typeDefinition) {
     String _firstUpper = StringExtensions.toFirstUpper(typeDefinition.getName());
     String _plus = ("ACreateAddArrayElement" + _firstUpper);
     return (_plus + "Command");
   }
-  
+
   @Override
   public String createConcreteClassFileName(final Concept concept, final AProperty category) {
     String _name = concept.getName();
@@ -63,7 +63,7 @@ public class GenerateArrayCreateAddCommand extends AGeneratorGapGenerator<APrope
     String _plus_4 = (_plus_3 + _concreteClassName);
     return (_plus_4 + ".java");
   }
-  
+
   @Override
   public String createAbstractClassFileName(final Concept concept, final AProperty category) {
     String _name = concept.getName();
@@ -76,7 +76,7 @@ public class GenerateArrayCreateAddCommand extends AGeneratorGapGenerator<APrope
     String _plus_4 = (_plus_3 + _abstractClassName);
     return (_plus_4 + ".java");
   }
-  
+
   @Override
   public void serializeModel(final Concept concept, final IFileSystemAccess fsa) {
     final Consumer<Category> _function = (Category it) -> {
@@ -94,7 +94,7 @@ public class GenerateArrayCreateAddCommand extends AGeneratorGapGenerator<APrope
     };
     concept.getNonAbstractCategories().forEach(_function);
   }
-  
+
   /**
    * This method just creates the package declaration. The concept name needs to fit to the package name
    */
@@ -107,7 +107,7 @@ public class GenerateArrayCreateAddCommand extends AGeneratorGapGenerator<APrope
     _builder.newLineIfNotEmpty();
     return _builder;
   }
-  
+
   @Override
   public CharSequence declareImports(final ImportManager importManager, final Concept concept, final AProperty conceptPart, final String conceptPackage) {
     StringConcatenation _builder = new StringConcatenation();
@@ -128,7 +128,7 @@ public class GenerateArrayCreateAddCommand extends AGeneratorGapGenerator<APrope
     }
     return _builder;
   }
-  
+
   @Override
   protected CharSequence declareClass(final Concept concept, final AProperty property, final ImportManager manager) {
     StringConcatenation _builder = new StringConcatenation();
@@ -147,7 +147,7 @@ public class GenerateArrayCreateAddCommand extends AGeneratorGapGenerator<APrope
     _builder.newLine();
     return _builder;
   }
-  
+
   @Override
   protected CharSequence declareAClass(final Concept concept, final AProperty property, final ImportManager importManager) {
     StringConcatenation _builder = new StringConcatenation();

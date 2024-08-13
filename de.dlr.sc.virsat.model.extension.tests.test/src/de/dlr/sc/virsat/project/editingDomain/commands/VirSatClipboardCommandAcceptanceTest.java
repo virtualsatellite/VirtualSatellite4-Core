@@ -27,7 +27,7 @@ import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ArrayInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.propertyinstances.ValuePropertyInstance;
 import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import de.dlr.sc.virsat.model.extension.tests.model.AConceptTestCase;
+import de.dlr.sc.virsat.model.extension.tests.model.AExtensionConceptTestCase;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryIntrinsicArray;
 
@@ -37,7 +37,7 @@ import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryIntrinsicArray;
  * @author fisc_ph
  *
  */
-public class VirSatClipboardCommandAcceptanceTest  extends AConceptTestCase  {
+public class VirSatClipboardCommandAcceptanceTest  extends AExtensionConceptTestCase  {
 
 	private Concept concept;
 	

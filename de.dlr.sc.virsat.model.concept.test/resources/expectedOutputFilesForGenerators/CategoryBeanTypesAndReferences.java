@@ -12,9 +12,9 @@ package testConcept.model;
 // *****************************************************************
 // * Import Statements
 // *****************************************************************
-import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
-import javax.xml.bind.annotation.XmlType;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
+import jakarta.xml.bind.annotation.XmlType;
 
 // *****************************************************************
 // * Class Declaration
@@ -55,3 +55,4 @@ public  class TestCategoryB extends ATestCategoryB {
 		super(categoryAssignment);
 	}
 }
+

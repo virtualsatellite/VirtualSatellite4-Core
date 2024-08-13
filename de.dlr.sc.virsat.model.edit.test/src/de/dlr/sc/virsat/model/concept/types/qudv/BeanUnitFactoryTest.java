@@ -9,9 +9,9 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.qudv;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.concept.types.factory.BeanUnitFactory;
@@ -32,7 +32,7 @@ public class BeanUnitFactoryTest {
 		BeanUnitFactory beanUnitFactory = new BeanUnitFactory();
 		IBeanUnit<? extends AUnit> beanUnitSimple = beanUnitFactory.getInstanceFor(simpleUnit);
 		
-		assertTrue(beanUnitSimple instanceof BeanUnitSimple);
+		assertThat(beanUnitSimple, instanceOf(BeanUnitSimple.class));
 		assertEquals(simpleUnit, beanUnitSimple.getUnit());
 	}
 	
@@ -43,7 +43,7 @@ public class BeanUnitFactoryTest {
 		BeanUnitFactory beanUnitFactory = new BeanUnitFactory();
 		IBeanUnit<? extends AUnit> beanUnitPrefixed = beanUnitFactory.getInstanceFor(prefixedUnit);
 		
-		assertTrue(beanUnitPrefixed instanceof BeanUnitPrefixed);
+		assertThat(beanUnitPrefixed, instanceOf(BeanUnitPrefixed.class));
 		assertEquals(prefixedUnit, beanUnitPrefixed.getUnit());
 	}
 	
@@ -54,7 +54,7 @@ public class BeanUnitFactoryTest {
 		BeanUnitFactory beanUnitFactory = new BeanUnitFactory();
 		IBeanUnit<? extends AUnit> beanUnitDerived = beanUnitFactory.getInstanceFor(derivedUnit);
 		
-		assertTrue(beanUnitDerived instanceof BeanUnitDerived);
+		assertThat(beanUnitDerived, instanceOf(BeanUnitDerived.class));
 		assertEquals(derivedUnit, beanUnitDerived.getUnit());
 	}
 	
@@ -65,7 +65,7 @@ public class BeanUnitFactoryTest {
 		BeanUnitFactory beanUnitFactory = new BeanUnitFactory();
 		IBeanUnit<? extends AUnit> beanUnitLinearConversion = beanUnitFactory.getInstanceFor(linearConversionUnit);
 		
-		assertTrue(beanUnitLinearConversion instanceof BeanUnitLinearConversion);
+		assertThat(beanUnitLinearConversion, instanceOf(BeanUnitLinearConversion.class));
 		assertEquals(linearConversionUnit, beanUnitLinearConversion.getUnit());
 	}
 	
@@ -76,7 +76,7 @@ public class BeanUnitFactoryTest {
 		BeanUnitFactory beanUnitFactory = new BeanUnitFactory();
 		IBeanUnit<? extends AUnit> beanUnitAffineConversion = beanUnitFactory.getInstanceFor(affineConversionUnit);
 		
-		assertTrue(beanUnitAffineConversion instanceof BeanUnitAffineConversion);
+		assertThat(beanUnitAffineConversion, instanceOf(BeanUnitAffineConversion.class));
 		assertEquals(affineConversionUnit, beanUnitAffineConversion.getUnit());
 	}
 }

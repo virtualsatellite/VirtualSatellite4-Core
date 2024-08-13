@@ -19,10 +19,10 @@ import static org.junit.Assert.assertTrue;
 import java.io.StringWriter;
 import java.util.List;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.core.GenericType;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.Response;
 
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.Test;
@@ -34,6 +34,7 @@ import de.dlr.sc.virsat.model.dvlm.json.JAXBUtility;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.server.Activator;
 import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
+import de.dlr.sc.virsat.server.resources.modelaccess.RepositoryAccessResource;
 import de.dlr.sc.virsat.server.test.VersionControlTestHelper;
 
 public class ModelAccessResourceTest extends AModelAccessResourceTest {
@@ -89,7 +90,7 @@ public class ModelAccessResourceTest extends AModelAccessResourceTest {
 	
 		assertNull(beanString.getValue());
 		Response response = webTarget
-				.path(ModelAccessResource.PROPERTY)
+				.path(RepositoryAccessResource.PROPERTY)
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.put(Entity.json(jsonIn));
@@ -105,7 +106,7 @@ public class ModelAccessResourceTest extends AModelAccessResourceTest {
 		int commits = VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath());
 		
 		List<String> entity = webTarget
-				.path(ModelAccessResource.CONCEPTS)
+				.path(RepositoryAccessResource.CONCEPTS)
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.get(new GenericType<List<String>>() { });
@@ -114,7 +115,7 @@ public class ModelAccessResourceTest extends AModelAccessResourceTest {
 		assertEquals(activeConcepts.size(), entity.size());
 		
 		String entityString = webTarget
-				.path(ModelAccessResource.CONCEPTS)
+				.path(RepositoryAccessResource.CONCEPTS)
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.get(String.class);
@@ -129,8 +130,8 @@ public class ModelAccessResourceTest extends AModelAccessResourceTest {
 		int commits = VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath());
 		
 		List<String> entity = webTarget
-				.path(ModelAccessResource.CONCEPTS)
-				.queryParam(ModelAccessResource.QP_ONLY_ACTIVE_CONCEPTS, "false")
+				.path(RepositoryAccessResource.CONCEPTS)
+				.queryParam(RepositoryAccessResource.QP_ONLY_ACTIVE_CONCEPTS, "false")
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.get(new GenericType<List<String>>() { });
@@ -139,8 +140,8 @@ public class ModelAccessResourceTest extends AModelAccessResourceTest {
 		assertThat(entity.size(), is(greaterThan(activeConcepts.size())));
 		
 		String entityString = webTarget
-				.path(ModelAccessResource.CONCEPTS)
-				.queryParam(ModelAccessResource.QP_ONLY_ACTIVE_CONCEPTS, "false")
+				.path(RepositoryAccessResource.CONCEPTS)
+				.queryParam(RepositoryAccessResource.QP_ONLY_ACTIVE_CONCEPTS, "false")
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
 				.get(String.class);
@@ -158,20 +159,20 @@ public class ModelAccessResourceTest extends AModelAccessResourceTest {
 		
 		assertEquals(0, listener.getCount());
 		
-		getTestRequestBuilder(ModelAccessResource.ROOT_SEIS).get();
+		getTestRequestBuilder(RepositoryAccessResource.ROOT_SEIS).get();
 		
 		int countWithSync = listener.getCount();
 		assertThat("At least one log message because of synchronization", countWithSync, greaterThan(0));
 		
 		// Request one with the query param build = false that should create one less log message
 		listener.setCount(0);
-		getTestRequestBuilderWithQueryParam(ModelAccessResource.ROOT_SEIS, ModelAccessResource.QP_BUILD, "false").get();
+		getTestRequestBuilderWithQueryParam(RepositoryAccessResource.ROOT_SEIS, RepositoryAccessResource.QP_BUILD, "false").get();
 		
 		assertEquals("Build message missing", countWithSync - 1, listener.getCount());
 		
 		// Request with the query param sync = false that should create no messages
 		listener.setCount(0);
-		getTestRequestBuilderWithQueryParam(ModelAccessResource.ROOT_SEIS, ModelAccessResource.QP_SYNC, "false").get();
+		getTestRequestBuilderWithQueryParam(RepositoryAccessResource.ROOT_SEIS, RepositoryAccessResource.QP_SYNC, "false").get();
 		
 		assertEquals("No new messages", 0, listener.getCount());
 		
@@ -185,7 +186,7 @@ public class ModelAccessResourceTest extends AModelAccessResourceTest {
 		
 		// Request with the query param sync = false should still create log no messages
 		listener.setCount(0);
-		getTestRequestBuilderWithQueryParam(ModelAccessResource.FORCE_SYNC, ModelAccessResource.QP_SYNC, "false").get();
+		getTestRequestBuilderWithQueryParam(RepositoryAccessResource.FORCE_SYNC, RepositoryAccessResource.QP_SYNC, "false").get();
 		
 		int countWithSync = listener.getCount();
 		assertThat("At least one log message because of synchronization", countWithSync, greaterThan(0));
@@ -197,8 +198,8 @@ public class ModelAccessResourceTest extends AModelAccessResourceTest {
 	public void testCreateRootSei() throws Exception {
 		String wantedTypeFqn = tSei.getFullQualifiedSturcturalElementName();
 		
-		Response response = getTestRequestBuilderWithQueryParam(ModelAccessResource.ROOT_SEIS, 
-				ModelAccessResource.QP_FULL_QUALIFIED_NAME, wantedTypeFqn).post(Entity.json(null));
+		Response response = getTestRequestBuilderWithQueryParam(RepositoryAccessResource.ROOT_SEIS, 
+				RepositoryAccessResource.QP_FULL_QUALIFIED_NAME, wantedTypeFqn).post(Entity.json(null));
 		
 		IUuid entity = assertIUuidGotCreated(response, wantedTypeFqn, ed, ed.getResourceSet().getRepository().getRootEntities());
 		
@@ -208,8 +209,8 @@ public class ModelAccessResourceTest extends AModelAccessResourceTest {
 		// Assert implicit parent discipline rights check
 		setDiscipline(ed.getResourceSet().getRepository(), anotherDiscipline);
 		
-		response = getTestRequestBuilderWithQueryParam(ModelAccessResource.ROOT_SEIS, 
-				ModelAccessResource.QP_FULL_QUALIFIED_NAME, wantedTypeFqn).post(Entity.json(null));
+		response = getTestRequestBuilderWithQueryParam(RepositoryAccessResource.ROOT_SEIS, 
+				RepositoryAccessResource.QP_FULL_QUALIFIED_NAME, wantedTypeFqn).post(Entity.json(null));
 		assertCommandNotExecuteableErrorResponse(response);
 	}
 	
@@ -218,15 +219,15 @@ public class ModelAccessResourceTest extends AModelAccessResourceTest {
 		int commits = VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath());
 		
 		// Test all disciplines
-		String entityString = getTestRequestBuilder(ModelAccessResource.DISCIPLINES).get(String.class);
+		String entityString = getTestRequestBuilder(RepositoryAccessResource.DISCIPLINES).get(String.class);
 		assertTrue("Test discipline should be returned", entityString.contains(DISCIPLINE_NAME));
 		
 		// Test role management discipline
-		entityString = getTestRequestBuilder(ModelAccessResource.ROLEMANAGEMENT).get(String.class);
+		entityString = getTestRequestBuilder(RepositoryAccessResource.ROLEMANAGEMENT).get(String.class);
 		assertTrue("Test discipline should be returned", entityString.contains(DISCIPLINE_NAME));
 		
 		// Test repository discipline
-		entityString = getTestRequestBuilder(ModelAccessResource.REPOSITORY).get(String.class);
+		entityString = getTestRequestBuilder(RepositoryAccessResource.REPOSITORY).get(String.class);
 		assertTrue("Test discipline should be returned", entityString.contains(DISCIPLINE_NAME));
 		
 		assertEquals("No new commit on get without remote changes", commits, 

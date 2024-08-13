@@ -9,11 +9,11 @@
  */
 package de.dlr.sc.virsat.model.concept.generator.propertyTester;
 
+import com.google.inject.Inject;
 import de.dlr.sc.virsat.model.concept.ConceptLanguageTestInjectorProvider;
 import de.dlr.sc.virsat.model.concept.test.util.GeneratorJunitAssert;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.ConceptsPackage;
-import javax.inject.Inject;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.XtextRunner;
@@ -32,13 +32,13 @@ public class GenerateConceptEnabledTesterTest {
   @Inject
   @Extension
   private ParseHelper<Concept> _parseHelper;
-  
+
   private Concept concept;
-  
+
   private final String testConceptName = "testConcept";
-  
+
   private final GenerateConceptEnabledTester conceptEnabledPropertyTesterGenerator = new GenerateConceptEnabledTester();
-  
+
   @Before
   public void setUp() {
     try {
@@ -53,21 +53,21 @@ public class GenerateConceptEnabledTesterTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCreateConcreteClassFileName() {
     final String fileName = this.conceptEnabledPropertyTesterGenerator.createConcreteClassFileName(this.concept, this.concept);
     final String expectedFileName = (((("../../" + this.testConceptName) + ".ui/src/") + this.testConceptName) + "/propertyTester/ConceptEnabledTester.java");
     Assert.assertEquals("Concrete file name for the generated ConceptEnabledTester is correct", expectedFileName, fileName);
   }
-  
+
   @Test
   public void testCreateAbstractClassFileName() {
     final String fileName = this.conceptEnabledPropertyTesterGenerator.createAbstractClassFileName(this.concept, this.concept);
     final String expectedFileName = (((("../../" + this.testConceptName) + ".ui/src-gen/") + this.testConceptName) + "/propertyTester/AConceptEnabledTester.java");
     Assert.assertEquals("Abstract file name for the generated ConceptEnabledTester is correct", expectedFileName, fileName);
   }
-  
+
   @Test
   public void testCreateConcreteClass() {
     try {
@@ -77,7 +77,7 @@ public class GenerateConceptEnabledTesterTest {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   @Test
   public void testCreateAbstractClass() {
     try {

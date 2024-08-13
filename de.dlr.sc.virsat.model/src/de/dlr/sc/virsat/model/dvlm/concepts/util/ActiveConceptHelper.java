@@ -509,12 +509,12 @@ public class ActiveConceptHelper {
 		final String fqnObjectClazz = getCachedQualifiedClassName(eObjectClass);
 
 		// If the object is of the same type as the one where it should be assigned to, than the result is true;
-		if (fqnTypeClazz.equals(fqnObjectClazz)) {
+		if ((fqnTypeClazz != null) && fqnTypeClazz.equals(fqnObjectClazz)) {
 			return true;
 		}
 		
 		// Otherwise start looping over all potential types
-		if ((fqnTypeClazz != null) && (!fqnTypeClazz.isEmpty())) {
+		if ((fqnTypeClazz != null) && !fqnTypeClazz.isEmpty()) {
 
 			for (EClass eObjectSuperType : eObjectClass.getEAllSuperTypes()) {
 				String fqnObjectSuperType = getCachedQualifiedClassName(eObjectSuperType); 

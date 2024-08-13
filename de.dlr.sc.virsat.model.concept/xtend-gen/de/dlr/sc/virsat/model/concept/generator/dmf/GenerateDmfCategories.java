@@ -79,31 +79,31 @@ import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 @SuppressWarnings("all")
 public class GenerateDmfCategories {
   public static final String GENMODEL_TYPE_ECORE_EXTENSION = "genmodel";
-  
+
   public static final String MODEL_TYPE_ECORE_EXTENSION = "ecore";
-  
+
   public static final String MODEL_CONCEPT_ECORE_FILENAME = ("concept." + GenerateDmfCategories.MODEL_TYPE_ECORE_EXTENSION);
-  
+
   public static final String GENMODEL_CONCEPT_ECORE_FILENAME = ("concept." + GenerateDmfCategories.GENMODEL_TYPE_ECORE_EXTENSION);
-  
+
   public static final String MODEL_DVLM_ECORE_URI = "/de.dlr.sc.virsat.model/model/dvlm.ecore";
-  
+
   public static final String MODEL_DMF_DOBJECT_NAME = "DObject";
-  
+
   public static final String MODEL_NS_PREFIX_PREFIX = "dmf_";
-  
+
   private EClass dvlmDObject;
-  
+
   private ResourceSet ecoreModelResourceSet;
-  
+
   private Resource targetResource;
-  
+
   private Resource dvlmResource;
-  
+
   private String platformPluginUriStringForEcoreModel;
-  
+
   private Set<EPackage> eReferenceEPackages = new HashSet<EPackage>();
-  
+
   /**
    * This method serialized the data model into the given format
    * @param fileNameExtension the extension of the target format to serialize to. Can be either XMI or XML for the  moment
@@ -219,7 +219,7 @@ public class GenerateDmfCategories {
       throw Exceptions.sneakyThrow(_e);
     }
   }
-  
+
   /**
    * This method creates the Ecore EPackage from a concept where all categories will
    * be stored in
@@ -235,7 +235,7 @@ public class GenerateDmfCategories {
     this.targetResource.getContents().add(ePackage);
     return ePackage;
   }
-  
+
   /**
    * This method creates the classes corresponding to categories
    * @param conceptModel the concept model which contains all categories
@@ -256,21 +256,21 @@ public class GenerateDmfCategories {
             attribute.setEType(EcorePackage.Literals.ESTRING);
             return attribute;
           }
-          
+
           @Override
           public EStructuralFeature caseFloatProperty(final FloatProperty object) {
             final EAttribute attribute = EcoreFactory.eINSTANCE.createEAttribute();
             attribute.setEType(EcorePackage.Literals.EDOUBLE);
             return attribute;
           }
-          
+
           @Override
           public EStructuralFeature caseIntProperty(final IntProperty object) {
             final EAttribute attribute = EcoreFactory.eINSTANCE.createEAttribute();
             attribute.setEType(EcorePackage.Literals.EINT);
             return attribute;
           }
-          
+
           @Override
           public EStructuralFeature caseEnumProperty(final EnumProperty object) {
             final EAttribute attribute = EcoreFactory.eINSTANCE.createEAttribute();
@@ -280,28 +280,28 @@ public class GenerateDmfCategories {
             _eClassifiers.add(eEnumType);
             return attribute;
           }
-          
+
           @Override
           public EStructuralFeature caseBooleanProperty(final BooleanProperty object) {
             final EAttribute attribute = EcoreFactory.eINSTANCE.createEAttribute();
             attribute.setEType(EcorePackage.Literals.EBOOLEAN);
             return attribute;
           }
-          
+
           @Override
           public EStructuralFeature caseResourceProperty(final ResourceProperty object) {
             final EAttribute attribute = EcoreFactory.eINSTANCE.createEAttribute();
             attribute.setEType(EcorePackage.Literals.ESTRING);
             return attribute;
           }
-          
+
           @Override
           public EStructuralFeature caseComposedProperty(final ComposedProperty cp) {
             final EReference eReference = EcoreFactory.eINSTANCE.createEReference();
             eReference.setContainment(true);
             return eReference;
           }
-          
+
           @Override
           public EStructuralFeature caseReferenceProperty(final ReferenceProperty rp) {
             ATypeDefinition _referenceType = rp.getReferenceType();
@@ -311,7 +311,7 @@ public class GenerateDmfCategories {
             final EReference eReference = EcoreFactory.eINSTANCE.createEReference();
             return eReference;
           }
-          
+
           @Override
           public EStructuralFeature caseEReferenceProperty(final EReferenceProperty object) {
             final EReference eReference = EcoreFactory.eINSTANCE.createEReference();
@@ -372,7 +372,7 @@ public class GenerateDmfCategories {
             eReference.setContainment(true);
             return eReference;
           }
-          
+
           @Override
           public EStructuralFeature caseReferenceProperty(final ReferenceProperty rp) {
             final EClass referencedEClass = GenerateDmfCategories.this.findTypeDefinitionInEcoreResource(rp.getReferenceType());
@@ -389,7 +389,7 @@ public class GenerateDmfCategories {
     };
     conceptModel.getCategories().forEach(_function_1);
   }
-  
+
   /**
    * This method creates and EEnum Class out of the information of
    * the EnumProperty
@@ -409,7 +409,7 @@ public class GenerateDmfCategories {
     property.getValues().forEach(_function);
     return eEnum;
   }
-  
+
   /**
    * This method initializes the resource set by creating the target resource
    * and getting DVLM Ecore model and the DObject.
@@ -431,14 +431,14 @@ public class GenerateDmfCategories {
     }
     return _xblockexpression;
   }
-  
+
   /**
    * Gets the Ecore model resource set
    */
   public ResourceSet getEcoreModelResourceSet() {
     return this.ecoreModelResourceSet;
   }
-  
+
   /**
    * This method finds a property in its Ecore representation rather than in the .concept xText based
    * file. This is needed to create correct references in one Ecore based category model to another one
@@ -467,7 +467,7 @@ public class GenerateDmfCategories {
     final EClass referencedEClass = ((EClass) _findFirst);
     return referencedEClass;
   }
-  
+
   /**
    * This method hands back the DObject from the DVLM Ecore which
    * is the base class for all implementations of the category eClasses

@@ -39,7 +39,7 @@ import org.eclipse.xtext.xbase.lib.StringExtensions;
 public class GenerateUiPluginXml {
   @Accessors
   private PluginXmlReader pluginXmlReader;
-  
+
   public void serializeModel(final Concept concept, final PluginXmlReader pluginXmlReader, final IFileSystemAccess fsa) {
     this.pluginXmlReader = pluginXmlReader;
     final String fileName = "plugin.xml";
@@ -49,7 +49,7 @@ public class GenerateUiPluginXml {
     final String uiFolder = (("../../" + uiPlugin) + "/");
     fsa.generateFile((uiFolder + fileName), ConceptOutputConfigurationProvider.GENERATOR_OUTPUT_ID_SOURCE, fileOutput);
   }
-  
+
   public CharSequence createUiXml(final Concept concept, final String uiPlugin) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
@@ -355,7 +355,7 @@ public class GenerateUiPluginXml {
     _builder.newLine();
     return _builder;
   }
-  
+
   public CharSequence declareCommandsImages(final Concept concept, final IQualifiedName qualifiedName) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("<image");
@@ -382,7 +382,7 @@ public class GenerateUiPluginXml {
     _builder.newLine();
     return _builder;
   }
-  
+
   public CharSequence declareCommands(final Concept concept, final IQualifiedName qualifiedNameObject) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("<command");
@@ -403,7 +403,7 @@ public class GenerateUiPluginXml {
     _builder.newLine();
     return _builder;
   }
-  
+
   public CharSequence declareHandler(final Concept concept, final Category category) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("<handler");
@@ -427,7 +427,7 @@ public class GenerateUiPluginXml {
     _builder.newLine();
     return _builder;
   }
-  
+
   public CharSequence declareHandler(final Concept concept, final StructuralElement structuralElement) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("<handler");
@@ -451,7 +451,7 @@ public class GenerateUiPluginXml {
     _builder.newLine();
     return _builder;
   }
-  
+
   public CharSequence declareAddConceptSubMenuMenuContributions(final Concept concept) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("<menuContribution");
@@ -592,7 +592,7 @@ public class GenerateUiPluginXml {
     _builder.newLine();
     return _builder;
   }
-  
+
   public CharSequence declareAddCategoryMenuContributions(final Concept concept, final Category category) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("<command");
@@ -667,7 +667,7 @@ public class GenerateUiPluginXml {
     _builder.newLine();
     return _builder;
   }
-  
+
   public CharSequence declareAddStructuralElementMenuContributions(final Concept concept, final StructuralElement structuralElement) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("<command");
@@ -772,7 +772,7 @@ public class GenerateUiPluginXml {
     _builder.newLine();
     return _builder;
   }
-  
+
   public CharSequence declareEditorSection(final Concept concept) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("<extension");
@@ -800,7 +800,7 @@ public class GenerateUiPluginXml {
     _builder.newLine();
     return _builder;
   }
-  
+
   public CharSequence declareUiSnippetTables(final Concept concept, final ATypeDefinition typeDefinition) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("<uiSnippet");
@@ -833,7 +833,7 @@ public class GenerateUiPluginXml {
     _builder.newLine();
     return _builder;
   }
-  
+
   public CharSequence declareUiSnippetArrayTables(final Concept concept, final AProperty property, final Category category, final Category extendingCategory) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("<uiSnippet");
@@ -868,7 +868,7 @@ public class GenerateUiPluginXml {
     _builder.newLine();
     return _builder;
   }
-  
+
   public CharSequence declareUiSnippetVerificationTables(final Concept conceptToBeVerified, final Category verificationCategory) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("<uiSnippet");
@@ -898,7 +898,7 @@ public class GenerateUiPluginXml {
     _builder.newLine();
     return _builder;
   }
-  
+
   public CharSequence declareUiSnippetArrayTables(final Concept concept, final AProperty property, final Category category) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("<uiSnippet");
@@ -931,7 +931,7 @@ public class GenerateUiPluginXml {
     _builder.newLine();
     return _builder;
   }
-  
+
   public CharSequence declareConceptImageExtension(final IQualifiedName qualifiedNameObject) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("<conceptImage");
@@ -952,7 +952,7 @@ public class GenerateUiPluginXml {
     _builder.newLine();
     return _builder;
   }
-  
+
   public CharSequence declareUiSnippetSections(final Concept concept, final Category category) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("<uiSnippet");
@@ -985,14 +985,14 @@ public class GenerateUiPluginXml {
     _builder.newLine();
     return _builder;
   }
-  
+
   public String getCommandId(final Concept concept, final IQualifiedName qualifiedNameObject) {
     String _name = concept.getName();
     String _plus = (_name + ".ui.command.Add");
     String _name_1 = qualifiedNameObject.getName();
     return (_plus + _name_1);
   }
-  
+
   /**
    * Call thus method to hand back the name of the current concept
    * In case the short name is set it will be returned otherwise the usual name will be handed back
@@ -1007,7 +1007,7 @@ public class GenerateUiPluginXml {
     }
     return _xifexpression;
   }
-  
+
   public ATypeDefinition getVerificationType(final AProperty property) {
     Object _xblockexpression = null;
     {
@@ -1020,16 +1020,16 @@ public class GenerateUiPluginXml {
     }
     return ((ATypeDefinition)_xblockexpression);
   }
-  
+
   public boolean isVerificationTypeInConcept(final Concept concept, final AProperty property) {
     return ActiveConceptHelper.getConcept(this.getVerificationType(property)).equals(concept);
   }
-  
+
   @Pure
   public PluginXmlReader getPluginXmlReader() {
     return this.pluginXmlReader;
   }
-  
+
   public void setPluginXmlReader(final PluginXmlReader pluginXmlReader) {
     this.pluginXmlReader = pluginXmlReader;
   }

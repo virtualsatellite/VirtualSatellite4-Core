@@ -9,7 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.concept.types.qudv;
 
-import javax.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlElement;
 
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.SetCommand;
@@ -17,7 +17,8 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 
 import de.dlr.sc.virsat.model.dvlm.qudv.LinearConversionUnit;
 import de.dlr.sc.virsat.model.dvlm.qudv.QudvPackage;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 
 public class BeanUnitLinearConversion extends ABeanConversionBasedUnit<LinearConversionUnit> {
 
@@ -29,7 +30,7 @@ public class BeanUnitLinearConversion extends ABeanConversionBasedUnit<LinearCon
 		super(unit);
 	}
 	
-	@ApiModelProperty(required = true)
+	@Schema(required = true)
 	@XmlElement
 	public double getFactor() {
 		return unit.getFactor();

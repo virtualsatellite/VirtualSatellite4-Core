@@ -46,29 +46,29 @@ public class GenerateCategoryUiSnippetArrayTable extends AGeneratorGapGenerator<
     String _name = concept.getName();
     return (_name + ".ui.snippet");
   }
-  
+
   public static String getConcreteClassName(final AProperty property, final Category category) {
     String _firstUpper = StringExtensions.toFirstUpper(ConceptGeneratorUtil.getPropertyId(property, category));
     return ("UiSnippetTable" + _firstUpper);
   }
-  
+
   public static String getAbstractClassName(final AProperty property, final Category category) {
     String _firstUpper = StringExtensions.toFirstUpper(ConceptGeneratorUtil.getPropertyId(property, category));
     return ("AUiSnippetTable" + _firstUpper);
   }
-  
+
   public static String getConcreteClassName(final AProperty property, final Category category, final Category extendingCategory) {
     String _concreteClassName = GenerateCategoryUiSnippetArrayTable.getConcreteClassName(property, category);
     String _firstUpper = StringExtensions.toFirstUpper(extendingCategory.getName());
     return (_concreteClassName + _firstUpper);
   }
-  
+
   public static String getAbstractClassName(final AProperty property, final Category category, final Category extendingCategory) {
     String _abstractClassName = GenerateCategoryUiSnippetArrayTable.getAbstractClassName(property, category);
     String _firstUpper = StringExtensions.toFirstUpper(extendingCategory.getName());
     return (_abstractClassName + _firstUpper);
   }
-  
+
   @Override
   public String createConcreteClassFileName(final Concept concept, final AProperty property) {
     String _name = concept.getName();
@@ -78,7 +78,7 @@ public class GenerateCategoryUiSnippetArrayTable extends AGeneratorGapGenerator<
     String _plus_2 = (_plus_1 + _packageFolder);
     return (_plus_2 + "/");
   }
-  
+
   @Override
   public String createAbstractClassFileName(final Concept concept, final AProperty property) {
     String _name = concept.getName();
@@ -88,35 +88,35 @@ public class GenerateCategoryUiSnippetArrayTable extends AGeneratorGapGenerator<
     String _plus_2 = (_plus_1 + _packageFolder);
     return (_plus_2 + "/");
   }
-  
+
   public String createConcreteClassFileName(final Concept concept, final AProperty property, final Category category, final Category extendingCategory) {
     String _createConcreteClassFileName = this.createConcreteClassFileName(concept, property);
     String _concreteClassName = GenerateCategoryUiSnippetArrayTable.getConcreteClassName(property, category, extendingCategory);
     String _plus = (_createConcreteClassFileName + _concreteClassName);
     return (_plus + ".java");
   }
-  
+
   public String createAbstractClassFileName(final Concept concept, final AProperty property, final Category category, final Category extendingCategory) {
     String _createAbstractClassFileName = this.createAbstractClassFileName(concept, property);
     String _abstractClassName = GenerateCategoryUiSnippetArrayTable.getAbstractClassName(property, category, extendingCategory);
     String _plus = (_createAbstractClassFileName + _abstractClassName);
     return (_plus + ".java");
   }
-  
+
   public String createConcreteClassFileName(final Concept concept, final AProperty property, final Category category) {
     String _createConcreteClassFileName = this.createConcreteClassFileName(concept, property);
     String _concreteClassName = GenerateCategoryUiSnippetArrayTable.getConcreteClassName(property, category);
     String _plus = (_createConcreteClassFileName + _concreteClassName);
     return (_plus + ".java");
   }
-  
+
   public String createAbstractClassFileName(final Concept concept, final AProperty property, final Category category) {
     String _createAbstractClassFileName = this.createAbstractClassFileName(concept, property);
     String _abstractClassName = GenerateCategoryUiSnippetArrayTable.getAbstractClassName(property, category);
     String _plus = (_createAbstractClassFileName + _abstractClassName);
     return (_plus + ".java");
   }
-  
+
   @Override
   public void serializeModel(final Concept concept, final IFileSystemAccess fsa) {
     final Consumer<Category> _function = (Category it) -> {
@@ -151,7 +151,7 @@ public class GenerateCategoryUiSnippetArrayTable extends AGeneratorGapGenerator<
     };
     concept.getNonAbstractCategories().forEach(_function);
   }
-  
+
   public String createConcreteClass(final Concept concept, final AProperty conceptPart, final Category category) {
     String _package = this.getPackage(concept);
     final ImportManager imCClass = new ImportManager(_package);
@@ -173,7 +173,7 @@ public class GenerateCategoryUiSnippetArrayTable extends AGeneratorGapGenerator<
     String fileOutputClass = _builder.toString();
     return fileOutputClass;
   }
-  
+
   public String createConcreteClass(final Concept concept, final AProperty conceptPart, final Category category, final Category extendingCategory) {
     String _package = this.getPackage(concept);
     final ImportManager imCClass = new ImportManager(_package);
@@ -195,7 +195,7 @@ public class GenerateCategoryUiSnippetArrayTable extends AGeneratorGapGenerator<
     String fileOutputClass = _builder.toString();
     return fileOutputClass;
   }
-  
+
   public String createAbstractClass(final Concept concept, final AProperty conceptPart, final Category category, final Category extendingCategory) {
     String _package = this.getPackage(concept);
     final ImportManager imAClass = new ImportManager(_package);
@@ -217,7 +217,7 @@ public class GenerateCategoryUiSnippetArrayTable extends AGeneratorGapGenerator<
     String fileOutputAClass = _builder.toString();
     return fileOutputAClass;
   }
-  
+
   /**
    * This method just creates the package declaration. The concept name needs to fit to the package name
    */
@@ -230,7 +230,7 @@ public class GenerateCategoryUiSnippetArrayTable extends AGeneratorGapGenerator<
     _builder.newLineIfNotEmpty();
     return _builder;
   }
-  
+
   /**
    * Handle the import statements
    */
@@ -254,7 +254,7 @@ public class GenerateCategoryUiSnippetArrayTable extends AGeneratorGapGenerator<
     }
     return _builder;
   }
-  
+
   @Override
   protected CharSequence declareClass(final Concept concept, final AProperty type, final ImportManager importManager) {
     CharSequence _xblockexpression = null;
@@ -265,7 +265,7 @@ public class GenerateCategoryUiSnippetArrayTable extends AGeneratorGapGenerator<
     }
     return _xblockexpression;
   }
-  
+
   protected CharSequence declareClass(final Concept concept, final AProperty type, final Category category, final Category extendingCategory, final ImportManager importManager) {
     StringConcatenation _builder = new StringConcatenation();
     importManager.register("de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet");
@@ -286,7 +286,7 @@ public class GenerateCategoryUiSnippetArrayTable extends AGeneratorGapGenerator<
     _builder.newLine();
     return _builder;
   }
-  
+
   protected CharSequence declareClass(final Concept concept, final AProperty type, final Category category, final ImportManager importManager) {
     StringConcatenation _builder = new StringConcatenation();
     importManager.register("de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet");
@@ -307,7 +307,7 @@ public class GenerateCategoryUiSnippetArrayTable extends AGeneratorGapGenerator<
     _builder.newLine();
     return _builder;
   }
-  
+
   @Override
   protected CharSequence declareAClass(final Concept concept, final AProperty arrayProperty, final ImportManager importManager) {
     CharSequence _xblockexpression = null;
@@ -318,7 +318,7 @@ public class GenerateCategoryUiSnippetArrayTable extends AGeneratorGapGenerator<
     }
     return _xblockexpression;
   }
-  
+
   protected CharSequence declareAClass(final Concept concept, final AProperty arrayProperty, final Category category, final Category extendingCategory, final ImportManager importManager) {
     CharSequence _xifexpression = null;
     if ((arrayProperty instanceof ComposedProperty)) {
@@ -352,7 +352,7 @@ public class GenerateCategoryUiSnippetArrayTable extends AGeneratorGapGenerator<
     }
     return _xifexpression;
   }
-  
+
   /**
    * This method handles the UiSnippet for a Table of Dynamic Array of Properties
    */
@@ -435,7 +435,7 @@ public class GenerateCategoryUiSnippetArrayTable extends AGeneratorGapGenerator<
     _builder.newLine();
     return _builder;
   }
-  
+
   /**
    * This method handles the UiSnippet for a Table of Static Array of Properties
    */
@@ -511,7 +511,7 @@ public class GenerateCategoryUiSnippetArrayTable extends AGeneratorGapGenerator<
     _builder.newLine();
     return _builder;
   }
-  
+
   /**
    * This method handles the UiSnippet for a Table of Static Array of Categories
    */
@@ -597,7 +597,7 @@ public class GenerateCategoryUiSnippetArrayTable extends AGeneratorGapGenerator<
     _builder.newLine();
     return _builder;
   }
-  
+
   /**
    * This method handles the UiSnippet for a Table of Dynamic Array of Categories
    */
@@ -697,7 +697,7 @@ public class GenerateCategoryUiSnippetArrayTable extends AGeneratorGapGenerator<
     _builder.newLine();
     return _builder;
   }
-  
+
   /**
    * This method hands back the correct reference depending
    * on if it is a composed or reference property.

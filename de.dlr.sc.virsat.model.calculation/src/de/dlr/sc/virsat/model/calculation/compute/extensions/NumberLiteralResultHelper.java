@@ -37,6 +37,7 @@ import de.dlr.sc.virsat.model.dvlm.calculation.NumberLiteral;
 import de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind;
 import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
 import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper.QudvCalcMethod;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * Helper class for applying operations to number literals
@@ -61,6 +62,10 @@ public class NumberLiteralResultHelper {
 	 * Get the value of the literal, while respecting the case of being not a number
 	 * @return value of the literal
 	 */
+	@SuppressFBWarnings(
+			justification = "This is not a problem since it is the more easy way of coding",
+			value = "DCN_NULLPOINTER_EXCEPTION"
+	)
 	public double getValue() {
 		try {
 			double doubleValue = Double.parseDouble(numberLiteralResult.getNumberLiteral().getValue());

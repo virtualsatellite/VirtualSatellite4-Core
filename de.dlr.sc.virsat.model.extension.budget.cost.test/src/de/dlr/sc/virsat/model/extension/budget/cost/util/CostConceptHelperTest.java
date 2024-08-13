@@ -56,25 +56,25 @@ public class CostConceptHelperTest {
 		
 		boolean result = cch.initBeansForObject(new Object());
 		assertFalse("Not a SEI object", result);
-		assertNotNull("There is always a bean", cch.bSei);
-		assertNull("But it may be empty", cch.bSei.getStructuralElementInstance());
+		assertNotNull("There is always a bean", cch.getbSei());
+		assertNull("But it may be empty", cch.getbSei().getStructuralElementInstance());
 		
 		result = cch.initBeansForObject(sei);
 		assertTrue("Found Sei Object", result);
-		assertNotNull("bean Detected", cch.bSei);
-		assertEquals("The bSei has the correct TI", sei, cch.bSei.getStructuralElementInstance());
-		assertNotNull("Found Cost Summary CA", cch.costSummary);
-		assertNull("No bean detected", cch.costEquipment);
+		assertNotNull("bean Detected", cch.getbSei());
+		assertEquals("The bSei has the correct TI", sei, cch.getbSei().getStructuralElementInstance());
+		assertNotNull("Found Cost Summary CA", cch.getCostSummary());
+		assertNull("No bean detected", cch.getCostEquipment());
 		
 		CostEquipment costEquipment = new CostEquipment(concept);
 		beanSei.add(costEquipment);
 		
 		result = cch.initBeansForObject(sei);
 		assertTrue("Found Sei Object", result);
-		assertNotNull("bean Detected", cch.bSei);
-		assertEquals("The bSei has the correct TI", sei, cch.bSei.getStructuralElementInstance());
-		assertNotNull("Found Cost Summary CA", cch.costSummary);
-		assertNotNull("Found Cost Equipment CA", cch.costEquipment);
+		assertNotNull("bean Detected", cch.getbSei());
+		assertEquals("The bSei has the correct TI", sei, cch.getbSei().getStructuralElementInstance());
+		assertNotNull("Found Cost Summary CA", cch.getCostSummary());
+		assertNotNull("Found Cost Equipment CA", cch.getCostEquipment());
 	}
 
 }
