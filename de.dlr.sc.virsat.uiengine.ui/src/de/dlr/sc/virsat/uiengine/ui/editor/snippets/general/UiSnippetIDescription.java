@@ -81,12 +81,12 @@ public class UiSnippetIDescription extends AUiEStructuralFeatureSectionSnippet i
 	}
 
 	/**
-	 * Method to set up the Text 
+	 * Method to set up the Text in proper Grid Dimensions
 	 * @param editingDomain the editingDomain
 	 */
 	private void setUpText(EditingDomain editingDomain) {
 		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
-        gridData.heightHint = 100;
+		gridData.heightHint = 100;
 	    textDescription.setLayoutData(gridData);
 	}
 
