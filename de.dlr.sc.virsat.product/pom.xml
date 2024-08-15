@@ -25,8 +25,7 @@
 		<profile>
 			<id>deploy</id>
 			<properties>
-				<build.folder.application>VirSat4_Core_Application</build.folder.application>
-				<build.folder.fullpath>${build.folder.target.bin}/${build.folder.application}/${build.folder.type}</build.folder.fullpath>
+				<build.folder.fullpath>${build.folder.target}/${build.folder.type}</build.folder.fullpath>
 			</properties>
 
 			<build>
@@ -99,18 +98,6 @@
 									<target>
 										<!-- ANT Script Start -->
 
-										<fail
-											message="Cannot Release!!! Release folder already exists !!! Potential overwrite to ${build.folder.fullpath} !!!">
-											<condition>
-												<and>
-													<equals arg1="${build.deploy.release}" arg2="true" />
-													<available file="${build.folder.fullpath}"
-														type="dir" />
-												</and>
-											</condition>
-										</fail>
-
-										<delete dir="${build.folder.fullpath}" />
 										<copy toDir="${build.folder.fullpath}">
 											<fileset dir="./target/products/">
 											    <include name="*.tar.gz"/>
