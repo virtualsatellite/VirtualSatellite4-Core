@@ -2,10 +2,10 @@
 <launchConfiguration type="org.eclipse.m2e.Maven2LaunchConfigurationType">
     <intAttribute key="M2_COLORS" value="0"/>
     <booleanAttribute key="M2_DEBUG_OUTPUT" value="false"/>
-    <stringAttribute key="M2_GOALS" value="install -DJOB_NAME=Local_Build"/>
+    <stringAttribute key="M2_GOALS" value="install -DJOB_NAME=Local_Build "/>
     <booleanAttribute key="M2_NON_RECURSIVE" value="false"/>
     <booleanAttribute key="M2_OFFLINE" value="false"/>
-    <stringAttribute key="M2_PROFILES" value="development,product,doc,deploy,deployUnsecured"/>
+    <stringAttribute key="M2_PROFILES" value="development,product,doc,deploy,deploySecured"/>
     <listAttribute key="M2_PROPERTIES"/>
     <stringAttribute key="M2_RUNTIME" value="EMBEDDED"/>
     <booleanAttribute key="M2_SKIP_TESTS" value="false"/>
@@ -14,6 +14,9 @@
     <stringAttribute key="M2_USER_SETTINGS" value=""/>
     <booleanAttribute key="M2_WORKSPACE_RESOLUTION" value="false"/>
     <booleanAttribute key="org.eclipse.debug.core.ATTR_FORCE_SYSTEM_CONSOLE_ENCODING" value="false"/>
+    <mapAttribute key="org.eclipse.debug.core.environmentVariables">
+        <mapEntry key="GITHUB_SHA" value="12345ABCDEF"/>
+    </mapAttribute>
     <stringAttribute key="org.eclipse.debug.ui.ATTR_CONSOLE_ENCODING" value="UTF-8"/>
     <listAttribute key="org.eclipse.debug.ui.favoriteGroups">
         <listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
