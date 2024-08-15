@@ -11,7 +11,6 @@ package de.dlr.sc.virsat.graphiti.ui.diagram.editor;
 
 import java.util.Set;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -155,13 +154,11 @@ public class VirSatDiagramUpdateBehavior extends DefaultUpdateBehavior {
 		try {
 			decodedPath = URLDecoder.decode(diagramInput.getUri().toPlatformString(false), StandardCharsets.UTF_8.name());
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	//  Path path = new Path(decodedPath);
-	//	IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(path);
-		IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(decodedPath));
-		IProject project = file.getProject();
+		Path path = new Path(decodedPath);
+		IResource resource =  ResourcesPlugin.getWorkspace().getRoot().getFile(path);
+		IProject project = resource.getProject();
 		VirSatResourceSet resourceSet = VirSatResourceSet.getResourceSet(project);
 		VirSatTransactionalEditingDomain ed =  VirSatEditingDomainRegistry.INSTANCE.getEd(resourceSet);
 		
