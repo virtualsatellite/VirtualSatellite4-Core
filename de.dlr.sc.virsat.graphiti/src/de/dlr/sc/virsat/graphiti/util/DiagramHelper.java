@@ -9,11 +9,15 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.graphiti.util;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
+//import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.command.CommandStack;
@@ -88,9 +92,23 @@ public class DiagramHelper {
 			seiUri = seiUri.appendFileExtension(VirSatProjectCommons.FILENAME_EXTENSION);
 			seiUri = URI.createPlatformResourceURI(seiUri.toFileString(), true);
 			
-			Path path = new Path(resourceUri.toPlatformString(false));
-			IResource iResource = ResourcesPlugin.getWorkspace().getRoot().findMember(path);
-			IProject project = iResource.getProject();
+			
+//			Path path = new Path(resourceUri.toPlatformString(false));
+//			IResource iResource = ResourcesPlugin.getWorkspace().getRoot().findMember(path);
+//			IProject project = iResource.getProject();
+//			ResourceSet resourceSet = VirSatResourceSet.getResourceSet(project);
+//			
+			String decodedPath = null;
+			try {
+				decodedPath = URLDecoder.decode(resourceUri.toPlatformString(false), StandardCharsets.UTF_8.name());
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			//Path path = new Path(decodedPath);
+			//IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(path);
+			IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(decodedPath));
+			IProject project = file.getProject();
 			ResourceSet resourceSet = VirSatResourceSet.getResourceSet(project);
 			
 			// Now that we have the correct URI, grab the corresponding resource from the resource set

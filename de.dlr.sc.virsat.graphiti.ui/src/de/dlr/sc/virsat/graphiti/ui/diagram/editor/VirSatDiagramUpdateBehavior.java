@@ -11,6 +11,7 @@ package de.dlr.sc.virsat.graphiti.ui.diagram.editor;
 
 import java.util.Set;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -29,6 +30,10 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain.IResourceEventListener;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * The update behavior for VirSat diagrams.
@@ -146,9 +151,17 @@ public class VirSatDiagramUpdateBehavior extends DefaultUpdateBehavior {
 		// Dont create a new editing domain, instead get the virsat editing domain
 		// associated with the project of this file 
 		DiagramEditorInput diagramInput = (DiagramEditorInput) input;
-		Path path = new Path(diagramInput.getUri().toPlatformString(false));
-		IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(path);
-		IProject project = resource.getProject();
+		String decodedPath = null;
+		try {
+			decodedPath = URLDecoder.decode(diagramInput.getUri().toPlatformString(false), StandardCharsets.UTF_8.name());
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	//  Path path = new Path(decodedPath);
+	//	IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(path);
+		IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(decodedPath));
+		IProject project = file.getProject();
 		VirSatResourceSet resourceSet = VirSatResourceSet.getResourceSet(project);
 		VirSatTransactionalEditingDomain ed =  VirSatEditingDomainRegistry.INSTANCE.getEd(resourceSet);
 		
