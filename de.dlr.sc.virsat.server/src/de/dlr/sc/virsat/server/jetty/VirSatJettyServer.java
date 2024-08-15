@@ -107,8 +107,8 @@ public class VirSatJettyServer {
 			//servletContextHandler.addServlet(PersonServletContainer.class, "/rest/persons/*");
 			
 			registerServlet(servletContextHandler, StatusServlet.class, "Server Status", "/status");
-			registerServlet(servletContextHandler, ModelAccessServletContainer.class, "Model API", PATH + ModelAccessServletContainer.MODEL_API + SUFFIX);
-			registerServlet(servletContextHandler, RepoManagementServletContainer.class, "Model API", PATH + RepoManagementServletContainer.MANAGEMENT_API + SUFFIX);
+			registerServlet(servletContextHandler, ModelAccessServletContainer.class, "Repository and Model API", PATH + ModelAccessServletContainer.MODEL_API + SUFFIX);
+			registerServlet(servletContextHandler, RepoManagementServletContainer.class, "Project Management API", PATH + RepoManagementServletContainer.MANAGEMENT_API + SUFFIX);
 			
 			// provide swagger UI at base path
 			Activator.getDefault().getLog().info("Setting up Servlet for: Swagger UI");

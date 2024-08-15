@@ -15,6 +15,8 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 
 import java.io.IOException;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.glassfish.jersey.CommonProperties;
 import org.glassfish.jersey.internal.inject.AbstractBinder;
@@ -56,8 +58,10 @@ public class ModelAccessServletContainer extends ServletContainer implements Ser
 			// Resources
 			register(RepositoryAccessResource.class);
 
-
-			register(OpenApiResource.class);
+			OpenApiResource openApiResource = new OpenApiResource();
+			Set<String> resourcePackages = RepositoryAccessResource.RESOURCE_CLASSES.stream().map((clazz) -> clazz.getPackage().toString()).collect(Collectors.toSet());
+			openApiResource.resourcePackages(resourcePackages);
+			register(openApiResource);
 			
 			// Registering this feature enables jetty to check for java security annotations e.g. roles allowed
 			register(RolesAllowedDynamicFeature.class);

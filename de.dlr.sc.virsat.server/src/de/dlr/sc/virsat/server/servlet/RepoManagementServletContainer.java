@@ -12,6 +12,7 @@ package de.dlr.sc.virsat.server.servlet;
 
 import jakarta.servlet.Servlet;
 
+import java.util.Set;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.glassfish.jersey.servlet.ServletContainer;
@@ -37,7 +38,10 @@ public class RepoManagementServletContainer extends ServletContainer implements 
 		 */
 		private RepoManagementRestApplication() {
 			register(ProjectManagementResource.class);
-			register(OpenApiResource.class);
+			
+			OpenApiResource openApiResource = new OpenApiResource();
+			openApiResource.resourcePackages(Set.of(ProjectManagementResource.class.getPackage().toString()));
+			register(openApiResource);
 			
 			// Registering this feature enables jetty to check for java security annotations e.g. roles allowed
 			register(RolesAllowedDynamicFeature.class);
