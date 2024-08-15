@@ -35,7 +35,6 @@ import de.dlr.sc.virsat.uiengine.ui.editor.snippets.IUiSnippet;
 
 /**
  * class ui snippet IDescription implements the interface ui snippet for the description part
- * @author leps_je
  *
  */
 public class UiSnippetIDescription extends AUiEStructuralFeatureSectionSnippet implements IUiSnippet {
