@@ -9,6 +9,9 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.graphiti.util;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,7 +91,14 @@ public class DiagramHelper {
 			seiUri = seiUri.appendFileExtension(VirSatProjectCommons.FILENAME_EXTENSION);
 			seiUri = URI.createPlatformResourceURI(seiUri.toFileString(), true);
 			
-			Path path = new Path(resourceUri.toPlatformString(false));
+	
+			String decodedPath = null;
+			try {
+				decodedPath = URLDecoder.decode(resourceUri.toPlatformString(false), StandardCharsets.UTF_8.name());
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+			Path path = new Path(decodedPath);
 			IResource iResource = ResourcesPlugin.getWorkspace().getRoot().findMember(path);
 			IProject project = iResource.getProject();
 			ResourceSet resourceSet = VirSatResourceSet.getResourceSet(project);

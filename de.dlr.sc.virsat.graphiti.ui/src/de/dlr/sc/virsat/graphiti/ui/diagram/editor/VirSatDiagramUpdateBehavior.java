@@ -30,6 +30,10 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain.IResourceEventListener;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+
 /**
  * The update behavior for VirSat diagrams.
  * @author muel_s8
@@ -146,8 +150,14 @@ public class VirSatDiagramUpdateBehavior extends DefaultUpdateBehavior {
 		// Dont create a new editing domain, instead get the virsat editing domain
 		// associated with the project of this file 
 		DiagramEditorInput diagramInput = (DiagramEditorInput) input;
-		Path path = new Path(diagramInput.getUri().toPlatformString(false));
-		IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(path);
+		String decodedPath = null;
+		try {
+			decodedPath = URLDecoder.decode(diagramInput.getUri().toPlatformString(false), StandardCharsets.UTF_8.name());
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		Path path = new Path(decodedPath);
+		IResource resource =  ResourcesPlugin.getWorkspace().getRoot().getFile(path);
 		IProject project = resource.getProject();
 		VirSatResourceSet resourceSet = VirSatResourceSet.getResourceSet(project);
 		VirSatTransactionalEditingDomain ed =  VirSatEditingDomainRegistry.INSTANCE.getEd(resourceSet);
