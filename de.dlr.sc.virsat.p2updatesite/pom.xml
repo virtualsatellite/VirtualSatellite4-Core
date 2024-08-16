@@ -24,6 +24,10 @@
 	<profiles>
 		<profile>
 			<id>deploy</id>
+			<properties>
+				<build.folder.application>VirSat4_Core_Application</build.folder.application>
+				<build.folder.fullpath>${build.folder.target.p2}/${build.folder.application}/${build.folder.type}</build.folder.fullpath>
+			</properties>
 			<build>
 				<plugins>
 					<plugin>
@@ -34,9 +38,19 @@
 								<configuration>
 									<!-- ANT Script Start -->
 									<target>
-										<copy toDir="${build.folder.fullpath}">
-											<fileset dir="./target/">
-											    <include name="*.zip"/>
+										<fail
+											message="Cannot Release!!! Release folder already exists !!! Potential overwrite to ${build.folder.fullpath} !!!">
+											<condition>
+												<and>
+													<equals arg1="${build.deploy.release}" arg2="true" />
+													<available file="${build.folder.fullpath}"
+														type="dir" />
+												</and>
+											</condition>
+										</fail>
+										<delete dir="${build.folder.fullpath}" />
+										<copy todir="${build.folder.fullpath}">
+											<fileset dir="./target/repository">
 											</fileset>
 										</copy>
 									</target>
@@ -53,18 +67,5 @@
 			</build>
 		</profile>
 	</profiles>
-	
-	<build>
-		<plugins>
-			<plugin>
-            <groupId>org.eclipse.tycho</groupId>
-            <artifactId>tycho-p2-repository-plugin</artifactId>
-            <version>${tycho-version}</version>
-            <configuration>
-			<finalName>${build.file.core}_p2</finalName>
-			</configuration>
-        </plugin>
-		</plugins>
-	</build>
 
 </project> 

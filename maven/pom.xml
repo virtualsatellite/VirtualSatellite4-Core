@@ -24,11 +24,14 @@
 		<build.qualifier>'t'yyyyMMddHHmm</build.qualifier>
 		<maven.build.timestamp.format>'t'yyyyMMddHHmm</maven.build.timestamp.format>
 		<build.folder.target>../builds</build.folder.target>
+		<build.folder.p2>p2</build.folder.p2>
+		<build.folder.bin>bin</build.folder.bin>
 		<build.folder.target.secured>../deploy/secured</build.folder.target.secured>
 		<build.folder.target.unsecured>../deploy/unsecured</build.folder.target.unsecured>
-		<build.folder.target>../builds/</build.folder.target>
+		<build.folder.target.bin>../builds/${build.folder.bin}</build.folder.target.bin>
+		<build.folder.target.p2>../builds/${build.folder.p2}</build.folder.target.p2>
 		<build.folder.type>test</build.folder.type>
-		<build.folder.fullpath>${build.folder.target}/${build.folder.type}</build.folder.fullpath>
+		<build.file.zip>VirSat_Core_Test.zip</build.file.zip>
 		<build.deploy.release>false</build.deploy.release>
 
 		<!-- Sonar Code Coverage -->
@@ -41,12 +44,16 @@
 			<id>deployUnsecured</id>
 			<properties>
 				<build.folder.target>${build.folder.target.unsecured}/</build.folder.target>
+				<build.folder.target.bin>${build.folder.target.unsecured}/${build.folder.bin}</build.folder.target.bin>
+				<build.folder.target.p2>${build.folder.target.unsecured}/${build.folder.p2}</build.folder.target.p2>
 			</properties>
 		</profile>
 		<profile>
 			<id>deployBackuped</id>
 			<properties>
 				<build.folder.target>${build.folder.target.secured}</build.folder.target>
+				<build.folder.target.bin>${build.folder.target.secured}/${build.folder.bin}</build.folder.target.bin>
+				<build.folder.target.p2>${build.folder.target.secured}/${build.folder.p2}</build.folder.target.p2>
 			</properties>
 		</profile>
 		<profile>
@@ -72,6 +79,7 @@
 		<profile>
 			<id>release</id>
 			<properties>
+				<build.deploy.release>true</build.deploy.release>
 				<build.qualifier>'r'yyyyMMddHHmm</build.qualifier>
 				<maven.build.timestamp.format>'r'yyyyMMddHHmm</maven.build.timestamp.format>
 				<build.folder.type>release/${build.version}/${env.GITHUB_SHA}</build.folder.type>
