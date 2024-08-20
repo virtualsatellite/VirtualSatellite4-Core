@@ -67,8 +67,9 @@ public class VirSatServerApplication implements IApplication {
 		jettyServer = new VirSatJettyServer();
 		jettyServer.setServerPort(port);
 		jettyServer.init();
-		jettyServer.start().join();
+		jettyServer.start();
 		System.out.println("Jetty Server started.");
+		jettyServer.join();
 		System.out.println("--------------------------------------------------");
 		System.out.println("The server stopped, I am about to shut down.");
 		System.out.println("Bye Bye, see you on the launch pad...");
