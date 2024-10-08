@@ -77,6 +77,7 @@ public abstract class AVersioningBackendTest extends ASwtBotTestCase {
 	}
 	
 	public static final String SWTBOT_COMMIT_MESSAGE = "SwtBotTest - Commit Message!";
+	public static final String SWTBOT_COMMIT_MESSAGE_EXPECTED_LOCAL_GIT_COMMIT = "Backend Local Commit Before Pull: SWTBotTestProject";
 	public static final String SWTBOT_COMMIT_MESSAGE_REMOTE = "SwtBotTest - Commit from Remote!";
 	
 	@Test
