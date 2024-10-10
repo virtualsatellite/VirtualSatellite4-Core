@@ -1,6 +1,21 @@
 VirSat Core Release Notes
 -------------------------
 
+Release 4.17.1 (10th October 2024)
+----------------------------------
+
+New Features:
+	
+Useability:
+	
+
+Maintenance:
+		
+Fixed Bugs:
+	Fixed Null Pointer Exception in visualization causing it to not start #1209.
+	Fixed Null Pointer Exception in visualization in connection with the selection frame of objects.
+	Fixed problem after removing the deprecated communication server with updating the visualization when changing the model.
+
 Release 4.17.0 (6th August 2024)
 ----------------------------------
 
