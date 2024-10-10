@@ -89,7 +89,6 @@ public class DeltaShapeHelper extends ShapeHelper {
 	public void traverseTreeAndCreateShapes(StructuralElementInstance rootSei) {
 		super.traverseTreeAndCreateShapes(rootSei);
 		
-		pauseVisTreeManagerUpdateSending();
 		for (GhostShapeDelta ghostShapeDelta : ghostShapeDeltas) {
 			Shape ghostShape = ghostShapeDelta.shape;
 			ghostShape.id += GHOST_SHAPE_SUFFIX;
@@ -106,6 +105,5 @@ public class DeltaShapeHelper extends ShapeHelper {
 				visualisationTreeManager.setParent(ghostShapeId, ghostShapeParentId);
 			}
 		}
-		resumeVisTreeManagerUpdateSending();
 	}
 }

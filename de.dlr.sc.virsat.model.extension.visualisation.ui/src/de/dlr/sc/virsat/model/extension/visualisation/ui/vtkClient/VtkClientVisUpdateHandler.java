@@ -14,6 +14,7 @@ import java.awt.EventQueue;
 
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPart;
@@ -26,8 +27,8 @@ import de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer;
 import de.dlr.sc.virsat.model.extension.visualisation.Activator;
 import de.dlr.sc.virsat.model.extension.visualisation.treemanager.IVisUpdateHandler;
 import de.dlr.sc.virsat.uiengine.ui.editor.GenericEditor;
+import de.dlr.sc.visproto.VisProto.SceneGraph;
 import de.dlr.sc.visproto.VisProto.SceneGraphNode;
-import de.dlr.sc.visproto.VisProto.VisualisationMessage;
 import vtk.vtkProp;
 
 /**
@@ -52,12 +53,12 @@ public class VtkClientVisUpdateHandler implements IVisUpdateHandler, IPartListen
 	 * 
 	 * @param visualisationMessage 
 	 */
-	public synchronized void updateVisualisationData(VisualisationMessage visualisationMessage) {
+	public synchronized void updateVisualisationData(SceneGraph sceneGraph) {
 		EventQueue.invokeLater(new Runnable() {
 
 			@Override
 			public void run() {
-				mNode = visualisationMessage.getSceneGraph().getNode();
+				mNode = sceneGraph.getNode();
 				VtkTreeManager visMan = VtkTreeManager.getInstance();
 				visMan.clearInvalidActors();
 				visMan.forceSceneryUpdate(mNode);
@@ -93,8 +94,10 @@ public class VtkClientVisUpdateHandler implements IVisUpdateHandler, IPartListen
 		if (instance == null) {
 			instance = new VtkClientVisUpdateHandler();
 			IWorkbench workbench = PlatformUI.getWorkbench();
-			IWorkbenchWindow workbenchwindow = workbench.getActiveWorkbenchWindow();
-			workbenchwindow.getPartService().addPartListener(instance);
+			Display.getDefault().syncExec(() -> {
+				IWorkbenchWindow workbenchwindow = workbench.getActiveWorkbenchWindow();
+				workbenchwindow.getPartService().addPartListener(instance);
+			});
 		}
 		return instance;
 	}

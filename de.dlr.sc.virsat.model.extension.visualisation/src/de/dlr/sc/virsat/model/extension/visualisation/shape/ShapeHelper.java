@@ -19,7 +19,6 @@ import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInst
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.extension.visualisation.IVisualisationTreeManager;
 import de.dlr.sc.virsat.model.extension.visualisation.model.Visualisation;
-import de.dlr.sc.virsat.model.extension.visualisation.treemanager.IPausableSender;
 
 /**
  * A class for extracting of shape data from a StructuralElementInstance,
@@ -48,11 +47,9 @@ public class ShapeHelper {
 	 * @param sei The SEI for which to create a shape.
 	 */
 	public void traverseTreeAndCreateShapes(StructuralElementInstance sei) {
-		pauseVisTreeManagerUpdateSending();
 		StructuralElementInstance visParent = getVisualisationParent(sei);
 		String visParentId = visParent != null ? visParent.getUuid().toString() : null;
 		traverseTreeAndCreateShapes(sei, visParentId);
-		resumeVisTreeManagerUpdateSending();
 	}
 
 	/**
@@ -258,24 +255,7 @@ public class ShapeHelper {
 		return createShapeFromBean(visBean, shapeId);
 	}
 
-	/**
-	 * tries to pause update sending until all the scenegraph is created
-	 */
-	protected void pauseVisTreeManagerUpdateSending() {
-		if (visualisationTreeManager instanceof IPausableSender) {
-			((IPausableSender) visualisationTreeManager).pauseSending();
-		}
-	}
 
-	/**
-	 * tries to resume update sending
-	 */
-	protected void resumeVisTreeManagerUpdateSending() {
-		if (visualisationTreeManager instanceof IPausableSender) {
-			((IPausableSender) visualisationTreeManager).resumeSending();
-		}
-	}
-	
 	/**
 	 * Creates Shape from Vis Bean
 	 * @param visBean The bean from which to use the values

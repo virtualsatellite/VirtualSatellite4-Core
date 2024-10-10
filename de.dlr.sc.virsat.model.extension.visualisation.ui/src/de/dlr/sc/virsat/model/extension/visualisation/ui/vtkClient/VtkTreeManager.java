@@ -420,7 +420,7 @@ public class VtkTreeManager extends vtkPanel {
 		ActorVtk actor = actorMap.get(node.getID());
 
 		if (selectedActor != null) {
-			if (selectedActor.getId().equals(actor.getId())) {
+			if (selectedActor.getId().equals(actor.getId()) && selectedActor.GetMapper() != null) {
 				highlightSource.SetBounds(selectedActor.GetMapper().GetBounds());
 				localAxes.SetUserTransform(parent.GetUserTransform());
 				highlightActor.SetUserTransform(actor.GetUserTransform());
