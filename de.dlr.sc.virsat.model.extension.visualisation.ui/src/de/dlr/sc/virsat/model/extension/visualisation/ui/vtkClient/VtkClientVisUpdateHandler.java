@@ -14,6 +14,7 @@ import java.awt.EventQueue;
 
 import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPart;
@@ -93,8 +94,10 @@ public class VtkClientVisUpdateHandler implements IVisUpdateHandler, IPartListen
 		if (instance == null) {
 			instance = new VtkClientVisUpdateHandler();
 			IWorkbench workbench = PlatformUI.getWorkbench();
-			IWorkbenchWindow workbenchwindow = workbench.getActiveWorkbenchWindow();
-			workbenchwindow.getPartService().addPartListener(instance);
+			Display.getDefault().syncExec(() -> {
+				IWorkbenchWindow workbenchwindow = workbench.getActiveWorkbenchWindow();
+				workbenchwindow.getPartService().addPartListener(instance);
+			});
 		}
 		return instance;
 	}
