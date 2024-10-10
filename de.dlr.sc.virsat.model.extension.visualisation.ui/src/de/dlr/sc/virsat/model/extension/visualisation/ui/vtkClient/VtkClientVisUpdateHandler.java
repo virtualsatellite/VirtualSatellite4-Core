@@ -27,8 +27,8 @@ import de.dlr.sc.virsat.model.dvlm.categories.ICategoryAssignmentContainer;
 import de.dlr.sc.virsat.model.extension.visualisation.Activator;
 import de.dlr.sc.virsat.model.extension.visualisation.treemanager.IVisUpdateHandler;
 import de.dlr.sc.virsat.uiengine.ui.editor.GenericEditor;
+import de.dlr.sc.visproto.VisProto.SceneGraph;
 import de.dlr.sc.visproto.VisProto.SceneGraphNode;
-import de.dlr.sc.visproto.VisProto.VisualisationMessage;
 import vtk.vtkProp;
 
 /**
@@ -53,12 +53,12 @@ public class VtkClientVisUpdateHandler implements IVisUpdateHandler, IPartListen
 	 * 
 	 * @param visualisationMessage 
 	 */
-	public synchronized void updateVisualisationData(VisualisationMessage visualisationMessage) {
+	public synchronized void updateVisualisationData(SceneGraph sceneGraph) {
 		EventQueue.invokeLater(new Runnable() {
 
 			@Override
 			public void run() {
-				mNode = visualisationMessage.getSceneGraph().getNode();
+				mNode = sceneGraph.getNode();
 				VtkTreeManager visMan = VtkTreeManager.getInstance();
 				visMan.clearInvalidActors();
 				visMan.forceSceneryUpdate(mNode);
