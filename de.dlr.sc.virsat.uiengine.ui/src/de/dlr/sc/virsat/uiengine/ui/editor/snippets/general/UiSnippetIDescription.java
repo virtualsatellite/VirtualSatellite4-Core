@@ -19,9 +19,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.jface.databinding.swt.typed.WidgetProperties;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -47,7 +45,6 @@ public class UiSnippetIDescription extends AUiEStructuralFeatureSectionSnippet i
 	private EsfMarkerImageProvider emip;
 	
 	private Text textDescription;
-	private Label labelPropertyIcon;
 
 	
 	/**
@@ -63,16 +60,10 @@ public class UiSnippetIDescription extends AUiEStructuralFeatureSectionSnippet i
 		super.createSwt(toolkit, editingDomain, composite, initModel);
 		
 		Composite sectionBody = createSectionBody(toolkit, SECTION_HEADING, null, UI_LAYOUT_NR_COLUMNS);
-		
-		// Divide left column into new parts
-		Composite labelWithIcon = toolkit.createComposite(sectionBody);
-		labelWithIcon.setLayout(new GridLayout(2, false));
-		
-		labelPropertyIcon = toolkit.createLabel(labelWithIcon, "");
-		Label labelDescription = toolkit.createLabel(labelWithIcon, DESCRIPTION_FIELD);
+
+		Label labelDescription = toolkit.createLabel(sectionBody, DESCRIPTION_FIELD);
 		textDescription = toolkit.createText(sectionBody, "", SWT.MULTI | SWT.V_SCROLL | SWT.BORDER | SWT.WRAP);
-		
-		setUpIcon();
+
 		setUpLabel(labelDescription);		
 		setUpText(editingDomain);
 	    
@@ -84,9 +75,10 @@ public class UiSnippetIDescription extends AUiEStructuralFeatureSectionSnippet i
 	 * @param editingDomain the editingDomain
 	 */
 	private void setUpText(EditingDomain editingDomain) {
-		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
-		gridData.heightHint = 100;
+	    GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+	    gridData.heightHint = 100;  // Fixed height to prevent resizing
 	    textDescription.setLayoutData(gridData);
+
 	}
 
 	/**
@@ -97,15 +89,7 @@ public class UiSnippetIDescription extends AUiEStructuralFeatureSectionSnippet i
 	    label.setLayoutData(createDefaultGridData());
 	}
 
-	/**
-	 * Method to set up the Icon
-	 */
-	private void setUpIcon() {
-		labelPropertyIcon.setLayoutData(new GridData());
-		Image dummyImage = emip.getOkImage();
-		labelPropertyIcon.setImage(dummyImage);
-	}
-	
+
 	@Override
 	public void setDataBinding(DataBindingContext dbCtx, EditingDomain editingDomain, EObject model) {
 		super.setDataBinding(dbCtx, editingDomain, model);
@@ -116,20 +100,6 @@ public class UiSnippetIDescription extends AUiEStructuralFeatureSectionSnippet i
 		}
 	}
 
-	@Override
-	public void updateState(boolean state) {
-		super.updateState(state);
-		
-		Image problemImage = emip.getProblemImageForStructuralFeatureInEobject(model, GeneralPackage.Literals.IDESCRIPTION__DESCRIPTION);
-		if (problemImage == null) {
-			labelPropertyIcon.setVisible(false);
-		} else {
-			labelPropertyIcon.setVisible(true);
-			labelPropertyIcon.setImage(problemImage);
-			labelPropertyIcon.setToolTipText(emip.getProblemImageToolTipForStructuralFeatureInEobject(model, GeneralPackage.Literals.IDESCRIPTION__DESCRIPTION));
-		}
-	}
-	
 	@Override
 	protected Set<IMarkerHelper> getMarkerHelpers() {
 		return Collections.singleton(emip.getVpmHelper());
