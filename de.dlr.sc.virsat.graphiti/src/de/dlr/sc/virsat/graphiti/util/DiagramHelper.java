@@ -9,6 +9,9 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.graphiti.util;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +36,7 @@ import org.eclipse.graphiti.mm.pictograms.Diagram;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.services.IGaService;
+import org.apache.log4j.Logger;
 
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
@@ -52,6 +56,8 @@ import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
  */
 
 public class DiagramHelper {
+	
+	private static final Logger logger = Logger.getLogger(DiagramHelper.class);
 	
 	/**
 	 * Hidden constructor
@@ -88,7 +94,16 @@ public class DiagramHelper {
 			seiUri = seiUri.appendFileExtension(VirSatProjectCommons.FILENAME_EXTENSION);
 			seiUri = URI.createPlatformResourceURI(seiUri.toFileString(), true);
 			
-			Path path = new Path(resourceUri.toPlatformString(false));
+	
+			String decodedPath = null;
+			try {
+				decodedPath = URLDecoder.decode(resourceUri.toPlatformString(false), StandardCharsets.UTF_8.name());
+				logger.debug("Decoded path: " + decodedPath);
+			} catch (UnsupportedEncodingException e) {
+				logger.error("Failed to decode URI", e);
+				e.printStackTrace();
+			}
+			Path path = new Path(decodedPath);
 			IResource iResource = ResourcesPlugin.getWorkspace().getRoot().findMember(path);
 			IProject project = iResource.getProject();
 			ResourceSet resourceSet = VirSatResourceSet.getResourceSet(project);

@@ -14,7 +14,8 @@ Require-Bundle: de.dlr.sc.virsat.graphiti,
  org.eclipse.graphiti.ui;visibility:=reexport,
  org.eclipse.graphiti.mm,
  org.eclipse.graphiti.pattern,
- org.eclipse.emf.workspace
+ org.eclipse.emf.workspace,
+ org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: DLR (German Aerospace Center)

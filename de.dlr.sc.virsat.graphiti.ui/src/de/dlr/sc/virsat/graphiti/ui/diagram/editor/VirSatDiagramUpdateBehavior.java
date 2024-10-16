@@ -24,11 +24,16 @@ import org.eclipse.graphiti.ui.editor.DiagramBehavior;
 import org.eclipse.graphiti.ui.editor.DiagramEditorInput;
 import org.eclipse.graphiti.ui.editor.IDiagramEditorInput;
 import org.eclipse.swt.widgets.Display;
+import org.apache.log4j.Logger;
 
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain.IResourceEventListener;
 import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * The update behavior for VirSat diagrams.
@@ -37,6 +42,8 @@ import de.dlr.sc.virsat.project.resources.VirSatResourceSet;
  */
 
 public class VirSatDiagramUpdateBehavior extends DefaultUpdateBehavior {
+	
+	private static final Logger logger = Logger.getLogger(VirSatDiagramUpdateBehavior.class);
 	
 	/**
 	 * VirSat Resource Event which is triggered by the Workspace Synchronizer
@@ -146,8 +153,16 @@ public class VirSatDiagramUpdateBehavior extends DefaultUpdateBehavior {
 		// Dont create a new editing domain, instead get the virsat editing domain
 		// associated with the project of this file 
 		DiagramEditorInput diagramInput = (DiagramEditorInput) input;
-		Path path = new Path(diagramInput.getUri().toPlatformString(false));
-		IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(path);
+		String decodedPath = null;
+		try {
+			decodedPath = URLDecoder.decode(diagramInput.getUri().toPlatformString(false), StandardCharsets.UTF_8.name());
+			logger.debug("Decoded path: " + decodedPath);
+		} catch (UnsupportedEncodingException e) {
+			logger.error("Failed to decode URI", e);
+			e.printStackTrace();
+		}
+		Path path = new Path(decodedPath);
+		IResource resource =  ResourcesPlugin.getWorkspace().getRoot().getFile(path);
 		IProject project = resource.getProject();
 		VirSatResourceSet resourceSet = VirSatResourceSet.getResourceSet(project);
 		VirSatTransactionalEditingDomain ed =  VirSatEditingDomainRegistry.INSTANCE.getEd(resourceSet);
