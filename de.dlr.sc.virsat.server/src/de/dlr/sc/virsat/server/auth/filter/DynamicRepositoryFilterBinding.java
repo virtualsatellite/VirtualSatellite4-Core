@@ -15,8 +15,8 @@ import jakarta.ws.rs.container.ResourceInfo;
 import jakarta.ws.rs.core.FeatureContext;
 
 /**
- * Binds the RepositoryFilter to specified classes and functions,
- * so the filter will only be used on those
+ * Binds the RepositoryFilter which is used to check whether
+ * a user has access to a given repository
  */
 public class DynamicRepositoryFilterBinding implements DynamicFeature {
 
