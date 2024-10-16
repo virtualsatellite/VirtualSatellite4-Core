@@ -13,7 +13,6 @@ import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -26,6 +25,7 @@ import org.eclipse.graphiti.ui.editor.DiagramEditorInput;
 import org.eclipse.graphiti.ui.editor.IDiagramEditorInput;
 import org.eclipse.swt.widgets.Display;
 
+import de.dlr.sc.virsat.graphiti.ui.Activator;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain.IResourceEventListener;
@@ -154,9 +154,9 @@ public class VirSatDiagramUpdateBehavior extends DefaultUpdateBehavior {
 		String decodedPath = null;
 		try {
 			decodedPath = URLDecoder.decode(diagramInput.getUri().toPlatformString(false), StandardCharsets.UTF_8.name());
+			Activator.getDefault().getLog().info("Decoded path: " + decodedPath);
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Activator.getDefault().getLog().error("Failed to decode URI", e);
 		}
 	//  Path path = new Path(decodedPath);
 	//	IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(path);

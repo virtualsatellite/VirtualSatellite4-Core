@@ -38,6 +38,7 @@ import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.services.IGaService;
 
+import de.dlr.sc.virsat.graphiti.Activator;
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.Repository;
@@ -56,7 +57,7 @@ import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
  */
 
 public class DiagramHelper {
-	
+
 	/**
 	 * Hidden constructor
 	 */
@@ -101,9 +102,9 @@ public class DiagramHelper {
 			String decodedPath = null;
 			try {
 				decodedPath = URLDecoder.decode(resourceUri.toPlatformString(false), StandardCharsets.UTF_8.name());
+				Activator.getDefault().getLog().info("Decoded path: " + decodedPath);
 			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Activator.getDefault().getLog().error("Failed to decode URI", e);
 			}
 			//Path path = new Path(decodedPath);
 			//IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(path);
