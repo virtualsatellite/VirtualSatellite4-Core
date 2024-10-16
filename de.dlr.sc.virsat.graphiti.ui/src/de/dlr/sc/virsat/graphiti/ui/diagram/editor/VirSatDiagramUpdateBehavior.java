@@ -24,6 +24,7 @@ import org.eclipse.graphiti.ui.editor.DiagramBehavior;
 import org.eclipse.graphiti.ui.editor.DiagramEditorInput;
 import org.eclipse.graphiti.ui.editor.IDiagramEditorInput;
 import org.eclipse.swt.widgets.Display;
+import org.apache.log4j.Logger;
 
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
@@ -41,6 +42,8 @@ import java.nio.charset.StandardCharsets;
  */
 
 public class VirSatDiagramUpdateBehavior extends DefaultUpdateBehavior {
+	
+	private static final Logger logger = Logger.getLogger(VirSatDiagramUpdateBehavior.class);
 	
 	/**
 	 * VirSat Resource Event which is triggered by the Workspace Synchronizer
@@ -153,7 +156,9 @@ public class VirSatDiagramUpdateBehavior extends DefaultUpdateBehavior {
 		String decodedPath = null;
 		try {
 			decodedPath = URLDecoder.decode(diagramInput.getUri().toPlatformString(false), StandardCharsets.UTF_8.name());
+			logger.debug("Decoded path: " + decodedPath);
 		} catch (UnsupportedEncodingException e) {
+			logger.error("Failed to decode URI", e);
 			e.printStackTrace();
 		}
 		Path path = new Path(decodedPath);
