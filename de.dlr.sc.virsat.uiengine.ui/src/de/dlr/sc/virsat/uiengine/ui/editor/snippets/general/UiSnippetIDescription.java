@@ -75,9 +75,9 @@ public class UiSnippetIDescription extends AUiEStructuralFeatureSectionSnippet i
 	 * @param editingDomain the editingDomain
 	 */
 	private void setUpText(EditingDomain editingDomain) {
-	    GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
-	    gridData.heightHint = 100;  // Fixed height to prevent resizing
-	    textDescription.setLayoutData(gridData);
+		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true);
+		gridData.heightHint = 100;  // Fixed height to prevent resizing
+		textDescription.setLayoutData(gridData);
 
 	}
 
@@ -86,7 +86,7 @@ public class UiSnippetIDescription extends AUiEStructuralFeatureSectionSnippet i
 	 * @param label The label to be set up
 	 */
 	private void setUpLabel(Label label) {
-	    label.setLayoutData(createDefaultGridData());
+		label.setLayoutData(createDefaultGridData());
 	}
 
 
