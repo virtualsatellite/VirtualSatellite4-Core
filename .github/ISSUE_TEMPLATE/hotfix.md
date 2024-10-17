@@ -41,6 +41,7 @@ This ticket captures all release related work of VirtualSatellite4-Core
 - [ ] Create GitHub Release including a Tag on  `master_lts` branch. Name it "Release_4.xx.x".
  
 6. Merge back integration branch:
+- [ ] Merge `development` into `integration` or `hotfix` branch. Check that everything is working as expected.
 - [ ] Merge `integration` or `hotfix` branch into `development` branch (Pull Request named "Integration 4.x.x - Remerge Fixes")
  
 Well Done!! You should have a HotFix Virtual Satellite Release :rocket:
