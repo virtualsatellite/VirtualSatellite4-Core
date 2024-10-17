@@ -25,6 +25,10 @@ on:
     branches:
       - '**'
 
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   # -------------------------------------------------------------
   # Setting up locale to have correct keyboard mapping for swtbot
