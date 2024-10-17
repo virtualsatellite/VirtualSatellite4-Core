@@ -36,8 +36,12 @@ public class Activator extends Plugin {
 	private static Activator plugin;
 	// The CLI command line option for specifying a configuration file
 	private static final String CONFIG_FILE_CLI_PARAM = "configFile";
+	// The CLI command line option for setting the port
+	private static final String PORT_CLI_PARAM = "port";
 	// The configuration file path and its default value
 	private String propertiesFilePath = "resources/server.properties";
+	// The default port for our server
+	public static final int VIRSAT_JETTY_PORT = 8000;
 	
 	@Override
 	public void start(BundleContext context) throws Exception {
@@ -73,6 +77,20 @@ public class Activator extends Plugin {
 			return new FileInputStream(propertiesFilePath);
 		} else {
 			return FileLocator.openStream(getBundle(), new Path(propertiesFilePath), false); 
+		}
+	}
+	
+	/**
+	 * Get the specified jetty server port or default
+	 * @return the port as int
+	 */
+	public int getServerPort() {
+		CommandLineManager cliManager = de.dlr.sc.virsat.external.lib.commons.cli.Activator.getCommandLineManager();
+		boolean isCustomPathSet = cliManager.isCommandLineOptionSet(PORT_CLI_PARAM);
+		if (isCustomPathSet) {
+			return Integer.parseInt(cliManager.getCommandLineOptionParameter(PORT_CLI_PARAM));
+		} else {
+			return VIRSAT_JETTY_PORT;
 		}
 	}
 

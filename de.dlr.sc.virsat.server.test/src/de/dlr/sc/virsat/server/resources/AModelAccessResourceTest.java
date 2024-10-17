@@ -17,9 +17,13 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.List;
 
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.Invocation.Builder;
 import jakarta.ws.rs.core.HttpHeaders;
@@ -472,6 +476,10 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 		assertBadRequestResponse(response, ApiErrorHelper.COULD_NOT_FIND_REQUESTED_ELEMENT);
 	}
 	
+	protected void assertForbiddenResponse(Response response) {
+		assertEquals(Status.FORBIDDEN.getStatusCode(), response.getStatus());
+	}
+	
 	protected void assertInternalErrorResponse(Response response, String expectedMessage) {
 		assertErrorResponse(response, Status.INTERNAL_SERVER_ERROR, ApiErrorHelper.INTERNAL_SERVER_ERROR + ": " + expectedMessage);
 	}
@@ -498,9 +506,11 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 		Repository repository = ed.getResourceSet().getRepository();
 		
 		assertEquals(HttpStatus.OK_200, response.getStatus());
-		String uuid = response.readEntity(String.class);
-		
-		IUuid obj = RepositoryUtility.findObjectById(uuid, repository);
+		String entityString = response.readEntity(String.class);
+		JsonReader reader = Json.createReader(new StringReader(entityString));
+		JsonObject repsonseObject = reader.readObject();
+
+		IUuid obj = RepositoryUtility.findObjectById(repsonseObject.getString("uuid"), repository);
 		assertNotNull(obj);
 		
 		// Assert correctly typed

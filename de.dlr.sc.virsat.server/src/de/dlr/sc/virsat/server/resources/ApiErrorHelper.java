@@ -51,7 +51,7 @@ public class ApiErrorHelper {
 		if (ed.getVirSatCommandStack().canExecute(command, iUserContext)) {
 			ed.getVirSatCommandStack().executeNoUndo(command, iUserContext, false);
 		} else {
-			throw new RuntimeException(NOT_EXECUTEABLE);
+			throw new IllegalArgumentException(NOT_EXECUTEABLE);
 		}
 	}
 

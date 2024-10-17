@@ -24,6 +24,7 @@ import jakarta.ws.rs.core.Response;
 import org.eclipse.emf.common.command.Command;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
 import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
+import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.project.structure.command.CreateRemoveSeiWithFileStructureCommand;
@@ -161,10 +162,12 @@ public class StructuralElementInstanceResource {
 			if (parentSei == null) {
 				return ApiErrorHelper.createNotFoundErrorResponse();
 			}
-			String newSeiUuid = ModelAccessResource.createSeiFromFqn(fullQualifiedName, parentSei, parentResource.getEd(), parentResource.getUser());
+			BeanStructuralElementInstance newSeiBean = ModelAccessResource.createSeiFromFqn(fullQualifiedName, parentSei, parentResource.getEd(), parentResource.getUser());
 			
 			parentResource.synchronize();
-			return Response.ok(newSeiUuid).build();
+			return Response.ok(newSeiBean).build();
+		} catch (IllegalArgumentException e) {
+			return Response.status(Response.Status.FORBIDDEN).entity("Forbidden").build();
 		} catch (Exception e) {
 			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
@@ -213,6 +216,8 @@ public class StructuralElementInstanceResource {
 			// Sync after delete
 			parentResource.synchronize();
 			return Response.ok().build();
+		} catch (IllegalArgumentException e) {
+			return Response.status(Response.Status.FORBIDDEN).entity("Forbidden").build();
 		} catch (Exception e) {
 			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}

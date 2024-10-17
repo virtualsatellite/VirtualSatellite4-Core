@@ -32,6 +32,7 @@ import org.eclipse.emf.ecore.EObject;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
 import de.dlr.sc.virsat.model.concept.types.roles.BeanDiscipline;
 import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
+import de.dlr.sc.virsat.model.concept.types.structural.BeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
@@ -276,10 +277,10 @@ public class ModelAccessResource {
 		try {
 			serverRepository.syncRepository();
 			
-			String newSeiUuid = createSeiFromFqn(fullQualifiedName, repository, ed, userContext);
+			BeanStructuralElementInstance newSeiBean = createSeiFromFqn(fullQualifiedName, repository, ed, userContext);
 			
 			serverRepository.syncRepository();
-			return Response.ok(newSeiUuid).build();
+			return Response.ok(newSeiBean).build();
 		} catch (Exception e) {
 			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
@@ -476,7 +477,7 @@ public class ModelAccessResource {
 	 * @param iUserContext the user context
 	 * @return uuid of the created sei
 	 */
-	public static String createSeiFromFqn(String fullQualifiedName, EObject owner, VirSatTransactionalEditingDomain editingDomain, IUserContext iUserContext) {
+	public static BeanStructuralElementInstance createSeiFromFqn(String fullQualifiedName, EObject owner, VirSatTransactionalEditingDomain editingDomain, IUserContext iUserContext) {
 		ActiveConceptHelper helper = new ActiveConceptHelper(editingDomain.getResourceSet().getRepository());
 		StructuralElement se = helper.getStructuralElement(fullQualifiedName);
 		StructuralElementInstance newSei = new StructuralInstantiator().generateInstance(se, null);
@@ -489,7 +490,7 @@ public class ModelAccessResource {
 		Command createCommand = CreateAddSeiWithFileStructureCommand.create(editingDomain, owner, newSei);
 		ApiErrorHelper.executeCommandIffCanExecute(createCommand, editingDomain, iUserContext);
 		
-		return newSei.getUuid().toString();
+		return new BeanStructuralElementInstance(newSei);
 	}
 
 }

@@ -58,6 +58,7 @@
 
 				<module>de.dlr.sc.virsat.external.lib</module>
 				<module>de.dlr.sc.virsat.external.lib.apache.poi</module>
+				<module>de.dlr.sc.virsat.external.lib.comet.sdkj.servicedal</module>
 				<module>de.dlr.sc.virsat.external.lib.spotbugs</module>
 				<module>de.dlr.sc.virsat.external.lib.commons.cli</module>
 				<module>de.dlr.sc.virsat.external.lib.commons.csv</module>

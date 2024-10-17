@@ -99,6 +99,12 @@ public abstract class AProjectTestCase {
 		}
 
 		testProject = createTestProject(getProjectName());
+		
+//		// Clean the project if it already exists and recreate it
+//		if (testProject.exists()) {
+//			testProject.delete(true, null);
+//		}
+		
 		projectCommons = new VirSatProjectCommons(testProject);
 		addProjectFileStructure();
 
