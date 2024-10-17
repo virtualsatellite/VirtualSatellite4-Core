@@ -40,7 +40,7 @@ import de.dlr.sc.visproto.VisProto.SceneGraphNode.Builder;
 /**
  * This class is responsible for the management of the ProtoBuf-SceneGraph
  */
-public class TreeManager implements IVisualisationTreeManager, IPausableSender {
+public class TreeManager implements IVisualisationTreeManager {
 	
 	//global root node created on initialisation which always exists
 	public static final String VISUALISATION_GLOBAL_ROOT_ID = "0";
@@ -53,6 +53,7 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 	private Map<String, Integer> hashNodeMap = new HashMap<String, Integer>();
 	private IShapeEditObserver observer;
 
+	
 	/**
 	 * Log root node
 	 */
@@ -131,6 +132,8 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 		if (!protoNodeMap.get(shape.id).hasGeometry() && protoGeometryFileMap.containsKey(shape.id)) {
 			protoGeometryFileMap.remove(shape.id);
 		}
+
+		sendSceneGraph(mSceneGraph.build());
 	}
 
 	/**
@@ -317,6 +320,8 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 					shape.rotationX, shape.rotationY, shape.rotationZ,
 					shape.color, shape.transparency);
 			addChildNode(VISUALISATION_GLOBAL_ROOT_ID, shape.id);
+			
+			sendSceneGraph(mSceneGraph.build());
 		} else {
 			activator.getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "ID already exists", null));
 			throw new RuntimeException("Error at creating new shape. ID already exist");
@@ -470,6 +475,7 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 	public void setParent(String idChild, String idParent) {
 		removeFromCurrentParent(idChild);
 		addChildNode(idParent, idChild);
+		sendSceneGraph(mSceneGraph.build());
 	}
 
 	/**
@@ -516,6 +522,7 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 			addChildNode(mSceneGraph.getNodeBuilder(), child);
 		}
 		
+		sendSceneGraph(mSceneGraph.build());
 	}
 
 	/**
@@ -538,6 +545,7 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 	public void removeShapeWithSubtree(String id) {
 		removeFromCurrentParent(id);
 		removeNodeRecursively(id);
+		sendSceneGraph(mSceneGraph.build());
 	}
 
 	/**
@@ -550,7 +558,6 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 			removeNodeRecursively(child.getID());
 		}
 	}
-
 
 	/**
 	 * Checks if there is a registered node with the ide
@@ -607,6 +614,7 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 				}
 				protoNodeMap.clear();
 				this.refreshMapFrom(mSceneGraph.getNodeBuilder());
+				sendSceneGraph(mSceneGraph.build());
 			} else {
 				activator.getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "Received SceneGraph is equal to the current one", null));
 			}	
@@ -684,15 +692,20 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 	}
 
 	@Override
-	public void pauseSending() {
-	}
-
-	@Override
-	public void resumeSending() {
-	}
-
-	@Override
 	public void reloadGeometryFile(String shapeId) {
 		createGeometryFileBuilder(shapeId);
 	}
+	
+	private IVisUpdateHandler visUpdateHandler;
+	
+	public void setVisUpdateHandler(IVisUpdateHandler visUpdateHandler) {
+		this.visUpdateHandler = visUpdateHandler;
+	}
+	
+	public void sendSceneGraph(SceneGraph sceneGraph) {
+		if (visUpdateHandler != null) {
+			visUpdateHandler.updateVisualisationData(sceneGraph);
+		}
+	}
+	
 }
