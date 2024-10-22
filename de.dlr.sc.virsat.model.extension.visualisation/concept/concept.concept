@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *******************************************************************************/
- Concept de.dlr.sc.virsat.model.extension.visualisation displayname "Visualization" version 1.5 description "Concept that defines visualisation properties" {
+ Concept de.dlr.sc.virsat.model.extension.visualisation displayname "Visualization" version 1.5 description "Concept that defines visualization properties" {
 	Category Visualisation {
 		Applicable For All;
 		Cardinality 1;
@@ -20,22 +20,29 @@
 			CONE=5,
 			GEOMETRY=6
 		]  
-		default 		NONE;  
+		default 		NONE description "The kind of object to be displayed. None in case just a transformation is considered.";  
 		
-		Resource geometryFile description "STL File";
-		FloatProperty radius default 0 quantityKind "Length" unit "Meter";
-		FloatProperty sizeX default 0 quantityKind "Length" unit "Meter";
-		FloatProperty sizeY default 0 quantityKind "Length" unit "Meter";
-		FloatProperty sizeZ default 0 quantityKind "Length" unit "Meter";
-		FloatProperty unitScale default 1 quantityKind "Length" unit "Millimeter";
-		IntProperty color default 16777215; // 0xFFFFFF, white
-		FloatProperty transparency default 0;
-		FloatProperty positionX default 0 quantityKind "Length" unit "Meter";
-		FloatProperty positionY default 0 quantityKind "Length" unit "Meter";
-		FloatProperty positionZ default 0 quantityKind "Length" unit "Meter";
-		FloatProperty rotationX default 0 quantityKind "Angle" unit "Degree";
-		FloatProperty rotationY default 0 quantityKind "Angle" unit "Degree";
-		FloatProperty rotationZ default 0 quantityKind "Angle" unit "Degree";
+		Resource geometryFile description "STL File for complex geometries"; 
+		
+		FloatProperty radius default 0 quantityKind "Length" unit "Meter" description "The radius of a sphere, cone or cylinder";
+		
+		FloatProperty sizeX default 0 quantityKind "Length" unit "Meter" description "Size in X direction as used by Boxes";
+		FloatProperty sizeY default 0 quantityKind "Length" unit "Meter" description "Size in Y direction as used by Boxes, Cylinders and Condes";
+		FloatProperty sizeZ default 0 quantityKind "Length" unit "Meter" description "Size in Z direction as used by Boxes";
+		
+		FloatProperty unitScale default 1 quantityKind "Length" unit "Millimeter" description "the unit of measurements in an STL file.";
+		
+		IntProperty color default 16777215 description "Color for the object to eb displayed."; // 0xFFFFFF, white
+		
+		FloatProperty transparency default 0 description "Transparency value for the object";
+		
+		FloatProperty positionX default 0 quantityKind "Length" unit "Meter" description "translation in X direction";
+		FloatProperty positionY default 0 quantityKind "Length" unit "Meter" description "translation in Y direction";
+		FloatProperty positionZ default 0 quantityKind "Length" unit "Meter" description "translation in Z direction";
+		
+		FloatProperty rotationX default 0 quantityKind "Angle" unit "Degree" description "rotation around X axis";
+		FloatProperty rotationY default 0 quantityKind "Angle" unit "Degree" description "rotation around Y axis";
+		FloatProperty rotationZ default 0 quantityKind "Angle" unit "Degree" description "rotation around Z axis";
 	}
 }
 

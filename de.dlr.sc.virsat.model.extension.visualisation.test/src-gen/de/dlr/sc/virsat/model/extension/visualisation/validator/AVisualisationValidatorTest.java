@@ -29,7 +29,7 @@ import org.junit.Before;
  * 
  * Don't Manually modify this class
  * 
- * Concept that defines visualisation properties
+ * Concept that defines visualization properties
  * 
  */	
 public abstract class AVisualisationValidatorTest {

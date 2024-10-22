@@ -21,7 +21,7 @@ import de.dlr.sc.virsat.model.concept.migrator.AMigrator;
  * 
  * Don't Manually modify this class
  * 
- * Concept that defines visualisation properties
+ * Concept that defines visualization properties
  * 
  */	
 public abstract class AMigrator1v5 extends AMigrator {

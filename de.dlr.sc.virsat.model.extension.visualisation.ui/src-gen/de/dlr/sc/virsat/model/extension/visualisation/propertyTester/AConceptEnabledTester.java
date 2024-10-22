@@ -21,7 +21,7 @@ import de.dlr.sc.virsat.project.ui.editingDomain.propertyTester.EditingDomainPro
  * 
  * Don't Manually modify this class
  * 
- * Concept that defines visualisation properties
+ * Concept that defines visualization properties
  * 
  */	
 public abstract class AConceptEnabledTester extends EditingDomainPropertyTester {

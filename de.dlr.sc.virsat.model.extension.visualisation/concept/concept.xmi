@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="ASCII"?>
-<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v11/c" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v11/cp/cppd" name="de.dlr.sc.virsat.model.extension.visualisation" description="Concept that defines visualisation properties" version="1.5" displayName="Visualization">
+<dvlm_c:Concept xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dvlm_c="http://www.virsat.sc.dlr.de/dvlm/v11/c" xmlns:dvlm_cppd="http://www.virsat.sc.dlr.de/dvlm/v11/cp/cppd" name="de.dlr.sc.virsat.model.extension.visualisation" description="Concept that defines visualization properties" version="1.5" displayName="Visualization">
   <imports importedNamespace="de.dlr.sc.virsat.model.ext.core.*"/>
   <categories name="Visualisation" isApplicableForAll="true" cardinality="1">
-    <properties xsi:type="dvlm_cppd:EnumProperty" name="shape" defaultValue="//@categories.0/@properties.0/@values.0">
+    <properties xsi:type="dvlm_cppd:EnumProperty" name="shape" description="The kind of object to be displayed. None in case just a transformation is considered." defaultValue="//@categories.0/@properties.0/@values.0">
       <values name="NONE" value="1"/>
       <values name="BOX" value="2"/>
       <values name="SPHERE" value="3"/>
@@ -10,20 +10,20 @@
       <values name="CONE" value="5"/>
       <values name="GEOMETRY" value="6"/>
     </properties>
-    <properties xsi:type="dvlm_cppd:ResourceProperty" name="geometryFile" description="STL File"/>
-    <properties xsi:type="dvlm_cppd:FloatProperty" name="radius" quantityKindName="Length" unitName="Meter" defaultValue="0"/>
-    <properties xsi:type="dvlm_cppd:FloatProperty" name="sizeX" quantityKindName="Length" unitName="Meter" defaultValue="0"/>
-    <properties xsi:type="dvlm_cppd:FloatProperty" name="sizeY" quantityKindName="Length" unitName="Meter" defaultValue="0"/>
-    <properties xsi:type="dvlm_cppd:FloatProperty" name="sizeZ" quantityKindName="Length" unitName="Meter" defaultValue="0"/>
-    <properties xsi:type="dvlm_cppd:FloatProperty" name="unitScale" quantityKindName="Length" unitName="Millimeter" defaultValue="1"/>
-    <properties xsi:type="dvlm_cppd:IntProperty" name="color" defaultValue="16777215"/>
-    <properties xsi:type="dvlm_cppd:FloatProperty" name="transparency" defaultValue="0"/>
-    <properties xsi:type="dvlm_cppd:FloatProperty" name="positionX" quantityKindName="Length" unitName="Meter" defaultValue="0"/>
-    <properties xsi:type="dvlm_cppd:FloatProperty" name="positionY" quantityKindName="Length" unitName="Meter" defaultValue="0"/>
-    <properties xsi:type="dvlm_cppd:FloatProperty" name="positionZ" quantityKindName="Length" unitName="Meter" defaultValue="0"/>
-    <properties xsi:type="dvlm_cppd:FloatProperty" name="rotationX" quantityKindName="Angle" unitName="Degree" defaultValue="0"/>
-    <properties xsi:type="dvlm_cppd:FloatProperty" name="rotationY" quantityKindName="Angle" unitName="Degree" defaultValue="0"/>
-    <properties xsi:type="dvlm_cppd:FloatProperty" name="rotationZ" quantityKindName="Angle" unitName="Degree" defaultValue="0"/>
+    <properties xsi:type="dvlm_cppd:ResourceProperty" name="geometryFile" description="STL File for complex geometries"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="radius" description="The radius of a sphere, cone or cylinder" quantityKindName="Length" unitName="Meter" defaultValue="0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="sizeX" description="Size in X direction as used by Boxes" quantityKindName="Length" unitName="Meter" defaultValue="0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="sizeY" description="Size in Y direction as used by Boxes, Cylinders and Condes" quantityKindName="Length" unitName="Meter" defaultValue="0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="sizeZ" description="Size in Z direction as used by Boxes" quantityKindName="Length" unitName="Meter" defaultValue="0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="unitScale" description="the unit of measurements in an STL file." quantityKindName="Length" unitName="Millimeter" defaultValue="1"/>
+    <properties xsi:type="dvlm_cppd:IntProperty" name="color" description="Color for the object to eb displayed." defaultValue="16777215"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="transparency" description="Transparency value for the object" defaultValue="0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="positionX" description="translation in X direction" quantityKindName="Length" unitName="Meter" defaultValue="0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="positionY" description="translation in Y direction" quantityKindName="Length" unitName="Meter" defaultValue="0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="positionZ" description="translation in Z direction" quantityKindName="Length" unitName="Meter" defaultValue="0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="rotationX" description="rotation around X axis" quantityKindName="Angle" unitName="Degree" defaultValue="0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="rotationY" description="rotation around Y axis" quantityKindName="Angle" unitName="Degree" defaultValue="0"/>
+    <properties xsi:type="dvlm_cppd:FloatProperty" name="rotationZ" description="rotation around Z axis" quantityKindName="Angle" unitName="Degree" defaultValue="0"/>
     <extendsCategory href="platform:/resource/de.dlr.sc.virsat.model.ext.core/concept/concept.xmi#de.dlr.sc.virsat.model.ext.core.GenericCategory"/>
   </categories>
 </dvlm_c:Concept>
