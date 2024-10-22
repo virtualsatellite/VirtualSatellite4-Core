@@ -57,9 +57,11 @@ public class Shape {
 	 * @param transparency transparency from 0 to 1
 	 * @param shape the shape type
 	 */
+	//CHECKSTYLE:OFF
 	public Shape(String id, URI geometryFile, float sizeX, float sizeY, float sizeZ, float unitScale, float radius, double positionX, 
 			double positionY, double positionZ, double rotationX, double rotationY, double rotationZ, int color, float transparency,
 			VisualisationShape shape) {
+		//CHECKSTYLE:ON
 		this.id = id;
 		this.geometryFile = geometryFile;
 		this.sizeX = sizeX;
