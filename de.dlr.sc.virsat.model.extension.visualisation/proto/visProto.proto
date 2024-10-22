@@ -47,6 +47,7 @@ message Vector3
 message Geometry
 {
 	required string originFilepath		= 1;
+	optional float unitScale	  		= 2 [default=0.001];
 }
 
 message Box

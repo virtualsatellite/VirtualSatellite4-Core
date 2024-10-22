@@ -72,6 +72,7 @@ public class Visualisation extends AVisualisation {
 		shape.sizeX = (float) this.getSizeXBean().getValueToBaseUnit(); 
 		shape.sizeY = (float) this.getSizeYBean().getValueToBaseUnit();
 		shape.sizeZ = (float) this.getSizeZBean().getValueToBaseUnit();
+		shape.unitScale = (float) this.getUnitScaleBean().getValueToBaseUnit();
 		shape.radius = (float) this.getRadiusBean().getValueToBaseUnit();
 		shape.positionX = this.getPositionXBean().getValueToBaseUnit();
 		shape.positionY = this.getPositionYBean().getValueToBaseUnit();
@@ -94,6 +95,7 @@ public class Visualisation extends AVisualisation {
 		this.getSizeXBean().setValueAsBaseUnit(shape.sizeX);
 		this.getSizeYBean().setValueAsBaseUnit(shape.sizeY);
 		this.getSizeZBean().setValueAsBaseUnit(shape.sizeZ);
+		this.getUnitScaleBean().setValueAsBaseUnit(shape.unitScale);
 		this.getRadiusBean().setValueAsBaseUnit(shape.radius);
 
 		this.setColor(shape.color);

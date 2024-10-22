@@ -27,6 +27,7 @@ public class Shape {
 	public float sizeY = 0;
 	public float sizeZ = 0;
 	public float radius = 0;
+	public float unitScale = 0.001f;
 	public double positionX = 0;
 	public double positionY = 0;
 	public double positionZ = 0;
@@ -56,14 +57,17 @@ public class Shape {
 	 * @param transparency transparency from 0 to 1
 	 * @param shape the shape type
 	 */
-	public Shape(String id, URI geometryFile, float sizeX, float sizeY, float sizeZ, float radius, double positionX, 
+	//CHECKSTYLE:OFF
+	public Shape(String id, URI geometryFile, float sizeX, float sizeY, float sizeZ, float unitScale, float radius, double positionX, 
 			double positionY, double positionZ, double rotationX, double rotationY, double rotationZ, int color, float transparency,
 			VisualisationShape shape) {
+		//CHECKSTYLE:ON
 		this.id = id;
 		this.geometryFile = geometryFile;
 		this.sizeX = sizeX;
 		this.sizeY = sizeY;
 		this.sizeZ = sizeZ;
+		this.unitScale = unitScale;
 		this.radius = radius;
 		this.positionX = positionX;
 		this.positionY = positionY;
@@ -93,6 +97,7 @@ public class Shape {
 		this.sizeX = shapeToCopyFrom.sizeX;
 		this.sizeY = shapeToCopyFrom.sizeY;
 		this.sizeZ = shapeToCopyFrom.sizeZ;
+		this.unitScale = shapeToCopyFrom.unitScale;
 		this.radius = shapeToCopyFrom.radius;
 		this.positionX = shapeToCopyFrom.positionX;
 		this.positionY = shapeToCopyFrom.positionY;
@@ -123,6 +128,7 @@ public class Shape {
 				&& equalsConeSizes(this, other)
 				&& equalsCylinderSizes(this, other)
 				&& (this.geometryFile == other.geometryFile || this.shape != VisualisationShape.GEOMETRY)
+				&& this.unitScale == other.unitScale
 				);
 	}
 	
@@ -224,6 +230,7 @@ public class Shape {
 
 		if (shape == VisualisationShape.GEOMETRY) {
 			result = 31 * result + ((geometryFile == null) ? 0 : geometryFile.hashCode());
+			result = 31 * result + Float.floatToIntBits(unitScale);
 		}
 		if (shape == VisualisationShape.BOX) {
 			result = 31 * result + Float.floatToIntBits(sizeX);

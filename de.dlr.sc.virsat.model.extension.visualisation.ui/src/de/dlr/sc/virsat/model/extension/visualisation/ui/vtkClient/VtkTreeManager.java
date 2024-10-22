@@ -167,7 +167,10 @@ public class VtkTreeManager extends vtkPanel {
 		} 
 		
 		vtkLinearTransform vlt = model.GetUserTransform();
-		geometryActor.SetUserTransform(calculateTransform(node, vlt));
+		vtkTransform vtkTransform = calculateTransform(node, vlt);
+		float unitScale = node.getGeometry().getUnitScale();
+		vtkTransform.Scale(unitScale, unitScale, unitScale);
+		geometryActor.SetUserTransform(vtkTransform);
 		geometryActor.GetProperty().SetAmbient(GEOMETRY_AMBIENT_REFLECTION);
 		geometryActor.GetProperty().SetDiffuse(GEOMETRY_DIFFUSE_REFLECTION);
 		double[] color = CalculateColor.caluclateIntToRGBDouble(node.getColor());
