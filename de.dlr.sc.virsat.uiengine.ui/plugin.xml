@@ -75,6 +75,11 @@
             snippet="de.dlr.sc.virsat.uiengine.ui.editor.snippets.general.UiSnippetIUuid">
       </uiSnippet>
       <uiSnippet
+            id="de.dlr.sc.virsat.uiengine.ui.uiSnippetDescription"
+            section="de.dlr.sc.virsat.uiengine.ui.editorSection.General"
+            snippet="de.dlr.sc.virsat.uiengine.ui.editor.snippets.general.UiSnippetIDescription">
+      </uiSnippet>
+      <uiSnippet
             id="de.dlr.sc.virsat.uiengine.ui.uiSnippetName"
             section="de.dlr.sc.virsat.uiengine.ui.editorSection.General"
             snippet="de.dlr.sc.virsat.uiengine.ui.editor.snippets.general.UiSnippetIName">
