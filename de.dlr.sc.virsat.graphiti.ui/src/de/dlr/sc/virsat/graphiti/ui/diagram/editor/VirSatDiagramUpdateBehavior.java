@@ -151,6 +151,8 @@ public class VirSatDiagramUpdateBehavior extends DefaultUpdateBehavior {
 		// Dont create a new editing domain, instead get the virsat editing domain
 		// associated with the project of this file 
 		DiagramEditorInput diagramInput = (DiagramEditorInput) input;
+
+		// Decoding the URL to get the path in correct form
 		String decodedPath = null;
 		try {
 			decodedPath = URLDecoder.decode(diagramInput.getUri().toPlatformString(false), StandardCharsets.UTF_8.name());
@@ -158,8 +160,7 @@ public class VirSatDiagramUpdateBehavior extends DefaultUpdateBehavior {
 		} catch (UnsupportedEncodingException e) {
 			Activator.getDefault().getLog().error("Failed to decode URI", e);
 		}
-	//  Path path = new Path(decodedPath);
-	//	IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(path);
+
 		IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(decodedPath));
 		IProject project = file.getProject();
 		VirSatResourceSet resourceSet = VirSatResourceSet.getResourceSet(project);

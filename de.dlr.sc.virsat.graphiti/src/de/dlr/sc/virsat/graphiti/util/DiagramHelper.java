@@ -17,7 +17,6 @@ import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-//import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.command.CommandStack;
@@ -92,13 +91,8 @@ public class DiagramHelper {
 			seiUri = seiUri.appendSegment(VirSatProjectCommons.FILENAME_STRUCTURAL_ELEMENT_SEGMENT);
 			seiUri = seiUri.appendFileExtension(VirSatProjectCommons.FILENAME_EXTENSION);
 			seiUri = URI.createPlatformResourceURI(seiUri.toFileString(), true);
-			
-			
-//			Path path = new Path(resourceUri.toPlatformString(false));
-//			IResource iResource = ResourcesPlugin.getWorkspace().getRoot().findMember(path);
-//			IProject project = iResource.getProject();
-//			ResourceSet resourceSet = VirSatResourceSet.getResourceSet(project);
-//			
+
+			// Decoding the URL to get the path in correct form
 			String decodedPath = null;
 			try {
 				decodedPath = URLDecoder.decode(resourceUri.toPlatformString(false), StandardCharsets.UTF_8.name());
@@ -106,8 +100,7 @@ public class DiagramHelper {
 			} catch (UnsupportedEncodingException e) {
 				Activator.getDefault().getLog().error("Failed to decode URI", e);
 			}
-			//Path path = new Path(decodedPath);
-			//IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(path);
+
 			IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(decodedPath));
 			IProject project = file.getProject();
 			ResourceSet resourceSet = VirSatResourceSet.getResourceSet(project);
