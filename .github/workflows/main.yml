@@ -221,7 +221,7 @@ jobs:
         with:
           name: Surefire Reports
           path: 
-            ../../**/.metadata/*.log
+            ../../**/*.log
 
   # -----------------------------------------------------
   # Build and Test - Checkstyle Job
