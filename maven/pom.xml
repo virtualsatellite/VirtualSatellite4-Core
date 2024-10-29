@@ -193,8 +193,8 @@
 								in the plugins target directory, thus creating a repository within a repository (git from
 								the source code). UI tests will then sometimes believe that the project is already connected
 								to a VCS but in fact isn't. -->
-							<osgiDataDirectory>${basedir}/../../surefire-work/${project.artifactId}/data</osgiDataDirectory>
-							<work>${basedir}/../../surefire-work/${project.artifactId}/work</work>
+							<osgiDataDirectory>${basedir}/../surefire-work/${project.artifactId}/data</osgiDataDirectory>
+							<work>${basedir}/../surefire-work/${project.artifactId}/work</work>
 							
 							<excludes>
 								<exclude>**/AllTests</exclude>
