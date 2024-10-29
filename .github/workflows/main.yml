@@ -211,6 +211,17 @@ jobs:
           name: Surefire Reports
           path: 
             ./**/target/surefire-reports/*
+      
+      # --------------------------------------------
+      # Upload Logs to github artifacts
+      # --------------------------------------------            
+      - name: Build and Test - Upload Surefire Logs on Failure
+        # if: ${{ failure() }}
+        uses: actions/upload-artifact@v4.3.4
+        with:
+          name: Surefire Reports
+          path: 
+            ../../**/.metadata/*.log
 
   # -----------------------------------------------------
   # Build and Test - Checkstyle Job
