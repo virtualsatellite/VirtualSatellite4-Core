@@ -28,6 +28,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.model.extension.tests.Activator;
 import de.dlr.sc.virsat.model.extension.tests.model.TestStructuralElement;
 import de.dlr.sc.virsat.model.extension.tests.test.ATestConceptTestCase;
 import de.dlr.sc.virsat.model.external.tests.Container;
@@ -92,6 +93,7 @@ public class VirSatTransactionalEditingDomainNonDVLMTest extends ATestConceptTes
 			public void resourceEvent(Set<Resource> resources, int event) {
 				synchronized (this) {
 					if (resources.contains(externalModelResourceVirSatDomain) && event == VirSatTransactionalEditingDomain.EVENT_RELOAD) {
+						Activator.getDefault().getLog().info("NonDvlmExternalModelChange: Listener for observing reload of model has been triggered");
 						externalModelResourceReloaded.set(true);
 					}
 				}
@@ -106,24 +108,32 @@ public class VirSatTransactionalEditingDomainNonDVLMTest extends ATestConceptTes
 			// Adding the listener in the lock, makes sure that no other thread in between was
 			// triggering it. Still it does not tell that no other thread has maybe still some changes
 			// leading to notifications on the resource change listeners.
+			Activator.getDefault().getLog().info("NonDvlmExternalModelChange: Waiting for all accumulated resource events to be fired.");
 			VirSatTransactionalEditingDomain.waitForFiringOfAccumulatedResourceChangeEvents();
+			Activator.getDefault().getLog().info("NonDvlmExternalModelChange: Now adding the resource listener");
 			VirSatTransactionalEditingDomain.addResourceEventListener(rel);
 			
 			// Do some external changes
+			Activator.getDefault().getLog().info("NonDvlmExternalModelChange: Ready to do the model change");
 			doExternalModelChange();
 		}
 		// The save is not interlocked, since it will lock the workspace at some point same as the ResourceListner
 		// implemented above which locks itself. Otherwise a deadlock would happen here.
-		editingDomain.saveAll();
+		//editingDomain.saveAll();
 		
+		Activator.getDefault().getLog().info("NonDvlmExternalModelChange: Waiting for detecting the reload of the model.");
 		while (!externalModelResourceReloaded.get()) {
+			Activator.getDefault().getLog().info("NonDvlmExternalModelChange: Sleeping...");
 			Thread.sleep(THREAD_TEST_SLEEP_TIME);
 		}
+		Activator.getDefault().getLog().info("NonDvlmExternalModelChange: Reload is detected.");
 		
 		// Check reload of changes
 		assertTrue("Oudated model element should be set to proxy state", containerVirsatContext.eIsProxy());
+		Activator.getDefault().getLog().info("NonDvlmExternalModelChange: Getting content of external model.");
 		Container reloadedContainer = (Container) externalModelResourceVirSatDomain.getContents().get(0);
 		assertNotNull("Change should have been loaded into virsat model resource", reloadedContainer.getObjects());
+		Activator.getDefault().getLog().info("NonDvlmExternalModelChange: Test Done.");
 	}
 	
 	/**
@@ -131,7 +141,7 @@ public class VirSatTransactionalEditingDomainNonDVLMTest extends ATestConceptTes
 	 * @throws IOException
 	 */
 	private Container doExternalModelChange() throws IOException {
-		
+		Activator.getDefault().getLog().info("\"NonDvlmExternalModelChange: Preparing change of external model");
 		TransactionalEditingDomain externalEditingDomain = TransactionalEditingDomain.Factory.INSTANCE.createEditingDomain();
 		ResourceSet externalResourceSet = externalEditingDomain.getResourceSet();
 		Resource externalResourceHandle = externalResourceSet.getResource(externalModelResourceVirSatDomain.getURI(), true);
@@ -145,7 +155,10 @@ public class VirSatTransactionalEditingDomainNonDVLMTest extends ATestConceptTes
 		});
 		
 		assertNull("Change should be done in external editing domain", containerVirsatContext.getObjects());
+		
+		Activator.getDefault().getLog().info("NonDvlmExternalModelChange: Saving the external model change.");
 		externalResourceHandle.save(Collections.emptyMap());
+		Activator.getDefault().getLog().info("NonDvlmExternalModelChange: Saved now.");
 		
 		return newContainerHandle;
 	}
