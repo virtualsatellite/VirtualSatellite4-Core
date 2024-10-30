@@ -31,6 +31,7 @@ import de.dlr.sc.virsat.server.controller.RepoManagementController;
 import de.dlr.sc.virsat.server.jetty.VirSatJettyServer;
 import de.dlr.sc.virsat.server.repository.ServerRepository;
 import de.dlr.sc.virsat.server.resources.ApiErrorHelper;
+import de.dlr.sc.virsat.server.servlet.ModelAccessServletContainer;
 import de.dlr.sc.virsat.server.servlet.RepoManagementServletContainer;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
@@ -56,7 +57,10 @@ import io.swagger.v3.oas.annotations.servers.Server;
 		title = "The Server Management API",
 		description = "API to manage the server configuration and setting up projects"
 	),
-	servers = {@Server(url = VirSatJettyServer.PATH + RepoManagementServletContainer.MANAGEMENT_API)}
+	servers = {
+		@Server(url = VirSatJettyServer.PATH + RepoManagementServletContainer.MANAGEMENT_API),
+		@Server(url = VirSatJettyServer.PATH + ModelAccessServletContainer.MODEL_API)
+	}
 )
 @Path(ProjectManagementResource.PATH)
 @RolesAllowed({ServerRoles.ADMIN})

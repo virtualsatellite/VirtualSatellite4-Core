@@ -34,6 +34,7 @@ import de.dlr.sc.virsat.server.resources.model.PropertyResource;
 import de.dlr.sc.virsat.server.resources.model.QudvResource;
 import de.dlr.sc.virsat.server.resources.model.StructuralElementInstanceResource;
 import de.dlr.sc.virsat.server.servlet.ModelAccessServletContainer;
+import de.dlr.sc.virsat.server.servlet.RepoManagementServletContainer;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
@@ -58,7 +59,8 @@ import io.swagger.v3.oas.annotations.servers.Server;
 		description = "API to access the Virtual Satellite repository and data model"
 	),
 	servers = {
-		@Server(url = VirSatJettyServer.PATH + ModelAccessServletContainer.MODEL_API)
+		@Server(url = VirSatJettyServer.PATH + ModelAccessServletContainer.MODEL_API),
+		@Server(url = VirSatJettyServer.PATH + RepoManagementServletContainer.MANAGEMENT_API)
 	}
 )
 @Path(RepositoryAccessResource.PATH)
