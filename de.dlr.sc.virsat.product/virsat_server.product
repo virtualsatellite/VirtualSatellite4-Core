@@ -3,11 +3,12 @@
 
 <product name="Virtual Satellite 4 - Headless Server" uid="de.dlr.virsat.server.product" application="de.dlr.sc.virsat.server.application" version="4.17.1.qualifier" type="features" includeLaunchers="true" autoIncludeRequirements="true">
 
+
    <configIni use="default">
    </configIni>
 
    <launcherArgs>
-      <programArgs>-consoleLog -console
+      <programArgs>-consoleLog -console -data workspace
       </programArgs>
       <vmArgs>-Dosgi.requiredJavaVersion=17
 -Dosgi.instance.area.default=@user.home/eclipse-workspace
@@ -28,6 +29,7 @@
 
    <windowImages/>
 
+
    <launcher name="VirSat4_Server">
       <win useIco="true">
          <ico path="../de.dlr.sc.virsat.branding.ui/resources/images/Branding/VirSat_MultiRes.ico"/>
@@ -35,9 +37,11 @@
       </win>
    </launcher>
 
+
    <vm>
       <windows include="false">org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17</windows>
    </vm>
+
 
    <plugins>
       <plugin id="de.dlr.sc.virsat.apps"/>
