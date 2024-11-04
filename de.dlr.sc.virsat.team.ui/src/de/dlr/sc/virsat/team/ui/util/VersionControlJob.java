@@ -14,6 +14,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
@@ -42,29 +45,48 @@ public abstract class VersionControlJob extends Job {
 
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
-		SubMonitor subMonitor = SubMonitor.convert(monitor, selectedProjects.size());
+		SubMonitor subMonitor = SubMonitor.convert(monitor, selectedProjects.size() * 2);
 		List<IStatus> status = new ArrayList<>();
+		boolean autoBuildEnabled = isAutoBuildEnabled();
 		
+		// disable auto building to avoid file changes during the commit operation
+		if (autoBuildEnabled) {
+			setAutoBuild(false);
+		}
+
 		for (IProject project : selectedProjects) {
-			VirSatTransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(project);
 			try {
-				ed.runExclusive(() -> {
-					ed.getCommandStack().flush();
-					try {
-						executeBackendOperation(project, subMonitor.split(1));
-					} catch (Exception e) {
-						status.add(new Status(Status.ERROR, Activator.getPluginId(), "Error during update", e));
-					}
-				});
-			} catch (InterruptedException e) {
-				status.add(new Status(Status.ERROR, Activator.getPluginId(), "Transaction interruption during update", e));
+				// trigger a build to ensure a consistent data model
+				project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, subMonitor.split(1));
+				
+				VirSatTransactionalEditingDomain ed = VirSatEditingDomainRegistry.INSTANCE.getEd(project);
+				try {
+					ed.runExclusive(() -> {
+						ed.getCommandStack().flush();
+						try {
+							executeBackendOperation(project, subMonitor.split(1));
+						} catch (Exception e) {
+							status.add(new Status(Status.ERROR, Activator.getPluginId(), "Error during update", e));
+						}
+					});
+				} catch (InterruptedException e) {
+					status.add(new Status(Status.ERROR, Activator.getPluginId(), "Transaction interruption during update", e));
+				}
+			} catch (CoreException e) {
+				status.add(new Status(Status.ERROR, Activator.getPluginId(), "Error during build", e));
 			}
+
 		}
 		if (!status.isEmpty()) {
 			MultiStatus multiStatus = new MultiStatus(Activator.getPluginId(), Status.ERROR, status.toArray(new Status[] {}), "Errors during update", status.get(0).getException());
 			StatusManager.getManager().handle(multiStatus, StatusManager.LOG | StatusManager.SHOW);
 			return Status.CANCEL_STATUS;
 		}
+		
+		if (autoBuildEnabled) {
+			setAutoBuild(true);
+		}
+
 		return Status.OK_STATUS;
 	}
 	
@@ -75,5 +97,24 @@ public abstract class VersionControlJob extends Job {
 	 * @throws Exception
 	 */
 	protected abstract void executeBackendOperation(IProject project, IProgressMonitor monitor) throws Exception;
+	
+	private static boolean isAutoBuildEnabled() {
+		return ResourcesPlugin.getWorkspace().getDescription().isAutoBuilding();
+	}
+	
+	/**
+	 * Enables or disables auto building of the workspace.
+	 */
+	private static void setAutoBuild(boolean enable) {
+		var workspace = ResourcesPlugin.getWorkspace();
+		var desc = workspace.getDescription();
+
+		desc.setAutoBuilding(enable);
+		try {
+			workspace.setDescription(desc);
+		} catch (CoreException e) {
+			Activator.getDefault().getLog().log(new Status(IStatus.ERROR, Activator.getPluginId(), e.getMessage()));
+		}
+	}
 
 }
