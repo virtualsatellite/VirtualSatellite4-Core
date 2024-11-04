@@ -13,7 +13,6 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.jface.wizard.Wizard;
 
-import de.dlr.sc.virsat.qudv.ui.Activator;
 import de.dlr.sc.virsat.qudv.ui.wizards.pages.SimpleQuantityKindWizardPageOne;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.model.dvlm.qudv.SimpleQuantityKind;
@@ -23,7 +22,6 @@ import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
 
 /**
  * a simple wizard which allows to add simple quantity kinds
- * @author scha_vo
  *
  */
 public class SimpleQuantityKindWizard extends Wizard {
@@ -46,7 +44,6 @@ public class SimpleQuantityKindWizard extends Wizard {
 	public SimpleQuantityKindWizard(UnitManagement um, SimpleQuantityKind quantityKind) {
 		super();
 		setNeedsProgressMonitor(true);
-		setDefaultPageImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.getPluginId(), "resources/facets-page-wizban.png"));
 		setUnitManagement(um);
 		this.quantityKind = quantityKind;
 	}
@@ -58,7 +55,6 @@ public class SimpleQuantityKindWizard extends Wizard {
 	public SimpleQuantityKindWizard(UnitManagement um) {
 		super();
 		setNeedsProgressMonitor(true);
-		setDefaultPageImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.getPluginId(), "resources/facets-page-wizban.png"));
 		setUnitManagement(um);
 	}
 	
@@ -68,7 +64,6 @@ public class SimpleQuantityKindWizard extends Wizard {
 	public SimpleQuantityKindWizard() {
 		super();
 		setNeedsProgressMonitor(true);
-		setDefaultPageImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.getPluginId(), "resources/facets-page-wizban.png")); 
 	}
 
 	/**

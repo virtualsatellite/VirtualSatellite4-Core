@@ -15,7 +15,6 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.jface.wizard.Wizard;
 
-import de.dlr.sc.virsat.qudv.ui.Activator;
 import de.dlr.sc.virsat.qudv.ui.wizards.pages.DerivedQuantityKindWizardPageOne;
 import de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind;
 import de.dlr.sc.virsat.model.dvlm.qudv.DerivedQuantityKind;
@@ -47,7 +46,6 @@ public class DerivedQuantityKindWizard extends Wizard {
 	public DerivedQuantityKindWizard(UnitManagement um, DerivedQuantityKind quantityKind) {
 		super();
 		setNeedsProgressMonitor(true);
-		setDefaultPageImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.getPluginId(), "resources/facets-page-wizban.png"));
 		setUnitManagement(um);
 		this.quantityKind = quantityKind;
 	}
@@ -59,7 +57,6 @@ public class DerivedQuantityKindWizard extends Wizard {
 	public DerivedQuantityKindWizard(UnitManagement um) {
 		super();
 		setNeedsProgressMonitor(true);
-		setDefaultPageImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.getPluginId(), "resources/facets-page-wizban.png"));
 		setUnitManagement(um);
 	}
 	
@@ -69,7 +66,6 @@ public class DerivedQuantityKindWizard extends Wizard {
 	public DerivedQuantityKindWizard() {
 		super();
 		setNeedsProgressMonitor(true);
-		setDefaultPageImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.getPluginId(), "resources/facets-page-wizban.png")); 
 	}
 	
 	/**
