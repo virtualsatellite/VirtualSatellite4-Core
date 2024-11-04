@@ -999,11 +999,19 @@ public class VirSatResourceSet extends ResourceSetImpl implements ResourceSet {
 		Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(),
 				"VirSatResourceSet: Started saving Resource (" + resource.getURI().toPlatformString(true) + ") for Project (" + project.getName() + ")"));
 
+		if (resource.getURI().isPlatformPlugin()) {
+			Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(),
+					"VirSatResourceSet: Resource is stored in a plugin, thus it cannot be saved (" + resource.getURI().toPlatformString(true) + ")"));
+			return;
+		}
+
+		
 		if (!resource.isLoaded()) {
 			Activator.getDefault().getLog().log(new Status(Status.WARNING, Activator.getPluginId(),
 					"VirSatResourceSet: Attempted to save unloaded resource (" + resource.getURI().toPlatformString(true) + ")"));
 		}
 
+		
 		try {
 			// Only save the resource if we actually have the right to do this.
 			if (overrideWritePermissions || hasWritePermission(resource, userContext)) {
