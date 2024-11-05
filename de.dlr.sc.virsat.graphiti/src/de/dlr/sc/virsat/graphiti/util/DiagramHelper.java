@@ -93,9 +93,9 @@ public class DiagramHelper {
 			seiUri = URI.createPlatformResourceURI(seiUri.toFileString(), true);
 
 			// Decoding the URL to get the path in correct form
-			String decodedPath = null;
+			String decodedPath = resourceUri.toPlatformString(false);
 			try {
-				decodedPath = URLDecoder.decode(resourceUri.toPlatformString(false), StandardCharsets.UTF_8.name());
+				decodedPath = URLDecoder.decode(decodedPath, StandardCharsets.UTF_8.name());
 				Activator.getDefault().getLog().info("Decoded path: " + decodedPath);
 			} catch (UnsupportedEncodingException e) {
 				Activator.getDefault().getLog().error("Failed to decode URI", e);
