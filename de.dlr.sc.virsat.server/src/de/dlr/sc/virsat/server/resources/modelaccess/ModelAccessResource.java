@@ -484,7 +484,7 @@ public class ModelAccessResource {
 	public static IBeanStructuralElementInstance createSeiFromFqn(String fullQualifiedName, EObject owner, VirSatTransactionalEditingDomain editingDomain, IUserContext iUserContext, String name) throws CoreException {
 		ActiveConceptHelper helper = new ActiveConceptHelper(editingDomain.getResourceSet().getRepository());
 		StructuralElement se = helper.getStructuralElement(fullQualifiedName);
-		StructuralElementInstance newSei = new StructuralInstantiator().generateInstance(se, null);
+		StructuralElementInstance newSei = new StructuralInstantiator().generateInstance(se, name);
 		
 		if (owner instanceof IAssignedDiscipline) {
 			Discipline parentDiscipline = ((IAssignedDiscipline) owner).getAssignedDiscipline();
