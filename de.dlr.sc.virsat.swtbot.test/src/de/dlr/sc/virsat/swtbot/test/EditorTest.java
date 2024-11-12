@@ -82,6 +82,49 @@ public class EditorTest extends ASwtBotTestCase {
 	}
 	
 	@Test
+	public void closeEditorForRemovedCaByNavigator() throws CoreException {
+		openEditor(configurationTree);
+		openEditor(elementConfiguration);
+		openEditor(document);
+		
+		bot.viewByTitle("VirSat Navigator").show();
+		SWTBotTreeItem documentTreeItem = bot.tree().getTreeItem("SWTBotTestProject").getNode("Repository").getNode("CT: ConfigurationTree").getNode("EC: ElementConfiguration").getNode("D: Document").select();
+		documentTreeItem.select();
+	
+		buildCounter.executeInterlocked(() -> {
+			documentTreeItem.contextMenu("Delete").click();
+		});
+		
+		List<String> editorTitles = bot.editors().stream().map(SWTBotEditor::getTitle).collect(Collectors.toList());
+
+		// CHECKSTYLE:OFF
+		assertEquals("There are just two editors open", 3, editorTitles.size());
+		assertThat("Repository Editor is still open", editorTitles, hasItems(
+				"Repository", 
+				"CT: ConfigurationTree -> ConfigurationTree",
+				"EC: ElementConfiguration -> ConfigurationTree.ElementConfiguration")
+		);
+		// CHECKSTYLE:ON
+		
+		// Add a document again open it and try the same thing when removing the containing SEI
+		document = addElement(Document.class, conceptPs, elementConfiguration);
+		openEditor(document);
+
+		bot.viewByTitle("VirSat Navigator").show();
+		SWTBotTreeItem elementConfigurationTreeItem = bot.tree().getTreeItem("SWTBotTestProject").getNode("Repository").getNode("CT: ConfigurationTree").getNode("EC: ElementConfiguration").select();
+		elementConfigurationTreeItem.select();
+	
+		buildCounter.executeInterlocked(() -> {
+			elementConfigurationTreeItem.contextMenu("Delete").click();
+		});
+		
+		editorTitles = bot.editors().stream().map(SWTBotEditor::getTitle).collect(Collectors.toList());
+
+		assertEquals("There are just two editors open", 2, editorTitles.size());
+		assertThat("Repository Editor is still open", editorTitles, hasItems("Repository", "CT: ConfigurationTree -> ConfigurationTree"));
+	}
+	
+	@Test
 	public void closeEditorForRemovedSeiByNavigator() throws CoreException {
 		openEditor(configurationTree);
 		openEditor(elementConfiguration);
@@ -157,7 +200,7 @@ public class EditorTest extends ASwtBotTestCase {
 	}
 	
 	@Test
-	public void addAndremoveCategoriesFromSEIEditor() {
+	public void addAndRemoveCategoriesFromSEIEditor() {
 		final int EXPECTED_EC_CHILDREN = 3;
 		
 		openEditor(elementConfiguration);
