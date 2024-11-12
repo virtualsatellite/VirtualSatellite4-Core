@@ -68,6 +68,7 @@ public abstract class AVisualisation extends GenericCategory implements IBeanCat
 	public static final String PROPERTY_SIZEX = "sizeX";
 	public static final String PROPERTY_SIZEY = "sizeY";
 	public static final String PROPERTY_SIZEZ = "sizeZ";
+	public static final String PROPERTY_UNITSCALE = "unitScale";
 	public static final String PROPERTY_COLOR = "color";
 	public static final String PROPERTY_TRANSPARENCY = "transparency";
 	public static final String PROPERTY_POSITIONX = "positionX";
@@ -326,6 +327,43 @@ public abstract class AVisualisation extends GenericCategory implements IBeanCat
 	public BeanPropertyFloat getSizeZBean() {
 		safeAccessSizeZ();
 		return sizeZ;
+	}
+	
+	// *****************************************************************
+	// * Attribute: unitScale
+	// *****************************************************************
+	private BeanPropertyFloat unitScale = new BeanPropertyFloat();
+	
+	private void safeAccessUnitScale() {
+		if (unitScale.getTypeInstance() == null) {
+			unitScale.setTypeInstance((UnitValuePropertyInstance) helper.getPropertyInstance("unitScale"));
+		}
+	}
+	
+	public Command setUnitScale(EditingDomain ed, double value) {
+		safeAccessUnitScale();
+		return this.unitScale.setValue(ed, value);
+	}
+	
+	public void setUnitScale(double value) {
+		safeAccessUnitScale();
+		this.unitScale.setValue(value);
+	}
+	
+	public double getUnitScale() {
+		safeAccessUnitScale();
+		return unitScale.getValue();
+	}
+	
+	public boolean isSetUnitScale() {
+		safeAccessUnitScale();
+		return unitScale.isSet();
+	}
+	
+	@XmlElement
+	public BeanPropertyFloat getUnitScaleBean() {
+		safeAccessUnitScale();
+		return unitScale;
 	}
 	
 	// *****************************************************************

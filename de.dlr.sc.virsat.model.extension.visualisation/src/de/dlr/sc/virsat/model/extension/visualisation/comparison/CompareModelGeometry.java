@@ -113,7 +113,7 @@ public class CompareModelGeometry extends ACompareModelAlgorithm {
 				String shapeGeometryString = compareVis.getShape();
 				VisualisationShape shapeGeometry = VisualisationShape.valueOf(shapeGeometryString); 
 				Shape shape = new Shape(key, compareVis.getGeometryFile(), 
-						(float) compareVis.getSizeX(), (float) compareVis.getSizeY(), (float) compareVis.getSizeZ(), 
+						(float) compareVis.getSizeX(), (float) compareVis.getSizeY(), (float) compareVis.getSizeZ(), (float) compareVis.getUnitScale(),
 						(float) compareVis.getRadius(), compareVis.getPositionX(), compareVis.getPositionY(), 
 						compareVis.getPositionZ(), compareVis.getRotationX(), compareVis.getRotationY(), compareVis.getRotationZ(),
 						GEO_REMOVED_COLOR, (float) compareVis.getTransparency(), shapeGeometry);
