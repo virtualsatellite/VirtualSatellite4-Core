@@ -14,10 +14,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.ecore.EObject;
 
 import de.dlr.sc.virsat.commons.datastructures.DependencyTree;
+import de.dlr.sc.virsat.model.calculation.Activator;
 import de.dlr.sc.virsat.model.calculation.compute.problem.EvaluationProblem;
 import de.dlr.sc.virsat.model.calculation.compute.problem.OutOfDateProblem;
 import de.dlr.sc.virsat.model.dvlm.calculation.AExpression;
@@ -28,6 +31,7 @@ import de.dlr.sc.virsat.model.dvlm.calculation.IEquationResult;
 import de.dlr.sc.virsat.model.dvlm.calculation.ReferencedInput;
 import de.dlr.sc.virsat.model.dvlm.calculation.TypeInstanceResult;
 import de.dlr.sc.virsat.model.dvlm.categories.ATypeInstance;
+import de.dlr.sc.virsat.model.dvlm.general.IName;
 import de.dlr.sc.virsat.model.dvlm.inheritance.IOverridableInheritanceLink;
 import de.dlr.sc.virsat.model.dvlm.roles.IUserContext;
 import de.dlr.sc.virsat.model.dvlm.roles.RightsHelper;
@@ -138,61 +142,75 @@ public class EquationHelper {
 		
 		// Evaluate the expressions according to the linearization
 		for (EObject object : linear) {
-			if (object instanceof AExpression) {
-				exprHelper.evaluate((AExpression) object, mapExpressionToResult);
-				
-				// Check if its a referenced input with a definition attached to it
-				// If so, update the referenced instance
-				if (object instanceof ReferencedInput) {
-					ReferencedInput refInput = (ReferencedInput) object;
-					if (refInput.getDefinition() != null) {
-						IEquationInput eqInput = exprHelper.getReferencedDefinitionInput(refInput);
-						refInput.setReference(eqInput);
-					}
-				}
-			} else if (object instanceof IEquationResult) {
-				IEquationResult equationResult = (IEquationResult) object;
-
-				Equation equation = (Equation) equationResult.eContainer();
-				IExpressionResult result = exprHelper.evaluate(equation.getExpression(), mapExpressionToResult);
-
-				boolean hasWritePermissionResult = RightsHelper.hasWritePermission(equationResult, userContext);
-				boolean isTypeInstance = equationResult instanceof TypeInstanceResult;
-				
-				// Assign the result according to the registrated setter
-				if (isTypeInstance) {
-					TypeInstanceResult instanceResult = (TypeInstanceResult) equationResult;
-					ATypeInstance instance = (ATypeInstance) instanceResult.getReference();
-					IResultSetter setter = exprHelper.getResultSetter(instance);
+			try {
+				if (object instanceof AExpression) {
+					exprHelper.evaluate((AExpression) object, mapExpressionToResult);
 					
-					mapExpressionToResult.put(instance, result);
-					
-					if (hasWritePermissionResult) {
-						updateOverrideFlag(instance);
-						equationProblems.addAll(setter.set(instance, result));
-					} else if (setter != null) {
-						boolean isChange = !exprHelper.performGet(instance).equals(result, EPS);
-						if (isChange) {
-							// Mark all the affected type instances as out of date
-							for (ATypeInstance ti : setter.getAffectedTypeInstances(instance)) {
-								equationProblems.add(new OutOfDateProblem(ti, result.toString()));
-							}
+					// Check if its a referenced input with a definition attached to it
+					// If so, update the referenced instance
+					if (object instanceof ReferencedInput) {
+						ReferencedInput refInput = (ReferencedInput) object;
+						if (refInput.getDefinition() != null) {
+							IEquationInput eqInput = exprHelper.getReferencedDefinitionInput(refInput);
+							refInput.setReference(eqInput);
 						}
 					}
-				} 
-
-				boolean hasWritePermissionEquation = RightsHelper.hasWritePermission(equation, userContext);
-				if (hasWritePermissionEquation) {
-					if (equation.isIsInherited()) {
-						equation.setOverride(true);
-					}
+				} else if (object instanceof IEquationResult) {
+					IEquationResult equationResult = (IEquationResult) object;
+	
+					Equation equation = (Equation) equationResult.eContainer();
+					IExpressionResult result = exprHelper.evaluate(equation.getExpression(), mapExpressionToResult);
+	
+					boolean hasWritePermissionResult = RightsHelper.hasWritePermission(equationResult, userContext);
+					boolean isTypeInstance = equationResult instanceof TypeInstanceResult;
 					
-					String resultText = result.toString();
-					equation.setResultText(resultText);
-				} 
-			
-				mapExpressionToResult.put(equation, result);
-				mapExpressionToResult.put(equation.getExpression(), result);
+					// Assign the result according to the registrated setter
+					if (isTypeInstance) {
+						TypeInstanceResult instanceResult = (TypeInstanceResult) equationResult;
+						ATypeInstance instance = (ATypeInstance) instanceResult.getReference();
+						IResultSetter setter = exprHelper.getResultSetter(instance);
+						
+						mapExpressionToResult.put(instance, result);
+						
+						if (hasWritePermissionResult) {
+							updateOverrideFlag(instance);
+							equationProblems.addAll(setter.set(instance, result));
+						} else if (setter != null) {
+							boolean isChange = !exprHelper.performGet(instance).equals(result, EPS);
+							if (isChange) {
+								// Mark all the affected type instances as out of date
+								for (ATypeInstance ti : setter.getAffectedTypeInstances(instance)) {
+									equationProblems.add(new OutOfDateProblem(ti, result.toString()));
+								}
+							}
+						}
+					} 
+	
+					boolean hasWritePermissionEquation = RightsHelper.hasWritePermission(equation, userContext);
+					if (hasWritePermissionEquation) {
+						if (equation.isIsInherited()) {
+							equation.setOverride(true);
+						}
+						
+						String resultText = result.toString();
+						equation.setResultText(resultText);
+					} 
+				
+					mapExpressionToResult.put(equation, result);
+					mapExpressionToResult.put(equation.getExpression(), result);
+				}
+			} catch (Exception e) {
+				var names = new ArrayList<String>();
+				var node = object;
+				
+				while (node != null) {
+					if (node instanceof IName) {
+						names.add(((IName) node).getName());
+					}
+					node = node.eContainer();
+				}
+				
+				Activator.getDefault().getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "Calculation failed for " + names.stream().collect(Collectors.joining(", ")), e));
 			}
 		}
 		
