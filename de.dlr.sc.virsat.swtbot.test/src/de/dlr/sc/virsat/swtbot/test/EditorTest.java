@@ -82,7 +82,6 @@ public class EditorTest extends ASwtBotTestCase {
 		document = addElement(Document.class, conceptPs, elementConfiguration);
 	}
 	
-	@Ignore
 	@Test
 	public void closeEditorForRemovedCaByNavigator() throws CoreException {
 		openEditor(configurationTree);
@@ -146,6 +145,7 @@ public class EditorTest extends ASwtBotTestCase {
 		assertThat("Repository Editor is still open", editorTitles, hasItems("Repository", "CT: ConfigurationTree -> ConfigurationTree"));
 	}
 	
+	@Ignore
 	@Test
 	public void closeEditorForRemovedSeiByWorkspaceResource() throws CoreException {
 		openEditor(configurationTree);
