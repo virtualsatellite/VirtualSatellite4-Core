@@ -9,11 +9,14 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.graphiti.util;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.command.CommandStack;
@@ -34,6 +37,7 @@ import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.graphiti.services.Graphiti;
 import org.eclipse.graphiti.services.IGaService;
 
+import de.dlr.sc.virsat.graphiti.Activator;
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.Repository;
@@ -52,7 +56,7 @@ import de.dlr.sc.virsat.project.structure.VirSatProjectCommons;
  */
 
 public class DiagramHelper {
-	
+
 	/**
 	 * Hidden constructor
 	 */
@@ -87,10 +91,18 @@ public class DiagramHelper {
 			seiUri = seiUri.appendSegment(VirSatProjectCommons.FILENAME_STRUCTURAL_ELEMENT_SEGMENT);
 			seiUri = seiUri.appendFileExtension(VirSatProjectCommons.FILENAME_EXTENSION);
 			seiUri = URI.createPlatformResourceURI(seiUri.toFileString(), true);
-			
-			Path path = new Path(resourceUri.toPlatformString(false));
-			IResource iResource = ResourcesPlugin.getWorkspace().getRoot().findMember(path);
-			IProject project = iResource.getProject();
+
+			// Decoding the URL to get the path in correct form
+			String decodedPath = resourceUri.toPlatformString(false);
+			try {
+				decodedPath = URLDecoder.decode(decodedPath, StandardCharsets.UTF_8.name());
+				Activator.getDefault().getLog().info("Decoded path: " + decodedPath);
+			} catch (UnsupportedEncodingException e) {
+				Activator.getDefault().getLog().error("Failed to decode URI", e);
+			}
+
+			IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(decodedPath));
+			IProject project = file.getProject();
 			ResourceSet resourceSet = VirSatResourceSet.getResourceSet(project);
 			
 			// Now that we have the correct URI, grab the corresponding resource from the resource set

@@ -1,4 +1,4 @@
-<feature id="de.dlr.sc.virsat.graphiti.feature" label="VirSat Core Graphiti feature" version="4.17.0.qualifier" provider-name="DLR (German Aerospace Center)" plugin="de.dlr.sc.virsat.branding.ui" license-feature="de.dlr.sc.virsat.license.feature">
+<feature id="de.dlr.sc.virsat.graphiti.feature" label="VirSat Core Graphiti feature" version="4.18.0.qualifier" provider-name="DLR (German Aerospace Center)" plugin="de.dlr.sc.virsat.branding.ui" license-feature="de.dlr.sc.virsat.license.feature">
 
    <description>
       Virsat Project Feature

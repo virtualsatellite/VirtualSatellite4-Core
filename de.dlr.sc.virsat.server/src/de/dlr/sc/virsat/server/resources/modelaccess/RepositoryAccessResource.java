@@ -97,7 +97,7 @@ public class RepositoryAccessResource {
 
 	// List of all resource classes used in this class
 	// Used to register model specific filters
-	public static final List<?> RESOURCE_CLASSES = Arrays.asList(
+	public static final List<Class<?>> RESOURCE_CLASSES = Arrays.asList(
 			ModelAccessResource.class,
 			StructuralElementInstanceResource.class,
 			CategoryAssignmentResource.class,

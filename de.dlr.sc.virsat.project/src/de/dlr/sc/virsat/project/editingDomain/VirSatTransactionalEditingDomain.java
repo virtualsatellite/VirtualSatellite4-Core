@@ -1097,12 +1097,19 @@ public class VirSatTransactionalEditingDomain extends TransactionalEditingDomain
 		// This ensures workspace locking before transaction locking
 		executeInWorkspace(() -> {
 			try {
-				if (writeExclusive) {
-					Object result = doWriteExclusive(read);
-					atomicResult.set(result);
-				} else {
-					Object result = super.runExclusive(read);
-					atomicResult.set(result);
+				// Check if the project is still open. due to some concurrency it can happen that the navigator tries to access
+				// this code, while the project is already closed. This is leading to unwanted exceptions and undefined behavior
+				if (!this.virSatResourceSet.getProject().isOpen()) {
+					Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.getPluginId(), "VirSatTransactionalEditingDomain: The project is already closed, will not execute exclusivley in workspace."));
+					atomicResult.set(null);
+				} else {			
+					if (writeExclusive) {
+						Object result = doWriteExclusive(read);
+						atomicResult.set(result);
+					} else {
+						Object result = super.runExclusive(read);
+						atomicResult.set(result);
+					}
 				}
 			} catch (InterruptedException e) {
 				// In case there has been an exception store it.

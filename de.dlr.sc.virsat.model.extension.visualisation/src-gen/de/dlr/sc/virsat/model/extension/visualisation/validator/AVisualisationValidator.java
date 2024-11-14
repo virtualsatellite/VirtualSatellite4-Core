@@ -22,7 +22,7 @@ import de.dlr.sc.virsat.model.dvlm.validator.IStructuralElementInstanceValidator
  * 
  * Don't Manually modify this class
  * 
- * Concept that defines visualisation properties
+ * Concept that defines visualization properties
  * 
  */	
 public abstract class AVisualisationValidator implements IStructuralElementInstanceValidator {

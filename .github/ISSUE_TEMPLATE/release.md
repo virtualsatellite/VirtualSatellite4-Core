@@ -9,12 +9,12 @@ assignees: ''
 
 Virtual Satellite Release Version 4.x.x
 
-This ticket captures all release related work of the VirtualSatellite4-Core release
+This ticket captures all release related work of VirtualSatellite4-Core
 
 1. Perform version update:
-- [ ] Checkout/Update the Development branch
-- [ ] Remove current integration branch (Make sure no one else is integrating at the moment) 
-- [ ] Create new integration branch from development branch
+- [ ] Checkout/Update the `Development` branch
+- [ ] Remove current `integration` branch (Make sure no one else is integrating at the moment) 
+- [ ] Create new `integration` branch from development branch
 - [ ] Run ant script to update version numbers (open build.xml and start the updateVersions task)
 - [ ] Check if the server APIs had changes and update the version numbers in the servlets if necessary
 - [ ] Check if there are unreleased changes on the Ecore data model (open dvlm.ecore, check if History > Release (not yet released is empty))
@@ -27,18 +27,18 @@ This ticket captures all release related work of the VirtualSatellite4-Core rele
 - [ ] Check that Java API Doc is working in our Concept-IDE - If not update the Java API Doc being registered in the Java doc plugin
     - To check if it works, create a VirSat App and test if the Java API and Model APi from VirSat is backed by JavaDoc
 - [ ] Make sure application launches without errors from the product launcher
-- [ ] Merge integration branch into development branch (Pull Request named "Integration 4.x.x - Remerge Versions")
+- [ ] Merge `integration` branch into `development` branch (Pull Request named "Integration 4.x.x - Remerge Versions")
 
 2. Perform integration on integration branch:
 - [ ] Apply all needed fixes
 - [ ] Update the release notes
 
 3. Update master/release branch:
-- [ ] Merge integration branch into master branch (Pull Request named "Release 4.x.x")
-- [ ] Create Release Tag
- 
+- [ ] Merge `integration` branch into `master` branch (Pull Request named "Release 4.x.x")
+- [ ] Create GitHub Release including a Tag on the 'master' branch. Name it "Release_4.xx.x".
+
 4. Merge back integration branch:
-- [ ] Merge integration branch into development branch (Pull Request named "Integration 4.x.x - Remerge Fixes")
+- [ ] Merge `integration` branch into `development` branch (Pull Request named "Integration 4.x.x - Remerge Fixes")
  
 Well Done!! You should have a new Virtual Satellite Release :rocket:
 

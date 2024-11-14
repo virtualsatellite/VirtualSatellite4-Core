@@ -20,6 +20,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 import de.dlr.sc.virsat.model.extension.visualisation.treemanager.StartManagers;
+import de.dlr.sc.virsat.model.extension.visualisation.ui.vtkClient.VtkClientVisUpdateHandler;
 import de.dlr.sc.virsat.project.editingDomain.VirSatTransactionalEditingDomain;
 
 /**
@@ -68,6 +69,8 @@ public class Activator extends AbstractUIPlugin {
 		pluginId = getDefault().getBundle().getSymbolicName();
 		// initialize the communication servers
 		try {
+			
+			StartManagers.getTreeManager().setVisUpdateHandler(VtkClientVisUpdateHandler.getInstance());
 		
 			resourceReloadListener = new ResourceReloadListener();
 			VirSatTransactionalEditingDomain.addResourceEventListener(resourceReloadListener);

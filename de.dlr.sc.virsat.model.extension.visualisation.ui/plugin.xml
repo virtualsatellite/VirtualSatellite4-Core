@@ -47,7 +47,7 @@
 		        id="de.dlr.sc.virsat.model.extension.visualisation.menu" 
 		        label="Visualization"
 		        icon="resources/icons/de.dlr.sc.virsat.model.extension.visualisation.gif"
-		        tooltip="Concept that defines visualisation properties">
+		        tooltip="Concept that defines visualization properties">
 		        <separator
 		            name="categories"
 		            visible="true">

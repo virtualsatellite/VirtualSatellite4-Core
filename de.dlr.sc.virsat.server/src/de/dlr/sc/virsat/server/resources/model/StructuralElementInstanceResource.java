@@ -9,6 +9,27 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.resources.model;
 
+import org.eclipse.emf.common.command.Command;
+
+import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
+import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
+import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.project.structure.command.CreateRemoveSeiWithFileStructureCommand;
+import de.dlr.sc.virsat.project.structure.command.RemoveFileStructureCommand;
+import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
+import de.dlr.sc.virsat.server.resources.ApiErrorHelper;
+import de.dlr.sc.virsat.server.resources.modelaccess.ModelAccessResource;
+import de.dlr.sc.virsat.server.resources.modelaccess.RepositoryAccessResource;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -20,27 +41,6 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
-import org.eclipse.emf.common.command.Command;
-import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
-import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
-import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.project.structure.command.CreateRemoveSeiWithFileStructureCommand;
-import de.dlr.sc.virsat.project.structure.command.RemoveFileStructureCommand;
-import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
-import de.dlr.sc.virsat.server.resources.ApiErrorHelper;
-import de.dlr.sc.virsat.server.resources.modelaccess.RepositoryAccessResource;
-import de.dlr.sc.virsat.server.resources.modelaccess.ModelAccessResource;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.security.SecurityScheme;
-import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = RepositoryAccessResource.TAG_SEI)
 @SecurityScheme(
@@ -152,7 +152,8 @@ public class StructuralElementInstanceResource {
 			})
 	public Response createSei(@PathParam("seiUuid") @Parameter(description = "parent uuid", required = true) String parentUuid,
 			@QueryParam(value = RepositoryAccessResource.QP_FULL_QUALIFIED_NAME)
-			@Parameter(description = "Full qualified name of the SEI type", required = true) String fullQualifiedName) {
+			@Parameter(description = "Full qualified name of the SEI type", required = true) String fullQualifiedName,
+			@QueryParam(value = RepositoryAccessResource.QP_NAME) @Parameter(description = "name of the new SEI", required = false) String name) {
 		try {
 			parentResource.synchronize();
 			
@@ -161,10 +162,12 @@ public class StructuralElementInstanceResource {
 			if (parentSei == null) {
 				return ApiErrorHelper.createNotFoundErrorResponse();
 			}
-			String newSeiUuid = ModelAccessResource.createSeiFromFqn(fullQualifiedName, parentSei, parentResource.getEd(), parentResource.getUser());
+			IBeanStructuralElementInstance newSeiBean = ModelAccessResource.createSeiFromFqn(fullQualifiedName, parentSei, parentResource.getEd(), parentResource.getUser(), name);
 			
 			parentResource.synchronize();
-			return Response.ok(newSeiUuid).build();
+			return Response.ok(newSeiBean).build();
+		} catch (IllegalArgumentException e) {
+			return Response.status(Response.Status.FORBIDDEN).entity("Forbidden").build();
 		} catch (Exception e) {
 			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
@@ -213,6 +216,8 @@ public class StructuralElementInstanceResource {
 			// Sync after delete
 			parentResource.synchronize();
 			return Response.ok().build();
+		} catch (IllegalArgumentException e) {
+			return Response.status(Response.Status.FORBIDDEN).entity("Forbidden").build();
 		} catch (Exception e) {
 			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}

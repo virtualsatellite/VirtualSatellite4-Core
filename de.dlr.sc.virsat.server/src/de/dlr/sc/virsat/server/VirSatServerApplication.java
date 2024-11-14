@@ -94,10 +94,16 @@ public class VirSatServerApplication implements IApplication {
 		}
 		
 		Activator.getDefault().getLog().info("About to start the Jetty Server instance...");
+		System.out.println("About to start the Jetty Server instance...");
+		int port = Activator.getDefault().getServerPort();
+		System.out.println("Using port: " + String.format("%04d", port));
 		
 		jettyServer = new VirSatJettyServer();
+		jettyServer.setServerPort(port);
 		jettyServer.init();
-		jettyServer.start().join();
+		jettyServer.start();
+		System.out.println("Jetty Server started.");
+		jettyServer.join();
 		
 		System.out.println("--------------------------------------------------");
 		System.out.println("The server stopped, I am about to shut down.");

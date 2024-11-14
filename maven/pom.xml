@@ -10,7 +10,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.dlr.sc.virsat</groupId>
 	<artifactId>de.dlr.sc.virsat.parent</artifactId>
-	<version>4.17.0-SNAPSHOT</version>
+	<version>4.18.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<properties>
@@ -20,7 +20,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<build.version>4.17.0</build.version>
+		<build.version>4.18.0</build.version>
 		<build.qualifier>'t'yyyyMMddHHmm</build.qualifier>
 		<maven.build.timestamp.format>'t'yyyyMMddHHmm</maven.build.timestamp.format>
 		<build.folder.target>../builds</build.folder.target>
@@ -177,6 +177,7 @@
 						<configuration>
 							<!-- Let the tests run for 6 minutes max. If time is exceeded kill 
 								the process. Apparently something is wrong -->
+							<forkedProcessTimeoutInSeconds>360</forkedProcessTimeoutInSeconds>
 							<redirectTestOutputToFile>true</redirectTestOutputToFile>
 							<showEclipseLog>false</showEclipseLog>
 							
@@ -192,8 +193,8 @@
 								in the plugins target directory, thus creating a repository within a repository (git from
 								the source code). UI tests will then sometimes believe that the project is already connected
 								to a VCS but in fact isn't. -->
-							<osgiDataDirectory>${basedir}/../../surefire-work/${project.artifactId}/data</osgiDataDirectory>
-							<work>${basedir}/../../surefire-work/${project.artifactId}/work</work>
+							<osgiDataDirectory>${basedir}/../surefire-work/${project.artifactId}/data</osgiDataDirectory>
+							<work>${basedir}/../surefire-work/${project.artifactId}/work</work>
 							
 							<excludes>
 								<exclude>**/AllTests</exclude>
@@ -289,7 +290,7 @@
 						<artifact>
 							<groupId>de.dlr.sc.virsat</groupId>
 							<artifactId>de.dlr.sc.virsat.target</artifactId>
-							<version>4.17.0-SNAPSHOT</version>
+							<version>4.18.0-SNAPSHOT</version>
 							<classifier>virsat_windows</classifier>
 						</artifact>
 					</target>

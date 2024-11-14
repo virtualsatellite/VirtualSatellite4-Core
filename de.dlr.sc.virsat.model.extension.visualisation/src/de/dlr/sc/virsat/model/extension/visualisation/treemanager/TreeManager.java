@@ -40,7 +40,7 @@ import de.dlr.sc.visproto.VisProto.SceneGraphNode.Builder;
 /**
  * This class is responsible for the management of the ProtoBuf-SceneGraph
  */
-public class TreeManager implements IVisualisationTreeManager, IPausableSender {
+public class TreeManager implements IVisualisationTreeManager {
 	
 	//global root node created on initialisation which always exists
 	public static final String VISUALISATION_GLOBAL_ROOT_ID = "0";
@@ -53,6 +53,7 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 	private Map<String, Integer> hashNodeMap = new HashMap<String, Integer>();
 	private IShapeEditObserver observer;
 
+	
 	/**
 	 * Log root node
 	 */
@@ -102,8 +103,8 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 	public void editShape(Shape shape) {
 		switch (shape.shape) {
 			case GEOMETRY:
-				if (geometryFilePathHasChanged(shape.id, shape.geometryFile)) {
-					editGeometry(shape.id, shape.geometryFile);
+				if (geometryHasChanged(shape.id, shape.unitScale, shape.geometryFile)) {
+					editGeometry(shape.id, shape.unitScale, shape.geometryFile);
 					createGeometryFileBuilder(shape.id);
 				}
 				break;
@@ -131,6 +132,8 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 		if (!protoNodeMap.get(shape.id).hasGeometry() && protoGeometryFileMap.containsKey(shape.id)) {
 			protoGeometryFileMap.remove(shape.id);
 		}
+
+		sendSceneGraph(mSceneGraph.build());
 	}
 
 	/**
@@ -139,10 +142,12 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 	 * @param geometryFile 	GeometryFile Resource which potentially references a different STL-File.
 	 * @return 				true if referenced STL-File has changed.
 	 */
-	private boolean geometryFilePathHasChanged(String id, URI geometryFile) {
+	private boolean geometryHasChanged(String id, float unitScale, URI geometryFile) {
 		String currentGeometryPath = protoNodeMap.get(id).getGeometry().getOriginFilepath();
-		String nextGeometryPath = getGeometryFilePathString(geometryFile);	
-		return !currentGeometryPath.equals(nextGeometryPath);
+		String nextGeometryPath = getGeometryFilePathString(geometryFile);
+		float currentUnitScale = protoNodeMap.get(id).getGeometry().getUnitScale();
+		float nextUnitScale = unitScale;
+		return !currentGeometryPath.equals(nextGeometryPath) || Float.compare(currentUnitScale, nextUnitScale) != 0;
 	}
 
 	/**
@@ -151,10 +156,11 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 	 * @param id 				ID of the corresponding SceneGraphNode.
 	 * @param geometryFilePath 	Path to new Resource.
 	 */
-	private void editGeometry(String id, URI geometryFilePath) {
+	private void editGeometry(String id, float unitScale, URI geometryFilePath) {
 		SceneGraphNode.Builder node = getNode(id);
 		Geometry.Builder geometry = node.getGeometryBuilder();
 		geometry.setOriginFilepath(getGeometryFilePathString(geometryFilePath));
+		geometry.setUnitScale(unitScale);
 	}
 
 	/**
@@ -288,7 +294,7 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 		if (!protoNodeMap.containsKey(shape.id)) {
 			switch (shape.shape) {
 				case GEOMETRY:
-					createGeometry(shape.id, shape.geometryFile);
+					createGeometry(shape.id, shape.unitScale, shape.geometryFile);
 					if (!protoNodeMap.get(shape.id).getGeometry().getOriginFilepath().equals("")) {
 						createGeometryFileBuilder(shape.id);
 					}
@@ -317,6 +323,8 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 					shape.rotationX, shape.rotationY, shape.rotationZ,
 					shape.color, shape.transparency);
 			addChildNode(VISUALISATION_GLOBAL_ROOT_ID, shape.id);
+			
+			sendSceneGraph(mSceneGraph.build());
 		} else {
 			activator.getLog().log(new Status(Status.ERROR, Activator.getPluginId(), "ID already exists", null));
 			throw new RuntimeException("Error at creating new shape. ID already exist");
@@ -328,10 +336,11 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 	 * @param id 				ID of this Geometry-Shape
 	 * @param geometryFilePath 	Path to Resource of this Geometry-Shape
 	 */
-	private void createGeometry(String id, URI geometryFilePath) {
+	private void createGeometry(String id, float unitScale, URI geometryFilePath) {
 		SceneGraphNode.Builder node = SceneGraphNode.newBuilder();
 		node.setID(id);
 		node.getGeometryBuilder().setOriginFilepath(getGeometryFilePathString(geometryFilePath));
+		node.getGeometryBuilder().setUnitScale(unitScale);
 		protoNodeMap.put(id, node);
 	}
 	
@@ -470,6 +479,7 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 	public void setParent(String idChild, String idParent) {
 		removeFromCurrentParent(idChild);
 		addChildNode(idParent, idChild);
+		sendSceneGraph(mSceneGraph.build());
 	}
 
 	/**
@@ -516,6 +526,7 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 			addChildNode(mSceneGraph.getNodeBuilder(), child);
 		}
 		
+		sendSceneGraph(mSceneGraph.build());
 	}
 
 	/**
@@ -538,6 +549,7 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 	public void removeShapeWithSubtree(String id) {
 		removeFromCurrentParent(id);
 		removeNodeRecursively(id);
+		sendSceneGraph(mSceneGraph.build());
 	}
 
 	/**
@@ -550,7 +562,6 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 			removeNodeRecursively(child.getID());
 		}
 	}
-
 
 	/**
 	 * Checks if there is a registered node with the ide
@@ -607,6 +618,7 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 				}
 				protoNodeMap.clear();
 				this.refreshMapFrom(mSceneGraph.getNodeBuilder());
+				sendSceneGraph(mSceneGraph.build());
 			} else {
 				activator.getLog().log(new Status(Status.WARNING, Activator.getPluginId(), "Received SceneGraph is equal to the current one", null));
 			}	
@@ -676,6 +688,7 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 			shape.shape = VisualisationShape.CYLINDER;
 		} else if (node.hasGeometry()) {
 			shape.geometryFile = URI.createURI(node.getGeometry().getOriginFilepath());
+			shape.unitScale = node.getGeometry().getUnitScale();
 			shape.shape = VisualisationShape.GEOMETRY;
 		} else if (node.hasNone()) {
 			shape.shape = VisualisationShape.NONE;
@@ -684,15 +697,20 @@ public class TreeManager implements IVisualisationTreeManager, IPausableSender {
 	}
 
 	@Override
-	public void pauseSending() {
-	}
-
-	@Override
-	public void resumeSending() {
-	}
-
-	@Override
 	public void reloadGeometryFile(String shapeId) {
 		createGeometryFileBuilder(shapeId);
 	}
+	
+	private IVisUpdateHandler visUpdateHandler;
+	
+	public void setVisUpdateHandler(IVisUpdateHandler visUpdateHandler) {
+		this.visUpdateHandler = visUpdateHandler;
+	}
+	
+	public void sendSceneGraph(SceneGraph sceneGraph) {
+		if (visUpdateHandler != null) {
+			visUpdateHandler.updateVisualisationData(sceneGraph);
+		}
+	}
+	
 }

@@ -235,7 +235,7 @@ public class GenericEditor extends FormEditor implements IEditingDomainProvider,
 				
 								// now check if the model object could be reloaded
 								// otherwise close the editor
-								if (GenericEditor.this.editorModelObject == null) {
+								if (GenericEditor.this.editorModelObject == null || GenericEditor.this.editorModelObject.eResource() == null) {
 									DVLMEditorPlugin.getPlugin().getLog().log(new Status(Status.INFO, DVLMEditorPlugin.getPlugin().getSymbolicName(),
 											"GenericEditor: Handling a Change Event with uncontained editorModelObject for (" + GenericEditor.this.getTitle() + ")... Failed Reloading and clsoing editor"));
 									handleClosedEditorResource();

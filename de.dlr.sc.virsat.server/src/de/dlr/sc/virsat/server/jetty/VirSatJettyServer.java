@@ -56,6 +56,7 @@ public class VirSatJettyServer {
 	private static final String SUFFIX = "/*";
 	
 	private LoginService loginService = null;
+	private int serverPort = -1;
 
 	private Server server;
 	
@@ -106,8 +107,8 @@ public class VirSatJettyServer {
 			//servletContextHandler.addServlet(PersonServletContainer.class, "/rest/persons/*");
 			
 			registerServlet(servletContextHandler, StatusServlet.class, "Server Status", "/status");
-			registerServlet(servletContextHandler, ModelAccessServletContainer.class, "Model API", PATH + ModelAccessServletContainer.MODEL_API + SUFFIX);
-			registerServlet(servletContextHandler, RepoManagementServletContainer.class, "Model API", PATH + RepoManagementServletContainer.MANAGEMENT_API + SUFFIX);
+			registerServlet(servletContextHandler, ModelAccessServletContainer.class, "Repository and Model API", PATH + ModelAccessServletContainer.MODEL_API + SUFFIX);
+			registerServlet(servletContextHandler, RepoManagementServletContainer.class, "Project Management API", PATH + RepoManagementServletContainer.MANAGEMENT_API + SUFFIX);
 			
 			// provide swagger UI at base path
 			Activator.getDefault().getLog().info("Setting up Servlet for: Swagger UI");
@@ -136,6 +137,10 @@ public class VirSatJettyServer {
 		Activator.getDefault().getLog().info("Initializing Servlet for <" + purpose + "> @ localhost:" + VIRSAT_JETTY_PORT + apiEndPoint);
 		ServletHolder holder = contextHandler.addServlet(servlet, apiEndPoint);
 		holder.setInitParameter(ServerProperties.WADL_FEATURE_DISABLE, "true");
+	}
+	
+	public void setServerPort(int port) {
+		this.serverPort = port;
 	}
 	
 	/**
@@ -167,8 +172,12 @@ public class VirSatJettyServer {
 		ServerConnector httpsConnector = new ServerConnector(server,
 			new SslConnectionFactory(sslContextFactory, HttpVersion.HTTP_1_1.asString()),
 			new HttpConnectionFactory(httpsConf));
-		httpsConnector.setPort(VIRSAT_JETTY_PORT_HTTPS);
-
+		if (serverPort != -1) {
+			httpsConnector.setPort(serverPort);
+		} else {
+			httpsConnector.setPort(VIRSAT_JETTY_PORT_HTTPS);
+		}
+		
 		server.addConnector(httpsConnector);
 	}
 
@@ -189,7 +198,11 @@ public class VirSatJettyServer {
 		// Simple HTTP connector
 		final ServerConnector http = new ServerConnector(server,
 				new HttpConnectionFactory(httpConfiguration));
-		http.setPort(VIRSAT_JETTY_PORT);
+		if (serverPort != -1) {
+			http.setPort(serverPort);
+		} else {
+			http.setPort(VIRSAT_JETTY_PORT);
+		}
 		server.addConnector(http);
 	}
 

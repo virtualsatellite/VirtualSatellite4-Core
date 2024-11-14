@@ -36,11 +36,11 @@ public class VisualisationTreeManagerTest {
 	@Test
 	public final void testCreateSimpleShapesAndSynchronize() throws InvalidProtocolBufferException {
 		//CHECKSTYLE:OFF
-		Shape shape1 = new Shape("Box001", URI.createURI(""), 1f, 1f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 255, 0.5f, VisualisationShape.BOX);
-		Shape shape2 = new Shape("Sphere002", URI.createURI(""), 1f, 2f, 2f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 25500, 0, VisualisationShape.SPHERE);
-		Shape shape3 = new Shape("Cone003", URI.createURI(""), 1f, 1f, 1f, 1f, 0, 0, 0, 0, 2, 1, 30000, 0, VisualisationShape.CONE);
-		Shape shape4 = new Shape("Cylinder004", URI.createURI(""), 1f, 1f, 3f, 2f, 0, 0, 2, 1, 7, 0, 10000, 0.6f, VisualisationShape.CYLINDER);
-		Shape shape5 = new Shape("None005", URI.createURI(""), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100, 0, VisualisationShape.NONE);
+		Shape shape1 = new Shape("Box001", URI.createURI(""), 1f, 1f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 255, 0.5f, VisualisationShape.BOX);
+		Shape shape2 = new Shape("Sphere002", URI.createURI(""), 1f, 2f, 2f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 25500, 0, VisualisationShape.SPHERE);
+		Shape shape3 = new Shape("Cone003", URI.createURI(""), 1f, 1f, 1f, 0f, 1f, 0, 0, 0, 0, 2, 1, 30000, 0, VisualisationShape.CONE);
+		Shape shape4 = new Shape("Cylinder004", URI.createURI(""), 1f, 1f, 3f, 0f,2f, 0, 0, 2, 1, 7, 0, 10000, 0.6f, VisualisationShape.CYLINDER);
+		Shape shape5 = new Shape("None005", URI.createURI(""), 0, 0, 0, 0f, 0, 0, 0, 0, 0, 0, 0, 100, 0, VisualisationShape.NONE);
 		//CHECKSTYLE:ON
 		treeManager.createShape(shape1);
 		treeManager.createShape(shape2);
@@ -59,7 +59,7 @@ public class VisualisationTreeManagerTest {
 	@Test
 	public final void testEditShape() {
 		//CHECKSTYLE:OFF
-		Shape shape = new Shape("Box001", URI.createURI(""), 1f, 1f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 255, 0.5f, VisualisationShape.BOX);
+		Shape shape = new Shape("Box001", URI.createURI(""), 1f, 1f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 255, 0.5f, VisualisationShape.BOX);
 		treeManager.createShape(shape);
 		shape.shape = VisualisationShape.CYLINDER;
 		shape.sizeY = 2f;
@@ -73,10 +73,10 @@ public class VisualisationTreeManagerTest {
 	@Test
 	public final void testRemoveRootShapeWithSubtree() {
 		//CHECKSTYLE:OFF
-		Shape shape1 = new Shape("Box001", URI.createURI(""), 1f, 1f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 255, 0.5f, VisualisationShape.BOX);
-		Shape shape2 = new Shape("Sphere002", URI.createURI(""), 0F, 0F, 0F, 1, 0F, 2F, 0F, 0F, 0F, 0F, 255, 0F, VisualisationShape.SPHERE);
-		Shape shape3 = new Shape("Box003", URI.createURI(""), 0.5f, 0.5f, 0.5f, 0f, 1f, 0f, 0f, 0f, 0f, 0f, 255, 0.5f, VisualisationShape.BOX);
-		Shape shape4 = new Shape("Box004", URI.createURI(""), 1, 1, 1, 0, 0, 0, 4, 0, 0, 0, 100, 0, VisualisationShape.CONE);
+		Shape shape1 = new Shape("Box001", URI.createURI(""), 1f, 1f, 1f,0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 255, 0.5f, VisualisationShape.BOX);
+		Shape shape2 = new Shape("Sphere002", URI.createURI(""), 0F, 0F, 0F, 0f, 1, 0F, 2F, 0F, 0F, 0F, 0F, 255, 0F, VisualisationShape.SPHERE);
+		Shape shape3 = new Shape("Box003", URI.createURI(""), 0.5f, 0.5f, 0.5f, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 0f, 255, 0.5f, VisualisationShape.BOX);
+		Shape shape4 = new Shape("Box004", URI.createURI(""), 1, 1, 1, 0f, 0, 0, 0, 4, 0, 0, 0, 100, 0, VisualisationShape.CONE);
 		//CHECKSTYLE:ON
 		treeManager.createShape(shape1);
 		treeManager.createShape(shape2);
@@ -97,9 +97,9 @@ public class VisualisationTreeManagerTest {
 	public final void testRemoveRootShapeWithoutSubtree() {
 		
 		//CHECKSTYLE:OFF
-		Shape root = new Shape("Root", URI.createURI(""), 1f, 1f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 255, 0.5f, VisualisationShape.BOX);
-		Shape child1 = new Shape("Child1", URI.createURI(""), 0F, 0F, 0F, 1, 0F, 2F, 0F, 0F, 0F, 0F, 255, 0F, VisualisationShape.SPHERE);
-		Shape child2 = new Shape("Child2", URI.createURI(""), 0.5f, 0.5f, 0.5f, 0f, 1f, 0f, 0f, 0f, 0f, 0f, 255, 0.5f, VisualisationShape.BOX);
+		Shape root = new Shape("Root", URI.createURI(""), 1f, 1f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 255, 0.5f, VisualisationShape.BOX);
+		Shape child1 = new Shape("Child1", URI.createURI(""), 0F, 0F, 0F, 0f, 1, 0F, 2F, 0F, 0F, 0F, 0F, 255, 0F, VisualisationShape.SPHERE);
+		Shape child2 = new Shape("Child2", URI.createURI(""), 0.5f, 0.5f, 0.5f, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 0f, 255, 0.5f, VisualisationShape.BOX);
 		//CHECKSTYLE:ON
 		
 		treeManager.createShape(root);
@@ -121,10 +121,10 @@ public class VisualisationTreeManagerTest {
 	public final void testRemoveNonRootShapeWithoutSubtree() {
 		
 		//CHECKSTYLE:OFF
-		Shape root = new Shape("Root", URI.createURI(""), 1f, 1f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 255, 0.5f, VisualisationShape.BOX);
-		Shape parent = new Shape("Parent", URI.createURI(""), 1f, 1f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 255, 0.5f, VisualisationShape.BOX);
-		Shape child1 = new Shape("Child1", URI.createURI(""), 0F, 0F, 0F, 1, 0F, 2F, 0F, 0F, 0F, 0F, 255, 0F, VisualisationShape.SPHERE);
-		Shape child2 = new Shape("Child2", URI.createURI(""), 0.5f, 0.5f, 0.5f, 0f, 1f, 0f, 0f, 0f, 0f, 0f, 255, 0.5f, VisualisationShape.BOX);
+		Shape root = new Shape("Root", URI.createURI(""), 1f, 1f, 1f, 0f,0f, 0f, 0f, 0f, 0f, 0f, 0f, 255, 0.5f, VisualisationShape.BOX);
+		Shape parent = new Shape("Parent", URI.createURI(""), 1f, 1f, 1f, 0f,0f, 0f, 0f, 0f, 0f, 0f, 0f, 255, 0.5f, VisualisationShape.BOX);
+		Shape child1 = new Shape("Child1", URI.createURI(""), 0F, 0F, 0F, 0f,1, 0F, 2F, 0F, 0F, 0F, 0F, 255, 0F, VisualisationShape.SPHERE);
+		Shape child2 = new Shape("Child2", URI.createURI(""), 0.5f, 0.5f, 0.5f, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 0f, 255, 0.5f, VisualisationShape.BOX);
 		//CHECKSTYLE:ON
 		
 		treeManager.createShape(root);
@@ -150,8 +150,8 @@ public class VisualisationTreeManagerTest {
 	public final void testSetParent() {
 		
 		//CHECKSTYLE:OFF
-		Shape shape1 = new Shape("Box001", URI.createURI(""), 1f, 1f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 255, 0.5f, VisualisationShape.BOX);
-		Shape shape2 = new Shape("Sphere002", URI.createURI(""), 0F, 0F, 0F, 1, 0F, 2F, 0F, 0F, 0F, 0F, 255, 0F, VisualisationShape.SPHERE);
+		Shape shape1 = new Shape("Box001", URI.createURI(""), 1f, 1f, 1f, 0f,0f, 0f, 0f, 0f, 0f, 0f, 0f, 255, 0.5f, VisualisationShape.BOX);
+		Shape shape2 = new Shape("Sphere002", URI.createURI(""), 0F, 0F, 0F, 0f, 1, 0F, 2F, 0F, 0F, 0F, 0F, 255, 0F, VisualisationShape.SPHERE);
 		//CHECKSTYLE:ON
 		
 		treeManager.createShape(shape1);
@@ -166,10 +166,10 @@ public class VisualisationTreeManagerTest {
 	public final void testDeleteWholeScenegraph() {
 		
 		//CHECKSTYLE:OFF
-		Shape s1 = new Shape("s1", URI.createURI(""), 1f, 1f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 255, 0.5f, VisualisationShape.BOX);
-		Shape s2 = new Shape("s2", URI.createURI(""), 0F, 0F, 0F, 1, 0F, 2F, 0F, 0F, 0F, 0F, 255, 0F, VisualisationShape.SPHERE);
-		Shape s21 = new Shape("s21", URI.createURI(""), 0F, 0F, 0F, 1, 0F, 2F, 0F, 0F, 0F, 0F, 255, 0F, VisualisationShape.SPHERE);
-		Shape s22 = new Shape("s22", URI.createURI(""), 0F, 0F, 0F, 1, 0F, 2F, 0F, 0F, 0F, 0F, 255, 0F, VisualisationShape.SPHERE);
+		Shape s1 = new Shape("s1", URI.createURI(""), 1f, 1f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 255, 0.5f, VisualisationShape.BOX);
+		Shape s2 = new Shape("s2", URI.createURI(""), 0F, 0F, 0F, 0f, 1, 0F, 2F, 0F, 0F, 0F, 0F, 255, 0F, VisualisationShape.SPHERE);
+		Shape s21 = new Shape("s21", URI.createURI(""), 0F, 0F, 0F, 0f, 1, 0F, 2F, 0F, 0F, 0F, 0F, 255, 0F, VisualisationShape.SPHERE);
+		Shape s22 = new Shape("s22", URI.createURI(""), 0F, 0F, 0F, 0f, 1, 0F, 2F, 0F, 0F, 0F, 0F, 255, 0F, VisualisationShape.SPHERE);
 		//CHECKSTYLE:ON
 		
 		treeManager.createShape(s1);
@@ -189,12 +189,12 @@ public class VisualisationTreeManagerTest {
 	public final void testSetParentNonRootWithSubtree() {
 		
 		//CHECKSTYLE:OFF
-		Shape r = new Shape("root", URI.createURI(""), 1f, 1f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 255, 0.5f, VisualisationShape.BOX);
-		Shape s1 = new Shape("s1", URI.createURI(""), 1f, 1f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 255, 0.5f, VisualisationShape.BOX);
-		Shape s2 = new Shape("s2", URI.createURI(""), 0F, 0F, 0F, 1, 0F, 2F, 0F, 0F, 0F, 0F, 255, 0F, VisualisationShape.SPHERE);
-		Shape s21 = new Shape("s21", URI.createURI(""), 0F, 0F, 0F, 1, 0F, 2F, 0F, 0F, 0F, 0F, 255, 0F, VisualisationShape.SPHERE);
-		Shape s22 = new Shape("s22", URI.createURI(""), 0F, 0F, 0F, 1, 0F, 2F, 0F, 0F, 0F, 0F, 255, 0F, VisualisationShape.SPHERE);
-		Shape s3 = new Shape("s3", URI.createURI(""), 1f, 1f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 255, 0.5f, VisualisationShape.BOX);
+		Shape r = new Shape("root", URI.createURI(""), 1f, 1f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 255, 0.5f, VisualisationShape.BOX);
+		Shape s1 = new Shape("s1", URI.createURI(""), 1f, 1f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 255, 0.5f, VisualisationShape.BOX);
+		Shape s2 = new Shape("s2", URI.createURI(""), 0F, 0F, 0F, 0f, 1, 0F, 2F, 0F, 0F, 0F, 0F, 255, 0F, VisualisationShape.SPHERE);
+		Shape s21 = new Shape("s21", URI.createURI(""), 0F, 0F, 0F, 0f, 1, 0F, 2F, 0F, 0F, 0F, 0F, 255, 0F, VisualisationShape.SPHERE);
+		Shape s22 = new Shape("s22", URI.createURI(""), 0F, 0F, 0F, 0f, 1, 0F, 2F, 0F, 0F, 0F, 0F, 255, 0F, VisualisationShape.SPHERE);
+		Shape s3 = new Shape("s3", URI.createURI(""), 1f, 1f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 255, 0.5f, VisualisationShape.BOX);
 		//CHECKSTYLE:ON
 		
 		treeManager.createShape(r);
@@ -227,11 +227,11 @@ public class VisualisationTreeManagerTest {
 	public final void testRemoveNonRootWithSubtree() {
 		
 		//CHECKSTYLE:OFF
-		Shape r = new Shape("root", URI.createURI(""), 1f, 1f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 255, 0.5f, VisualisationShape.BOX);
-		Shape s1 = new Shape("s1", URI.createURI(""), 1f, 1f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 255, 0.5f, VisualisationShape.BOX);
-		Shape s2 = new Shape("s2", URI.createURI(""), 0F, 0F, 0F, 1, 0F, 2F, 0F, 0F, 0F, 0F, 255, 0F, VisualisationShape.SPHERE);
-		Shape s21 = new Shape("s21", URI.createURI(""), 0F, 0F, 0F, 1, 0F, 2F, 0F, 0F, 0F, 0F, 255, 0F, VisualisationShape.SPHERE);
-		Shape s22 = new Shape("s22", URI.createURI(""), 0F, 0F, 0F, 1, 0F, 2F, 0F, 0F, 0F, 0F, 255, 0F, VisualisationShape.SPHERE);
+		Shape r = new Shape("root", URI.createURI(""), 1f, 1f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 255, 0.5f, VisualisationShape.BOX);
+		Shape s1 = new Shape("s1", URI.createURI(""), 1f, 1f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 255, 0.5f, VisualisationShape.BOX);
+		Shape s2 = new Shape("s2", URI.createURI(""), 0F, 0F, 0F, 0f, 1, 0F, 2F, 0F, 0F, 0F, 0F, 255, 0F, VisualisationShape.SPHERE);
+		Shape s21 = new Shape("s21", URI.createURI(""), 0F, 0F, 0F, 0f, 1, 0F, 2F, 0F, 0F, 0F, 0F, 255, 0F, VisualisationShape.SPHERE);
+		Shape s22 = new Shape("s22", URI.createURI(""), 0F, 0F, 0F, 0f, 1, 0F, 2F, 0F, 0F, 0F, 0F, 255, 0F, VisualisationShape.SPHERE);
 		//CHECKSTYLE:ON
 		
 		treeManager.createShape(r);

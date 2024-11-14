@@ -9,7 +9,7 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.visualisation.treemanager;
 
-import de.dlr.sc.visproto.VisProto.VisualisationMessage;
+import de.dlr.sc.visproto.VisProto.SceneGraph;
 
 /**
  * Calling VisualisationManager to refresh
@@ -22,7 +22,7 @@ public interface IVisUpdateHandler {
 	/**
 	 * Updates corresponding TreeManagern and Visualisation.
 	 * 
-	 * @param visualisationMessage	contains the SceneGraph message with the updated SceneGraph
+	 * @param sceneGraph	contains the SceneGraph message with the updated SceneGraph
 	 */
-	void updateVisualisationData(VisualisationMessage visualisationMessage); 
+	void updateVisualisationData(SceneGraph sceneGraph); 
 }

@@ -13,25 +13,17 @@ package de.dlr.sc.virsat.server.resources.modelaccess;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.annotation.security.RolesAllowed;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.DefaultValue;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
-import jakarta.ws.rs.core.GenericEntity;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.EObject;
+
 import de.dlr.sc.virsat.model.concept.types.factory.BeanStructuralElementInstanceFactory;
 import de.dlr.sc.virsat.model.concept.types.roles.BeanDiscipline;
 import de.dlr.sc.virsat.model.concept.types.structural.ABeanStructuralElementInstance;
+import de.dlr.sc.virsat.model.concept.types.structural.IBeanStructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.Repository;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.concepts.registry.ActiveConceptConfigurationElement;
@@ -56,12 +48,23 @@ import de.dlr.sc.virsat.server.resources.model.StructuralElementInstanceResource
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
-import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DefaultValue;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.GenericEntity;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 /**
 	 * The resource to access the VirSat data model of a specific server repository
@@ -272,14 +275,15 @@ public class ModelAccessResource {
 					description = ApiErrorHelper.INTERNAL_SERVER_ERROR)
 			})
 	public Response createRootSei(@QueryParam(value = RepositoryAccessResource.QP_FULL_QUALIFIED_NAME) 
-		@Parameter(description = "Full qualified name of the SEI type", required = true) String fullQualifiedName) {
+		@Parameter(description = "Full qualified name of the SEI type", required = true) String fullQualifiedName,
+		@QueryParam(value = RepositoryAccessResource.QP_NAME) @Parameter(description = "name of the new SEI", required = false) String name) {
 		try {
 			serverRepository.syncRepository();
 			
-			String newSeiUuid = createSeiFromFqn(fullQualifiedName, repository, ed, userContext);
+			IBeanStructuralElementInstance newSeiBean = createSeiFromFqn(fullQualifiedName, repository, ed, userContext, name);
 			
 			serverRepository.syncRepository();
-			return Response.ok(newSeiUuid).build();
+			return Response.ok(newSeiBean).build();
 		} catch (Exception e) {
 			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
@@ -475,11 +479,12 @@ public class ModelAccessResource {
 	 * @param editingDomain the editing domain
 	 * @param iUserContext the user context
 	 * @return uuid of the created sei
+	 * @throws CoreException 
 	 */
-	public static String createSeiFromFqn(String fullQualifiedName, EObject owner, VirSatTransactionalEditingDomain editingDomain, IUserContext iUserContext) {
+	public static IBeanStructuralElementInstance createSeiFromFqn(String fullQualifiedName, EObject owner, VirSatTransactionalEditingDomain editingDomain, IUserContext iUserContext, String name) throws CoreException {
 		ActiveConceptHelper helper = new ActiveConceptHelper(editingDomain.getResourceSet().getRepository());
 		StructuralElement se = helper.getStructuralElement(fullQualifiedName);
-		StructuralElementInstance newSei = new StructuralInstantiator().generateInstance(se, null);
+		StructuralElementInstance newSei = new StructuralInstantiator().generateInstance(se, name);
 		
 		if (owner instanceof IAssignedDiscipline) {
 			Discipline parentDiscipline = ((IAssignedDiscipline) owner).getAssignedDiscipline();
@@ -489,7 +494,7 @@ public class ModelAccessResource {
 		Command createCommand = CreateAddSeiWithFileStructureCommand.create(editingDomain, owner, newSei);
 		ApiErrorHelper.executeCommandIffCanExecute(createCommand, editingDomain, iUserContext);
 		
-		return newSei.getUuid().toString();
+		return new BeanStructuralElementInstanceFactory().getInstanceFor(newSei);
 	}
 
 }

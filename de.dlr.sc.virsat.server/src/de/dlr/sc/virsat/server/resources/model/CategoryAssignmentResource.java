@@ -24,6 +24,7 @@ import jakarta.ws.rs.core.Response;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.AddCommand;
 import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
+import de.dlr.sc.virsat.model.concept.types.category.BeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
 import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
 import de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage;
@@ -178,7 +179,12 @@ public class CategoryAssignmentResource {
 			ApiErrorHelper.executeCommandIffCanExecute(createCommand, parentResource.getEd(), parentResource.getUser());
 			
 			parentResource.synchronize();
-			return Response.ok(newCa.getUuid().toString()).build();
+			
+			BeanCategoryAssignment newCaBean = new BeanCategoryAssignment();
+			newCaBean.setTypeInstance(newCa);
+			return Response.ok(newCaBean).build();
+		} catch (IllegalArgumentException e) {
+			return Response.status(Response.Status.FORBIDDEN).entity("Forbidden").build();
 		} catch (Exception e) {
 			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
@@ -227,6 +233,8 @@ public class CategoryAssignmentResource {
 			// Sync after delete
 			parentResource.synchronize();
 			return Response.ok().build();
+		} catch (IllegalArgumentException e) {
+			return Response.status(Response.Status.FORBIDDEN).entity("Forbidden").build();
 		} catch (Exception e) {
 			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
