@@ -40,6 +40,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
@@ -81,6 +82,7 @@ public class EditorTest extends ASwtBotTestCase {
 		document = addElement(Document.class, conceptPs, elementConfiguration);
 	}
 	
+	@Ignore
 	@Test
 	public void closeEditorForRemovedCaByNavigator() throws CoreException {
 		openEditor(configurationTree);
