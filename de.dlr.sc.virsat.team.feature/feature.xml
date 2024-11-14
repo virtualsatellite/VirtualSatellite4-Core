@@ -1,4 +1,4 @@
-<feature id="de.dlr.sc.virsat.team.feature" label="VirSat Core Simple Team Connector feature" version="4.17.1.qualifier" provider-name="DLR (German Aerospace Center)" plugin="de.dlr.sc.virsat.branding.ui" license-feature="de.dlr.sc.virsat.license.feature">
+<feature id="de.dlr.sc.virsat.team.feature" label="VirSat Core Simple Team Connector feature" version="4.18.0.qualifier" provider-name="DLR (German Aerospace Center)" plugin="de.dlr.sc.virsat.branding.ui" license-feature="de.dlr.sc.virsat.license.feature">
 
    <description>
       VirSat Team Connector

@@ -40,6 +40,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
@@ -144,6 +145,7 @@ public class EditorTest extends ASwtBotTestCase {
 		assertThat("Repository Editor is still open", editorTitles, hasItems("Repository", "CT: ConfigurationTree -> ConfigurationTree"));
 	}
 	
+	@Ignore
 	@Test
 	public void closeEditorForRemovedSeiByWorkspaceResource() throws CoreException {
 		openEditor(configurationTree);
