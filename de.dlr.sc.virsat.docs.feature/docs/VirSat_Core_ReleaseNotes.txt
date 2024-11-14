@@ -1,6 +1,25 @@
 VirSat Core Release Notes
 -------------------------
 
+Release 4.18.0 (13th November 2024)
+----------------------------------
+
+New Features:
+	Allow setting a unit factor in visualization
+	Allow adding descriptions on structural elements
+	
+Usability:
+
+Maintenance:
+		
+Fixed Bugs:
+	Fixed issue with opening diagram editors
+	Fixed issue when committing without saving/building beforehand
+	Fixed issue where sometimes an editor would remain open when deleting the corresponding element
+	Fixed handling of request parameter on SEI POST endpoint of server
+	Fixed error handling in equation builder to make it more robust
+
+
 Release 4.17.1 (10th October 2024)
 ----------------------------------
 
