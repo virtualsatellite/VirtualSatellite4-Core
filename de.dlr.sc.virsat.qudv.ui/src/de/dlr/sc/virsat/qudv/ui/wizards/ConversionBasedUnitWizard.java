@@ -13,7 +13,6 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.jface.wizard.Wizard;
 
-import de.dlr.sc.virsat.qudv.ui.Activator;
 import de.dlr.sc.virsat.qudv.ui.wizards.pages.ConversionBasedUnitWizardPageOne;
 import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 import de.dlr.sc.virsat.model.dvlm.qudv.AConversionBasedUnit;
@@ -27,7 +26,6 @@ import de.dlr.sc.virsat.model.dvlm.qudv.util.QudvUnitHelper;
 
 /**
  * a wizard for the ConversionBased Units
- * @author scha_vo
  *
  */
 public class ConversionBasedUnitWizard extends Wizard {
@@ -46,7 +44,6 @@ public class ConversionBasedUnitWizard extends Wizard {
 	public ConversionBasedUnitWizard(UnitManagement um, AUnit unit) {
 		super();
 		setNeedsProgressMonitor(true);
-		setDefaultPageImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.getPluginId(), "resources/facets-page-wizban.png"));
 		setUnitManagement(um);
 		this.unit = (AConversionBasedUnit) unit;
 	}
@@ -58,9 +55,7 @@ public class ConversionBasedUnitWizard extends Wizard {
 	public ConversionBasedUnitWizard(UnitManagement um) {
 		super();
 		setNeedsProgressMonitor(true);
-		setDefaultPageImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.getPluginId(), "resources/facets-page-wizban.png"));
 		setUnitManagement(um);
-		 
 	}
 	
 	/**
@@ -69,7 +64,6 @@ public class ConversionBasedUnitWizard extends Wizard {
 	public ConversionBasedUnitWizard() {
 		super();
 		setNeedsProgressMonitor(true);
-		setDefaultPageImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.getPluginId(), "resources/facets-page-wizban.png")); 
 	}
 	
 	/**

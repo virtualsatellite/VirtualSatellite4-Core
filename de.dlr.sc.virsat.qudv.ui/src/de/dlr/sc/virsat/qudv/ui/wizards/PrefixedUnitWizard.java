@@ -13,7 +13,6 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.jface.wizard.Wizard;
 
-import de.dlr.sc.virsat.qudv.ui.Activator;
 import de.dlr.sc.virsat.qudv.ui.wizards.pages.PrefixedUnitWizardPageOne;
 import de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind;
 import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
@@ -26,7 +25,6 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 
 /**
  * the wizard to define a prefixed unit
- * @author scha_vo
  *
  */
 public class PrefixedUnitWizard extends Wizard {
@@ -48,7 +46,6 @@ public class PrefixedUnitWizard extends Wizard {
 	public PrefixedUnitWizard(UnitManagement um, AUnit unit) {
 		super();
 		setNeedsProgressMonitor(true);
-		setDefaultPageImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.getPluginId(), "resources/facets-page-wizban.png"));
 		setUnitManagement(um);
 		this.unit = (PrefixedUnit) unit;
 	}
@@ -61,7 +58,6 @@ public class PrefixedUnitWizard extends Wizard {
 		super();
 		setNeedsProgressMonitor(true);
 		setUnitManagement(um);
-		setDefaultPageImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.getPluginId(), "resources/facets-page-wizban.png")); 
 	}
 	
 	/**
@@ -70,7 +66,6 @@ public class PrefixedUnitWizard extends Wizard {
 	public PrefixedUnitWizard() {
 		super();
 		setNeedsProgressMonitor(true);
-		setDefaultPageImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.getPluginId(), "resources/facets-page-wizban.png")); 
 	}
 	
 	/**

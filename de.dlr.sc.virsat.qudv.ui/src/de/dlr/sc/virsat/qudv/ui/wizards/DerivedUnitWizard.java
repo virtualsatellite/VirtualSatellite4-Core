@@ -15,7 +15,6 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.jface.wizard.Wizard;
 
-import de.dlr.sc.virsat.qudv.ui.Activator;
 import de.dlr.sc.virsat.qudv.ui.wizards.pages.DerivedUnitWizardPageOne;
 import de.dlr.sc.virsat.model.dvlm.qudv.AQuantityKind;
 import de.dlr.sc.virsat.model.dvlm.qudv.AUnit;
@@ -27,7 +26,6 @@ import de.dlr.sc.virsat.project.editingDomain.VirSatEditingDomainRegistry;
 
 /**
  * the wizard to define derived units
- * @author scha_vo
  *
  */
 public class DerivedUnitWizard extends Wizard {
@@ -47,7 +45,6 @@ public class DerivedUnitWizard extends Wizard {
 	public DerivedUnitWizard(UnitManagement um, AUnit unit) {
 		super();
 		setNeedsProgressMonitor(true);
-		setDefaultPageImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.getPluginId(), "resources/facets-page-wizban.png"));
 		setUnitManagement(um);
 		this.unit = (DerivedUnit) unit;
 	}
@@ -59,17 +56,15 @@ public class DerivedUnitWizard extends Wizard {
 	public DerivedUnitWizard(UnitManagement um) {
 		super();
 		setNeedsProgressMonitor(true);
-		setDefaultPageImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.getPluginId(), "resources/facets-page-wizban.png")); 
 		setUnitManagement(um);
-		
 	}
+
 	/**
 	 * public constructor
 	 */
 	public DerivedUnitWizard() {
 		super();
 		setNeedsProgressMonitor(true);
-		setDefaultPageImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.getPluginId(), "resources/facets-page-wizban.png")); 
 	}
 	
 	/**

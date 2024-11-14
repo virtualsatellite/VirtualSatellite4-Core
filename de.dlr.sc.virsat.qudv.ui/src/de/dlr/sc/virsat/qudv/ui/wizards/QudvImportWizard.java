@@ -14,13 +14,11 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.IImportWizard;
 import org.eclipse.ui.IWorkbench;
 
-import de.dlr.sc.virsat.qudv.ui.Activator;
 import de.dlr.sc.virsat.qudv.ui.wizards.pages.QudvImportMapToProxyPage;
 import de.dlr.sc.virsat.qudv.ui.wizards.pages.QudvImportPage;
 
 /**
  * import wizard to 
- * @author scha_vo
  *
  */
 public class QudvImportWizard extends Wizard implements IImportWizard {
@@ -35,7 +33,6 @@ public class QudvImportWizard extends Wizard implements IImportWizard {
 		super();
 		setWindowTitle("QUDV Import");
 		setNeedsProgressMonitor(true);
-		setDefaultPageImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.getPluginId(), "resources/facets-page-wizban.png"));
 	}
 	
 	@Override

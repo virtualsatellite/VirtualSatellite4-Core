@@ -14,12 +14,10 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.IExportWizard;
 import org.eclipse.ui.IWorkbench;
 
-import de.dlr.sc.virsat.qudv.ui.Activator;
 import de.dlr.sc.virsat.qudv.ui.wizards.pages.QudvExportPage;
 
 /**
  * an export wizard which exports the complete QUDV library to a file
- * @author scha_vo
  *
  */
 public class QudvExportWizard extends Wizard implements IExportWizard {
@@ -33,7 +31,6 @@ public class QudvExportWizard extends Wizard implements IExportWizard {
 		super();
 		setWindowTitle("QUDV Export");
 		setNeedsProgressMonitor(true);
-		setDefaultPageImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.getPluginId(), "resources/facets-page-wizban.png"));
 	}
 	
 
