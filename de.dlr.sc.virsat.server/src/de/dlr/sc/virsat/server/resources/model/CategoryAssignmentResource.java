@@ -9,6 +9,33 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.server.resources.model;
 
+import java.util.Collections;
+
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.edit.command.AddCommand;
+
+import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
+import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
+import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage;
+import de.dlr.sc.virsat.model.dvlm.categories.Category;
+import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
+import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
+import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
+import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
+import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
+import de.dlr.sc.virsat.server.resources.ApiErrorHelper;
+import de.dlr.sc.virsat.server.resources.modelaccess.ModelAccessResource;
+import de.dlr.sc.virsat.server.resources.modelaccess.RepositoryAccessResource;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -20,32 +47,6 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
-import org.eclipse.emf.common.command.Command;
-import org.eclipse.emf.edit.command.AddCommand;
-import de.dlr.sc.virsat.model.concept.types.category.ABeanCategoryAssignment;
-import de.dlr.sc.virsat.model.concept.types.category.BeanCategoryAssignment;
-import de.dlr.sc.virsat.model.concept.types.category.IBeanCategoryAssignment;
-import de.dlr.sc.virsat.model.concept.types.factory.BeanCategoryAssignmentFactory;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoriesPackage;
-import de.dlr.sc.virsat.model.dvlm.categories.Category;
-import de.dlr.sc.virsat.model.dvlm.categories.CategoryAssignment;
-import de.dlr.sc.virsat.model.dvlm.categories.util.CategoryInstantiator;
-import de.dlr.sc.virsat.model.dvlm.concepts.util.ActiveConceptHelper;
-import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
-import de.dlr.sc.virsat.server.dataaccess.RepositoryUtility;
-import de.dlr.sc.virsat.server.resources.ApiErrorHelper;
-import de.dlr.sc.virsat.server.resources.modelaccess.RepositoryAccessResource;
-import de.dlr.sc.virsat.server.resources.modelaccess.ModelAccessResource;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.security.SecurityScheme;
-import io.swagger.v3.oas.annotations.tags.Tag;
 
 
 @Tag(name = RepositoryAccessResource.TAG_CA)
@@ -175,13 +176,12 @@ public class CategoryAssignmentResource {
 			Category category = helper.getCategory(fullQualifiedName);
 			CategoryAssignment newCa = new CategoryInstantiator().generateInstance(category, null);
 			
-			Command createCommand = AddCommand.create(parentResource.getEd(), parentSei, CategoriesPackage.Literals.ICATEGORY_ASSIGNMENT_CONTAINER__CATEGORY_ASSIGNMENTS, newCa);
+			Command createCommand = AddCommand.create(parentResource.getEd(), parentSei, CategoriesPackage.Literals.ICATEGORY_ASSIGNMENT_CONTAINER__CATEGORY_ASSIGNMENTS, Collections.singletonList(newCa));
 			ApiErrorHelper.executeCommandIffCanExecute(createCommand, parentResource.getEd(), parentResource.getUser());
+			IBeanCategoryAssignment newCaBean = new BeanCategoryAssignmentFactory().getInstanceFor(newCa);
 			
 			parentResource.synchronize();
-			
-			BeanCategoryAssignment newCaBean = new BeanCategoryAssignment();
-			newCaBean.setTypeInstance(newCa);
+	
 			return Response.ok(newCaBean).build();
 		} catch (IllegalArgumentException e) {
 			return Response.status(Response.Status.FORBIDDEN).entity("Forbidden").build();
