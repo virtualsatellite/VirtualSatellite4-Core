@@ -129,7 +129,7 @@ public class CategoryAssignmentResource {
 	public Response putCa(@Parameter(description = "CA to put", required = true) ABeanCategoryAssignment bean) {
 		try {
 			parentResource.synchronize();
-			return Response.status(Response.Status.OK).build();
+			return Response.status(Response.Status.OK).entity(bean).build();
 		} catch (Exception e) {
 			return ApiErrorHelper.createInternalErrorResponse(e.getMessage());
 		}
@@ -175,6 +175,7 @@ public class CategoryAssignmentResource {
 			ActiveConceptHelper helper = new ActiveConceptHelper(parentResource.getEd().getResourceSet().getRepository());
 			Category category = helper.getCategory(fullQualifiedName);
 			CategoryAssignment newCa = new CategoryInstantiator().generateInstance(category, null);
+			newCa.setName(category.getName());
 			
 			Command createCommand = AddCommand.create(parentResource.getEd(), parentSei, CategoriesPackage.Literals.ICATEGORY_ASSIGNMENT_CONTAINER__CATEGORY_ASSIGNMENTS, Collections.singletonList(newCa));
 			ApiErrorHelper.executeCommandIffCanExecute(createCommand, parentResource.getEd(), parentResource.getUser());
