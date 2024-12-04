@@ -75,6 +75,26 @@ public class BeanPropertyFloat extends ABeanUnitValueProperty<Double> {
 		}
 	}
 	
+	@XmlJavaTypeAdapter(DoubleAdapter.class)
+	@XmlElement(nillable = true)
+	@Schema(description = "Double")
+	/**
+	 * Convenience Method to directly convert the value to its base unit
+	 * @return the value in its base unit
+	 */
+	public double getValueInBaseUnit() {
+		return getValueToBaseUnit();
+	}
+	
+	/**
+	 * Convenience method to easily set a value in the frame of base unit and have it
+	 * converted to the currently set unit.
+	 * @param inputValue the value to be set in base unit frame
+	 */
+	public void setValueInBaseUnit(double inputValue) {
+		setValueAsBaseUnit(inputValue);
+	}
+	
 	/**
 	 * Convenience Method to directly convert the value to its base unit
 	 * @return the value in its base unit
