@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: VirSat Test Utils
+Bundle-SymbolicName: de.dlr.sc.virsat.test.utils
+Bundle-Version: 4.18.0.qualifier
+Bundle-Activator: de.dlr.sc.virsat.test.utils.Activator
+Bundle-Vendor: DLR (German Aerospace Center)
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.junit
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-ActivationPolicy: lazy
+Eclipse-ExtensibleAPI: true
+Export-Package: de.dlr.sc.virsat.test.utils
+Automatic-Module-Name: de.dlr.sc.virsat.test.utils

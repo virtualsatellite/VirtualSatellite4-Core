@@ -9,7 +9,6 @@
  *******************************************************************************/
 package de.dlr.sc.virsat.model.extension.tests.model.json;
 
-import static de.dlr.sc.virsat.model.extension.tests.test.TestActivator.assertEqualsNoWs;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -51,6 +50,7 @@ import de.dlr.sc.virsat.model.dvlm.units.UnitManagement;
 import de.dlr.sc.virsat.model.dvlm.units.UnitsFactory;
 import de.dlr.sc.virsat.model.extension.tests.model.TestCategoryAllProperty;
 import de.dlr.sc.virsat.model.extension.tests.test.TestActivator;
+import de.dlr.sc.virsat.test.utils.TestUtil;
 
 /**
  * Class containing static helper functions 
@@ -180,8 +180,7 @@ public class JsonTestHelper {
 		StringWriter sw = new StringWriter();
 		jsonMarshaller.marshal(testObject, sw);
 		
-		String expectedJson = TestActivator.getResourceContentAsString(resource);
-		assertEqualsNoWs("Json is as expected", expectedJson, sw.toString());
+		TestUtil.assertEqualContent(sw.toString(), TestActivator.FRAGMENT_ID, resource);
 	}
 	
 	public static Unmarshaller getUnmarshaller(JAXBUtility jaxbUtility, EObject modelObject) throws JAXBException, IOException {

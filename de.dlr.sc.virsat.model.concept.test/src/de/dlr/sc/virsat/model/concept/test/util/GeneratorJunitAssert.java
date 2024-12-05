@@ -10,15 +10,12 @@
 package de.dlr.sc.virsat.model.concept.test.util;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import org.junit.Assert;
 import de.dlr.sc.virsat.model.concept.test.TestActivator;
+import de.dlr.sc.virsat.test.utils.TestUtil;
 
 /**
  * Some special Assert Statements to check the code generators with
  * reference content stored in the plugin/ test fragment resources
- * @author fisc_ph
- *
  */
 public class GeneratorJunitAssert {
 
@@ -29,40 +26,14 @@ public class GeneratorJunitAssert {
 	}
 
 	/**
-	 * Set this flag to output the actual content to the console
-	 */
-	
-	private static final String ENV_VARIABLE_FLUSH_ACTUAL = "flushActualGeneratorFiles";
-	private static final String ENV_VARIABLE_FLUSH_ACTUAL_TRUE = "true";
-	private static final String ENV_VARIABLE_FLUSH_PATH = "flushActualPath";
-		
-	
-	/**
 	 * Method to check content against a reference from the resources folder
 	 * @param actual the current content as string
 	 * @param expectedFilePath the path to the file containing the expected content
 	 * @throws IOException in case the expected content  file could not be read
 	 */
 	public static void assertEqualContent(String actual, String expectedFilePath) throws IOException {
-	
-		if (ENV_VARIABLE_FLUSH_ACTUAL_TRUE.equalsIgnoreCase(System.getenv(ENV_VARIABLE_FLUSH_ACTUAL))) {
-			String fileName = System.getenv(ENV_VARIABLE_FLUSH_PATH) + expectedFilePath.substring(expectedFilePath.lastIndexOf('/'), expectedFilePath.length());
-			
-			PrintWriter writer = new PrintWriter(fileName, "UTF-8");
-			writer.println(actual);
-			writer.close();
-			return;
-		}
-		
-		String expectedString = TestActivator.getResourceContentAsString(expectedFilePath);
-		String expectedNoWs = expectedString.replaceAll("\\s+", "");
-		String actualNoWs = actual.replaceAll("\\s+", "");
-		
-		if (!expectedNoWs.equals(actualNoWs)) {
-			Assert.assertEquals("File content for " + expectedFilePath + " is correct", expectedString, actual);
-		}
+		TestUtil.assertEqualContent(actual, TestActivator.FRAGMENT_ID, expectedFilePath);
 	}
-	
 	
 	/**
 	 * Method to check content against a reference from the resources folder

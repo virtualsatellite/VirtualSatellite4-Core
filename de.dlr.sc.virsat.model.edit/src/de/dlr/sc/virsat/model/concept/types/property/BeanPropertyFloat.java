@@ -82,8 +82,12 @@ public class BeanPropertyFloat extends ABeanUnitValueProperty<Double> {
 	 * Convenience Method to directly convert the value to its base unit
 	 * @return the value in its base unit
 	 */
-	public double getValueInBaseUnit() {
-		return getValueToBaseUnit();
+	public Double getValueInBaseUnit() {
+		if (ti.getValue() == null) {
+			return Double.NaN;
+		} else {
+			return getValueToBaseUnit();
+		}
 	}
 	
 	/**
@@ -91,8 +95,10 @@ public class BeanPropertyFloat extends ABeanUnitValueProperty<Double> {
 	 * converted to the currently set unit.
 	 * @param inputValue the value to be set in base unit frame
 	 */
-	public void setValueInBaseUnit(double inputValue) {
-		setValueAsBaseUnit(inputValue);
+	public void setValueInBaseUnit(Double inputValue) {
+		if (inputValue != null) {
+			setValueAsBaseUnit(inputValue);
+		}
 	}
 	
 	/**

@@ -23,7 +23,8 @@
       "propertyType" : "float",
       "override" : false,
       "unitBean" : null,
-      "value" : null
+      "value" : null,
+      "valueInBaseUnit" : null
    },
    "testIntBean" : {
       "uuid" : "0f37aff6-ccc0-436f-a592-bd466f74bd80",
@@ -31,7 +32,8 @@
       "propertyType" : "int",
       "override" : false,
       "unitBean" : null,
-      "value" : null
+      "value" : null,
+      "valueInBaseUnit" : null
    },
    "testResourceBean" : {
       "uuid" : "fa822159-51a5-4bf2-99cf-e565b67e0eb0",

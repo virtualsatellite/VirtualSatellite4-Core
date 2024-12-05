@@ -366,11 +366,13 @@ public abstract class AModelAccessResourceTest extends AServerRepositoryTest {
 	protected void testPutProperty(IBeanObject property) throws Exception {
 		int commits = VersionControlTestHelper.countCommits(testServerRepository.getLocalRepositoryPath());
 		
+		Entity entity = Entity.entity(property, MediaType.APPLICATION_JSON_TYPE);
+		
 		Response response = webTarget
 				.path(RepositoryAccessResource.PROPERTY)
 				.request()
 				.header(HttpHeaders.AUTHORIZATION, USER_WITH_REPO_HEADER)
-				.put(Entity.entity(property, MediaType.APPLICATION_JSON_TYPE));
+				.put(entity);
 		assertEquals(HttpStatus.OK_200, response.getStatus());
 		
 		assertEquals("No new commit on put without changes", commits, 

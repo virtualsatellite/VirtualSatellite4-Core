@@ -71,8 +71,12 @@ public class BeanPropertyInt extends ABeanUnitValueProperty<Long> {
 	 * Convenience Method to directly convert the value to its base unit
 	 * @return the value in its base unit
 	 */
-	public int getValueInBaseUnit() {
-		return getValueToBaseUnit();
+	public Long getValueInBaseUnit() {
+		if (ti.getValue() == null) {
+			return null;
+		} else {
+			return getValueToBaseUnit();
+		}
 	}
 	
 	/**
@@ -80,16 +84,18 @@ public class BeanPropertyInt extends ABeanUnitValueProperty<Long> {
 	 * converted to the currently set unit.
 	 * @param inputValue the value to be set in base unit frame
 	 */
-	public void setValueInBaseUnit(int inputValue) {
-		setValueAsBaseUnit(inputValue);
+	public void setValueInBaseUnit(Long inputValue) {
+		if (inputValue != null) {
+			setValueAsBaseUnit(inputValue);
+		}
 	}
 
 	/**
 	 * Convenience Method to directly convert the value to its base unit
 	 * @return the value in its base unit
 	 */
-	public int getValueToBaseUnit() {
-		return (int) ti.getValueToBaseUnit();
+	public Long getValueToBaseUnit() {
+		return Double.valueOf(ti.getValueToBaseUnit()).longValue();
 	}
 
 	/**
@@ -97,7 +103,7 @@ public class BeanPropertyInt extends ABeanUnitValueProperty<Long> {
 	 * converted to the currently set unit.
 	 * @param inputValue the value to be set in base unit frame
 	 */
-	public void setValueAsBaseUnit(int inputValue) {
+	public void setValueAsBaseUnit(Long inputValue) {
 		ti.setValueAsBaseUnit(inputValue);		
 	}
 	
