@@ -204,8 +204,8 @@
 				<module>de.dlr.sc.virsat.performance.test</module>
 
 				<!-- SWTBot UI Tests -->
-<!--				<module>de.dlr.sc.virsat.swtbot.test</module>
--->			</modules>
+				<module>de.dlr.sc.virsat.swtbot.test</module>
+			</modules>
 		</profile>
 		<profile>
 			<id>doc</id>
