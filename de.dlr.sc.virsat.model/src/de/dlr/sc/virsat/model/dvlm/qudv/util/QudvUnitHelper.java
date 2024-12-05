@@ -1243,10 +1243,11 @@ public class QudvUnitHelper {
 	public double convertFromSourceToTargetUnit(AUnit sourceUnit, double sourceValue, AUnit targetUnit) throws IllegalArgumentException {
 		double convertedValue = 0.0;
 		if (!haveSameQuantityKind(sourceUnit, targetUnit)) {
-			throw new IllegalArgumentException("Cannot convert from " + sourceUnit.getName() + " to " + targetUnit.getName() 
-			+ " as they have different quantitiy kinds!");
+			throw new IllegalArgumentException("Cannot convert from " + sourceUnit.getName() + " with quantity kind "+ sourceUnit.getQuantityKind() +
+					" to " + targetUnit.getName() + "with quantity kind" + targetUnit.getQuantityKind() + " as they have different quantitiy kinds!");
 		}
 		
+			
 		//we convert the source Unit to the basUnits and then to the given target unit
 		convertedValue = convertFromSourceUnitToBaseUnit(sourceUnit, sourceValue);
 		convertedValue = convertFromBaseUnitToTargetUnit(targetUnit, convertedValue);
