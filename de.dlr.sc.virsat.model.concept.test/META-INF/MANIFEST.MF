@@ -16,7 +16,8 @@ Require-Bundle: de.dlr.sc.virsat.external.lib.apache.poi,
  org.eclipse.xtext.testing,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtext.xbase.testing,
- org.eclipse.xtext.ecore
+ org.eclipse.xtext.ecore,
+ de.dlr.sc.virsat.test.utils
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: de.dlr.sc.virsat.model.concept,
  de.dlr.sc.virsat.model.concept.test

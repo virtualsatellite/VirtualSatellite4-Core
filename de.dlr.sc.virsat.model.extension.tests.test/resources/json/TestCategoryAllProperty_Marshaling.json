@@ -23,7 +23,8 @@
       "propertyType" : "float",
       "override" : false,
       "unitBean" : "e2203b42-e703-4429-9bf9-dbd4882c341c",
-      "value" : 0.0
+      "value" : 0.0,
+      "valueInBaseUnit" : 0.0
    },
    "testIntBean" : {
       "uuid" : "0f37aff6-ccc0-436f-a592-bd466f74bd80",
@@ -31,7 +32,8 @@
       "propertyType" : "int",
       "override" : false,
       "unitBean" : "e2203b42-e703-4429-9bf9-dbd4882c341c",
-      "value" : 1
+      "value" : 1,
+      "valueInBaseUnit" : 1000
    },
    "testResourceBean" : {
       "uuid" : "fa822159-51a5-4bf2-99cf-e565b67e0eb0",

@@ -45,7 +45,7 @@ public class ServerRepoHelper {
 			Files.createDirectories(serverConfigurationDirectory);
 		}
 		
-		Activator.getDefault().getLog().info("Searching for repositories in: " + serverConfigurationDirectory);
+		Activator.getDefault().getLog().info("Searching for repositories in: " + serverConfigurationDirectory.toAbsolutePath());
 		Files.walk(serverConfigurationDirectory)
 			.filter(Files::isRegularFile)
 			.forEach(potentialConfigFile -> {

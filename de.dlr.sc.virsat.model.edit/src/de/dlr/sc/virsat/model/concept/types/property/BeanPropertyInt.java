@@ -10,7 +10,6 @@
 package de.dlr.sc.virsat.model.concept.types.property;
 
 import jakarta.xml.bind.annotation.XmlElement;
-
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.SetCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -63,6 +62,49 @@ public class BeanPropertyInt extends ABeanUnitValueProperty<Long> {
 			return Long.parseLong(ti.getValue());
 		}
 		return null;
+	}
+	
+	
+	@XmlElement(nillable = true)
+	@Schema(description = "Long")
+	/**
+	 * Convenience Method to directly convert the value to its base unit
+	 * @return the value in its base unit
+	 */
+	public Long getValueInBaseUnit() {
+		if (ti.getValue() == null) {
+			return null;
+		} else {
+			return getValueToBaseUnit();
+		}
+	}
+	
+	/**
+	 * Convenience method to easily set a value in the frame of base unit and have it
+	 * converted to the currently set unit.
+	 * @param inputValue the value to be set in base unit frame
+	 */
+	public void setValueInBaseUnit(Long inputValue) {
+		if (inputValue != null) {
+			setValueAsBaseUnit(inputValue);
+		}
+	}
+
+	/**
+	 * Convenience Method to directly convert the value to its base unit
+	 * @return the value in its base unit
+	 */
+	public Long getValueToBaseUnit() {
+		return Double.valueOf(ti.getValueToBaseUnit()).longValue();
+	}
+
+	/**
+	 * Convenience method to easily set a value in the frame of base unit and have it
+	 * converted to the currently set unit.
+	 * @param inputValue the value to be set in base unit frame
+	 */
+	public void setValueAsBaseUnit(Long inputValue) {
+		ti.setValueAsBaseUnit(inputValue);		
 	}
 	
 	@Schema(

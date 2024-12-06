@@ -133,6 +133,7 @@
 				<module>de.dlr.sc.virsat.server.swagger.ui</module>
 
 				<module>de.dlr.sc.virsat.concept.unittest.util</module>
+				<module>de.dlr.sc.virsat.test.utils</module>
 				<module>de.dlr.sc.virsat.test</module>
 				
 				<module>de.dlr.sc.virsat.model.extension.thermal</module>
