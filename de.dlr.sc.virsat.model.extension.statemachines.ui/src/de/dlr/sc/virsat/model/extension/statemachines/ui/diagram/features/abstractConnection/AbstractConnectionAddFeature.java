@@ -135,7 +135,7 @@ public abstract class AbstractConnectionAddFeature extends VirSatAddConnectionFe
 			IGaService gaService = Graphiti.getGaService();
 			
 			Polyline polyline = gaService.createPolyline(connection);
-			polyline.setLineStyle(LineStyle.DASH);
+			polyline.setLineStyle(LineStyle.SOLID);
 			polyline.setLineWidth(2);
 			polyline.setForeground(manageColor(getLineColor()));
 
