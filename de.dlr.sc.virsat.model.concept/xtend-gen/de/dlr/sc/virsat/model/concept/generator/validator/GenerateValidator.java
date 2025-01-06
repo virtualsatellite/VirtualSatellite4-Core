@@ -16,12 +16,12 @@ import de.dlr.sc.virsat.model.concept.generator.util.ConceptGeneratorUtil;
 import de.dlr.sc.virsat.model.dvlm.concepts.Concept;
 import de.dlr.sc.virsat.model.dvlm.structural.StructuralElementInstance;
 import de.dlr.sc.virsat.model.dvlm.validator.IStructuralElementInstanceValidator;
+import java.util.List;
 import java.util.Set;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.xbase.lib.Conversions;
-import org.eclipse.xtext.xbase.lib.IterableExtensions;
 
 @SuppressWarnings("all")
 public class GenerateValidator extends AGeneratorGapGenerator<EObject> {
@@ -40,7 +40,7 @@ public class GenerateValidator extends AGeneratorGapGenerator<EObject> {
   public static String getValidatorName(final Concept concept) {
     final String name = concept.getName();
     final String[] arrOfName = name.split("\\.");
-    final String shortName = IterableExtensions.<String>last(((Iterable<String>)Conversions.doWrapArray(arrOfName)));
+    final String shortName = ((List<String>)Conversions.doWrapArray(arrOfName)).getLast();
     String _upperCase = shortName.substring(0, 1).toUpperCase();
     String _substring = shortName.substring(1);
     final String validatorName = (_upperCase + _substring);

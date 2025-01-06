@@ -13,9 +13,9 @@ import org.eclipse.graphiti.features.IDirectEditingInfo;
 import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.IAddContext;
 import org.eclipse.graphiti.mm.algorithms.AbstractText;
-import org.eclipse.graphiti.mm.algorithms.Ellipse;
 import org.eclipse.graphiti.mm.algorithms.Image;
 import org.eclipse.graphiti.mm.algorithms.Rectangle;
+import org.eclipse.graphiti.mm.algorithms.RoundedRectangle;
 import org.eclipse.graphiti.mm.algorithms.styles.Font;
 import org.eclipse.graphiti.mm.algorithms.styles.Orientation;
 import org.eclipse.graphiti.mm.pictograms.ChopboxAnchor;
@@ -41,7 +41,7 @@ import de.dlr.sc.virsat.model.extension.statemachines.ui.diagram.features.stateM
  */
 
 public class StateAddFeature extends VirSatAddShapeFeature {
-	public static  final int RADIUS = 65;
+	public static  final int RADIUS = 50;
 	
 	public static final int INDEX_ELLIPSE = 0;
 	public static final int INDEX_INITIAL_ARROW = 1;
@@ -49,8 +49,12 @@ public class StateAddFeature extends VirSatAddShapeFeature {
 	
 	public static final int INITIAL_ARROW_SIZE = 15;
 	public static final int CONTAINER_SIZE = RADIUS + INITIAL_ARROW_SIZE * 2;
+	public static final int CORNER_WIDTH = 0;
+	public static final int CORNER_HEIGHT = 0;
+	public static final int ROUNDED_CORNERS = 5;
 	
-	public static final IColorConstant ELEMENT_BACKGROUND =	new ColorConstant(232, 94, 74);
+	public static final IColorConstant ELEMENT_FOREGROUND =	new ColorConstant(187, 175, 159);
+	public static final IColorConstant ELEMENT_BACKGROUND =	new ColorConstant(255, 255, 255);
 	
 	private StateMachineAddFeature stateMachineAddFeature;
 	
@@ -115,18 +119,22 @@ public class StateAddFeature extends VirSatAddShapeFeature {
 			IGaService gaService = Graphiti.getGaService();
 
 			Rectangle invisibleRectangle = gaService.createInvisibleRectangle(containerShape);
-			gaService.setLocationAndSize(invisibleRectangle, context.getX(), context.getY(), CONTAINER_SIZE,
+			gaService.setLocationAndSize(invisibleRectangle, context.getX(), context.getY(), CONTAINER_SIZE * 2,
 					CONTAINER_SIZE);
 
-			ContainerShape ellipseShape = peCreateService.createContainerShape(containerShape, true);
+			ContainerShape roundedRectangleShape = peCreateService.createContainerShape(containerShape, true);
 
-			Ellipse ellipse = gaService.createEllipse(ellipseShape);
-			ellipse.setBackground(manageColor(ELEMENT_BACKGROUND));
-			ellipse.setLineVisible(false);
-			ellipseShape.setActive(false);
-
+			RoundedRectangle roundedRectangle = gaService.createRoundedRectangle(roundedRectangleShape, CORNER_WIDTH, CORNER_HEIGHT);		
+			roundedRectangle.setLineVisible(true);
+			roundedRectangle.setLineWidth(2);		
+			roundedRectangle.setForeground(manageColor(ELEMENT_FOREGROUND));
+			roundedRectangle.setBackground(manageColor(ELEMENT_BACKGROUND));
+			roundedRectangle.setCornerHeight(ROUNDED_CORNERS);
+			roundedRectangle.setCornerWidth(ROUNDED_CORNERS);
+			roundedRectangleShape.setActive(false);
+			
 			ChopboxAnchor boxAnchor = peCreateService.createChopboxAnchor(containerShape);
-			boxAnchor.setReferencedGraphicsAlgorithm(ellipse);
+			boxAnchor.setReferencedGraphicsAlgorithm(roundedRectangle);
 			link(boxAnchor, state);
 
 			Shape imageShape = peCreateService.createShape(containerShape, false);

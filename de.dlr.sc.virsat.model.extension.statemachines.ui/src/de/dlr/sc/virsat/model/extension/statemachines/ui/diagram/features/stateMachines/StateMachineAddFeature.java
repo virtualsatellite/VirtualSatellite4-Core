@@ -55,8 +55,8 @@ public class StateMachineAddFeature extends VirSatAddShapeFeature {
 	public static final int ROUNDED_CORNERS = 10;
 	
 	public static final IColorConstant ELEMENT_TEXT_FOREGROUND = IColorConstant.BLACK;
-	public static final IColorConstant ELEMENT_FOREGROUND =	new ColorConstant(98, 131, 167);	
-	public static final IColorConstant ELEMENT_BACKGROUND =	new ColorConstant(187, 218, 247);
+	public static final IColorConstant ELEMENT_FOREGROUND =	new ColorConstant(197, 185, 169);	
+	public static final IColorConstant ELEMENT_BACKGROUND =	new ColorConstant(243, 246, 244);
 	
 	/** 
 	 * Default constructor.

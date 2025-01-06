@@ -205,8 +205,7 @@ public class DiagramHelper {
 		return concept;
 	}
 	
-	private static final int[] ARROW_HEAD_POLYLINE = new int[] { -10, 5, 0, 0, -10, -5 };
-	
+	private static final int[] ARROW_HEAD_POLYLINE = new int[] { -10, 5, 0, 0, -10, -5 };	
 	/**
 	 * Creates an arrow head for the line connection
 	 * @param gaContainer the connection which we want to equip with the arrow head
