@@ -114,24 +114,11 @@ public abstract class AbstractConnectionAddFeature extends VirSatAddConnectionFe
 			var itbProvider = getFeatureProvider().getDiagramTypeProvider().getCurrentToolBehaviorProvider();
 			
 			if (itbProvider instanceof StateMachineDiagramToolBehaviorProvider) {
-				var stateA = fromAnchor.getReferencedGraphicsAlgorithm();
-				var stateB = toAnchor.getReferencedGraphicsAlgorithm();
-				var heightA = stateA.getHeight();
-				var heightB = stateB.getHeight();
-				int distanceX = (locRelDiagToAnchor.getX() + locRelDiagFromAnchor.getX())/2;
-//				int distanceY = (locRelDiagToAnchor.getY() + locRelDiagFromAnchor.getY())/2;
+				int distanceX = (locRelDiagToAnchor.getX() + locRelDiagFromAnchor.getX()) / 2;
 				
 				var pointA = createService.createPoint(distanceX, locRelDiagFromAnchor.getY());
 				var pointB = createService.createPoint(distanceX, locRelDiagToAnchor.getY());
 
-//				var pointA = createService.createPoint(stateA.getWidth() + distanceX*3 / 2, heightA / 2);
-//				var pointB = createService.createPoint(distanceX *3 / -2, heightB / 2);
-				
-//				var pointA = createService.createPoint(distanceBetweenStates, heightA / 2);
-//				var pointB = createService.createPoint(distanceBetweenStates, heightB / 2);
-				
-//				so if B's X is greater than A's x, then A
-				
 				var bendPoints = connection.getBendpoints();
 				bendPoints.add(pointA);
 				bendPoints.add(pointB);
@@ -139,8 +126,7 @@ public abstract class AbstractConnectionAddFeature extends VirSatAddConnectionFe
 			
 			// if the transition is a self-loop, generate some additional bend points to make it more visible
 			if (fromAnchor.equals(toAnchor)) {
-				/* ICreateService */ createService = Graphiti.getCreateService();
-//				var itbProvider = getFeatureProvider().getDiagramTypeProvider().getCurrentToolBehaviorProvider();
+				createService = Graphiti.getCreateService();
 				
 				if (itbProvider instanceof StateMachineDiagramToolBehaviorProvider) {
 					var stateGa = fromAnchor.getReferencedGraphicsAlgorithm();
