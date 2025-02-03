@@ -17,6 +17,7 @@ import org.eclipse.graphiti.features.context.IAddContext;
 import org.eclipse.graphiti.mm.algorithms.Polyline;
 import org.eclipse.graphiti.mm.algorithms.Text;
 import org.eclipse.graphiti.mm.algorithms.styles.LineStyle;
+import org.eclipse.graphiti.mm.algorithms.styles.Point;
 import org.eclipse.graphiti.mm.pictograms.Anchor;
 import org.eclipse.graphiti.mm.pictograms.ConnectionDecorator;
 import org.eclipse.graphiti.mm.pictograms.FreeFormConnection;
@@ -100,24 +101,36 @@ public abstract class AbstractConnectionAddFeature extends VirSatAddConnectionFe
 
 		FreeFormConnection connection = null;
 		if (fromAnchor != null && toAnchor != null) {
-			// Create a Polyline connection
-
+			
+			// Create a Rectangular connection by default
 			connection = peCreateService.createFreeFormConnection(getDiagram());
 			connection.setStart(fromAnchor);
 			connection.setEnd(toAnchor);
 			
 			var locRelDiagFromAnchor = Graphiti.getLayoutService().getLocationRelativeToDiagram(fromAnchor);
 			var locRelDiagToAnchor = Graphiti.getLayoutService().getLocationRelativeToDiagram(toAnchor);
-			
-			// ,with rectangular lines
+ 
 			ICreateService createService = Graphiti.getCreateService();
 			var itbProvider = getFeatureProvider().getDiagramTypeProvider().getCurrentToolBehaviorProvider();
 			
+			// creates transition as rectangular lines
 			if (itbProvider instanceof StateMachineDiagramToolBehaviorProvider) {
-				int distanceX = (locRelDiagToAnchor.getX() + locRelDiagFromAnchor.getX()) / 2;
+				int distanceX = Math.abs(locRelDiagToAnchor.getX() - locRelDiagFromAnchor.getX());
+				int distanceY = Math.abs(locRelDiagToAnchor.getY() - locRelDiagFromAnchor.getY());
+				int bendPointPosX = Math.abs((locRelDiagToAnchor.getX() + locRelDiagFromAnchor.getX()) / 2);
+				int bendPointPosY = Math.abs((locRelDiagToAnchor.getY() + locRelDiagFromAnchor.getY()) / 2);
 				
-				var pointA = createService.createPoint(distanceX, locRelDiagFromAnchor.getY());
-				var pointB = createService.createPoint(distanceX, locRelDiagToAnchor.getY());
+				Point pointA = null;
+				Point pointB = null;
+				
+				if (distanceX >= distanceY) {
+					pointA = createService.createPoint(bendPointPosX, locRelDiagFromAnchor.getY());
+					pointB = createService.createPoint(bendPointPosX, locRelDiagToAnchor.getY());
+				} 
+				if (distanceX < distanceY) {
+					pointA = createService.createPoint(locRelDiagFromAnchor.getX(), bendPointPosY);
+					pointB = createService.createPoint(locRelDiagToAnchor.getX(), bendPointPosY);
+				}
 
 				var bendPoints = connection.getBendpoints();
 				bendPoints.add(pointA);
