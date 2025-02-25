@@ -177,6 +177,24 @@ public class ModelAPIAppsTest {
 	}
 	
 	@Test
+	public void testGetRoot() {
+		StructuralElementInstance sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		StructuralElementInstance seiParent = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		StructuralElementInstance seiRoot = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		BeanStructuralElementInstance beanSei = new BeanStructuralElementInstance(sei);
+		BeanStructuralElementInstance beanSeiParent = new BeanStructuralElementInstance(seiParent);
+		BeanStructuralElementInstance beanSeiRoot = new BeanStructuralElementInstance(seiRoot);
+		
+		sei.setParent(seiParent);
+		seiParent.setParent(seiRoot);
+		beanSei.setParent(beanSeiParent);
+		beanSeiParent.setParent(beanSeiRoot);
+
+		assertTrue("beanSei.getRoot() function returns beanSeiRoot", beanSei.getRoot().equals(beanSeiRoot) && sei.getRoot().equals(seiRoot));
+		assertFalse("beanSei.getRoot() is faulty", !beanSei.getRoot().equals(beanSeiRoot) || !sei.getRoot().equals(seiRoot));
+	}
+	
+	@Test
 	public void testPerformInheritance() {
 		StructuralElement se = StructuralFactory.eINSTANCE.createStructuralElement();
 		se.setIsCanInheritFromAll(true);

@@ -379,6 +379,16 @@ public abstract class ABeanStructuralElementInstance implements IBeanStructuralE
 	}
 	
 	@Override
+	public BeanStructuralElementInstance getRoot() {
+		StructuralElementInstance parentSei = VirSatEcoreUtil.getEContainerOfClass(sei, StructuralElementInstance.class);
+		if (parentSei != null) {
+			return new BeanStructuralElementInstance(parentSei).getRoot();
+		} else {
+			return new BeanStructuralElementInstance(sei);
+		}
+	}	
+	
+	@Override
 	public void delete() {
 		EcoreUtil.delete(sei);
 	}

@@ -40,6 +40,8 @@ import de.dlr.sc.virsat.model.dvlm.types.TypesPackage;
 import de.dlr.sc.virsat.model.dvlm.types.impl.VirSatUuid;
 
 import de.dlr.sc.virsat.model.dvlm.util.DVLMUnresolvedReferenceException;
+import de.dlr.sc.virsat.model.ecore.VirSatEcoreUtil;
+
 import java.lang.reflect.InvocationTargetException;
 
 import java.util.Collection;
@@ -430,7 +432,7 @@ public class StructuralElementInstanceImpl extends MinimalEObjectImpl.Container 
 		}
 		return relationInstances;
 	}
-
+	
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -502,6 +504,25 @@ public class StructuralElementInstanceImpl extends MinimalEObjectImpl.Container 
 			eNotify(new ENotificationImpl(this, Notification.SET, StructuralPackage.STRUCTURAL_ELEMENT_INSTANCE__PARENT, newParent, newParent));
 	}
 
+	
+//	public StructuralElementInstance getParent() {
+//		if (eContainerFeatureID() != StructuralPackage.STRUCTURAL_ELEMENT_INSTANCE__PARENT) return null;
+//		return (StructuralElementInstance)eContainer();
+//	}
+
+	/**
+	 * returns Root 
+	 */
+	public StructuralElementInstance getRoot() {
+		StructuralElementInstance parentSei = VirSatEcoreUtil.getEContainerOfClass(this, StructuralElementInstance.class);
+		if (parentSei != null) {
+			return parentSei.getRoot();
+		} else {
+			return this;
+		}
+	}
+
+	
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

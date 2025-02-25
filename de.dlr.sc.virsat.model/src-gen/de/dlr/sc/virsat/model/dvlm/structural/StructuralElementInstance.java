@@ -131,6 +131,11 @@ public interface StructuralElementInstance extends IUuid, IDescription, IName, I
 	void setParent(StructuralElementInstance value);
 
 	/**
+	 * Returns the value of the root '<em><b>Parent</b></em>' container reference.
+	 */
+	StructuralElementInstance getRoot();
+	
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * <!-- begin-model-doc -->
