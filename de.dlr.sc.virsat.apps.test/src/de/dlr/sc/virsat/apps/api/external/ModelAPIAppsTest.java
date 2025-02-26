@@ -181,17 +181,28 @@ public class ModelAPIAppsTest {
 		StructuralElementInstance sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
 		StructuralElementInstance seiParent = StructuralFactory.eINSTANCE.createStructuralElementInstance();
 		StructuralElementInstance seiRoot = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		
+		sei.setParent(seiParent);
+		seiParent.setParent(seiRoot);
+		
+		assertTrue("sei.getRoot() function returns seiRoot", sei.getRoot().equals(seiRoot));
+		assertFalse("sei.getRoot() is faulty", !sei.getRoot().equals(seiRoot));
+	}
+	
+	@Test
+	public void testGetRootBean() {
+		StructuralElementInstance sei = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		StructuralElementInstance seiParent = StructuralFactory.eINSTANCE.createStructuralElementInstance();
+		StructuralElementInstance seiRoot = StructuralFactory.eINSTANCE.createStructuralElementInstance();
 		BeanStructuralElementInstance beanSei = new BeanStructuralElementInstance(sei);
 		BeanStructuralElementInstance beanSeiParent = new BeanStructuralElementInstance(seiParent);
 		BeanStructuralElementInstance beanSeiRoot = new BeanStructuralElementInstance(seiRoot);
 		
-		sei.setParent(seiParent);
-		seiParent.setParent(seiRoot);
 		beanSei.setParent(beanSeiParent);
 		beanSeiParent.setParent(beanSeiRoot);
-
-		assertTrue("beanSei.getRoot() function returns beanSeiRoot", beanSei.getRoot().equals(beanSeiRoot) && sei.getRoot().equals(seiRoot));
-		assertFalse("beanSei.getRoot() is faulty", !beanSei.getRoot().equals(beanSeiRoot) || !sei.getRoot().equals(seiRoot));
+		
+		assertTrue("beanSei.getRoot() function returns beanSeiRoot", beanSei.getRoot().equals(beanSeiRoot));
+		assertFalse("beanSei.getRoot() is faulty", !beanSei.getRoot().equals(beanSeiRoot));
 	}
 	
 	@Test
