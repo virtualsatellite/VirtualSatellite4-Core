@@ -253,6 +253,13 @@ public interface IBeanStructuralElementInstance extends IBeanUuid, IBeanDelete, 
 	void setParent(BeanStructuralElementInstance newParent);
 	
 	/**
+	 * Call this method to get the root SEI bean of this bean
+	 * The generic type is used, because we don't want to un-/marshall the concrete type.
+	 * @return parent SEI bean or recurses until the parent is found
+	 */
+	BeanStructuralElementInstance getRoot();
+	
+	/**
 	 * Removes all CA beans in the given List from this SEI bean
 	 * @param beanList list containing IBeanCategoryAssignment elements
 	 */
