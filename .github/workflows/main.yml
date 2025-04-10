@@ -95,7 +95,7 @@ jobs:
       # Setup caching for m2 repository
       # --------------------------------------------
       - name: Setup - Cache local Maven repository
-        uses: actions/cache@v4.0.2
+        uses: actions/cache@v4.2.0
         with:
           path: |
              ~/.m2/repository/
@@ -157,7 +157,7 @@ jobs:
       # Setup caching for m2 repository
       # --------------------------------------------
       - name: Setup - Cache local Maven repository
-        uses: actions/cache@v4.0.2
+        uses: actions/cache@v4.2.0
         with:
           path: |
              ~/.m2/repository/
@@ -253,7 +253,7 @@ jobs:
       # Setup caching for m2 repository
       # --------------------------------------------
       - name: Setup - Cache local Maven repository
-        uses: actions/cache@v4.0.2
+        uses: actions/cache@v4.2.0
         with:
           path: |
              ~/.m2/repository/
@@ -316,7 +316,7 @@ jobs:
       # Setup caching for m2 repository
       # --------------------------------------------
       - name: Setup - Cache local Maven repository
-        uses: actions/cache@v4.0.2
+        uses: actions/cache@v4.2.0
         with:
           path: |
              ~/.m2/repository/
