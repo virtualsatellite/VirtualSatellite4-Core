@@ -99,7 +99,7 @@ public class CadImportWizard extends Wizard implements IWorkbenchWizard {
 					Command importCommnd = importer.transform(editingDomain, jsonContent, mapping);
 					if (!importCommnd.canExecute()) {
 						Status status = new Status(Status.ERROR, Activator.getPluginId(),
-								"CadImportWizard: The import command is not exectuable!");
+								"CadImportWizard: File imported successfully without changes!");
 						StatusManager.getManager().handle(status, StatusManager.LOG | StatusManager.SHOW);
 						return Status.CANCEL_STATUS;
 					}
