@@ -376,6 +376,7 @@ public abstract class AUiSnippetGenericTable extends AUiCategorySectionSnippet {
 	 */
 	protected Table createDefaultTable(FormToolkit toolkit, Composite sectionBody) {
 		GridData gridDataTable = createDefaultGridData();
+		gridDataTable.grabExcessVerticalSpace = true;
 		gridDataTable.horizontalSpan = 1;
 		gridDataTable.minimumHeight = DEFAULT_TABLE_HEIGHT;
 		gridDataTable.heightHint = DEFAULT_TABLE_HEIGHT;
