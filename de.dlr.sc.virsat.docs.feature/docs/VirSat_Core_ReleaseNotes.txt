@@ -1,6 +1,18 @@
 VirSat Core Release Notes
 -------------------------
 
+Release 4.18.1 (17th February 2026)
+----------------------------------
+
+New Features:
+	
+Usability:
+
+Maintenance:
+		
+Fixed Bugs:
+	Fixed bug when loading stl geometries from projects which are just referenced into the workspace
+	
 Release 4.18.0 (13th November 2024)
 ----------------------------------
 
