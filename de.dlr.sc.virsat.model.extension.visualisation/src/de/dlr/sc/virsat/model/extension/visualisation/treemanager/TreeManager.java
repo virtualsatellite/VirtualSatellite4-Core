@@ -19,6 +19,7 @@ import java.util.Map;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.util.URI;
 
 import com.google.protobuf.ByteString;
@@ -354,8 +355,9 @@ public class TreeManager implements IVisualisationTreeManager {
 		SceneGraphNode.Builder geometry = protoNodeMap.get(id);
 		
 		String relativeDocumentPath = geometry.getGeometry().getOriginFilepath();
-		String currentWorkspacePath = ResourcesPlugin.getWorkspace().getRoot().getRawLocation().toOSString();
-		Path path = Paths.get(currentWorkspacePath, relativeDocumentPath);
+		IPath relativeDocumentWorkspacePath = new org.eclipse.core.runtime.Path(relativeDocumentPath);
+		String absoluteWorkspacePath = ResourcesPlugin.getWorkspace().getRoot().getFile(relativeDocumentWorkspacePath).getLocation().toOSString();
+		Path path = Paths.get(absoluteWorkspacePath);
 		
 		try {
 			byte[] geometryFileBytes = Files.readAllBytes(path);

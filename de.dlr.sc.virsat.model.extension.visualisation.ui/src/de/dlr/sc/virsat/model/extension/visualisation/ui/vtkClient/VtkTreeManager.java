@@ -10,13 +10,13 @@
 package de.dlr.sc.virsat.model.extension.visualisation.ui.vtkClient;
 
 import java.awt.EventQueue;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Vector;
 
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Status;
 
 import de.dlr.sc.virsat.model.extension.visualisation.Activator;
@@ -547,8 +547,9 @@ public class VtkTreeManager extends vtkPanel {
 	 * @return File path as string
 	 */
 	private String getAbsoluteFilePath(String geometryFilePath) {
-		String currentWorkspacePath = ResourcesPlugin.getWorkspace().getRoot().getRawLocation().toOSString();
-		return Paths.get(currentWorkspacePath, geometryFilePath).toString();
+		IPath relativeDocumentWorkspacePath = new org.eclipse.core.runtime.Path(geometryFilePath);
+		String absoluteWorkspacePath = ResourcesPlugin.getWorkspace().getRoot().getFile(relativeDocumentWorkspacePath).getLocation().toOSString();
+		return absoluteWorkspacePath;
 	}
 	
 	/**
